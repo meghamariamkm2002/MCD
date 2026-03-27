@@ -1,0 +1,44 @@
+the entire algorithm.
+All right, so you take MNIST training and validation data, and you instantiate a bunch of really big networks.
+This is ground truth.
+Okay, you need this, you need this to learn from you instantiate a bunch of really big networks.
+Now, if I draw the graph from before, right, we had this was the performance of the actual
+networks, this comes from here, from this region right here, this is the training data.
+So you instantiate a bunch of these networks, each one, you instantiate in one of them, each one gives rise to a different nonlinearity.
+And you do the full training, ground truth training and evaluation on the full training set and the full validation set.
+And you get validation losses, right?
+For each of these.
+And these are the points right here.
+Now you've, that's the training data for your neural, for your neural architecture search.
+So for your petri dish method.
+What the Petri dish does is it says it extracts the motive and the motive is the thing that you optimize over.
+So as I said, you want to keep that thing in its essence, but you want to reduce everything else.
+So it reduces it instead of from a two layer on 100 wide MLP.
+It reduces that to a two layer single neuron wide MLP.
+Okay.
+And it now this over here is the training data for the procedure that we're going to do now.
+So what it would take is it would take it would take one of these values, it would instantiate and we have that here would instantiate the neural network in the small form.
+of that.
+And now we know that if I train the full data and evaluate, if I train on the full training data and evaluate on the full validation data, I should get this accuracy.
+So I will create, and we're going to look at in a second, I will create training and validation data such that if I train on this training data,
+and then validate on this validation data, I get the same validation loss as if I had trained the big network with the same, you know, the same C parameter on the full training data and evaluate on the full validation data.
+Okay.
+So in this step, I'm optimizing the data here, the training and validation data.
+And now in the second step, once I have this training and validation data that I can basically reproduce this graph right here, then I can go and actually ask my model, okay, now please tell me what happens over here.
+So what am I going to do?
+I'm going to take that, I'm going to instantiate it, I'm going to use my training data that I learned to train it, I'm going to use my validation data that I learned to evaluate it and it's going to give me a number and that number is going to be like close to, hopefully close to do this.
+So this is how we can extrapolate using that method.
+Okay.
+Now, there are a number of assumptions right here, and you can imagine this doesn't work in any situation.
+This works if basically you have to get lucky in that you have to abstract the correct things.
+I said you need to reduce everything else.
+Notably, you see they reduce the 100 layer width to a single neuron-wide MLP.
+and they sort of guess that this doesn't change the fundamental thing.
+But you can also see they leave the two-layer neural network.
+And I can almost guarantee you that they tried this, reducing this to a one-layer neural network, and it did not work.
+And so you have to be sort of very careful of what quantities you abstract and what quantities you don't.
+Because, okay, now you might always think, oh, I can reduce the number of dimensions or channels.
+That's also not always the case.
+So I think that's kind of the crux of the method.
+You have to actually engineer this down compressing of the architecture such that its properties are still kept.
+And yeah, but yeah, in other things.

@@ -1,0 +1,499 @@
+[
+  {
+    "id": "002",
+    "title": "sp_0503_002",
+    "filename": "Videos/sp_0503.mp4",
+    "paper_filename": "Papers/sp_0503.pdf",
+    "type": "slides",
+    "relevant_segments": [
+      {
+        "para_id": "p17",
+        "section_heading": "2.1 Robust Gromov-Wasserstein",
+        "text": "The Gromov-Wasserstein (GW) distance aims at matching distributions defined in different metric spaces. It is defined as follows:",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p18",
+        "section_heading": "2.1 Robust Gromov-Wasserstein",
+        "text": "Definition 2.1 (Gromov-Wasserstein). Suppose that we are given two unregistered complete separable metric spaces (X, dX), (Y, dY ) accompanied with Borel probability measures \u00b5, \u03bd respectively. The GW distance between \u00b5 and \u03bd is defined as",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p19",
+        "section_heading": "2.1 Robust Gromov-Wasserstein",
+        "text": "where \u03a0(\u00b5, \u03bd) is the set of all probability measures on X \u00d7 Y with \u00b5 and \u03bd as marginals.",
+        "seg_type": "par"
+      },
+      {
+        "box": [
+          378.3286437988281,
+          1027.870361328125,
+          841.6793823242188,
+          1079.8321533203125
+        ],
+        "text": [
+          "\\operatorname* { i n f } _ { \\pi \\in \\Pi ( \\mu , \\nu ) } \\iint | d \\chi ( x , x ^ { \\prime } ) - d \\chi ( y , y ^ { \\prime } ) | ^ { 2 } d \\pi ( x , y ) d \\pi ( x ^ { \\prime } , y ^ { \\prime } ) ,"
+        ],
+        "page": "sp_0503_page_0003",
+        "id": "sp_0503_page_0003-1",
+        "seg_type": "eq"
+      },
+      {
+        "para_id": "p1",
+        "section_heading": "Abstract",
+        "text": "Gromov-Wasserstein (GW) distance is a powerful tool for comparing and aligning probability distributions supported on different metric spaces. Recently, GW has become the main modeling technique for aligning heterogeneous data for a wide range of graph learning tasks. However, the GW distance is known to be highly sensitive to outliers, which can result in large inaccuracies if the outliers are given the same weight as other samples in the objective function. To mitigate this issue, we introduce a new and robust version of the GW distance called RGW. RGW features optimistically perturbed marginal constraints within a KullbackLeibler divergence-based ambiguity set. To make the benefits of RGW more accessible in practice, we develop a computationally efficient and theoretically provable procedure using Bregman proximal alternating linearized minimization algorithm. Through extensive experimentation, we validate our theoretical results and demonstrate the effectiveness of RGW on real-world graph learning tasks, such as subgraph matching and partial shape correspondence.",
+        "seg_type": "par"
+      }
+    ]
+  },
+  {
+    "id": "003",
+    "title": "sp_0503_003",
+    "filename": "Videos/sp_0503.mp4",
+    "paper_filename": "Papers/sp_0503.pdf",
+    "type": "slides",
+    "relevant_segments": [
+      {
+        "para_id": "p3",
+        "section_heading": "1 Introduction",
+        "text": "In practice, the robustness of GW distance suffers heavily from its sensitivity to outliers. Here, outliers mean the samples with large noise, which usually are far away from the clean samples or have different structures from the clean samples. The hard constraints on the marginals in the Gromov-Wasserstein distance require all the mass in the source distribution to be entirely transported to the target distribution, making it highly sensitive to outliers. When the outliers are weighted similarly as other clean samples, even a small fraction of outliers corrupted can largely impact the GW distance value and the optimal coupling, which is unsatisfactory in real-world applications.",
+        "seg_type": "par"
+      }
+    ]
+  },
+  {
+    "id": "004",
+    "title": "sp_0503_004",
+    "filename": "Videos/sp_0503.mp4",
+    "paper_filename": "Papers/sp_0503.pdf",
+    "type": "slides",
+    "relevant_segments": [
+      {
+        "para_id": "p21",
+        "section_heading": "2.1 Robust Gromov-Wasserstein",
+        "text": "Definition 2.2 (Robust Gromov-Wasserstein). Suppose that we are given two unregistered complete separable metric spaces (X, dX), (Y, dY ) accompanied with Borel probability measures \u00b5, \u03bd respectively. The Robust GW between \u00b5 and \u03bd is defined as",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p22",
+        "section_heading": "2.1 Robust Gromov-Wasserstein",
+        "text": "where F (\u03b1, \u03b2) =",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p23",
+        "section_heading": "2.1 Robust Gromov-Wasserstein",
+        "text": "and (\u03c01, \u03c02) are two marginals of the joint distribution \u03c0, defined by \u03c01(A) = \u03c0(A \u00d7 Y ) for any Borel set A \u2282 X and \u03c02(B) = \u03c0(X \u00d7B) for any Borel set B \u2282 Y .",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p26",
+        "section_heading": "2.2 Robustness Guarantees",
+        "text": "Robust Gromov-Wasserstein aims at mitigating the sensitivity of the GW distance to outliers, which can result in large inaccuracies if the outliers are given the same weight as other samples in the objective function. Specifically, RGW is designed to address the issue of the GW distance exploding as the distance between the clean samples and the outliers goes to infinity. In general, even a small number of outliers can cause the GW distance to change dramatically when added to the marginal distributions. To formalize this, consider the Huber \u03f5-contamination model popularized in robust statistics [22, 11, 12]. In that model, a base measure \u00b5c is contaminated by an outlier distribution \u00b5a to obtain a contaminated measure \u00b5,",
+        "seg_type": "par"
+      }
+    ]
+  },
+  {
+    "id": "005",
+    "title": "sp_0503_005",
+    "filename": "Videos/sp_0503.mp4",
+    "paper_filename": "Papers/sp_0503.pdf",
+    "type": "slides",
+    "relevant_segments": [
+      {
+        "para_id": "p31",
+        "section_heading": "2.2 Robustness Guarantees",
+        "text": "The derived bound indicates that robust Gromov-Wasserstein provides a provably robust estimate under the Huber \u03f5-contamination model. If the fraction of outliers is known, the upper bound for the robust GW is determined by the true Gromov-Wasserstein distance, along with additional terms that account for the KL divergence between the clean distribution and the outlier distribution for both \u00b5 and \u03bd. The impact of this factor is determined by the extent of relaxation in the marginal distributions \u03c11 and \u03c12. By carefully choosing \u03c11 = \u03f51dKL(\u00b5a, \u00b5c) and \u03c12 = \u03f52dKL(\u03bda, \u03bdc), we can tighten the upper bound on the robust GW value, while still keeping it below the original GW distance (excluding outliers). Importantly, substituting these values of \u03c11 and \u03c12 yields GWrob\u03c11,\u03c12(\u00b5, \u03bd) \u2264 GW(\u00b5c, \u03bdc), indicating that the robust GW between the contaminated distribution \u00b5 and \u03bd is upper bounded by the original GW distance between the clean distribution \u00b5c and \u03bdc. Remark 2.4. The following inequality for UGW under the Huber \u03f5-contamination model can be derived using the same techniques as in Theorem 2.3:",
+        "seg_type": "par"
+      }
+    ]
+  },
+  {
+    "id": "006",
+    "title": "sp_0503_006",
+    "filename": "Videos/sp_0503.mp4",
+    "paper_filename": "Papers/sp_0503.pdf",
+    "type": "slides",
+    "relevant_segments": [
+      {
+        "para_id": "p29",
+        "section_heading": "2.2 Robustness Guarantees",
+        "text": "Theorem 2.3. Let \u00b5 and \u03bd be two distributions corrupted by fractions \u03f51 and \u03f52 of outliers, respectively. Specifically, \u00b5 is defined as (1\u2212 \u03f51)\u00b5c + \u03f51\u00b5a, and \u03bd is defined as (1\u2212 \u03f52)\u03bdc + \u03f52\u03bda, where \u00b5c and \u03bdc represent the clean distributions, and \u00b5a and \u03bda represent the outlier distributions. Then,",
+        "seg_type": "par"
+      },
+      {
+        "box": [
+          301.8070373535156,
+          1219.4605712890625,
+          923.5430908203125,
+          1334.8162841796875
+        ],
+        "text": [
+          "\\begin{array} { r l } & { \\mathbf { G } \\mathbf { W } _ { \\rho _ { 1 } , \\rho _ { 2 } } ^ { \\mathrm { r o b } } ( \\mu , \\nu ) \\leq \\mathbf { G } \\mathbf { W } ( \\mu _ { c } , \\nu _ { c } ) + \\operatorname* { m a x } \\left( 0 , \\epsilon _ { 1 } - \\frac { \\rho _ { 1 } } { d \\mathbf { K } \\mathbf { L } \\left( \\mu _ { a } , \\mu _ { c } \\right) } \\right) \\tau _ { 1 } d _ { \\mathbf { K L } } ( \\mu _ { c } , \\mu _ { a } ) } \\\\ & { \\qquad \\qquad \\qquad + \\operatorname* { m a x } \\left( 0 , \\epsilon _ { 2 } - \\frac { \\rho _ { 2 } } { d _ { \\mathbf { K L } } \\left( \\nu _ { a } , \\nu _ { c } \\right) } \\right) \\tau _ { 2 } d _ { \\mathbf { K L } } ( \\nu _ { c } , \\nu _ { a } ) . } \\end{array}"
+        ],
+        "page": "sp_0503_page_0004",
+        "id": "sp_0503_page_0004-1",
+        "seg_type": "eq"
+      },
+      {
+        "para_id": "p28",
+        "section_heading": "2.2 Robustness Guarantees",
+        "text": "Under the assumption of the Huber \u03f5-contamination model, it can be demonstrated that by selecting suitable values of \u03c11 and \u03c12, the robust Gromov-Wasserstein distance ensures that outliers are unable to substantially inflate the transportation distance. For robust Gromov-Wasserstein, we have the following bound:",
+        "seg_type": "par"
+      }
+    ]
+  },
+  {
+    "id": "007",
+    "title": "sp_0503_007",
+    "filename": "Videos/sp_0503.mp4",
+    "paper_filename": "Papers/sp_0503.pdf",
+    "type": "slides",
+    "relevant_segments": [
+      {
+        "para_id": "p33",
+        "section_heading": "3.1 Problem Setup",
+        "text": "To start with our algorithmic developments, we consider the discrete case for simplicity and practicality, where \u00b5 and \u03bd are two empirical distributions, i.e., \u00b5 = \u2211n i=1 \u00b5i\u03b4xi and \u03bd = \u2211m j=1 \u03bdj\u03b4yj . Denote D \u2208 Sn, Dik = dX(xi, xk) and D\u0304 \u2208 Sm and D\u0304jl = dY (yj , yl). We construct a 4-way tensor as follows:",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p34",
+        "section_heading": "3.1 Problem Setup",
+        "text": "We define the tensor-matrix multiplication as",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p35",
+        "section_heading": "3.1 Problem Setup",
+        "text": "Then, the robust GW admits the following reformulation:",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p36",
+        "section_heading": "3.1 Problem Setup",
+        "text": "Here, \u03c01 = \u03c01m and \u03c02 = \u03c0T1n.",
+        "seg_type": "par"
+      },
+      {
+        "box": [
+          461.2877502441406,
+          825.4122314453125,
+          762.0787963867188,
+          908.7510375976562
+        ],
+        "text": [
+          "( \\mathcal { L } \\otimes T ) _ { i j } : = \\left( \\sum _ { k , \\ell } \\mathcal { L } _ { i , j , k , \\ell } T _ { k , \\ell } \\right) _ { i , j } ."
+        ],
+        "page": "sp_0503_page_0005",
+        "id": "sp_0503_page_0005-1",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          410.73175048828125,
+          742.919189453125,
+          811.3792114257812,
+          789.7001953125
+        ],
+        "text": [
+          "\\mathcal { L } ( D , \\bar { D } ) : = \\left( \\left| d _ { X } \\left( x _ { i } , x _ { k } \\right) - d _ { Y } \\left( y _ { j } , y _ { l } \\right) \\right| ^ { 2 } \\right) _ { i , j , k , l } ."
+        ],
+        "page": "sp_0503_page_0005",
+        "id": "sp_0503_page_0005-2",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          230.39639282226562,
+          1202.5582275390625,
+          975.0962524414062,
+          1419.268798828125
+        ],
+        "text": [
+          "\\begin{array} { c } { { \\displaystyle { \\pi ^ { k + 1 } = \\arg \\operatorname* { m i n } _ { \\tau \\geq 0 } \\left\\{ \\left( \\mathcal { L } ( D , \\bar { D } ) \\otimes \\pi ^ { k } , \\pi \\right) + \\tau _ { 1 } d _ { \\mathbf { k } \\mathbf { L } } ( \\pi _ { 1 } , \\alpha ^ { k } ) + \\tau _ { 2 } d _ { \\mathbf { k } \\mathbf { L } } ( \\pi _ { 2 } , \\beta ^ { k } ) + \\frac { 1 } { t _ { k } } d _ { \\mathbf { k } \\mathbf { L } } ( \\pi , \\pi ^ { k } ) \\right\\} , } } } \\\\ { { { \\displaystyle { \\qquad \\qquad \\qquad \\qquad \\quad \\mathrm { ~ a r g ~ m i n ~ } \\left\\{ d _ { \\mathbf { k } \\mathbf { L } } ( \\pi _ { 1 } ^ { k + 1 } , \\alpha ) + \\frac { 1 } { c _ { k } } d _ { \\mathbf { k } \\mathbf { L } } ( \\alpha ^ { k } , \\alpha ) \\right\\} , } } } } \\\\ { { { \\displaystyle { \\qquad \\qquad \\qquad \\quad d _ { \\mathbf { k } \\mathbf { L } } ( \\varepsilon , \\Delta ) \\leq \\rho _ { 1 } } \\left\\{ d _ { \\mathbf { k } \\mathbf { L } } ( \\pi _ { 2 } ^ { k + 1 } , \\beta ) + \\frac { 1 } { r _ { k } } d _ { \\mathbf { k } \\mathbf { L } } ( \\beta ^ { k } , \\beta ) \\right\\} , } } } \\\\ { { { \\displaystyle { \\qquad \\qquad \\qquad \\quad \\alpha ^ { k + 1 } = \\operatorname* { m a x } _ { ( \\mathbf { k } , \\delta ) \\leq \\rho _ { 2 } } \\left\\{ d _ { \\mathbf { k } \\mathbf { L } } ( \\pi _ { 2 } ^ { k + 1 } , \\beta ) + \\frac { 1 } { r _ { k } } d _ { \\mathbf { k } \\mathbf { L } } ( \\beta ^ { k } , \\beta ) \\right\\} } . } } } \\end{array}"
+        ],
+        "page": "sp_0503_page_0005",
+        "id": "sp_0503_page_0005-5",
+        "seg_type": "eq"
+      },
+      {
+        "para_id": "p33",
+        "section_heading": "3.1 Problem Setup",
+        "text": "To start with our algorithmic developments, we consider the discrete case for simplicity and practicality, where \u00b5 and \u03bd are two empirical distributions, i.e., \u00b5 = \u2211n i=1 \u00b5i\u03b4xi and \u03bd = \u2211m j=1 \u03bdj\u03b4yj . Denote D \u2208 Sn, Dik = dX(xi, xk) and D\u0304 \u2208 Sm and D\u0304jl = dY (yj , yl). We construct a 4-way tensor as follows:",
+        "seg_type": "par"
+      }
+    ]
+  },
+  {
+    "id": "008",
+    "title": "sp_0503_008",
+    "filename": "Videos/sp_0503.mp4",
+    "paper_filename": "Papers/sp_0503.pdf",
+    "type": "slides",
+    "relevant_segments": [
+      {
+        "para_id": "p40",
+        "section_heading": "3.2 Bregman Proximal Alternating Linearized Minimization (BPALM) Method",
+        "text": "To solve the \u03c0-subproblem, we can utilize the Sinkhorn algorithm for the entropic regularized unbalanced optimal transport problem. This algorithm, which has been previously introduced in [13, 32], is well-suited for our needs. As for the \u03b1-subproblem, we consider the case where \u03c11 is strictly larger than 0. Otherwise, when \u03c11 = 0, \u03b1 should simply equal \u00b5, making the subproblem unnecessary. To solve the \u03b1-subproblem, we attempt to find the optimal dual multiplier w\u2217. Specifically, consider the problem:",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p37",
+        "section_heading": "3.2 Bregman Proximal Alternating Linearized Minimization (BPALM) Method",
+        "text": "As Problem (3) is non-convex and involves three variables, we employ BPALM [5, 2] to solve it. By choosing the KL divergence as Bregman distance, the updates of this algorithm are given by:",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p38",
+        "section_heading": "3.2 Bregman Proximal Alternating Linearized Minimization (BPALM) Method",
+        "text": "Here, tk, ck, and rk are stepsizes in BPALM.",
+        "seg_type": "par"
+      },
+      {
+        "box": [
+          381.874755859375,
+          949.6101684570312,
+          843.9811401367188,
+          1051.1566162109375
+        ],
+        "text": [
+          "\\begin{array} { r l } & { \\underset { \\pi , \\alpha , \\beta } { \\mathrm { m i n } } \\; \\left\\langle \\mathcal { L } ( D , \\bar { D } ) \\otimes \\pi , \\pi \\right\\rangle + \\tau _ { 1 } d _ { \\mathbf { K L } } ( \\pi _ { 1 } , \\alpha ) + \\tau _ { 2 } d _ { \\mathbf { K L } } ( \\pi _ { 2 } , \\beta ) } \\\\ & { \\quad \\mathrm { s . t . } \\; d _ { \\mathbf { K L } } ( \\mu , \\alpha ) \\leq \\rho _ { 1 } , d _ { \\mathbf { K L } } ( \\nu , \\beta ) \\leq \\rho _ { 2 } , } \\\\ & { \\qquad \\quad \\alpha \\in \\Delta ^ { n } , \\beta \\in \\Delta ^ { m } , \\pi \\geq 0 . } \\end{array}"
+        ],
+        "page": "sp_0503_page_0005",
+        "id": "sp_0503_page_0005-3",
+        "seg_type": "eq"
+      }
+    ]
+  },
+  {
+    "id": "009",
+    "title": "sp_0503_009",
+    "filename": "Videos/sp_0503.mp4",
+    "paper_filename": "Papers/sp_0503.pdf",
+    "type": "slides",
+    "relevant_segments": [
+      {
+        "para_id": "p1",
+        "section_heading": "Abstract",
+        "text": "Gromov-Wasserstein (GW) distance is a powerful tool for comparing and aligning probability distributions supported on different metric spaces. Recently, GW has become the main modeling technique for aligning heterogeneous data for a wide range of graph learning tasks. However, the GW distance is known to be highly sensitive to outliers, which can result in large inaccuracies if the outliers are given the same weight as other samples in the objective function. To mitigate this issue, we introduce a new and robust version of the GW distance called RGW. RGW features optimistically perturbed marginal constraints within a KullbackLeibler divergence-based ambiguity set. To make the benefits of RGW more accessible in practice, we develop a computationally efficient and theoretically provable procedure using Bregman proximal alternating linearized minimization algorithm. Through extensive experimentation, we validate our theoretical results and demonstrate the effectiveness of RGW on real-world graph learning tasks, such as subgraph matching and partial shape correspondence.",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p49",
+        "section_heading": "4 Experiment Results",
+        "text": "In this section, we present comprehensive experimental results to validate the effectiveness of our proposed RGW model and BPALM algorithm in various graph learning tasks, specifically subgraph alignment and partial shape correspondence. Traditionally, balanced GW has been applied successfully in scenarios where the source and target graphs have similar sizes. However, in our approach, we treat the missing part of the target graph as outliers and leverage RGW for improved performance. All simulations are conducted in Python 3.9 on a high-performance computing server running Ubuntu 20.10, equipped with an Intel(R) Xeon(R) Silver 4214R CPU. Our code is available at https://github.com/lmkong020/outlier-robust-GW.",
+        "seg_type": "par"
+      },
+      {
+        "caption": "Table 1: Comparison of the average matching accuracy (%) and wall-clock time (seconds) on subgraph alignment of 50% subgraph on datasets Synthetic, Proteins and Enzymes and Hit@1 and Hit@10 of dataset Douban.",
+        "captionBoundary": {
+          "x1": 107.69100189208984,
+          "x2": 504.00347900390625,
+          "y1": 560.4415283203125,
+          "y2": 588.261962890625
+        },
+        "figType": "Table",
+        "imageText": [
+          "RGW",
+          "94.44",
+          "361.44",
+          "53.30",
+          "834.76",
+          "69.38",
+          "466.91",
+          "63.43",
+          "293.84",
+          "75.58",
+          "96.24",
+          "srGW",
+          "1.60",
+          "152.01",
+          "21.30",
+          "63.00",
+          "12.08",
+          "172.48",
+          "24.13",
+          "19.68",
+          "4.03",
+          "11.54",
+          "RGWD",
+          "16.68",
+          "955.40",
+          "27.94",
+          "4396.41",
+          "59.69",
+          "3586.56",
+          "30.35",
+          "2629.00",
+          "4.11",
+          "16.46",
+          "UGW",
+          "89.88",
+          "176.24",
+          "25.72",
+          "4026.93",
+          "67.30",
+          "1853.82",
+          "43.73",
+          "1046.29",
+          "0.09",
+          "0.72",
+          "PGW",
+          "2.28",
+          "479.99",
+          "13.94",
+          "544.79",
+          "20.08",
+          "348.44",
+          "11.43",
+          "212.09",
+          "18.24",
+          "37.03",
+          "eBPG",
+          "3.71",
+          "85.31",
+          "19.88",
+          "1975.12",
+          "32.15",
+          "9645.05",
+          "21.58",
+          "1219.81",
+          "0.08",
+          "0.53",
+          "BPG",
+          "15.41",
+          "24.67",
+          "29.30",
+          "118.26",
+          "61.26",
+          "80.39",
+          "32.49",
+          "70.42",
+          "72.72",
+          "92.39",
+          "BAPG",
+          "48.89",
+          "27.95",
+          "30.98",
+          "122.13",
+          "66.84",
+          "16.49",
+          "35.64",
+          "16.41",
+          "72.18",
+          "92.58",
+          "FW",
+          "2.27",
+          "18.39",
+          "16.00",
+          "27.05",
+          "26.15",
+          "60.34",
+          "15.47",
+          "9.57",
+          "17.97",
+          "51.07",
+          "SpecGW",
+          "1.78",
+          "3.72",
+          "12.06",
+          "11.07",
+          "42.64",
+          "12.85",
+          "10.69",
+          "3.96",
+          "2.68",
+          "9.83",
+          "Method",
+          "Synthetic",
+          "Proteins-1",
+          "Proteins-2",
+          "Enzymes",
+          "Douban",
+          "Acc",
+          "Time",
+          "Acc",
+          "Time",
+          "Acc",
+          "Time",
+          "Acc",
+          "Time",
+          "Hit@1",
+          "Hit@10"
+        ],
+        "name": "1",
+        "page": 7,
+        "regionBoundary": {
+          "x1": 109.92,
+          "x2": 502.08,
+          "y1": 591.84,
+          "y2": 728.16
+        },
+        "renderDpi": 150,
+        "renderURL": "/Users/meghamariam/PROJECTS/PROJ1_Dataset/PROJ1_Crossmodal-Traversal/DATASET/Presentation/pap-seg/fig/sp_0503/sp_0503-Table1-1.png",
+        "id": "sp_0503-Table1-1",
+        "seg_type": "tab"
+      },
+      {
+        "para_id": "p52",
+        "section_heading": "4.2 Subgraph Alignment",
+        "text": "The subgraph alignment problem, which involves determining the isomorphism between a query graph and a subgraph of a larger target graph, has been extensively studied [16, 20]. While the",
+        "seg_type": "par"
+      }
+    ]
+  },
+  {
+    "id": "010",
+    "title": "sp_0503_010",
+    "filename": "Videos/sp_0503.mp4",
+    "paper_filename": "Papers/sp_0503.pdf",
+    "type": "slides",
+    "relevant_segments": [
+      {
+        "para_id": "p51",
+        "section_heading": "4.1 Partial Shape Correspondence",
+        "text": "We evaluate the matching performance of RGW on the TOSCA dataset [6, 34] for partial shape correspondence. For the initial estimation of the transport plan in both RGW and PGW, we utilize the partial functional map method [34], employing 30 eigenfunctions. This method establishes an initial matching relationship between the source and target shapes. This method establishes an initial matching relationship between the source and target shapes by setting \u03c0ik to 1 for matching pairs (i, k) and 0 otherwise. The resultant transport plan is scaled by \u2225\u03c0\u22251 = \u2211 ij \u03c0ij . UGW is not suitable for this large-scale task due to its long execution time. As shown in Figure 3, RGW outperforms PGW, and it enhances the performance of the initial point.",
+        "seg_type": "par"
+      },
+      {
+        "caption": "Figure 3: (a): 3D shape geometry of the source and target; (b)-(e): visualization of ground truth, initial point obtained from the partial functional map, and the matching results of PGW and RGW.",
+        "captionBoundary": {
+          "x1": 108.0,
+          "x2": 505.247314453125,
+          "y1": 265.6755065917969,
+          "y2": 282.5870056152344
+        },
+        "figType": "Figure",
+        "imageText": [
+          "(e)",
+          "Robust",
+          "GW(d)",
+          "Partial",
+          "GW(c)",
+          "Partial",
+          "Functional",
+          "Map",
+          "(a)",
+          "Shape",
+          "Geometry",
+          "(b)",
+          "Ground",
+          "Truth"
+        ],
+        "name": "3",
+        "page": 7,
+        "regionBoundary": {
+          "x1": 130.56,
+          "x2": 473.28,
+          "y1": 72.96,
+          "y2": 252.48
+        },
+        "renderDpi": 150,
+        "renderURL": "/Users/meghamariam/PROJECTS/PROJ1_Dataset/PROJ1_Crossmodal-Traversal/DATASET/Presentation/pap-seg/fig/sp_0503/sp_0503-Figure3-1.png",
+        "id": "sp_0503-Figure3-1",
+        "seg_type": "fig"
+      }
+    ]
+  }
+]

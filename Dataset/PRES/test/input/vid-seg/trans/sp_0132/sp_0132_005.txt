@@ -1,0 +1,5 @@
+Among them, Softmax's free attention with linear complexity is a notable variant that balances accuracy and efficiency well.
+However, issues remain when we are trying to apply Softmax's free attention to multi-dimensional problems.
+For multi-dimensional problem, the number of grid points usually grows exponentially with respect to the number of dimensions.
+This result in that query and key matrix becomes too tall and thin matrix and their product is inherently low-rank matrix.
+Also, doing the dot product between a large number of grid points can be potentially unstable to train and evaluate.

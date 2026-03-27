@@ -1,0 +1,1 @@
+Typically, it performs the gradient optimization by using the following update rule, which is the Euler discretization of the Langevin SDE.

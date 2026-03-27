@@ -1,0 +1,9 @@
+Previously, there's no approximation factors of certain convectors subsets for general problems is k plus epsilon, or some error term, epsilon.
+We show that extreme points are sufficient in removing this error term, epsilon.
+The result of factor k is also a low bound.
+That means that it cannot be lowered in general cases.
+We next give another bounce on the number of extreme points.
+Note that this also grows exponentially in the number of objectives, like previously known runtimes for zero methods.
+Interestingly, we find that the matrix bases map to convex hull points are too heavily connected, meaning we can always exchange elements between any two such places in a way where each immediate step results in the convex hull base.
+This property lets us compute a sharpened upper bounds on the number of tree points in my objective instances.
+Most importantly, these structure findings do not rely on any assumptions on the objective space, and thus our waste independence.

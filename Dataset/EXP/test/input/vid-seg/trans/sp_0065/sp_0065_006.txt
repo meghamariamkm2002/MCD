@@ -1,0 +1,19 @@
+How do we even produce sound?
+And that's this diagram right here.
+So you have this GAN TTS generator.
+This is a generator that takes in a hidden representation.
+So it takes in tokens.
+Let's say token one, token two.
+Let's go from the one before.
+Think of a sentence, hello there.
+Okay.
+So it takes these tokens and of course it takes like hidden representations of the tokens and it will output, it will output for each one or for this joint sequence, one, hidden two, it would output the sound wave.
+Okay.
+And this has been a paper before the scan TTS and you also you condition it on the speaker and on latent variables like how you want the pitch to be and so on.
+That's not really important for us right here.
+The generator can simply take these token embeddings and produce sound.
+The problem is in the original paper, you had an alignment.
+You knew which token corresponded to which piece of sound, and therefore you sort of knew... So after that, you need to compare this to the generator thing.
+And you knew which token corresponded to which piece of sound right here.
+So the generator knew what it had to produce from each token, how long it should be, and so on.
+So this is the generally the alignment

@@ -1,0 +1,216 @@
+1
+00:00:00,031 --> 00:00:00,913
+up this.
+
+2
+00:00:01,975 --> 00:00:09,150
+So the crucial part of the paper I think is right here and it's sort of like, you know, section 2.2.
+
+3
+00:00:10,773 --> 00:00:21,094
+But I would want to point out that I think this is the crucial part, this is why the method works ultimately, why it's able to build this implicit gradient.
+
+4
+00:00:21,074 --> 00:00:25,480
+So the section is called proximal regularization in the inner level.
+
+5
+00:00:26,161 --> 00:00:28,284
+And we'll go through this with a bit of detail.
+
+6
+00:00:29,125 --> 00:00:40,922
+To have sufficient learning in the inner level while also avoiding overfitting, ALG, that's the inner optimization procedure, needs to incorporate some form of regularization.
+
+7
+00:00:40,902 --> 00:01:00,278
+So their goal here, or their point here is that, especially if these individual tasks have small training data sets, you need to have some kind of protection against overfitting.
+
+8
+00:01:00,258 --> 00:01:13,017
+And they say since MAML uses a small number of gradient steps, this corresponds to early stopping and can be interpreted as a form of regularization and Bayesian prior.
+
+9
+00:01:13,618 --> 00:01:21,911
+So MAML is this previous method, this basic method that back propagates through the optimization procedure.
+
+10
+00:01:22,552 --> 00:01:28,020
+And since it does this, since it back propagates through the optimization procedure,
+
+11
+00:01:28,000 --> 00:01:39,706
+It's computationally limited to only run very few forward optimization steps because it then has to back propagate through each one, right, needs to store each one.
+
+12
+00:01:40,789 --> 00:01:42,172
+So it's computationally limited.
+
+13
+00:01:42,212 --> 00:01:44,136
+So by necessity.
+
+14
+00:01:44,116 --> 00:01:47,120
+it uses only a small number of gradient steps.
+
+15
+00:01:48,462 --> 00:01:50,465
+And therefore, this is kind of early stopping.
+
+16
+00:01:50,525 --> 00:01:58,455
+And we know to prevent overfitting, one thing you can do is to stop before your training accuracy reaches full zero.
+
+17
+00:01:59,116 --> 00:02:06,326
+And you can stop earlier than that, ideally at a point when your validation accuracy reaches the low point.
+
+18
+00:02:06,927 --> 00:02:13,195
+But they say basically this this limited number of steps is a form of regularization.
+
+19
+00:02:13,175 --> 00:02:19,044
+Now, of course, in this new method, we don't have this constraint anymore.
+
+20
+00:02:19,104 --> 00:02:30,542
+We can run our inner optimization to super convergence, and therefore, we don't have this implicit regularizer anymore, and we'll have to make up for that.
+
+21
+00:02:30,522 --> 00:02:41,904
+They say, in cases like ill conditioned optimization landscapes and medium shot learning, we may want to take many gradient steps, which poses two challenges for mammal.
+
+22
+00:02:42,505 --> 00:02:51,061
+First, we need to store and differentiate through the long optimization path of ALG, which imposes a considerable computation and memory burden, right?
+
+23
+00:02:51,081 --> 00:02:52,243
+That's what we said.
+
+24
+00:02:52,223 --> 00:03:06,518
+Second, the dependence of the model parameters phi i on the meta parameters shrinks and vanishes as the number of gradient steps in algroes, making meta learning difficult.
+
+25
+00:03:06,538 --> 00:03:20,053
+So what they're saying is if you optimize your inner optimization algorithm to the very end, then it is not very, it's dependence and especially for gradient descent, it's linear dependence
+
+26
+00:03:20,033 --> 00:03:41,080
+on the initial parameters, so on the meta parameters, shrinks the more optimization steps you do, because the more and more you're going to basically forget about your initialization, move away from that and move to a local optimum, which you could reach from many, many different initializations.
+
+27
+00:03:41,060 --> 00:03:43,763
+Though that's still a question of whether that's happening.
+
+28
+00:03:44,264 --> 00:03:46,126
+But that's the idea here, right?
+
+29
+00:03:46,447 --> 00:03:50,071
+If you're at the local optimum, you could have reached that from any sort of point.
+
+30
+00:03:50,792 --> 00:03:56,920
+And there's going to be very little information about the end of the procedure from the beginning.
+
+31
+00:03:57,020 --> 00:04:01,566
+And therefore, if you want to calculate the gradient, that's going to be like super inaccurate.
+
+32
+00:04:01,546 --> 00:04:14,684
+And they say to overcome these limitations, so they solve these two things in one right here, we consider a more explicitly regularized algorithm.
+
+33
+00:04:15,785 --> 00:04:22,294
+So what they'll say is they'll say, we don't just want to optimize this inner objective.
+
+34
+00:04:22,714 --> 00:04:23,976
+So this would be here.
+
+35
+00:04:23,956 --> 00:04:28,830
+So we don't just want to find the minimum of this inner loss function.
+
+36
+00:04:28,890 --> 00:04:30,173
+That's one goal we have.
+
+37
+00:04:30,755 --> 00:04:35,950
+But the other goal we have is to stay close to the initial parameters.
+
+38
+00:04:36,090 --> 00:04:38,978
+And that's where this regularizer comes in here.
+
+39
+00:04:38,958 --> 00:04:52,536
+So this basically says we want with our parameters here that we are optimizing, we want to find them such that they minimize this loss function, really minimize it, find the best point.
+
+40
+00:04:52,797 --> 00:05:02,790
+But also with a trade-off of lambda, we want to stay close to the initial parameters that we started from.
+
+41
+00:05:03,091 --> 00:05:08,458
+This is the initial parameters and the closeness is measured in the L2 norm.
+
+42
+00:05:08,438 --> 00:05:21,884
+So it's a quadratic regularizer on how close you might know from initial supervised learning or something that sometimes you do something like plus lambda times the L2 norm of the weight.
+
+43
+00:05:21,984 --> 00:05:28,557
+So this would be called weight regularization, weight decay, L2 normalization, something like this.
+
+44
+00:05:28,537 --> 00:05:34,625
+where you regularize your weights such that you stay close to the zero point, right?
+
+45
+00:05:34,825 --> 00:05:39,931
+Implicitly in this, there is a minus zero given.
+
+46
+00:05:41,133 --> 00:05:44,537
+But here, you want to stay close to your initial parameters.
+
+47
+00:05:44,998 --> 00:05:50,725
+So the inner optimization is no longer just minimizing the loss on the training data set.
+
+48
+00:05:50,765 --> 00:05:52,587
+The inner optimization is that.
+
+49
+00:05:52,567 --> 00:06:08,263
+And with ALG star, we denote, so if ALG has a star, we say that this is referring not to the procedure of the algorithm, but to the minimum that the algorithm has found.
+
+50
+00:06:08,243 --> 00:06:21,231
+So Alex star means the algorithm has optimized this inner procedure to its minimum, which is a balance of the training loss of that task and staying close to the original parameters.
+
+51
+00:06:21,872 --> 00:06:26,843
+And this, I think this, um, they say that here, the,
+
+52
+00:06:26,823 --> 00:06:39,830
+Proximal regularization term in equation three encourages Phi i to remain close to Theta, thereby retaining a strong dependence throughout.
+
+53
+00:06:39,890 --> 00:06:42,235
+This is why their method works.
+
+54
+00:06:43,678 --> 00:06:55,041
+And we're going to see in the math right soon how exactly they're able through this to establish
+

@@ -1,0 +1,23 @@
+[
+  {
+    "input_path": "/tmp/megha/PDF-Extract-Kit/Presentation/layout_pap/sp_0457/sp_0457_page_5.png",
+    "page_index": null,
+    "boxes": [
+      {
+        "cls_id": 14,
+        "label": "algorithm",
+        "score": 0.9369055032730103,
+        "coordinate": [
+          440.193603515625,
+          1430.8275146484375,
+          2097.524169921875,
+          2349.293701171875
+        ],
+        "text": "nput: Learning rate \u03b7m, smoothing parameter \u00b5m, compressor Cm for m  {0, 1, ...M }.\nutput: Parameter wm for m  {0, 1, ..M }.\n: Initialize model parameter wm for all participants m  {0, 1, ..M }\n: while not convergent do\nwhen a client m is activated, do:\nRandomly select a sample xm,i\nCompute and send Cm (hm(wm; xm,i)) to server\nReceive Co(\u2206m,i) from the server (in a listen manner)\nCompute  hm,i fi (w0, \u03a6i) via Avg-RandGradEst (Eq. 2)\nCompute  wm hm (wm; xm,i) via backpropagation.\nCompute vm =  hm, i fi (\u03c90, \u03a6i) \u00b7 wm hm,i\nUpdate wm \u2190 Wm \u2212 \u03b7mVm\nwhen server receives from client m, do:\nCompute \u03b4\ni and group into \u2206m,i\nSend Co(\u2206m,i) to the client m\nCompute v0 = wo fi(w0, \u03a6i), (FOO)\nUpdate W0 \u2190 W0 \u2212 N0V0",
+        "input_path": "/tmp/megha/PDF-Extract-Kit/Presentation/layout_pap/sp_0457/sp_0457_page_5.png",
+        "id": "sp_0457_page_5_1",
+        "seg_type": "algo"
+      }
+    ]
+  }
+]

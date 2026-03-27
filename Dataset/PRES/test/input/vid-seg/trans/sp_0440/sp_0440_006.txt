@@ -1,0 +1,2 @@
+The main technique contribution behind our results is a novel robust self-normalized concentration inequality.
+It uses adaptive Hubert regression to handle heavy-tailed noise by replacing squared loss with a more robust Hubert loss as shown in the figure.

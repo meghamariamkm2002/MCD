@@ -1,0 +1,3 @@
+Furthermore, we extend our analysis to a more general case, where we add another level of outer function that makes it a tree-level compositional problem.
+Similarly to FCCO, this extended formulation has the coupled relation between each pair of adjacent layers.
+We call this class of problems TCCO.

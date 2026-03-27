@@ -1,0 +1,20 @@
+{
+  "sp_0012_page_0003": {
+    "bboxes": [
+      {
+        "box": [
+          720.8812255859375,
+          931.8729248046875,
+          972.9681396484375,
+          961.031494140625
+        ],
+        "text": [
+          "\\operatorname* { m a x } \\left\\{ t _ { \\mathrm { u p s t r e a m } } , e \\times t _ { \\mathrm { d o w n s t r e a m } } \\right\\} ,"
+        ],
+        "id": "sp_0012_page_0003-1",
+        "page": "sp_0012_page_0003",
+        "seg_type": "eq"
+      }
+    ]
+  }
+}

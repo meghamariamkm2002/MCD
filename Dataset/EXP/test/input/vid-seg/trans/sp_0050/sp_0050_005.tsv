@@ -1,0 +1,41 @@
+start	end	text
+31	8179	different things, or actually more than two different things, but they formulate this in an abstract way right here.
+9260	22774	So what they'll look at is the so-called properties, a property F. And this property F can be, for example, that an amino acid is a binding site.
+23354	28840	Property F can also be that two amino acids are in contact with each other.
+28820	43666	So f always takes i and j. If in the case, for example, where this is the contact property, then it simply is the indicator function for when i and j are a in contact.
+46511	52802	And if it is just a binding site, then I think we are looking at j.
+54740	62730	at the token level property, we define to be an indicator that returns one if the property is present in token J, okay?
+62750	66955	So whenever J is a binding site, then that holds.
+67356	70359	So what we're looking at are these attention heads in BERT.
+70660	81333	If you don't know BERT has an attention mechanism, which basically means from layer to layer, each token can attend to all other tokens.
+81353	84477	So here, the amino acid sequence, I've drawn it twice.
+84457	96762	and the next layer representation of this amino acid will be able to gather information from all of the other amino acid through an attention mechanism, through a dynamic routing algorithm.
+97202	102533	I've made a video on attention is all you need if you want to find out more how this works.
+102513	108462	Now, what we're interested in is the strength of these connections.
+109083	121483	So, the hypothesis is if molecule, here is one, two, three, four, five and six, if molecule one and three are contact sites,
+121463	131079	then maybe we will find a layer where this connection between one and three is very strong, right?
+131119	141016	That would indicate that there is a connection site or that would indicate that BERT has learned something about the connection sites, okay?
+141296	144822	If we find this repeatedly, so if we look at many, many proteins,
+144802	162979	and whenever we know that there is a contact between two things, and then we observe that the corresponding attention is very high, then we can be pretty sure that BERT has learned something about contact between amino acids.
+162959	165603	The same goes for binding sites.
+165623	188393	So if 4 here is a binding site and then all the connections, all the attention that the higher layer gets from 4, so all the information routed away from 4 is very strong, that means all these other tokens are paying special attention to the token number 4, to this amino acid.
+188373	199918	And if we find that there's a big correlation with this being a binding site, then we can reasonably conclude that Bert has learned something about binding sites.
+200978	208405	So we're going to do a correlative analysis for proteins where we know the binding sites, where we know the contacts.
+208765	214230	We can analyze them, we can run simulations, therefore we can know them.
+214831	220796	So we're going to look at this quantity right here, which is simply a normalized quantity.
+220956	224500	So we're going to look at the attention in a given attention head.
+225240	229264	So as you know, BERT has many layers with many attention heads.
+229244	241561	And we're going to look at whether or not this property is active and just normalize it by the total attention in that head so that we get some kind of a percentage number.
+242503	243404	That's the first task.
+243444	247990	We're basically going to look at how does the attention correlate with these properties.
+248851	253358	And the second task we're going to do is this probing task.
+253378	258525	So a probing task is like a linear probe in like a classifier.
+258505	263672	So what we're going to do is we're going to take a layer right here.
+265094	275668	And even though it's an intermediate layer, we're simply going to run it through a linear classifier and then decide is this a binding site, for example, or not.
+276389	280395	Is a given amino acid a binding site or not?
+280415	284260	Is a given pair a contact or not?
+284240	288896	So this is kind of a linear problem, but this sort of takes a backseat in this paper.
+289478	293712	The analysis is really on the attention heads and what the attention heads learn.
+295217	296060	And that's already it.
+296501	299251	They take a pre-trained BERT model.
+299271	305050	So there are these BERT models that are already trained on these protein databases.

@@ -1,0 +1,40 @@
+different things, or actually more than two different things, but they formulate this in an abstract way right here.
+So what they'll look at is the so-called properties, a property F. And this property F can be, for example, that an amino acid is a binding site.
+Property F can also be that two amino acids are in contact with each other.
+So f always takes i and j. If in the case, for example, where this is the contact property, then it simply is the indicator function for when i and j are a in contact.
+And if it is just a binding site, then I think we are looking at j.
+at the token level property, we define to be an indicator that returns one if the property is present in token J, okay?
+So whenever J is a binding site, then that holds.
+So what we're looking at are these attention heads in BERT.
+If you don't know BERT has an attention mechanism, which basically means from layer to layer, each token can attend to all other tokens.
+So here, the amino acid sequence, I've drawn it twice.
+and the next layer representation of this amino acid will be able to gather information from all of the other amino acid through an attention mechanism, through a dynamic routing algorithm.
+I've made a video on attention is all you need if you want to find out more how this works.
+Now, what we're interested in is the strength of these connections.
+So, the hypothesis is if molecule, here is one, two, three, four, five and six, if molecule one and three are contact sites,
+then maybe we will find a layer where this connection between one and three is very strong, right?
+That would indicate that there is a connection site or that would indicate that BERT has learned something about the connection sites, okay?
+If we find this repeatedly, so if we look at many, many proteins,
+and whenever we know that there is a contact between two things, and then we observe that the corresponding attention is very high, then we can be pretty sure that BERT has learned something about contact between amino acids.
+The same goes for binding sites.
+So if 4 here is a binding site and then all the connections, all the attention that the higher layer gets from 4, so all the information routed away from 4 is very strong, that means all these other tokens are paying special attention to the token number 4, to this amino acid.
+And if we find that there's a big correlation with this being a binding site, then we can reasonably conclude that Bert has learned something about binding sites.
+So we're going to do a correlative analysis for proteins where we know the binding sites, where we know the contacts.
+We can analyze them, we can run simulations, therefore we can know them.
+So we're going to look at this quantity right here, which is simply a normalized quantity.
+So we're going to look at the attention in a given attention head.
+So as you know, BERT has many layers with many attention heads.
+And we're going to look at whether or not this property is active and just normalize it by the total attention in that head so that we get some kind of a percentage number.
+That's the first task.
+We're basically going to look at how does the attention correlate with these properties.
+And the second task we're going to do is this probing task.
+So a probing task is like a linear probe in like a classifier.
+So what we're going to do is we're going to take a layer right here.
+And even though it's an intermediate layer, we're simply going to run it through a linear classifier and then decide is this a binding site, for example, or not.
+Is a given amino acid a binding site or not?
+Is a given pair a contact or not?
+So this is kind of a linear problem, but this sort of takes a backseat in this paper.
+The analysis is really on the attention heads and what the attention heads learn.
+And that's already it.
+They take a pre-trained BERT model.
+So there are these BERT models that are already trained on these protein databases.

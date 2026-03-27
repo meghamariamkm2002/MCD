@@ -1,0 +1,13 @@
+start	end	text
+31	8988	The last experiment they do is these linear probes, which where they just go and they just build classifiers from different parts of the network.
+9690	14880	And you can see right here that what is predicted and how well they work.
+14900	18968	So each bar here is going to be the difference of performance.
+18988	22815	So this is differential performance of diagnostic classifier by layer.
+22795	25602	sorted by task order in figure eight.
+26284	31316	Each plot shows the change in performance between the given layer and the previous layer.
+33101	40399	So a bar up shows it's performing better than the previous layer, a bar down shows it's performing worse than the previous layer.
+40379	45750	You see right here that these are the secondary structures right here.
+46371	55309	You can see that there is a lot of performance in the earlier layers right here and not that high performance in the later layers.
+55730	59518	Whereas for the tertiary structures, the binding site and the contact,
+59498	79380	You can see that there is a bit of performance in places, but it sort of tends to be more towards the middle, certainly more towards the middle of the end of the network than the secondary structures, which sort of makes sense with our hypothesis.
+79360	100035	You can also see this here, where they show the percent of attention focused as a function of layer, and the red is the center of mass, and you can see that as the secondary structure, their center of mass is at a lower layer in general than the tertiary.

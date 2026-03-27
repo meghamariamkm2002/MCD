@@ -1,0 +1,2 @@
+We introduce the implementation rate gamma to construct the verbitation as a regression problem and accelerate the process of verbitation through sketching method.
+This reduces the time complexity from being linear in terms of the batch size to being linear in terms of the sketch size C.

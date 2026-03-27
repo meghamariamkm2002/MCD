@@ -1,0 +1,119 @@
+WEBVTT
+
+00:00.031 --> 00:02.274
+is this long-term memory right here.
+
+00:02.694 --> 00:12.927
+So in this memory, ideally, we would want to fit, let's say, an entire day, an entire week, or even an entire month of data from one of these cameras.
+
+00:13.507 --> 00:22.478
+And it's just not feasible that we expand this current window here to an entire month or an entire week.
+
+00:22.458 --> 00:35.338
+for many of those of those cameras because even though they have a low frame rate and so on it's still too much in order to then be all differentiable all back propagatable and so on.
+
+00:36.200 --> 00:47.217
+So we can't really back prop in for this long term memory in essence what we want to do is exactly the same we want to build up a memory
+
+00:47.197 --> 01:06.302
+of all of the regions of interest or maybe selected regions or all of the best regions of interest, whatever heuristic strategy we have of the past, whatever this camera has seen, let's say in the last month or in the current week or something like this, we want to build all of this up.
+
+01:06.282 --> 01:11.347
+and then use an attention mechanism, just the same in order to incorporate it.
+
+01:11.688 --> 01:20.197
+But we have to come up with these things right here in some other way than a way where we can backprop.
+
+01:20.237 --> 01:30.568
+So we can't really use this stage one detector right here because this is the one we're training and so we have to backprop through it.
+
+01:30.548 --> 01:38.084
+Now an easy proposal is to simply use it anyway, but do like a stop gradient on it, so we don't back prop through it.
+
+01:38.585 --> 01:42.854
+That is one way, but the paper decides on a different way.
+
+01:42.995 --> 01:51.072
+The paper decides that all of the past basically, right here, right here, and so on,
+
+01:51.052 --> 01:54.495
+we'll take a pre-trained object detector.
+
+01:54.795 --> 02:13.471
+So not the one we're training currently, but we'll take a pre-trained one that was pre-trained either on something like Coco, which is an object detection dataset, or you can pre-train it on Coco and then fine-tune it on a detask you're interested in, in a single frame fashion.
+
+02:14.472 --> 02:21.058
+For whatever way, we'll take a pre-trained object detector or region of interest extractor,
+
+02:21.038 --> 02:30.613
+And that will give us, for each frame in the past, will give us also the regions of interest along with the features.
+
+02:32.235 --> 02:32.515
+Okay?
+
+02:33.477 --> 02:41.068
+And these are the features that we then go and put into the memory bank.
+
+02:41.088 --> 02:42.811
+Sorry, my tablet just crashed a bit.
+
+02:43.472 --> 02:44.093
+There we go.
+
+02:45.659 --> 02:49.784
+Okay, so we'll take a pre-trained extractor right here.
+
+02:51.186 --> 02:53.409
+That will give us features for regions of interest.
+
+02:53.469 --> 02:58.897
+We'll put that into the memory bank and then we will use an attention mechanism to incorporate it.
+
+02:59.257 --> 03:06.807
+Now the attention mechanism we can train, but we cannot train the extractor for the features.
+
+03:06.787 --> 03:16.379
+And this is the difference to the short-term memory where we can actually train the feature extractor in order to help us with building the memory.
+
+03:17.100 --> 03:21.085
+Now the memory is simply built without a goal in mind, basically.
+
+03:21.545 --> 03:30.116
+And the attention mechanism basically has to learn that it doesn't work with features that are meant for its task.
+
+03:30.176 --> 03:36.203
+It works with features that have been originally created for a different task, and they're not going to change.
+
+03:36.183 --> 03:39.528
+But as we'll see, this, you know, can be handled.
+
+03:40.549 --> 03:42.191
+So that's what they do.
+
+03:42.412 --> 03:48.200
+They incorporate short term and long term memory into their stage two prediction.
+
+03:48.300 --> 03:54.949
+And then the stage two prediction simply takes in all of those features and classifies the class of the object.
+
+03:56.070 --> 03:59.595
+And that's the architecture of context RCNN.
+
+03:59.756 --> 04:03.000
+It's RCNN with long and short term context.
+
+04:05.444 --> 04:12.263
+So they describe very different ways of how they built the memory and so on, how they built the features.
+
+04:12.964 --> 04:15.692
+I kind of glossed over this right now.
+
+04:15.732 --> 04:18.861
+There's a lot of consideration in building these things.
+
+04:18.881 --> 04:23.914
+And you have to look at the paper how they exactly do this.
+
+04:24.376 --> 04:30.051
+I'm more interested in the high level architecture and the sort of ideas behind it.
+

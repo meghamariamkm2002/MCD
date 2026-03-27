@@ -1,0 +1,488 @@
+[
+  {
+    "para_id": "p1",
+    "section_heading": "Abstract",
+    "text": "Vision-Language (VL) pre-trained models have shown their superiority on many multimodal tasks. However, the adversarial robustness of such models has not been fully explored. Existing approaches mainly focus on exploring the adversarial robustness under the white-box setting, which is unrealistic. In this paper, we aim to investigate a new yet practical task to craft image and text perturbations using pre-trained VL models to attack black-box fine-tuned models on different downstream tasks. Towards this end, we propose VLATTACK2 to generate adversarial samples by fusing perturbations of images and texts from both singlemodal and multimodal levels. At the single-modal level, we propose a new blockwise similarity attack (BSA) strategy to learn image perturbations for disrupting universal representations. Besides, we adopt an existing text attack strategy to generate text perturbations independent of the image-modal attack. At the multimodal level, we design a novel iterative cross-search attack (ICSA) method to update adversarial image-text pairs periodically, starting with the outputs from the single-modal level. We conduct extensive experiments to attack five widely-used VL pre-trained models for six tasks. Experimental results show that VLATTACK achieves the highest attack success rates on all tasks compared with state-of-the-art baselines, which reveals a blind spot in the deployment of pre-trained VL models.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p2",
+    "section_heading": "1 Introduction",
+    "text": "The recent success of vision-language (VL) pre-trained models on multimodal tasks have attracted broad attention from both academics and industry [1, 2, 3, 4, 5, 6, 7]. These models first learn multimodal interactions by pre-training on the large-scale unlabeled image-text datasets and are later fine-tuned with labeled pairs on different downstream VL tasks [8, 9, 10]. In many cases, these pre-trained models have revealed more powerful cross-task learning capabilities compared to training from scratch [11, 12]. Despite their remarkable performance, the adversarial robustness of these VL models is still relatively unexplored.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p3",
+    "section_heading": "1 Introduction",
+    "text": "Existing work [13, 14, 15, 16] conducting adversarial attacks in VL tasks is mainly under the whitebox setting, where the gradient information of fine-tuned models is accessible to attackers. However, in a more realistic scenario, a malicious attacker may only be able to access the public pre-trained models released through third parties. The attacker would not have any prior knowledge about the",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p4",
+    "section_heading": "1 Introduction",
+    "text": "parameters learned by downstream VL models fine-tuned on private datasets. Towards bridging this striking limitation, we investigate a new yet practical attack paradigm – generating adversarial perturbations on a pre-trained VL model to attack various black-box downstream tasks fine-tuned on the pre-trained one.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p5",
+    "section_heading": "1 Introduction",
+    "text": "However, such an attack setting is non-trivial and faces the following challenges: (1) Task-specific challenge. The pre-trained VL models are usually used for fine-tuning different downstream tasks, which requires the designed attack mechanism to be general and work for attacking multiple tasks. As illustrated in Figure 1, the attacked tasks are not only limited to close-set problems, such as visual question answering, but also generalized to open-ended questions, such as visual grounding. (2) Model-specific challenge. Since the parameters of the fine-tuned models are unknown, it requires the attack method to automatically learn the adversarial transferability between pre-trained and finetuned models on different modalities. Although the adversarial transferability [17, 18, 19, 20] across image models has been widely discussed, it is still largely unexplored in the pre-trained models, especially for constructing mutual connections between perturbations on different modalities.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p6",
+    "section_heading": "1 Introduction",
+    "text": "To address all the aforementioned challenges, we propose a new yet general Vision-Language Attack strategy (named VLATTACK) to explore the adversarial transferability between pre-trained and fine-tuned VL models, as shown in Figure 2. The whole VLATTACK scheme fuses perturbations of images and texts from two levels:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p7",
+    "section_heading": "1 Introduction",
+    "text": "Single-modal Level. VLATTACK independently generates perturbations on a single modality, following a “from image to text” order as the former can be perturbed on a continuous space. The single-modal attack can effectively detect the adversarial vulnerability of an image or text, and hence avoids redundant perturbations on the other modality. Specifically, to fully utilize the image-text interactions that have been stored in the pre-trained model, we propose a novel block-wise similarity attack (BSA) strategy to attack the image modality, which adds perturbations to enlarge the network block-wise distance between original and perturbed features in the pretrained model, disrupting the universal image-text representations for the downstream predictions. If BSA fails to change the prediction after querying the fine-tuned black-box model, VLATTACK will attack the text modality by employing the word-level perturbation techniques [21, 22, 23, 24]. We adopt BERT-Attack [21] to attack the text modality as its prominent performance has been widely verified in many studies [25, 26, 27]. Finally, if all the text perturbations {T′i} fail, VLATTACK will generate a list of perturbed samples T and feed them to the multimodal attack along with the perturbed image I′. Multimodal Level. If the above attack fails to change the predictions, we cross-update image and text perturbations at the multimodal level based on previous outputs. The proposed iterative crosssearch attack (ICSA) strategy updates the image-text perturbation pair (I′i,T′i) in an iterative way",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p8",
+    "section_heading": "1 Introduction",
+    "text": "by considering the mutual relations between different modal perturbations. ICSA uses a text perturbation T′i selected from the list T as the guidance to iteratively update the perturbed image I′i by employing the block-wise similarity attack (BSA) until the new pair (I′i,T ′ i) makes the prediction of the downstream task change. In addition, text perturbations are cross-searched according to the semantic similarity with the benign one at the multimodal attack level, which gradually increases the extent of the direction modification to preserve the original semantics to the greatest extent.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p9",
+    "section_heading": "1 Introduction",
+    "text": "Our contributions are summarized as follows: (1) To the best of our knowledge, we are the first to explore the adversarial vulnerability across pre-trained and fine-tuned VL models. (2) We propose VLATTACK to search adversarial samples from different levels. For the single-modal level, we propose the BSA strategy to unify the perturbation optimization targets on various downstream tasks. For the multimodal level, we design the ICSA to generate adversarial image-text pairs by cross-searching perturbations on different modalities. (3) To demonstrate the generalization ability of VLATTACK, we evaluate the proposed VLATTACK on five widely-used VL models, including BLIP [28], CLIP [29], ViLT [1], OFA [5] and UniTAB [4] for six tasks: (i) VQA, (ii) visual entailment, (iii) visual reasoning, (iv) referring expression comprehension, (v) image captioning, and (vi) image classification. Experimental results demonstrate that VLATTACK outperforms both single-modal and multimodal attack approaches, which reveals a significant blind spot in the robustness of large-scale VL models.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p10",
+    "section_heading": "2 Related Work",
+    "text": "Single-modal Adversarial Attack Methods. Image Attack. Traditional image attack methods [30, 31] generate adversarial samples by optimizing the loss function with regard to the decision boundary from model outputs. Not only do the generated perturbations change the model predictions, but they can also be transferred to other convolutional neural network (CNN) structures. Such a property is called transferability and has been extensively studied. For example, data augmentation-based methods [32, 33] endeavor to create diverse input patterns to enhance representation diversity across different models. Feature disruptive attacks [17, 34, 35] introduce the intermediate loss to change the local activation of image features output from the middle layers of CNNs, enabling the perturbed features to transfer to different models without knowing their structures and parameters. Text Attack. Adversarial attacks on natural language processing (NLP) tasks mainly concentrate on word-level and sentence-level perturbations. Word-level perturbations [21, 22, 23, 24] substitute words with synonyms that share similar word embeddings and contextual information. Sentence-level perturbations [25, 36, 37] focus on logical structures of texts through paraphrasing or adding unrelated sentence segments. All of these methods have revealed the adversarial vulnerability of traditional NLP models to some extent. However, adapting them to a multimodal attack setting is still underexplored.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p11",
+    "section_heading": "2 Related Work",
+    "text": "Multimodal Adversarial Attack Methods. Multimodal VL models are susceptible to adversarial attacks as perturbations can be added to both modalities. Existing methods mainly explore adversarial robustness on a specific VL task. For the visual question answering task, Fool-VQA [13] is proposed, which iteratively adds pixel-level perturbations on images to achieve the attack. For the image-text retrieval task, CMLA [14] and AACH [38] add perturbations to enlarge Hamming distance between image and text hash codes, which causes wrong image-text matching results. Recently, Co-attack [15] is proposed, which combines image and text perturbations using word substitution attacks to ascertain a direction for guiding the multi-step attack on images. The whole framework is deployed in a white-box setting, where attackers are assumed to have access to the parameters of each downstream task model. Besides, Co-attack is only validated on three tasks, which is not general enough.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p12",
+    "section_heading": "3 Preliminaries",
+    "text": "VL Pre-trained Model Structure. Fine-tuning from pre-training has become a unified paradigm in the recent VL model design. Most pre-trained VL models can be divided into encoder-only [1, 39, 40, 41] and encoder-decoder [4, 5, 6] structures. Two representative model structures are shown in Figure 3. Given an image-text pair (I,T), both VL models first embed each modality separately. Image tokens are obtained through an image encoder composed of a vision transformer [42] or a Resnet [43] after flattening the grid features into a sequence. Text tokens are generated through",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p13",
+    "section_heading": "3 Preliminaries",
+    "text": "a word encoder made up of a tokenizer [44, 45] and a word vector projection. The encoder-only model then attends tokens of two modalities and a learnable special token ⟨cls⟩ and feeds them into a Transformer encoder. Finally, the output representation from the ⟨cls⟩ token is fed into a classification head for the final prediction ⟨ans⟩. For the encoder-decoder structure, the attached image and text tokens are fed into a Transformer network [46] to generate sequence predictions [⟨ans1⟩, ⟨ans2⟩, · · · , ⟨end⟩] in an auto-regressive manner. The network stops regressing when an end token ⟨end⟩ appears. In this work, we deeply explore the adversarial vulnerability of both structures.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p14",
+    "section_heading": "3 Preliminaries",
+    "text": "Threat Model. Let F denote the public pre-trained model and S represent the downstream task model, where S shares most of or the same structure with F . As shown in Figure 3, the network structures of both types of public VL pre-trained models are different. The encoder-only model allows modifying the last prediction layer based on the requirement of downstream tasks but keeping the other layers the same as F . However, the encoder-decoder model unifies the outputs of different downstream tasks, which leads to S having the same structure as F . Note that the downstream tasks will fully fine-tune parameters using their own data, and hence, all the model parameters in F are updated in the fine-tuning stage. Thus, all parameters in S are not accessible.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p15",
+    "section_heading": "3 Preliminaries",
+    "text": "Given an image-text pair (I,T), the goal of the downstream task is to predict the labels of the input pair accurately, i.e., S : (I,T) → Y , where Y = {y1, · · · , yn}. For the encoder-only models, the ground truth label is a one-hot vector. For the encoder-decoder models, the ground truth is a sequence that consists of multiple ordered one-hot vectors. Let y denote the ground truth vector. The goal of the adversarial attack is to generate adversarial examples (I′,T′) using F , which can cause an incorrect prediction on S. Mathematically, our problem is formulated as follows:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p16",
+    "section_heading": "3 Preliminaries",
+    "text": "where σi is the l∞-norm perturbation strength on the image. σs is the semantic similarity between the original and perturbed texts, which constrains the semantic consistency after perturbation. The semantic similarity is measured by the cosine similarity Cos(·, ·) between the sentence embedding Us(T ′) and Us(T) using the Universal Sentence Encoder Us [47].",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p17",
+    "section_heading": "4 Methodology",
+    "text": "As shown in Figure 2, the proposed VLATTACK generates adversarial samples from two steps, constrained by perturbation budget parameters σi and σs. The first step attacks every single modality independently to avoid unnecessary modifications. Samples that fail at the first step will be fed into our multimodal level, where we adopt a cross-search attack strategy to iteratively refine both image and text perturbations at the same time. Next, we will introduce the details of VLATTACK from the single-modal level to the multimodal level.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p18",
+    "section_heading": "4.1 Single-modal Attacks: From Image to Text",
+    "text": "VLATTACK attempts to generate adversarial samples on every single modality in the first step. Compared to the discrete words in T, the continuous values-based image I is more vulnerable to attack by using gradient information3. Thus, VLATTACK starts by attacking the image I.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p19",
+    "section_heading": "4.1 Single-modal Attacks: From Image to Text",
+    "text": "3This motivatio ble 1.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p20",
+    "section_heading": "4.1 Single-modal Attacks: From Image to Text",
+    "text": "Image-Attack. In the black-box setting, the parameters of the fine-tuned model S are unknown. However, the pre-trained model F is accessible. Intuitively, if the feature representations learned by the pre-trained model F from the clean input I and the perturbed input I′ are significantly different, such a perturbation may transfer to fine-tuned models to change the predictions of downstream tasks. As shown in Figure 3, the image features can be obtained from both the image encoder and the Transformer encoder, even from different layers or blocks. To fully leverage the specific characteristics of the pre-trained model structure, we propose the block-wise similarity attack (BSA) to corrupt universal contextualized representations.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p21",
+    "section_heading": "4.1 Single-modal Attacks: From Image to Text",
+    "text": "As shown in Figure 4, BSA perturbs images by maximizing the block-wise distances between the intermediate representations in the image encoder Fα and Transformer encoder Fβ of the pre-trained model F . Mathematically, we define the loss function of BSA as follows:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p22",
+    "section_heading": "4.1 Single-modal Attacks: From Image to Text",
+    "text": "where Mi is the number of blocks in the image encoder, and M ij is the number of flattened image feature embeddings generated in the i-th block4. Similarly, Mk is the number of blocks in the Transformer encoder, and Mkt is the number of image token features generated in the k-th block. Fi,jα is the j-th feature vector obtained in the i-th layer of the image encoder, and F k,t β is the t-th feature vector obtained in the k-th layer of the Transformer encoder. The image encoder only takes a single image I or I′ as the input, but the Transformer encoder will use both image and text as the input. We adopt the cosine similarity to calculate the distances between perturbed and benign features as token representations attended with each other in the inner product space [46]. Note that BSA does not rely on the information from the decision boundary, and thus, it can be easily adapted to different task settings by disrupting the benign representations.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p23",
+    "section_heading": "4.1 Single-modal Attacks: From Image to Text",
+    "text": "In the image attack step, we generate an adversarial image candidate through project gradient decent optimization [30] with Ns iterations, where Ns < N and N is the maximum number of iterations on the image attack. The remaining N − Ns attack step budgets will be used in the multimodal attack in Section 4.2. If (I′,T) is an adversarial sample generated by BSA, then VLATTACK will stop. Otherwise, VLATTACK moves to attack the text modality.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p24",
+    "section_heading": "4.1 Single-modal Attacks: From Image to Text",
+    "text": "Text-Attack. In some VL tasks, the number of tokens in the text is quite small. For example, the average length of the text in the VQAv2 [48] and RefCOCO [49] datasets is 6.21 and 3.57, respectively5. Moreover, some of them are nonsense words, which makes it unnecessary to design a new approach for attacking the text modality. Furthermore, existing text attack approaches such as BERT-Attack [21] are powerful for generating adversarial samples for texts. Therefore, we directly apply BERT-Attack to generate text perturbations. To avoid unnecessary modifications, we use the clean image I as the input instead of the generation perturbed image I′.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p25",
+    "section_heading": "4.1 Single-modal Attacks: From Image to Text",
+    "text": "Specifically, an adversarial candidate T′i produced by BERT-Attack is firstly fed into a universal sentence encoder Us with the benign text T to test the semantic similarity. T ′",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p26",
+    "section_heading": "4.1 Single-modal Attacks: From Image to Text",
+    "text": "i will be removed if the cosine similarity γi between T′i and T is smaller than the threshold σs, i.e., γi = Cos(Us(T ′ i), Us(T)) < σs. Otherwise, we put T ′ i and the benign image I into the finetuned model S to detect whether the new pair (I,T′i) perturbs the original prediction y. During the text attack, we create a list T to store all perturbed samples {T′i} and the corresponding cosine similarity values {γi}. If any sample in T successfully changes the prediction of the downstream task, then VLATTACK will stop. Otherwise, VLATTACK will carry the perturbed image I′ from the image attack and the perturbed text candidate list T from the text attack to the multimodal attack level. Note that BERT-Attack is based on synonym word substitution. Even for a short text, the number of adversarial examples can still be large. In other words, the length of T may be large. The whole single-modal attack process is shown in Algorithm 1 (lines 1-15).",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p27",
+    "section_heading": "4.1 Single-modal Attacks: From Image to Text",
+    "text": "Algorithm 1 VLATTACK Input: A pre-trained model F , a fine-tuned model S, a clean image-text pair (I,T) and its prediction y on the",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p28",
+    "section_heading": "4.1 Single-modal Attacks: From Image to Text",
+    "text": "S , and the Gaussian distribution U ; Parameters: Perturbation budget σi on I, σs on T. Iteration number N and Ns. 1: //Single-modal Attacks: From Image to Text (Section 4.1) 2: Initialize I′ = I+ δ, δ ∈ U(0, 1), T = 3: // Image attack by updating I′ using Eq. (2) for Ns steps 4: I′ = BSA(L, I′,T, Ns, σi, F ) 5: if S(I′,T) ̸= y then return (I ′ ,T)",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p29",
+    "section_heading": "4.1 Single-modal Attacks: From Image to Text",
+    "text": "6: else 7: // Text attack by applying BERT-attack 8: for pertubed text T ′ i in BERT-attack do",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p30",
+    "section_heading": "4.1 Single-modal Attacks: From Image to Text",
+    "text": "9: if γi = Cos(Us(T′i), Us(T)) > σs then 10: Add the pair (T′i, γi) into T ; 11: if S(I,T ′ i) ̸= y then return (I,T ′ i) 12: end if 13: end if 14: end for 15: end if 16: // Multimodal Attack (Section 4.2) 17: Rank T according to similarity scores {γi} and get top-K samples {T̂′1, · · · , T̂′K} according to Eq. (3); 18: for k = 1, · · · ,K do 19: if S(I′k,T′k) ̸= y then return (I′k,T′k) 20: end if 21: Replace (I′k, T̂ ′ k) with (I ′ ,T) in Eq. (2); 22: I ′ k+1 = BSA(L, I ′ k, T̂ ′ k, Nk, σi, F ) 23: if S(I′k+1,T′k) ̸= y then return (I′k+1,T′k) 24: end if 25: end for 26: return None",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p31",
+    "section_heading": "4.2 Multimodal Attack",
+    "text": "In many cases, only perturbing images or texts is hard to succeed, as a single-modality perturbation is insufficient to break down the image-text correlation. To solve this problem, we propose a new attack strategy to disrupt dynamic mutual connections based on perturbations from different modalities.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p32",
+    "section_heading": "4.2 Multimodal Attack",
+    "text": "Attack Steps. Since the maximum number of image attack steps N is predefined, it is impossible to test all the perturbed image-text pairs (I′,T′i) using the remaining budget N −Ns if the length of T (i.e., |T |) is very large. Thus, we need to rank the perturbed text samples {T′i} according to their corresponding cosine similarity values {γi} in a descending order to make the adversarial sample keep the high semantic similarity with the original text T. Let K denote the number of attack steps in the multimodal attack, and we have:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p33",
+    "section_heading": "4.2 Multimodal Attack",
+    "text": "Iterative Cross-Search Attack. A naive way to conduct the multimodal attack is to test each perturbed image-text pair (I′, T̂′k) (k = 1, · · · ,K) by querying the black-box fine-tuned model S, where T̂′i is the i-th text perturbation in the ranked list T . However, this simple approach ignores learning mutual connections between the perturbed text and image. To solve this issue, we propose a new iterative cross-search attack (ICSA) strategy. In ICSA, VLATTACK will dynamically update the image perturbation under the guidance of the text perturbation.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p34",
+    "section_heading": "4.2 Multimodal Attack",
+    "text": "Specifically, in each multimodal attack step, ICSA first determines the number of image attack steps. Since there are K adversarial text candidates that will be equally used in ICSA, the iteration number of image attacks that will be allocated to each text sample is Nk = ⌊N−NsK ⌋. ICSA will take the k-th pair (I′k, T̂ ′ k) as the input to generate the new image perturbation I ′ k+1 by optimizing the block-wise attack loss in Eq. (2), where I′1 is the output from the image attack in the single-modal level, i.e., I ′. Such a process is repeated until an adversarial sample (I ′",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p35",
+    "section_heading": "4.2 Multimodal Attack",
+    "text": "j , T̂ ′ j) is found, or all the K perturbed texts",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p36",
+    "section_heading": "4.2 Multimodal Attack",
+    "text": "are visited. When T = ∅, VLATTACK will degenerate to the block-wise similarity attack (BSA) and iteratively updates I ′ for N − Ns steps. Finally, VLATTACK generates adversarial samples based on either single-modality or cross-modality attacks. The overall scheme of VLATTACK is summarized in Algorithm 1.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p37",
+    "section_heading": "5.1 Experiment Setup",
+    "text": "Pre-trained VL Models and Tasks. Experiments are conducted on five pre-trained models For the encoder-only model, we adopt ViLT [1] and BLIP [28] for two downstream tasks, including the visual question answering (VQA) task on the VQAv2 dataset [48] and the visual reasoning (VR) task on the NLVR2 dataset [50]. For the encoder-decoder structure, we adopt Unitab [4] and OFA [5]. For Unitab, evaluations are made on the VQAv2 dataset for the VQA task and on RefCOCO, RefCOCO+, and RefCOCOg datasets [49] for the Referring Expression Comprehension (REC) task that can be viewed as the task of bounding box generation. For OFA, we implement experiments on the same tasks as Unitab and add the SNLI-VE dataset [51] for the visual entailment (VE) task. The specific structures of these models are detailed in Appendix A. To verify the overall generality, we evaluate the uni-modal tasks on OFA [5] using MSCOCO [52] for the image captioning task and ImageNet-1K [53] for the image classification task. We also evaluate CLIP [29] on the image classification task on the SVHN [54] dataset. Note that all evaluation tasks have publicly available pre-trained and fine-tuned models, which provide more robust reproducibility. The details of each dataset and implementation can be found in Appendix B.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p38",
+    "section_heading": "5.1 Experiment Setup",
+    "text": "Baselines. We compare VLATTACK with adversarial attacks on different modalities. For attacks on the image modality, we take DR [17], SSP [35], and FDA [34] as baselines. These methods are designed to perturb image features only and can be directly adapted to our problem. Other methods [18, 19, 30, 32, 33, 55] either fully rely on the output from classifiers or combine feature perturbation with classification loss [20, 56, 57]. These methods can not be applied in our problem setting since the pre-trained and fine-tuned models usually share different prediction heads and are trained on different tasks. For attacks on the text modality, we take BERT-Attack (B&A) [21] and R&R [24] as baselines. VLATTACK also compares with Co-Attack [15], which is the only multimodal attack scheme that adds adversarial perturbations to both modalities.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p39",
+    "section_heading": "5.2 Results on Multimodal Tasks",
+    "text": "In this section, we conduct experiments on four pre-trained VL models and use Attack Success Rate (ASR) to evaluate the performance on four multimodal tasks, including VQA, VR, REC, and VE. The higher the ASR, the better the performance. Results are illustrated in Table 1, where the results of our proposed BSA and VLATTACK are highlighted. We can observe that the proposed VLATTACK significantly outperforms all baselines. Compared with the best baseline on each dataset,",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p40",
+    "section_heading": "5.2 Results on Multimodal Tasks",
+    "text": "VLATTACK achieves an average gain of 29.61% on ViLT, 24.20% on BLIP, 16.48% on Unitab and 30.84% on OFA, respectively. When only adding image perturbations, our proposed BSA outperforms the best baseline by an average of 15.94% on ViLT and on BLIP. BSA also achieves an average gain of 12.12% and 14.13% on Unitab and OFA, respectively. As mentioned before, text data in multimodal tasks are composed of phrases or only a few words. Consequently, text attack performs poorly on most multimodal datasets. These high ASR values have revealed significant security concerns regarding the adversarial robustness of pre-trained VL models.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p41",
+    "section_heading": "5.3 Results on Uni-Modal Tasks",
+    "text": "For the results on uni-modal tasks, we first evaluate OFA on image captioning and classification tasks on MSCOCO and ImageNet-1K, respectively. Because these tasks accept a fixed text prompt for prediction, we only perturb image I and compare different image attack methods. For the captioning task, we choose four commonly-used metrics, including BLEU@4, METEOR, CIDEr, and SPICE, the same as those used in OFA [5]. The lower, the better. We report ASR on the image classification task. The higher, the better. The experimental results are illustrated in Table 2. In general, BSA achieves the best performance on both tasks in terms of all metrics. For example, BSA significantly reduces the CIDEr score from 145.43 to 2.16. Compared with the best baseline SSP with 23.54, BSA reduces this score over 10 times. For the image classification task, BSA also achieves the best performance with 41.35% ASR. The superior performance demonstrates that the VLATTACK can also generalize to computer vision tasks when only using BSA. Note that we do not evaluate textto-image generation tasks because our attack framework produces the same results as BERT-Attack with text-only inputs.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p42",
+    "section_heading": "5.3 Results on Uni-Modal Tasks",
+    "text": "We also evaluate CLIP on the image classification task on the SVHN dataset. Concretely, we use the image encoder of CLIP as the pre-trained model and then fine-tune on the SVHN dataset after adding a linear classification head. For the choices of image encoder of CLIP, we adopt ViT-B/16 and ResNet-50, denoted by CLIP-ViT/16 and CLIP-RN50. We test the attack performance using 5K correctly predicted samples. All results are illustrated in the following Table 3. Since the task only accepts images as input, we compare our BSA with other image attack baselines. As shown in the table, our proposed BSA still maintains the best ASR using different image encoder structures, clearly demonstrating its effectiveness.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p43",
+    "section_heading": "5.4 Systematic Validation with Crowdsourcing",
+    "text": "We also conduct a human evaluation study to comprehensively verify the soundness of our proposed method. The experiment is developed on the results output from the ViLT model on the VQAv2 dataset using Amazon Mechanical Turk (MTurk). The baseline that we choose is SSP since it outperforms others in our experiments, as shown in Table 1. Specifically, we randomly sampled 650 examples and stored the generated answers after the attack. To validate the performance of both approaches, we send the original image-question pairs and the corresponding generated answer to",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p44",
+    "section_heading": "5.4 Systematic Validation with Crowdsourcing",
+    "text": "the MTurk system. We provide three choice candidates to workers, including “Definitely Correct”, “Not Sure”, and “Definitely Wrong”. A successful attack means that the worker will label “Definitely Wrong” to the pair. To make the annotations more accurate and reliable, each pair is annotated by three workers, and we report the majority choice as the final human evaluation result. The statistics of human evaluation results are shown in Table 4. We can observe that the proposed VLAttack still significantly outperforms the strongest baseline SSP, thus demonstrating its robustness and effectiveness from a human perceptual perspective.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p45",
+    "section_heading": "5.5 Model Design Analysis",
+    "text": "Ablation Study. In our model design, we propose a new block-wise similarity attack (BSA) for attacking the image modality and an interactive cross-search attack (ICSA) for attacking image-text modalities together. We use the following methods to evaluate the effectiveness of each component. The results are shown in Figure 5. “IE”/“TE” means that we only use the image/Transformer encoder when calculating the loss in Eq. (2). “BSA” uses both encoders. We set iteration Ns = 40 for a fair comparison. Next, “BSA+BA” means after attacking images using BSA, we attack texts using BERT-Attack (Algorithm 1 Lines 1-15). “BSA+BA+Q” denotes replacing ICSA with a simple query strategy by querying the black-box task with each pair (I′,T′i), where T ′ i comes from the perturbed text candidate list T . We can observe that for image attacks, IE and TE play an important role in different tasks, but in general, BSA (= IE + TE) outperforms them. Adding the text attack, BSA+BA performs better than BSA. This comparison result demonstrates that both modalities are vulnerable. BSA+BA+Q performs better than BSA+BA but worse than VLATTACK, which confirms the necessity and reasonableness of conducting the interactive cross-search attack. More results on other datasets are shown in Appendix C.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p46",
+    "section_heading": "5.5 Model Design Analysis",
+    "text": "Parameter Sensitivity Analysis We discuss the effect of different iteration numbers of N and Ns in VLATTACK. All experiments are conducted on the VQAv2 dataset and the ViLT model. The total iteration number N is set from 10 to 80, Ns is set to N2 . As depicted in Figure 6(a), the ASR performance is dramatically improved by increasing N from 10 to 20 steps and then achieves the best result when N = 40. We next investigate the impact of different initial iteration numbers Ns. We test Ns from 5 to 40, but the total iteration number N is fixed to 40. As shown in Figure 6(b), the ASR score reaches the summit when Ns is 5, and it is smoothly decreased by continually enlarging Ns. Considering that the smaller initial iteration number Ns increases the ratio of text perturbations, we set Ns as 20 to obtain the best trade-off between attack performance and the naturalness of generated adversarial samples in our experiments.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p47",
+    "section_heading": "5.5 Model Design Analysis",
+    "text": "Block-wise Similarity Attack. We further visualize the effect of our proposed BSA through attention maps in the fine-tuned downstream model S on the VQAv2 dataset through the ViLT model. As is shown in Figure 7, the attention area is shifted from “jacket” to the background, which indicates that the representation used to answer the question extracts information from the unrelated image regions. We also combined the BSA with various optimization methods to verify its generalization ability. The experimental results are presented in Appendix D.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p48",
+    "section_heading": "5.6 Case Study",
+    "text": "We conduct case studies using visualization to show the effectiveness of VLATTACK for multimodal and uni-modal tasks, as displayed in",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p49",
+    "section_heading": "5.6 Case Study",
+    "text": "Figure 8. For multimodal tasks in Figure 8(a), the predictions of all displayed samples remain unchanged when attacking a single modality via BSA. However, perturbing both modalities using VLATTACK successfully modifies the predictions. An intriguing finding can be observed in the REC task, where the fine-tuned model S outputs wrong predictions by stretching and deforming the original bounding box predictions. The proposed VLATTACK also shows its power on uni-modal tasks in Fig-",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p50",
+    "section_heading": "5.6 Case Study",
+    "text": "ure 8(b). For example, in the image captioning task, the fine-tuned model generates a description of a “person” after receiving an adversarial image of a “horse”, which is entirely unrelated. More case studies are shown in Appendix E.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p51",
+    "section_heading": "6 Conclusion",
+    "text": "In this paper, we propose a new question, which aims to generate adversarial samples only based on the publicly available pre-trained models to attack fine-tuned models deployed in different VL tasks. Considering the task-specific and model-specific challenges, we proposed VLATTACK, which generates perturbations by exploring different modalities in two levels. The single-modal level attack first perturbs images through a novel algorithm BSA to disrupt the universal image-text representations and then attacks text if the former fails, which avoids unnecessary modifications on both modalities. If both image and text attacks fail, the multimodal attack level adopts an iterative crosssearch attack strategy to generate adversarial image-text combinations. By periodically substituting text candidates during the image attack process, the mutual relations between different modal perturbations are sufficiently explored. Experimental results demonstrate the effectiveness of the proposed VLATTACK on attacking multiple VL tasks, which reveals a significant safety concern in realistic scenarios.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p52",
+    "section_heading": "6 Conclusion",
+    "text": "Acknowledgements This work is partially supported by the National Science Foundation under Grant No. 1951729, 1953813, 2119331, 2212323, and 2238275.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p53",
+    "section_heading": "A. Details of VL Models",
+    "text": "This section introduces the details of VL models involved in our experiment, including ViLT, BLIP, Unitab, and OFA.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p54",
+    "section_heading": "A. Details of VL Models",
+    "text": "• ViLT. We first select ViLT [1] as the encoder-only VL model because of its succinct structure and prominent performance on multiple downstream tasks. Given an input image I ∈ RH×W×3 and a sentence T, ViLT yields M image tokens using a linear transformation on the flattened image patches, where each token is a 1D vector and M = HWP 2 for a given patch resolution (P, P ). Word tokens are encoded through a Byte-Pair Encoder (BPE) [44] and a word-vector linear projection. Then, tokens of two modalities and a special learnable token ⟨cls⟩ are concatenated. By attending visual and text tokens and a special token ⟨cls⟩ in a Transformer encoder with twelve layers, the output feature from the ⟨cls⟩ token is fed into a task-specific classification head for the final output. Taking the VQA task as an example, the VQA classifier adopts a linear layer to output a vector with Hs elements, where Hs is the number of all possible choices in the closed answer set of the VQA task. The final output is obtained through the element with the highest response in the vector.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p55",
+    "section_heading": "A. Details of VL Models",
+    "text": "• BLIP. The BLIP model also adopts an encoder-only structure. Specifically, BLIP first encodes an image through a twelve-layer vision transformer ViT-B/16 [42], and generates word token embeddings through the BPE and a linear layer. Next, the image features and word token embeddings are then fed into a multimodal encoder. The structure of the multimodal encoder is the same as a twelve-layer transformer decoder, where each layer contains a self-attention module, a crossattention module and a feed-forward module. In each layer, the multimodal encoder first accepts the word token embeddings as input and attends to them through the self-attention module. Then, the updated embedding will fuse with image features through the cross-attention module. Finally, the output from the multimodal encoder will be fed into different projection heads for downstream tasks, just like the ViLT model.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p56",
+    "section_heading": "A. Details of VL Models",
+    "text": "• Unitab. Unitab adopts an encoder-decoder framework. It first embeds text T via RoBERTa [45] and flats features after encoding image I through ResNet [43]. The attached visual and text token features are then fed into a standard Transformer network [46] with six encoder layers and six decoder layers. Finally, the sequence predictions [⟨ans1⟩, ⟨ans2⟩, · · · , ⟨end⟩] are obtained autoregressively through a projection head. The network stops regressing when an end token ⟨end⟩ appears. For different tasks, the output tokens may come from different pre-defined vocabularies. Given the REC task as an example, four tokens [(⟨loc x1⟩, ⟨loc x2⟩), (⟨loc x3⟩, ⟨loc x4⟩)] will be selected from the location vocabulary, which forms the coordinate of a bounding box. As a result, these models can handle both text and grounding tasks.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p57",
+    "section_heading": "A. Details of VL Models",
+    "text": "• OFA. OFA also adopts an encoder-decoder structure. Different from Unitab, it adopts the BPE to encode text and extends the linguistic vocabulary by adding image quantization tokens [58] ⟨img⟩ for synthesis tasks. Note that the main difference between OFA and Unitab lies in their pre-training and fine-tuning strategies rather than the model structure. For example, in the pre-training process, Unitab focuses on learning alignments between predicted words and boxes through grounding tasks, while OFA captures more general representations through multi-task joint training that includes both single-modal and multimodal tasks. Overall, OFA outperforms Unitab in terms of performance improvement.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p58",
+    "section_heading": "B. Dataset and Implementation",
+    "text": "B.1 Tasks and Datasets",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p59",
+    "section_heading": "B. Dataset and Implementation",
+    "text": "To verify the generalization ability of our proposed VLATTACK, we evaluate a wide array of popular vision language tasks summarized in Table 5. Specifically, the selected tasks span from text understanding (visual reasoning, visual entailment, visual question answering) to image understanding (image classification, captioning) and localization (referring expression comprehension).",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p60",
+    "section_heading": "B. Dataset and Implementation",
+    "text": "For each dataset, we sample 5K correctly predicted samples in the corresponding validation dataset to evaluate the ASR performance. All validation datasets follow the same split settings as adopted in the respective attack models. Because VQA is a multiclass classification task, we select a correct",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p61",
+    "section_heading": "B. Dataset and Implementation",
+    "text": "prediction only if the prediction result is the same as the label with the highest VQA score6, and regard the label as the ground truth in Eq. (1). In the REC task, a correct prediction is considered when the Intersection-over-Union (IoU) score between the predicted and ground truth bounding box is larger than 0.5. We adopt the same IoU threshold as in Unitab [4] and OFA [5].",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p62",
+    "section_heading": "B. Dataset and Implementation",
+    "text": "B.2 Implementation Details",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p63",
+    "section_heading": "B. Dataset and Implementation",
+    "text": "For the perturbation parameters of images, we follow the setting in the common transferable image attacks [18, 19] and set the maximum perturbation σi of each pixel to 16/255 on all tasks except REC. Considering that even a single coordinate change can affect the final grounding results to a great extent, the σi of the REC task is 4/255 to better highlight the ASR differences among distinct methods. The total iteration number N and step size are set to 40 and 0.01 by following the projected gradient decent method [30], and Ns is 20. For the perturbation on the text, the semantic similarity constraint σs is set to 0.95, and the number of maximum modified words is set to 1 by following the previous text-attack work [15, 24] to ensure the semantic consistency and imperceptibility. All experiments are conducted on a single GTX A6000 GPU.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p64",
+    "section_heading": "C. More Ablation Results",
+    "text": "In Section 5.4, we conduct an ablation study to show the effectiveness of each module in our model design on VQA, VE, and REC tasks. Here, we conduct additional ablation experiments for the remaining tasks, including visual reasoning, image captioning, and image classification.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p65",
+    "section_heading": "C. More Ablation Results",
+    "text": "Figure 10 shows the results of the image captioning task using the OFA model. Because the image captioning task only accepts a fixed text prompt for prediction, we only perturb the image and report the results on IE, TE, and BSA. For this task, we report BLEU@4 and CIDEr scores. The lower, the better. We can observe that the proposed BSA outperforms IE and TE, indicating our model",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p66",
+    "section_heading": "C. More Ablation Results",
+    "text": "design’s effectiveness.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p67",
+    "section_heading": "C. More Ablation Results",
+    "text": "Figure 11 shows the results of the image classification task using the OFA model. The experiment is conducted on the ImageNet1K dataset. Similar to the image captioning task, we only attack images, and compare the results of IE, TE and BSA. The evaluation metric for this task is ASR. The higher, the better. We can have the same observations with other ablation studies, where attacking both encoders outperforms attacking a single encoder.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p68",
+    "section_heading": "D. Different Optimization Methods",
+    "text": "VLATTACK can be easily adapted to various optimization methods in image attacks. To demonstrate the generalizability of our method, we replace the projected gradient decent [30] in VLATTACK with Momentum Iterative method (MI) [55] and Diverse Input attack (DI) [33] since they have shown better performance than traditional iterative attacks [30, 59]. The replaced methods are denoted by BSAMI , and VLATTACKMI using MI, BSADI and VLATTACKDI using DI, respectively. Experiments are developed on ViLT and Unitab. Results are shown in Table 6. Using MI and DI optimizations, BSAMI and BSADI still outperform all baselines displayed in Table 1 in the main manuscript. Also, VLATTACKMI and VLATTACKDI outperform the image attack method BSAMI and BSADI with an average ASR improvement of 9.70% and 9.29% among all datasets. The gain of performance demonstrates that the proposed VLATTACK can be further improved by combining with stronger gradient-based optimization schemes.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p69",
+    "section_heading": "E. Case Study",
+    "text": "E.1 How does VLATTACK generate adversarial samples?",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p70",
+    "section_heading": "E. Case Study",
+    "text": "The proposed VLATTACK aims to attack multimodal VL tasks starting by attacking single modalities. If they are failed, VLATTACK uses the proposed interactive cross-search attack (ICSA) strategy to generate adversarial samples. In this experiment, we display the generated adversarial cases from different attack steps, including the image modality in Figure 12, the text modality in Figure 13, and the multimodal attack in Figure 14.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p71",
+    "section_heading": "E. Case Study",
+    "text": "Single-modal Attacks (Section 4.1). VLATTACK first perturbs the image modality using the proposed BSA and only outputs the adversarial image if the attack is successful (Algorithm 1 lines 1-5). As shown in Figure 12, only attacking the image modality, VLATTACK can generate a successful adversarial sample to fool the downstream task. Then, VLATTACK will stop. Otherwise, it will perturb the text through BERT-Attack (B&A) and use the clean image as the input, which is illustrated in Figure 13 (Algorithm 1, lines 6-15). During the text attack, B&A will generate multiple candidates by replacing the synonyms of a word. Since the length of text sentences is very short in the VL datasets, we only replace one word each time. From Figure 13, we can observe that B&A first replaces “kid” with its synonym “child”, but this is not an adversarial sample. B&A then moves to the next word “small” and uses its synonym “cute” as the perturbation. By querying the black-box downstream task model, VLATTACK successes, and the algorithm will stop. Multimodal Attack",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p72",
+    "section_heading": "E. Case Study",
+    "text": "(Section 4.2). If the single-modal attack fails, VLATTACK moves to the multimodal attack by iteratively cross-updating image and text perturbations, where image perturbations are added through BSA, and text perturbations are added according to the semantic similarity. The cross-updating process is repeated until an adversarial image-text pair is found (Algorithm 1, lines 16-24). Figure 14 shows an example. In step 1, VLATTACK fails to attack the image modality and outputs a perturbed image denoted as I′1. In step 2, VLATTACK also fails to attack the text modality and outputs a list of text perturbations T . VLATTACK has to use the multimodal attack to generate adversarial samples in step 3. It first ranks the text perturbations in T according to the semantic similarity between the original text and each perturbation. The ranked list is denoted as {T̂′1, · · · , T̂′K}. Then it equally allocates the iteration number of the image attack to generate the image perturbations iteratively. In",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p73",
+    "section_heading": "E. Case Study",
+    "text": "Figure 14, this number is 6, which means we run BSA with the budget 6 to generate a new image perturbation.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p74",
+    "section_heading": "E. Case Study",
+    "text": "VLATTACK takes the pair (I′1, T̂ ′ 1) as the input to query the black-box downstream model, where T̂′1 = “What material is the table make of?”. If this pair is not an adversarial sample, then the proposed ICSA will adopt BSA to generate the new image perturbation I′2. The new pair (I ′ 2, T̂ ′ 1) will be checked again. If it is still not an adversarial sample, VLATTACK will use the next text perturbation T̂′2 = “What materials is the table made of?” and the newly generated image perturbation I ′ 2 as the input and repeat the previous steps until finding a successful adversarial sample or using up all K text perturbations in T . VLATTACK employs a systematic strategy for adversarial attacks on VL models, sequentially targeting single-modal and multimodal perturbations to achieve successful adversarial attacks.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p75",
+    "section_heading": "E. Case Study",
+    "text": "E.2 Case Study on Different Tasks",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p76",
+    "section_heading": "E. Case Study",
+    "text": "We also provide additional qualitative results from Figure 15 to Figure 20 for experiments on all six tasks. For better visualization, we display the adversarial and clean samples side by side in a single column. By adding pixel and word perturbations, the fidelity of all samples is still preserved, but predictions are dramatically changed. For instance, in the image captioning task of Figure 19, all generated captions show no correlation with the input images. Some texts may even include replacement Unicode characters, such as “\\ufffd”, resulting in incomplete sentence structures.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p77",
+    "section_heading": "F. Discussion: BSA v.s. BadEncoder",
+    "text": "We notice that the idea of our proposed BSA is somehow similar to the BadEncoder [60] method, as they all use the cosine similarity as the optimization target. However, the proposed BSA is different from or better than BadEncoder.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p78",
+    "section_heading": "F. Discussion: BSA v.s. BadEncoder",
+    "text": "(1) BadEncoder only utilizes the final output feature vectors from the whole encoder, ignoring the outputs from the intermediate layers/blocks. However, BSA calculates fine-grained similarity scores. As shown in Eq. 2 of our original paper, we distinguish the outputs from image and Transformer encoders. Such a design can modify the low-level vision features and the high-level cross-modal representations. In our setting, we attack fine-tuned models of a wide diversity of downstream tasks, including but not limited to image classification tasks like Badencoder. The parameters of these task-specific models are fully finetuned on distinct datasets, and the output representations of the encoder significantly change accordingly. Thus, instead of only attacking the output feature from the last layer like BadEncoder, perturbing each intermediate feature representation from each encoder and each block can enhance the attack performance. This statement is also verified in Section 5.5, where the ASR score of BSA is higher than only attacking a single encoder.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p79",
+    "section_heading": "F. Discussion: BSA v.s. BadEncoder",
+    "text": "(2) The motivation for adopting the cosine distance is different. In BadEncoder, CLIP uses cosine similarity as a loss function to calculate distances for positive/negative image text pairs, which is motivated by the pre-training strategy of CLIP. However, we adopt cosine similarity because the fine-grained token representations attend to each other in the inner product space, which is inspired by the mechanism design of the Transformer structure. Therefore, the proposed BSA method greatly differs from BadEncoder in the above two aspects.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p80",
+    "section_heading": "G. Limitations",
+    "text": "The limitations of our work can be summarized from the following two aspects. On the one hand, in our current model design, for the text modality, we directly apply the existing model instead of developing a new one. Therefore, there is no performance improvement on tasks that only accept texts as input, such as text-to-image synthesis. On the other hand, our research problem is formulated by assuming the pre-trained and downstream models share similar structures. The adversarial transferability between different pre-trained and fine-tuned models is worth exploring, which we left to our future work.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p81",
+    "section_heading": "H. Broad Impacts",
+    "text": "Our research reveals substantial vulnerabilities in vision-language (VL) pre-trained models, underlining the importance of adversarial robustness cross pre-trained and fine-tuned models. By exposing these vulnerabilities through the VLATTACK strategy, we offer inspiration for developing more robust models. Furthermore, our findings underscore the ethical considerations of using VL models in real-world applications, especially those dealing with sensitive information and big data. Overall, our work emphasizes the necessity of balancing performance and robustness in VL models, with implications extending across computer vision, natural language processing, and broader artificial intelligence applications.",
+    "seg_type": "par"
+  }
+]

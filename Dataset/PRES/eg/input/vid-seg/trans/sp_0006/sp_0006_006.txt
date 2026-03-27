@@ -1,0 +1,5 @@
+Our attention module is inspired by the right-to-activated DNA model.
+In this tool example, the input space is divided into seven subspaces by a DNA model.
+For samples belonging to the subspace within the dotted red box, the output can be calculated with a linear model.
+
+model, which can be further related as a product between a attention score and a value, where the attention is the distance between the input to one of the boundary of the polyhedron, and the value is a fixed number.

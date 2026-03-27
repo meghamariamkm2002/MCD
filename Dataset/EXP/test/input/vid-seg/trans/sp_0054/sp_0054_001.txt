@@ -1,0 +1,20 @@
+Hi there, today we'll look at deburta, decoding enhanced BERT with disentangled attention by Peng Chenghe, Xiaodong Liu, Zhang Fenggao, and Waiju Zhen of Microsoft.
+This paper is an improvement on BERT, the language model and the Roberto variant of it.
+Specifically, it suggests two improvements, namely,
+First is this disentangled attention where they disentangle positional information and content information of the individual tokens in the attention mechanism.
+And the second improvement is kind of results from the first improvement as this decoding enhanced decoder, I guess enhanced decoder.
+where because they only use relative positional information in the transformer part of the model, they have to re-feed the absolute positional information at the end, which gives them another bit of improvement.
+All together with this, they reach state-of-the-art in various NLP tasks, and this model, Deberta, is now available in Huggingface for you to download for all of your NLP needs.
+So we're going to go through the paper and look at the two improvements and what they give.
+Let's see if that's relevant.
+As always, if you like content like this, don't hesitate to share it out to all of your friends and leave a like and a comment.
+I still read all the comments, so give me your opinion.
+And please also give me your opinions on the new recording setup.
+There should be a title somewhere here, a picture somewhere here.
+I absolutely want to hear feedback because I have no idea what I'm doing.
+So, yeah.
+All right, let's dive in Deberta or Deberta or Deberta.
+I don't know.
+I think it's Deberta because it's from decoding enhanced.
+Deberta is a new model architecture they say here.
+We propose a new model architecture Deberta, decoding enhanced BERT with disentangled attention that improves the BERT and ROBERTA models using two novel

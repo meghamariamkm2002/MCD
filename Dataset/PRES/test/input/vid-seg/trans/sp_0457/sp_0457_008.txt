@@ -1,0 +1,3 @@
+We theoretically analyze the convergence of our framework.
+You can refer to our paper if you are interested in how we get it.
+And the main takeaway is that applying our algorithm, the convergence rate is only limited by the size of the output layer of the client and set of the size of an entire global model, which is a significant improvement if the global model is very large.

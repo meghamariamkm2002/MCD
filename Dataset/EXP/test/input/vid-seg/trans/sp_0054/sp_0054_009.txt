@@ -1,0 +1,37 @@
+And now for their big thing, they build, they scale it up, and they have a bunch of tricks here.
+And pretty cool, they scale it up.
+I just want to highlight one trick.
+We optimize the model architecture as follows.
+First, we share the projection matrices of relative position embeddings.
+Okay.
+So they share the projection matrices of the relative position embeddings with each other.
+Okay.
+So they share the position matrices with the content matrices.
+So now instead of, for example, so here is the query of the content, the key of the content, here is the query of the projection and the key of the, sorry, position, position.
+My battery is soon over.
+I have to speed up.
+So the content right here and the position right here give rise to these matrices by means of these learned weights.
+So here is WKC.
+That's the matrix that generates the queries from the content, that generates the keys from the content, the matrix that generates the queries from the position, and the matrix that generates the keys from the position.
+So if you now share, you now want to share this and that, and also you want to share this and that.
+So if, and at the end they are added, right?
+So you multiply these things and then they are added.
+And in my mind, honestly, what, what that results in, because before,
+Let's just, let's just see.
+So before you had something like, if we simply multiply query times key transposed for the context side, that would give you sort of context, W, Q, and now we share them.
+So we don't care about C and P anymore.
+W, K transposed, K transposed, and, oh, sorry.
+of course, context this transposed.
+And now we add them to something else.
+And let's just say we have these position to position encodings that they leave away.
+But you know, we're going to consider them because it's easiest.
+So it's position wqw
+K, yeah, transposed, position transposed.
+You know, if these matrices are shared, this simply ends up to be being the addition of the position and content times these two matrices times the, again, this.
+So and this is just like the old school attention mechanism now I see there's these cross terms and maybe they influence something but it gets closer and closer.
+Back to the old mechanism where you simply add the encodings and don't consider them in a.
+in a disentangled way.
+If you share the matrices of the disentangled representations, it simply refers back to as if you were to feed the position in each layer of a traditional transformer.
+Yeah, I'm not sure how much really the disentanglement is super important or whether or not it's just more important that this positional information is actually available at each step.
+But I might be wrong here with the cross terms.
+I haven't actually looked entirely at that.

@@ -1,0 +1,1088 @@
+[
+  {
+    "para_id": "p1",
+    "section_heading": "Abstract",
+    "text": "In this paper we offer a new perspective on the well established agglomerative clustering algorithm, focusing on recovery of hierarchical structure. We recommend a simple variant of the standard algorithm, in which clusters are merged by maximum average dot product and not, for example, by minimum distance or within-cluster variance. We demonstrate that the tree output by this algorithm provides a bona fide estimate of generative hierarchical structure in data, under a generic probabilistic graphical model. The key technical innovations are to understand how hierarchical information in this model translates into tree geometry which can be recovered from data, and to characterise the benefits of simultaneously growing sample size and data dimension. We demonstrate superior tree recovery performance with real data over existing approaches such as UPGMA, Ward\u2019s method, and HDBSCAN.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p2",
+    "section_heading": "1 Introduction",
+    "text": "Hierarchical structure is known to occur in many natural and man-made systems [32], and the problem considered in this paper is how to recover this structure from data. Hierarchical clustering algorithms, [25, 36, 37, 41] are very popular techniques which organise data into nested clusters, used routinely by data scientists and machine learning researchers, and are easily accessible through open source software packages such as scikit-learn [38]. We focus on perhaps the most popular family of such techniques: agglomerative clustering [17], [24, Ch.3], in which clusters of data points are merged recursively.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p3",
+    "section_heading": "1 Introduction",
+    "text": "Agglomerative clustering methods are not model-based procedures, but rather simple algorithms. Nevertheless, in this work we uncover a new perspective on agglomerative clustering by introducing a general form of generative statistical model for the data, but without assuming specific parametric families of distributions (e.g., Gaussian). In our model (section 2.1), hierarchy takes the form of a tree defining the conditional independence structure of latent variables, using elementary concepts from probabilistic graphical modelling [30, 28]. In a key innovation, we then augment this conditional independence tree to form what we call a dendrogram, whose geometry is related to population statistics of the data. The new insight which enables tree recovery in our setting (made precise and explained in section 3) is that dot products between data vectors reveal heights of most recent common ancestors in the dendrogram.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p4",
+    "section_heading": "1 Introduction",
+    "text": "We suggest an agglomerative algorithm which merges clusters according to highest sample average dot product (section 2.2). This is in contrast to many existing approaches which quantify dissimilarity",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p5",
+    "section_heading": "1 Introduction",
+    "text": "between data vectors using Euclidean distance. We also consider the case where data are preprocessed by reducing dimension using PCA. We mathematically analyse the performance of our dot product clustering algorithm and establish that under our model, with sample size n and data dimension p growing simultaneously at appropriate rates, the merge distortion [20, 27] between the algorithm output and underlying tree vanishes. In numerical examples with real data (section 4), where we have access to labels providing a notion of true hierarchy, we compare performance of our algorithm against existing methods in terms of a Kendall \u03c4b correlation performance measure, which quantifies association between ground-truth and estimated tree structure. We examine statistical performance with and without dimension reduction by PCA, and illustrate how dot products versus Euclidean distances relate to semantic structure in ground-truth hierarchy.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p6",
+    "section_heading": "1 Introduction",
+    "text": "Related work Agglomerative clustering methods combine some dissimilarity measure with a \u2018linkage\u2019 function, determining which clusters are combined. Popular special cases include UPGMA [44] and Ward\u2019s method [48], against which we make numerical comparisons (section 4). Owing to the simple observation that, in general, finding the largest dot product between data vectors is not equivalent to finding the smallest Euclidean distance, we can explain why these existing methods may not correctly recover tree structure under our model (appendix E). Popular density-based clustering methods methods include CURE [22], OPTICS [7], BIRCH [52] and HDBSCAN [9]. In section 4 we discuss the extent to which these methods can and cannot be compared against ours in terms of tree recovery performance.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p7",
+    "section_heading": "1 Introduction",
+    "text": "Existing theoretical treatments of hierarchical clustering involve different mathematical problem formulations and assumptions to ours. One common setup is to assume an underlying ultrametric space whose geometry specifies the unknown tree, and/or to study tree recovery as n \u2192 \u221e with respect to a cost function, e.g, [10, 16, 43, 11, 14, 15, 31, 12]. An alternative problem formulation addresses recovery of the cluster tree of the probability density from which it is assumed data are sampled [42, 20, 27]. The unknown tree in our problem formulation specifies conditional independence structure, and so it has a very different interpretation to the trees in all these cited works. Moreover, our data are vectors in Rp, and p \u2192 \u221e is a crucial aspect of our convergence arguments, but in the above cited works p plays no role or is fixed. Our definition of dendrogram is different to that in e.g. [10]: we do not require all leaf vertices to be equidistant from the root \u2013 a condition which arises as the \u201cfixed molecular clock\u201d hypothesis [18, 34] in phylogenetics. We also allow data to be sampled from non-leaf vertices. There is an enormous body of work on tree reconstruction methods in phylogenetics, e.g. listed at [4], but these are mostly not general-purpose solutions to the problem of inferring hierarchy. Associated theoretical convergence results are limited in scope, e.g, the famous work [18] is limited to a fixed molecular clock, five taxa and does not allow observation error.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p8",
+    "section_heading": "2.1 Statistical model, tree and dendrogram",
+    "text": "Where possible, we use conventional terminology from the field of probabilistic graphical models, e.g., [28] to define our objects and concepts. Our model is built around an unobserved tree T = (V, E), that is a directed acyclic graph with vertex and edge sets V and E , with two properties: T is connected (ignoring directions of edges), and each vertex has at most one parent, where we say u is a parent of v if there is an edge from u to v. We observe data vectors Yi \u2208 Rp, i = 1, . . . , n, which we model as:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p9",
+    "section_heading": "2.1 Statistical model, tree and dendrogram",
+    "text": "comprising three independent sources of randomness:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p10",
+    "section_heading": "2.1 Statistical model, tree and dendrogram",
+    "text": "\u2022 Z1, . . . , Zn are i.i.d., discrete random variables, with distribution supported on a subset of vertices Z \u2286 V , |Z| < \u221e;",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p11",
+    "section_heading": "2.1 Statistical model, tree and dendrogram",
+    "text": "\u2022 X(v) := [X1(v) \u00b7 \u00b7 \u00b7 Xp(v)]\u22a4 is an Rp-valued random vector for each vertex v \u2208 V; \u2022 E1, . . . ,En are i.i.d, Rp-valued random vectors. The elements of Ei are i.i.d., zero mean and",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p12",
+    "section_heading": "2.1 Statistical model, tree and dendrogram",
+    "text": "unit variance. For each z \u2208 Z , S(z) \u2208 Rp\u00d7p, is a deterministic matrix.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p13",
+    "section_heading": "2.1 Statistical model, tree and dendrogram",
+    "text": "For each v \u2208 Z , one can think of the vector X(v) as the random centre of a \"cluster\", with correlation structure of the cluster determined by the matrix S(z). The latent variable Zi indicates which cluster",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p14",
+    "section_heading": "2.1 Statistical model, tree and dendrogram",
+    "text": "the ith data vector Yi is associated with. The vectors X(v), v \u2208 V \\ Z , correspond to unobserved vertices in the underlying tree. As an example, Z could be the set of leaf vertices of T , but neither our methods nor theory require this to be the case. Throughout this paper, we assume that the tree T determines two distributional properties of X. Firstly, we assume T is the conditional independence graph of the collection of random variables Xj := {Xj(v); v \u2208 V} for each j, that is, A1. for all j = 1, . . . , p, the marginal probability density or mass function of Xj factorises as:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p15",
+    "section_heading": "2.1 Statistical model, tree and dendrogram",
+    "text": "where Pav denotes the parent of vertex v.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p16",
+    "section_heading": "2.1 Statistical model, tree and dendrogram",
+    "text": "However we do not necessarily require that X1, . . . , Xp are independent or identically distributed. Secondly, we assume A2. for each j = 1 . . . , p, the following martingale-like property holds:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p17",
+    "section_heading": "2.1 Statistical model, tree and dendrogram",
+    "text": "for all vertices v \u2208 V except the root.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p18",
+    "section_heading": "2.1 Statistical model, tree and dendrogram",
+    "text": "The conditions A1 and A2 induce an additive hierarchical structure in X. For any distinct vertices u, v \u2208 V and w an ancestor of both, A1 and A2 imply that given Xj(w), the increments Xj(u) \u2212 Xj(w) and Xj(v)\u2212Xj(w) are conditionally independent and both conditionally mean zero. To explain our algorithm we need to introduce the definition of a dendrogram, D = (T , h), where h : V \u2192 R+ is a function which assigns a height to each vertex of T , such that h(v) \u2265 h(Pav) for any vertex v \u2208 V other than the root. The term \u201cdendrogram\u201d is derived from the ancient Greek for \u201ctree\u201d and \u201cdrawing\u201d, and indeed the numerical values h(v), v \u2208 V , can be used to construct a drawing of T where height is measured with respect to some arbitrary baseline on the page, an example is shown in figure 1(a). With \u27e8\u00b7, \u00b7\u27e9 denoting the usual dot product between vectors, the function",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p19",
+    "section_heading": "2.1 Statistical model, tree and dendrogram",
+    "text": "will act as a measure of affinity underlying our algorithm. The specific height function we consider is h(v) := \u03b1(v, v). The martingale property A2 ensures that this height function satisfies h(v) \u2265 h(Pav) as required, see lemma 2 in appendix C. In appendix E we also consider cosine similarity as an affinity measure, and analyse its performance under a multiplicative noise model, cf. the additive model (1).",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p20",
+    "section_heading": "2.2 Algorithm",
+    "text": "Combining the model (1) with (2) we have \u03b1(Zi, Zj) = p\u22121E[\u27e8Yi,Yj\u27e9|Zi, Zj ] for i \u0338= j \u2208 [n], [n] := {1, . . . , n}. The input to algorithm 1 is an estimate \u03b1\u0302(\u00b7, \u00b7) of all the pairwise affinities \u03b1(Zi, Zj), i \u0338= j \u2208 [n]. We consider two approaches to estimating \u03b1(Zi, Zj), with and without dimension reduction by uncentered PCA. For some r \u2264 min{p, n}, let V \u2208 Rp\u00d7r denote the matrix whose columns are orthonormal eigenvectors of \u2211n i=1 YiY \u22a4 i associated with its r largest eigenvalues. Then \u03b6i := V\u22a4Yi is r-dimensional vector of principal component scores for the ith data vector. The two possibilities for \u03b1\u0302(\u00b7, \u00b7) we consider are:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p21",
+    "section_heading": "2.2 Algorithm",
+    "text": "In the case of \u03b1\u0302pca the dimension r must be chosen. Our theory in section 3.2 assumes that r is chosen as the rank of the matrix with entries \u03b1(u, v), u, v \u2208 Z , which is at most |Z|. In practice r usually must be chosen based on the data, we discuss this in appendix A.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p22",
+    "section_heading": "2.2 Algorithm",
+    "text": "Algorithm 1 returns a dendrogram D\u0302 = (T\u0302 , h\u0302), comprising a tree T\u0302 = (V\u0302, E\u0302) and height function h\u0302. Each vertex in V\u0302 is a subset of [n], thus indexing a subset of the data vectors Y1, . . . ,Yn. The leaf vertices are the singleton sets {i}, i \u2208 [n], corresponding to the data vectors themselves. As algorithm 1 proceeds, vertices are appended to V\u0302 , edges are appended to E\u0302 , and the domain of the function \u03b1\u0302(\u00b7, \u00b7) is extended as affinities between elements of V\u0302 are computed. Throughout the paper we simplify notation by writing \u03b1\u0302(i, j) as shorthand for \u03b1\u0302({i}, {j}) for i, j \u2208 [n], noting that each argument of \u03b1\u0302(\u00b7, \u00b7) is in fact a subset of [n].",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p23",
+    "section_heading": "2.2 Algorithm",
+    "text": "Implementation using scikit-learn The presentation of algorithm 1 has been chosen to simplify its theoretical analysis, but alternative formulations of the same method may be much more computationally efficient in practice. In appendix B we outline how algorithm 1 can easily be implemented using the AgglomerativeClustering class in scikit-learn [38].",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p24",
+    "section_heading": "3.1 Merge distortion is upper bounded by affinity estimation error",
+    "text": "In order to explain the performance of algorithm 1 we introduce the merge height functions:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p25",
+    "section_heading": "3.1 Merge distortion is upper bounded by affinity estimation error",
+    "text": "m(u, v) := h(most recent common ancestor of u and v), u, v \u2208 V, m\u0302(u, v) := h\u0302(most recent common ancestor of u and v), u, v \u2208 V\u0302.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p26",
+    "section_heading": "3.1 Merge distortion is upper bounded by affinity estimation error",
+    "text": "To simplify notation we write m\u0302(i, j) as shorthand for m\u0302({i}, {j}), for i, j \u2208 [n]. The discrepancy between any two dendrograms whose vertices are in correspondence can be quantified by merge distortion [20] \u2013 the maximum absolute difference in merge height across all corresponding pairs of",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p27",
+    "section_heading": "3.1 Merge distortion is upper bounded by affinity estimation error",
+    "text": "vertices. [20] advocated merge distortion as a performance measure for cluster-tree recovery, which is different to our model-based formulation, but merge distortion turns out to be a useful and tractable performance measure in our setting too. As a preface to our main theoretical results, lemma 1 explains how the geometry of the dendrogram D, in terms of merge heights, is related to population statistics of our model. Defining d(u, v) := h(u)\u2212 h(w) + h(v)\u2212 h(w) for u \u0338= v \u2208 V , where w is the most recent common ancestor of u and v, we see d(u, v) is the vertical distance on the dendrogram from u down to w then back up to v, as illustrated in figure 1(a). Lemma 1. For any two vertices u, v \u2208 V ,",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p28",
+    "section_heading": "3.1 Merge distortion is upper bounded by affinity estimation error",
+    "text": "The proof is in appendix C. Considering the first two equalities in (4), it is natural to ask if the estimated affinities \u03b1\u0302(\u00b7, \u00b7) being close to the true affinities \u03b1(\u00b7, \u00b7) implies a small merge distortion between m\u0302(\u00b7, \u00b7) and m(\u00b7, \u00b7). This is the subject of our first main result, theorem 1 below. In appendix E we use the third equality in (4) to explain why popular agglomerative techniques such as UPGMA [44] and Ward\u2019s method [48] which merge clusters based on proximity in Euclidean distance may enjoy limited success under our model, but in general do not correctly recover tree structure.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p29",
+    "section_heading": "3.1 Merge distortion is upper bounded by affinity estimation error",
+    "text": "Let b denote the minimum branch length of D, that is, b = min{h(v)\u2212h(Pav)}, where the minimum is taken over all vertices in V except the root. Theorem 1. Let the function \u03b1\u0302(\u00b7, \u00b7) given as input to algorithm 1 be real-valued and symmetric but otherwise arbitrary. For any z1, . . . , zn \u2208 Z , if",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p30",
+    "section_heading": "3.1 Merge distortion is upper bounded by affinity estimation error",
+    "text": "then the dendrogram returned by algorithm 1 satisfies",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p31",
+    "section_heading": "3.1 Merge distortion is upper bounded by affinity estimation error",
+    "text": "The proof is in appendix C.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p32",
+    "section_heading": "3.2 Affinity estimation error vanishes with increasing dimension and sample size",
+    "text": "Our second main result, theorem 2 below, concerns the accuracy of estimating the affinities \u03b1(\u00b7, \u00b7) using \u03b1\u0302data or \u03b1\u0302pca as defined in (3). We shall consider the following technical assumptions.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p33",
+    "section_heading": "3.2 Affinity estimation error vanishes with increasing dimension and sample size",
+    "text": "A3 (Mixing across dimensions). For mixing coefficients \u03c6 satisfying \u2211",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p34",
+    "section_heading": "3.2 Affinity estimation error vanishes with increasing dimension and sample size",
+    "text": "k\u22651 \u03c6 1/2(k) < \u221e and all",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p35",
+    "section_heading": "3.2 Affinity estimation error vanishes with increasing dimension and sample size",
+    "text": "u, v \u2208 Z , the sequence {(Xj(u), Xj(v)); j \u2265 1} is \u03c6-mixing. A4 (Bounded moments). For some q \u2265 2, supj\u22651 maxv\u2208Z E[|Xj(v)|2q] < \u221e and E[|E11|2q] < \u221e, where E11 is the first element of the vector E1. A5 (Disturbance control). maxv\u2208Z \u2225S(v)\u2225op \u2208 O(1) as p \u2192 \u221e, where \u2225 \u00b7 \u2225op is the spectral norm. A6 (PCA rank). The dimension r chosen in definition of \u03b1\u0302pca, see (3), is equal to the rank of the matrix with entries \u03b1(u, v), u, v \u2208 Z .",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p36",
+    "section_heading": "3.2 Affinity estimation error vanishes with increasing dimension and sample size",
+    "text": "The concept of \u03c6-mixing is a classical weak-dependence condition, e.g. [19, 39]. A3 implies that for each j \u2265 1, (Xj(u), Xj(v)) and (Xj+\u03b4(u), Xj+\u03b4(v)) are asymptotically independent as \u03b4 \u2192 \u221e. However, it is important to note that \u03b1\u0302data and \u03b1\u0302pca in (3), and hence the operation of algorithm 1 with these inputs, are invariant to permutation of the data dimensions j = 1, . . . , p. Thus our analysis under A3 only requires there is some permutation of dimensions under which \u03c6-mixing holds. A4 is a fairly mild integrability condition. A5 allows control of magnitudes of the \u201cdisturbance\u201d vectors Yi \u2212X(Zi) = S(Zi)Ei. Further background and discussion of assumptions is given in appendix C.2. Theorem 2. Assume that A1-A5 hold and let q be as in A4. Then",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p37",
+    "section_heading": "3.2 Affinity estimation error vanishes with increasing dimension and sample size",
+    "text": "If additionally A3 is strengthened from \u03c6-mixing to independence, S(v) = \u03c3Ip for some constant \u03c3 \u2265 0 and all v \u2208 Z (in which case A5 holds), and A6 holds, then",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p38",
+    "section_heading": "3.2 Affinity estimation error vanishes with increasing dimension and sample size",
+    "text": "The proof of theorem 2 is in appendix C.2. We give an original and self-contained proof of (6). To prove (7) we use a recent uniform-concentration result for principal component scores from [49]. Overall, theorem 2 says that affinity estimation error vanishes if the dimension p grows faster enough relative to n (and r in the case of \u03b1\u0302pca, noting that under A6, r \u2264 |Z|, so it is sensible to assume r is much smaller than n and p). The argument of OP(\u00b7) is the convergence rate; if (Xp,n) is some collection of random variables indexed by p and n, Xp,n \u2208 OP(n2/q/ \u221a p) means that for any \u03f5 > 0, there exists \u03b4 and M such that n2/q/ \u221a p \u2265 M implies P(|Xp,n| > \u03b4) < \u03f5. We note the convergence rate in (6) is decreasing in q where as rate in (7) is not. It is an open mathematical question whether (7) can be improved in this regard; sharpening the results of Whiteley et al. [49] used in the proof of (7) seems very challenging. However, when q = 2, (6) gives OP ( n/ \u221a p ) compared",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p39",
+    "section_heading": "3.2 Affinity estimation error vanishes with increasing dimension and sample size",
+    "text": "to OP (\u221a nr/p+ \u221a r/n ) in (7), i.e. an improvement from n to \u221a nr in the first term. We explore",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p40",
+    "section_heading": "3.2 Affinity estimation error vanishes with increasing dimension and sample size",
+    "text": "empirical performance of \u03b1\u0302data versus \u03b1\u0302pca in section 4.2.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p41",
+    "section_heading": "3.3 Interpretation",
+    "text": "By combining theorems 1 and 2, we find that when b > 0 is constant and \u03b1\u0302 is either \u03b1\u0302data or \u03b1\u0302pca, the merge distortion",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p42",
+    "section_heading": "3.3 Interpretation",
+    "text": "converges to zero at rates given by the r.h.s of (6) and (7). To gain intuition into what (8) tells us about the resemblance between D\u0302 and D, it is useful to consider an intermediate dendrogram illustrated in figure 1(b) which conveys the realized values of Z1, . . . , Zn. This dendrogram is constructed from D by adding a leaf vertex corresponding to each observation Yi, with parent Zi and height p\u22121E[\u2225Yi\u22252|Z1, . . . , Zn] = h(Zi) + p\u22121tr[S(Zi)\u22a4S(Zi)], and deleting any v \u2208 Z such that Zi \u0338= v for all i \u2208 [n] (e.g., vertex c in figure 1(b)). The resulting merge height between the vertices corresponding to Yi and Yj is m(Zi, Zj). (8) being small implies this must be close to m\u0302(i, j) in D\u0302 as in figure 1(c). Moreover, in the case \u03b1\u0302 = \u03b1\u0302data, the height h\u0302({i}) of leaf vertex {i} in D\u0302 is upper bounded by p\u22121\u2225Yi\u22252, which under our statistical assumptions is concentrated around p\u22121E[\u2225Yi\u22252|Z1, . . . , Zn], i.e., the heights of the leaves in figure 1(c) approximate those of the corresponding leaves in figure 1(b).",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p43",
+    "section_heading": "3.3 Interpretation",
+    "text": "Overall we see that D\u0302 in figure 1(c) approximates the dendrogram in figure 1(b), and in turn D. However even if m(Zi, Zj) = m\u0302(i, j) for all i, j, the tree output from algorithm 1, T\u0302 , may not be isomorphic (i.e., equivalent up to relabelling of vertices) to the tree in figure 1(b); T\u0302 is always binary and has 2n \u2212 1 vertices, whereas the tree in figure 1(b) may not be binary, depending on the underlying T and the realization of Z1, . . . , Zn. This reflects the fact that merge distortion, in general, is a pseudometric on dendrograms. However, if one restricts attention to specific classes of true dendrograms D, for instance binary trees with non-zero branch lengths, then asymptotically algorithm 1 can recover them exactly. We explain this point further in appendix C.3.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p44",
+    "section_heading": "4 Numerical experiments",
+    "text": "We explore the numerical performance of algorithm 1 in the setting of five data sets summarised below. The real datasets used are open source, and full details of data preparation and sources are given in appendix D.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p45",
+    "section_heading": "4 Numerical experiments",
+    "text": "Simulated data. A simple tree structure with vertices V = {1, 2, 3, 4, 5, 6, 7, 8}, edge set E = {6 1, 6 2, 6 3, 7 4, 7 5, 8 6, 8 7} and Z = {1, 2, 3, 4, 5} (the leaf vertices). Z1, . . . , Zn are drawn from the uniform distribution on Z . The Xj(v) are Gaussian random variables, independent across j. Full details of how these variables are sampled are in appendix D. The elements of Ei are standard Gaussian, and S(v) = \u03c3Ip with \u03c3 = 1.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p46",
+    "section_heading": "4 Numerical experiments",
+    "text": "20 Newsgroups. We used a random subsample of n = 5000 documents from the well-known 20 Newsgroups data set [29]. Each data vector corresponds to one document, capturing its p = 12818 Term Frequency Inverse Document Frequency features. The value of n was chosen to put us in the regime p \u2265 n, to which our theory is relevant \u2013 see section 3.2. Some ground-truth labelling of documents is known: each document is associated with 1 of 20 newsgroup topics, organized at two hierarchical levels.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p47",
+    "section_heading": "4 Numerical experiments",
+    "text": "Zebrafish gene counts. These data comprise gene counts in zebrafish embryo cells taken from their first day of development [47]. As embryos develop, cells differentiate into various types with specialised, distinct functions, so the data are expected to exhibit tree-like structure mapping these changes. We used a subsample such that n = 5079 and p = 5498 to put us in the p \u2265 n regime. Each cell has two labels: the tissue that the cell is from and a subcategory of this.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p48",
+    "section_heading": "4 Numerical experiments",
+    "text": "Amazon reviews. This dataset contains customer reviews on Amazon products [1]. A random sample of n = 5000 is taken and each data vector corresponds to one review with p = 5594 Term Frequency Inverse Document Frequency features. Each product reviewed has labels which make up a three-level hierarchy of product types.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p49",
+    "section_heading": "4 Numerical experiments",
+    "text": "S&P 500 stock returns. The data are p = 1259 daily returns between for n = 368 stocks which were constituents of the S&P 500 market index [2] between 2013 to 2018. The two-level hierarchy of stock sectors by industries and sub-industries follows the Global Industry Classification Standard [3].",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p50",
+    "section_heading": "4.1 Comparing algorithm 1 to existing methods",
+    "text": "We numerically compare algorithm 1 against three very popular variants of agglomerative clustering: UPGMA with Euclidean distance, Ward\u2019s method, and UPGMA with cosine distance. These are natural comparators because they work by iteratively merging clusters in a manner similar to algorithm 1, but using different criteria for choosing which clusters to merge. In appendix E we complement our numerical results with mathematical insights into how these methods perform under our modelling assumptions. Numerical results for other linkage functions and distances are given in appendix D. Several popular density-based clustering methods use some hierarchical structure, such as CURE [22], OPTICS [7] and BIRCH [52] but these have limitations which prevent direct comparisons: they aren\u2019t equipped with a way to simplify the structure into a tree, which it is our aim to recover, and only suggest extracting a flat partition based on a density threshold. HDBSCAN [9] is a density-based method that doesn\u2019t have these limitations, and we report numerical comparisons against it.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p51",
+    "section_heading": "4.1 Comparing algorithm 1 to existing methods",
+    "text": "Kendall \u03c4b ranking correlation. For real data some ground-truth hierarchical labelling may be available but ground-truth merge heights usually are not. We need a performance measure to quantitatively compare methods operating on such data. Commonly used clustering performance measures such as the Rand index [40] and others [23, 21] allow pairwise comparisons between partitions, but do not capture information about hierarchical structure. The cophenetic correlation coefficient [45] is commonly used to compare dendrograms, but relies on an assumption that points close in Euclidean distance should be considered similar which is incompatible with our notion of dot product affinity. To overcome these obstacles we formulate a performance measure as follows. For each of n data points, we rank the other n\u2212 1 data points according to the order in which they merge with it in the ground-truth hierarchy. We then compare these ground truth rankings to those obtained from a given hierarchical clustering algorithm using the Kendall \u03c4b correlation coefficient [26]. This outputs a value in the interval [\u22121, 1], with \u22121, 1 and 0 corresponding to negative, positive and lack of association between the ground-truth and algorithm-derived rankings. We report the mean association value across all n data points as the overall performance measure. Table 1 shows results with raw data vectors Y1:n or PC scores \u03b61:n taken as input to the various algorithms. For all the data sets except S&P 500, algorithm 1 is found to recover hierarchy more accurately than other methods. We include the results for the S&P 500 data to give a balanced scientific view, and in appendix E we discuss why our modelling assumptions may not be appropriate for these data, thus explaining the limitations of algorithm 1.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p52",
+    "section_heading": "4.2 Simulation study of dot product estimation with and without PCA dimension reduction",
+    "text": "For high-dimensional data, reducing dimension with PCA prior to clustering may reduce overall computational cost. Assuming \u03b61:n are obtained from, e.g., a partial SVD, in time O(npr), the time complexity of evaluating \u03b1\u0302pca is O(npr + n2r), versus O(n2p) for \u03b1\u0302data, although this ignores the cost of choosing r. In table 1 we see for algorithm 1, the results for input Y1:n are very similar to those for \u03b61:n. To examine this more closely and connect our findings to theorem 2, we now compare \u03b1\u0302data and \u03b1\u0302pca as estimates of \u03b1 through simulation. The model is as described at the start of section 4. In figure 2(a)-(b), we see that when p is growing with n, and when p is constant, the \u03b1\u0302pca error is very slightly smaller than the \u03b1\u0302data error. By contrast, in figure 2(c), when n = 10 is",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p53",
+    "section_heading": "4.2 Simulation study of dot product estimation with and without PCA dimension reduction",
+    "text": "fixed, we see that the \u03b1\u0302pca error is larger than that for \u03b1\u0302data. This inferior performance of \u03b1\u0302pca for very small and fixed n is explained by n appearing in the denominator of the second term in the rate OP( \u221a nr/p+ \u221a r/n) for \u03b1\u0302pca in theorem 2 versus n appearing only in the numerator of OP(n2/q/ \u221a p) for \u03b1\u0302data. Since it is Gaussian, this simulation model has finite exponential-of-quadratic moments, which is a much stronger condition than A4; we conjecture the convergence rate in this Gaussian case is OP( \u221a log n/p) for \u03b1\u0302data, which would be consistent with figure 2(a). These numerical results seem to suggest the rate for \u03b1\u0302pca is similar, thus the second result of theorem 2 may not be sharp.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p54",
+    "section_heading": "4.3 Comparing dot product affinities and Euclidean distances for the 20 Newsgroups data",
+    "text": "In this section we expand on the results in table 1 for the 20 Newsgroups data, by exploring how inter-topic and intra-topic dot product affinities and Euclidean distances relate to ground-truth labels. Most existing agglomerative clustering techniques quantify dissimilarity using Euclidean distance. To compare dot products and Euclidean distances, figures 3(a)-(b) show, for each topic, the top five topics with the largest average dot product and smallest average Euclidean distance respectively. We see that clustering of semantically similar topic classes is apparent when using dot products but not when using Euclidean distance. Note that the average dot product affinity between comp.windows.x and itself is not shown in figure 3(b), but is shown in 3(a), by the highest dark blue square in the comp.windows.x column. In appendix D we provide additional numerical results illustrating that with n fixed, performance in terms of \u03c4b correlation coefficient increases with p.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p55",
+    "section_heading": "4.3 Comparing dot product affinities and Euclidean distances for the 20 Newsgroups data",
+    "text": "For one topic (\u2018comp.windows.x\u2019) the results are expanded in figures 3(c)-(d) to show the average dot products and average Euclidean distances to all other topics. Four out of the five topics with the largest dot product affinity belong to the same \u2018comp\u2019 topic class and other one is a semantically similar \u2018sci.crypt\u2019 topic. Whereas, the other topics in the same \u2018comp\u2019 class are considered dissimilar in terms of Euclidean distance.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p56",
+    "section_heading": "4.3 Comparing dot product affinities and Euclidean distances for the 20 Newsgroups data",
+    "text": "In order to display visually compact estimated dendrograms, we applied algorithm 1 and UPGMA in a semi-supervised setting where each topic is assigned its own PC score, taken to be the average of the PC scores of the documents in that topic, and then the algorithms are applied to cluster the topics. The results are shown in figures 3(e)-(f) (for ease of presentation, leaf vertex \u2018heights\u2019 are fixed to be equal).",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p57",
+    "section_heading": "5 Limitations and opportunities",
+    "text": "Our algorithm is motivated by modelling assumptions. If these assumptions are not appropriate for the data at hand, then the algorithm cannot be expected to perform well. A notable limitation of our model is that \u03b1(u, v) \u2265 0 for all u, v \u2208 V (see lemma 3 in appendix C). This is an inappropriate assumption when there are strong negative cross-correlations between some pairs of data vectors, and may explain why our algorithm has inferior performance on the S&P 500 data in table 1. Further discussion is given in appendix E. A criticism of agglomerative clustering algorithms in their basic form is that their computational cost scales faster than O(n2). Approximations to standard agglomerative methods which improve computational scalability have been proposed [33, 5, 35]. Future research could investigate analogous approximations and speed-up of our method. Fairness in hierarchical clustering has been recently studied in cost function-based settings by [6] and in greedy algorithm settings by [13]. Future work could investigate versions of our algorithm which incorporate fairness measures.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p58",
+    "section_heading": "A Wasserstein dimension selection",
+    "text": "In order to compute the principal component scores \u03b61, . . . , \u03b6n, one must choose the dimension r. Traditionally and somewhat heuristically, this is done by finding the \u201celbow\u201d in the scree plot of eigenvalues. The bias-variance tradeoff associated with choosing r was explored by [49], who suggested a data-splitting method of dimension selection for high-dimensional data using Wasserstein distances. Whilst this method may be more costly than the traditional \u201celbow\u201d approach, it was empirically demonstrated in [49] to have superior performance.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p59",
+    "section_heading": "A Wasserstein dimension selection",
+    "text": "We note that in practice, the eigenvectors appearing in this procedure could be computed sequentially as r grows, and to limit computational cost one might consider r only up to some rmax < min(n, p).",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p60",
+    "section_heading": "A Wasserstein dimension selection",
+    "text": "B Implementation using scikit-learn",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p61",
+    "section_heading": "A Wasserstein dimension selection",
+    "text": "Algorithm 1 can be implemented using the Python module scikit-learn [38] via their AgglomerativeClustering class, using the standard \u2018average\u2019 linkage criterion and a custom metric function to compute the desired affinities. However, AgglomerativeClustering merges clusters based on minimum distance metric, whereas algorithm 1 merges according to maximum dot product. Therefore, the custom metric function we used in our implementation calculates all the pairwise dot products and subtracts them from the maximum. This transformation needs to then be rectified if accessing the merge heights.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p62",
+    "section_heading": "A Wasserstein dimension selection",
+    "text": "All code released as part of this paper is under the MIT License and can be found at https: //github.com/anniegray52/dot_product_hierarchical",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p63",
+    "section_heading": "C Proofs and supporting theoretical results",
+    "text": "Lemma 2. The height function h(v) := \u03b1(v, v) satisfies h(v) \u2265 h(Pav) for all v \u2208 V except the root.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p64",
+    "section_heading": "Proof.",
+    "text": "where A2 combined with the tower property and linearity of conditional expectation implies E[\u27e8X(v)\u2212X(Pav),X(Pav)\u27e9] = 0.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p65",
+    "section_heading": "Proof.",
+    "text": "Lemma 3. For all u, v \u2208 V , \u03b1(u, v) \u2265 0.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p66",
+    "section_heading": "Proof.",
+    "text": "Proof. If u = v, \u03b1(u, v) \u2265 0 holds immediately from the definition of \u03b1 in (2). For u \u0338= v with most recent common ancestor w,",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p67",
+    "section_heading": "Proof.",
+    "text": "where the second equality uses A1 together with standard conditional independence aguments, and the third equality uses A2.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p68",
+    "section_heading": "Proof.",
+    "text": "Proof of lemma 1. Let w be the most recent common ancestor of u and v. For each j = 1, . . . , p, the property A1 together with standard conditional independence arguments imply that Xj(u) and Xj(v) are conditionally independent given Xj(w), and the property A2 implies that E[Xj(u)|Xj(w)] = E[Xj(v)|Xj(w)] = Xj(w). Therefore, by the tower property of conditional expectation,",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p69",
+    "section_heading": "Proof.",
+    "text": "Hence, using the definitions of the merge height m, the height h and the affinity \u03b1,",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p70",
+    "section_heading": "Proof.",
+    "text": "which proves the first equality in the statement. The second equality is the definition of \u03b1.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p71",
+    "section_heading": "Proof.",
+    "text": "For the third equality in the statement, we have",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p72",
+    "section_heading": "Proof.",
+    "text": "where the first equality uses the definition of d, and the second equality uses the definition of h and h(w) = m(u, v) = \u03b1(u, v).",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p73",
+    "section_heading": "C.1 Proof of Theorem 1",
+    "text": "The following lemma establishes an identity concerning the affinities computed in algorithm 1 which will be used in the proof of theorem 1.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p74",
+    "section_heading": "C.1 Proof of Theorem 1",
+    "text": "Lemma 4. Let Pm, m \u2265 0, be the sequence of partitions of [n] constructed in algorithm 1 . Then for any m \u2265 0,",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p75",
+    "section_heading": "C.1 Proof of Theorem 1",
+    "text": "Proof. The proof is by induction on m. With m = 0, (9) holds immediately since P0 = {{1}, . . . , {n}}. Now suppose (9) holds at step m. Then for any distinct pair w,w\u2032 \u2208 Pm+1,",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p76",
+    "section_heading": "C.1 Proof of Theorem 1",
+    "text": "either w or w\u2032 is the result of merging two elements of Pm, or w and w\u2032 are both elements of Pm. In the latter case the induction hypothesis immediately implies:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p77",
+    "section_heading": "C.1 Proof of Theorem 1",
+    "text": "In the case that w or w\u2032 is the result of a merge, suppose w.l.o.g. that w = u \u222a v for some u, v \u2208 Pm and w\u2032 \u2208 Pm. Then by definition of \u03b1\u0302 in algorithm 1 ,",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p78",
+    "section_heading": "C.1 Proof of Theorem 1",
+    "text": "where the final equality uses w = u \u222a v. The induction hypothesis thus holds at step m+ 1.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p79",
+    "section_heading": "C.1 Proof of Theorem 1",
+    "text": "The following proposition establishes the validity of the height function constructed in algorithm 1. Some of the arguments used in this proof are qualitatively similar to those used to study reducible linkage functions by, e.g., Sumengen et al. [46], see also historical references therein.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p80",
+    "section_heading": "C.1 Proof of Theorem 1",
+    "text": "Proposition 1. With V\u0302 the vertex set and h\u0302 the height function constructed in algorithm 1 with any symmetric, real-valued input \u03b1\u0302(\u00b7, \u00b7), it holds that h\u0302(v) \u2265 h\u0302(Pav) for all vertices v \u2208 V\u0302 except the root.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p81",
+    "section_heading": "C.1 Proof of Theorem 1",
+    "text": "Proof. The required inequality h\u0302(v) \u2265 h\u0302(Pav) holds immediately for all the leaf vertices v \u2208 P0 = {{1}, . . . , {n}} by the definition of h\u0302 in algorithm 1. All the remaining vertices in the output tree, i.e., those in V\u0302 \\P0, are formed by merges over the course of the algorithm. For m \u2265 0 let wm = um\u222avm denote the vertex formed by merging some um, vm \u2208 Pm. Then wm = Paum and wm = Pavm . Each um is either a member of P0 or equal to wm\u2032 for some m\u2032 < m. The same is true of each vm. It therefore suffices to show that h\u0302(wm) \u2265 h\u0302(wm+1) for m \u2265 0, where by definition in the algorithm, h\u0302(wm) = \u03b1\u0302(um, vm). Also by definition in the algorithm, h\u0302(wm+1) is the largest pairwise affinity between elements of Pm+1. Our objective therefore is to upper-bound this largest affinity and compare it to h\u0302(wm) = \u03b1\u0302(um, vm).",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p82",
+    "section_heading": "C.1 Proof of Theorem 1",
+    "text": "The affinity between wm = um \u222a vm and any other element w\u2032 of Pm+1 (which must also be an element of Pm) is, by definition in the algorithm,",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p83",
+    "section_heading": "C.1 Proof of Theorem 1",
+    "text": "where the last inequality holds because um, vm, by definition, have the largest affinity amongst all elements of Pm. For the same reason, the affinity between any two distinct elements of Pm+1 neither of which is wm (and therefore both of which are elements of Pm) is upper-bounded by \u03b1\u0302(um, vm). We have therefore established h\u0302(wm) = \u03b1\u0302(um, vm) \u2265 h\u0302(wm+1) as required, and this completes the proof.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p84",
+    "section_heading": "C.1 Proof of Theorem 1",
+    "text": "Proof of theorem 1. Let us introduce some definitions used throughout the proof.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p85",
+    "section_heading": "C.1 Proof of Theorem 1",
+    "text": "We arbitrarily chose and then fix i, j \u2208 [n] with i \u0338= j, and define",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p86",
+    "section_heading": "C.1 Proof of Theorem 1",
+    "text": "Let u denote the most recent common ancestor of the leaf vertices {i} and {j} in D\u0302 and let m \u2265 1 denote the step of the algorithm at which u is created by a merge, that is m = min{m\u2032 \u2265 1 : u \u2208 Pm\u2032}. We note that by construction, u is equal to the union of all leaf vertices with ancestor u, and by definition of h\u0302 in algorithm 1 h\u0302(u) = H\u0302 .",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p87",
+    "section_heading": "C.1 Proof of Theorem 1",
+    "text": "Let v denote the most recent common ancestor of zi and zj in D, which has height h(v) = H .",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p88",
+    "section_heading": "C.1 Proof of Theorem 1",
+    "text": "Lower bound on m(zi, zj)\u2212m\u0302(i, j). There is no partition of u into two non-empty sets A,B \u2286 [n] such that \u03b1\u0302(k, l) < H\u0302 for all k \u2208 A and l \u2208 B. We prove this by contradiction. Suppose that such a partition exists. There must be a step m\u2032 \u2264 m at which some A\u2032 \u2286 A is merged some B\u2032 \u2286 B. The vertex w formed by this merge would have height",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p89",
+    "section_heading": "C.1 Proof of Theorem 1",
+    "text": "where the first equality is the definition of h\u0302(w) in the algorithm and the second equality holds by lemma 4. However, in this construction u is an ancestor of w, and h\u0302(w) < h\u0302(u) therefore contradicts the result of proposition 1.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p90",
+    "section_heading": "C.1 Proof of Theorem 1",
+    "text": "As a device to be used in the next step of the proof, consider an undirected graph with vertex set u, in which there is an edge between two vertices k and l if and only if \u03b1\u0302(k, l) \u2265 H\u0302 . Then, because there is no partition as established above, this graph must be connected. Now consider a second undirected graph, also with vertex set u, in which there is any edge between two vertices k and l if and only if \u03b1(zk, zl) \u2265 H\u0302 \u2212M . Due to the definition of M in (10), any edge in the first graph is an edge in the second, so the second graph is connected too. Let k, l, and \u2113 be any distinct members of u. Using the fact established in lemma 1 that \u03b1(zk, zl) and \u03b1(zl, z\u2113) are respectively the merge heights in D between zk and zl, and zl and z\u2113, it can be seen that if there are edges between k and l and between l and \u2113 in the second graph, there must also be an edge in that graph between k and \u2113. Combined with the connectedness, this implies that the second graph is complete, so that \u03b1(zk, zl) \u2265 H\u0302 \u2212M for all distinct k, l \u2208 u. In particular \u03b1(zi, zj) \u2265 H\u0302 \u2212M , and since m(zi, zj) = \u03b1(zi, zj), we find",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p91",
+    "section_heading": "C.1 Proof of Theorem 1",
+    "text": "Upper bound on m(zi, zj)\u2212 m\u0302(i, j). Let Sv = {i \u2208 [n] : zi = v or zi has ancestor v in D}. For k, l \u2208 Sv , lemma 1 tells us \u03b1(zk, zl) is the merge height between zk and zl, so \u03b1(zk, zl) \u2265 H . Using (10), we therefore have",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p92",
+    "section_heading": "C.1 Proof of Theorem 1",
+    "text": "It follows from the definition of h\u0302 in the algorithm that if Sv = [n], the heights of all vertices in D\u0302 are greater than or equal to H \u2212M . This implies H\u0302 \u2265 H \u2212M . In summary, we have shown that when Sv = [n],",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p93",
+    "section_heading": "C.1 Proof of Theorem 1",
+    "text": "It remains to consider the case Sv \u0338= [n]. The proof of the same upper bound (14) in this case is more involved. In summary, we need to establish that the most recent common ancestor of {i} and {j} in D\u0302 has height at least H \u2212M . The main idea of the proof is to consider the latest step of the algorithm at which a vertex with height at least H \u2212M is formed by a merge, and show the partition formed by this merge contains the most recent common ancestor of {i} and {j}, or an ancestor thereof. To this end let m\u2217 denote the latest step in algorithm 1 at which the vertex formed, w\u2217, has height greater than or equal to H \u2212M . To see that m\u2217 must exist, notice",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p94",
+    "section_heading": "C.1 Proof of Theorem 1",
+    "text": "by definition of M in (10). Combined with the definition of h\u0302 in algorithm 1, the vertex formed by the merge at step 1 of the algorithm therefore has height greater than or equal to H \u2212M . Therefore m\u2217 is indeed well-defined.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p95",
+    "section_heading": "C.1 Proof of Theorem 1",
+    "text": "Our next objective is to show that the partition Pm\u2217 formed at step m\u22c6 contains an element which itself contains both i and j. We proceed by establishing some facts about Sv and Pm\u2217 .",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p96",
+    "section_heading": "C.1 Proof of Theorem 1",
+    "text": "Let S\u0304v := [n] \\ Sv. For k \u2208 Sv, l \u2208 S\u0304v, v cannot be an ancestor of zl, by lemma 1 \u03b1(zk, zl) is the merge height of zk and zl, and b is the minimum branch length in D, so we have \u03b1(zk, zl) \u2264 H \u2212 b. From (10) we then find",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p97",
+    "section_heading": "C.1 Proof of Theorem 1",
+    "text": "We claim that no element of Pm\u2217 can contain both an element of Sv and an element of S\u0304v . We prove this claim by contradiction. If such an element of Pm\u2217 did exist, there would be a step m\u2032 \u2264 m\u2217 at which some A\u2032 \u2286 Sv is merged with some B\u2032 \u2286 S\u0304v. But the vertex w\u2032 formed by this merge would be assigned height h\u0302(w\u2032) = \u03b1\u0302(A\u2032, B\u2032) \u2264 H \u2212 b+M < H \u2212M , where the first inequality uses lemma 4 and (16), and the second inequality uses the assumption of the theorem that M < b/2. Recalling the definition of w\u22c6 we have h\u0302(w\u2217) \u2265 H \u2212M . We therefore see that w\u2217 is an ancestor of w\u2032 with h\u0302(w\u2217) > h\u0302(w\u2032), contradicting the result of proposition 1.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p98",
+    "section_heading": "C.1 Proof of Theorem 1",
+    "text": "Consider the elements of Pm\u2217 , denoted A and B, which contain i and j respectively. We claim that A = B. We prove this claim by contradiction. Suppose A \u0338= B. As established in the previous paragraph, neither A nor B can contain an element of S\u0304v . Therefore, using lemma 4 and (13),",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p99",
+    "section_heading": "C.1 Proof of Theorem 1",
+    "text": "Again using the established fact that no element of Pm\u2217 can contain both an element of Sv and an element of S\u0304v, m\u2217 cannot be the final step of the algorithm, since that would require Pm\u22c6 = {[n]}. Therefore \u03b1\u0302(A,B) is one of the affinities which algorithm 1 would maximise over at step m\u2217 + 1, so the height of the vertex formed by a merge at step m\u2217 + 1 would be greater than or equal to H \u2212M , which contradicts the definition of m\u2217. Thus we have proved there exists an element of Pm\u2217 which contains both i and j. This element must be the most recent common ancestor of {i} and {j}, or an ancestor thereof. Also, this element must have been formed by a merge at a step less than or equal to m\u22c6 and so must have height greater than or equal to H \u2212M . Invoking proposition 1 we have thus established H\u0302 \u2265 H \u2212M . In summary, in the case Sv \u0338= [n], we have shown",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p100",
+    "section_heading": "C.1 Proof of Theorem 1",
+    "text": "Combining the lower bound (12) with the upper bounds (14), (17) and the fact that i, j were chosen arbitrarily, completes the proof.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p101",
+    "section_heading": "C.1 Proof of Theorem 1",
+    "text": "C.2 Supporting material and proof for Theorem 2",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p102",
+    "section_heading": "Definitions and interpretation for assumptions A3 and A5",
+    "text": "We recall the definition of \u03c6-mixing from, e.g., [39]. For a sequence of random variables {\u03bej ; j \u2265 1}, define:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p103",
+    "section_heading": "Definitions and interpretation for assumptions A3 and A5",
+    "text": "where F ji is the \u03c3-algebra generated by \u03bei, . . . , \u03bej . Then {\u03bej ; j \u2265 1} is said to be \u03c6-mixing if \u03c6(k) \u2198 0 as k \u2192 \u221e. To interpret assumption A5 notice",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p104",
+    "section_heading": "Definitions and interpretation for assumptions A3 and A5",
+    "text": "where the first inequality uses the independence of Ei and Zi and the second inequality uses the fact that the elements of the vectors Ei are i.i.d. Since Yi \u2212X(Zi) = S(Zi)Ei, A5 thus implies E[\u2225Yi \u2212X(Zi)\u22252] \u2208 O(p) as p \u2192 \u221e, which can be viewed as a natural growth rate since p is the dimension of the disturbance vector Yi \u2212X(Zi). In the proof of proposition 2 below, A5 is used in a similar manner to control dot products of the form \u27e8Yi \u2212Xi,Xj\u27e9 and \u27e8Yi \u2212Xi,Yj \u2212Xj\u27e9.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p105",
+    "section_heading": "Definitions and interpretation for assumptions A3 and A5",
+    "text": "Proof of Theorem 2. For the first claim of the theorem, proposition 2 combined with the tower property of conditional expectation imply that for any \u03b4 > 0,",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p106",
+    "section_heading": "Definitions and interpretation for assumptions A3 and A5",
+    "text": "from which (6) follows.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p107",
+    "section_heading": "Definitions and interpretation for assumptions A3 and A5",
+    "text": "The second claim of the theorem is in essence a corollary to [49][Thm 1]. A little work is needed to map the setting of the present work on to the setting of Whiteley et al. [49][Thm 1]. To see the connection, we endow the finite set Z in the present work with the discrete metric: dZ(u, v) := 0 for u \u0338= v, and dZ(v, v) = 0. Then (Z, dZ) is a compact metric space, and in the setting specified in the statement of theorem 2 where A3 is strengthened to independence, s = p and S(v) = \u03c3Ip for all v \u2208 Z , the variables Y1 . . . ,Yn; {X(v), v \u2208 Z}; E1, . . . ,En exactly follow the Latent Metric Model of Whiteley et al. [49].",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p108",
+    "section_heading": "Definitions and interpretation for assumptions A3 and A5",
+    "text": "Moreover, according to the description in section 2.1, the variables Z1, . . . , Zn are i.i.d. according to a probability distribution supported on Z . As in [49], by Mercer\u2019s theorem there exists a feature map \u03d5 : Z \u2192 Rr associated with this probability distribution, such that \u27e8\u03d5(u), \u03d5(v)\u27e9 = \u03b1(u, v), for u, v \u2208 Z . Here r, as in A6, is the rank of the matrix with elements \u03b1(u, v), which is at most Z . Theorem 1 of [49] in this context implies there exists a random orthogonal matrix Q \u2208 Rr\u00d7r such that",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p109",
+    "section_heading": "Definitions and interpretation for assumptions A3 and A5",
+    "text": "Consider the bound:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p110",
+    "section_heading": "Definitions and interpretation for assumptions A3 and A5",
+    "text": "where orthogonality of Q has been used, and the final inequality uses Cauchy-Schwarz and the triangle inequality for the \u2225 \u00b7 \u2225 norm. Combining the above estimate with (19), the bound:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p111",
+    "section_heading": "Definitions and interpretation for assumptions A3 and A5",
+    "text": "and A4 completes the proof of the second claim of the theorem.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p112",
+    "section_heading": "Definitions and interpretation for assumptions A3 and A5",
+    "text": "Proposition 2. Assume the model in section 2.1 satisfies assumptions A3-A5, and let \u03c6 and q be as in A3 and A4. Then there exists a constant C(q, \u03c6) depending only on q and \u03c6 such that for any \u03b4 > 0,",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p113",
+    "section_heading": "Definitions and interpretation for assumptions A3 and A5",
+    "text": "where",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p114",
+    "section_heading": "Definitions and interpretation for assumptions A3 and A5",
+    "text": "Proof. Fix any i, j such that 1 \u2264 i < j \u2264 n. Consider the decomposition:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p115",
+    "section_heading": "Definitions and interpretation for assumptions A3 and A5",
+    "text": "where",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p116",
+    "section_heading": "Definitions and interpretation for assumptions A3 and A5",
+    "text": "The proof proceeds by bounding E[|\u2206k|q|Z1, . . . , Zn] for k = 1, . . . , 4. Writing \u22061 as",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p117",
+    "section_heading": "Definitions and interpretation for assumptions A3 and A5",
+    "text": "we see that \u22061 is a sum p random variables each of which is conditionally mean zero given Z1, . . . , Zn. Noting that the two collections of random variables {Z1, . . . , Zn} and {X(v); v \u2208 V} are independent (as per the description of the model in section 2.1), under assumption A3 we may apply a moment inequality for \u03c6-mixing random variables [51][Lemma 1.7] to show that there exists a constant C1(q, \u03c6) depending only on q, \u03c6 such that",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p118",
+    "section_heading": "Definitions and interpretation for assumptions A3 and A5",
+    "text": "where second inequality holds by two applications of Jensen\u2019s inequality and q \u2265 2, and the final inequality uses the fact that for a, b \u2265 0, (a+ b)q \u2264 2q\u22121(aq + bq), the Cauchy-Schwartz inequality, and the independence of {Z1, . . . , Zn} and {X(v); v \u2208 V}. For \u22062, we have",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p119",
+    "section_heading": "Definitions and interpretation for assumptions A3 and A5",
+    "text": "where [\u00b7]k denotes the kth element of a vector. Since the three collections of random variables, {Z1, . . . , Zn}, {X(v); v \u2208 Z} and {E1, . . . ,En} are mutually independent, and the elements of each vector Ej \u2208 Rp are mean zero and independent, we see that given {Z1, . . . , Zn} and {X(v); v \u2208 V}, \u22062 is a simple average of conditionally independent and conditionally mean-zero",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p120",
+    "section_heading": "Definitions and interpretation for assumptions A3 and A5",
+    "text": "random variables. Applying the Marcinkiewicz\u2013Zygmund inequality we find there exists a constant C2(q) depending only on q such that",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p121",
+    "section_heading": "Definitions and interpretation for assumptions A3 and A5",
+    "text": "Noting that q \u2265 2 and applying Minkowski\u2019s inequality to the r.h.s. of (23), then using the independence of {Z1, . . . , Zn}, {X(v); v \u2208 Z} and {E1, . . . ,En} and the i.i.d. nature of the elements of the vector Ej ,",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p122",
+    "section_heading": "Definitions and interpretation for assumptions A3 and A5",
+    "text": "Substituting into (23) and using the tower property of conditional expectation we obtain:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p123",
+    "section_heading": "Definitions and interpretation for assumptions A3 and A5",
+    "text": "where the second inequality holds by Jensen\u2019s inequality (recall q \u2265 2). Since the r.h.s. of (24) does not depend on i or j, the same bound holds with \u22062 on the l.h.s. replaced by \u22063.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p124",
+    "section_heading": "Definitions and interpretation for assumptions A3 and A5",
+    "text": "Turning to \u22064, we have",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p125",
+    "section_heading": "Definitions and interpretation for assumptions A3 and A5",
+    "text": "Noting that i \u0338= j, and that the elements of Ei and Ej are independent, identically distributed, and mean zero, we see that \u22064 is a sum of p2 random variables which are all conditionally mean zero and conditionally independent given Z1, . . . , Zn. The Marcinkiewicz\u2013Zygmund inequality gives:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p126",
+    "section_heading": "Definitions and interpretation for assumptions A3 and A5",
+    "text": "Applying Minkowski\u2019s inequality to the r.h.s. of (25),",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p127",
+    "section_heading": "Definitions and interpretation for assumptions A3 and A5",
+    "text": "where the final inequality holds by Jensen\u2019s inequality. Substituting back into (25) and using \u2225S(u)\u22a4S(v)\u2225F \u2264 p1/2\u2225S(u)\u22a4S(v)\u2225op \u2264 p1/2\u2225S(u)\u2225op\u2225S(v)\u2225op, we obtain:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p128",
+    "section_heading": "Definitions and interpretation for assumptions A3 and A5",
+    "text": "Combining (22), (24) and (26) using the fact that for a, b \u2265 0, (a+ b)q \u2264 2q\u22121(aq + bq), we find that there exists a constant C(q, \u03c6) depending only on q and \u03c6 such that",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p129",
+    "section_heading": "Definitions and interpretation for assumptions A3 and A5",
+    "text": "where M(q,X,E,S) is defined in the statement of the proposition and is finite by assumptions A4 and A5. By Markov\u2019s inequality, for any \u03b4 \u2265 0,",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p130",
+    "section_heading": "Definitions and interpretation for assumptions A3 and A5",
+    "text": "and the proof is completed by a union bound:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p131",
+    "section_heading": "Definitions and interpretation for assumptions A3 and A5",
+    "text": "C.3 Interpretation of merge heights and exact tree recovery",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p132",
+    "section_heading": "Definitions and interpretation for assumptions A3 and A5",
+    "text": "Here we expand on the discussion in section 3.3 and provide further interpretation of merge heights and algorithm 1. In particular our aim is to clarify in what circumstances algorithm 1 will asymptotically correctly recover underlying tree structure. For ease of exposition throughout section C.3 we assume that Z are the leaf vertices of T . As a preliminary we note the following corollary to theorem 1: assuming b > 0, if one takes as input to algorithm 1 the true merge heights, i.e. (up to bijective relabelling of leaf vertices)",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p133",
+    "section_heading": "Definitions and interpretation for assumptions A3 and A5",
+    "text": "\u03b1\u0302(\u00b7, \u00b7) := m(\u00b7, \u00b7) = \u03b1(\u00b7, \u00b7), where n = |Z|, then theorem 1 implies that algorithm 1 outputs a dendrogram D whose merge heights m\u0302(\u00b7, \u00b7) are equal to m(\u00b7, \u00b7) (up to bijective relabeling over vertices). This clarifies that with knowledge of m(\u00b7, \u00b7), algorithm 1) constructs a dendrogram which has m(\u00b7, \u00b7) as its merge heights. We now ask for more: if once again m(\u00b7, \u00b7) is taken as input to algorithm 1, under what conditions is the output tree T\u0302 equal to T (upto bijective relabelling of vertices)? We claim this holds when T is a binary tree and that all its non-leaf nodes have different heights. We provide a sketch proof of this claim, since a complete proof involves many tedious and notationally cumbersome details.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p134",
+    "section_heading": "Definitions and interpretation for assumptions A3 and A5",
+    "text": "To remove the need for repeated considerations of relabelling, suppose T = (V, E) is given, then w.l.o.g. relabel the leaf vertices of T as {1}, . . . , {|Z|} and relabel each non-leaf vertex to be the union of its children. Thus each vertex is some subset of [|Z|]. Now assume that T is a binary tree and that all its non-leaf nodes have different heights. Note that |V| = 2|Z| \u2212 1, i.e., there are |Z| \u2212 1 non-leaf vertices. The tree T is uniquely characterized by a sequence of partitions P\u03030, . . . , P\u0303|Z|\u22121 where P\u03030 := {{1}, . . . , {|Z|}}, and for m = 1, . . . , |Z| \u2212 1, P\u0303m is constructed from P\u0303m\u22121 by merging the two elements of P\u0303m\u22121 whose most recent common ancestor is the mth highest non-leaf vertex (which is uniquely defined since we are assuming no two non-leaf vertices have equal heights).",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p135",
+    "section_heading": "Definitions and interpretation for assumptions A3 and A5",
+    "text": "To see that in this situation algorithm 1, with \u03b1\u0302(\u00b7, \u00b7) := m(\u00b7, \u00b7) and n = |Z| as input, performs exact recovery of the tree, i.e., T\u0302 = T , it suffices to notice that the sequence of partitions P0, . . . , P|Z|\u22121 constructed by algorithm 1 uniquely characterizes T\u0302 , and moreover (P\u03030, . . . , P\u0303|Z|\u22121) = (P0, . . . , P|Z|\u22121). The details of this last equality involve simple but tedious substitutions of m(\u00b7, \u00b7) in place of \u03b1\u0302(\u00b7, \u00b7) in algorithm 1, so are omitted.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p136",
+    "section_heading": "D Further details of numerical experiments and data preparation",
+    "text": "All real datasets used are publicly available under the CC0: Public domain license. Further, all experiments were run locally on a laptop with an integrated GPU (Intel UHD Graphics 620).",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p137",
+    "section_heading": "D.1 Simulated data",
+    "text": "For each v \u2208 V , X1(v), . . . , Xp(v) are independent and identically distributed Gaussian random variables with:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p138",
+    "section_heading": "D.1 Simulated data",
+    "text": "for j = 1, . . . , p.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p139",
+    "section_heading": "D.1 Simulated data",
+    "text": "D.2 20 Newsgroups",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p140",
+    "section_heading": "D.1 Simulated data",
+    "text": "The dataset originates from [29], however, the version used is the one available in the Python package \u2018scikit-learn\u2018 [38]. Each document is pre-processed in the following way: generic stopwords and e-mail addresses are removed, and words are lemmatised. The processed documents are then converted into a matrix of TF-IDF features. Labels can be found on the 20 Newsgroups website http://qwone.com/~jason/20Newsgroups/, but are mainly intuitive from the title of labels, with full stops separating levels of hierarchy. When using PCA a dimension of r = 34 was selected by the method described in appendix A.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p141",
+    "section_heading": "D.1 Simulated data",
+    "text": "The following numerical results complement those in the main part of the paper.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p142",
+    "section_heading": "D.3 Zebrafish gene counts",
+    "text": "These data were collected over a 24-hour period (timestamps available in the data), however, the temporal aspect of the data was ignored when selecting a sub-sample. To process the data, we followed the steps in [47] which are the standard steps in the popular SCANPY [50] \u2013 a Python package for analysing single-cell gene-expression data to process the data. This involves filtering out genes that are present in less than 3 cells or are highly variable, taking the logarithm, scaling and regressing out the effects of the total counts per cell. When using PCA a dimension of r = 29 was selected by the method described in appendix A.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p143",
+    "section_heading": "D.4 Amazon reviews",
+    "text": "The pre-processing of this dataset is similar to that of the Newsgroup data except e-mail addresses are no longer removed. Some data points had a label of \u2018unknown\u2019 in the third level of the hierarchy, these were removed from the dataset. In addition, reviews that are two words or less are not included. When using PCA a dimension of r = 22 was selected by the method described in appendix A.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p144",
+    "section_heading": "D.5 S&P 500 stock data",
+    "text": "This dataset was found through the paper [8] with the authors code used to process the data. The labels follow the Global Industry Classification Standard and can be found here: [3]. The return on day i of each stock is calculated by",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p145",
+    "section_heading": "D.5 S&P 500 stock data",
+    "text": "where popi and p cl i is the respective opening and closing price on day i. When using PCA a dimension of r = 10 was used as selected by the method described in appendix A.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p146",
+    "section_heading": "E Understanding agglomerative clustering with Euclidean or cosine distances in our framework",
+    "text": "E.1 Quantifying dissimilarity using Euclidean distance",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p147",
+    "section_heading": "E Understanding agglomerative clustering with Euclidean or cosine distances in our framework",
+    "text": "The first step of many standard variants of agglomerative clustering such as UPGMA and Ward\u2019s method is to find and merge the pair of data vectors which are closest to each other in Euclidean distance. From the elementary identity:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p148",
+    "section_heading": "E Understanding agglomerative clustering with Euclidean or cosine distances in our framework",
+    "text": "we see that, in general, this is not equivalent to finding the pair with largest dot product, because of the presence of the terms \u2225Yi\u22252 and \u2225Yj\u22252. For some further insight in to how this relates to our",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p149",
+    "section_heading": "E Understanding agglomerative clustering with Euclidean or cosine distances in our framework",
+    "text": "(a) (b)",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p150",
+    "section_heading": "E Understanding agglomerative clustering with Euclidean or cosine distances in our framework",
+    "text": "modelling and theoretical analysis framework, it is revealing to the consider the idealised case of choosing to merge by maximising merge height m(\u00b7, \u00b7) versus minimising d(\u00b7, \u00b7) (recall the identities for m and d established in lemma 1). Figure 5 shows two simple scenarios in which geometry of the dendrogram has an impact on whether or not maximising merge height m(\u00b7, \u00b7) is equivalent to minimising d(\u00b7, \u00b7). From this example we see that, in situations where some branch lengths are disproportionately large, minimising d(\u00b7, \u00b7) will have different results to maximising m(\u00b7, \u00b7). UPGMA and Ward\u2019s method differ in their linkage functions, and so differ in the clusters they create in practice after their respective first algorithmic steps. UPGMA uses average linkage to combine Euclidean distances, and there does not seem to be a mathematically simple connection between this and algorithm 1, except to say that in general it will return different results. Ward\u2019s method merges the pair of clusters which results in the minimum increase in within-cluster variance. When clusters contain equal numbers of samples, this increase is equal to the squared Euclidean distance between the clusters\u2019 respective centroids.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p151",
+    "section_heading": "E Understanding agglomerative clustering with Euclidean or cosine distances in our framework",
+    "text": "E.2 Agglomerative clustering with cosine distance is equivalent to an instance of algorithm 1",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p152",
+    "section_heading": "E Understanding agglomerative clustering with Euclidean or cosine distances in our framework",
+    "text": "The cosine \u2018distance\u2019 between Yi and Yj is:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p153",
+    "section_heading": "E Understanding agglomerative clustering with Euclidean or cosine distances in our framework",
+    "text": "In table 1 we show results for standard agglomerative clustering using dcos as a measure of dissimilarity, combined with average linkage. At each iteration, this algorithm works by merging the pair of data-vectors/clusters which are closest with respect to dcos(\u00b7, \u00b7), say u and v merged to form w, with dissimilarities between w and the existing data-vectors/clusters computed according to the average linkage function:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p154",
+    "section_heading": "E Understanding agglomerative clustering with Euclidean or cosine distances in our framework",
+    "text": "This procedure can be seen to be equivalent to algorithm 1 with input \u03b1\u0302(\u00b7, \u00b7) = 1\u2212 dcos(\u00b7, \u00b7). Indeed maximising 1\u2212dcos(\u00b7, \u00b7) is clearly equivalent to minimizing dcos(\u00b7, \u00b7), and with \u03b1\u0302(\u00b7, \u00b7) = 1\u2212dcos(\u00b7, \u00b7) the affinity computation at line 6 of algorithm 1 is:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p155",
+    "section_heading": "E Understanding agglomerative clustering with Euclidean or cosine distances in our framework",
+    "text": "where on the r.h.s. of the final equality we recognise (28).",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p156",
+    "section_heading": "E Understanding agglomerative clustering with Euclidean or cosine distances in our framework",
+    "text": "E.3 Using cosine similarity as an affinity measure removes multiplicative noise",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p157",
+    "section_heading": "E Understanding agglomerative clustering with Euclidean or cosine distances in our framework",
+    "text": "Building from the algorithmic equivalence identified in section E.2, we now address the theoretical performance of agglomerative clustering with cosine distance in our modelling framework.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p158",
+    "section_heading": "E Understanding agglomerative clustering with Euclidean or cosine distances in our framework",
+    "text": "Intuitively, cosine distance is used in situations where the magnitudes of data vectors are thought not to convey useful information about dissimilarity. To formalise this idea, we consider a variation of our statistical model from section 2.1 in which:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p159",
+    "section_heading": "E Understanding agglomerative clustering with Euclidean or cosine distances in our framework",
+    "text": "\u2022 Z are the leaf vertices of T , |Z| = n, and we take these vertices to be labelled Z = {1, . . . , n} \u2022 X is as in section 2.1, properties A1 and A2 hold, and it is assumed that for all v \u2208 Z , p\u22121E[\u2225X(v)\u22252] = 1.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p160",
+    "section_heading": "E Understanding agglomerative clustering with Euclidean or cosine distances in our framework",
+    "text": "\u2022 the additive model (1) is replaced by a multiplicative noise model:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p161",
+    "section_heading": "E Understanding agglomerative clustering with Euclidean or cosine distances in our framework",
+    "text": "where \u03b3i > 0 are all strictly positive random scalars, independent of other variables, but otherwise arbitrary.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p162",
+    "section_heading": "E Understanding agglomerative clustering with Euclidean or cosine distances in our framework",
+    "text": "The interpretation of this model is that the expected square magnitude of the data vector Yi is entirely determined by \u03b3i, indeed we have",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p163",
+    "section_heading": "E Understanding agglomerative clustering with Euclidean or cosine distances in our framework",
+    "text": "where h is as in section 2.1. We note that in this multiplicative model, the random vectors Ei and matrices S(v) from section 2.1 play no role, and one can view the random variables Z1, . . . , Zn as being replaced by constants Zi = i, rather than being i.i.d.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p164",
+    "section_heading": "E Understanding agglomerative clustering with Euclidean or cosine distances in our framework",
+    "text": "Now define:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p165",
+    "section_heading": "E Understanding agglomerative clustering with Euclidean or cosine distances in our framework",
+    "text": "Theorem 3. Assume that the model specified in section E.3 satisfies A3 and for some q \u2265 2, supj\u22651 maxv\u2208Z E[|Xj(v)|2q] < \u221e. Then",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p166",
+    "section_heading": "E Understanding agglomerative clustering with Euclidean or cosine distances in our framework",
+    "text": "Proof. The main ideas of the proof are that the multiplicative factors \u03b3i,\u03b3j in the numerator \u03b1\u0302cos(i, j) cancel out with those in the denominator, and combined with the condition p\u22121E[\u2225X(v)\u22252] = 1 we may then establish that \u03b1(i, j) and \u03b1\u0302cos(i, j) are probabilistically close using similar arguments to those in the proof of proposition 2.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p167",
+    "section_heading": "E Understanding agglomerative clustering with Euclidean or cosine distances in our framework",
+    "text": "Consider the decomposition:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p168",
+    "section_heading": "E Understanding agglomerative clustering with Euclidean or cosine distances in our framework",
+    "text": "Applying the Cauchy-Schwartz inequality, and adding and subtracting p\u22121/2\u2225X(j)\u2225 and 1 in the final term of this decomposition leads to:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p169",
+    "section_heading": "E Understanding agglomerative clustering with Euclidean or cosine distances in our framework",
+    "text": "The proof proceeds by arguing that the term (32) is in OP ( n2/q/ \u221a p ) , and the terms (33) and (34)",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p170",
+    "section_heading": "E Understanding agglomerative clustering with Euclidean or cosine distances in our framework",
+    "text": "are in OP ( n1/q/ \u221a p ) , where we note that this asymptotic concerns the limit as n2/q/ \u221a p \u2192 0.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p171",
+    "section_heading": "E Understanding agglomerative clustering with Euclidean or cosine distances in our framework",
+    "text": "In order to analyse the term (32), let P\u0303 denote the probability law of the additive model for Y1, . . . ,Yn in equation (1) in section 2.1, in the case that S(v) = 0 for all v \u2208 Z . Let E\u0303 denote the associated expectation. Then for any \u03b4 > 0 and i, j \u2208 [n], i \u0338= j,",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p172",
+    "section_heading": "E Understanding agglomerative clustering with Euclidean or cosine distances in our framework",
+    "text": "The conditional probability on the r.h.s of the final equality can be upper bounded using the inequality (27) in the proof of proposition 2, and combined with the same union bound argument used immediately after (27), this establishes (32) is in OP ( n2/q/ \u221a p ) as required.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p173",
+    "section_heading": "E Understanding agglomerative clustering with Euclidean or cosine distances in our framework",
+    "text": "To show that (33) and (34) are in OP ( n1/q/ \u221a p ) , it suffices to show that maxi\u2208[n] \u2223\u2223p\u22121/2\u2225X(i)\u2225 \u2212 1\u2223\u2223 is in OP ( n1/q/ \u221a p ) . By re-arranging the equality: (|a| \u2212 1)(|a|+ 1) = |a|2 \u2212 1, we have",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p174",
+    "section_heading": "E Understanding agglomerative clustering with Euclidean or cosine distances in our framework",
+    "text": "where \u2206j(i) := |Xj(i)|2\u22121. Thus under the model from section E.3, p\u22121 \u2211p",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p175",
+    "section_heading": "E Understanding agglomerative clustering with Euclidean or cosine distances in our framework",
+    "text": "j=1 \u2206j(i) is an average of p mean-zero random variables, and by the same arguments as in the proof of proposition 2 under the mixing assumption A3 and the assumption of the theorem that supj\u22651 maxv\u2208Z E[|Xj(v)|2q] < \u221e, combined with a union bound, we have",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p176",
+    "section_heading": "E Understanding agglomerative clustering with Euclidean or cosine distances in our framework",
+    "text": "Together with (35) this implies maxi\u2208[n] \u2223\u2223p\u22121/2\u2225X(i)\u2225 \u2212 1\u2223\u2223 is in OP (n1/q/\u221ap) as required, and that completes the proof.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p177",
+    "section_heading": "E Understanding agglomerative clustering with Euclidean or cosine distances in our framework",
+    "text": "E.4 Limitations of our modelling assumptions and failings of dot-product affinities",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p178",
+    "section_heading": "E Understanding agglomerative clustering with Euclidean or cosine distances in our framework",
+    "text": "As noted in section 5, algorithm 1 is motivated and theoretically justified by our modelling assumptions, laid out in sections 2-3 and E.3. If these assumptions are not well matched to data in practice, then algorithm 1 may not perform well.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p179",
+    "section_heading": "E Understanding agglomerative clustering with Euclidean or cosine distances in our framework",
+    "text": "The proof of lemma 3 shows that, as a consequence of the conditional independence and martingalelike assumptions, A1 and A2, \u03b1(u, v) \u2265 0 for all u, v. By theorems 2 and 3, \u03b1\u0302data, \u03b1\u0302pca approximate \u03b1 (at the vertices Z) under the additive model from section 2.1, and \u03b1\u0302cos approximates \u03b1 under the multiplicative model from section E.3. Therefore if in practice \u03b1\u0302data(i, j), \u03b1\u0302pca(i, j) or \u03b1\u0302cos(i, j) are found to take non-negligible negative values for some pairs i, j, that is an indication that our modelling assumptions may not be appropriate.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p180",
+    "section_heading": "E Understanding agglomerative clustering with Euclidean or cosine distances in our framework",
+    "text": "Even if the values taken by \u03b1\u0302data(i, j), \u03b1\u0302pca(i, j) or \u03b1\u0302cos(i, j) are all positive in practice, there could be other failings of our modelling assumptions. As an academic but revealing example, if instead of (1) or (29), the data were to actually follow a combined additive and multiplicative noise model, i.e.,",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p181",
+    "section_heading": "E Understanding agglomerative clustering with Euclidean or cosine distances in our framework",
+    "text": "then in general neither \u03b1\u0302data, \u03b1\u0302pca nor \u03b1\u0302cos would approximate \u03b1 as p \u2192 \u221e.",
+    "seg_type": "par"
+  }
+]

@@ -1,0 +1,2 @@
+We can also show that RGW is provably robust.
+Under the Hubel Epsilon Contamination Model, the RGW is upper bounded by the GW distance between QN samples plus constant terms controlled by marginal realisation coefficient rho and marginal penalty coefficient tau.

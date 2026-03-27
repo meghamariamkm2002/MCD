@@ -1,0 +1,560 @@
+1
+00:00:00,031 --> 00:00:01,853
+information game or perfect information.
+
+2
+00:00:03,235 --> 00:00:09,461
+Okay, so let's shortly go over a little bit of background.
+
+3
+00:00:09,662 --> 00:00:11,884
+So we're going to need some terms right here.
+
+4
+00:00:13,926 --> 00:00:17,090
+The first term we're going to need is what's called a world state.
+
+5
+00:00:17,590 --> 00:00:21,475
+So a world state is the state of the world.
+
+6
+00:00:21,755 --> 00:00:24,418
+I know easy, easy, but
+
+7
+00:00:24,398 --> 00:00:43,757
+it's quite important that to see that in poker what is the world state so in heads up the limit hold them there are your cards you get two your opponent gets two cards right and then there are board cards like at at the end there are five but um
+
+8
+00:00:44,176 --> 00:00:47,103
+Maybe there are only three or they're none yet depends on the state of the game.
+
+9
+00:00:47,424 --> 00:00:51,053
+So the board cards, you know, this is maybe an ace, a king, an eight.
+
+10
+00:00:51,534 --> 00:00:59,755
+You know your two whole cards, which is maybe an ace and an ace, but you don't know your opponent's cards.
+
+11
+00:01:00,617 --> 00:01:00,717
+Okay.
+
+12
+00:01:00,697 --> 00:01:07,584
+We're also going to assume that the actions are always public for the purposes of this video.
+
+13
+00:01:07,965 --> 00:01:16,093
+They don't, not necessarily for rebel the algorithm, but for us, let's just say the actions are all public.
+
+14
+00:01:17,315 --> 00:01:24,843
+So the world state is the fixed entire state of the world.
+
+15
+00:01:25,343 --> 00:01:29,067
+So the world state would include
+
+16
+00:01:30,464 --> 00:01:35,291
+the your cards, the public cards and your opponent's cards.
+
+17
+00:01:35,732 --> 00:01:40,860
+So the world state is sort of like a super user can look at all of the cards.
+
+18
+00:01:41,400 --> 00:01:42,522
+Okay, that's the world state.
+
+19
+00:01:43,143 --> 00:01:47,089
+No one knows the full world state, but it still exists.
+
+20
+00:01:48,183 --> 00:01:48,724
+Okay.
+
+21
+00:01:48,744 --> 00:01:52,830
+What we also need is, so there's a concept of actions.
+
+22
+00:01:53,070 --> 00:01:59,159
+There's an action space, which in poker is something like you can bet, you can raise and so on.
+
+23
+00:01:59,179 --> 00:02:05,869
+So these are your classic actions and there is a transition function like in classic reinforcement learning.
+
+24
+00:02:05,889 --> 00:02:08,773
+So the transition function depends on the world state.
+
+25
+00:02:08,753 --> 00:02:11,697
+and the action and it gives you the next world state.
+
+26
+00:02:12,238 --> 00:02:18,427
+And after an action, each agent receives a reward that is also a function of the world state and the action.
+
+27
+00:02:19,008 --> 00:02:19,408
+Okay.
+
+28
+00:02:19,428 --> 00:02:28,060
+So important to note that this is the reward you receive, but you don't know the, you maybe know the function, but you don't know the world state, right?
+
+29
+00:02:28,081 --> 00:02:32,006
+So you can't explicitly sort of predict your reward.
+
+30
+00:02:32,146 --> 00:02:34,069
+You can maybe predict the distribution.
+
+31
+00:02:35,686 --> 00:02:39,112
+Alright, the next concepts are the concepts of observation.
+
+32
+00:02:39,132 --> 00:02:45,522
+Since we are in an imperfect information game, an observation and the world state, these are not the same thing.
+
+33
+00:02:45,803 --> 00:02:50,610
+Like in chess, you need to look at the board and that's all there is.
+
+34
+00:02:50,630 --> 00:02:52,193
+That's all there is to know.
+
+35
+00:02:52,173 --> 00:02:55,479
+So the world state and the observation are the same thing.
+
+36
+00:02:55,900 --> 00:03:00,187
+Here, there is the concept of private and public observations.
+
+37
+00:03:01,149 --> 00:03:14,653
+So public observation is what everyone knows in each step, whereas private observations are things that are just revealed to you personally.
+
+38
+00:03:15,022 --> 00:03:22,291
+In poker, the private observation is simply your two whole cards and the public observation is the middle cards.
+
+39
+00:03:22,311 --> 00:03:27,478
+So this is the public observation and this is your private observation.
+
+40
+00:03:27,939 --> 00:03:34,247
+So the private observation is different for each player while the public observation is the same.
+
+41
+00:03:34,447 --> 00:03:44,640
+I guess you could model the public observation as simply another player that doesn't get any whole cards, but that's a question of semantics.
+
+42
+00:03:44,620 --> 00:03:45,321
+All right.
+
+43
+00:03:45,341 --> 00:03:51,087
+The observations can also include the actions that happen so far, just for completeness.
+
+44
+00:03:51,647 --> 00:03:56,813
+If you, like, you can get information about hidden actions and so on.
+
+45
+00:03:57,113 --> 00:04:05,242
+There's lots of mathematical freedom here, but just the concept is you have private observations to each player individually and then public observations.
+
+46
+00:04:05,642 --> 00:04:12,990
+The subscript I here always denotes a individual player while you see there is no such subscript in the public
+
+47
+00:04:12,970 --> 00:04:15,370
+in the public observations.
+
+48
+00:04:16,396 --> 00:04:21,041
+All right, the next concept is a history, and a history is pretty much what you think.
+
+49
+00:04:21,121 --> 00:04:26,587
+A history or a trajectory is a finite sequence of legal actions and world states denoted by this.
+
+50
+00:04:26,647 --> 00:04:31,692
+So you can see it's simply the history of world states and actions that happened.
+
+51
+00:04:32,533 --> 00:04:39,080
+Again, no one knows the history fully, but it's still, it is still the case.
+
+52
+00:04:39,120 --> 00:04:45,947
+And I know, I know, you can, I don't know, quantum mechanics, many worlds, theorem, blah, blah, blah.
+
+53
+00:04:46,298 --> 00:04:51,292
+we'll just assume that whatever you don't know these, these are fixed currents.
+
+54
+00:04:51,332 --> 00:04:52,395
+They're actually there.
+
+55
+00:04:52,436 --> 00:04:56,226
+They have a value even though no one has looked at them yet.
+
+56
+00:04:56,367 --> 00:04:59,616
+So the world state is defined even if you don't know it.
+
+57
+00:05:00,203 --> 00:05:04,969
+So the first real interesting concept here is called an info state.
+
+58
+00:05:06,571 --> 00:05:17,104
+So the info state is like the world state or like the history, but it's conditioned on what an individual player knows.
+
+59
+00:05:17,524 --> 00:05:25,594
+The info state also called an action observation history for agent I is a sequence of an agent's observations and actions.
+
+60
+00:05:26,074 --> 00:05:29,839
+So you can see it's very much like a history, except
+
+61
+00:05:29,819 --> 00:05:31,761
+that it doesn't have the world states.
+
+62
+00:05:32,062 --> 00:05:34,044
+So usually there would be the world state here.
+
+63
+00:05:34,244 --> 00:05:34,865
+You said no.
+
+64
+00:05:34,905 --> 00:05:40,231
+There is the observation for player i at each of the time steps.
+
+65
+00:05:40,271 --> 00:05:44,416
+And these observations, they include public and private observations.
+
+66
+00:05:45,237 --> 00:05:48,962
+And along with the actions, but we'll say the actions are public anyway.
+
+67
+00:05:49,502 --> 00:05:51,625
+So an info state
+
+68
+00:05:51,605 --> 00:05:58,235
+is basically the history as it looks to player i. Okay, that's an info state.
+
+69
+00:05:58,615 --> 00:06:05,966
+In our original game, we said that player two can't distinguish between the three nodes.
+
+70
+00:06:06,367 --> 00:06:18,304
+So if you look at the three nodes individually, like this node one, node two, node three, these are three different world states with three different histories.
+
+71
+00:06:18,453 --> 00:06:30,067
+And to player two, they're simply the same info state, because all player two knows is that player one has taken some action, it doesn't know which action.
+
+72
+00:06:30,488 --> 00:06:34,573
+So the observation that player two has is exactly the same.
+
+73
+00:06:34,593 --> 00:06:36,495
+Therefore, it can't distinguish.
+
+74
+00:06:36,555 --> 00:06:42,182
+So you can see that the info state is sort of the correct abstraction that we're going to look at here.
+
+75
+00:06:42,162 --> 00:06:47,911
+In turn, if you look for player one, it looks different.
+
+76
+00:06:48,352 --> 00:06:55,303
+Even though for player one, it's also three different world states, it is also three different info states, okay?
+
+77
+00:06:55,523 --> 00:06:58,668
+Because player one knows which action they have taken.
+
+78
+00:06:59,009 --> 00:07:03,736
+So player one can decide which of these three states player two is in.
+
+79
+00:07:04,217 --> 00:07:09,165
+So player one, this corresponds to three different info states.
+
+80
+00:07:09,618 --> 00:07:17,228
+So the info states is always conditioned on a player, and it is the unit that we'll look at here.
+
+81
+00:07:18,870 --> 00:07:29,685
+So the info state, briefly, it includes the observations and actions for a given player, and the observations include the private and the public observations.
+
+82
+00:07:29,665 --> 00:07:50,189
+the unique info state corresponding to a history for agent I is denoted by this, the set of histories that corresponds to some info state is denoted by large H. So as we said, if you have an info state, there are many different histories that could have led to the info state.
+
+83
+00:07:50,510 --> 00:07:50,830
+Okay.
+
+84
+00:07:52,008 --> 00:08:21,559
+so there are many different like there maybe for player two it looks like three different histories that could have happened lead to the same info state okay that's but any given history determined fully determines the info state if i tell you what happened you can give me the info state for each player you can say ah player one played rocks therefore player two is in that info state and player one is in that info state so that's why
+
+85
+00:08:22,113 --> 00:08:28,671
+There is a unique info state for each history, but there is a set of histories for each info state.
+
+86
+00:08:30,796 --> 00:08:35,228
+So the last concept from here is a policy.
+
+87
+00:08:35,967 --> 00:08:39,372
+A policy is, again, what you think it is.
+
+88
+00:08:39,592 --> 00:08:48,124
+So it is something, usually it's something that maps from an observation to an action or from a history to an action or from a world state to an action.
+
+89
+00:08:48,184 --> 00:08:55,835
+But here it is a function necessarily that maps from an info state to a probability distribution over actions.
+
+90
+00:08:55,895 --> 00:08:57,217
+So two things important here.
+
+91
+00:08:57,637 --> 00:09:00,321
+The input to the policy is an info state.
+
+92
+00:09:00,301 --> 00:09:06,870
+since the players they can't distinguish between the world states as long as they correspond to the same info state.
+
+93
+00:09:07,151 --> 00:09:12,338
+Therefore their policy necessarily must be taking an info state as an input.
+
+94
+00:09:12,679 --> 00:09:21,151
+So player 2's policy cannot depend on what player 1 did because it can't distinguish.
+
+95
+00:09:21,171 --> 00:09:25,617
+It can depend on the strategy of player 1 but not on the concrete action.
+
+96
+00:09:25,597 --> 00:09:30,105
+The second thing is that we map to a probability distribution over actions.
+
+97
+00:09:30,286 --> 00:09:35,836
+Now this is usually the case in RL if you frame it as a general principle.
+
+98
+00:09:36,477 --> 00:09:41,065
+However, here it's going to be quite important that this is always a probability distribution.
+
+99
+00:09:41,125 --> 00:09:43,690
+Very often in these games your
+
+100
+00:09:43,670 --> 00:09:46,253
+strategy is probabilistic.
+
+101
+00:09:46,353 --> 00:09:59,229
+So there is no single best move in Rock, Paper, Scissors, but the best thing to do, the best strategy is to play each move with a one-third probability or the modified version at the beginning.
+
+102
+00:09:59,830 --> 00:10:09,762
+But it's important to see that a policy will output a probability distribution and I will also call this the strategy of a player.
+
+103
+00:10:09,803 --> 00:10:13,407
+So the strategy is going to be the policy.
+
+104
+00:10:14,602 --> 00:10:21,301
+And I like to call it a strategy because it's a kind of a plan, what you would do in each situation.
+
+105
+00:10:21,321 --> 00:10:28,341
+And we're going to see that that is going to be a central theme, lifting in solving these games right here using Rebel.
+
+106
+00:10:28,574 --> 00:10:31,618
+So a policy profile is simply a tuple of policies.
+
+107
+00:10:31,999 --> 00:10:34,122
+So it's simply the policies of all players.
+
+108
+00:10:34,382 --> 00:10:35,664
+That's the policy profile.
+
+109
+00:10:36,405 --> 00:10:46,379
+If you combine the policy profile with some info state or some history, you can calculate the expected value.
+
+110
+00:10:46,779 --> 00:10:55,071
+So the expected value for a given history, given that the players play policy, players play policy profile pi,
+
+111
+00:10:55,051 --> 00:11:03,543
+So this is all players play their strategies in history H. And we're going to look at player I and its value.
+
+112
+00:11:03,563 --> 00:11:09,291
+So we can calculate the expected value of some policies.
+
+113
+00:11:09,731 --> 00:11:15,399
+So I can, I can, given this function V, I can input, okay, here's what happened.
+
+114
+00:11:15,640 --> 00:11:17,242
+And here's how everyone's strategy.
+
+115
+00:11:17,783 --> 00:11:23,050
+Now tell me in expectation what the first player is going to net from this.
+
+116
+00:11:23,519 --> 00:11:28,611
+Solving the value function is pretty much equivalent to solving the game.
+
+117
+00:11:28,651 --> 00:11:37,833
+So if you give me a good value function, I can solve the game by simply choosing the next action that gives me the best value function.
+
+118
+00:11:37,873 --> 00:11:39,537
+But there's a difficulty.
+
+119
+00:11:39,517 --> 00:11:46,912
+We said, okay, we know Pi strategies are public, but we don't know what history we're in, right?
+
+120
+00:11:46,952 --> 00:11:50,840
+So even if you had the perfect value function, I don't know what to input.
+
+121
+00:11:51,240 --> 00:11:52,663
+So this is going to be a problem.
+
+122
+00:11:53,665 --> 00:11:59,517
+All right, the last thing is a Nash equilibrium, you might know this term.
+
+123
+00:11:59,497 --> 00:12:06,029
+Nash equilibrium is a policy profile such that no agent can achieve a higher expected value by switching to a different policy.
+
+124
+00:12:06,390 --> 00:12:12,461
+Our goal here is going to be to find a Nash equilibrium strategy for these games.
+
+125
+00:12:13,042 --> 00:12:18,231
+And the rebel algorithm is going to provably converge to a Nash equilibrium.
+
+126
+00:12:18,211 --> 00:12:20,094
+All right.
+
+127
+00:12:20,114 --> 00:12:22,938
+So, okay, there's also the concept of a sub game.
+
+128
+00:12:23,198 --> 00:12:25,361
+A sub game is defined by a root history.
+
+129
+00:12:25,742 --> 00:12:30,849
+It's simply if you're in a, it's simply a game that starts at some intermediate state.
+
+130
+00:12:31,050 --> 00:12:31,891
+That's a sub game.
+
+131
+00:12:33,033 --> 00:12:33,654
+Okay.
+
+132
+00:12:33,674 --> 00:12:37,018
+Alpha zero, for example, constructs sub games.
+
+133
+00:12:37,679 --> 00:12:41,485
+In fact, it constructs these depth limited sub games.
+
+134
+00:12:41,465 --> 00:12:43,567
+because you only solve up to a certain depth.
+
+135
+00:12:44,027 --> 00:12:48,832
+And at that point, you sort of ask your value estimator what the value is.
+
+136
+00:12:49,932 --> 00:12:51,734
+This is different in different things.
+
+137
+00:12:51,854 --> 00:12:58,780
+Like you can also do this, this kind of Monte Carlo estimation where you just play one trace to the end and so on.
+
+138
+00:12:59,161 --> 00:13:02,724
+But the notion is we iteratively construct these depth limited sub games.
+
+139
+00:13:04,105 --> 00:13:09,750
+That means we play for a certain depth and then we evaluate at that depth.
+
+140
+00:13:10,827 --> 00:13:15,049
+The question is, how are we going to evaluate?
+

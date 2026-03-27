@@ -1,0 +1,264 @@
+1
+00:00:00,031 --> 00:00:07,559
+two data sets, namely MNIST, the Toronto Phase Database, and C410.
+
+2
+00:00:07,700 --> 00:00:16,550
+The generator nets used a mixture of rectifier linear activations and sigmoid activations, while the discriminator net used max out activations.
+
+3
+00:00:16,590 --> 00:00:17,511
+That was still a thing.
+
+4
+00:00:18,412 --> 00:00:26,781
+Dropout was applied in training at the discriminator net, while our theoretical framework was used.
+
+5
+00:00:26,761 --> 00:00:40,746
+Yeah, while our theoretical framework permits the use of dropout and other noise at intermediate layers of the generator, we used noise as the input to only the bottom most layer of the generator network.
+
+6
+00:00:40,766 --> 00:00:51,064
+Again, this wasn't kind of clear at the beginning and also the fact that to leave out dropout and so on in the generator was, I guess they found that empirically.
+
+7
+00:00:52,917 --> 00:00:58,287
+And then there was of course no way to evaluate these things, like how do we evaluate generative models?
+
+8
+00:00:58,627 --> 00:01:15,297
+Nowadays we have these inception distances and so on, but then we estimate probability of the test set under P under degenerative data by fitting a Gaussian-Parsen window to the samples generated with G and reporting the log likelihood under this distribution.
+
+9
+00:01:15,277 --> 00:01:19,784
+the theta parameter, yada, yada, yada.
+
+10
+00:01:20,706 --> 00:01:21,688
+Results are reported.
+
+11
+00:01:21,708 --> 00:01:31,524
+This method of estimating the likelihood has somewhat high variance and does not perform well in high dimensional spaces, but it is the best method available to our knowledge.
+
+12
+00:01:32,085 --> 00:01:40,879
+Advances in generative models that can sample, but not estimate likelihood directly, motivate further research into how to evaluate such models.
+
+13
+00:01:40,859 --> 00:01:43,645
+They were absolutely right in this.
+
+14
+00:01:44,226 --> 00:01:48,515
+There was a lot of research into how to evaluate these models.
+
+15
+00:01:48,695 --> 00:01:57,013
+However, it is my opinion that we still have very, very limited methods of evaluating models like this.
+
+16
+00:01:57,934 --> 00:02:01,602
+We have better methods, but it's
+
+17
+00:02:02,122 --> 00:02:06,926
+Yeah, it's not really, it's not really satisfactory how it is right now.
+
+18
+00:02:07,407 --> 00:02:25,202
+So you see that these models, these adversarial nets, by the way, they're always called adversarial nets right here, where I think we call them, like most people would call them adversarial networks, but it's just interesting to see the nets.
+
+19
+00:02:25,522 --> 00:02:26,643
+And also in the title, right?
+
+20
+00:02:26,663 --> 00:02:28,665
+It says, I think it says nets, does it?
+
+21
+00:02:29,425 --> 00:02:29,966
+I think it does.
+
+22
+00:02:30,386 --> 00:02:31,487
+We'll look at it after.
+
+23
+00:02:31,467 --> 00:02:41,705
+So they outperform these other models, especially these belief networks, who were kind of popular at the time.
+
+24
+00:02:41,765 --> 00:02:50,420
+And you can see the samples right here were in no way comparable to samples that you get from the modern GANs.
+
+25
+00:02:50,800 --> 00:02:56,310
+But this was already very, very, very good, especially the MNIST.
+
+26
+00:02:56,290 --> 00:02:58,252
+Here you could actually recognize.
+
+27
+00:02:58,272 --> 00:03:02,096
+So the ones with the yellow are always from the training data set.
+
+28
+00:03:02,176 --> 00:03:05,099
+They're like the nearest neighbors of the things on the left.
+
+29
+00:03:06,380 --> 00:03:10,224
+So they want to show that it doesn't simply remember the training data.
+
+30
+00:03:10,564 --> 00:03:16,851
+Though I'm not so sure, like this seems like it has some sort of somehow remembered the training data a little bit.
+
+31
+00:03:17,712 --> 00:03:21,015
+Also this one right here.
+
+32
+00:03:20,995 --> 00:03:26,023
+And there was already a way, so this was also very foresighted.
+
+33
+00:03:26,083 --> 00:03:34,638
+So these A to C were fully connected networks, which might be one of the reasons why it worked moderately well, right?
+
+34
+00:03:35,659 --> 00:03:42,210
+But the last one was a convolutional discriminator and a deconvolutional generator.
+
+35
+00:03:42,190 --> 00:03:48,219
+So already using kind of deconvolutions that are used everywhere today.
+
+36
+00:03:48,279 --> 00:03:51,464
+So they are used in GANs, in what not.
+
+37
+00:03:51,564 --> 00:03:58,815
+VAEs, to upsample anything, if you want to do pixel-wise classification, you use deconvolutions.
+
+38
+00:03:58,795 --> 00:04:09,225
+So, again, this paper sort of introduced a lot of things that later that we still use in GANs today.
+
+39
+00:04:09,685 --> 00:04:15,951
+Now, I'm sure deconvolutions weren't invented here, but, you know, we still use them.
+
+40
+00:04:16,712 --> 00:04:21,697
+So, legit, they were the first GAN paper to use deconvolutions, haha.
+
+41
+00:04:23,138 --> 00:04:24,820
+Yeah.
+
+42
+00:04:24,800 --> 00:04:31,471
+They also say we make no claim that these samples are better than samples generated by existing methods.
+
+43
+00:04:31,832 --> 00:04:39,464
+We believe that these samples are at least competitive with the better generative models in the literature and highlight the potential of the adversarial framework.
+
+44
+00:04:39,484 --> 00:04:42,169
+Today, this paper would be so rejected.
+
+45
+00:04:42,429 --> 00:04:44,733
+Like, wait, you're not better.
+
+46
+00:04:44,773 --> 00:04:45,915
+Get out of here.
+
+47
+00:04:46,576 --> 00:04:47,357
+You can't claim.
+
+48
+00:04:47,597 --> 00:04:49,080
+You can't claim this anymore.
+
+49
+00:04:50,342 --> 00:04:50,402
+No.
+
+50
+00:04:50,382 --> 00:04:51,665
+It doesn't work anymore.
+
+51
+00:04:51,685 --> 00:04:52,166
+I'm sorry.
+
+52
+00:04:52,647 --> 00:04:55,973
+Yours has always has to be better than everything else nowadays.
+
+53
+00:04:56,093 --> 00:04:58,438
+Otherwise, it's a weak reject.
+
+54
+00:04:58,458 --> 00:05:01,985
+Their experimental evidence doesn't convince me.
+
+55
+00:05:04,069 --> 00:05:05,893
+You can't simply say something's cool.
+
+56
+00:05:05,873 --> 00:05:13,533
+Also, already introduced in this paper, digits obtained by linearly interpolating between coordinates in z-space of the full model.
+
+57
+00:05:13,553 --> 00:05:21,553
+Like this thing here, every single GAN paper had interpolations in the GAN spike.
+
+58
+00:05:21,533 --> 00:05:24,237
+And it came all came from here.
+
+59
+00:05:24,257 --> 00:05:32,509
+So already this is just like this is like every GAN paper then had like rows of these like of these interpolations.
+
+60
+00:05:33,331 --> 00:05:38,939
+I should know if I have the paper on it and introduced right here.
+
+61
+00:05:39,480 --> 00:05:41,122
+Who knows if they hadn't done this.
+
+62
+00:05:41,743 --> 00:05:44,207
+Yeah, I guess it's it's kind of an obvious thing.
+
+63
+00:05:44,307 --> 00:05:49,515
+But still, you know, very, very cool to see that this was already done.
+
+64
+00:05:49,495 --> 00:06:01,438
+And here GANs compared to other different methods like deep-directed graphical models, generative autoencoders, and compared in very many ways.
+
+65
+00:06:01,478 --> 00:06:05,566
+So this is actually a good reference if you want to learn about these different kinds of models.
+
+66
+00:06:06,107 --> 00:06:10,035
+And they make the claim here that their advantages
+

@@ -1,0 +1,2106 @@
+{
+  "sp_0046_page_0001": {
+    "bboxes": [
+      {
+        "box": [
+          457.76641845703125,
+          1157.0616455078125,
+          765.4450073242188,
+          1225.387939453125
+        ],
+        "text": [
+          "\\mathbf { R } \\mathbf { E } \\boldsymbol { \\mathrm { G } } _ { T } \\triangleq \\sum _ { t = 1 } ^ { T } f _ { t } ( \\mathbf { x } _ { t } ) - \\operatorname* { m i n } _ { \\mathbf { x } \\in \\mathcal { X } } \\sum _ { t = 1 } ^ { T } f _ { t } ( \\mathbf { x } ) ,"
+        ],
+        "page": "sp_0046_page_0001",
+        "id": "sp_0046_page_0001-1",
+        "seg_type": "eq"
+      }
+    ]
+  },
+  "sp_0046_page_0002": {
+    "bboxes": [
+      {
+        "box": [
+          341.92730712890625,
+          1098.9583740234375,
+          879.0120239257812,
+          1167.496826171875
+        ],
+        "text": [
+          "F _ { T } \\triangleq \\operatorname* { m i n } _ { \\mathbf { x } \\in \\mathcal { X } } \\sum _ { t = 1 } ^ { T } f _ { t } ( \\mathbf { x } ) , \\, \\, \\mathrm { a n d } \\, \\, V _ { T } \\triangleq \\sum _ { t = 2 } ^ { T } \\operatorname* { s u p } _ { \\mathbf { x } \\in \\mathcal { X } } \\| \\nabla f _ { t } ( \\mathbf { x } ) - \\nabla f _ { t - 1 } ( \\mathbf { x } ) \\| ^ { 2 } ,"
+        ],
+        "page": "sp_0046_page_0002",
+        "id": "sp_0046_page_0002-1",
+        "seg_type": "eq"
+      }
+    ]
+  },
+  "sp_0046_page_0004": {
+    "bboxes": [
+      {
+        "box": [
+          500.2541809082031,
+          570.0296630859375,
+          722.3529663085938,
+          598.5376586914062
+        ],
+        "text": [
+          "\\mathcal { H } \\triangleq \\{ 1 / T , 2 / T , { 4 / T } , \\dots , 1 \\} ,"
+        ],
+        "page": "sp_0046_page_0004",
+        "id": "sp_0046_page_0004-1",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          305.0900573730469,
+          838.28955078125,
+          916.4830322265625,
+          907.1121826171875
+        ],
+        "text": [
+          "{ \\tt R E G } _ { T } = \\left[ \\sum _ { t = 1 } ^ { T } f _ { t } ( { \\bf x } _ { t } ) - \\sum _ { t = 1 } ^ { T } f _ { t } ( { \\bf x } _ { t , i ^ { * } } ) \\right] + \\left[ \\sum _ { t = 1 } ^ { T } f _ { t } ( { \\bf x } _ { t , i ^ { * } } ) - \\operatorname* { m i n } _ { { \\bf x } \\in \\mathcal { X } } \\sum _ { t = 1 } ^ { T } f _ { t } ( { \\bf x } ) \\right] ,"
+        ],
+        "page": "sp_0046_page_0004",
+        "id": "sp_0046_page_0004-2",
+        "seg_type": "eq"
+      }
+    ]
+  },
+  "sp_0046_page_0005": {
+    "bboxes": [
+      {
+        "box": [
+          265.42132568359375,
+          1169.817626953125,
+          876.6546020507812,
+          1301.731689453125
+        ],
+        "text": [
+          "\\sum _ { t = 1 } ^ { T } ( r _ { t , i ^ { * } } - m _ { t , i ^ { * } } ) ^ { 2 } \\lesssim \\left\\{ \\sum _ { t = 1 } ^ { T } \\langle \\nabla f _ { t } ( \\mathbf x _ { t } ) , \\mathbf x _ { t } - \\mathbf x _ { t , i ^ { * } } \\rangle ^ { 2 } , \\right."
+        ],
+        "page": "sp_0046_page_0005",
+        "id": "sp_0046_page_0005-1",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          289.2444152832031,
+          642.9993286132812,
+          933.6397094726562,
+          724.7503051757812
+        ],
+        "text": [
+          "\\sum _ { t = 1 } ^ { T } ( r _ { t , i ^ { * } } - m _ { t , i ^ { * } } ) ^ { 2 } \\lesssim \\left\\{ \\sum _ { t } | | \\mathbf { x } _ { t } - \\mathbf { x } _ { t , i ^ { * } } | | ^ { 2 } , \\right. \\qquad \\qquad \\qquad \\left. ( s t r o n g l y \\; c o n v e x ) \\right\\} \\skip"
+        ],
+        "page": "sp_0046_page_0005",
+        "id": "sp_0046_page_0005-2",
+        "seg_type": "eq"
+      }
+    ]
+  },
+  "sp_0046_page_0006": {
+    "bboxes": [
+      {
+        "box": [
+          373.7334899902344,
+          317.2848815917969,
+          849.4793701171875,
+          386.4363098144531
+        ],
+        "text": [
+          "\\| \\mathbf { x } _ { t } - \\mathbf { x } _ { t - 1 } \\| ^ { 2 } \\lesssim \\| p _ { t } - p _ { t - 1 } \\| _ { 1 } ^ { 2 } + \\sum _ { i = 1 } ^ { N } p _ { t , i } \\| \\mathbf { x } _ { t , i } - \\mathbf { x } _ { t - 1 , i } \\| ^ { 2 } ,"
+        ],
+        "page": "sp_0046_page_0006",
+        "id": "sp_0046_page_0006-1",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          280.7604064941406,
+          1014.0911865234375,
+          940.5824584960938,
+          1157.8597412109375
+        ],
+        "text": [
+          "\\begin{array} { r } { \\displaystyle \\sum _ { t = 1 } ^ { T } \\langle \\ell _ { t } , p _ { t } \\rangle - \\displaystyle \\sum _ { t = 1 } ^ { T } \\ell _ { t , i ^ { * } } \\leq \\displaystyle \\frac { 1 } { \\eta _ { i ^ { * } } } \\ln \\displaystyle \\frac { 1 } { \\hat { p } _ { 1 , i ^ { * } } } + \\displaystyle \\sum _ { i = 1 } ^ { d } \\displaystyle \\frac { \\hat { p } _ { 1 , i } } { \\eta _ { i } } - 8 \\displaystyle \\sum _ { t = 1 } ^ { T } \\sum _ { i = 1 } ^ { d } \\eta _ { i } p _ { t , i } ( \\ell _ { t , i } - m _ { t , : } ) ^ { 2 } } \\\\ { + 1 6 \\eta _ { i ^ { * } } \\displaystyle \\sum _ { t = 1 } ^ { T } ( \\ell _ { t , i ^ { * } } - m _ { t , i ^ { * } } ) ^ { 2 } - 4 \\displaystyle \\sum _ { t = 2 } ^ { T } \\| p _ { t } - p _ { t - 1 } \\| _ { 1 } ^ { 2 } . } \\end{array}"
+        ],
+        "page": "sp_0046_page_0006",
+        "id": "sp_0046_page_0006-2",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          226.11990356445312,
+          717.3544311523438,
+          957.3427124023438,
+          761.3252563476562
+        ],
+        "text": [
+          "\\begin{array} { r } { p _ { t } = \\underset { p \\in \\Delta _ { d } } { \\mathrm { a r g } \\, \\mathrm { m i n } } \\ \\left\\{ \\langle m _ { t } , p \\rangle + \\mathcal { D } _ { \\psi _ { t } } ( p , \\hat { p } _ { t } ) \\right\\} , \\quad \\hat { p } _ { t + 1 } = \\underset { p \\in \\Delta _ { d } } { \\mathrm { a r g } \\, \\mathrm { m i n } } \\ \\left\\{ \\langle \\ell _ { t } + a _ { t } , p \\rangle + \\mathcal { D } _ { \\psi _ { t } } ( p , \\hat { p } _ { t } ) \\right\\} , } \\end{array}"
+        ],
+        "page": "sp_0046_page_0006",
+        "id": "sp_0046_page_0006-3",
+        "seg_type": "eq"
+      }
+    ]
+  },
+  "sp_0046_page_0007": {
+    "bboxes": [
+      {
+        "box": [
+          282.40484619140625,
+          493.897705078125,
+          940.0101318359375,
+          564.8588256835938
+        ],
+        "text": [
+          "{ \\mathrm { R E G } } _ { T } = \\left[ \\sum _ { t = 1 } ^ { T } f _ { t } ( { \\mathbf { x } } _ { t } ) - \\sum _ { t = 1 } ^ { T } f _ { t } ( { \\mathbf { x } } _ { t , k ^ { * } , i ^ { * } } ) \\right] + \\left[ \\sum _ { t = 1 } ^ { T } f _ { t } ( { \\mathbf { x } } _ { t , k ^ { * } , i ^ { * } } ) - \\operatorname* { m i n } _ { { \\mathbf { x } } \\in \\mathcal { X } } \\sum _ { t = 1 } ^ { T } f _ { t } ( { \\mathbf { x } } ) \\right] ."
+        ],
+        "page": "sp_0046_page_0007",
+        "id": "sp_0046_page_0007-1",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          226.28123474121094,
+          986.6347045898438,
+          959.7089233398438,
+          1016.4993286132812
+        ],
+        "text": [
+          "\\begin{array} { r } { \\ell _ { t , k } \\triangleq \\langle \\nabla f _ { t } ( \\mathbf { x } _ { t } ) , \\mathbf { x } _ { t , k } \\rangle + \\lambda _ { 1 } \\| \\mathbf { x } _ { t , k } - \\mathbf { x } _ { t - 1 , k } \\| ^ { 2 } , m _ { t , k } \\triangleq \\langle \\widehat { m } _ { t , k } , p _ { t , k } \\rangle + \\lambda _ { 1 } \\| \\mathbf { x } _ { t , k } - \\mathbf { x } _ { t - 1 , k } \\| ^ { 2 } . } \\end{array}"
+        ],
+        "page": "sp_0046_page_0007",
+        "id": "sp_0046_page_0007-2",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          222.74313354492188,
+          1061.670166015625,
+          967.3751831054688,
+          1091.729736328125
+        ],
+        "text": [
+          "\\begin{array} { r } { \\ell _ { t , k , i } \\triangleq \\langle \\nabla f _ { t } ( { \\mathbf { x } } _ { t } ) , { \\mathbf { x } } _ { t , k , i } \\rangle + \\lambda _ { 2 } \\Vert { \\mathbf { x } } _ { t , k , i } - { \\mathbf { x } } _ { t - 1 , k , i } \\Vert ^ { 2 } , m _ { t , k , i } \\triangleq \\widehat { m } _ { t , k , i } + \\lambda _ { 2 } \\Vert { \\mathbf { x } } _ { t , k , i } - { \\mathbf { x } } _ { t - 1 , k , i } \\Vert ^ { 2 } , } \\end{array}"
+        ],
+        "page": "sp_0046_page_0007",
+        "id": "sp_0046_page_0007-3",
+        "seg_type": "eq"
+      }
+    ]
+  },
+  "sp_0046_page_0010": {
+    "bboxes": [
+      {
+        "box": [
+          212.84971618652344,
+          384.04443359375,
+          1025.4549560546875,
+          453.03363037109375
+        ],
+        "text": [
+          "\\mathrm { R E G } _ { T } \\leq \\left[ \\sum _ { t = 1 } ^ { T } \\ell _ { t } ( \\mathbf { x } _ { t } ) - \\sum _ { t = 1 } ^ { T } \\ell _ { t } ( \\mathbf { x } _ { t , i ^ { * } } ) - \\frac { \\lambda _ { i ^ { * } } } { 2 } \\sum _ { t = 1 } ^ { T } \\| \\mathbf { x } _ { t } - \\mathbf { x } _ { t , i ^ { * } } \\| ^ { 2 } \\right] + \\left[ \\sum _ { t = 1 } ^ { T } h _ { t , i ^ { * } } ( \\mathbf { x } _ { t , i ^ { * } } ) - \\sum _ { t = 1 } ^ { T } h _ { t , i ^ { * } } ( \\mathbf { x } ^ { \\star } ) \\right] ."
+        ],
+        "page": "sp_0046_page_0010",
+        "id": "sp_0046_page_0010-1",
+        "seg_type": "eq"
+      }
+    ]
+  },
+  "sp_0046_page_0013": {
+    "bboxes": [
+      {
+        "box": [
+          213.17056274414062,
+          446.2312316894531,
+          1009.3126831054688,
+          515.7566528320312
+        ],
+        "text": [
+          "\\sigma _ { 1 : T } ^ { 2 } \\triangleq \\sum _ { t = 1 } ^ { T } \\operatorname* { m a x } _ { \\mathbf { x } \\in X } \\mathbb { E } _ { f _ { t } \\sim \\mathcal { D } _ { t } } \\left[ \\Vert \\nabla f _ { t } ( \\mathbf { x } ) - \\nabla F _ { t } ( \\mathbf { x } ) \\Vert ^ { 2 } \\right] , \\, \\Sigma _ { 1 : T } ^ { 2 } \\triangleq \\mathbb { E } \\left[ \\sum _ { t = 2 } ^ { T } \\operatorname* { s u p } _ { \\mathbf { x } \\in X } \\Vert \\nabla F _ { t } ( \\mathbf { x } ) - \\nabla F _ { t - 1 } ( \\mathbf { x } ) \\Vert ^ { 2 } \\right] ."
+        ],
+        "page": "sp_0046_page_0013",
+        "id": "sp_0046_page_0013-1",
+        "seg_type": "eq"
+      }
+    ]
+  },
+  "sp_0046_page_0014": {
+    "bboxes": [
+      {
+        "box": [
+          242.75576782226562,
+          1383.80908203125,
+          977.0542602539062,
+          1452.7718505859375
+        ],
+        "text": [
+          "S _ { T } ^ { \\mathbf { x } } \\triangleq \\sum _ { t = 2 } ^ { T } \\| \\mathbf { x } _ { t } - \\mathbf { x } _ { t - 1 } \\| ^ { 2 } , \\ S _ { T , k } ^ { \\mathbf { x } } \\triangleq \\sum _ { t = 2 } ^ { T } \\| \\mathbf { x } _ { t , k } - \\mathbf { x } _ { t - 1 , k } \\| ^ { 2 } , \\ S _ { T , k , i } ^ { \\mathbf { x } } \\triangleq \\sum _ { t = 2 } ^ { T } \\| \\mathbf { x } _ { t , k , i } - \\mathbf { x } _ { t - 1 , k , i } \\| ^ { 2 } ,"
+        ],
+        "page": "sp_0046_page_0014",
+        "id": "sp_0046_page_0014-1",
+        "seg_type": "eq"
+      }
+    ]
+  },
+  "sp_0046_page_0015": {
+    "bboxes": [
+      {
+        "box": [
+          253.60079956054688,
+          557.5424194335938,
+          1010.0316162109375,
+          838.0902709960938
+        ],
+        "text": [
+          "\\begin{array} { r l } & { \\quad \\displaystyle \\sum _ { i = 1 } ^ { T } ( r _ { t , i } ; \\cdot - m _ { t , i } ; ) ^ { 2 } = \\displaystyle \\sum _ { t = 1 } ^ { T } ( \\langle \\underline { { \\bf g } } _ { t } , { \\bf x } _ { t } - { \\bf x } _ { t , i } ^ { \\phantom { \\dagger } } \\rangle - \\langle \\underline { { \\bf g } } _ { t - 1 } , { \\bf x } _ { t - 1 } - { \\bf x } _ { t - 1 , i } ; \\cdot \\rangle ) ^ { 2 } } \\\\ & { \\le 2 \\displaystyle \\sum _ { t = 1 } ^ { T } \\langle \\underline { { \\bf g } } _ { t } - \\underline { { \\bf g } } _ { t - 1 , \\cdot } { \\bf x } _ { t } - { \\bf x } _ { t , i } ; \\cdot \\rangle ^ { 2 } + 2 \\displaystyle \\sum _ { t = 1 } ^ { T } \\langle \\underline { { \\bf g } } _ { t - 1 } , { \\bf x } _ { t } - { \\bf x } _ { t - 1 } + { \\bf x } _ { t , i } ; \\cdot - { \\bf x } _ { t - 1 , i } ; \\rangle ^ { 2 } } \\\\ & { \\le 2 D ^ { 2 } \\displaystyle \\sum _ { t = 1 } ^ { T } \\| \\underline { { \\bf g } } _ { t } - { \\bf g } _ { t - 1 } \\| ^ { 2 } + 2 G ^ { 2 } \\displaystyle \\sum _ { t = 1 } ^ { T } \\| { \\bf x } _ { t } - { \\bf x } _ { t - 1 } + { \\bf x } _ { t , i } ; - { \\bf x } _ { t - 1 , i } ^ { \\phantom { \\dagger } } \\| ^ { 2 } \\qquad \\quad ( { \\bf b } ) \\mathrm { ~ A s s u m p t i o n ~ 1 ) } } \\\\ & { \\le 4 D ^ { 2 } V _ { T } + 4 ( D ^ { 2 } L ^ { 2 } + G ^ { 2 } ) \\displaystyle \\sum _ { t = 2 } ^ { T } \\| { \\bf x } _ { t } - { \\bf x } _ { t - 1 } \\| ^ { 2 } + 4 G ^ { 2 } \\displaystyle \\sum _ { t = 2 } ^ { T } \\| { \\bf x } _ { t , i } ; - { \\bf x } _ { t - 1 , i } ; | ^ { 2 } , } \\end{array}"
+        ],
+        "page": "sp_0046_page_0015",
+        "id": "sp_0046_page_0015-1",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          297.71099853515625,
+          306.12579345703125,
+          924.7352294921875,
+          517.4115600585938
+        ],
+        "text": [
+          "\\begin{array} { l } { \\displaystyle \\sum _ { t = 1 } ^ { T } ( r _ { t , i ^ { * } } - m _ { t , i ^ { * } } ) ^ { 2 } = \\sum _ { t = 1 } ^ { T } ( \\langle \\mathbf g _ { t } , \\mathbf x _ { t } - \\mathbf x _ { t , i ^ { * } } \\rangle - \\langle \\mathbf g _ { t - 1 } , \\mathbf x _ { t - 1 } - \\mathbf x _ { t - 1 , i ^ { * } } \\rangle ) ^ { 2 } } \\\\ { \\displaystyle \\qquad \\leq 2 \\sum _ { t = 1 } ^ { T } \\langle \\mathbf g _ { t } , \\mathbf x _ { t } - \\mathbf x _ { t , i ^ { * } } \\rangle ^ { 2 } + 2 \\sum _ { t = 1 } ^ { T } \\langle \\mathbf g _ { t - 1 } , \\mathbf x _ { t - 1 } - \\mathbf x _ { t - 1 , i ^ { * } } \\rangle ^ { 2 } } \\\\ { \\displaystyle \\qquad \\leq 4 \\sum _ { t = 1 } ^ { T } \\langle \\mathbf g _ { t } , \\mathbf x _ { t } - \\mathbf x _ { t , i ^ { * } } \\rangle ^ { 2 } + { \\mathcal O } ( 1 ) . } \\end{array}"
+        ],
+        "page": "sp_0046_page_0015",
+        "id": "sp_0046_page_0015-2",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          368.6193542480469,
+          139.38919067382812,
+          855.3633422851562,
+          209.03758239746094
+        ],
+        "text": [
+          "S _ { T } ^ { q } \\triangleq \\sum _ { t = 2 } ^ { T } \\| q _ { t } - q _ { t - 1 } \\| _ { 1 } ^ { 2 } , \\; \\mathrm { a n d } \\; S _ { T , k } ^ { p } \\triangleq \\sum _ { t = 2 } ^ { T } \\| p _ { t , k } - p _ { t - 1 , k } \\| _ { 1 } ^ { 2 } ."
+        ],
+        "page": "sp_0046_page_0015",
+        "id": "sp_0046_page_0015-3",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          231.88555908203125,
+          1212.487548828125,
+          993.7635498046875,
+          1440.734375
+        ],
+        "text": [
+          "\\begin{array} { r } { \\displaystyle \\sum _ { i = 1 } ^ { T } ( \\ell _ { i } + a _ { t } , p _ { t } - e _ { i } \\cdot ) \\leq \\displaystyle \\sum _ { t = 1 } ^ { T } ( { \\mathcal D } _ { \\ell _ { t } } ( u , \\widehat { p } _ { t } ) - { \\mathcal D } _ { \\psi _ { t } } ( u , \\widehat { p } _ { t + 1 } ) ) + \\displaystyle \\sum _ { t = 1 } ^ { T } ( \\ell _ { t } + a _ { t } - m _ { t } , p _ { t } - \\widehat { p } _ { t + 1 } ) } \\\\ { - \\displaystyle \\sum _ { t = 1 } ^ { T } ( { \\mathcal D } _ { \\psi _ { t } } ( \\widehat { p } _ { t + 1 } , p _ { t } ) + { \\mathcal D } _ { \\psi _ { t } } ( p _ { t } , \\widehat { p } _ { t } ) ) } \\\\ { \\leq \\displaystyle \\sum _ { t = 1 } ^ { T } ( { \\mathcal D } _ { \\psi _ { t } } ( u , \\widehat { p } _ { t } ) - { \\mathcal D } _ { \\psi _ { t } } ( u , \\widehat { p } _ { t + 1 } ) ) + \\displaystyle \\sum _ { t = 1 } ^ { T } \\left( ( \\ell _ { t } + a _ { t } - m _ { t } , p _ { t } - \\widehat { p } _ { t + 1 } ) - \\frac { 1 } { 2 } { \\mathcal D } _ { \\psi _ { t } } ( \\widehat { p } _ { t + 1 } , p _ { t } ) \\right) } \\\\ { \\underset { t = 1 } { \\overset { \\mathrm { r e a d } } { \\operatorname* { m a x } } } ( t , 1 , \\cdot ( \\cdot , 1 ) ) . } \\end{array}"
+        ],
+        "page": "sp_0046_page_0015",
+        "id": "sp_0046_page_0015-4",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          245.85374450683594,
+          986.7640991210938,
+          975.0929565429688,
+          1031.417724609375
+        ],
+        "text": [
+          "\\small \\begin{array} { r } { p _ { t } = \\underset { p \\in \\Delta _ { d } } { \\mathrm { a r g } \\, \\mathrm { m i n } } \\ \\left\\lbrace \\left\\langle m _ { t } , p \\right\\rangle + \\mathcal { D } _ { \\psi _ { t } } ( p , \\widehat { p } _ { t } ) \\right\\rbrace , \\quad \\widehat { p } _ { t + 1 } = \\underset { p \\in \\Delta _ { d } } { \\mathrm { a r g } \\, \\mathrm { m i n } } \\ \\left\\lbrace \\left\\langle \\ell _ { t } + a _ { t } , p \\right\\rangle + \\mathcal { D } _ { \\psi _ { t } } ( p , \\widehat { p } _ { t } ) \\right\\rbrace , } \\end{array}"
+        ],
+        "page": "sp_0046_page_0015",
+        "id": "sp_0046_page_0015-5",
+        "seg_type": "eq"
+      }
+    ]
+  },
+  "sp_0046_page_0016": {
+    "bboxes": [
+      {
+        "box": [
+          227.47991943359375,
+          1137.888671875,
+          1007.0919799804688,
+          1446.3779296875
+        ],
+        "text": [
+          "\\begin{array} { l } { \\displaystyle \\left\\lbrace \\ell _ { + } + a _ { + } - m _ { i } , p _ { t } - \\hat { p } _ { + + 1 } \\right\\rbrace - \\frac { 1 } { 2 } \\mathcal { D } _ { \\psi _ { i } } ( \\hat { p } _ { t + 1 } , p _ { t } ) \\leq \\left\\lbrace \\ell _ { + } + a _ { + } - m _ { i } , p _ { t } - p ^ { * } \\right\\rbrace - \\frac { 1 } { 2 } \\mathcal { D } _ { \\psi _ { i } } ( p ^ { * } , p _ { t } ) } \\\\ { \\displaystyle = \\frac { 1 } { 2 } \\big ( \\nabla \\psi _ { i } ( p _ { t } ) - \\nabla \\psi _ { i } ( p ^ { * } ) , p _ { t } - p ^ { * } \\big ) - \\frac { 1 } { 2 } \\mathcal { D } _ { \\psi _ { i } } ( p ^ { * } , p _ { t } ) = \\frac { 1 } { 2 } \\mathcal { D } _ { \\psi _ { i } } ( p _ { t } , p ^ { * } ) \\qquad \\mathrm { ~ ( b y ~ d e f i n i t i o n ) } } \\\\ { \\displaystyle = \\frac { 1 } { 2 } \\frac { 4 } { \\sin { \\frac { 1 } { \\mathcal { D } _ { i } } } } \\left( p _ { t , i } \\ln \\frac { p _ { t , i } } { p _ { t } ^ { * } } - p _ { t , i } + p _ { t } ^ { * } \\right) } \\\\ { \\displaystyle = \\frac { 1 } { 2 } \\frac { 4 } { \\sin { \\frac { \\mathcal { D } _ { i } \\lambda } { \\mathcal { D } _ { i } } } } \\left( 2 \\eta _ { t , i } \\left( \\ell _ { i , i } - m _ { t , i } + a _ { t , i } \\right) - 1 + \\exp ( - 2 \\eta _ { t , i } ( \\ell _ { i , i } - m _ { t , i } + a _ { t , i } ) ) \\right) } \\\\ { \\displaystyle \\leq \\frac { 1 } { 2 } \\frac { 4 } { \\sin { \\frac { \\mathcal { D } _ { i } \\lambda } { \\mathcal { D } _ { i } } } } \\mathcal { D } _ { \\psi _ { i } } ( \\ell _ { i , i } - m _ { t , i } + a _ { t , i } ) ^ { 2 } = 2 \\displaystyle \\sum _ { s = 1 } ^ { d } \\eta _ { s , i } p _ { t , i } \\big ( \\ell _ { i , i } - m _ { t , i } + a _ { t , i } \\big ) ^ { 2 } , } \\end{array}"
+        ],
+        "page": "sp_0046_page_0016",
+        "id": "sp_0046_page_0016-1",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          290.0512390136719,
+          382.5332336425781,
+          1014.2543334960938,
+          525.4639282226562
+        ],
+        "text": [
+          "\\begin{array} { l } { \\displaystyle \\mathcal { D } _ { \\psi _ { t } } ( a , b ) = \\sum _ { i = 1 } ^ { d } \\displaystyle \\frac { 1 } { \\eta _ { t , i } } \\left( a _ { i } \\ln \\frac { a _ { i } } { b _ { i } } - a _ { i } + b _ { i } \\right) = \\displaystyle \\sum _ { i = 1 } ^ { d } \\frac { b _ { i } } { \\eta _ { t , i } } \\left( \\frac { a _ { i } } { b _ { i } } \\ln \\frac { a _ { i } } { b _ { i } } - \\frac { a _ { i } } { b _ { i } } + 1 \\right) } \\\\ { \\displaystyle \\qquad \\geq \\operatorname* { m i n } _ { t , i } \\frac { 1 } { \\eta _ { t , i } } \\displaystyle \\sum _ { i = 1 } ^ { d } \\left( a _ { i } \\ln \\frac { a _ { i } } { b _ { i } } - a _ { i } + b _ { i } \\right) \\geq 3 2 \\mathrm { K L } ( a , b ) , ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ( \\mathbf { b y } ~ \\eta _ { t , i } \\leq 1 / 3 2 ) } \\end{array}"
+        ],
+        "page": "sp_0046_page_0016",
+        "id": "sp_0046_page_0016-2",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          231.29461669921875,
+          565.5984497070312,
+          991.4198608398438,
+          708.4559326171875
+        ],
+        "text": [
+          "\\begin{array} { r l } & { \\displaystyle \\mathrm { T E R M } \\left( \\mathrm { C } \\right) \\geq 3 2 \\sum _ { t = 1 } ^ { T } \\! \\left( \\mathbf { K L } ( \\widehat { p } _ { t + 1 } , p _ { t } ) + \\mathbf { K L } ( p _ { t } , \\widehat { p } _ { t } ) \\right) \\geq \\frac { 3 2 } { 2 \\ln 2 } \\sum _ { t = 1 } ^ { T } \\left( \\left\\lVert \\widehat { p } _ { t + 1 } - p _ { t } \\right\\rVert _ { 1 } ^ { 2 } + \\left\\lVert p _ { t } - \\widehat { p } _ { t } \\right\\rVert _ { 1 } ^ { 2 } \\right) } \\\\ & { \\qquad \\geq 1 6 \\sum _ { t = 2 } ^ { T } \\left( \\left\\lVert \\widehat { p } _ { t } - p _ { t - 1 } \\right\\rVert _ { 1 } ^ { 2 } + \\left\\lVert p _ { t } - \\widehat { p } _ { t } \\right\\rVert _ { 1 } ^ { 2 } \\right) \\geq 8 \\sum _ { t = 2 } ^ { T } \\left\\lVert p _ { t } - p _ { t - 1 } \\right\\rVert _ { 1 } ^ { 2 } , } \\end{array}"
+        ],
+        "page": "sp_0046_page_0016",
+        "id": "sp_0046_page_0016-3",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          390.31329345703125,
+          850.1729125976562,
+          832.0275268554688,
+          901.6658325195312
+        ],
+        "text": [
+          "p ^ { \\star } \\in \\arg \\operatorname* { m a x } _ { p } \\langle \\ell _ { t } + a _ { t } - m _ { t } , p _ { t } - p \\rangle - \\frac { 1 } { 2 } D _ { \\psi _ { t } } ( p , p _ { t } ) ,"
+        ],
+        "page": "sp_0046_page_0016",
+        "id": "sp_0046_page_0016-4",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          438.0007019042969,
+          946.4103393554688,
+          785.004150390625,
+          992.4323120117188
+        ],
+        "text": [
+          "\\ell _ { t } + a _ { t } - m _ { t } = \\frac { 1 } { 2 } ( \\nabla \\psi _ { t } ( p _ { t } ) - \\nabla \\psi _ { t } ( p ^ { \\star } ) ) ."
+        ],
+        "page": "sp_0046_page_0016",
+        "id": "sp_0046_page_0016-5",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          429.65106201171875,
+          141.7529754638672,
+          764.927490234375,
+          240.389404296875
+        ],
+        "text": [
+          "- \\ \\frac { 1 } { 2 } \\sum _ { \\underline { { i = 1 } } } ^ { T } \\left( \\mathcal { D } _ { \\psi _ { t } } ( \\widehat { \\pmb { p } } _ { t + 1 } , \\pmb { p } _ { t } ) + \\mathcal { D } _ { \\psi _ { t } } ( \\pmb { p } _ { t } , \\widehat { \\pmb { p } } _ { t } ) \\right) ,"
+        ],
+        "page": "sp_0046_page_0016",
+        "id": "sp_0046_page_0016-6",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          297.1081848144531,
+          1046.3111572265625,
+          926.0347900390625,
+          1098.9954833984375
+        ],
+        "text": [
+          "\\ell _ { t , i } - m _ { t , i } + a _ { t , i } = \\frac { 1 } { 2 \\eta _ { t , i } } \\ln \\frac { p _ { t , i } } { p _ { i } ^ { * } } \\Leftrightarrow p _ { i } ^ { * } = p _ { t , i } \\exp ( - 2 \\eta _ { t , i } ( \\ell _ { t , i } - m _ { t , i } + a _ { t , i } ) ) ."
+        ],
+        "page": "sp_0046_page_0016",
+        "id": "sp_0046_page_0016-7",
+        "seg_type": "eq"
+      }
+    ]
+  },
+  "sp_0046_page_0017": {
+    "bboxes": [
+      {
+        "box": [
+          258.22149658203125,
+          597.8209228515625,
+          963.7428588867188,
+          740.667724609375
+        ],
+        "text": [
+          "\\begin{array} { r l } { \\displaystyle \\sum _ { t = 1 } ^ { T } \\langle \\ell _ { t } + a _ { t } , p _ { t } - u \\rangle \\leq \\displaystyle \\sum _ { i = 1 } ^ { d } \\displaystyle \\frac { 1 } { \\eta _ { 1 , i } } f _ { \\mathrm { K L } } ( u _ { i } , \\widehat { p } _ { 1 , i } ) + \\displaystyle \\sum _ { t = 2 } ^ { T } \\displaystyle \\sum _ { i = 1 } ^ { d } \\left( \\displaystyle \\frac { 1 } { \\eta _ { t , i } } - \\displaystyle \\frac { 1 } { \\eta _ { t - 1 , i } } \\right) f _ { \\mathrm { K L } } ( u _ { i } , \\widehat { p } _ { t , i } ) } & { } \\\\ { \\displaystyle } & { \\displaystyle + 8 \\sum _ { t = 1 } ^ { T } \\displaystyle \\sum _ { i = 1 } ^ { d } \\eta _ { t , i } p _ { t , i } ( \\ell _ { t , i } - m _ { t , i } ) ^ { 2 } - 4 \\displaystyle \\sum _ { t = 2 } ^ { T } \\| p _ { t } - p _ { t - 1 } \\| _ { 1 } ^ { 2 } . } \\end{array}"
+        ],
+        "page": "sp_0046_page_0017",
+        "id": "sp_0046_page_0017-1",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          248.2584991455078,
+          780.6878662109375,
+          976.655517578125,
+          922.9987182617188
+        ],
+        "text": [
+          "\\begin{array} { r l } & { \\displaystyle \\sum _ { t = 1 } ^ { T } \\langle \\ell _ { t } , p _ { t } - u \\rangle \\leq \\displaystyle \\sum _ { i = 1 } ^ { d } \\frac { 1 } { \\eta _ { 1 , i } } f _ { \\mathrm { { R L } } } ( u _ { i } , \\hat { p } _ { 1 , i } ) + \\displaystyle \\sum _ { t = 2 } ^ { T } \\sum _ { i = 1 } ^ { d } \\left( \\frac { 1 } { \\eta _ { t , i } } - \\frac { 1 } { \\eta _ { t - 1 , i } } \\right) f _ { \\mathrm { { R L } } } ( u _ { i } , \\hat { p } _ { t , i } ) } \\\\ & { \\displaystyle - \\; 8 \\sum _ { t = 1 } ^ { T } \\sum _ { i = 1 } ^ { d } \\eta _ { t , i } p _ { t , i } ( \\ell _ { t , i } - m _ { t , i } ) ^ { 2 } + 1 6 \\sum _ { t = 1 } ^ { T } \\sum _ { i = 1 } ^ { d } \\eta _ { t , i } u _ { i } ( \\ell _ { t , i } - m _ { t , i } ) ^ { 2 } - 4 \\sum _ { t = 2 } ^ { T } \\| p _ { t } - p _ { t - 1 } \\| _ { 1 } ^ { 2 } . } \\end{array}"
+        ],
+        "page": "sp_0046_page_0017",
+        "id": "sp_0046_page_0017-2",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          370.5218200683594,
+          224.36244201660156,
+          850.4448852539062,
+          271.5271911621094
+        ],
+        "text": [
+          "\\lvert \\ell _ { t , i } - m _ { t , i } + a _ { t , i } \\rvert \\leq 2 + 1 6 \\cdot \\frac { 1 } { 3 2 } ( 2 \\ell _ { t , i } ^ { 2 } + 2 m _ { t , i } ^ { 2 } ) \\leq 4 \\leq 1 6 ."
+        ],
+        "page": "sp_0046_page_0017",
+        "id": "sp_0046_page_0017-3",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          268.2884826660156,
+          379.7806701660156,
+          950.5726928710938,
+          449.2908020019531
+        ],
+        "text": [
+          "\\mathrm { T E R M } \\left( { \\bf B } \\right) \\leq 2 \\sum _ { t = 1 } ^ { T } \\sum _ { i = 1 } ^ { d } \\eta _ { t , i } p _ { t , i } ( \\ell _ { t , i } - m _ { t , i } + a _ { t , i } ) ^ { 2 } \\leq 8 \\sum _ { t = 1 } ^ { T } \\sum _ { i = 1 } ^ { d } \\eta _ { t , i } p _ { t , i } ( \\ell _ { t , i } - m _ { t , i } ) ^ { 2 } ."
+        ],
+        "page": "sp_0046_page_0017",
+        "id": "sp_0046_page_0017-4",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          211.18409729003906,
+          1383.256591796875,
+          1018.447021484375,
+          1452.4630126953125
+        ],
+        "text": [
+          "\\sum _ { t = 1 } ^ { T } \\langle \\ell _ { t } , q _ { t } - e _ { k ^ { + } } \\rangle \\leq \\left( \\frac { 1 } { \\eta _ { k ^ { * } } } \\ln \\frac { 1 } { \\widehat { q } _ { 1 , k ^ { * } } } + \\sum _ { k = 1 } ^ { K } \\frac { \\widehat { q } _ { 1 , k } } { \\eta _ { k } } \\right) + 0 + 1 6 \\eta _ { k ^ { * } } \\sum _ { t = 1 } ^ { T } ( \\ell _ { t , k ^ { * } } - m _ { t , k ^ { * } } ) ^ { 2 } - \\operatorname* { m i n } _ { k \\in [ K ] } \\frac { 1 } { 4 \\eta _ { k } } S _ { T } ^ { q } ,"
+        ],
+        "page": "sp_0046_page_0017",
+        "id": "sp_0046_page_0017-5",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          303.3975830078125,
+          486.3347473144531,
+          916.4429931640625,
+          555.9558715820312
+        ],
+        "text": [
+          "\\mathrm { T E R M } \\left( \\boldsymbol { \\mathrm { A } } \\right) \\leq \\sum _ { i = 1 } ^ { d } \\frac { 1 } { \\eta _ { 1 , i } } f _ { \\mathrm { K L } } ( u _ { i } , \\widehat { p } _ { 1 , i } ) + \\sum _ { t = 2 } ^ { T } \\sum _ { i = 1 } ^ { d } \\left( \\frac { 1 } { \\eta _ { t , i } } - \\frac { 1 } { \\eta _ { t - 1 , i } } \\right) f _ { \\mathrm { K L } } ( u _ { i } , \\widehat { p } _ { t , i } ) ,"
+        ],
+        "page": "sp_0046_page_0017",
+        "id": "sp_0046_page_0017-6",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          219.92689514160156,
+          1118.4124755859375,
+          997.4335327148438,
+          1187.890869140625
+        ],
+        "text": [
+          "\\sum _ { t = 1 } ^ { T } \\langle \\ell _ { t } , q _ { t } - e _ { k ^ { + } } \\rangle + \\sum _ { t = 1 } ^ { T } \\langle \\ell _ { t , k ^ { + } } , p _ { t , k ^ { + } } - e _ { i ^ { + } } \\rangle \\leq \\frac { 1 } { \\eta _ { k ^ { + } } } \\ln \\frac { N } { 3 C _ { 0 } ^ { 2 } \\eta _ { k ^ { + } } ^ { 2 } } + 3 2 \\eta _ { k ^ { + } } V _ { \\ast } - \\frac { C _ { 0 } } { 2 } S _ { T } ^ { q } - \\frac { C _ { 0 } } { 4 } S _ { T , k ^ { + } } ^ { p } ,"
+        ],
+        "page": "sp_0046_page_0017",
+        "id": "sp_0046_page_0017-7",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          293.40399169921875,
+          306.26068115234375,
+          928.24755859375,
+          340.457763671875
+        ],
+        "text": [
+          "( \\ell _ { t , i } - m _ { t , i } + a _ { t , i } ) ^ { 2 } = \\left( \\ell _ { t , i } - m _ { t , i } + 1 6 \\eta _ { t , i } ( \\ell _ { t , i } - m _ { t , i } ) ^ { 2 } \\right) ^ { 2 } \\leq 4 ( \\ell _ { t , i } - m _ { t , i } ) ^ { 2 } ,"
+        ],
+        "page": "sp_0046_page_0017",
+        "id": "sp_0046_page_0017-8",
+        "seg_type": "eq"
+      }
+    ]
+  },
+  "sp_0046_page_0018": {
+    "bboxes": [
+      {
+        "box": [
+          274.30279541015625,
+          631.4370727539062,
+          946.7012939453125,
+          775.3124389648438
+        ],
+        "text": [
+          "\\begin{array} { c } { \\displaystyle \\sum _ { t = 1 } ^ { T } \\langle \\ell _ { t , k ^ { * } } , p _ { t , k ^ { * } } - e _ { i ^ { * } } \\rangle \\leq \\displaystyle \\frac { 1 } { 2 \\eta _ { k ^ { * } } } \\ln N + 3 2 \\eta _ { k ^ { * } } \\displaystyle \\sum _ { t = 1 } ^ { T } ( \\ell _ { t , k ^ { * } , i ^ { * } } - m _ { t , k ^ { * } , i ^ { * } } ) ^ { 2 } - \\displaystyle \\frac { C _ { 0 } } { 4 } S _ { T , k ^ { * } } ^ { p } } \\\\ { \\displaystyle \\qquad \\qquad \\qquad \\qquad \\qquad \\displaystyle - 1 6 \\eta _ { k ^ { * } } \\sum _ { t = 1 } ^ { T } \\sum _ { i = 1 } ^ { N } p _ { t , k ^ { * } , i } ( \\ell _ { t , k , i } - m _ { t , k , i } ) ^ { 2 } , } \\end{array}"
+        ],
+        "page": "sp_0046_page_0018",
+        "id": "sp_0046_page_0018-1",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          342.050048828125,
+          392.77667236328125,
+          881.8441772460938,
+          462.54193115234375
+        ],
+        "text": [
+          "\\frac { K ^ { 2 } } { 4 C _ { 0 } ^ { 2 } } \\le \\sum _ { k = 1 } ^ { K } \\eta _ { k } ^ { 2 } \\le \\sum _ { k = 1 } ^ { K } \\frac { 1 } { C _ { 0 } ^ { 2 } \\cdot 4 ^ { k } } \\le \\frac { 1 } { 3 C _ { 0 } ^ { 2 } } , \\quad \\sum _ { k = 1 } ^ { K } \\eta _ { k } \\le \\frac { 1 } { C _ { 0 } \\cdot 2 ^ { k } } \\le \\frac { 1 } { C _ { 0 } } ."
+        ],
+        "page": "sp_0046_page_0018",
+        "id": "sp_0046_page_0018-2",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          274.4468994140625,
+          253.10134887695312,
+          947.9468994140625,
+          322.12030029296875
+        ],
+        "text": [
+          "\\frac { 1 } { \\eta _ { k ^ { * } } } \\ln \\frac { 1 } { \\hat { q } _ { 1 , k ^ { * } } } + \\sum _ { k = 1 } ^ { K } \\frac { \\hat { q } _ { 1 , k } } { \\eta _ { k } } = \\frac { 1 } { \\eta _ { k ^ { * } } } \\ln \\frac { \\sum _ { k = 1 } ^ { K } \\eta _ { k } ^ { 2 } } { \\eta _ { k ^ { * } } ^ { 2 } } + \\sum _ { k = 1 } ^ { K } \\eta _ { k } ^ { 2 } \\le \\frac { 1 } { \\eta _ { k ^ { * } } } \\ln \\frac { 1 } { 3 C _ { 0 } ^ { 2 } \\eta _ { k ^ { * } } ^ { 2 } } + 4 C _ { 0 } ,"
+        ],
+        "page": "sp_0046_page_0018",
+        "id": "sp_0046_page_0018-3",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          269.56072998046875,
+          505.2488708496094,
+          954.2539672851562,
+          575.1491088867188
+        ],
+        "text": [
+          "\\sum _ { t = 1 } ^ { T } \\langle \\ell _ { t } , q _ { t } - e _ { k ^ { + } } \\rangle \\leq \\frac { 1 } { \\eta _ { k ^ { + } } } \\ln \\frac { 1 } { 3 C _ { 0 } ^ { 2 } \\eta _ { k ^ { + } } ^ { 2 } } + 1 6 \\eta _ { k ^ { + } } \\sum _ { t = 1 } ^ { T } ( \\ell _ { t , k ^ { + } } - m _ { t , k ^ { + } } ) ^ { 2 } - \\frac { C _ { 0 } } { 2 } S _ { T } ^ { q } + \\mathcal { O } ( 1 ) ."
+        ],
+        "page": "sp_0046_page_0018",
+        "id": "sp_0046_page_0018-4",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          311.47515869140625,
+          813.2224731445312,
+          909.1612548828125,
+          881.82275390625
+        ],
+        "text": [
+          "( \\ell _ { t , k ^ { \\star } } - m _ { t , k ^ { \\star } } ) ^ { 2 } = \\langle \\ell _ { t , k ^ { \\star } } - m _ { t , k ^ { \\star } } , p _ { t , k ^ { \\star } } \\rangle ^ { 2 } \\leq \\sum _ { i = 1 } ^ { N } p _ { t , k ^ { \\star } , i } ( \\ell _ { t , k , i } - m _ { t , k , i } ) ^ { 2 } ,"
+        ],
+        "page": "sp_0046_page_0018",
+        "id": "sp_0046_page_0018-5",
+        "seg_type": "eq"
+      }
+    ]
+  },
+  "sp_0046_page_0019": {
+    "bboxes": [
+      {
+        "box": [
+          344.71038818359375,
+          539.52001953125,
+          877.2067260742188,
+          620.2898559570312
+        ],
+        "text": [
+          "\\sum _ { t = 1 } ^ { T } \\langle \\nabla f _ { t } ( \\mathbf x _ { t } ) , \\mathbf x _ { t } - \\mathbf x _ { t , i ^ { \\star } } \\rangle \\lesssim \\sqrt { \\ln \\ln T \\sum _ { t = 1 } ^ { T } \\langle \\nabla f _ { t } ( \\mathbf x _ { t } ) , \\mathbf x _ { t } - \\mathbf x _ { t , i ^ { \\star } } \\rangle ^ { 2 } } ."
+        ],
+        "page": "sp_0046_page_0019",
+        "id": "sp_0046_page_0019-1",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          264.8070068359375,
+          668.5855712890625,
+          1018.0741577148438,
+          804.3316650390625
+        ],
+        "text": [
+          "\\begin{array} { r l } & { \\displaystyle \\mathbf { M } \\mathrm { E T A - R E G } \\lesssim \\sqrt { \\ln \\ln T \\sum _ { t = 1 } ^ { T } \\langle \\nabla f _ { t } ( \\mathbf { x } _ { t } ) , \\mathbf { x } _ { t } - \\mathbf { x } _ { t , i ^ { * } } \\rangle ^ { 2 } } - \\frac { \\alpha _ { i ^ { * } } } { 2 } \\sum _ { t = 1 } ^ { T } \\langle \\nabla f _ { t } ( \\mathbf { x } _ { t } ) , \\mathbf { x } _ { t } - \\mathbf { x } _ { t , i ^ { * } } \\rangle ^ { 2 } } \\\\ & { \\quad \\quad \\quad \\quad \\leq \\frac { \\ln \\ln T } { 2 \\alpha _ { i ^ { * } } } \\leq \\frac { \\ln \\ln T } { \\alpha } , \\quad \\quad \\quad \\quad \\quad \\quad \\quad \\quad \\quad \\quad \\quad \\quad \\, ( \\mathbf { b } \\mathbf { y } \\ \\alpha _ { i ^ { * } } \\leq \\alpha \\leq 2 \\alpha _ { i ^ { * } } ) } \\end{array}"
+        ],
+        "page": "sp_0046_page_0019",
+        "id": "sp_0046_page_0019-2",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          387.58624267578125,
+          897.3479614257812,
+          834.2554931640625,
+          950.2789306640625
+        ],
+        "text": [
+          "{ \\mathrm { B A S E - R E G } } \\lesssim \\frac { d D G _ { \\mathrm { e x p } } } { \\alpha _ { i ^ { * } } } \\log T \\leq \\frac { 2 d D ( G + G D ) } { \\alpha } \\log T ,"
+        ],
+        "page": "sp_0046_page_0019",
+        "id": "sp_0046_page_0019-3",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          374.3987731933594,
+          1112.060546875,
+          846.5877685546875,
+          1166.3326416015625
+        ],
+        "text": [
+          "\\mathrm { B A S E - R E G } \\leq \\frac { G _ { \\mathrm { s c } } ^ { 2 } } { \\lambda _ { i ^ { * } } } ( 1 + \\log T ) \\leq \\frac { 2 ( G + D ) ^ { 2 } } { \\lambda } ( 1 + \\log T ) ,"
+        ],
+        "page": "sp_0046_page_0019",
+        "id": "sp_0046_page_0019-4",
+        "seg_type": "eq"
+      }
+    ]
+  },
+  "sp_0046_page_0020": {
+    "bboxes": [
+      {
+        "box": [
+          228.56454467773438,
+          858.8909301757812,
+          1012.6273193359375,
+          1316.8541259765625
+        ],
+        "text": [
+          "\\begin{array} { r l } & { \\displaystyle \\sum _ { i = 1 } ^ { T } ( \\nabla L ( x _ { i } ) , x _ { i } - x _ { i + \\ell } , x _ { i } - x _ { i } ) \\sum _ { s = i } ^ { T } \\nabla L ( x _ { i } ) , x _ { i } - x _ { i + \\ell } \\rangle + \\displaystyle \\sum _ { i = 1 } ^ { T } \\nabla L ( x _ { i } ) , x _ { i + \\ell } - x _ { i + \\ell } , x _ { i } , } \\\\ & { \\displaystyle - \\sum _ { i = 1 } ^ { T } ( L _ { i } , q _ { i } - e _ { i + \\ell } ) + \\sum _ { i = 1 } ^ { T } ( L _ { i } , \\ldots , \\underbrace { 1 } { \\rho _ { i } } , 0 ) , } \\\\ & { \\displaystyle - \\lambda \\sum _ { i = 1 } ^ { T } \\sum _ { i = 1 } ^ { N } \\sum _ { i = 1 } ^ { N } L ( x _ { i + \\ell } ) \\sum _ { i = 1 } ^ { N } L ( x _ { i } ) - \\lambda \\sum _ { i = 1 } ^ { T } \\lambda \\sum _ { i = 1 } ^ { N } \\lambda | x _ { i } - x _ { i - \\ell + \\ell } | + } \\\\ & { \\displaystyle - \\lambda \\sum _ { i = 1 } ^ { T } \\sum _ { i = 1 } ^ { N } \\sum _ { i = 1 } ^ { N } ( \\underbrace { 1 } { \\rho _ { i } } , \\ldots , x _ { i + \\ell - \\ell } , 1 ) + \\lambda \\sum _ { i = 1 } ^ { N } \\lambda \\sum _ { i = 1 } ^ { N } \\lambda \\sum _ { i = 1 } ^ { N } , \\quad ( \\mathrm { S y l o i n i m a n ~ Z } \\{ \\ldots , \\ell + i , x _ { i } \\} ) } \\\\ & { \\displaystyle \\sum _ { i = 1 } ^ { T } ( L _ { i } , q _ { i } - e _ { i } , x _ { i } ) + \\sum _ { i = 1 } ^ { T } ( L _ { i } , \\ldots , \\underbrace { 1 - \\rho _ { i } } _ { i } , \\ldots , - L _ { i } ) \\sum _ { i = 1 } ^ { N } \\sum _ { i = 1 } ^ { N } \\lambda | x _ { i + \\ell } - x _ { i - \\ell + \\ell } | + } \\\\ & { \\displaystyle \\quad \\quad \\quad + ( 2 \\lambda _ { 1 } - \\lambda _ { 2 } ) \\sum _ { i = 1 } ^ { T } \\sum _ { i = 1 } ^ { N } \\sum _ { i = 1 } ^ { N } \\sum _ { i = 1 } ^ { N } ( \\underbrace { 1 - \\rho _ { i } } _ { i } , \\ldots , - \\lambda _ { i - \\ell } ) + 2 \\lambda \\ L ^ { 2 } \\sum _ { i = 1 } ^ { N } \\; \\; \\; \\; \\; \\; \\; \\; \\; \\; \\; \\; \\; \\; \\; \\; \\; \\mathrm { i } } \\\\ & { \\displaystyle \\sum _ { i = 1 } ^ { T } ( L _ { i } , q _ { i + \\ell } , x _ { i } - x _ { i + \\ell } ) \\; \\; \\; \\; \\; \\; \\; \\; \\; \\; \\; \\; \\"
+        ],
+        "page": "sp_0046_page_0020",
+        "id": "sp_0046_page_0020-1",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          209.16485595703125,
+          183.22909545898438,
+          1026.322021484375,
+          407.3006591796875
+        ],
+        "text": [
+          "\\begin{array} { l } { \\displaystyle \\sum _ { t = 1 } ^ { r } f _ { t } ( \\mathbf x _ { t } ) - \\sum _ { t = 1 } ^ { r } f _ { t } ( \\mathbf x ^ { * } ) \\leq \\sum _ { t = 1 } ^ { r } ( \\nabla f _ { t } ( \\mathbf x _ { t } ) , \\mathbf x _ { t } - \\mathbf x ^ { * } ) - \\frac { \\alpha } { 2 } \\sum _ { t = 1 } ^ { r } ( \\nabla f _ { t } ( \\mathbf x _ { t } ) , \\mathbf x _ { t } - \\mathbf x ^ { * } ) ^ { 2 } \\qquad } \\\\ { \\displaystyle \\leq \\sum _ { t = 1 } ^ { r } ( \\nabla f _ { t } ( \\mathbf x _ { t } ) , \\mathbf x _ { t } - \\mathbf x ^ { * } ) - \\frac { \\alpha _ { i \\cdot } } { 2 } \\sum _ { t = 1 } ^ { r } ( \\nabla f _ { t } ( \\mathbf x _ { t } ) , \\mathbf x _ { t } - \\mathbf x ^ { * } ) ^ { 2 } \\qquad } \\\\ { \\displaystyle = \\sum _ { t = 1 } ^ { r } ( \\nabla f _ { t } ( \\mathbf x _ { t } ) , \\mathbf x _ { t } - \\mathbf x _ { t , k ^ { * } , i ^ { * } } ) - \\frac { \\alpha _ { i \\cdot } } { 2 } \\langle \\nabla f _ { t } ( \\mathbf x _ { t } ) , \\mathbf x _ { t } - \\mathbf x _ { t , k ^ { * } , i ^ { * } } \\rangle ^ { 2 } + \\sum _ { t = 1 } ^ { r } h _ { t , i ^ { * } } ^ { \\mathrm { c o p } } ( \\mathbf x _ { t , k ^ { * } , i ^ { * } } ) - \\sum _ { t = 1 } ^ { r } h _ { t , i ^ { * } } ^ { \\mathrm { e p } } ( \\mathbf x ^ { * } ) , } \\end{array}"
+        ],
+        "page": "sp_0046_page_0020",
+        "id": "sp_0046_page_0020-2",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          329.5650634765625,
+          682.4527587890625,
+          892.474853515625,
+          781.0143432617188
+        ],
+        "text": [
+          "{ \\mathrm { R E G } } _ { T } \\leq \\underbrace { \\sum _ { t = 1 } ^ { T } \\langle \\nabla f _ { t } ( { \\mathbf x } _ { t } ) , { \\mathbf x } _ { t } - { \\mathbf x } _ { t , k ^ { \\star } , i ^ { \\star } } \\rangle } _ { \\mathrm { M E T A - R E G } } + \\underbrace { \\sum _ { t = 1 } ^ { T } \\langle \\nabla f _ { t } ( { \\mathbf x } _ { t } ) , { \\mathbf x } _ { t , k ^ { \\star } , i ^ { \\star } } - { \\mathbf x } ^ { \\star } \\rangle } _ { \\mathrm { B A S E - R E G } } ."
+        ],
+        "page": "sp_0046_page_0020",
+        "id": "sp_0046_page_0020-3",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          380.751220703125,
+          1378.4376220703125,
+          841.4645385742188,
+          1446.054443359375
+        ],
+        "text": [
+          "\\begin{array} { c } { { | \\ell _ { t , k , i } | \\leq G D + \\lambda _ { 2 } D ^ { 2 } , \\quad | m _ { t , k , i } | \\leq 2 G D + \\lambda _ { 2 } D ^ { 2 } , } } \\\\ { { | \\ell _ { t , k } | \\leq G D + \\lambda _ { 1 } D ^ { 2 } , \\quad | m _ { t , k } | \\leq 2 G D + ( \\lambda _ { 1 } + \\lambda _ { 2 } ) D ^ { 2 } , } } \\end{array}"
+        ],
+        "page": "sp_0046_page_0020",
+        "id": "sp_0046_page_0020-4",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          248.19656372070312,
+          512.4041748046875,
+          970.7338256835938,
+          596.78515625
+        ],
+        "text": [
+          "\\sum _ { i = 1 } ^ { T } \\langle \\nabla f _ { t } ( \\mathbf { x } _ { t } ) , \\mathbf { x } _ { t } - \\mathbf { x } _ { t , k ^ { \\star } , i ^ { \\star } } \\rangle - \\frac { \\lambda _ { i ^ { \\star } } } { 2 } \\| \\mathbf { x } _ { t } - \\mathbf { x } _ { t , k ^ { \\star } , i ^ { \\star } } \\| ^ { 2 } + \\sum _ { t = 1 } ^ { T } h _ { t , i ^ { \\star } } ^ { \\mathbf { s c } } ( \\mathbf { x } _ { t , k ^ { \\star } , i ^ { \\star } } ) - \\sum _ { t = 1 } ^ { T } h _ { t , i ^ { \\star } } ^ { \\mathbf { s c } } ( \\mathbf { x } ^ { \\star } ) ,"
+        ],
+        "page": "sp_0046_page_0020",
+        "id": "sp_0046_page_0020-5",
+        "seg_type": "eq"
+      }
+    ]
+  },
+  "sp_0046_page_0021": {
+    "bboxes": [
+      {
+        "box": [
+          247.50831604003906,
+          343.0433349609375,
+          1015.126953125,
+          553.0980834960938
+        ],
+        "text": [
+          "\\begin{array} { r l } & { \\quad \\displaystyle \\sum _ { t = 1 } ^ { T } \\langle \\nabla f _ { t } ( \\mathbf { x } _ { t } ) , \\mathbf { x } _ { t } - \\mathbf { x } _ { t , k ^ { \\star } , i ^ { \\star } } \\rangle \\leq \\displaystyle \\frac { 1 } { \\eta _ { k ^ { \\star } } } \\ln \\frac { N } { \\eta _ { k ^ { \\star } } ^ { 2 } } + 3 2 \\eta _ { k ^ { \\star } } V _ { \\star } + \\lambda _ { 2 } S _ { T , k ^ { \\star } , i ^ { \\star } } ^ { \\mathbf { x } } \\qquad \\mathrm { ( r e q u i r i n g ~ } C _ { 0 } \\geq 1 ) } \\\\ & { \\qquad \\qquad - \\displaystyle \\frac { C _ { 0 } } { 2 } S _ { T } ^ { q } - \\lambda _ { 1 } \\sum _ { t = 2 } ^ { T } \\sum _ { k = 1 } ^ { K } q _ { t , k } \\| \\mathbf { x } _ { t , k } - \\mathbf { x } _ { t - 1 , k } \\| ^ { 2 } + \\left( 2 \\lambda _ { 1 } D ^ { 2 } - \\displaystyle \\frac { C _ { 0 } } { 4 } \\right) S _ { T , k } ^ { p } . } \\\\ & { \\leq \\displaystyle \\frac { 1 } { \\eta _ { k ^ { \\star } } } \\ln \\frac { N } { \\eta _ { k ^ { \\star } } ^ { 2 } } + 3 2 \\eta _ { k ^ { \\star } } V _ { \\star } + \\lambda _ { 2 } S _ { T , k ^ { \\star } , i ^ { \\star } } ^ { \\mathbf { x } } - \\displaystyle \\frac { C _ { 0 } } { 2 } S _ { T } ^ { q } - \\lambda _ { 1 } \\sum _ { t = 2 } ^ { T } \\sum _ { k = 1 } ^ { K } q _ { t , k } \\| \\mathbf { x } _ { t , k } - \\mathbf { x } _ { t - 1 , k } \\| ^ { 2 } , } \\end{array}"
+        ],
+        "page": "sp_0046_page_0021",
+        "id": "sp_0046_page_0021-1",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          212.11660766601562,
+          1243.1304931640625,
+          1016.0343627929688,
+          1456.9302978515625
+        ],
+        "text": [
+          "\\begin{array} { l } { \\displaystyle \\bar { V } _ { T , k ^ { * } , i ^ { * } } = \\sum _ { t = 2 } ^ { T } \\| ( \\mathbf { g } _ { t } + \\boldsymbol { \\alpha } _ { i ^ { * } } \\mathbf { g } _ { t } \\mathbf { g } _ { t } ^ { \\top } ( \\mathbf { x } _ { t , k ^ { * } , i ^ { * } } - \\mathbf { x } _ { t } ) ) - ( \\mathbf { g } _ { t - 1 } + \\boldsymbol { \\alpha } _ { i ^ { * } } \\mathbf { g } _ { t - 1 } \\mathbf { g } _ { t - 1 } ^ { \\top } ( \\mathbf { x } _ { t - 1 , k ^ { * } , i ^ { * } } - \\mathbf { x } _ { t - 1 } ) ) \\| ^ { 2 } } \\\\ { \\displaystyle \\leq 2 \\sum _ { t = 2 } ^ { T } \\| \\mathbf { g } _ { t } - \\mathbf { g } _ { t - 1 } \\| ^ { 2 } + 2 \\alpha _ { i ^ { * } } ^ { 2 } \\sum _ { t = 2 } ^ { T } \\| \\mathbf { g } _ { t } \\mathbf { g } _ { t } ^ { \\top } ( \\mathbf { x } _ { t , k ^ { * } , i ^ { * } } - \\mathbf { x } _ { t } ) - \\mathbf { g } _ { t - 1 } \\mathbf { g } _ { t - 1 } ^ { \\top } ( \\mathbf { x } _ { t - 1 , k ^ { * } , i ^ { * } } - \\mathbf { x } _ { t - 1 } ) \\| ^ { 2 } } \\\\ { \\leq 4 V _ { T } + 4 L ^ { 2 } S _ { T } ^ { \\infty } + 4 D ^ { 2 } \\sum _ { t = 2 } ^ { T } \\| \\mathbf { g } _ { t } \\mathbf { g } _ { t } ^ { \\top } - \\mathbf { g } _ { t - 1 } \\mathbf { g } _ { t - 1 } ^ { \\top } \\| ^ { 2 } } \\end{array}"
+        ],
+        "page": "sp_0046_page_0021",
+        "id": "sp_0046_page_0021-2",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          237.4093780517578,
+          747.6310424804688,
+          1014.4551391601562,
+          1010.5762329101562
+        ],
+        "text": [
+          "\\begin{array} { r l r } & { \\quad \\displaystyle \\mathbf { M } \\mathbf { F } \\mathbf { \\hat { x } } \\mathbf { A } \\mathbf { E } \\mathbf { G } \\leq \\frac { 1 } { \\eta _ { k } } \\ln \\frac { N } { \\eta _ { k } ^ { 2 } } + \\left( 1 2 8 \\eta _ { k ^ { \\star } } - \\frac { \\alpha _ { i ^ { \\star } } } { 2 } \\right) \\sum _ { t = 1 } ^ { T } \\langle \\nabla f _ { t } ( \\mathbf { x } _ { t } ) , \\mathbf { x } _ { t , k ^ { \\star } , i ^ { \\star } } - \\mathbf { x } _ { t } \\rangle ^ { 2 } + \\lambda _ { 2 } S _ { T , k ^ { \\star } , i ^ { \\star } } ^ { \\kappa } } & \\\\ & { \\qquad - \\displaystyle \\frac { C _ { 0 } } { 2 } S _ { T } ^ { q } - \\lambda _ { 1 } \\sum _ { t = 2 } ^ { T } \\mathbf { F } _ { q , k } \\| \\mathbf { x } _ { t , k } - \\mathbf { x } _ { t - 1 , k } \\| ^ { 2 } } & \\\\ & { \\leq 2 C _ { 0 } \\ln ( 4 C _ { 0 } ^ { 2 } N ) + \\frac { 5 1 2 } { \\alpha } \\ln \\frac { 2 ^ { 2 0 } N } { \\alpha ^ { 2 } } + \\lambda _ { 2 } S _ { T , k ^ { \\star } , i ^ { \\star } } ^ { \\kappa } - \\displaystyle \\frac { C _ { 0 } } { 2 } S _ { T } ^ { q } } & { \\qquad \\mathrm { ( b y ~ L e m m a ~ \\ensuremath { \\mathbf { S } } ~ w i t h ~ } \\eta _ { + } \\triangleq \\frac { \\alpha _ { i ^ { \\star } } } { 2 S _ { 0 } ^ { \\star } } ) } & \\\\ & { \\qquad - \\lambda _ { 1 } \\sum _ { t = 2 } ^ { T } \\sum _ { t = 1 } ^ { K } q _ { t , k } \\| \\mathbf { x } _ { t , k } - \\mathbf { x } _ { t - 1 , k } \\| ^ { 2 } , } & { \\qquad \\qquad \\qquad \\qquad \\qquad \\qquad \\qquad \\qquad \\quad \\mathrm { ( C . 1 ) } } \\end{array}"
+        ],
+        "page": "sp_0046_page_0021",
+        "id": "sp_0046_page_0021-3",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          328.8264465332031,
+          220.88197326660156,
+          894.532470703125,
+          291.52398681640625
+        ],
+        "text": [
+          "\\begin{array} { r l } & { ( \\ell _ { t , k ^ { * } } - m _ { t , k ^ { * } } ) ^ { 2 } = ( \\langle \\nabla f _ { t } ( \\mathbf { x } _ { t } ) , \\mathbf { x } _ { t , k ^ { * } } \\rangle - \\langle \\widehat { m } _ { t , k ^ { * } } , p _ { t , k ^ { * } } \\rangle ) ^ { 2 } } \\\\ & { \\qquad \\qquad \\qquad = \\widehat { \\langle \\hat { \\ell } _ { t , k ^ { * } } - \\widehat { m } _ { t , k ^ { * } } , p _ { t , k ^ { * } } \\rangle ^ { 2 } } = \\langle \\ell _ { t , k ^ { * } } - m _ { t , k ^ { * } } , p _ { t , k ^ { * } } \\rangle ^ { 2 } } \\end{array}"
+        ],
+        "page": "sp_0046_page_0021",
+        "id": "sp_0046_page_0021-4",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          264.235107421875,
+          631.4028930664062,
+          957.7030639648438,
+          701.3521728515625
+        ],
+        "text": [
+          "\\frac { 1 } { \\eta _ { k ^ { \\star } } } \\ln \\frac { N } { \\eta _ { k ^ { \\star } } ^ { 2 } } + 3 2 \\eta _ { k ^ { \\star } } V _ { \\star } \\leq \\frac { 1 } { \\eta _ { k ^ { \\star } } } \\ln \\frac { N } { \\eta _ { k ^ { \\star } } ^ { 2 } } + 1 2 8 \\eta _ { k ^ { \\star } } \\sum _ { t = 1 } ^ { T } \\langle \\nabla f _ { t } ( { \\mathbf { x } } _ { t } ) , { \\mathbf { x } } _ { t , k ^ { \\star } , i ^ { \\star } } - { \\mathbf { x } } _ { t } \\rangle ^ { 2 } + \\mathcal { O } ( 1 ) ."
+        ],
+        "page": "sp_0046_page_0021",
+        "id": "sp_0046_page_0021-5",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          229.52423095703125,
+          1072.383544921875,
+          950.6893310546875,
+          1143.756591796875
+        ],
+        "text": [
+          "\\sum _ { t = 1 } ^ { T } h _ { t , t ^ { * } } ^ { \\mathrm { e x p } } ( \\mathbf { x } _ { t , k ^ { * } , i ^ { * } } ) - \\sum _ { t = 1 } ^ { T } h _ { t , i ^ { * } } ^ { \\mathrm { e x p } } ( \\mathbf { x } ^ { * } ) \\leq \\frac { 1 6 d } { \\alpha _ { i ^ { * } } } \\ln \\left( 1 + \\frac { \\alpha _ { i ^ { * } } } { 8 \\gamma d } \\bar { V } _ { T , k ^ { * } , i ^ { * } } \\right) + \\frac { 1 } { 2 } \\gamma D ^ { 2 } - \\frac { \\gamma } { 4 } S _ { T , k ^ { * } , i ^ { * } } ^ { \\mathbf { x } } ,"
+        ],
+        "page": "sp_0046_page_0021",
+        "id": "sp_0046_page_0021-6",
+        "seg_type": "eq"
+      }
+    ]
+  },
+  "sp_0046_page_0022": {
+    "bboxes": [
+      {
+        "box": [
+          276.5612487792969,
+          631.6875610351562,
+          1014.7152099609375,
+          872.593017578125
+        ],
+        "text": [
+          "\\begin{array} { r l } & { \\displaystyle \\mathtt { R E G } _ { T } \\le \\frac { 5 1 2 } { \\alpha } \\ln \\frac { 2 ^ { 2 0 } N } { \\alpha ^ { 2 } } + 2 C _ { 0 } \\ln ( 4 C _ { 0 } ^ { 2 } N ) + \\frac { 3 2 d } { \\alpha } \\ln \\left( 1 + \\frac { \\alpha C _ { 1 } } { 8 \\gamma d } V _ { T } \\right) } \\\\ & { \\qquad \\qquad + \\left( \\frac { 4 C _ { 2 } D ^ { 2 } } { \\gamma } - \\frac { C _ { 0 } } { 2 } \\right) S _ { T } ^ { q } + \\left( \\frac { 4 C _ { 2 } } { \\gamma } - \\lambda _ { 1 } \\right) \\sum _ { t = 2 } ^ { T } \\sum _ { k = 1 } ^ { K } q _ { t , k } \\| \\mathbf { x } _ { t , k } - \\mathbf { x } _ { t - 1 , k } \\| ^ { 2 } } \\\\ & { \\qquad \\qquad + \\left( \\lambda _ { 2 } + \\frac { 1 6 G ^ { 4 } } { \\gamma } - \\frac { \\gamma } { 4 } \\right) S _ { T , k , \\cdot , t } ^ { x } + \\frac { 1 } { 2 } \\gamma D ^ { 2 } } \\\\ & { \\qquad \\qquad \\le \\mathcal { O } \\left( \\frac { d } { \\alpha } \\ln V _ { T } \\right) . \\qquad \\mathrm { ~ ( r e q u i v i n g ~ } C _ { 0 } \\ge 8 C _ { 2 } D ^ { 2 } / \\gamma , \\lambda _ { 1 } \\ge 4 C _ { 2 } / \\gamma , \\gamma \\ge 8 G ^ { 2 } + \\lambda _ { 2 } ) } \\end{array}"
+        ],
+        "page": "sp_0046_page_0022",
+        "id": "sp_0046_page_0022-1",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          280.3595275878906,
+          308.62152099609375,
+          1017.3052978515625,
+          504.2568054199219
+        ],
+        "text": [
+          "\\begin{array} { r l } & { \\; \\; \\ln \\left( 1 + \\frac { \\alpha _ { i ^ { * } } } { 8 \\gamma d } \\bar { V } _ { T , k ^ { * } , i ^ { * } } \\right) \\leq \\ln \\left( 1 + \\frac { \\alpha _ { i ^ { * } } C _ { 1 } } { 8 \\gamma d } V _ { T } + \\frac { \\alpha _ { i ^ { * } } C _ { 2 } } { 8 \\gamma d } S _ { T } ^ { \\kappa } + \\frac { \\alpha _ { i ^ { * } } G ^ { 4 } } { \\gamma d } S _ { T , k ^ { * } , i ^ { * } } ^ { \\kappa } \\right) } \\\\ & { = \\ln \\left( 1 + \\frac { \\alpha _ { i ^ { * } } C _ { 1 } } { 8 \\gamma d } V _ { T } \\right) + \\ln \\left( 1 + \\frac { \\frac { \\alpha _ { i ^ { * } } C _ { 2 } } { 8 \\gamma d } S _ { T } ^ { \\kappa } } { 1 + \\frac { \\alpha _ { i ^ { * } } C _ { 1 } } { 8 \\gamma d } V _ { T } } \\right) } \\\\ & { \\leq \\ln \\left( 1 + \\frac { \\alpha _ { i ^ { * } } C _ { 1 } } { 8 \\gamma d } V _ { T } \\right) + \\frac { \\alpha _ { i ^ { * } } C _ { 2 } } { 8 \\gamma d } S _ { T } ^ { \\kappa } + \\frac { \\alpha _ { i ^ { * } } G ^ { 4 } } { \\gamma d } S _ { T , k ^ { * } , i ^ { * } } ^ { \\kappa } . \\qquad \\qquad \\mathrm { ( u n ~ } ( 1 + x ) \\leq x \\mathrm { ~ f o r ~ } x \\geq 0 ) } \\end{array}"
+        ],
+        "page": "sp_0046_page_0022",
+        "id": "sp_0046_page_0022-2",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          273.10125732421875,
+          1313.717529296875,
+          951.5078125,
+          1457.1650390625
+        ],
+        "text": [
+          "\\begin{array} { c l } { \\displaystyle \\bar { V } _ { T , k } , \\displaystyle \\vphantom { \\sum _ { i = 2 } ^ { T } } \\frac { T } { 2 } \\| ( \\mathbf { g } _ { t } + \\lambda _ { i } \\cdot ( \\mathbf { x } _ { t , k ^ { \\ast } , i ^ { \\ast } } - \\mathbf { x } _ { t } ) ) - ( \\mathbf { g } _ { t - 1 } + \\lambda _ { i ^ { \\ast } } ( \\mathbf { x } _ { t - 1 , k ^ { \\ast } , i ^ { \\ast } } - \\mathbf { x } _ { t - 1 } ) ) \\| ^ { 2 } } \\\\ { \\displaystyle \\leq 2 \\sum _ { t = 2 } ^ { T } \\| \\mathbf { g } _ { t } - \\mathbf { g } _ { t - 1 } \\| ^ { 2 } + 2 \\lambda _ { i ^ { \\ast } } ^ { 2 } \\sum _ { t = 2 } ^ { T } \\| ( \\mathbf { x } _ { t , k ^ { \\ast } , i ^ { \\ast } } - \\mathbf { x } _ { t } ) - ( \\mathbf { x } _ { t - 1 , k ^ { \\ast } , i ^ { \\ast } } - \\mathbf { x } _ { t - 1 } ) \\| ^ { 2 } } \\end{array}"
+        ],
+        "page": "sp_0046_page_0022",
+        "id": "sp_0046_page_0022-3",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          339.358642578125,
+          963.4030151367188,
+          879.533447265625,
+          1088.609619140625
+        ],
+        "text": [
+          "\\begin{array} { r } { \\begin{array} { r } { \\displaystyle \\mathbf { M } \\mathrm { E T A - R E G } \\leq \\displaystyle \\frac { 5 1 2 G ^ { 2 } } { \\lambda } \\ln \\displaystyle \\frac { 2 ^ { 2 0 } N G ^ { 4 } } { \\lambda ^ { 2 } } + 2 C _ { 0 } \\ln ( 4 C _ { 0 } ^ { 2 } N ) + \\lambda _ { 2 } S _ { T , k ^ { \\star } , i ^ { \\star } } ^ { \\mathbf { x } } } \\\\ { - \\displaystyle \\frac { C _ { 0 } } { 2 } S _ { T } ^ { q } - \\lambda _ { 1 } \\displaystyle \\sum _ { t = 2 } ^ { T } \\sum _ { k = 1 } ^ { K } q _ { t , k } \\lVert \\mathbf { x } _ { t , k } - \\mathbf { x } _ { t - 1 , k } \\rVert ^ { 2 } . } \\end{array} } \\end{array}"
+        ],
+        "page": "sp_0046_page_0022",
+        "id": "sp_0046_page_0022-4",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          233.7779998779297,
+          1121.4849853515625,
+          946.29931640625,
+          1191.4937744140625
+        ],
+        "text": [
+          "\\sum _ { t = 1 } ^ { T } h _ { t , i ^ { * } } ^ { \\mathrm { s c } } ( \\mathbf x _ { t , k ^ { * } , i ^ { * } } ) - \\sum _ { t = 1 } ^ { T } h _ { t , i ^ { * } } ^ { \\mathrm { s c } } ( \\mathbf x ^ { * } ) \\leq \\frac { 1 6 G _ { \\mathrm { s c } } ^ { 2 } } { \\lambda _ { i ^ { * } } } \\ln \\left( 1 + \\lambda _ { i ^ { * } } \\bar { V } _ { T , k ^ { * } , i ^ { * } } \\right) + \\frac 1 4 \\gamma D ^ { 2 } - \\frac \\gamma 8 S _ { T , k ^ { * } , i ^ { * } } ^ { \\mathrm { \\infty } } ,"
+        ],
+        "page": "sp_0046_page_0022",
+        "id": "sp_0046_page_0022-5",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          277.8662109375,
+          140.23434448242188,
+          1013.284912109375,
+          243.8448486328125
+        ],
+        "text": [
+          "\\begin{array} { r l r l } & { \\quad \\quad + \\, 4 G ^ { 4 } \\displaystyle \\sum _ { t = 2 } ^ { T } \\| ( \\mathbf { x } _ { t , k ^ { * } , i ^ { * } } - \\mathbf { x } _ { t } ) - ( \\mathbf { x } _ { t - 1 , k ^ { * } , i ^ { * } } - \\mathbf { x } _ { t - 1 } ) \\| ^ { 2 } \\qquad \\qquad } & & { \\quad ( \\mathbf { b y } \\, \\alpha \\in [ 1 / T , 1 ] ) } \\\\ & { \\leq C _ { 1 } V _ { T } + C _ { 2 } S _ { T } ^ { \\mathbf { x } } + 8 G ^ { 4 } S _ { T , k ^ { * } , i ^ { * } } ^ { \\mathbf { x } } , } \\end{array}"
+        ],
+        "page": "sp_0046_page_0022",
+        "id": "sp_0046_page_0022-6",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          266.1524658203125,
+          538.1744384765625,
+          955.9650268554688,
+          594.435791015625
+        ],
+        "text": [
+          "\\mathrm { B A S E - R E G } \\leq \\frac { 3 2 d } { \\alpha } \\ln \\left( 1 + \\frac { \\alpha C _ { 1 } } { 8 \\gamma d } V _ { T } \\right) + \\frac { 2 C _ { 2 } } { \\gamma } S _ { T } ^ { * } + \\left( \\frac { 1 6 G ^ { 4 } } { \\gamma } - \\frac { \\gamma } { 4 } \\right) S _ { T , k ^ { * } , i ^ { * } } ^ { \\mathbf { x } } + \\frac { 1 } { 2 } \\gamma D ^ { 2 } ."
+        ],
+        "page": "sp_0046_page_0022",
+        "id": "sp_0046_page_0022-7",
+        "seg_type": "eq"
+      }
+    ]
+  },
+  "sp_0046_page_0023": {
+    "bboxes": [
+      {
+        "box": [
+          272.0140075683594,
+          492.23876953125,
+          1015.4105224609375,
+          719.6551513671875
+        ],
+        "text": [
+          "\\begin{array} { r l } & { \\displaystyle \\left| \\mathbf { x } _ { K \\Omega _ { T } } \\leq \\frac { 5 1 2 G ^ { 2 } } { \\lambda } \\ln \\frac { 2 ^ { 2 0 } N G ^ { 4 } } { \\lambda ^ { 2 } } + 2 C _ { 0 } \\ln ( 4 C _ { 0 } ^ { 2 } N ) + \\frac { 3 2 \\left( G + D \\right) ^ { 2 } } { \\lambda } \\ln ( 1 + 4 \\lambda V _ { T } ) \\right. } \\\\ & { \\displaystyle \\qquad \\left. + \\left( 3 2 D ^ { 2 } C _ { 3 } - \\frac { C _ { 0 } } { 2 } \\right) S _ { T } ^ { 2 } + ( 3 2 C _ { 3 } - \\lambda ) \\sum _ { t = 2 \\, k = 1 } ^ { T } \\! \\! \\! \\! q _ { t , k } \\lVert \\mathbf { x } _ { t , k } - \\mathbf { x } _ { t - 1 , k } \\rVert ^ { 2 } \\right. } \\\\ & { \\displaystyle \\qquad \\left. + \\left( \\lambda _ { 2 } + 6 4 G _ { \\mathbf { x } } ^ { 2 } - \\frac { \\gamma } { 8 } \\right) S _ { T , k } ^ { * } , \\ldots + \\frac { 1 } { 4 } \\gamma D ^ { 2 } \\right. } \\\\ & { \\displaystyle \\qquad \\left. \\leq O \\left( \\frac { 1 } { \\lambda } \\ln V _ { T } \\right) \\right. \\qquad \\mathrm { ( r e q u i t i n g ~ } C _ { 0 } \\geq 6 4 D ^ { 2 } C _ { 3 } , \\lambda _ { 1 } \\geq 3 2 C _ { 3 } , \\gamma \\geq 8 \\lambda _ { 2 } + 5 1 2 G _ { \\mathbf { x } } ^ { 2 } \\right) } \\end{array}"
+        ],
+        "page": "sp_0046_page_0023",
+        "id": "sp_0046_page_0023-1",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          233.20675659179688,
+          770.8087158203125,
+          986.93310546875,
+          863.1295166015625
+        ],
+        "text": [
+          "\\begin{array} { r l } & { \\quad \\frac { 1 } { \\eta _ { k ^ { + } } } \\ln \\frac { N } { \\eta _ { k ^ { + } } ^ { 2 } } + 3 2 \\eta _ { k ^ { + } } V _ { \\star } \\leq \\frac { 1 } { \\eta _ { k ^ { + } } } \\ln \\frac { N } { \\eta _ { k ^ { + } } ^ { 2 } } + 1 2 8 \\eta _ { k ^ { + } } D ^ { 2 } V _ { T } + 2 ( D ^ { 2 } L ^ { 2 } + G ^ { 2 } ) S _ { T } ^ { \\star } + 2 G ^ { 2 } S _ { T , k ^ { + } , i ^ { 4 } } ^ { \\star } } \\\\ & { \\leq 2 C _ { 0 } \\ln ( 4 C _ { 0 } ^ { 2 } N ) + 3 2 D \\sqrt { 2 V _ { T } \\ln ( 5 1 2 N D ^ { 2 } V _ { T } ) } + 2 ( D ^ { 2 } L ^ { 2 } + G ^ { 2 } ) S _ { T } ^ { \\star } + 2 G ^ { 2 } S _ { T , k ^ { + } , i ^ { 4 } } ^ { \\star } . } \\end{array}"
+        ],
+        "page": "sp_0046_page_0023",
+        "id": "sp_0046_page_0023-2",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          296.5719909667969,
+          1303.4013671875,
+          917.476318359375,
+          1456.9232177734375
+        ],
+        "text": [
+          "\\begin{array} { r l } { \\lefteqn { { \\bf R E G } _ { T } \\leq 2 C _ { 0 } \\ln ( 4 C _ { 0 } ^ { 2 } N ) + \\mathcal { O } ( \\sqrt { V _ { T } \\ln V _ { T } } ) + 5 D \\sqrt { 1 + 2 V _ { T } } } \\quad } & { } \\\\ & { + \\left( 2 D C _ { 4 } - \\frac { C _ { 0 } } { 2 } \\right) S _ { T } ^ { q } + ( 2 C _ { 4 } - \\lambda _ { 1 } ) \\sum _ { t = 2 } ^ { T } \\sum _ { k = 1 } ^ { K } q _ { t , k } \\lVert { \\bf x } _ { t , k } - { \\bf x } _ { t - 1 , k } \\rVert ^ { 2 } } \\\\ & { + \\left( \\lambda _ { 2 } + 2 G ^ { 2 } - \\frac { \\gamma } { 4 } \\right) S _ { T , k ^ { \\star } , i ^ { \\star } } ^ { \\infty } + \\gamma D ^ { 2 } } \\end{array}"
+        ],
+        "page": "sp_0046_page_0023",
+        "id": "sp_0046_page_0023-3",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          274.6763610839844,
+          929.031982421875,
+          947.8847045898438,
+          1037.8128662109375
+        ],
+        "text": [
+          "\\begin{array} { r l } { \\lefteqn { \\mathrm { M E T A - R E G } \\le 2 C _ { 0 } \\ln ( 4 C _ { 0 } ^ { 2 } N ) + \\mathcal { O } ( \\sqrt { V _ { T } \\ln V _ { T } } ) + 2 ( D ^ { 2 } L ^ { 2 } + G ^ { 2 } ) S _ { T } ^ { \\alpha } } } \\\\ & { \\qquad \\qquad + \\left( \\lambda _ { 2 } + 2 G ^ { 2 } \\right) S _ { T , k ^ { * } , i ^ { * } } ^ { \\alpha } - \\frac { C _ { 0 } } { 2 } S _ { T } ^ { q } - \\lambda _ { 1 } \\sum _ { t = 2 } ^ { T } \\sum _ { k = 1 } ^ { K } q _ { t , k } \\| \\mathbf { x } _ { t , k } - \\mathbf { x } _ { t - 1 , k } \\| ^ { 2 } } \\end{array}"
+        ],
+        "page": "sp_0046_page_0023",
+        "id": "sp_0046_page_0023-4",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          282.4610595703125,
+          219.03309631347656,
+          993.8334350585938,
+          354.4096374511719
+        ],
+        "text": [
+          "\\begin{array} { r l } & { \\quad \\ln \\big ( 1 + \\lambda _ { i } { \\cdot } V _ { T , k ^ { * } , i ^ { * } } \\big ) \\leq \\ln ( 1 + 4 \\lambda _ { i ^ { * } } V _ { T } + ( 4 + 4 L ^ { 2 } ) \\lambda _ { i ^ { * } } S _ { T } ^ { \\mathbf { x } } + 4 \\lambda _ { i ^ { * } } S _ { T , k ^ { * } , i ^ { * } } ^ { \\mathbf { x } } ) } \\\\ & { = \\ln ( 1 + 4 \\lambda _ { i ^ { * } } V _ { T } ) + \\ln \\left( 1 + \\frac { ( 4 + 4 L ^ { 2 } ) \\lambda _ { i ^ { * } } S _ { T } ^ { \\mathbf { x } } + 4 \\lambda _ { i ^ { * } } S _ { T , k ^ { * } , i ^ { * } } ^ { \\mathbf { x } } } { 1 + 4 \\lambda _ { i ^ { * } } V _ { T } } \\right) } \\\\ & { \\leq \\ln ( 1 + 4 \\lambda _ { i ^ { * } } V _ { T } ) + ( 4 + 4 L ^ { 2 } ) \\lambda _ { i ^ { * } } S _ { T } ^ { \\mathbf { x } } + 4 \\lambda _ { i ^ { * } } S _ { T , k ^ { * } , i ^ { * } } ^ { \\mathbf { x } } . } \\end{array}"
+        ],
+        "page": "sp_0046_page_0023",
+        "id": "sp_0046_page_0023-5",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          242.40423583984375,
+          1076.1519775390625,
+          938.8770141601562,
+          1145.649169921875
+        ],
+        "text": [
+          "\\mathrm { B A S E - R E G } = \\sum _ { t = 1 } ^ { T } \\langle \\nabla f _ { t } ( \\mathbf { x } _ { t } ) , \\mathbf { x } _ { t , k ^ { * } , i ^ { * } } - \\mathbf { x } ^ { * } \\rangle \\leq 5 D \\sqrt { 1 + \\bar { V } _ { T , k ^ { * } , i ^ { * } } } + \\gamma D ^ { 2 } - \\frac { \\gamma } { 4 } S _ { T , k ^ { * } , i ^ { * } } ^ { \\mathbf { x } } ,"
+        ],
+        "page": "sp_0046_page_0023",
+        "id": "sp_0046_page_0023-6",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          352.4588928222656,
+          1219.10400390625,
+          870.5369873046875,
+          1260.4383544921875
+        ],
+        "text": [
+          "\\mathrm { B A S E - R E G } \\le 5 D \\sqrt { 1 + 2 V _ { T } } + 1 0 D L ^ { 2 } S _ { T } ^ { \\mathbf { x } } + \\gamma D ^ { 2 } - \\frac { \\gamma } { 4 } S _ { T , k ^ { \\star } , i ^ { \\star } } ^ { \\mathbf { x } } ."
+        ],
+        "page": "sp_0046_page_0023",
+        "id": "sp_0046_page_0023-7",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          275.75457763671875,
+          395.02447509765625,
+          946.514892578125,
+          446.2066955566406
+        ],
+        "text": [
+          "\\mathrm { B A S E - R E G } \\leq \\frac { 3 2 G _ { \\mathrm { x c } } ^ { 2 } } { \\lambda } \\ln ( 1 + 4 \\lambda V _ { T } ) + 1 6 C _ { 3 } S _ { T } ^ { \\mathrm { x } } + \\left( 6 4 G _ { \\mathrm { s c } } ^ { 2 } - \\frac { \\gamma } { 8 } \\right) S _ { T , k ^ { \\star } , i ^ { \\star } } ^ { \\mathrm { x } } + \\frac { 1 } { 4 } \\gamma D ^ { 2 } ,"
+        ],
+        "page": "sp_0046_page_0023",
+        "id": "sp_0046_page_0023-8",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          340.7864685058594,
+          142.32232666015625,
+          634.1180419921875,
+          174.59239196777344
+        ],
+        "text": [
+          "\\begin{array} { r } { \\leq 4 V _ { T } + ( 4 + 4 L ^ { 2 } ) S _ { T } ^ { \\mathbf { x } } + 4 S _ { T , k ^ { \\star } , i ^ { \\star } } ^ { \\mathbf { x } } , } \\end{array}"
+        ],
+        "page": "sp_0046_page_0023",
+        "id": "sp_0046_page_0023-9",
+        "seg_type": "eq"
+      }
+    ]
+  },
+  "sp_0046_page_0024": {
+    "bboxes": [
+      {
+        "box": [
+          213.89974975585938,
+          798.0405883789062,
+          1016.2777709960938,
+          1110.095703125
+        ],
+        "text": [
+          "\\begin{array} { l } { \\displaystyle \\bar { V } _ { T , k \\cdot \\cdot , i \\cdot } = \\displaystyle \\sum _ { i = 2 } ^ { T } \\| ( \\mathbf { g } _ { t } + \\alpha _ { i } \\mathbf { \\cdot } \\mathbf { g } _ { t } \\mathbf { g } _ { t } ^ { \\top } ( \\mathbf { x } _ { t , k \\cdot \\cdot } , \\ldots \\mathbf { x } _ { t } ) ) - ( \\mathbf { g } _ { t - 1 } + \\alpha _ { i } \\mathbf { \\cdot } \\mathbf { g } _ { t - 1 } \\mathbf { g } _ { t - 1 } ^ { \\top } ( \\mathbf { x } _ { t - 1 , k \\cdot \\cdot } , \\ldots - \\mathbf { x } _ { t - 1 } ) ) \\| ^ { 2 } } \\\\ { \\quad \\quad \\quad \\quad \\quad \\quad \\quad \\displaystyle \\sum _ { i = 2 } ^ { T } \\| \\mathbf { g } _ { t } - \\mathbf { g } _ { t - 1 } \\| ^ { 2 } + 2 \\alpha _ { i } ^ { 2 } \\displaystyle \\sum _ { i = 2 } ^ { T } \\| \\mathbf { g } _ { t } \\mathbf { g } _ { t } ^ { \\top } ( \\mathbf { x } _ { t , k \\cdot \\cdot } , \\ldots - \\mathbf { x } _ { t } ) - \\mathbf { g } _ { t - 1 } \\| ^ { \\frac { 1 } { 2 } } - \\| \\mathbf { g } _ { t - 1 , k \\cdot \\cdot } ^ { \\top } ( \\mathbf { x } _ { t - 1 , k \\cdot \\cdot } , \\ldots - \\mathbf { x } _ { t - 1 } ) \\| ^ { 2 } } \\\\ { \\quad \\quad \\quad \\quad \\quad \\quad \\quad \\quad \\quad \\quad \\quad \\quad \\quad \\quad \\quad \\quad \\quad \\quad \\quad \\quad \\left. + \\frac { 1 } { \\alpha _ { i } } \\left\\| \\mathbf { g } _ { t } - \\mathbf { g } _ { t - 1 } \\right\\| ^ { 2 } - \\mathbf { g } _ { t - 1 } \\| ^ { 2 } + 8 G ^ { \\frac { 1 } { 2 } } \\mathbf { g } _ { T } ^ { \\frac { 1 } { 2 } } + \\mathrm { ~ s G } ^ { \\frac { 1 } { 2 } } \\mathbf { g } _ { T , k \\cdot \\cdot } ^ { \\top } \\right. } \\\\ { \\quad \\quad \\quad \\quad \\quad \\quad \\quad \\quad \\quad \\quad \\left. + \\frac { 1 } { \\alpha _ { i } } \\left\\| \\mathbf { g } _ { t } ^ { ( 2 ) } ( \\mathbf { x } _ { t } ^ { 2 } ) \\right| ^ { \\frac { 1 } { 2 } } - \\| \\mathbf { g } _ { t - 1 } \\| ^ { 2 } + 8 G ^ { 4 } \\mathbf { g } _ { T } ^ { \\frac { 1 } { 2 } } + 8 G ^ { 4 } S _ { T , k \\cdot \\cdot } ^ { \\top } \\right. } \\\\ { \\quad \\quad \\quad \\quad \\quad \\quad \\quad \\quad \\quad \\quad \\quad \\quad \\left. \\mathbf { g } ( \\mathbf { x } _ { t } ) \\mathbf { g } _ { T } ^ { \\frac { 1 } { 2 } } + 8 G ^ { 4 } S _ { T , k \\cdot \\cdot } ^ { \\top } \\right\\} \\qquad \\quad \\quad \\quad \\quad \\quad \\quad \\quad \\quad \\quad "
+        ],
+        "page": "sp_0046_page_0024",
+        "id": "sp_0046_page_0024-1",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          272.0411071777344,
+          1397.828857421875,
+          818.981689453125,
+          1453.0245361328125
+        ],
+        "text": [
+          "{ \\mathrm { R E G } } _ { T } \\leq \\frac { 5 1 2 } { \\alpha } \\ln \\frac { 2 ^ { 2 0 } N } { \\alpha ^ { 2 } } + 2 C _ { 0 } \\ln ( 4 C _ { 0 } ^ { 2 } N ) + \\frac { 3 2 d } { \\alpha } \\ln \\left( 1 + \\frac { \\alpha C _ { 5 } } { 8 \\gamma d } F _ { T } ^ { \\mathrm { x } } \\right)"
+        ],
+        "page": "sp_0046_page_0024",
+        "id": "sp_0046_page_0024-2",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          291.729248046875,
+          1199.1717529296875,
+          930.2826538085938,
+          1255.6317138671875
+        ],
+        "text": [
+          "\\ln \\left( 1 + \\frac { \\alpha _ { i ^ { * } } } { 8 \\gamma d } \\bar { V } _ { T , k ^ { * } , i ^ { * } } \\right) \\leq \\ln \\left( 1 + \\frac { \\alpha _ { i ^ { * } } C _ { 5 } } { 8 \\gamma d } F _ { T } ^ { \\mathbf { x } } \\right) + \\frac { \\alpha _ { i ^ { * } } G ^ { 4 } } { \\gamma d } S _ { T } ^ { \\mathbf { x } } + \\frac { \\alpha _ { i ^ { * } } G ^ { 4 } } { \\gamma d } S _ { T , k ^ { * } , i ^ { * } } ^ { \\mathbf { x } } ."
+        ],
+        "page": "sp_0046_page_0024",
+        "id": "sp_0046_page_0024-3",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          260.0044860839844,
+          1300.2464599609375,
+          964.326904296875,
+          1354.144775390625
+        ],
+        "text": [
+          "{ \\tt B A S E - R E G } \\leq \\frac { 3 2 d } { \\alpha } \\ln \\left( 1 + \\frac { \\alpha C _ { 5 } } { 8 \\gamma d } F _ { T } ^ { \\tt x } \\right) + \\frac { 1 6 G ^ { 4 } } { \\gamma } S _ { T } ^ { \\tt x } + \\left( \\frac { 1 6 G ^ { 4 } } { \\gamma } - \\frac { \\gamma } { 4 } \\right) S _ { T , k ^ { * } , i ^ { * } } ^ { \\tt x } + \\frac { 1 } { 2 } \\gamma D ^ { 2 } ."
+        ],
+        "page": "sp_0046_page_0024",
+        "id": "sp_0046_page_0024-4",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          226.0542755126953,
+          271.72015380859375,
+          993.8908081054688,
+          381.65155029296875
+        ],
+        "text": [
+          "\\begin{array} { c } { \\displaystyle C _ { 0 } \\ge 1 , \\ C _ { 0 } \\ge 4 \\lambda _ { 1 } D ^ { 2 } , \\ C _ { 0 } \\ge 1 2 8 , \\ C _ { 0 } \\ge \\frac { 8 C _ { 2 } D ^ { 2 } } { 8 G ^ { 2 } + \\lambda _ { 2 } } , \\ C _ { 0 } \\ge 6 4 D ^ { 2 } C _ { 3 } , \\ C _ { 0 } \\ge 8 D , \\ C _ { 0 } \\ge 4 D C _ { 4 } , } \\\\ { \\lambda _ { 1 } \\ge \\frac { 4 C _ { 2 } } { 8 G ^ { 2 } + \\lambda _ { 2 } } , \\ \\lambda _ { 1 } \\ge 3 2 C _ { 3 } , \\ \\lambda _ { 1 } \\ge 2 C _ { 4 } , \\ \\lambda _ { 2 } \\ge 2 \\lambda _ { 1 } . } \\end{array}"
+        ],
+        "page": "sp_0046_page_0024",
+        "id": "sp_0046_page_0024-5",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          345.4563293457031,
+          137.37440490722656,
+          1011.982177734375,
+          173.2717742919922
+        ],
+        "text": [
+          "\\begin{array} { c c c } { \\leq { \\mathcal O } ( \\sqrt { V _ { T } \\ln V _ { T } } ) , ~ ~ ~ ~ } & { ~ ~ ~ ~ \\mathrm { ~ ( r e q u i r i n g ~ } C _ { 0 } \\geq 4 D C _ { 4 } , \\lambda _ { 1 } \\geq 2 C _ { 4 } , \\gamma \\geq 4 \\lambda _ { 2 } + 8 G ^ { 2 } ) } \\end{array}"
+        ],
+        "page": "sp_0046_page_0024",
+        "id": "sp_0046_page_0024-6",
+        "seg_type": "eq"
+      }
+    ]
+  },
+  "sp_0046_page_0025": {
+    "bboxes": [
+      {
+        "box": [
+          261.2979431152344,
+          1031.53271484375,
+          1013.2330322265625,
+          1312.2020263671875
+        ],
+        "text": [
+          "\\begin{array} { r l r } { \\lefteqn { \\mathrm { R E G } _ { T } \\leq \\frac { 5 1 2 G ^ { 2 } } { \\lambda } \\ln \\frac { 2 ^ { 2 0 } N G ^ { 4 } } { \\lambda ^ { 2 } } + 2 C _ { 0 } \\ln ( 4 G _ { 0 } ^ { 2 } N ) + \\frac { 3 2 G _ { \\infty } ^ { 2 } } { \\lambda } \\ln ( 1 + 3 2 \\lambda L F _ { T } ^ { \\star } ) } } \\\\ & { } & { + \\left( 1 2 8 D ^ { 2 } G _ { \\infty } ^ { 2 } - \\frac { C _ { 0 } } { 2 } \\right) S _ { T } ^ { q } + \\left( 1 2 8 G _ { \\infty } ^ { 2 } - \\lambda _ { 1 } \\right) \\sum _ { t = 2 \\lfloor k _ { \\pm } \\rfloor } ^ { T } \\eta _ { t , k } \\, \\bigl \\| \\mathbf { x } _ { t , k } - \\mathbf { x } _ { t - 1 , k } \\bigr \\| ^ { 2 } } \\\\ & { } & { + \\left( \\lambda _ { 2 } + 6 4 G _ { \\infty } ^ { 2 } - \\frac { 7 } { 8 } \\right) S _ { T , k - , i \\epsilon } ^ { \\star } } \\\\ & { } & { \\leq { \\mathcal O } \\left( \\frac { 1 } { \\lambda } \\ln F _ { T } ^ { \\star } \\right) \\qquad \\mathrm { ( r e q u i t i n g ~ } C _ { 0 } \\geq 2 5 6 D ^ { 2 } G _ { \\infty } ^ { 2 } , \\lambda _ { 1 } \\geq 1 2 8 G _ { \\infty } ^ { 2 } , \\gamma \\geq 8 \\lambda _ { 2 } + 5 1 2 G _ { \\infty } ^ { 2 } \\right) } \\\\ & { } & { \\qquad \\qquad \\qquad \\qquad \\qquad \\qquad \\qquad \\qquad \\qquad \\qquad \\qquad \\, ( 1 5 \\, \\mathrm { L e m m a ~ } ^ { 4 } ) } \\end{array}"
+        ],
+        "page": "sp_0046_page_0025",
+        "id": "sp_0046_page_0025-1",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          319.93731689453125,
+          140.84210205078125,
+          1012.6500244140625,
+          380.7285461425781
+        ],
+        "text": [
+          "\\begin{array} { l } { \\displaystyle + \\left( \\frac { 3 2 D ^ { 2 } G ^ { 4 } } { \\gamma } - \\frac { C _ { 0 } } { 2 } \\right) S _ { T } ^ { q } + \\left( \\frac { 3 2 G ^ { 4 } } { \\gamma } - \\lambda _ { 1 } \\right) \\sum _ { t = 2 } ^ { T } \\sum _ { k = 1 } ^ { K } q _ { t , k } \\| \\mathbf { x } _ { t , k } - \\mathbf { x } _ { t - 1 , k } \\| ^ { 2 } } \\\\ { \\displaystyle + \\left( \\lambda _ { 2 } + \\frac { 1 6 G ^ { 4 } } { \\gamma } - \\frac { \\gamma } { 4 } \\right) S _ { T , k } ^ { s } , \\dots } \\\\ { \\le \\mathcal { O } \\left( \\frac { d } { \\alpha } \\ln F _ { T } ^ { s } \\right) \\qquad \\mathrm { ~ ( r e q u i v i n g ~ } C _ { 0 } \\ge 6 4 D ^ { 2 } G ^ { 4 } / \\gamma , \\lambda _ { 1 } \\ge 3 2 G ^ { 4 } / \\gamma , \\gamma \\ge 8 G ^ { 2 } + \\lambda _ { 2 } ) } \\\\ { \\le \\mathcal { O } \\left( \\frac { d } { \\alpha } \\ln F _ { T } \\right) , } \\end{array}"
+        ],
+        "page": "sp_0046_page_0025",
+        "id": "sp_0046_page_0025-2",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          272.1678466796875,
+          635.4585571289062,
+          951.5760498046875,
+          805.2667846679688
+        ],
+        "text": [
+          "\\begin{array} { r l } & { \\displaystyle \\bar { V } _ { T , k ^ { * } , i ^ { * } } = \\sum _ { t = 2 } ^ { T } \\| ( \\mathbf g _ { t } + \\lambda _ { i ^ { * } } ( \\mathbf x _ { t , k ^ { * } , i ^ { * } } - \\mathbf x _ { t } ) ) - ( \\mathbf g _ { t - 1 } + \\lambda _ { i ^ { * } } ( \\mathbf x _ { t - 1 , k ^ { * } , i ^ { * } } - \\mathbf x _ { t - 1 } ) ) \\| ^ { 2 } } \\\\ & { \\quad \\quad \\quad \\quad \\leq 2 \\displaystyle \\sum _ { t = 2 } ^ { T } \\| \\mathbf g _ { t } - \\mathbf g _ { t - 1 } \\| ^ { 2 } + 2 \\lambda _ { i ^ { * } } ^ { 2 } \\displaystyle \\sum _ { t = 2 } ^ { T } \\| ( \\mathbf x _ { t , k ^ { * } , i ^ { * } } - \\mathbf x _ { t } ) - ( \\mathbf x _ { t - 1 , k ^ { * } , i ^ { * } } - \\mathbf x _ { t - 1 } ) \\| ^ { 2 } } \\\\ & { \\quad \\quad \\quad \\leq 3 2 L F _ { T } ^ { \\texttt X } + 4 S _ { T } ^ { \\texttt X } + 4 S _ { T , k ^ { * } , i ^ { * } } , } \\end{array}"
+        ],
+        "page": "sp_0046_page_0025",
+        "id": "sp_0046_page_0025-3",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          446.0346374511719,
+          450.310302734375,
+          776.3726806640625,
+          506.3395080566406
+        ],
+        "text": [
+          "x - d \\leq a \\ln \\left( 2 a b \\ln \\frac { 2 a b } { e } + 2 b d + 2 c \\right) ."
+        ],
+        "page": "sp_0046_page_0025",
+        "id": "sp_0046_page_0025-4",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          235.96408081054688,
+          1383.4293212890625,
+          986.427490234375,
+          1453.095458984375
+        ],
+        "text": [
+          "V _ { * } \\le 2 D ^ { 2 } \\sum _ { t = 1 } ^ { T } \\lVert \\nabla f _ { t } ( \\mathbf { x } _ { t } ) - \\nabla f _ { t - 1 } ( \\mathbf { x } _ { t - 1 } ) \\rVert ^ { 2 } + 2 G ^ { 2 } \\sum _ { t = 1 } ^ { T } \\lVert \\mathbf { x } _ { t , k ^ { \\star } , i ^ { \\star } } - \\mathbf { x } _ { t - 1 , k ^ { \\star } , i ^ { \\star } } + \\mathbf { x } _ { t - 1 } - \\mathbf { x } _ { t } \\rVert ^ { 2 }"
+        ],
+        "page": "sp_0046_page_0025",
+        "id": "sp_0046_page_0025-5",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          278.7391052246094,
+          847.8643188476562,
+          946.2269897460938,
+          900.755615234375
+        ],
+        "text": [
+          "\\frac { 1 6 G _ { \\mathrm { s c } } ^ { 2 } } { \\lambda _ { i ^ { * } } } \\ln \\left( 1 + \\lambda _ { i ^ { * } } \\bar { V } _ { T , k ^ { * } , i ^ { * } } \\right) \\leq \\frac { 1 6 G _ { \\mathrm { s c } } ^ { 2 } } { \\lambda _ { i ^ { * } } } \\ln ( 1 + 3 2 \\lambda _ { i ^ { * } } L F _ { T } ^ { \\bf x } ) + 6 4 G _ { \\mathrm { s c } } ^ { 2 } ( S _ { T } ^ { \\bf x } + S _ { T , k ^ { * } , i ^ { * } } ^ { \\bf x } ) ."
+        ],
+        "page": "sp_0046_page_0025",
+        "id": "sp_0046_page_0025-6",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          260.5251159667969,
+          941.49462890625,
+          961.3984985351562,
+          991.2840576171875
+        ],
+        "text": [
+          "{ \\tt B A S E - R E G } \\leq \\frac { 3 2 G _ { \\mathrm { s c } } ^ { 2 } } { \\lambda } \\ln ( 1 + 3 2 \\lambda L F _ { T } ^ { \\tt X } ) + 6 4 G _ { \\mathrm { s c } } ^ { 2 } S _ { T } ^ { \\tt X } + \\left( 6 4 G _ { \\mathrm { s c } } ^ { 2 } - \\frac { \\gamma } { 8 } \\right) S _ { T , k ^ { \\star } , i ^ { \\star } } ^ { \\tt X } + \\frac { 1 } { 4 } \\gamma D ^ { 2 } ."
+        ],
+        "page": "sp_0046_page_0025",
+        "id": "sp_0046_page_0025-7",
+        "seg_type": "eq"
+      }
+    ]
+  },
+  "sp_0046_page_0026": {
+    "bboxes": [
+      {
+        "box": [
+          245.37388610839844,
+          468.2843322753906,
+          979.068603515625,
+          753.6903686523438
+        ],
+        "text": [
+          "\\begin{array} { r l r } { \\lefteqn { \\mathbf { R F G } _ { T } \\leq \\frac { 1 } { \\eta _ { k ^ { * } } } \\ln \\frac { N } { \\eta _ { k ^ { * } } ^ { 2 } } + 1 0 2 4 \\eta _ { k ^ { * } } D ^ { 2 } L F _ { T } ^ { * } + 2 0 D \\sqrt { L F _ { T } ^ { * } } + \\left( \\lambda _ { 2 } + 2 G ^ { 2 } - \\frac { \\gamma } { 4 } \\right) S _ { T , k ^ { * } , \\cdot } ^ { * } . } } \\\\ & { } & { + \\left( 4 D ^ { 2 } G ^ { 2 } - \\frac { C _ { 0 } } { 2 } \\right) S _ { T } ^ { * } + \\left( 4 G ^ { 2 } - \\lambda _ { 1 } \\right) \\frac { T } { \\iota - 2 } \\underset { k = 2 \\, \\lfloor k _ { \\pm } \\rfloor } { \\sum } \\uppsi _ { k , k } \\biggr \\rvert \\mathbf { x } _ { + , k } - \\mathbf { x } _ { + , 1 , k } \\biggr \\} ^ { 2 } } \\\\ & { } & { \\leq \\frac { 1 } { \\eta _ { k ^ { * } } } \\ln \\frac { N } { \\eta _ { k ^ { * } } ^ { 2 } } + 1 0 2 4 \\eta _ { k ^ { * } } D ^ { 2 } L F _ { T } ^ { * } + 2 0 D \\sqrt { L F _ { T } ^ { * } } \\leq \\frac { 1 } { \\eta _ { k ^ { * } } } \\ln \\frac { N \\ell ^ { 5 } } { \\eta _ { k ^ { * } } ^ { 2 } } + 1 0 4 4 \\eta _ { k ^ { * } } D ^ { 2 } L F _ { T } ^ { * } } \\\\ & { } & { \\leq \\frac { 2 } { \\eta _ { k ^ { * } } } \\ln \\frac { N ^ { 6 } } { \\eta _ { k ^ { * } } ^ { 2 } } + 2 0 8 8 \\eta _ { k ^ { * } } D ^ { 2 } L F _ { T } \\quad } \\\\ & { } & { \\leq 4 C _ { 0 } \\ln ( 4 C _ { 0 } ^ { 2 } N ) + \\mathcal { O } \\left( \\sqrt { F _ { T } \\ln F _ { T } } \\right) , } & { \\mathrm { ~ } \\mathrm { ~ } \\mathrm { ~ ( b y ~ L e m m a ~ ~ ) } } \\end{array}"
+        ],
+        "page": "sp_0046_page_0026",
+        "id": "sp_0046_page_0026-1",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          287.70367431640625,
+          215.36492919921875,
+          932.3854370117188,
+          344.3326110839844
+        ],
+        "text": [
+          "\\begin{array} { r l } & { \\displaystyle \\mathbf { M } \\mathrm { E T A - R E G } \\leq \\displaystyle \\frac { 1 } { \\eta _ { k ^ { \\star } } } \\ln \\frac { N } { \\eta _ { k ^ { \\star } } ^ { 2 } } + 1 0 2 4 \\eta _ { k ^ { \\star } } D ^ { 2 } L F _ { T } ^ { \\mathbf { x } } + 2 G ^ { 2 } S _ { T } ^ { \\mathbf { x } } + \\bigl ( \\lambda _ { 2 } + 2 G ^ { 2 } \\bigr ) S _ { T , k ^ { \\star } , i ^ { \\star } } ^ { \\mathbf { x } } } \\\\ & { \\qquad \\qquad \\qquad - \\displaystyle \\frac { C _ { 0 } } { 2 } S _ { T } ^ { \\mathbf { q } } - \\lambda _ { 1 } \\sum _ { t = 2 } ^ { T } \\sum _ { k = 1 } ^ { K } q _ { t , k } \\| \\mathbf { x } _ { t , k } - \\mathbf { x } _ { t - 1 , k } \\| ^ { 2 } . } \\end{array}"
+        ],
+        "page": "sp_0046_page_0026",
+        "id": "sp_0046_page_0026-2",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          381.1651916503906,
+          383.2005310058594,
+          840.5078125,
+          425.7468566894531
+        ],
+        "text": [
+          "{ \\tt B A S E - R E G } \\leq 2 0 D \\sqrt { L F _ { T } ^ { \\tt X } } + \\gamma D ^ { 2 } - { \\frac { \\gamma } { 4 } } S _ { T , k ^ { \\star } , i ^ { \\star } } ^ { \\tt X } + \\mathcal { O } ( 1 ) ."
+        ],
+        "page": "sp_0046_page_0026",
+        "id": "sp_0046_page_0026-3",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          246.0872039794922,
+          1384.6126708984375,
+          975.7124633789062,
+          1453.038330078125
+        ],
+        "text": [
+          "\\mathbb { E } \\left[ \\sum _ { t = 2 } ^ { T } \\| \\nabla f _ { t } ( \\mathbf { x } _ { t } ) - \\nabla f _ { t - 1 } ( \\mathbf { x } _ { t - 1 } ) \\| ^ { 2 } \\right] \\leq 4 L ^ { 2 } \\sum _ { t = 2 } ^ { T } \\| \\mathbf { x } _ { t } - \\mathbf { x } _ { t - 1 } \\| ^ { 2 } + 8 \\sigma _ { 1 : T } ^ { 2 } + 4 \\Sigma _ { 1 : T } ^ { 2 } + \\mathcal { O } ( 1 ) ."
+        ],
+        "page": "sp_0046_page_0026",
+        "id": "sp_0046_page_0026-4",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          257.9458923339844,
+          918.4822998046875,
+          964.1657104492188,
+          1030.7694091796875
+        ],
+        "text": [
+          "\\begin{array} { c } { { C _ { 0 } \\ge 1 , ~ C _ { 0 } \\ge 4 \\lambda _ { 1 } D ^ { 2 } , ~ C _ { 0 } \\ge 1 2 8 , ~ C _ { 0 } \\ge \\frac { 6 4 D ^ { 2 } G ^ { 4 } } { 8 G ^ { 2 } + \\lambda _ { 2 } } , ~ C _ { 0 } \\ge 2 5 6 D ^ { 2 } G _ { \\mathrm { s c } } ^ { 2 } , ~ C _ { 0 } \\ge 8 D ^ { 2 } G ^ { 2 } , } } \\\\ { { C _ { 0 } \\ge 1 0 4 4 D ^ { 2 } L , ~ \\lambda _ { 1 } \\ge \\frac { 3 2 G ^ { 4 } } { 8 G ^ { 2 } + \\lambda _ { 2 } } , ~ \\lambda _ { 1 } \\ge 1 2 8 G _ { \\mathrm { s c } } ^ { 2 } , ~ \\lambda _ { 1 } \\ge 4 G ^ { 2 } , ~ \\lambda _ { 2 } \\ge 2 \\lambda _ { 1 } . } } \\end{array}"
+        ],
+        "page": "sp_0046_page_0026",
+        "id": "sp_0046_page_0026-5",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          263.0427551269531,
+          143.23304748535156,
+          587.40771484375,
+          174.36874389648438
+        ],
+        "text": [
+          "\\centering \\begin{array} { r } { \\leq 3 2 D ^ { 2 } L F _ { T } ^ { \\mathbf { x } } + 4 G ^ { 2 } S _ { T , k ^ { \\star } , i ^ { \\star } } ^ { \\mathbf { x } } + 4 G ^ { 2 } S _ { T } ^ { \\mathbf { x } } . } \\end{array}"
+        ],
+        "page": "sp_0046_page_0026",
+        "id": "sp_0046_page_0026-6",
+        "seg_type": "eq"
+      }
+    ]
+  },
+  "sp_0046_page_0027": {
+    "bboxes": [
+      {
+        "box": [
+          208.81915283203125,
+          1076.516845703125,
+          1029.7493896484375,
+          1272.9014892578125
+        ],
+        "text": [
+          "\\begin{array} { r l } & { \\quad \\mathbb { E } \\left[ \\displaystyle \\sum _ { t = 2 } ^ { T } \\frac { 1 } { \\lambda _ { i } { \\cdot } t } \\| \\nabla h _ { t , i ^ { * } } ^ { \\kappa } ( \\mathbf { x } _ { t , k ^ { * } , i ^ { * } } ) - \\nabla h _ { t - 1 , i ^ { * } } ^ { \\kappa } ( \\mathbf { x } _ { t - 1 , k ^ { * } , i ^ { * } } ) \\| ^ { 2 } \\right] } \\\\ & { \\le 8 \\displaystyle \\sum _ { t = 2 } ^ { T } \\frac { 2 \\sigma _ { t } ^ { 2 } + \\Sigma _ { t } ^ { 2 } } { \\lambda _ { i } { \\cdot } t } + 4 \\displaystyle \\sum _ { t = 2 } ^ { T } \\frac { ( 1 + 2 L ^ { 2 } ) \\| \\mathbf { x } _ { t } - \\mathbf { x } _ { t - 1 } \\| ^ { 2 } + \\| \\mathbf { x } _ { t , k ^ { * } , i ^ { * } } - \\mathbf { x } _ { t - 1 , k ^ { * } , i ^ { * } } \\| ^ { 2 } } { \\lambda _ { i } { \\cdot } t } } \\\\ & { \\le \\mathcal { O } \\left( \\displaystyle \\frac { 1 } { \\lambda } ( \\sigma _ { \\operatorname* { m a x } } ^ { 2 } + \\Sigma _ { \\operatorname* { m a x } } ^ { 2 } ) \\ln ( \\sigma _ { 1 , T } ^ { 2 } + \\Sigma _ { 1 ; T } ^ { 2 } ) \\right) + \\frac { 8 D ^ { 2 } ( L ^ { 2 } + 1 ) } { \\lambda _ { i ^ { * } } } \\ln ( 1 + \\lambda _ { i ^ { * } } ( 1 + 2 L ^ { 2 } ) S _ { T } ^ { \\kappa } + \\lambda _ { i ^ { * } } S _ { T , k ^ { * } , i ^ { * } } ^ { \\kappa } ) . } \\end{array}"
+        ],
+        "page": "sp_0046_page_0027",
+        "id": "sp_0046_page_0027-1",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          228.88864135742188,
+          1326.6759033203125,
+          993.9305419921875,
+          1456.07568359375
+        ],
+        "text": [
+          "\\begin{array} { c } { \\displaystyle \\mathbb { E } [ \\mathrm { R E G } _ { T } ] \\leq \\displaystyle \\frac { 5 1 2 G ^ { 2 } } { \\lambda } \\ln \\frac { 2 ^ { 2 0 } N G ^ { 4 } } { \\lambda ^ { 2 } } + 2 C _ { 0 } \\ln ( 4 C _ { 0 } ^ { 2 } N ) + \\mathcal { O } \\left( \\frac { 1 } { \\lambda } ( \\sigma _ { \\mathrm { m a x } } ^ { 2 } + \\Sigma _ { \\mathrm { m a x } } ^ { 2 } ) \\ln ( \\sigma _ { 1 : T } ^ { 2 } + \\Sigma _ { 1 : T } ^ { 2 } ) \\right) } \\\\ { \\displaystyle + \\left( 2 C _ { 7 } D ^ { 2 } - \\frac { C _ { 0 } } { 2 } \\right) S _ { T } ^ { q } + ( 2 C _ { 7 } - \\lambda _ { 1 } ) \\sum _ { t = 2 } ^ { T } \\sum _ { k = 1 } ^ { K } q _ { t , k } \\lVert \\mathbf { x } _ { t , k } - \\mathbf { x } _ { t - 1 , k } \\rVert ^ { 2 } } \\end{array}"
+        ],
+        "page": "sp_0046_page_0027",
+        "id": "sp_0046_page_0027-2",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          223.4568328857422,
+          274.1168518066406,
+          999.74267578125,
+          446.8411560058594
+        ],
+        "text": [
+          "\\begin{array} { c l } { \\displaystyle \\bar { V } _ { T , k ^ { * } , i ^ { * } } = \\displaystyle \\sum _ { t = 2 } ^ { T } \\| \\big ( \\mathbf { g } _ { t } + \\boldsymbol { \\alpha } _ { i ^ { * } } \\mathbf { g } _ { t } \\mathbf { g } _ { t } ^ { \\top } \\left( \\mathbf { x } _ { t , k ^ { * } , i ^ { * } } - \\mathbf { x } _ { t } \\right) \\right) - \\left( \\mathbf { g } _ { t - 1 } + \\boldsymbol { \\alpha } _ { i ^ { * } } \\mathbf { g } _ { t - 1 } \\mathbf { g } _ { t - 1 } ^ { \\top } \\big ( \\mathbf { x } _ { t - 1 , k ^ { * } , i ^ { * } } - \\mathbf { x } _ { t - 1 } \\big ) \\right) \\| ^ { 2 } } \\\\ { \\displaystyle } & { \\displaystyle \\leq \\left( 2 + 1 6 D ^ { 2 } G ^ { 2 } \\right) \\sum _ { t = 2 } ^ { T } \\| \\mathbf { g } _ { t } - \\mathbf { g } _ { t - 1 } \\| ^ { 2 } + 8 G ^ { 4 } S _ { T } ^ { \\times } + 8 G ^ { 4 } S _ { T , k ^ { * } , i ^ { * } } ^ { \\pi } } \\\\ { \\displaystyle } & { \\displaystyle \\leq 2 C _ { 5 } \\sigma _ { 1 ; T } ^ { 2 } + C _ { 5 } \\Sigma _ { 1 ; T } ^ { 2 } + C _ { 6 } S _ { T } ^ { \\infty } + 8 G ^ { 4 } S _ { T , k ^ { * } , i ^ { * } } ^ { \\pi } , } \\end{array}"
+        ],
+        "page": "sp_0046_page_0027",
+        "id": "sp_0046_page_0027-3",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          273.3890380859375,
+          592.7244873046875,
+          952.6876831054688,
+          779.1174926757812
+        ],
+        "text": [
+          "\\begin{array} { r l } & { \\displaystyle \\mathbb { E } [ { \\bf R e } _ { T } ] \\leq \\frac { 5 1 2 } { \\alpha } \\ln \\frac { 2 ^ { 2 0 } N } { \\alpha ^ { 2 } } + 2 C _ { 0 } \\ln ( 4 C _ { 0 } ^ { 2 } N ) + \\mathcal { O } \\left( \\frac { d } { \\alpha } \\ln \\left( \\sigma _ { 1 : T } ^ { 2 } + \\Sigma _ { 1 : T } ^ { 2 } \\right) \\right) } \\\\ & { \\displaystyle \\qquad \\qquad + \\left( \\frac { 4 C _ { 6 } D ^ { 2 } } { \\gamma } - \\frac { C _ { 0 } } { 2 } \\right) S _ { T } ^ { q } + \\left( \\frac { 4 C _ { 6 } } { \\gamma } - \\lambda _ { 1 } \\right) \\sum _ { t = 2 } ^ { T } \\sum _ { k = 1 } ^ { K } q _ { t , k } \\| { \\bf x } _ { t , k } - { \\bf x } _ { t - 1 , k } \\| ^ { 2 } } \\\\ & { \\displaystyle \\qquad \\qquad + \\left( \\lambda _ { 2 } + \\frac { 1 6 G ^ { 4 } } { \\gamma } - \\frac { \\gamma } { 4 } \\right) S _ { T , k + , i ^ { * } } ^ { x } + \\frac { 1 } { 2 } \\gamma D ^ { 2 } \\leq \\mathcal { O } \\left( \\frac { d } { \\alpha } \\ln ( \\sigma _ { 1 : T } ^ { 2 } + \\Sigma _ { 1 : T } ^ { 2 } ) \\right) , } \\end{array}"
+        ],
+        "page": "sp_0046_page_0027",
+        "id": "sp_0046_page_0027-4",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          316.3150939941406,
+          863.7275390625,
+          901.5255737304688,
+          994.6785278320312
+        ],
+        "text": [
+          "\\begin{array} { r l } & { \\quad \\mathbb { E } \\left[ \\| \\nabla h _ { t , i ^ { \\star } } ^ { \\mathrm { s c } } ( \\mathbf { x } _ { t , k ^ { \\star } , i ^ { \\star } } ) - \\nabla h _ { t - 1 , i ^ { \\star } } ^ { \\mathrm { s c } } ( \\mathbf { x } _ { t - 1 , k ^ { \\star } , i ^ { \\star } } ) \\| ^ { 2 } \\right] } \\\\ & { = \\mathbb { E } \\left[ \\| ( \\mathbf { g } _ { t } + \\lambda _ { i ^ { \\star } } ( \\mathbf { x } _ { t , k ^ { \\star } , i ^ { \\star } } - \\mathbf { x } _ { t } ) ) - ( \\mathbf { g } _ { t - 1 } + \\lambda _ { i ^ { \\star } } ( \\mathbf { x } _ { t - 1 , k ^ { \\star } , i ^ { \\star } } - \\mathbf { x } _ { t - 1 } ) ) \\| ^ { 2 } \\right] } \\\\ & { \\leq 2 \\mathbb { E } \\left[ \\| \\mathbf { g } _ { t } - \\mathbf { g } _ { t - 1 } \\| ^ { 2 } \\right] + 2 \\lambda _ { i ^ { \\star } } ^ { 2 } \\| ( \\mathbf { x } _ { t , k ^ { \\star } , i ^ { \\star } } - \\mathbf { x } _ { t } ) - ( \\mathbf { x } _ { t - 1 , k ^ { \\star } , i ^ { \\star } } - \\mathbf { x } _ { t - 1 } ) \\| ^ { 2 } } \\\\ & { \\leq 1 6 \\sigma _ { t } ^ { 2 } + 8 \\Sigma _ { t } ^ { 2 } + ( 4 + 8 L ^ { 2 } ) \\| \\mathbf { x } _ { t } - \\mathbf { x } _ { t - 1 } \\| ^ { 2 } + 4 \\| \\mathbf { x } _ { t , k ^ { \\star } , i ^ { \\star } } - \\mathbf { x } _ { t - 1 , k ^ { \\star } , i ^ { \\star } } \\| ^ { 2 } , } \\end{array}"
+        ],
+        "page": "sp_0046_page_0027",
+        "id": "sp_0046_page_0027-5",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          241.48638916015625,
+          503.47296142578125,
+          980.0014038085938,
+          558.80908203125
+        ],
+        "text": [
+          "\\mathbb { E } [ { \\mathtt { B } } _ { \\mathrm { A S E - R E G } } ] \\leq \\mathcal { O } \\left( \\frac { d } { \\alpha } \\ln \\left( \\sigma _ { 1 : T } ^ { 2 } + \\Sigma _ { 1 : T } ^ { 2 } \\right) \\right) + \\frac { 2 C _ { 6 } } { \\gamma } S _ { T } ^ { * } + \\left( \\frac { 1 6 G ^ { 4 } } { \\gamma } - \\frac { \\gamma } { 4 } \\right) S _ { T , k ^ { \\star } , i ^ { \\star } } ^ { \\mathbf { x } } + \\frac { 1 } { 2 } \\gamma D ^ { 2 } ."
+        ],
+        "page": "sp_0046_page_0027",
+        "id": "sp_0046_page_0027-6",
+        "seg_type": "eq"
+      }
+    ]
+  },
+  "sp_0046_page_0028": {
+    "bboxes": [
+      {
+        "box": [
+          210.62879943847656,
+          507.60858154296875,
+          1009.9872436523438,
+          761.7941284179688
+        ],
+        "text": [
+          "\\begin{array} { r l } & { \\quad \\mathbb { E } [ \\mathbf { M } \\mathbf { F } \\mathbf { T } \\mathbf { A } \\mathbf { - } \\mathbf { K } \\mathbf { F } \\mathbf { G } ] \\leq \\displaystyle \\frac { 1 } { \\eta _ { k } } \\ln \\frac { N } { \\eta _ { k } ^ { 2 } } + 1 2 8 D ^ { 2 } \\eta _ { k } \\mathrm { . } ( 2 \\sigma _ { 1 , T } ^ { 2 } + \\sum _ { 1 : T } ^ { 2 } ) + 1 2 8 ( 2 D ^ { 2 } L ^ { 2 } + G ^ { 2 } ) S _ { T } ^ { \\pm } } \\\\ & { \\qquad + \\left( \\lambda _ { 2 } + 1 2 8 G ^ { 2 } \\right) S _ { T , k } ^ { \\pm } \\mathrm { . . . } \\, \\displaystyle - \\frac { C _ { 0 } } { 2 } S _ { T } ^ { q } - \\lambda _ { 1 } \\sum _ { t = 2 } ^ { T } \\frac { K } { K + 1 } \\ensuremath { \\| \\mathbf { x } _ { t , k } - \\mathbf { x } _ { t - 1 , k } \\| ^ { 2 } } } \\\\ & { \\leq 2 C _ { 0 } \\ln ( 4 C _ { 0 } ^ { 2 } N ) + \\mathcal { O } \\left( \\sqrt { ( \\sigma _ { 1 : T } ^ { 2 } + \\sum _ { 1 : T } ^ { 2 } ) \\ln ( \\sigma _ { 1 : T } ^ { 2 } + \\sum _ { 1 : T } ^ { 2 } ) } \\right) } \\\\ & { \\phantom { = } \\; + 1 2 8 ( 2 D ^ { 2 } L ^ { 2 } + G ^ { 2 } ) S _ { T } ^ { \\pm } \\left( \\lambda _ { 2 } + 1 2 8 G ^ { 2 } \\right) S _ { T , k } ^ { 2 } \\mathrm { . . . } \\, \\displaystyle - \\frac { C _ { 0 } } { 2 } S _ { T } ^ { q } - \\lambda _ { 1 } \\sum _ { t = 2 } ^ { T } \\sum _ { t = 1 } ^ { K } q _ { t , k } \\left\\| \\mathbf { x } _ { t , k } - \\mathbf { x } _ { t - 1 , k } \\right\\| ^ { 2 } , } \\end{array}"
+        ],
+        "page": "sp_0046_page_0028",
+        "id": "sp_0046_page_0028-1",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          282.7693786621094,
+          917.8884887695312,
+          940.7282104492188,
+          1141.3992919921875
+        ],
+        "text": [
+          "\\begin{array} { l } { \\displaystyle \\mathbb { E } [ \\mathbf { R } \\mathbf { E } \\boldsymbol { \\sigma } ] \\leq \\mathcal { O } \\left( \\sqrt { ( \\sigma _ { 1 : T } ^ { 2 } + \\Sigma _ { 1 : T } ^ { 2 } ) \\ln ( \\sigma _ { 1 : T } ^ { 2 } + \\Sigma _ { 1 : T } ^ { 2 } ) } \\right) + 2 C _ { 0 } \\ln ( 4 C _ { 0 } ^ { 2 } N ) } \\\\ { \\displaystyle \\qquad + \\left( 2 D ^ { 2 } C _ { 9 } - \\frac { C _ { 0 } } { 2 } \\right) S _ { T } ^ { q } + ( 2 C _ { 9 } - \\lambda _ { 1 } ) \\sum _ { t = 2 } ^ { T } \\sum _ { k = 1 } ^ { K } q _ { t , k } \\lVert \\mathbf { x } _ { t , k } - \\mathbf { x } _ { t - 1 , k } \\rVert ^ { 2 } } \\\\ { \\displaystyle \\qquad + \\left( \\lambda _ { 2 } + 1 2 8 G ^ { 2 } - \\frac { \\gamma } { 4 } \\right) S _ { T , k } ^ { s } \\dots + \\gamma D ^ { 2 } } \\\\ { \\displaystyle \\leq \\mathcal { O } \\left( \\sqrt { ( \\sigma _ { 1 : T } ^ { 2 } + \\Sigma _ { 1 : T } ^ { 2 } ) \\ln ( \\sigma _ { 1 : T } ^ { 2 } + \\Sigma _ { 1 : T } ^ { 2 } ) } \\right) } \\end{array}"
+        ],
+        "page": "sp_0046_page_0028",
+        "id": "sp_0046_page_0028-2",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          234.4972686767578,
+          356.20574951171875,
+          986.3128051757812,
+          459.7481994628906
+        ],
+        "text": [
+          "\\begin{array} { l } { { \\displaystyle V _ { \\star } \\leq 2 D ^ { 2 } \\sum _ { t = 1 } ^ { T } \\| \\nabla f _ { t } ( { \\bf x } _ { t } ) - \\nabla f _ { t - 1 } ( { \\bf x } _ { t - 1 } ) \\| ^ { 2 } + 2 G ^ { 2 } \\sum _ { t = 1 } ^ { T } \\| { \\bf x } _ { t , k ^ { \\star } , i ^ { \\star } } - { \\bf x } _ { t - 1 , k ^ { \\star } , i ^ { \\star } } + { \\bf x } _ { t - 1 } - { \\bf x } _ { t } \\| ^ { 2 } } } \\\\ { ~ ~ ~ ~ \\leq 8 D ^ { 2 } ( 2 \\sigma _ { 1 , T } ^ { 2 } + \\Sigma _ { 1 : T } ^ { 2 } ) + ( 8 D ^ { 2 } L ^ { 2 } + 4 G ^ { 2 } ) S _ { T } ^ { \\mathbf { x } } + 4 G ^ { 2 } S _ { T , k ^ { \\star } , i ^ { \\star } } ^ { \\mathbf { x } } + \\mathcal { O } ( 1 ) , } \\end{array}"
+        ],
+        "page": "sp_0046_page_0028",
+        "id": "sp_0046_page_0028-3",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          306.39605712890625,
+          139.83192443847656,
+          734.5679321289062,
+          243.7291259765625
+        ],
+        "text": [
+          "\\begin{array} { r l } & { \\quad + \\left( \\lambda _ { 2 } + 3 2 D ^ { 2 } ( L ^ { 2 } + 1 ) - \\displaystyle \\frac { \\gamma } { 8 } \\right) S _ { T , k ^ { + } , i ^ { + } } ^ { \\mathbf { x } } + \\displaystyle \\frac { 1 } { 4 } \\gamma D ^ { 2 } } \\\\ & { \\leq \\mathcal { O } \\left( \\displaystyle \\frac { 1 } { \\lambda } ( \\sigma _ { \\operatorname* { m a x } } ^ { 2 } + \\Sigma _ { \\operatorname* { m a x } } ^ { 2 } ) \\ln ( \\sigma _ { 1 : T } ^ { 2 } + \\Sigma _ { 1 : T } ^ { 2 } ) \\right) , } \\end{array}"
+        ],
+        "page": "sp_0046_page_0028",
+        "id": "sp_0046_page_0028-4",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          277.6343078613281,
+          844.946533203125,
+          943.7498779296875,
+          887.591064453125
+        ],
+        "text": [
+          "\\begin{array} { r } { \\mathbb { E } [ { \\texttt B } \\mathrm { A S E - R E G } ] \\leq 1 0 D \\sqrt { ( 2 \\sigma _ { 1 : T } ^ { 2 } + \\Sigma _ { 1 : T } ^ { 2 } ) } + 1 0 D L S _ { T } ^ { \\mathbf { x } } + \\gamma D ^ { 2 } - \\frac { \\gamma } { 4 } S _ { T , k ^ { * } , i ^ { * } } ^ { \\mathbf { x } } + \\mathcal { O } ( 1 ) . } \\end{array}"
+        ],
+        "page": "sp_0046_page_0028",
+        "id": "sp_0046_page_0028-5",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          220.39321899414062,
+          1246.5677490234375,
+          999.0197143554688,
+          1356.839111328125
+        ],
+        "text": [
+          "\\begin{array} { l } { C _ { 0 } \\geq 1 , ~ C _ { 0 } \\geq 4 \\lambda _ { 1 } D ^ { 2 } , ~ C _ { 0 } \\geq 1 2 8 , ~ C _ { 0 } \\geq \\displaystyle \\frac { 8 C _ { 6 } D ^ { 2 } } { 8 G ^ { 2 } + \\lambda _ { 2 } } , ~ C _ { 0 } \\geq 4 C _ { 7 } D ^ { 2 } , ~ C _ { 0 } \\geq \\displaystyle \\frac { 4 D ^ { 2 } C _ { 8 } } { 1 6 + \\lambda _ { 2 } } , ~ C _ { 0 } \\geq 8 D , } \\\\ { C _ { 0 } \\geq 4 D ^ { 2 } C _ { 9 } , ~ \\lambda _ { 1 } \\geq \\displaystyle \\frac { 4 C _ { 6 } } { 8 G ^ { 2 } + \\lambda _ { 2 } } , ~ \\lambda _ { 1 } \\geq 2 C _ { 7 } , ~ \\lambda _ { 1 } \\geq \\displaystyle \\frac { 2 C _ { 8 } } { 1 6 + \\lambda _ { 2 } } , ~ \\lambda _ { 1 } \\geq 2 C _ { 9 } , ~ \\lambda _ { 1 } \\geq 4 G ^ { 2 } , ~ \\lambda _ { 2 } \\geq 2 \\lambda _ { 1 } . } \\end{array}"
+        ],
+        "page": "sp_0046_page_0028",
+        "id": "sp_0046_page_0028-6",
+        "seg_type": "eq"
+      }
+    ]
+  },
+  "sp_0046_page_0029": {
+    "bboxes": [
+      {
+        "box": [
+          475.4371337890625,
+          1183.2069091796875,
+          744.7510986328125,
+          1252.2708740234375
+        ],
+        "text": [
+          "\\sum _ { t = 1 } ^ { T } \\frac { a _ { t } } { b t } \\leq \\frac { a _ { \\operatorname* { m a x } } } { b } ( 1 + \\ln A ) + \\frac { 1 } { b ^ { 2 } } ."
+        ],
+        "page": "sp_0046_page_0029",
+        "id": "sp_0046_page_0029-1",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          261.6459045410156,
+          1306.2498779296875,
+          960.2450561523438,
+          1457.431884765625
+        ],
+        "text": [
+          "\\begin{array} { l } { \\displaystyle \\| \\mathbf { x } - \\mathbf { y } \\| ^ { 2 } = \\left\\| \\displaystyle \\sum _ { i = 1 } ^ { N } p _ { i } \\mathbf { x } _ { i } - \\sum _ { i = 1 } ^ { N } q _ { i } \\mathbf { y } _ { i } \\right\\| ^ { 2 } = \\left\\| \\displaystyle \\sum _ { i = 1 } ^ { N } p _ { i } \\mathbf { x } _ { i } - \\sum _ { i = 1 } ^ { N } p _ { i } \\mathbf { y } _ { i } + \\sum _ { i = 1 } ^ { N } p _ { i } \\mathbf { y } _ { i } - \\sum _ { i = 1 } ^ { N } q _ { i } \\mathbf { y } _ { i } \\right\\| ^ { 2 } } \\\\ { \\displaystyle \\leq 2 \\left\\| \\displaystyle \\sum _ { i = 1 } ^ { N } p _ { i } ( \\mathbf { x } _ { i } - \\mathbf { y } _ { i } ) \\right\\| ^ { 2 } + 2 \\left\\| \\displaystyle \\sum _ { i = 1 } ^ { N } ( p _ { i } - q _ { i } ) \\mathbf { y } _ { i } \\right\\| ^ { 2 } } \\end{array}"
+        ],
+        "page": "sp_0046_page_0029",
+        "id": "sp_0046_page_0029-2",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          410.7195739746094,
+          795.94775390625,
+          813.7192993164062,
+          864.482177734375
+        ],
+        "text": [
+          "\\| \\mathbf { x } - \\mathbf { y } \\| ^ { 2 } \\leq 2 \\sum _ { i = 1 } ^ { N } p _ { i } \\| \\mathbf { x } _ { i } - \\mathbf { y } _ { i } \\| ^ { 2 } + 2 D ^ { 2 } \\| p - \\pmb { q } \\| _ { 1 } ^ { 2 } ."
+        ],
+        "page": "sp_0046_page_0029",
+        "id": "sp_0046_page_0029-3",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          452.4775085449219,
+          1062.322509765625,
+          772.4371337890625,
+          1114.1448974609375
+        ],
+        "text": [
+          "\\frac { 1 } { \\eta } \\ln \\frac { Y } { \\eta ^ { 2 } } \\le 2 C _ { 0 } \\ln ( 4 Y C _ { 0 } ^ { 2 } ) + \\frac { 2 } { \\eta _ { \\star } } \\ln \\frac { 4 Y } { \\eta _ { \\star } ^ { 2 } } ."
+        ],
+        "page": "sp_0046_page_0029",
+        "id": "sp_0046_page_0029-4",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          400.9030456542969,
+          941.164794921875,
+          823.4124755859375,
+          991.737060546875
+        ],
+        "text": [
+          "\\frac { 1 } { \\eta } \\ln \\frac { Y } { \\eta ^ { 2 } } + \\eta X \\le 2 C _ { 0 } \\ln ( 4 Y C _ { 0 } ^ { 2 } ) + 4 \\sqrt { X \\ln ( 4 X Y ) } ."
+        ],
+        "page": "sp_0046_page_0029",
+        "id": "sp_0046_page_0029-5",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          396.3770751953125,
+          286.5054016113281,
+          825.0211181640625,
+          316.8544006347656
+        ],
+        "text": [
+          "\\| \\mathbf { g } _ { t } ^ { \\mathbf { x } } - \\mathbf { g } _ { t - 1 } ^ { \\mathbf { x } } \\| ^ { 2 } = \\| A \\mathbf { y } _ { t } - A \\mathbf { y } _ { t - 1 } \\| ^ { 2 } \\leq \\| \\mathbf { y } _ { t } - \\mathbf { y } _ { t - 1 } \\| ^ { 2 } ,"
+        ],
+        "page": "sp_0046_page_0029",
+        "id": "sp_0046_page_0029-6",
+        "seg_type": "eq"
+      }
+    ]
+  },
+  "sp_0046_page_0030": {
+    "bboxes": [
+      {
+        "box": [
+          420.1874694824219,
+          1067.934814453125,
+          804.92822265625,
+          1136.587646484375
+        ],
+        "text": [
+          "\\bar { V } _ { T } \\triangleq \\sum _ { t = 2 } ^ { T } \\| \\mathbf { g } _ { t } - \\mathbf { g } _ { t - 1 } \\| ^ { 2 } , \\mathrm { ~ w h e r e ~ } \\mathbf { g } _ { t } \\triangleq \\nabla f _ { t } ( \\mathbf { x } _ { t } ) ."
+        ],
+        "page": "sp_0046_page_0030",
+        "id": "sp_0046_page_0030-1",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          389.8095703125,
+          419.2810363769531,
+          834.0382690429688,
+          470.99468994140625
+        ],
+        "text": [
+          "\\frac { 1 } { \\eta } \\ln \\frac { Y } { \\eta ^ { 2 } } + \\eta X \\le \\frac { 2 } { \\eta _ { \\star } } \\ln \\frac { 4 Y } { \\eta _ { \\star } ^ { 2 } } + \\eta _ { \\star } X \\le 3 \\sqrt { X \\ln ( 4 X Y ) } ."
+        ],
+        "page": "sp_0046_page_0030",
+        "id": "sp_0046_page_0030-2",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          329.3337097167969,
+          529.7445678710938,
+          893.671875,
+          582.0587158203125
+        ],
+        "text": [
+          "\\frac { 1 } { \\eta } \\ln { \\frac { Y } { \\eta ^ { 2 } } } + \\eta X \\le \\frac { 1 } { \\eta } \\ln { \\frac { Y } { \\eta ^ { 2 } } } + \\eta _ { \\star } X \\le 2 C _ { 0 } \\ln ( 4 Y C _ { 0 } ^ { 2 } ) + \\sqrt { X \\ln ( 4 X Y ) } ."
+        ],
+        "page": "sp_0046_page_0030",
+        "id": "sp_0046_page_0030-3",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          252.72140502929688,
+          827.6339111328125,
+          967.1024780273438,
+          898.4406127929688
+        ],
+        "text": [
+          "\\sum _ { t = 1 } ^ { T } \\frac { a _ { t } } { b t } = \\sum _ { t = 1 } ^ { A } \\frac { a _ { t } } { b t } + \\sum _ { A + 1 } ^ { T } \\frac { a _ { t } } { b t } \\le \\frac { a _ { \\operatorname* { m a x } } } { b } \\sum _ { t = 1 } ^ { A } \\frac { 1 } { t } + \\frac { 1 } { b ( A + 1 ) } \\sum _ { A + 1 } ^ { T } a _ { t } \\le \\frac { a _ { \\operatorname* { m a x } } } { b } ( 1 + \\ln A ) + \\frac { 1 } { b ^ { 2 } } ,"
+        ],
+        "page": "sp_0046_page_0030",
+        "id": "sp_0046_page_0030-4",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          244.456787109375,
+          1188.3389892578125,
+          937.9470825195312,
+          1259.0743408203125
+        ],
+        "text": [
+          "\\bar { V } _ { T } = \\sum _ { t = 2 } ^ { T } \\| \\mathbf { g } _ { t } - \\nabla f _ { t - 1 } ( \\mathbf { x } _ { t } ) + \\nabla f _ { t - 1 } ( \\mathbf { x } _ { t } ) - \\mathbf { g } _ { t - 1 } \\| ^ { 2 } \\leq 2 V _ { T } + 2 L ^ { 2 } \\sum _ { t = 2 } ^ { T } \\| \\mathbf { x } _ { t } - \\mathbf { x } _ { t - 1 } \\| ^ { 2 } ,"
+        ],
+        "page": "sp_0046_page_0030",
+        "id": "sp_0046_page_0030-5",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          340.0428771972656,
+          141.16354370117188,
+          768.8272094726562,
+          284.4365539550781
+        ],
+        "text": [
+          "\\begin{array} { l } { \\displaystyle \\leq \\, 2 \\left( \\sum _ { i = 1 } ^ { N } p _ { i } \\| \\mathbf { x } _ { i } - \\mathbf { y } _ { i } \\| \\right) ^ { 2 } + 2 \\left( \\sum _ { i = 1 } ^ { N } | p _ { i } - q _ { i } | \\| \\mathbf { y } _ { i } \\| \\right) ^ { 2 } } \\\\ { \\displaystyle \\leq 2 \\sum _ { i = 1 } ^ { N } p _ { i } \\| \\mathbf { x } _ { i } - \\mathbf { y } _ { i } \\| ^ { 2 } + 2 D ^ { 2 } \\| p - q \\| _ { 1 } ^ { 2 } , } \\end{array}"
+        ],
+        "page": "sp_0046_page_0030",
+        "id": "sp_0046_page_0030-6",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          228.28439331054688,
+          1313.6317138671875,
+          956.7135620117188,
+          1384.113037109375
+        ],
+        "text": [
+          "{ \\bar { V } } _ { T } = \\sum _ { t = 2 } ^ { T } \\| \\mathbf { g } _ { t } - \\mathbf { g } _ { t - 1 } \\| ^ { 2 } \\leq 2 \\sum _ { t = 2 } ^ { T } \\| \\mathbf { g } _ { t } \\| ^ { 2 } + 2 \\sum _ { t = 2 } ^ { T } \\| \\mathbf { g } _ { t - 1 } \\| ^ { 2 } \\leq 4 \\sum _ { t = 1 } ^ { T } \\| \\mathbf { g } _ { t } \\| ^ { 2 } \\leq 1 6 L \\sum _ { t = 1 } ^ { T } f _ { t } ( \\mathbf { x } _ { t } ) ."
+        ],
+        "page": "sp_0046_page_0030",
+        "id": "sp_0046_page_0030-7",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          400.1058044433594,
+          611.2457885742188,
+          822.33154296875,
+          662.8449096679688
+        ],
+        "text": [
+          "\\frac { 1 } { \\eta } \\ln \\frac { Y } { \\eta ^ { 2 } } + \\eta X \\le 2 C _ { 0 } \\ln ( 4 Y C _ { 0 } ^ { 2 } ) + 4 \\sqrt { X \\ln ( 4 X Y ) } ,"
+        ],
+        "page": "sp_0046_page_0030",
+        "id": "sp_0046_page_0030-8",
+        "seg_type": "eq"
+      }
+    ]
+  },
+  "sp_0046_page_0031": {
+    "bboxes": [
+      {
+        "box": [
+          358.680908203125,
+          304.5787353515625,
+          864.4164428710938,
+          369.6011047363281
+        ],
+        "text": [
+          "\\mathsf { R E G } _ { T } \\leq 5 D \\sqrt { 1 + \\bar { V } _ { T } } + \\gamma D ^ { 2 } - \\frac { \\gamma } { 4 } \\sum _ { t = 2 } ^ { T } \\| \\mathbf { x } _ { t } - \\mathbf { x } _ { t - 1 } \\| ^ { 2 } + \\mathcal { O } ( 1 ) ."
+        ],
+        "page": "sp_0046_page_0031",
+        "id": "sp_0046_page_0031-1",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          236.79348754882812,
+          849.5360717773438,
+          986.4454345703125,
+          1027.9149169921875
+        ],
+        "text": [
+          "\\begin{array} { r } { \\displaystyle \\sum _ { t = 1 } ^ { T } f _ { t } ( \\mathbf { x } _ { t } ) - \\sum _ { t = 1 } ^ { T } f _ { t } ( \\mathbf { x } ^ { \\star } ) \\leq \\underbrace { \\displaystyle \\sum _ { t = 1 } ^ { T } \\eta _ { t } \\| \\nabla f _ { t } ( \\mathbf { x } _ { t } ) - \\mathbf { m } _ { t } \\| ^ { 2 } } _ { \\displaystyle \\mathrm { A n a r r u v i r v } } + \\underbrace { \\displaystyle \\sum _ { t = 1 } ^ { T } \\frac { 1 } { \\eta _ { t } } ( \\mathcal { D } _ { \\psi } ( \\mathbf { x } ^ { \\star } , \\hat { \\mathbf { x } } _ { t } ) - \\mathcal { D } _ { \\psi } ( \\mathbf { x } ^ { \\star } , \\hat { \\mathbf { x } } _ { t + 1 } ) ) } _ { \\mathrm { O r r } \\cdot \\mathrm { G a r } } } \\\\ { - \\displaystyle \\sum _ { t = 1 } ^ { T } \\frac { 1 } { \\eta _ { t } } ( \\mathcal { D } _ { \\psi } ( \\hat { \\mathbf { x } } _ { t + 1 } , \\mathbf { x } _ { t } ) + \\mathcal { D } _ { \\psi _ { t } } ( \\mathbf { x } _ { t } , \\hat { \\mathbf { x } } _ { t } ) ) , } \\end{array}"
+        ],
+        "page": "sp_0046_page_0031",
+        "id": "sp_0046_page_0031-2",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          226.71908569335938,
+          1096.278564453125,
+          995.630615234375,
+          1256.8707275390625
+        ],
+        "text": [
+          "\\begin{array} { r l } & { \\mathrm { A D A P T I V I T } = \\displaystyle \\sum _ { t = 1 } ^ { T } \\eta _ { t } \\| \\nabla f _ { t } ( \\mathbf { x } _ { t } ) - \\mathbf { m } _ { t } \\| ^ { 2 } \\leq D \\displaystyle \\sum _ { t = 1 } ^ { T } \\frac { \\| \\nabla f _ { t } ( \\mathbf { x } _ { t } ) - \\nabla f _ { t - 1 } ( \\mathbf { x } _ { t - 1 } ) \\| ^ { 2 } } { \\sqrt { 1 + \\displaystyle \\sum _ { s = 1 } ^ { t - 1 } \\| \\nabla f _ { s } ( \\mathbf { x } _ { s } ) - \\nabla f _ { s - 1 } ( \\mathbf { x } _ { s - 1 } ) \\| ^ { 2 } } } } \\\\ & { \\qquad \\qquad \\leq 4 D \\sqrt { 1 + \\displaystyle \\sum _ { t = 1 } ^ { T } \\| \\nabla f _ { t } ( \\mathbf { x } _ { t } ) - \\nabla f _ { t - 1 } ( \\mathbf { x } _ { t - 1 } ) \\| ^ { 2 } + 4 D G ^ { 2 } } , } \\end{array}"
+        ],
+        "page": "sp_0046_page_0031",
+        "id": "sp_0046_page_0031-3",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          235.4803924560547,
+          1339.675537109375,
+          988.1262817382812,
+          1406.3603515625
+        ],
+        "text": [
+          "\\mathbf { O P T - } \\boldsymbol { \\mathbf { G } } \\mathbf { A } \\mathbf { P } = \\sum _ { t = 1 } ^ { T } \\frac { 1 } { \\eta _ { t } } ( \\mathcal { D } _ { \\psi } ( \\mathbf { x } ^ { \\star } , \\widehat { \\mathbf { x } } _ { t } ) - \\mathcal { D } _ { \\psi } ( \\mathbf { x } ^ { \\star } , \\widehat { \\mathbf { x } } _ { t + 1 } ) ) = \\sum _ { t = 1 } ^ { T } \\frac { 1 } { 2 \\eta _ { t } } ( \\| \\mathbf { x } ^ { \\star } - \\widehat { \\mathbf { x } } _ { t } \\| ^ { 2 } - \\| \\mathbf { x } ^ { \\star } - \\widehat { \\mathbf { x } } _ { t + 1 } \\| ^ { 2 } )"
+        ],
+        "page": "sp_0046_page_0031",
+        "id": "sp_0046_page_0031-4",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          321.3493347167969,
+          702.8524780273438,
+          901.3532104492188,
+          773.2335815429688
+        ],
+        "text": [
+          "\\mathrm { R E G } _ { T } \\leq \\frac { 1 6 G ^ { 2 } } { \\lambda } \\ln \\left( 1 + \\lambda \\bar { V } _ { T } \\right) + \\frac { 1 } { 4 } \\gamma D ^ { 2 } - \\frac { \\gamma } { 8 } \\sum _ { t = 2 } ^ { T } \\| \\mathbf { x } _ { t } - \\mathbf { x } _ { t - 1 } \\| ^ { 2 } + \\mathcal { O } ( 1 ) ."
+        ],
+        "page": "sp_0046_page_0031",
+        "id": "sp_0046_page_0031-5",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          309.4547119140625,
+          553.3651123046875,
+          910.621826171875,
+          619.8062744140625
+        ],
+        "text": [
+          "\\mathbf { R } \\mathbf { E } \\mathbf { G } _ { T } \\leq \\frac { 1 6 d } { \\alpha } \\ln \\left( 1 + \\frac { \\alpha } { 8 \\gamma d } \\bar { V } _ { T } \\right) + \\frac { 1 } { 2 } \\gamma D ^ { 2 } - \\frac { \\gamma } { 4 } \\sum _ { t = 2 } ^ { T } \\| \\mathbf { x } _ { t } - \\mathbf { x } _ { t - 1 } \\| ^ { 2 } + \\mathcal { O } ( 1 ) ."
+        ],
+        "page": "sp_0046_page_0031",
+        "id": "sp_0046_page_0031-6",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          388.7331848144531,
+          202.92686462402344,
+          833.2988891601562,
+          229.7006378173828
+        ],
+        "text": [
+          "\\mathbf { x } _ { t } = \\Pi _ { \\mathcal { X } } [ \\widehat { \\mathbf { x } } _ { t } - \\eta _ { t } \\mathbf { m } _ { t } ] , \\quad \\widehat { \\mathbf { x } } _ { t + 1 } = \\Pi _ { \\mathcal { X } } [ \\widehat { \\mathbf { x } } _ { t } - \\eta _ { t } \\nabla f _ { t } ( \\mathbf { x } _ { t } ) ] ,"
+        ],
+        "page": "sp_0046_page_0031",
+        "id": "sp_0046_page_0031-7",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          249.06834411621094,
+          439.781982421875,
+          971.8948364257812,
+          476.9630432128906
+        ],
+        "text": [
+          "\\begin{array} { r } { \\mathbf { x } _ { t } = \\underset { \\mathbf { x } \\in \\mathcal { X } } { \\mathrm { a r g } \\, \\mathrm { m i n } } \\left\\{ \\langle \\mathbf { m } _ { t } , \\mathbf { x } \\rangle + \\mathcal { D } _ { \\psi _ { t } } ( \\mathbf { x } , \\hat { \\mathbf { x } } _ { t } ) \\right\\} , \\quad \\hat { \\mathbf { x } } _ { t + 1 } = \\underset { \\mathbf { x } \\in \\mathcal { X } } { \\mathrm { a r g } \\, \\mathrm { m i n } } \\left\\{ \\langle \\nabla f _ { t } ( \\mathbf { x } _ { t } ) , \\mathbf { x } \\rangle + \\mathcal { D } _ { \\psi _ { t } } ( \\mathbf { x } , \\hat { \\mathbf { x } } _ { t } ) \\right\\} , } \\end{array}"
+        ],
+        "page": "sp_0046_page_0031",
+        "id": "sp_0046_page_0031-8",
+        "seg_type": "eq"
+      }
+    ]
+  },
+  "sp_0046_page_0032": {
+    "bboxes": [
+      {
+        "box": [
+          307.861083984375,
+          831.511962890625,
+          917.2698364257812,
+          1039.4056396484375
+        ],
+        "text": [
+          "\\begin{array} { r l } & { \\displaystyle \\mathrm { O r r } \\mathrm { C a r } = \\frac { 1 } { 2 } \\sum _ { t = 1 } ^ { T } \\| \\mathbf { x } ^ { * } - \\widehat \\mathbf { x } _ { t } \\| _ { U _ { t } } ^ { 2 } - \\displaystyle \\frac { 1 } { 2 } \\sum _ { t = 1 } ^ { T } \\| \\mathbf { x } ^ { * } - \\widehat \\mathbf { x } _ { t + 1 } \\| _ { U _ { t } } ^ { 2 } } \\\\ & { \\displaystyle \\qquad \\leq \\frac { 1 } { 2 } \\| \\mathbf { x } ^ { * } - \\widehat \\mathbf { x } _ { 1 } \\| _ { V _ { 1 } } ^ { 2 } + \\frac { 1 } { 2 } \\sum _ { t = 1 } ^ { T } ( \\| \\mathbf { x } ^ { * } - \\widehat \\mathbf { x } _ { t + 1 } \\| _ { U _ { t + 1 } } ^ { 2 } - \\| \\mathbf { x } ^ { * } - \\widehat \\mathbf { x } _ { t + 1 } \\| _ { U _ { t } } ^ { 2 } ) } \\\\ & { \\displaystyle \\qquad \\leq \\frac { 1 } { 2 } \\gamma D ^ { 2 } + \\frac { \\alpha G ^ { 2 } D ^ { 2 } } { 4 } + \\frac { \\alpha } { 4 } \\sum _ { t = 1 } ^ { T } \\| \\mathbf { x } ^ { * } - \\widehat \\mathbf { x } _ { t + 1 } \\| _ { \\nabla f _ { t } ( \\mathbf { x } _ { t } ) \\nabla f _ { t } ( \\mathbf { x } _ { t } ) ^ { \\top } } ^ { 2 } . } \\end{array}"
+        ],
+        "page": "sp_0046_page_0032",
+        "id": "sp_0046_page_0032-1",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          227.321533203125,
+          359.551025390625,
+          994.13525390625,
+          500.10516357421875
+        ],
+        "text": [
+          "\\begin{array} { r l r } & { \\mathrm { S T A B I L T Y } = \\displaystyle \\sum _ { t = 1 } ^ { T } \\frac { 1 } { 2 \\eta _ { t } } ( \\| \\hat { { \\mathbf x } } _ { t + 1 } - { \\mathbf x } _ { t } \\| ^ { 2 } + \\| { \\mathbf x } _ { t } - \\hat { { \\mathbf x } } _ { t } \\| ^ { 2 } ) \\geq \\displaystyle \\sum _ { t = 2 } ^ { T } \\frac { 1 } { 2 \\eta _ { t } } ( \\| \\hat { { \\mathbf x } } _ { t } - { \\mathbf x } _ { t - 1 } \\| ^ { 2 } + \\| { \\mathbf x } _ { t } - \\hat { { \\mathbf x } } _ { t } \\| ^ { 2 } ) } & \\\\ & { \\quad } & { \\geq \\displaystyle \\sum _ { t = 2 } ^ { T } \\frac { 1 } { 4 \\eta _ { t } } \\| { \\mathbf x } _ { t } - { \\mathbf x } _ { t - 1 } \\| ^ { 2 } \\geq \\displaystyle \\frac { \\gamma } { 4 } \\sum _ { t = 2 } ^ { T } \\| { \\mathbf x } _ { t } - { \\mathbf x } _ { t - 1 } \\| ^ { 2 } . } & \\end{array}"
+        ],
+        "page": "sp_0046_page_0032",
+        "id": "sp_0046_page_0032-2",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          237.507568359375,
+          1099.7215576171875,
+          983.5533447265625,
+          1240.6158447265625
+        ],
+        "text": [
+          "\\begin{array} { l } { \\displaystyle \\leq \\frac { 1 } { 2 } \\gamma D ^ { 2 } + \\frac { \\alpha } { 4 } \\sum _ { t = 1 } ^ { T } \\| \\mathbf { x } ^ { \\star } - \\widehat \\mathbf { x } _ { t + 1 } \\| _ { \\nabla f _ { t } ( \\mathbf { x } _ { t } ) \\nabla f _ { t } ( \\mathbf { x } _ { t } ) ^ { \\top } } ^ { 2 } - \\frac { \\alpha } { 2 } \\sum _ { t = 1 } ^ { T } \\| \\mathbf { x } _ { t } - \\mathbf { x } ^ { \\star } \\| _ { \\nabla f _ { t } ( \\mathbf { x } _ { t } ) \\nabla f _ { t } ( \\mathbf { x } _ { t } ) ^ { \\top } } ^ { 2 } + \\mathcal { O } ( 1 ) } \\\\ { \\displaystyle \\leq \\frac { 1 } { 2 } \\gamma D ^ { 2 } + \\frac { \\alpha } { 2 } \\sum _ { t = 1 } ^ { T } \\| \\mathbf { x } _ { t } - \\widehat \\mathbf { x } _ { t + 1 } \\| _ { \\nabla f _ { t } ( \\mathbf { x } _ { t } ) \\nabla f _ { t } ( \\mathbf { x } _ { t } ) ^ { \\top } } ^ { 2 } + \\mathcal { O } ( 1 ) , } \\end{array}"
+        ],
+        "page": "sp_0046_page_0032",
+        "id": "sp_0046_page_0032-3",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          414.16741943359375,
+          1387.5372314453125,
+          806.8001098632812,
+          1452.9139404296875
+        ],
+        "text": [
+          "\\sum _ { t = 1 } ^ { T } \\Vert \\mathbf { x } _ { t } - \\widehat { \\mathbf { x } } _ { t + 1 } \\Vert _ { U _ { t } } ^ { 2 } \\leq \\sum _ { t = 1 } ^ { T } \\Vert \\nabla f _ { t } ( \\mathbf { x } _ { t } ) - \\mathbf { m } _ { t } \\Vert _ { U _ { t } ^ { - 1 } } ^ { 2 } ."
+        ],
+        "page": "sp_0046_page_0032",
+        "id": "sp_0046_page_0032-4",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          320.0762634277344,
+          141.83941650390625,
+          858.1035766601562,
+          328.8675231933594
+        ],
+        "text": [
+          "\\begin{array} { l } { \\displaystyle \\leq \\frac { \\| \\mathbf { x } ^ { \\star } - \\widehat { \\mathbf { x } } _ { 1 } \\| ^ { 2 } } { 2 \\eta _ { 1 } } + \\sum _ { t = 2 } ^ { T } \\left( \\frac { 1 } { 2 \\eta _ { t } } - \\frac { 1 } { 2 \\eta _ { t - 1 } } \\right) \\| \\mathbf { x } ^ { \\star } - \\widehat { \\mathbf { x } } _ { t } \\| ^ { 2 } } \\\\ { \\displaystyle \\leq \\frac { D } { 2 } ( 1 + \\gamma D ) + D ^ { 2 } \\sum _ { t = 2 } ^ { T } \\left( \\frac { 1 } { 2 \\eta _ { t } } - \\frac { 1 } { 2 \\eta _ { t - 1 } } \\right) \\leq \\frac { D } { 2 } ( 1 + \\gamma D ) + \\frac { D ^ { 2 } } { 2 \\eta _ { T } } } \\\\ { \\displaystyle = \\gamma D ^ { 2 } + \\frac { D } { 2 } \\sqrt { 1 + \\bar { V } _ { T } } + \\mathcal { O } ( 1 ) . } \\end{array}"
+        ],
+        "page": "sp_0046_page_0032",
+        "id": "sp_0046_page_0032-5",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          269.3304443359375,
+          1270.5648193359375,
+          953.34228515625,
+          1338.2454833984375
+        ],
+        "text": [
+          "\\frac { \\alpha } { 2 } \\sum _ { t = 1 } ^ { T } \\| \\mathbf { x } _ { t } - \\widehat { \\mathbf { x } } _ { t + 1 } \\| _ { \\nabla f _ { t } ( \\mathbf { x } _ { t } ) \\nabla f _ { t } ( \\mathbf { x } _ { t } ) ^ { \\top } } ^ { 2 } \\leq \\frac { \\alpha G ^ { 2 } } { 2 } \\sum _ { t = 1 } ^ { T } \\| \\mathbf { x } _ { t } - \\widehat { \\mathbf { x } } _ { t + 1 } \\| ^ { 2 } \\leq \\sum _ { t = 1 } ^ { T } \\| \\mathbf { x } _ { t } - \\widehat { \\mathbf { x } } _ { t + 1 } \\| _ { U _ { t } } ^ { 2 } ."
+        ],
+        "page": "sp_0046_page_0032",
+        "id": "sp_0046_page_0032-6",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          236.4481658935547,
+          604.306884765625,
+          982.3887329101562,
+          777.7976684570312
+        ],
+        "text": [
+          "\\begin{array} { r } { \\displaystyle \\sum _ { t = 1 } ^ { T } f _ { t } ( \\mathbf x _ { t } ) - \\sum _ { t = 1 } ^ { T } f _ { t } ( \\mathbf x ^ { * } ) \\leq \\underbrace { \\displaystyle \\sum _ { t = 1 } ^ { T } \\| \\nabla f _ { t } ( \\mathbf x _ { t } ) - \\mathbf m _ { t } \\| _ { U _ { t } ^ { - 1 } } ^ { 2 } } _ { \\displaystyle \\mathrm { A n a r r u r u r y } } + \\underbrace { \\displaystyle \\sum _ { t = 1 } ^ { T } ( \\mathcal D _ { \\psi _ { t } } ( \\mathbf x ^ { * } , \\hat { \\mathbf x } _ { t } ) - \\mathcal D _ { \\psi _ { t } } ( \\mathbf x ^ { * } , \\hat { \\mathbf x } _ { t + 1 } ) ) } _ { \\displaystyle \\mathrm { o r r } . } } \\\\ { - \\displaystyle \\sum _ { t = 1 } ^ { T } ( \\mathcal D _ { \\psi _ { t } } ( \\hat { \\mathbf x } _ { t + 1 } , \\mathbf x _ { t } ) + \\mathcal D _ { \\psi _ { t } } ( \\mathbf x _ { t } , \\hat { \\mathbf x } _ { t } ) ) - \\displaystyle \\sum _ { t = 1 } ^ { \\alpha } \\| \\mathbf x _ { t } - \\mathbf x ^ { * } \\| _ { \\nabla f _ { t } ( \\mathbf x _ { t } ) \\nabla f _ { t } ( \\mathbf x _ { t } ) } ^ { 2 } , } \\end{array}"
+        ],
+        "page": "sp_0046_page_0032",
+        "id": "sp_0046_page_0032-7",
+        "seg_type": "eq"
+      }
+    ]
+  },
+  "sp_0046_page_0033": {
+    "bboxes": [
+      {
+        "box": [
+          221.42579650878906,
+          316.2174072265625,
+          1002.6170043945312,
+          460.5403137207031
+        ],
+        "text": [
+          "\\begin{array} { r l } & { \\mathrm { S T A B I L T Y } = \\displaystyle \\sum _ { t = 1 } ^ { T } ( \\mathcal { D } _ { \\psi _ { t } } ( \\widehat { \\mathbf { x } } _ { t + 1 } , \\mathbf { x } _ { t } ) + \\mathcal { D } _ { \\psi _ { t } } ( \\mathbf { x } _ { t } , \\widehat { \\mathbf { x } } _ { t } ) ) = \\displaystyle \\frac { 1 } { 2 } \\sum _ { t = 1 } ^ { T } \\| \\widehat { \\mathbf { x } } _ { t + 1 } - \\mathbf { x } _ { t } \\| _ { \\psi _ { t } } ^ { 2 } + \\frac { 1 } { 2 } \\sum _ { t = 1 } ^ { T } \\| \\mathbf { x } _ { t } - \\widehat { \\mathbf { x } } _ { t } \\| _ { U _ { t } } ^ { 2 } } \\\\ & { \\qquad \\qquad \\geq \\displaystyle \\frac { \\gamma } { 2 } \\sum _ { t = 1 } ^ { T } \\| \\widehat { \\mathbf { x } } _ { t + 1 } - \\mathbf { x } _ { t } \\| ^ { 2 } + \\displaystyle \\frac { \\gamma } { 2 } \\sum _ { t = 1 } ^ { T } \\| \\mathbf { x } _ { t } - \\widehat { \\mathbf { x } } _ { t } \\| ^ { 2 } \\geq \\displaystyle \\frac { \\gamma } { 4 } \\sum _ { t = 2 } ^ { T } \\| \\mathbf { x } _ { t } - \\mathbf { x } _ { t - 1 } \\| ^ { 2 } . } \\end{array}"
+        ],
+        "page": "sp_0046_page_0033",
+        "id": "sp_0046_page_0033-1",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          305.78955078125,
+          1305.5941162109375,
+          1011.0224609375,
+          1446.276123046875
+        ],
+        "text": [
+          "\\begin{array} { r l r } { \\lefteqn { \\mathrm { S T A B L I T Y } = \\sum _ { t = 1 } ^ { T } \\frac { \\gamma + \\lambda t } { 4 } ( \\| \\widehat { \\mathbf x } _ { t + 1 } - { \\mathbf x } _ { t } \\| ^ { 2 } + \\| { \\mathbf x } _ { t } - \\widehat { \\mathbf x } _ { t } \\| ^ { 2 } ) } } \\\\ & { \\qquad \\qquad \\geq \\displaystyle \\frac { \\gamma } { 4 } \\sum _ { t = 2 } ^ { T } ( \\| \\widehat { \\mathbf x } _ { t } - { \\mathbf x } _ { t - 1 } \\| ^ { 2 } + \\| { \\mathbf x } _ { t } - \\widehat { \\mathbf x } _ { t } \\| ^ { 2 } ) \\geq \\displaystyle \\frac { \\gamma } { 8 } \\sum _ { t = 2 } ^ { T } \\| { \\mathbf x } _ { t } - { \\mathbf x } _ { t - 1 } \\| ^ { 2 } . } \\end{array}"
+        ],
+        "page": "sp_0046_page_0033",
+        "id": "sp_0046_page_0033-2",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          257.1380615234375,
+          1007.6915283203125,
+          966.8475952148438,
+          1150.1661376953125
+        ],
+        "text": [
+          "\\begin{array} { r l } & { \\mathrm { O P T - G A P - N E G A T I V I T V } \\leq \\displaystyle \\frac { 1 } { 4 } ( \\gamma + \\lambda ) D ^ { 2 } + \\frac { \\lambda } { 4 } \\sum _ { t = 1 } ^ { T } \\| \\mathbf { x } ^ { \\star } - \\widehat { \\mathbf { x } } _ { t + 1 } \\| ^ { 2 } - \\displaystyle \\frac { \\lambda } { 2 } \\sum _ { t = 1 } ^ { T } \\| \\mathbf { x } _ { t } - \\mathbf { x } ^ { \\star } \\| ^ { 2 } } \\\\ & { \\qquad \\qquad \\qquad \\qquad \\leq \\displaystyle \\frac { 1 } { 4 } \\gamma D ^ { 2 } + \\frac { \\lambda } { 2 } \\sum _ { t = 1 } ^ { T } \\| \\mathbf { x } _ { t } - \\widehat { \\mathbf { x } } _ { t + 1 } \\| ^ { 2 } + \\mathcal { O } ( 1 ) . } \\end{array}"
+        ],
+        "page": "sp_0046_page_0033",
+        "id": "sp_0046_page_0033-3",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          352.367431640625,
+          825.2536010742188,
+          872.279296875,
+          966.080322265625
+        ],
+        "text": [
+          "\\begin{array} { r l } & { \\mathrm { \\bf O P T - } \\mathrm { \\bf G A P } \\leq \\displaystyle \\frac { 1 } { \\eta _ { 1 } } \\cal D _ { \\psi } \\big ( { \\bf x } ^ { \\star } , \\hat { \\bf x } _ { 1 } \\big ) + \\displaystyle \\sum _ { t = 1 } ^ { T } \\left( \\frac { 1 } { \\eta _ { t + 1 } } - \\frac { 1 } { \\eta _ { t } } \\right) \\mathcal { D } _ { \\psi } \\big ( { \\bf x } ^ { \\star } , \\hat { \\bf x } _ { t + 1 } \\big ) } \\\\ & { \\qquad \\qquad \\leq \\displaystyle \\frac { 1 } { 4 } ( \\gamma + \\lambda ) D ^ { 2 } + \\frac { \\lambda } { 4 } \\sum _ { t = 1 } ^ { T } \\| { \\bf x } ^ { \\star } - \\hat { \\bf x } _ { t + 1 } \\| ^ { 2 } . } \\end{array}"
+        ],
+        "page": "sp_0046_page_0033",
+        "id": "sp_0046_page_0033-4",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          311.7957763671875,
+          498.52227783203125,
+          910.1923217773438,
+          567.4304809570312
+        ],
+        "text": [
+          "\\mathrm { R E G } _ { T } \\leq \\frac { 1 6 d } { \\alpha } \\ln \\left( 1 + \\frac { \\alpha } { 8 \\gamma d } \\bar { V } _ { T } \\right) + \\frac { 1 } { 2 } \\gamma D ^ { 2 } - \\frac { \\gamma } { 4 } \\sum _ { t = 2 } ^ { T } \\| \\mathbf { x } _ { t } - \\mathbf { x } _ { t - 1 } \\| ^ { 2 } + \\mathcal { O } ( 1 ) ,"
+        ],
+        "page": "sp_0046_page_0033",
+        "id": "sp_0046_page_0033-5",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          360.746826171875,
+          201.45982360839844,
+          859.6154174804688,
+          271.888916015625
+        ],
+        "text": [
+          "\\sum _ { t = 1 } ^ { T } \\| \\nabla f _ { t } ( \\mathbf x _ { t } ) - \\nabla f _ { t - 1 } ( \\mathbf x _ { t - 1 } ) \\| _ { U _ { t } ^ { - 1 } } ^ { 2 } \\leq \\frac { 8 d } { \\alpha } \\ln \\left( 1 + \\frac { \\alpha } { 8 \\gamma d } \\bar { V } _ { T } \\right) ."
+        ],
+        "page": "sp_0046_page_0033",
+        "id": "sp_0046_page_0033-6",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          289.6988220214844,
+          1190.5284423828125,
+          933.5545043945312,
+          1259.906005859375
+        ],
+        "text": [
+          "\\frac { \\lambda } { 2 } \\sum _ { t = 1 } ^ { T } \\| \\mathbf { x } _ { t } - \\widehat \\mathbf { x } _ { t + 1 } \\| ^ { 2 } \\leq \\frac { \\lambda } { 2 } \\sum _ { t = 1 } ^ { T } \\eta _ { t } ^ { 2 } \\| \\nabla f _ { t } ( \\mathbf { x } _ { t } ) - \\mathbf { m } _ { t } \\| ^ { 2 } \\leq \\sum _ { t = 1 } ^ { T } \\eta _ { t } \\| \\nabla f _ { t } ( \\mathbf { x } _ { t } ) - \\mathbf { m } _ { t } \\| ^ { 2 } ."
+        ],
+        "page": "sp_0046_page_0033",
+        "id": "sp_0046_page_0033-7",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          388.2434387207031,
+          683.8050537109375,
+          833.3937377929688,
+          762.2161865234375
+        ],
+        "text": [
+          "\\sum _ { t = 1 } ^ { T } f _ { t } ( \\mathbf { x } _ { t } ) - \\sum _ { t = 1 } ^ { T } f _ { t } ( \\mathbf { x } ^ { \\star } ) \\leq ( \\mathrm { E . } 5 ) - \\underbrace { \\frac { \\lambda } { 2 } \\sum _ { t = 1 } ^ { T } \\| \\mathbf { x } _ { t } - \\mathbf { x } ^ { \\star } \\| ^ { 2 } } _ { \\varepsilon = 1 } ."
+        ],
+        "page": "sp_0046_page_0033",
+        "id": "sp_0046_page_0033-8",
+        "seg_type": "eq"
+      }
+    ]
+  },
+  "sp_0046_page_0034": {
+    "bboxes": [
+      {
+        "box": [
+          321.5376281738281,
+          428.1578063964844,
+          898.8782348632812,
+          496.9485778808594
+        ],
+        "text": [
+          "\\mathbf { R } \\mathbf { E } \\boldsymbol { \\mathrm { G } } _ { T } \\leq \\frac { 1 6 G ^ { 2 } } { \\lambda } \\ln \\left( 1 + \\lambda \\bar { V } _ { T } \\right) + \\frac { 1 } { 4 } \\gamma D ^ { 2 } - \\frac { \\gamma } { 8 } \\sum _ { t = 2 } ^ { T } \\lVert \\mathbf { x } _ { t } - \\mathbf { x } _ { t - 1 } \\rVert ^ { 2 } + \\mathcal { O } ( 1 ) ,"
+        ],
+        "page": "sp_0046_page_0034",
+        "id": "sp_0046_page_0034-1",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          256.5089111328125,
+          179.89694213867188,
+          966.3660888671875,
+          249.88609313964844
+        ],
+        "text": [
+          "\\mathtt { R E G } _ { T } \\leq 2 \\sum _ { t = 1 } ^ { T } \\eta _ { t } \\| \\nabla f _ { t } ( \\mathbf { x } _ { t } ) - \\nabla f _ { t - 1 } ( \\mathbf { x } _ { t - 1 } ) \\| ^ { 2 } + \\frac { 1 } { 4 } \\gamma D ^ { 2 } - \\frac { \\gamma } { 8 } \\sum _ { t = 2 } ^ { T } \\| \\mathbf { x } _ { t } - \\mathbf { x } _ { t - 1 } \\| ^ { 2 } + \\mathcal { O } ( 1 ) ."
+        ],
+        "page": "sp_0046_page_0034",
+        "id": "sp_0046_page_0034-2",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          374.85125732421875,
+          314.8928527832031,
+          846.7081298828125,
+          383.3836975097656
+        ],
+        "text": [
+          "\\sum _ { t = 1 } ^ { T } \\frac { 1 } { \\lambda t } \\| \\mathbf { g } _ { t } - \\mathbf { g } _ { t - 1 } \\| ^ { 2 } \\leq \\frac { 4 G ^ { 2 } } { \\lambda } \\ln \\left( 1 + \\lambda \\bar { V } _ { T } \\right) + \\frac { 4 G ^ { 2 } } { \\lambda } + \\frac { 1 } { \\lambda ^ { 2 } } ."
+        ],
+        "page": "sp_0046_page_0034",
+        "id": "sp_0046_page_0034-3",
+        "seg_type": "eq"
+      }
+    ]
+  }
+}

@@ -1,0 +1,2 @@
+We focus on the setting of contextual bash bandit, we call it the Cpp setting.
+In this setting, we assume that the expected reward of each action is determined by different parameters.

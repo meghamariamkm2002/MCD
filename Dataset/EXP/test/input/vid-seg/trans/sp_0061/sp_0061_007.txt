@@ -1,0 +1,40 @@
+How do you, how do you actually produce training and validation data to match these?
+And there are a number of ways, but what comes to mind is, is meta learning, right?
+So because what you're doing, they initialize the training and validation data at random points.
+So these are just random at the beginning.
+And then they optimize the data itself using gradient descent.
+Okay.
+Now see synthetic training data and they are randomly initialized.
+Okay.
+And they use gradient descent.
+They have it somewhere.
+Yes.
+So they have this inner training loop, okay, which is many steps of inner training.
+And then they have the outer loss, which is the, um,
+It's the validation loss after the inner training loop.
+And the difference from that to the true validation loss.
+And then they do gradient descent on this outer loss.
+Now this outer loss is a result of the inner loss.
+And the inner loss is a result of the inner training procedure.
+And the inner training procedure is n steps of feeding in the training data.
+Every step you feed in the training data.
+So your computational graph is going to look like.
+So here is your training data as train.
+And here are your initial parameters.
+You initialize them randomly.
+In the first step, you use the training data to produce theta 1.
+Then in the second step, you use your training data again to produce theta 2.
+And then you use it again to use data through and so on.
+Each time you feed the training data in order to evolve your parameters to give you a better prediction.
+So the gradient, since somewhere back here there's a loss, the gradient here will have to flow back through all of these paths and through all of these connections to the training data.
+This is kind of you back propagate through an optimization procedure.
+And we have this a bunch of times here.
+And I've looked at the code and the code is like really crazy and it looks like proper research code, but it appears to be that that's actually what's happening.
+They backprop through the optimization procedure to find this synthetic training and validation data.
+Now, that's crazy, but it also kind of limits how far you can go with this, because usually you can't backprop for more than a couple of steps doing this.
+Now, the fact that the inner model is small helps, but also this introduces very, very much, like these things are very brittle.
+If you backprop through an optimization procedure like this, these things tend to be very brittle.
+And so I think there's another thing there where you have to pay careful attention.
+All right.
+That's it's basically it.
+The last thing they say is that they can combine this with orchid

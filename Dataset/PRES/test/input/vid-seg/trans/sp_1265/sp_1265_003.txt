@@ -1,0 +1,5 @@
+comments.
+So this is the overview of our method.
+We call this IMFL.
+It aims at solving the best acquisition strategy that the biases between low for that automatic RM annotations and half data human annotations to maximize model performance given limited budget.
+So from this figure, we will see like IMFL extremely outperforms the three times human annotations baseline and also very close to five times upper bound in some specific data set.

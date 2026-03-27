@@ -1,0 +1,122 @@
+WEBVTT
+
+00:00.031 --> 00:08.179
+different things, or actually more than two different things, but they formulate this in an abstract way right here.
+
+00:09.260 --> 00:22.774
+So what they'll look at is the so-called properties, a property F. And this property F can be, for example, that an amino acid is a binding site.
+
+00:23.354 --> 00:28.840
+Property F can also be that two amino acids are in contact with each other.
+
+00:28.820 --> 00:43.666
+So f always takes i and j. If in the case, for example, where this is the contact property, then it simply is the indicator function for when i and j are a in contact.
+
+00:46.511 --> 00:52.802
+And if it is just a binding site, then I think we are looking at j.
+
+00:54.740 --> 01:02.730
+at the token level property, we define to be an indicator that returns one if the property is present in token J, okay?
+
+01:02.750 --> 01:06.955
+So whenever J is a binding site, then that holds.
+
+01:07.356 --> 01:10.359
+So what we're looking at are these attention heads in BERT.
+
+01:10.660 --> 01:21.333
+If you don't know BERT has an attention mechanism, which basically means from layer to layer, each token can attend to all other tokens.
+
+01:21.353 --> 01:24.477
+So here, the amino acid sequence, I've drawn it twice.
+
+01:24.457 --> 01:36.762
+and the next layer representation of this amino acid will be able to gather information from all of the other amino acid through an attention mechanism, through a dynamic routing algorithm.
+
+01:37.202 --> 01:42.533
+I've made a video on attention is all you need if you want to find out more how this works.
+
+01:42.513 --> 01:48.462
+Now, what we're interested in is the strength of these connections.
+
+01:49.083 --> 02:01.483
+So, the hypothesis is if molecule, here is one, two, three, four, five and six, if molecule one and three are contact sites,
+
+02:01.463 --> 02:11.079
+then maybe we will find a layer where this connection between one and three is very strong, right?
+
+02:11.119 --> 02:21.016
+That would indicate that there is a connection site or that would indicate that BERT has learned something about the connection sites, okay?
+
+02:21.296 --> 02:24.822
+If we find this repeatedly, so if we look at many, many proteins,
+
+02:24.802 --> 02:42.979
+and whenever we know that there is a contact between two things, and then we observe that the corresponding attention is very high, then we can be pretty sure that BERT has learned something about contact between amino acids.
+
+02:42.959 --> 02:45.603
+The same goes for binding sites.
+
+02:45.623 --> 03:08.393
+So if 4 here is a binding site and then all the connections, all the attention that the higher layer gets from 4, so all the information routed away from 4 is very strong, that means all these other tokens are paying special attention to the token number 4, to this amino acid.
+
+03:08.373 --> 03:19.918
+And if we find that there's a big correlation with this being a binding site, then we can reasonably conclude that Bert has learned something about binding sites.
+
+03:20.978 --> 03:28.405
+So we're going to do a correlative analysis for proteins where we know the binding sites, where we know the contacts.
+
+03:28.765 --> 03:34.230
+We can analyze them, we can run simulations, therefore we can know them.
+
+03:34.831 --> 03:40.796
+So we're going to look at this quantity right here, which is simply a normalized quantity.
+
+03:40.956 --> 03:44.500
+So we're going to look at the attention in a given attention head.
+
+03:45.240 --> 03:49.264
+So as you know, BERT has many layers with many attention heads.
+
+03:49.244 --> 04:01.561
+And we're going to look at whether or not this property is active and just normalize it by the total attention in that head so that we get some kind of a percentage number.
+
+04:02.503 --> 04:03.404
+That's the first task.
+
+04:03.444 --> 04:07.990
+We're basically going to look at how does the attention correlate with these properties.
+
+04:08.851 --> 04:13.358
+And the second task we're going to do is this probing task.
+
+04:13.378 --> 04:18.525
+So a probing task is like a linear probe in like a classifier.
+
+04:18.505 --> 04:23.672
+So what we're going to do is we're going to take a layer right here.
+
+04:25.094 --> 04:35.668
+And even though it's an intermediate layer, we're simply going to run it through a linear classifier and then decide is this a binding site, for example, or not.
+
+04:36.389 --> 04:40.395
+Is a given amino acid a binding site or not?
+
+04:40.415 --> 04:44.260
+Is a given pair a contact or not?
+
+04:44.240 --> 04:48.896
+So this is kind of a linear problem, but this sort of takes a backseat in this paper.
+
+04:49.478 --> 04:53.712
+The analysis is really on the attention heads and what the attention heads learn.
+
+04:55.217 --> 04:56.060
+And that's already it.
+
+04:56.501 --> 04:59.251
+They take a pre-trained BERT model.
+
+04:59.271 --> 05:05.050
+So there are these BERT models that are already trained on these protein databases.
+

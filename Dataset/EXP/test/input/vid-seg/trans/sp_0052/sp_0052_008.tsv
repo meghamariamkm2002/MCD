@@ -1,0 +1,63 @@
+start	end	text
+1685	6471	So they do some qualitative results, which I find very interesting.
+6611	12558	For example, they can visualize what the attention weights of their models are.
+13199	23772	So here you always have a very long time frame, I think an entire month in this memory bank of the long-term memory.
+24472	31641	Now in the top classification, you see the large thing here, the large frame is the one you actually want to classify.
+31621	41300	And the other frames are the frames where the top attention score is, so that the attention weights are the highest.
+43685	47914	So here in order to classify this, what does the model pay attention to?
+48314	50980	Or which other frames does the model pay attention to?
+51421	52583	And you can see right here,
+53660	56448	They are all spread across the entire month.
+56628	57631	Here is the timeline.
+58794	67618	The most attended two pictures are spread across the entire month and almost all of them actually have that war talk in here.
+69016	81800	So this must be like its regular route and the model recognizes that and pulls in information from all these other images in order to correctly classify it here.
+82962	92340	On the other hand, on the next example, this gazelle and tablet crashed right here.
+94126	105661	It also puts all the weight on top of images of that same gazelle, but you can see maybe that gazelle was only there for this one particular moment.
+106162	113331	And all the pictures this camera has of it is in the very few moments that the gazelle was around.
+113671	120000	You can see they all come here from the same point in time, or very, very close points in time.
+120460	123424	And you can see that it puts a lot of weight
+123404	126489	on wherever the gazelle is.
+127171	138831	So, you know, that's a pretty strong indication that it actually learns to pull in the correct information, be that from long time horizon or from a short time horizon, if necessary.
+138811	158642	You can also see right here, they visualize the top attention where the top attention weights go in terms of how long the frames where the attention goes to is away from the frame that they're trying to classify.
+158622	163748	So these graphics are somewhat kind of weird to interpret.
+164429	168714	This here always means how much is the total time of the buffer.
+169355	179627	So the memory buffer here contains always pictures from one hour before until one hour after the keyframe you want to classify.
+179647	183111	So this is the frame you want to classify at minute zero.
+183091	189162	And the memory buffer contains images from 60 minutes before to 60 minutes after.
+189202	191687	So it's not real time, right?
+191707	195033	You go back through your footage and you try to classify.
+195053	198940	So you can also pull out images from the future.
+198920	203567	You can see there's most attention is on the current frame, which makes sense.
+204128	209636	You're trying to classify the current frame and it kind of falls off as you go further and further away.
+210438	212561	And this is across the entire data set.
+212581	215305	So this is not a specific example, which also makes sense.
+215365	219932	Probably in most of the time, the relevant information is
+219912	223476	you know, closer in time rather than farther away.
+223876	227140	But also you can see that the distribution is pretty spread out.
+227501	231725	So it makes the model makes use of the entire range of time.
+232146	244840	And you can see that throughout, even if you have an entire day in the buffer or two days, even if you have entire week before and week after in the buffer, and even if you have an entire month here.
+244820	255056	And especially if you look at when you have an entire week in the buffer, you can see the periodicity through the days.
+255216	265191	So that means the model tends to pay attention to images that are from the same time of day compared to the current keyframe.
+265171	274184	That's fairly, fairly good indication that the model has actually learned to address this memory by its content.
+274985	283859	Now night and day isn't super difficult because you can just go on the brightness and so on, but still, it's pretty cool to see that this is actually happening.
+285140	293693	They do have some failure cases of the single frame model that their model is able to handle up here.
+295175	296476	they make a lot of sense.
+296797	321840	So here you can see that there's an object that's moving out of frame and the single frame detector wasn't able to recognize this probably because it's moving out of frame whereas this new, this context RCNN is able to detect it probably because it looked at the frame just before it where the car was somewhere back here and
+321820	324002	it could correctly classify it.
+324042	327707	Well, that's just disregard my drawings.
+329228	337718	Here it managed to recognize this animal in the back, whereas this old model, the single frame model, hasn't.
+338098	350612	Also probably by looking either at frames next to it or by looking at other frames of herds of animals and realizing that usually when there's two elephants there's more.
+353107	359914	Here you can see that the object highly occluded, so we're talking about the object at the very edge of the frame.
+361255	362756	Object poorly lit.
+363037	365179	This is particularly impressive.
+365739	371025	And also an example where the animals are often in herds.
+371045	378692	And if you see one deer, the likelihood that there's other deer is very high in this particular camera.
+378672	386410	And by aggregating information from different frames, you can see that maybe it's always the same patch of the error that comes by.
+387533	394369	And here, the single frame detector detects this patch here as a vehicle.
+394349	415041	where it shouldn't and of course the new model, the context RCNN is able to recognize that this is present in all of the frames and in most frames the single object detector doesn't detect it as a vehicle and so it can kind of carry over that information.
+415021	418625	Now, you can already see sort of what the downsides might be.
+418765	430757	If the single object detector is like very, very, very sure that this is in a single frame, that this is a car, it could carry over that information to the other frame.
+430837	443270	So even though the single frame detector might have failed in that particular frame, if it fails super hard, it might, you know, shout that to all the other frames, basically dominate the memory saying like, look, this is a car.
+443351	444792	I'm like pretty sure.
+444772	451175	And it will carry over that information to all of the other frames.
+451275	460047	And they say in one of these high confidence mistakes, it basically detected the same tree as a giraffe.

@@ -1,0 +1,18 @@
+Sorry, the gradient of the log probability.
+Because optimal denoising theory says that for zero mean and Gaussian noise, the optimal denoising function, the optimal denoising function for zero mean Gaussian corruption is this thing right here.
+So it is, if you give me x and you tell me,
+X has been corrupted by zero mean Gaussian noise of size sigma n.
+then the best, and you simply tell me, give me back the original image.
+The best thing I can do is to take what you gave me and add this gradient of the log probability of X, if I can, if I have a model of the log probability, right?
+So that's the best thing I can do.
+And that's the best denoising function.
+And now you have to think a bit of in reverse.
+If we train a denoising auto encoder.
+that is going to approximate this best function that there is.
+So we know that the best possible denoising function is this.
+We train a denoising autoencoder, which in the optimal case is going to converge to the best denoising function.
+So if we then reformulate and we do denoising autoencoder,
+of x minus or x tilde minus x tilde.
+That is divided by the standard deviation.
+Sorry, the variance.
+That is going to give us this quantity right here, the gradient of the log probability.

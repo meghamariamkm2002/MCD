@@ -1,0 +1,23 @@
+[
+  {
+    "input_path": "/tmp/megha/PDF-Extract-Kit/Presentation/layout_pap/sp_1125/sp_1125_page_5.png",
+    "page_index": null,
+    "boxes": [
+      {
+        "cls_id": 14,
+        "label": "algorithm",
+        "score": 0.9300224184989929,
+        "coordinate": [
+          1268.045654296875,
+          1490.079833984375,
+          2090.041015625,
+          2192.10302734375
+        ],
+        "text": "lgorithm 1 Local training process of Fed-GraB\n[nput:\nw\n7\nlocal model at round l for client k\nOutput: Updated local model w\nl+1\nk\nfunctionCLIENTUPDATE(w\n1:\nUpdate prior vector Pc by DPA with wk\nl\nfor batch b  B do\nfor each classifier zj  z do\n#Initialize \u2206j (t) = 0\npos\n(L; b), \nneg\n(L;\nzj\nzj\nSample a random value r \u223c Uniform(0, 1)\n# Gradient Balancer\nInput of SGB e(t) \u2190 \u2206j (t)\nCompute output of SGB u(t) by Eq. (3)\nCompute re-weighting coefficients \u03b2j by Eq. (4)\n# Gradient Collector\nUpdate \u2206j (t) with the re-weighted gradients by Eq. (5)\nWk\nl+1\nWk\n2\n\u03b2j\n+1\nj=0",
+        "input_path": "/tmp/megha/PDF-Extract-Kit/Presentation/layout_pap/sp_1125/sp_1125_page_5.png",
+        "id": "sp_1125_page_5_1",
+        "seg_type": "algo"
+      }
+    ]
+  }
+]

@@ -1,0 +1,17 @@
+line and do that.
+It's also pretty interesting the neural network that they actually used was like super duper small.
+The input to the neural network consists of 84 by 84 by 4 image produced by this, so this is the pre-processing.
+The first hidden layer convolves 16 8 by 8 filters with Stride 4 with the input image and applies the rectifier non-linearity, so the ReLU.
+The second hidden layer convolves 32 4 by 4 filters with Stride 2, again followed by rectifier non-linearity.
+The final hidden layer is fully connected and consists of 256 rectifier units.
+The output layer is a fully connected linear layer with single output for each valid action.
+Number of valid actions is vary between 4 and 18 on the games we considered.
+Okay, as you can see, the neural network is pretty small.
+It's two conv layers.
+And as was in fashion back then, you had like big filters.
+So you know, big filters from like AlexNet.
+Yeah, big filters, but fewer than today.
+So today, the trend is more like deeper layers, more filters, but they are not as big.
+They're like three by three filters today only.
+Pretty interesting how they did it back then.
+Interesting also no max pooling and so on.

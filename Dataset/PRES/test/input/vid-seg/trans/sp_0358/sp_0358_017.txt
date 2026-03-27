@@ -1,0 +1,1 @@
+Finally, we perform the empirical evaluations against these exponential and long-term delays.

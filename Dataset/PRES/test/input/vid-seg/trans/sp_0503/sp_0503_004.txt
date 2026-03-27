@@ -1,0 +1,4 @@
+To overcome this issue, we propose a robust form of water sign.
+Here, we introduce two perturbed marginal distributions, alpha and beta, lying in the K-O-divergence ball with the center as observed distribution, new and new respectively.
+This auxiliary distribution helps to erase the samples and mitigate the influence of the outliers.
+Also, we relaxed the homogenous constraint by adding the KL divergence between the marginals of pi and beta and alpha as the penalty terms.

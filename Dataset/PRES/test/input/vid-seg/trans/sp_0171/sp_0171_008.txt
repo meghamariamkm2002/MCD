@@ -1,0 +1,6 @@
+Additionally, our paper has the following further contributions.
+We explore the role of pre-processing data with PCA.
+We show the output of this algorithm provides a legitimate estimate of hierarchical structure and data.
+We show the benefits of simultaneously growing sample size and dimension.
+And we have the details on tree recovery compared to other methods on real data.
+Thank you for listening.

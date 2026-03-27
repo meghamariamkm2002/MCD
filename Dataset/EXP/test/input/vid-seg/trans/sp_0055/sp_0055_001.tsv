@@ -1,0 +1,7 @@
+start	end	text
+31	1334	Hi there.
+1734	6965	What you're seeing here is a divide and conquer Monte Carlo tree search in action.
+7506	14941	This is a planning algorithm that plans in a kind of an unconventional fashion.
+15321	22275	So we're going to explore this today in this paper, divide and conquer Monte Carlo tree search for goal-directed planning.
+22255	39183	by Giambattista Parascondolo and Lars Busing and a list of other authors and I believe this is from Deep Mind and Max Planck and Eta and yeah, that's it.
+39865	40045	All right

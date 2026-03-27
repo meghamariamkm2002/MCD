@@ -1,0 +1,4 @@
+However, VDK introduces a different optimization objective, and this could be magnified in the factory learning setting due to numerous local updates, and also imbalanced in the distribution.
+To verify this, we pick six back-point algorithms, including the original FAT average, and also the variance with local regularization, like FAT Prox and Skyphone, and also the variance with modification in global updates, like FAT average momentum, FAT adder, and FAT exp.
+The two experiments use data CFR10 by dividing it into 100 clans following directly distribution with parameter alpha.
+And we choose ResNet18 as a model.

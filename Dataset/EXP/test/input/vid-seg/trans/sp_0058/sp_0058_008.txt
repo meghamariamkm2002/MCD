@@ -1,0 +1,25 @@
+All right, that's the rebel algorithm.
+And they also describe how they actually sample data for learning with the exploration.
+And they also show that running algorithm one with T iterations of CFR in each sub game will produce a value approximator that has an error of at most this for any PBS that could be encountered during play.
+So they're going to say that the value approximator, given that it is sort of idealized, will actually converge to a good value approximator if you sample it depending on how many iterations of CF are you do.
+But you can see that the more iterations you do, the better of an approximation you get.
+And if you have a good value estimator, as we already said, you basically have solved the game.
+The last thing is that they determine now, what do we do at test time?
+You might not have thought of this.
+This seems sort of obvious if you know alpha zero, but they determine that at inference time, you can simply run this same algorithm except you don't want to produce training data from it and you don't want to learn anything.
+You simply want to run this algorithm too.
+If you run that algorithm at test time, that will actually give you a
+Nash equilibrium.
+So that's theorem three right here.
+If algorithm run one runs a test time with no off policy exploration value network with error at most this and this, and was trained as described in theorem two, with T iterations of that.
+Then the algorithm plays a this kind of approximation Nash equilibrium where C1 and C2 are game specific constants Okay, so you can see right here that the Nash equilibrium is going to be perfect depending on how many iterations you do and Depending on I believe how accurate in your neural network is yes your value network error
+Okay, if you make that smaller, your Nash equilibrium is going to be better.
+Pretty pretty cool.
+So that was the algorithm.
+They do a bunch of experiments where they say, what kind of network they use, if they use the value net or not, if they use self play or not.
+And they can also introduce a policy net, I believe for initializing or searching more effectively.
+They compare against previous things like deep stack, Libratus and so on.
+they do beat top humans.
+As you can see, poker has been for a long time kind of an not so solved game by machine learning, but this area has been over for a while right now.
+And they do release the code of, I believe, of the Liarstice.
+So they have the code released for rebel and the implementation for Liarstice, but not for

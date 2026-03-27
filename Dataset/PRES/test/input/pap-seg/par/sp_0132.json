@@ -1,0 +1,530 @@
+[
+  {
+    "para_id": "p1",
+    "section_heading": "Abstract",
+    "text": "Transformer has shown state-of-the-art performance on various applications and has recently emerged as a promising tool for surrogate modeling of partial differential equations (PDEs). Despite the introduction of linear-complexity attention, applying Transformer to problems with a large number of grid points can be numerically unstable and computationally expensive. In this work, we propose Factorized Transformer (FactFormer), which is based on an axial factorized kernel integral. Concretely, we introduce a learnable projection operator that decomposes the input function into multiple sub-functions with one-dimensional domain. These sub-functions are then evaluated and used to compute the instance-based kernel with an axial factorized scheme. We showcase that the proposed model is able to simulate 2D Kolmogorov flow on a 256 \u00d7 256 grid and 3D smoke buoyancy on a 64\u00d7 64\u00d7 64 grid with good accuracy and efficiency. The proposed factorized scheme can serve as a computationally efficient low-rank surrogate for the full attention scheme when dealing with multi-dimensional problems.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p2",
+    "section_heading": "1 Introduction",
+    "text": "Various physics processes are modeled by partial differential equations (PDEs), from the interaction between atoms in molecular systems to large-scale cosmological phenomena. Solving PDEs advances the understanding of complex physical phenomena, enabling people to make accurate predictions, and make informed decisions across a wide range of scientific and engineering disciplines. Numerical solvers provide a practical way to simulate and predict PDEs since many PDEs are often difficult to solve analytically. Most numerical solvers divide the continuous domain into a discretized grid and reduce the continuous differential equations to algebraic equations via methods like finite difference/element/volume methods or spectral method. Despite the theoretical guarantees behind them, their practical realization of specific problems can pose challenges that require careful expertise to overcome, such as a sufficient understanding of the underlying physics, or a fine-tailored mesh that resolves the necessary spatio-temporal scales. The interest in developing user-friendly and efficient PDE solvers, along with the success of deep learning models in many other areas [13, 44, 51, 103], has facilitated the emergence of neural-network-based PDE solvers, where the neural network can be used to parameterize the solution function of the target equation [96], or to approximate the solution operator[69, 76]. Compared to many numerical solvers, neural PDE solvers appear to be more tolerant with coarse discretization [104], and can be applied without explicit meshing [96]. In addition, knowing the underlying equations are not strictly necessary for neural PDE solvers, which gives them the potential to simplify and accelerate the process of physics simulation based on PDEs.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p3",
+    "section_heading": "1 Introduction",
+    "text": "Among various neural network designs, attention-based models (Transformer) [115] have become state-of-the-art for a wide array of applications [13, 18, 27, 51], which gives rise to a recent surge of interest in applying the Transformer to PDE modeling [16, 29, 35, 41, 43, 54, 67, 73, 82, 86]. By viewing the input sequence as a function sampled on a discretization grid, attention can be interpreted as a learnable kernel integral [17, 35, 54, 60] or a learnable Galerkin projection [16], and the sequence-to-sequence Transformer [115] can be modified correspondingly to be better suited for",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p4",
+    "section_heading": "1 Introduction",
+    "text": "PDE modeling [16, 35, 43, 54, 67, 74, 86]. In these works, attention is typically applied to every grid point in the domain to exploit both the local and non-local structure of the system, and therefore a linear-complexity variant of attention is usually necessary. As the number of grid points grows exponentially with respect to the number of dimensions, this results in a very large attention matrix that computes the interaction between every pair of the grid points (despite this attention matrix is not evaluated explicitly in linear attention). Consequently, cascading a deep stack of attention layers introduces instability and relatively high computational cost on high-resolution grid. To alleviate these issues and improve the scalability of Transformer in PDE modeling, we propose a modified attention mechanism. Our model is inspired by the kernel integral viewpoint of softmax-free attention, with a factorized integration scheme motivated by the inherent low-rank structure of dot-product kernel matrix. More specifically, we propose a multi-dimensional factorized kernel integral with each kernel function in the integral having only single-dimensional domains. To calculate these axial kernels, we propose a learnable integral operator that is able to project the input function with high-dimensional domain into a set of sub-functions with single-dimensional domain. The computation of each axial kernel is quadratic with respect to the number of grid points along that the corresponding axis but does not grow with the number of dimensions, which alleviates the curse of dimensionality in standard attention. With the modified attention mechanism, our proposed model can scale up to multi-dimensional problems with a large number of grid points and achieve competitive performance compared to state-of-the-art models. Moreover, we show that our factorized attention mechanism can reduce the computational cost and improve stability compared to softmax-free linear attention.1",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p5",
+    "section_heading": "2 Related works",
+    "text": "Neural PDE solver Based on the emphases of model design, neural PDE solvers can generally be divided into the following groups. The first group of work focuses on using neural networks with mesh-specific architecture design (such as convolutional layers for uniform mesh, or a graph layer for irregular mesh) to learn the spatial and/or temporal correlation of the PDE data [10, 38, 48, 64, 65, 75, 88, 91, 92, 100, 104, 109, 114, 116]. With input-target data collected, the training process can be conducted without the knowledge of underlying PDEs. This can be appealing when the physics of the system is unknown or partially known, such as large-scale climate modeling [61, 83, 90, 97]. The second group of work, namely the Physics-Informed Neural Networks (PINNs)[15, 40, 42, 52, 77, 87, 96, 106, 127], treat neural networks as a parametrization of the underlying solution function. PINNs incorporate the knowledge of the governing equations into the construction of loss function, which includes the residual of the PDE, the consistency with given boundary condition and initial condition. Unlike the previous group of works, PINNs do not necessarily need inputtarget data and can be trained solely based on equation loss. The third group of works, often referred to as the neural operator, focuses on learning a mapping between the function spaces[5, 8, 9, 16, 36, 43, 50, 54, 60, 68, 70, 71, 76, 78, 86]. Neural operator has the generalization capability within a family of PDE and can potentially be adapted to different discretization without retraining. DeepONet [76] proposes a practical realization of the universal operator approximation theorem [21]. Concurrent work graph neural operator [69] proposes a learnable kernel integral to approximate the solution operator of parametric PDEs and the follow-up work Fourier Neural Operator (FNO) [68] achieves excelling accuracy and efficiency on certain types of problems. Broadly speaking, the",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p6",
+    "section_heading": "2 Related works",
+    "text": "1Code for this project is a tFormer.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p7",
+    "section_heading": "2 Related works",
+    "text": "operator learning can be conducted upon different types of function bases, such as the Fourier bases [34, 58, 59, 68, 95, 110, 121], wavelet bases [36], learned bases in an attention layer [16, 67], or based on approximation of the Green\u2019s function [7, 108]. The training of neural operators can also be combined with the principle of PINNs to yield a more physically consistent prediction [72, 117]. Our model is closely related to the neural operator, as the major building blocks in our proposed model are a learnable projection operator and a learnable kernel integral operator.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p8",
+    "section_heading": "2 Related works",
+    "text": "In addition to direct surrogate modeling, neural networks can also be combined with numerical solvers to improve their accuracy and efficiency. For example, using a trained neural network to correct the error of the solver on the fly [3, 28, 56, 89, 113], or doing offline high-fidelity reconstruction [24, 30, 49, 66, 102].",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p9",
+    "section_heading": "2 Related works",
+    "text": "Transformer for Physics Simulation The Transformer model [115] have gained outstanding popularity in natural language modeling [13, 25], imagery data processing [27] and beyond [51]. In the field of physics simulation, Transformer has drawn increasing research interest as a surrogate model for simulation, with its modeling capability demonstrated both as a neural PDE solver [16, 32, 35, 41, 43, 48, 54, 67, 82, 86] and as a pure data-driven model in the absence of a known governing PDE [14, 20, 31, 83]. The dot-product attention can be considered as an approximation of an integral transform with a non-symmetric learnable kernel function [16, 17, 35, 54, 60, 122], which relates Transformer to other popular operator learning models such the FNO [68]. We will expand the discussion of Transformer under the kernel viewpoint in Section 3.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p10",
+    "section_heading": "2 Related works",
+    "text": "Efficient Transformer Following the introduction of Transformer [115], various works have investigated ways of reducing the computational cost of standard scaled-dot product attention. The first line of work seeks to remove the softmax and make use of matrix associativity to derive linear complexity attention [23, 53, 101], which has also been explored for PDE modeling[16, 43, 67]. The second line of work tries to approximate the dot product between query and key matrix by exploiting the low-rank structure of it [4, 22, 45, 55, 120, 123, 126]. Our work is related to the first group of works with a softmax-free design, but still calculates the dot product between query and key first. Among the second line of work, Axial Transformer is closely related to our work, as both works have explored conducting attention in an axial fashion. However, the derivation of attention matrix is different in the two works (see Section 3.2 for detailed comparison). More generally, the exploitation of the multi-dimensional tensor structure in our proposed model can be related to tensor factorization methods [57, 85] and their applications in various deep learning models [58, 63, 80, 84, 124].",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p11",
+    "section_heading": "3.1 Attention mechanism",
+    "text": "Standard attention Given three sets of vectors, namely the queries {qi} Nq i=1, keys {ki} Nk i=1, and values {vi}Nvi=1 (assuming Nk = Nv), attention mechanism [2, 33, 79, 115] dynamically computes a weighted average of the values: zi = \u2211Nv j=1 h(qi,kj)vj , where qi,ki,vi \u2208 R1\u00d7d, h(\u00b7) is the weight function that determines the contribution of a specific value to the final output. An example of h(\u00b7) is the scaled-dot product with softmax [115]: h(qi,kj) = exp (qikTj /\u03c4)/ \u2211 s exp (qik T s /\u03c4), and \u03c4 is",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p12",
+    "section_heading": "3.1 Attention mechanism",
+    "text": "usually chosen as \u03c4 = \u221a d. The queries/keys/values are usually obtained from inputs via learnable projection. In self-attention, all of them are computed from the same source as follow:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p13",
+    "section_heading": "3.1 Attention mechanism",
+    "text": "where ui \u2208 R1\u00d7din is the input vector and {Wq,Wk,Wv} \u2208 Rdin\u00d7d are learnbale projection matrices. In cross-attention, queries are derived from one input while keys and values are derived from another.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p14",
+    "section_heading": "3.1 Attention mechanism",
+    "text": "Attention as learnable integral Under the hood of PDE modeling, the input sequence to the attention layer can be viewed as the sampling of input function on the discretization grid [16, 54, 60, 67]. Kovachki et al. [60] propose that the scaled-dot product attention [115] can be viewed as a special case of a Neural Operator [60], where the attention amounts to the Monte Carlo approximation of the learnable kernel integral. Cao [16] further proposes two interpretations of softmax-free attention. The first is to view attention as the Fredholm integral equation of the second kind with a learnable asymmetric dot-product kernel, and the second is to view it as a Peterov-Galerkin projection with learnable basis function. The softmax-free attention proposed by Cao [16] is later extended in OFormer [67], where Rotary Positional Encoding (RoPE) [105] is introduced to modulate the dot product and can be viewed as another special case of the kernel integral in Neural Operator style.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p15",
+    "section_heading": "3.1 Attention mechanism",
+    "text": "In this work, we continue on adopting the learnable kernel integral viewpoint of attention and view each channel of the hidden feature map as the sampling of a specific function on the discretization grid. Given query/key/value matrix {Q,K, V } \u2208 RN\u00d7d, their row vectors: qi/ki/vi, correspond to the sampling of a set of functions {ql(\u00b7), kl(\u00b7), vl(\u00b7)}dl=1 on grid point xi, where {xi}Ni=1 discretizes the underlying domain. As a more concrete example, the l-th column (channel) of qi, represents the sampling of function ql(\u00b7) on a grid point, i.e. (qi)l = ql(xi). Furthermore, softmax-free attention is equivalent to the numerical quadrature of a kernel integral:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p16",
+    "section_heading": "3.1 Attention mechanism",
+    "text": "where zi is the output vector, \u03ba (x, \u03be) = \u2211d",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p17",
+    "section_heading": "3.1 Attention mechanism",
+    "text": "l=1 ql(x)kl(\u03be) is an instance-based kernel and ws is the quadrature weight. Understanding attention from the perspective of the kernel has been an active topic of research [17, 23, 111, 122]. The theoretical approximation power of different kernel integrals has also been analyzed under the context of PDE learning [35, 54, 60]. Note that the above kernel does not explicitly depend on the spatial coordinates (xi, \u03be). For this work, we opt for a modified kernel formulation proposed in OFormer [67], which modulates the dot product kernel with relative position. Assuming the underlying spatial domain is 1-D (which is sufficient for our proposed model, see next subsection), given query and key vectors qi,kj and their corresponding spatial coordinates xi, xj , RoPE [105] (g(\u00b7, \u00b7) : R1\u00d7d \u00d7 R 7\u2192 R1\u00d7d) is defined as:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p18",
+    "section_heading": "3.1 Attention mechanism",
+    "text": "and \u03bb, \u03b8l are hyperparameters. \u03b8l is usually chosen as 10000\u22122(l\u22121)/d, l \u2208 {1, 2, . . . , d/2} following Vaswani et al. [115] and Su et al. [105]. \u03bb is a mesh-based weight that we heuristically set to 64 throughout most problems. The projection function \u0398(\u00b7) : R 7\u2192 Rd \u00d7Rd can explicitly modulate the dot product with relative position: g (qi, xi) g (kj , xj) T = qi\u0398(xi \u2212 xj)kTj , thanks to the following property of rotation matrix: Rl(xi)Rl(xj)T = Rl(xi \u2212 xj). To summarize, we will adopt attention mechanism in the following form for the proposed model (with modification discussed in the next subsection):",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p19",
+    "section_heading": "3.1 Attention mechanism",
+    "text": "where @\u0303 denotes a matrix whose row vectors are RoPE encoded as in (3), e.g., Q\u0303i = g(qi, xi), w is the quadrature weight with a typical choice of 1/N for uniform quadrature rule, Z is the output matrix. The query/key/value matrix Q/K/V is derived from the input via learnable projections defined in (1). The matrix product Q\u0303K\u0303T evaluates the kernel function \u03ba(\u00b7, \u00b7) on the discretization grid {xi}Ni=1.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p20",
+    "section_heading": "3.2 Multidimensional factorized attention",
+    "text": "Compared to the standard scaled dot product attention that has quadratic complexity with respect to the length of the input sequence, the attention in (4) can enjoy a linear complexity by making use of the associativity of matrix multiplication (calculate K\u0303TV first). In PDE modeling, the length of the input sequence is equal to the number of points on the underlying discretization grid. Assuming the n-dimensional domain is discretized by S1\u00d7S2\u00d7 . . .\u00d7Sn = N points, the softmax-free attention in (4) will compute the kernel in (2) with the dot product of Q and K, which are N by d matrices with N usually much larger than d. The kernel matrix computed is by design low-rank as it is the product of two tall and thin matrices. Meanwhile, attending a large number of grid points to each other can be unstable and the linear attention has a complexity that is quadratic to the channel dimension d, which can limit the scalability of the model in terms of its width. To improve the numerical stability and reduce the computational cost of the aforementioned attention mechanism, we propose a simple yet efficient way to modify the kernel integral discussed in the previous section which is motivated by the low-rank structure of attention. Essentially, our model computes the kernel integral in an axial factorized manner instead of convolving over all the grid points in the domain. For the following discussion, we will use tensor notation [57] to describe the operation. We assume the data is represented on a uniform Eulerian grid and can be treated as n-way tensor",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p21",
+    "section_heading": "3.2 Multidimensional factorized attention",
+    "text": "U \u2208 RS1\u00d7S2\u00d7...\u00d7Sn2. The product of it with a matrix W \u2208 RJ\u00d7Sm across the m-th mode will result in a tensor of shape S1 \u00d7 . . .\u00d7 Sm\u22121 \u00d7 J \u00d7 Sm+1 \u00d7 . . .\u00d7 Sn, whose elements are defined as:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p22",
+    "section_heading": "3.2 Multidimensional factorized attention",
+    "text": "Learnable projection The first major component of the proposed framework is a set of learnable integral operators {G(1),G(2), . . . ,G(n)} that projects the input function u : Rn 7\u2192 Rd into a set of functions with one-dimensional domain {\u03d5(1), \u03d5(2), . . . , \u03d5(n)} \u2208 R 7\u2192 Rd, which is defined as:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p23",
+    "section_heading": "3.2 Multidimensional factorized attention",
+    "text": "where h(m)(\u00b7) : Rd 7\u2192 Rd and \u03b3(m)(\u00b7) : Rd 7\u2192 Rd are pointwise learnable functions and w = 1/(L1L2 \u00b7 \u00b7 \u00b7Lm\u22121Lm+1 \u00b7 \u00b7 \u00b7Ln), with Lm being the size of domain \u2126m discretized by {x(m)i } Sm i=1. In practice, we implement h(m) as a three-layer multi-layer perception (MLP) similar to the feedforward network in Transformer [115] and \u03b3(m) as a simple linear transformation. When the underlying grid is uniform, (6) simply amounts to first transforming the input with pointwise learnable functions \u03b3(m)(\u00b7), applying mean pooling over all but the m-th spatial dimension, and then applying another pointwise learnable function h(m).",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p24",
+    "section_heading": "3.2 Multidimensional factorized attention",
+    "text": "Factorized kernel integral Equipped with the above projection module, we now introduce our factorized kernel integral scheme. More specifically, we propose to use the following integral to replace the kernel integral in (2):",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p25",
+    "section_heading": "3.2 Multidimensional factorized attention",
+    "text": "where kernels {\u03ba(1), . . . , \u03ba(n)} : R\u00d7 R 7\u2192 R are computed based on projected single-dimensional function along each axis, v(\u00b7) : Rn 7\u2192 Rd is derived from the input function u via linear transformation (just as the value in standard attention). Next, we will discuss how the above kernel integral is implemented in practice. Using the learnable projection operator defined in (6), we can obtain {U\u0302 (1), . . . , U\u0302 (n)} (U\u0302 (m) \u2208 RSm\u00d7d) from the input U \u2208 RS1\u00d7...\u00d7Sn\u00d7d, where the imth row of U\u0302 is the evaluation of projected function \u03d5(m)(\u00b7) at xim : U\u0302 (m) im",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p26",
+    "section_heading": "3.2 Multidimensional factorized attention",
+    "text": "= \u03d5(m)(xim). Then we apply linear transformation on them to obtain the query/key matrix just as standard attention: Q(m) = U\u0302 (m)W (m) q ,K(m) = U\u0302 (m)W (m) k , where {W (m) q ,W (m) k } \u2208 Rd\u00d7d are learnable matrices. The query and key are used to compute the kernel matrix A(m) \u2208 RSm\u00d7Sm :",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p27",
+    "section_heading": "3.2 Multidimensional factorized attention",
+    "text": "where wm is the mesh weight, @\u0303 denotes the RoPE encoded matrix as discussed in (4), the i-th row and j-th column of A(m) represents the kernel value \u03ba(m)(x(m)i ,x(m)j ). Despite (8) has a quadratic complexity with respect to the grid size Sm, this is an affordable cost for most of the problems where the axial grid size Sm is mostly between 64 to 512. Meanwhile, the value V \u2208 RS1\u00d7...\u00d7Sn\u00d7d is derived from the input via a linear transformation (i.e. (m+ 1)-th mode product): V = U \u00d7n+1 Wv , where Wv \u2208 Rd\u00d7d is again a learnable matrix. The overall factorized kernel integral is numerically approximated with the following tensor-matrix product (Figure 2):",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p28",
+    "section_heading": "3.2 Multidimensional factorized attention",
+    "text": "In (9), the computation of all kernel is of complexity O(S21d + S 2 2d + . . . + S 2 nd), and the time complexity of a single tensor-matrix product V \u00d7m A(m) is O(NSmd). After evaluating the tensormatrix product, the output tensor Z will be sent to a pointwise feedforward network f(\u00b7) : Rd 7\u2192 Rd. To sum up, the update protocol of a single layer in our proposed factorized Transformer is defined as follows:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p29",
+    "section_heading": "3.2 Multidimensional factorized attention",
+    "text": "where Att(\u00b7) is the attention from (9), IN(\u00b7) is instance normalization [112] that normalizes each channel instance-wise. It is worth pointing out that the axial factorized kernel proposed here shares some similarities with the Axial Transformer proposed in Ho et al. [45], but has two significant differences despite the connection. Firstly, Axial Transformer reduces the computational cost by constraining the context of attention along each axis (e.g. a pixel can only attend to other pixels on the same row), which amounts to moving all but one axis to the batch dimension. In this way computing the axial kernel matrix is of O(NSmd) complexity (recall N = S1 \u00d7 . . .\u00d7 Sn) instead of O(S2md) as in our model. And its overall computation of attention is relatively more expensive due to the presence of softmax. Secondly, the decomposition in Axial Transformer is not layer-wise. For example, in the first layer, the attention is conducted in a row-wise manner and then the second block will conduct attention in a column-wise manner, whereas our model decomposes attention along all axes into a tensor-matrix product within every layer. We provide an illustrative example in Figure 27 of the Appendix.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p30",
+    "section_heading": "3.3 Training techniques",
+    "text": "In this subsection, we will discuss several techniques used for training the model (including baselines) in our numerical experiments. In general, these techniques aim to alleviate the compounding error of autoregressive neural PDE solvers when applied to time-dependent PDEs.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p31",
+    "section_heading": "3.3 Training techniques",
+    "text": "Latent marching It is proposed in the Li et al. [67] that a simple pointwise learnable function \u03b5(\u00b7, \u00b7) \u2208 Rd \u00d7 R>0 7\u2192 Rd can be used to propagate dynamics in the latent space with a fixed time interval \u2206t: z (x, t+\u2206t) = z (x, t) + \u03b5 (z (x, t) , t), where z is the output of the final attention layer. In practice, \u03b5 is implemented as a pointwise MLP and is efficient to compute. Leveraging this technique, with one call to the neural solver, we can forward the state for multiple time steps (by marching in the latent space for k steps), thus reducing the total number of calls by a ratio of k. This is in principle similar to the Temporal Bundling technique proposed in Message-Passing Neural PDE solver (MP-PDE) [12], yet different in practical realization. In MP-PDE, the multi-timestep prediction is implemented as first predicting the difference in time {d1, d2, . . . , dk} and then adding them to the input u0 by a forward Euler scheme in the physical space: u\u0302k = u0 + dk\u2206t. In this work, we opt for the latent marching to predict multi-timesteps as the forward Euler scheme (in the physical space) is less stable for fluid problems with relatively large time step sizes.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p32",
+    "section_heading": "3.3 Training techniques",
+    "text": "Pushforward Neural PDE solvers are observed to be unstable for time-dependent problems. A small error or perturbation that occurs at the beginning of neural PDE solvers\u2019 prediction, can easily result in an unbounded rollout error. While there is hardly a universal method for guaranteeing their stability, a wide array of techniques have been proposed to improve the stability of neural PDE solvers, such as adding physics constraints [72, 118, 119], rollout training [68] or adding random-walk noise [91, 100, 104]. For this work, we adopt the pushforward technique from MP-PDE, which amounts to rolling out the model for two steps during training and then letting the gradient only flows through the last step. This allows training the model on error-corrupted samples and promotes the stability of the model. From a practical perspective, this is straightforward to implement and also computationally much cheaper than standard rollout training.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p33",
+    "section_heading": "4 Experiment",
+    "text": "In this section, we will investigate our proposed model numerically on several challenging problems. Furthermore, we compare our model against softmax-free attention [16, 67]. The baseline models we compared against are Fourier Neural Operator (FNO) [68], Factorized Fourier Neural Operator (F-FNO) [110] and Dilated ResNet (Dil-ResNet) [44, 125]. FNO has been shown to have good accuracy on a wide range of PDE problems and is computationally very efficient owing to the Fast Fourier Transformation (FFT). F-FNO factorizes the spectral convolution in FNO into separate spectral convolution along different axes and adopt an improved residual connection formulation like Transformer [115]. Dil-ResNet is recently introduced by Stachenfeld et al. [104] to learn the coarsegrained dynamics of turbulent flow and has demonstrated state-of-the-art performance across several problems. We adopt the implementation of Dil-ResNet with group normalization from PDEArena [37]. On 2D steady-state problem where linear attention\u2019s computational cost is affordable, we also include the result from Galerkin Transformer [16], which uses CNN to project the function onto a coarse grid and applies linear attention on the coarse grid. The implementation details of the proposed model and baselines are available in Section A, B of the Appendix.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p34",
+    "section_heading": "4.1 Benchmark problems",
+    "text": "We first apply our model to three fluid-like systems, where the underlying physics patterns are sensitive to the spatiotemporal scale that discretization can resolve, and typically require fine discretization for classical numerical solvers. In these problems, the neural PDE solver is trained to predict the next frame (or multiple frames if using latent marching) given a context of previous frames. The number of context frames of Kolmogorov flow and isotropic turbulence is set to 10 following [68, 72], and 4 for smoke buoyancy similar to [37]. We also consider a well-known steady-state problem-2D Darcy flow, which has been studied in many of the previous works. Below we provide a brief description of each problem we studied. More details can be found in Section E of the Appendix.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p35",
+    "section_heading": "4.1 Benchmark problems",
+    "text": "2D Kolmogorov flow The first example is 2D Kolmogorov flow governed by incompressible Navier-Stokes equation with a periodic boundary condition. The Reynolds number Re determines how turbulent the system will be. We adopt the setting of forced turbulence following Kochkov et al. [56] and generate the data by using the pseudo-spectral method to simulate fluid flow with Reynolds number Re = 1000. The objective is to predict the vorticity \u03c9 of the flow field within an interval [t0, t0 + T ], where T = 1s and t0 is a random starting point in the sequence. We use a spatial grid of 256\u00d7 256 and temporal discretization of \u2206t = 0.0625s (therefore 1s corresponds to 16 frames) to train and evaluate the model.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p36",
+    "section_heading": "4.1 Benchmark problems",
+    "text": "3D isotropic turbulence The second example is 3D isotropic turbulence governed by incompressible Navier-Stokes equation with a periodic boundary condition. The major difference from the first example is that the vortex stretching term is non-zero for three-dimensional flow. We use the 3D spectral simulator from Mortensen and Langtangen [81], which simulates the forced turbulence described in Lamorgese et al. [62]. For generating the dataset, we simulate a system of Taylor Reynolds number Re\u03bb = 84 [62]. The objective is to predict the pressure p and velocity u from t = 0.5 to t = 1s (10 frames). The model is trained and evaluated on a 60 \u00d7 60 \u00d7 60 spatial grid with \u2206t = 0.05s.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p37",
+    "section_heading": "4.1 Benchmark problems",
+    "text": "3D smoke buoyancy The third example is 3D buoyancy-driven flow, which depicts smoke volume rising in a closed domain. A similar system in 2D formulation has been studied in several previous works [11, 113]. The underlying governing equation is the incompressible Navier-Stokes equation coupled with an advection equation. The boundary condition for the smoke field is Dirichlet while the boundary condition for the flow field is Neumann. The advection equation describes the motion of smoke, which is transported along the flow field. We modify the solver from [37] that is implemented in phiflow[46] to generate the data, with buoyancy factor set to 0.5 and viscosity \u03bd = 0.003. The objective is to predict the scalar density field of smoke d and velocity of flow u from t = 3 to t = 15s (16 frames). The model is trained and evaluated on a 64\u00d7 64\u00d7 64 spatial grid with \u2206t = 0.75s. To account for non-periodic boundary conditions, we pad the domain for FNO variants and DilResNet following the original works. For FactFormer, we append a simple CNN block after the model, which comprises 3-by-3 convolutional layers with zero padding.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p38",
+    "section_heading": "4.1 Benchmark problems",
+    "text": "2D Darcy flow In addition to the above time-depedendent systems, the fourth example is 2D steady-state problem from Li et al. [68]. Given the diffusion coefficient, the model predicts the steady-state flow field. The boundary condition is also Dirichlet so we adopt settings for all models similar to the 3D smoke problem.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p39",
+    "section_heading": "4.2 Results and discussion",
+    "text": "For all the models, we study two protocols of training. The first is Latent Marching with Pushforward (denote as LM). The second is simply Autoregressive (denote as AR), where the model is rolled out for two steps during training. For LM models, each call to the model will output k future steps. On 2D Kolmogorov flow/3D smoke buoyancy, k is set to 4, and 2 for 3D isotropic turbulence. We interleave pushforward training with standard per-step training for LM models. The relative L2 norm is used to train and measure the error of each model following Li et al. [68]. The sequence-wise averaged error and the frame-wise error at the end frame are reported in Table 1, 2, 3. We also report the time cost of simulating a sequence and the number of parameters for each model. The frame-wise error trends are shown in Figure 6, 7, 8, 9, 10 in the Appendix. The visualization of predicted samples are provided in the Section F of Appendix. We observe that Dil-ResNet has a slightly better per-frame fitting capability compared to the other models on 3D flow problems. As shown in the loss trend plots, it starts at a lower error compared to other models. This coincides with the observation in Stachenfeld et al. [104] where Dil-ResNet\u2019s performance is strong on 3D fluid problems. On 2D flow, F-FNO has the best accuracy compared to other models. Interestingly, FactFormer can catch up with Dil-ResNet on 2D Kolmogorov flow and 3D smoke buoyancy when the time duration becomes longer. Yet for shorter-term prediction - 3D isotropic turbulence, Dil-ResNet still has the best final accuracy. This suggests that the accuracy of long-term prediction can potentially benefit from exploiting the global structure that lies in the input. Nonetheless, compared to Dil-ResNet, FactFormer offers superior efficiency as indicated by the inference time (time cost of simulating a sequence). Since the training time is roughly proportional to the model forward time, on 3D problems Dil-ResNet generally takes 3-4 times longer to train. In terms of different training strategies, we find that AR models are less stable than multi-step training (LM) and computationally more expensive as it requires more calls to the neural solver. Despite the average error varies case by case, LM models\u2019 error generally accumulates slower on the problems we studied, whereas AR models quickly blow up in some cases. Lastly, while Dil-ResNet has shown good accuracy for 3D flow problems, its performance is highly dependent on the training discretizations. As shown in the Figure 3, without changing model architecture, its evaluation errors increases significantly when the resolution increases, while Transformer-based models and FNO models\u2019 performance are roughly invariant to the resolution. This highlights a major difference between CNN-based models and neural operators.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p40",
+    "section_heading": "4.3 Comparison against full attention",
+    "text": "In this subsection, we will present an ablation study of the proposed factorized attention mechanism with softmax-free attention (denoted as \"linear attention\") previously applied to PDE modeling[16, 67]. More specifically, we employ the attention from Li et al. [67] (in the form of (4)) to replace factorized attention in (10), with K\u0303, V normalized column-wise via instance normalization, e.g. ||V\u00b7,j ||2 = 1. To accommodate for the memory cost of linear attention, we further downsample the 2D Kolmogorov flow discussed in the last subsection to a 128\u00d7 128 grid and train both linear and factorized attention models on it (with latent marching and pushforward trick).",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p41",
+    "section_heading": "4.3 Comparison against full attention",
+    "text": "Comparison of performance We compare the accuracy and computational cost of the two attention mechanisms in Figure 4 and Table 4. While in principle full attention could have better approximation capacity than factorized attention, in practice we find that it performs worse than factorized attention on this problem we studied. Specifically, its rollout is less stable and results in a degraded accuracy. We hypothesize that this is due to the instability of iteratively calculating the attention matrix of a large size, as rolling out the prediction requires recursively calling the model multiple times. In",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p42",
+    "section_heading": "4.3 Comparison against full attention",
+    "text": "addition to the accuracy improvement, the benchmark on computation empirically demonstrates the computational efficiency improvement of factorized attention over linear attention. We provide more detailed comparison between factorized attention and linear attention in the Section D of Appendix, where we observed consistent efficiency improvement with different grid sizes and model sizes. Pattern of attention matrices We also investigate the structure of different attention matrices. By construction, when using softmax-free attention to compute the kernel integral in (2), the kernel matrix A = QKT is going to have a low-rank structure since rank(A) \u2264 min(rank(Q), rank(K)), Q,K \u2208 RN\u00d7d and usuallyN >> d. After training, we compute the attention matrices based on 100 samples and conduct singular value decomposition (SVD) on them. We define the total energy of the spectrum as the sum of singular values E = \u2211 i \u03c3i, where \u03c3i is the i-th singular value and report",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p43",
+    "section_heading": "4.3 Comparison against full attention",
+    "text": "the normalized cumulative energy histogram bk = \u2211k i=1 \u03c3i/ \u2211",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p44",
+    "section_heading": "4.3 Comparison against full attention",
+    "text": "i \u03c3i in Figure 5a, 5b, 5c. For each layer, the histogram is averaged across the attention matrices of all heads. We observe that for linear attention, its rank is relatively low as less than 5% of the singular values capture over 90% of the total energy, which is similar to the trend observed from previous works studying the rank of standard softmax-attention [6, 26, 120]. Note that the spectrum of linear attention is based on a truncated SVD and therefore its rank will be even lower if a full SVD is performed. The highly low-rank structure of the full attention matrix hints the potential to approximate with or decomposed into smaller and more compact matrices, and our proposed factorized scheme is one example.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p45",
+    "section_heading": "5 Conclusion",
+    "text": "In this work, we propose an end-to-end Transformer for PDE modeling, which features a learnable projection operator and a factorized kernel integral. We demonstrate that the proposed model balances efficiency and accuracy well, making it a promising and scalable solution for PDE surrogate modeling. However, the proposed attention mechanism is still not free from the curse of dimensionality. The computation of the factorized kernel integral requires evaluating the function on all S1\u00d7S2\u00d7. . .\u00d7Sm grid points. A future direction could be extending the factorization scheme to a more efficient tensor decomposition format like tensor-train. The proposed model currently exploits the uniform structure of the underlying grids and use mean pooling when doing projection, but non-uniform quadrature weight will be necessary when applying to non-uniform grids. It is also observed that the proposed model and other neural PDE solvers can be unstable due to the error accumulation when solving time-dependent systems.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p46",
+    "section_heading": "Acknowledgement",
+    "text": "This work is supported by the National Science Foundation under Grant No. 1953222. The authors would like to thank the annonymous reviewers and area chair for their efforts and valuable feedback during the reviewing process. The authors would like to thank Dr. Shuhao Cao from University of Missouri - Kansas City for the comments regarding the backpropagation of feedforward layer and attention layer in Transformer. The authors would also like to thank Zhi Ye for the suggestions on benchmarking the computational cost of the model.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p47",
+    "section_heading": "A Model implementation details",
+    "text": "Hidden dimension indicates the number of channels in the latent space. Depth denotes the number of attention layers. Before entering each attention layer, we modulate the latent encoding with positional encoding: zi \u2190 zi + \u03c8(xi), where xi is the Cartesian coordinate of latent encoding zi, \u03c8 : Rn 7\u2192 Rd is a random Fourier feature mapping [94, 107] with a learnable linear transformation. Kernel dimension is the dimension of each head, which is equivalent to dk, the number of function bases used to compute the kernel: \u03ba(x, \u03be) = \u2211dk l ql(x)kl(\u03be). We train the model with AdamW optimizer and cyclic learning rate scheduler with a maximum learning rate 3e\u2212 4, similar to prior Transformer-for-PDE works [16, 43, 67].",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p48",
+    "section_heading": "A Model implementation details",
+    "text": "For 3D smoke buoyancy and 2D Darcy flow problem, we append a CNN block after attention layers to better account for the boundary values. The CNN block has a U-shape arrangement with 4 CNN layers, with all layers using a kernel size of 3 and padding size of 1 (pad with zeros). The first CNN layer has a stride of 2, while other layers have a stride of 1. The stride-2 convolution will downsample the data by half, so nearest upsampling is applied between the second and third CNN layers to recover the spatial resolution.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p49",
+    "section_heading": "A Model implementation details",
+    "text": "On top of every model (including baselines we will discuss in the next section), we use a 2D convolutional layer to compress the temporal dimension if it is a time-dependent problem. Concretely, we first reshape the input into (N,Tin) where N is the number of spatial grid points and Tin is the number of input frames. Then we apply 2D convolution filters of size (1, Tin) to compress the temporal dimension to 1. At the bottom of every model, we use a three-layer MLP to project the latent encoding back to variables of interest such as pressure and velocities. In addition, we adopt a curriculum training strategy for all latent marching models, where we only march for 1 step at the beginning of the training and don\u2019t do any pushforward. Then we gradually increase the latent marching steps throughout the training and apply pushforward when the model has been trained for around 6% of the total epochs.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p50",
+    "section_heading": "B Baseline implementation details",
+    "text": "In this section, we provide the full details of baseline models, namely FNO, F-FNO, Dil-ResNet, and linear attention Transformer.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p51",
+    "section_heading": "B Baseline implementation details",
+    "text": "For Fourier Neural Operator, the implementation is taken from Li et al. [72]\u2019s official implementation: https://github.com/neuraloperator/physics_informed. And for Factorized Fourier Neural Operator the implementation is taken from https://github.com/alasdairtran/ fourierflow. We add group normalization before the final fully-connected layer. We use a hidden size of 96, a mode number of 12 for 3D problems, 24 for 2D turbulence, 20 for Darcy flow, and a layer number of 4.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p52",
+    "section_heading": "B Baseline implementation details",
+    "text": "For Dil-ResNet, we adopt the implementation from Gupta and Brandstetter [37]:https://github. com/microsoft/pdearena. Compared to Gupta and Brandstetter [37] and Stachenfeld et al. [104], we simplify the setting by truncating the number of layers inside each block, where we use dilation layers [1, 3, 8, 3, 1] ([1, 2, 4, 2, 1] is chosen for the 3D problem as it has slightly better performance) inside each block instead of [1, 2, 4, 8, 4, 2, 1]. The primary reason is that without truncation, the training on 3D problems will take over a week (and cannot fit into a single A6000 GPU for 2-step",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p53",
+    "section_heading": "B Baseline implementation details",
+    "text": "rollout training), which is significantly slower than other models. In summary, we use 3 residual blocks (each with 5 CNN layers of width 128), an MLP-based or 2D convolution-based (for convolution in temporal domain) encoder/decoder, with group normalization inserted between every residual block. The implementation of the linear attention Transformer follows OFormer\u2019s [67] attention implementation https://github.com/BaratiLab/OFormer, with a Galerkin style normalization scheme [16]. Other hyperparameters are kept the same as the hyperparameters listed in Table 5 - 2D Kolmogorov. For non-Transformer models, they are trained with Adam optimizer and decay learning rate from 5e\u2212 4 to 5e\u2212 6 throughout the training. All the experiments are carried out using PyTorch 1.8 except for FNO/F-FNO experiment, which uses PyTorch 1.13 for optimizing complex-valued parameters. We train all LM models for 100k iterations and AR models for 64k iterations of gradient updates.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p54",
+    "section_heading": "B Baseline implementation details",
+    "text": "C Visualization of error trend",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p55",
+    "section_heading": "B Baseline implementation details",
+    "text": "This section includes the average frame-wise error trend for the time-dependent systems we have investigated.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p56",
+    "section_heading": "D Further ablation study",
+    "text": "This section includes further study and numerical experiments on the proposed model.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p57",
+    "section_heading": "D Further ablation study",
+    "text": "Note on backpropagation Consider a single (softmax-free) attention block that consists of a attention layer and a two layer feedforward network (for simplicity we consider single-headed case):",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p58",
+    "section_heading": "D Further ablation study",
+    "text": "where U0 \u2208 RN\u00d7d is the input, W1,W2 \u2208 Rd\u00d7d are learnable weights for the feedforward network. Given a loss function l(\u00b7) : RN\u00d7d 7\u2192 R (for example, mean squared error), define U\u03031 := U1W1, \u2202l \u2202U2 := h, \u2202\u03c3(U\u03031) \u2202U\u03031",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p59",
+    "section_heading": "D Further ablation study",
+    "text": ":= g, the gradient for the weights and input in the feedforward network are (\u2299 denotes element-wise multiplication):",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p60",
+    "section_heading": "D Further ablation study",
+    "text": "For linear (softmax-free) dot-product attention: U1 = Att(U0) = QKTV , where Q = U0Wq,K = U0Wk, V = U0Wv , and thus U1 = U0WqWTk UT0 U0Wv, the gradient of weights are:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p61",
+    "section_heading": "D Further ablation study",
+    "text": "where U0 \u2208 RN\u00d7d has appeared three times in each calculation and thus in backpropagation the computational cost of attention layer is generally more expensive than the feedforward layer where it involves more matrices that grow exponentially with respect to the spatial resolution.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p62",
+    "section_heading": "D Further ablation study",
+    "text": "Next we provide a comparison between the backpropagation of linear attention and the proposed factorized attention in scalar summation form. For simplicity, we only consider the attention layer. For linear attention, it can be written as:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p63",
+    "section_heading": "D Further ablation study",
+    "text": "where Zi,c denotes the i-th row and j-th column of matrix Z and similar for other matrices, Q = XWq,K = XWk, V = XWv and X \u2208 RN\u00d7d is input. The gradient of parameters are computed as:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p64",
+    "section_heading": "D Further ablation study",
+    "text": "For the proposed factorized attention, it can written as:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p65",
+    "section_heading": "D Further ablation study",
+    "text": "where A(m) = Q(n)(K(m))T (A(m) \u2208 RSm\u00d7Sm , N = S1\u00d7S2\u00d7 . . .\u00d7Sn) is the axial kernel matrix as defined in (8), X(m) \u2208 RSm\u00d7d is the axial projection along m-th axis as defined in (6). For Wv , its gradient is computed as:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p66",
+    "section_heading": "D Further ablation study",
+    "text": "For W (n)q ,W (n) k , their gradients are computed as:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p67",
+    "section_heading": "D Further ablation study",
+    "text": "The major difference is that for factorized attention the summation is taken over each axis separately while for linear attention is taken over all N grid points.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p68",
+    "section_heading": "D Further ablation study",
+    "text": "Runtime comparison As discussed in Section A, the kernel dimension indicates how many function bases are used to evaluate the kernel and a larger kernel dimension is beneficial to the learning capacity of the model. As shown in Figure 11a, 11b, linear attention\u2019s training cost increases more significantly than the factorized attention as kernel dimension increases, since its complexity is quadratic with respect to kernel dimension. Factorized attention\u2019s computational efficiency can be further improved by reducing the spatial resolution, leveraging techniques such as learning the mapping in the latent space (similar to latent diffusion model [99]), multi-scale network architecture that resembles multigrid methods [35, 74], or domain decomposition [47, 93]. Furthermore, the training cost of factorized attention is also relatively lower than linear attention on 3D domain as shown in Figure 12a, 12b.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p69",
+    "section_heading": "D Further ablation study",
+    "text": "Model scaling performance We study the impact of the number of heads and size of kernel dimension on prediction loss. For each direction of hyperparameter search, we fix the value of other hyperparameters to that shown in Table 5. The ablation experiments are conducted on 2D Kolmogorov flow (sampled from a 128 \u00d7 128 grid) with a splitting different from the Evaluation Section in the main body of the paper. As shown in Figure 13b, the number of attention heads has a crucial impact on the final performance. The model\u2019s performance drops significantly when using fewer heads. This highlights the importance of multi-head mechanism in the factorized attention. In addition, we observe that the final accuracy of our model benefits from an increased kernel dimension (as shown in Figure 13a).",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p70",
+    "section_heading": "D Further ablation study",
+    "text": "Visualization of learned kernels We visualize the learned kernel as shown in Figure 14. Due to the presence of Rotary positional encoding [105], all kernels have a stationary pattern (the kernel value \u03ba(\u03be1, \u03be2) depends only on the relative distance between two points, e.g. L2 distance: ||\u03be1 \u2212 \u03be2||2). The kernel matrices also exhibits symmetric pattern despite the non-symmetric nature of dot product QKT and all kernel matrices are diagonal dominated.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p71",
+    "section_heading": "D Further ablation study",
+    "text": "Influence of random seed We investigate the influence of random seeds by training the model with three different seeds. As shown in Figure 15, all models converge to the similar level of loss with marginal difference.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p72",
+    "section_heading": "E Dataset details",
+    "text": "In this section we provide the details for each dataset.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p73",
+    "section_heading": "E Dataset details",
+    "text": "2D Kolmogorov flow The incompressible Navier-Stokes equation under vorticity form reads as,",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p74",
+    "section_heading": "E Dataset details",
+    "text": "where \u03c9 denotes vorticity, u denotes velocity, Re denotes the Reynolds number, x = (x1, x2) denotes the spatial coordinates and f(\u00b7) is the forcing term that is set to f(x) = \u2212n cos (nx2) \u2212 0.1\u03c9(x). The equation is periodic in all spatial directions. Compared to the cases discussed in Li et al. [72], we set the forcing factor n to 8 [1, 19] and introduce dragging force term 0.1\u03c9(x) as described in Kochkov et al. [56]. The initial condition \u03c90 is sampled from a prescribed Gaussian random field",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p75",
+    "section_heading": "E Dataset details",
+    "text": "same as Li et al. [72]. The dataset consists of 100 trajectories for training and 20 trajectories for testing, with the length of each trajectory being 10 seconds and 160 frames.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p76",
+    "section_heading": "E Dataset details",
+    "text": "We modify the pseudo-spectral solver (under Apache License 2.0) from https://github.com/ neuraloperator/physics_informed/blob/master/solver/kolmogorov_flow.py to generate the data. The referenced direct numerical simulation is carried out with a spatial resolution of 2048\u00d7 2048 and a temporal resolution of 1e\u2212 4.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p77",
+    "section_heading": "E Dataset details",
+    "text": "3D isotropic turbulence The incompressible Navier-Stokes equation for this problem is given as:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p78",
+    "section_heading": "E Dataset details",
+    "text": "where u denotes velocity, p denotes the pressure, \u03bd is the viscosity parameter, x = [x1, x2, x3] denotes the spatial coordinates and f(\u00b7) is the forcing term. The equation is periodic in all three spatial dimensions. The initialization of u and the forcing settings follow Rogallo [98] and Lamorgese et al. [62] respectively, with Taylor Reynolds number set to 84 [62]. The dataset consists of 1000 trajectories for training and 100 trajectories for testing, with the length of each trajectory being 1 second and 20 frames.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p79",
+    "section_heading": "E Dataset details",
+    "text": "We use the spectral Galerkin solver (under GNU GPL license 3.0) from https://github.com/ spectralDNS. The referenced simulation is carried out with a spatial resolution of 60 \u00d7 60 \u00d7 60 and a temporal resolution of 0.005s.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p80",
+    "section_heading": "E Dataset details",
+    "text": "3D smoke buoyancy The governing equations for the 3D smoke buoyancy problem are incompressible Navier-Stokes equation (similar as above) coupled with advection equation:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p81",
+    "section_heading": "E Dataset details",
+    "text": "where f(x, t) = [0, 0, \u03b7d(x, t)], \u03b7 is the buoyancy factor, the velocity field u has a Dirichlet boundary condition: u(x, \u00b7) = 0,\u2200x \u2208 \u2202\u2126, and the scalar density field for smoke has a Neumann boundary condition: \u2207d(x, \u00b7) = 0,\u2200x \u2208 \u2202\u2126. The initial condition d0(x) is a random field 3 with scaling of Fourier coefficient set to 15.0, smoothness factor set to 4.0. The length of the rectangular domain L is set to 8. The dataset consists of 2000 trajectories for training and 200 trajectories for testing, with the length of each trajectory being 15 seconds and 20 frames.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p82",
+    "section_heading": "E Dataset details",
+    "text": "We modify the 2D solver (under MIT license) from https://github.com/microsoft/pdearena to generate the data. The solver applies an advection-project scheme. The referenced simulation is carried out with a spatial resolution of 64\u00d7 64\u00d7 64 and a temporal resolution of 0.75s.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p83",
+    "section_heading": "E Dataset details",
+    "text": "2D Darcy flow The equation for the 2D Darcy flow is defined as:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p84",
+    "section_heading": "E Dataset details",
+    "text": "where f(x) is the forcing function that is set to constant 1. The coefficient function a(x) is sampled from Gaussian Random Field with zero Neumann boundary condition. The data is generated via second-order finite difference solver on a 421\u00d7 421 resolution grid. We use the pre-generated dataset from Li et al. [68] (under MIT license). The dataset consists of 1000 samples for training and 100 samples for testing.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p85",
+    "section_heading": "E Dataset details",
+    "text": "/",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p86",
+    "section_heading": "E Dataset details",
+    "text": "In this section, we provide exemplary visualization of the model\u2019s prediction. For 3D problems, the cross-section at the middle of the first axis is shown.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p87",
+    "section_heading": "G Broader impact",
+    "text": "The numerical simulation of PDEs is of extensive application in various fields, such as manufacturing, weather forecasting, and engineering design. Meanwhile, Transformer has shown promising performance on a wide range of data-driven applications including PDE modeling. Our work can help improve the stability and computational efficiency of the attention-based PDE surrogate models. Our experiments demonstrate that the proposed model serves as an efficient surrogate for numerical solvers, maintaining a balance between accuracy and efficiency, and thus pushing the Pareto front of accuracy-efficiency. However, as there exists a large variety of PDEs and each with very unique properties, there is no guarantee that one type of data-driven model can rule all. Additionally, just like most concurrent works on neural PDE solvers, the long-term stability of the proposed model cannot be guaranteed. Therefore it is important to acknowledge the limitations and potential risks associated with the application of neural PDE solvers.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p88",
+    "section_heading": "G Broader impact",
+    "text": "Apart from enriching the existing architecture design choice of attention-based models, our work also has the potential to be combined with other neural PDE solvers design formulas (e.g., explicitly take into account the relationship between different output variables), or common neural network architectures (e.g., U-Net).",
+    "seg_type": "par"
+  }
+]

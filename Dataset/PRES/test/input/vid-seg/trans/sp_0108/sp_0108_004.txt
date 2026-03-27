@@ -1,0 +1,5 @@
+Observing that the asymmetric distribution of power is key to the ability of malicious servers to breach user confidentiality, we design a fully decentralized peer-to-peer learning protocol.
+In our framework, a committee of users performs the server's work of aggregating the secret shared model updates in order to preserve user privacy.
+While this setup provides good confidentiality guarantees, it presents challenges when ensuring protection from data poisoning attacks mounted by users.
+Many algorithms for defending against these attacks exist, but almost all of them require viewing user updates in plain text.
+To remedy this, we designed maliciously secure multi-party computation protocols for robust aggregation.

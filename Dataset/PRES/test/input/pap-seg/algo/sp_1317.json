@@ -1,0 +1,44 @@
+[
+  {
+    "input_path": "/tmp/megha/PDF-Extract-Kit/Presentation/layout_pap/sp_1317/sp_1317_page_16.png",
+    "page_index": null,
+    "boxes": [
+      {
+        "cls_id": 14,
+        "label": "algorithm",
+        "score": 0.90118807554245,
+        "coordinate": [
+          437.3078918457031,
+          520.5266723632812,
+          2100.9560546875,
+          1251.0377197265625
+        ],
+        "text": "Input: D = {\u00afqi}i=1 where qi = (q1(xi) \u2212 a1, \u00b7 \u00b7 \u00b7 , qK(xi) \u2212 aK); maximal number of iteratic\nmini-batch index Bt  [n]; step size \u03b1t\nfor t = 1, \u00b7 . . , T do\nDual variables update (in log-scale):\nK\n1 ( 1og (l(t)\n\u03b1t\n1\n\u2211I\n= exp\npro\u03b1t\u03b3\u00b7l1\nqi,j\nforj\n+\nj\n\u03c4(t)\n|Bt|\niBt k=1\nK\n1\n\u2211\u03a0\n\u03c4(t+1)\n|Bt|\niBt k=1\nend for\nOutput: \u03bb (T +1)\n= log(ll(T +1))\nFunction: prox\u03b1| \u2225, (x) = sign(x) max{|x| = \u03b1 \u2212",
+        "input_path": "/tmp/megha/PDF-Extract-Kit/Presentation/layout_pap/sp_1317/sp_1317_page_16.png",
+        "id": "sp_1317_page_16_1",
+        "seg_type": "algo"
+      }
+    ]
+  },
+  {
+    "input_path": "/tmp/megha/PDF-Extract-Kit/Presentation/layout_pap/sp_1317/sp_1317_page_6.png",
+    "page_index": null,
+    "boxes": [
+      {
+        "input_path": "/tmp/megha/PDF-Extract-Kit/Presentation/layout_pap/sp_1317/sp_1317_page_6.png",
+        "cls_id": 14,
+        "label": "algorithm",
+        "score": 0.8674110174179077,
+        "coordinate": [
+          444.70367431640625,
+          299.95440673828125,
+          2100.970947265625,
+          960.4758911132812
+        ],
+        "text": "Input: D = {\u00af~qi}n=1 where qi = (q1(xsyn) \u2212 a1, \u00b7 \u00b7 \u00b7 , qK (xsyn) \u2212 aK); maximal number of iteration\nmini-batch index Bt  [n]; step size \u03b1t\nfor t = 1, . . . , T do\nDual variables update:\n exp \u2212 \u2211\u03bbte ,k qu.j\nK\n\u039b(t+1) = pro\u03b1t\u03b3\u00b7l 1\n\u03b1t\n1\n\u2211\nfor j  [K]\n\u03c4(t)\n|Bt|\niBt\nk=1\nK\n1\n\u03c4(t+1)\n\u2211\nexp\nqi,k\n|Bt|\nX\niBt\nk=1\nend for\nOutput: \u03bb(T +1)",
+        "id": "sp_1317_page_6_1",
+        "seg_type": "algo"
+      }
+    ]
+  }
+]

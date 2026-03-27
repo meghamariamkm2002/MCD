@@ -1,0 +1,20 @@
+1
+00:00:00,031 --> 00:00:00,572
+research.
+
+2
+00:00:01,593 --> 00:00:05,319
+In Monte Carlo research, ignore the yellow one for now.
+
+3
+00:00:05,439 --> 00:00:09,485
+You're in the green position and you want to go to the blue position.
+
+4
+00:00:10,006 --> 00:00:15,754
+In Monte Carlo research, what you're searching over is the next action to take.
+
+5
+00:00:16,215 --> 00:00:19,660
+In this case, you have four possible actions to take.
+

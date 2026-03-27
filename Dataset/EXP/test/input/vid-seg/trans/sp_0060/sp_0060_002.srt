@@ -1,0 +1,200 @@
+1
+00:00:00,031 --> 00:00:00,692
+win-win.
+
+2
+00:00:02,314 --> 00:00:08,744
+So this paper is about semi-supervised learning in effect.
+
+3
+00:00:08,764 --> 00:00:14,432
+So it's at the intersection actually of semi-supervised learning, knowledge distillation and transfer learning.
+
+4
+00:00:14,853 --> 00:00:17,597
+So what do we mean by semi-supervised learning?
+
+5
+00:00:17,717 --> 00:00:21,162
+Usually in supervised learning you'll have some sort of data set
+
+6
+00:00:21,142 --> 00:00:25,792
+And the dataset will contain, let's say it's an image net, it's image dataset.
+
+7
+00:00:26,193 --> 00:00:27,936
+So the dataset will contain images.
+
+8
+00:00:28,658 --> 00:00:31,945
+This is an image with like some sort of cat on it.
+
+9
+00:00:32,947 --> 00:00:36,755
+And it will contain the labels according to that.
+
+10
+00:00:36,935 --> 00:00:38,138
+So cat.
+
+11
+00:00:38,118 --> 00:00:45,184
+Now, in semi-supervised learning, you assume that, so this is supervised learning.
+
+12
+00:00:45,405 --> 00:00:50,709
+In semi-supervised learning, you assume that only part of your dataset has the labels.
+
+13
+00:00:51,130 --> 00:00:57,856
+So like only this part down here has the labels, and the upper part does not have the labels.
+
+14
+00:00:58,256 --> 00:01:00,018
+So that's semi-supervised learning.
+
+15
+00:01:00,298 --> 00:01:07,264
+It's often the case when it's very expensive to get labels, so you can only get labels for a couple of images in your dataset.
+
+16
+00:01:07,244 --> 00:01:11,850
+But very often in semi-supervised learning, you still assume it's the same data set.
+
+17
+00:01:12,491 --> 00:01:16,176
+There is a slightly different setup here that's called transfer learning.
+
+18
+00:01:17,178 --> 00:01:23,847
+So in transfer learning, what you'll have is you'll have your data set that has the labels, but it's very small.
+
+19
+00:01:24,287 --> 00:01:26,090
+So you'll notice I've drawn it smaller.
+
+20
+00:01:26,390 --> 00:01:27,852
+That means you have very little.
+
+21
+00:01:27,832 --> 00:01:35,406
+That is also the case when it's very expensive to get labels, but also it's expensive to get the data itself.
+
+22
+00:01:35,767 --> 00:01:46,667
+This is often the case, like say in medical data, where not only is it expensive to get labels for like a CT scan, it's actually expensive to get the CT scan.
+
+23
+00:01:46,647 --> 00:01:57,751
+So, what the goal in transfer learning is, is to say, well, I do, I do have only this small data set, but I do have this giant other data set over here.
+
+24
+00:01:58,232 --> 00:02:06,951
+Now, can't I, it's not the same, it's maybe they're not CT, so these are CT scans, maybe these are x-rays, right?
+
+25
+00:02:06,931 --> 00:02:09,897
+They're fairly similar, similar technology.
+
+26
+00:02:11,159 --> 00:02:14,445
+If you slice the CT, it'll give you sort of an x-ray.
+
+27
+00:02:15,006 --> 00:02:23,202
+Can I pre-train my model on x-ray data and then fine-tune it on the CT data?
+
+28
+00:02:23,182 --> 00:02:26,810
+So that's called transfer learning, usually.
+
+29
+00:02:27,210 --> 00:02:30,437
+Now, this can be done with or without labels.
+
+30
+00:02:30,457 --> 00:02:35,568
+So it can be that for the xray dataset, you do have the labels or you don't have the labels.
+
+31
+00:02:35,608 --> 00:02:39,115
+There are techniques for all of those.
+
+32
+00:02:39,697 --> 00:02:40,819
+Now,
+
+33
+00:02:40,799 --> 00:02:44,885
+What we're going to look at today is kind of the situation right here.
+
+34
+00:02:45,186 --> 00:02:52,797
+It's the transfer learning situation where you do not have the labels for this x-ray data set.
+
+35
+00:02:53,218 --> 00:03:05,997
+But other than in this x-ray example, what we're going to look at is the small data set is going to be our ImageNet database, so our original picture with label database.
+
+36
+00:03:05,977 --> 00:03:15,459
+So you'll see immediately the difference here is that in the transfer learning setting, we usually assume that the data set we want to train on is fairly small.
+
+37
+00:03:15,900 --> 00:03:20,290
+Here, you know, ImageNet is already sizable.
+
+38
+00:03:21,620 --> 00:03:28,390
+But what we have is we have a much larger database of unlabeled images that we can just get from the internet.
+
+39
+00:03:28,890 --> 00:03:34,799
+So we can scrape the internet for any kind of pictures, and that will be our unlabeled dataset.
+
+40
+00:03:35,139 --> 00:03:43,611
+And what we'll try to do is somehow incorporate this unlabeled dataset here into the training process to get better on the ImageNet dataset.
+
+41
+00:03:43,591 --> 00:03:54,287
+Okay, so this is the problem statement is you have the ImageNet dataset and you have a second much larger dataset of unlabeled images and you somehow want to make use of them.
+
+42
+00:03:54,708 --> 00:03:57,893
+So I hope you see how this is sort of connected to the others.
+
+43
+00:03:57,953 --> 00:04:11,674
+It's essentially sort of a transfer semi-supervised learning setting, but with the exception that usually in transfer learning you assume that the labeled dataset is like super small.
+
+44
+00:04:11,654 --> 00:04:13,096
+which is not the case here.
+
+45
+00:04:13,317 --> 00:04:17,323
+And that's going to result in us being able to apply a different technique.
+
+46
+00:04:17,704 --> 00:04:20,629
+So this different technique is called the noisy student.
+
+47
+00:04:21,631 --> 00:04:28,262
+Now, usually what you might do in a transfer learning setting is you might want to start with that big data set, right?
+
+48
+00:04:28,642 --> 00:04:34,111
+Because that's the data set that's sizable enough to allow you to train a really big model on it.
+
+49
+00:04:34,191 --> 00:04:37,978
+And then you fine tune and you sort of hope that the information transfers over.
+
+50
+00:04:38,859 --> 00:04:40,041
+Here, on the other hand,
+

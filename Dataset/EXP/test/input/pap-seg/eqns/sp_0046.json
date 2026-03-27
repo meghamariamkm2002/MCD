@@ -1,0 +1,144 @@
+{
+  "sp_0046_page_0003": {
+    "bboxes": [
+      {
+        "box": [
+          300.69854736328125,
+          223.3298797607422,
+          922.1073608398438,
+          261.610107421875
+        ],
+        "text": [
+          "\\operatorname* { m i n } _ { G } \\operatorname* { m a x } _ { D } V ( D , G ) = \\mathbb { E } _ { \\mathbf { x } \\sim p _ { \\mathrm { d a t a } } ( \\mathbf { x } ) } [ \\log D ( \\mathbf { x } ) ] + \\mathbb { E } _ { \\boldsymbol { z } \\sim p _ { \\hat { z } } ( \\boldsymbol { z } ) } [ \\log ( 1 - D ( G ( \\boldsymbol { z } ) ) ) ] ."
+        ],
+        "id": "sp_0046_page_0003-1",
+        "page": "sp_0046_page_0003"
+      }
+    ]
+  },
+  "sp_0046_page_0004": {
+    "bboxes": [
+      {
+        "box": [
+          496.556640625,
+          831.1887817382812,
+          727.4136962890625,
+          886.7973022460938
+        ],
+        "text": [
+          "D _ { G } ^ { * } ( { \\pmb x } ) = \\frac { p _ { d a t a } ( { \\pmb x } ) } { p _ { d a t a } ( { \\pmb x } ) + p _ { g } ( { \\pmb x } ) }"
+        ],
+        "id": "sp_0046_page_0004-1",
+        "page": "sp_0046_page_0004"
+      },
+      {
+        "box": [
+          475.52655029296875,
+          532.3905029296875,
+          787.7791748046875,
+          597.80712890625
+        ],
+        "text": [
+          "\\nabla _ { \\boldsymbol { \\theta } _ { g } } \\frac { 1 } { m } \\sum _ { i = 1 } ^ { m } \\log \\left( 1 - D \\left( \\boldsymbol { G } \\left( \\boldsymbol { z } ^ { ( i ) } \\right) \\right) \\right) ."
+        ],
+        "id": "sp_0046_page_0004-2",
+        "page": "sp_0046_page_0004"
+      },
+      {
+        "box": [
+          309.60321044921875,
+          1307.4329833984375,
+          914.4210815429688,
+          1469.5098876953125
+        ],
+        "text": [
+          "\\begin{array} { r l } & { C ( G ) = \\underset { D } { \\operatorname* { m a x } } \\, V ( G , D ) } \\\\ & { \\quad \\quad = \\mathbb { E } _ { \\alpha \\sim p _ { \\mathrm { d a t } } } [ \\log D _ { G } ^ { * } ( \\alpha ) ] + \\mathbb { E } _ { \\boldsymbol { x } \\sim p _ { s } } [ \\log ( 1 - D _ { G } ^ { * } ( G ( \\boldsymbol { z } ) ) ) ] } \\\\ & { \\quad \\quad = \\! \\mathbb { E } _ { \\boldsymbol { x } \\sim p _ { \\mathrm { d a t } } } [ \\log D _ { G } ^ { * } ( \\boldsymbol { x } ) ] + \\mathbb { E } _ { \\boldsymbol { x } \\sim p _ { g } } [ \\log ( 1 - D _ { G } ^ { * } ( \\boldsymbol { x } ) ) ] } \\\\ & { \\quad = \\! \\mathbb { E } _ { \\boldsymbol { x } \\sim p _ { \\mathrm { d a t } } } \\left[ \\log \\frac { p _ { \\mathrm { d a t } } ( \\boldsymbol { x } ) } { P _ { \\mathrm { d a t } } ( \\boldsymbol { x } ) + p _ { g } ( \\boldsymbol { x } ) } \\right] + \\mathbb { E } _ { \\boldsymbol { x } \\sim p _ { g } } \\left[ \\log \\frac { p _ { g } ( \\boldsymbol { x } ) } { p _ { \\mathrm { d a t } } ( \\boldsymbol { x } ) + p _ { g } ( \\boldsymbol { x } ) } \\right] } \\end{array}"
+        ],
+        "id": "sp_0046_page_0004-3",
+        "page": "sp_0046_page_0004"
+      },
+      {
+        "box": [
+          411.7903137207031,
+          379.6270751953125,
+          872.3621215820312,
+          446.1602478027344
+        ],
+        "text": [
+          "\\nabla _ { \\theta _ { d } } \\frac { 1 } { m } \\sum _ { i = 1 } ^ { m } \\left[ \\log D \\left( \\pmb { x } ^ { ( i ) } \\right) + \\log \\left( 1 - D \\left( G \\left( \\pmb { z } ^ { ( i ) } \\right) \\right) \\right) \\right] ."
+        ],
+        "id": "sp_0046_page_0004-4",
+        "page": "sp_0046_page_0004"
+      },
+      {
+        "box": [
+          326.729248046875,
+          969.73388671875,
+          896.3873901367188,
+          1078.4677734375
+        ],
+        "text": [
+          "\\begin{array} { r l } & { V ( G , D ) = \\displaystyle \\int _ { \\boldsymbol { x } } p _ { \\mathrm { d a t a } } ( \\boldsymbol { x } ) \\log ( D ( \\boldsymbol { x } ) ) d \\boldsymbol { x } + \\int _ { z } p _ { z } ( z ) \\log ( 1 - D ( g ( z ) ) ) d z } \\\\ & { \\qquad \\qquad = \\displaystyle \\int _ { \\boldsymbol { x } } p _ { \\mathrm { d a t a } } ( \\boldsymbol { x } ) \\log ( D ( \\boldsymbol { x } ) ) + p _ { g } ( \\boldsymbol { x } ) \\log ( 1 - D ( \\boldsymbol { x } ) ) d \\boldsymbol { x } } \\end{array}"
+        ],
+        "id": "sp_0046_page_0004-5",
+        "page": "sp_0046_page_0004"
+      }
+    ]
+  },
+  "sp_0046_page_0005": {
+    "bboxes": [
+      {
+        "box": [
+          322.2862243652344,
+          408.5190734863281,
+          898.9844360351562,
+          465.4093322753906
+        ],
+        "text": [
+          "C ( G ) = - \\log ( 4 ) + K L \\left( p _ { \\mathrm { d a t a } } \\left\\| { \\frac { p _ { \\mathrm { d a t a } } + p _ { g } } { 2 } } \\right. \\right) + K L \\left( p _ { g } \\left\\| { \\frac { p _ { \\mathrm { d a t a } } + p _ { g } } { 2 } } \\right. \\right)"
+        ],
+        "id": "sp_0046_page_0005-1",
+        "page": "sp_0046_page_0005"
+      },
+      {
+        "box": [
+          424.604736328125,
+          320.89508056640625,
+          799.465087890625,
+          350.2674255371094
+        ],
+        "text": [
+          "\\begin{array} { r } { \\mathbb { E } _ { \\pmb { x } \\sim p _ { \\mathrm { d a t a } } } \\left[ - \\log 2 \\right] + \\mathbb { E } _ { \\pmb { x } \\sim p _ { g } } \\left[ - \\log 2 \\right] = - \\log 4 } \\end{array}"
+        ],
+        "id": "sp_0046_page_0005-2",
+        "page": "sp_0046_page_0005"
+      },
+      {
+        "box": [
+          448.2579650878906,
+          556.321533203125,
+          777.0277099609375,
+          584.1627197265625
+        ],
+        "text": [
+          "C ( G ) = - \\log ( 4 ) + 2 \\cdot J S D \\left( p _ { \\mathrm { d a t a } } \\; | | p _ { g } \\right)"
+        ],
+        "id": "sp_0046_page_0005-3",
+        "page": "sp_0046_page_0005"
+      },
+      {
+        "box": [
+          417.2047424316406,
+          815.3358154296875,
+          807.0493774414062,
+          844.3318481445312
+        ],
+        "text": [
+          "\\mathbb { E } _ { { \\pmb x } \\sim p _ { d a t a } } [ \\log D _ { G } ^ { * } ( { \\pmb x } ) ] + \\mathbb { E } _ { { \\pmb x } \\sim p _ { g } } [ \\log ( 1 - D _ { G } ^ { * } ( { \\pmb x } ) ) ]"
+        ],
+        "id": "sp_0046_page_0005-4",
+        "page": "sp_0046_page_0005"
+      }
+    ]
+  }
+}

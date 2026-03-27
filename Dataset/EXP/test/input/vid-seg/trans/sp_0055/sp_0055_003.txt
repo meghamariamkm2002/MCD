@@ -1,0 +1,35 @@
+The algorithm is pretty simple in this case.
+So this algorithm rests on this traverse procedure.
+So we're going to traverse what they call these OR nodes.
+So they divide the problem into and nodes and or nodes.
+I don't believe that's particularly necessary for us to think about, but here's how this works.
+So they traverse the or node s to s prime.
+This is simply, again, this is a node, but the node is a path from s to s prime, where we don't know yet what happens in between, right?
+So what we'll do is we'll run this procedure select and select it.
+You can see it outputs an S prime and the S prime is going to be a node here somewhere in the middle where the model says this is your subdivision point.
+and then it will recursively traverse the left and the right branch of this tree.
+So it will subdivide the problem into two problems and then recursively call this traverse.
+You see that's the function that we're defining.
+call this traverse function on these.
+So it will subdivide this problem into these problems and for the next step again it will for each of the problems propose a middle node and subdivide it further and so on until you have a full plan.
+At some point you're going to have a full plan.
+Now, here, again, is the important thing to remember.
+This is just one branch of the search.
+This is just one possible plan.
+And we are going to do a tree search over these plans.
+So this select function here, it has returned this s prime, but it could have returned any point between s and s double prime.
+So let, in it, this is just one branch.
+I'm going to, I don't have space to draw here, but I'm going to draw it down here again.
+So it could have also returned this particular node here, like it's a different s' and then subdivided the problem into different problems.
+And then of course those problems are now different, so they would be subdivided differently again and so on.
+So this top part here is just, if you consider this thing here, your root node, this is where you search from.
+This top part is just one node, one branch in the tree, but we could also subdivide like this, and then that would be another branch in your tree.
+And this tree here is the thing that you're searching over.
+So, it's important to keep this in mind.
+We're searching over these different possibilities.
+Now, the rest of this algorithm here is basically the carryover from Monte Carlo Tree Search.
+And I don't want to go into that in this video.
+But if you're interested in how to actually implement this, you'll have to go look at MCTS and then all of this just carries over from that algorithm because you have to keep estimates of value and visit counts in this tree and so on.
+And also you have some sort of a value estimator.
+But yeah, I'm mainly concerned with how the tree is constructed right here.
+So basically, here's the difference between the Monte Carlo tree search and the divide and conquer Monte Carlo.

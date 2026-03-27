@@ -1,0 +1,38 @@
+start	end	text
+31	992	word relationships.
+1373	10566	So the skipgram model was already introduced by Mikloff in an earlier paper that came out, I believe, not like one or two months prior to this one.
+11047	13731	As I said, Word2Vec is a series of papers.
+13831	16876	I don't think there is a paper called Word2Vec.
+16916	21422	Rather, they here have released the code along with the with the paper.
+22003	24587	The code was called Word2Vec.
+24567	29936	So the skipgram model was introduced previously, but it is replicated right here.
+30376	37708	So in the skipgram model, what you're trying to do is you're trying to get a distributed word representation.
+38229	39090	So what does that mean?
+39151	43698	That means that for each word in your language, let's take these words right here.
+44038	51891	For each word in the language, you want to come up with a vector that somehow describes that word in a continuous fashion.
+51871	58104	In the two might be mapped to, I don't know, 0.1, 0.9 and 0.3.
+60348	64417	Learn might be mapped to negative 0.5 and so on.
+64437	69407	So each word gets assigned a vector in the same dimensional space.
+69387	77562	And what the previous paper kind of discovered is that if you do this correctly, then these vectors, they have some kind of properties.
+77602	84995	And we can already kind of jump ahead because this was already a bit researched in the last paper.
+85877	89303	The semantics of these vectors will be something like this.
+89283	98065	So here they have a two dimensional PCA, so these are the first two dimensions of the 1000 dimensional skipgram vectors.
+98085	105925	So the vectors they obtain, they can do things like this, where they can show that in these spaces, for example,
+105905	111734	there appears to be a vector direction that characterizes the capital of a country.
+112675	124233	So if you take a few countries and their capitals and you average that vector, you get a kind of a direction for capitalness of a city given a country.
+124293	127879	You can see that there is a pretty clear relation here.
+127859	137490	Now some of these things have later been revised to such that they are ultimately ended up being not that impressive.
+137530	141755	For example, there was always this kind of math with vectors.
+142736	145819	And I don't, I believe this is, this might not be in this.
+146160	150745	This is in the last paper where they discovered that if you take the vector for
+150725	163926	king and you subtract the vector for man and you add the vector for woman, then that would result in the vector for queen.
+164927	176445	So the way they did it was basically they did this calculation right here and then they searched in the point they ended up, they searched for the nearest neighbor in their vocabulary.
+176425	178608	And that turned out to be queen.
+178708	184817	But in order to make it queen, actually, you have to exclude the original word king.
+184837	195492	And people quickly discovered that if you don't exclude the original word, the result of this kind of arithmetic will almost always lead back to the original word.
+195773	200239	And then a lot of these analogy tasks are simply the result of you
+200219	203646	Then discarding that word during the nearest neighbor search.
+203666	207314	And then Queen just happens to be one of the closest words.
+207795	213466	And it's sort of much less dependent on which exact calculation you do here.
+213747	219138	So there's been a lot of follow-up work kind of analyzing, criticizing these vector masks.
+219158	230040	But definitely we know that these word vectors turned out to be extremely, extremely helpful and syntactically and semantically relevant in downstream tasks.

@@ -1,0 +1,693 @@
+[
+  {
+    "id": "002",
+    "title": "sp_1402_002",
+    "filename": "Videos/sp_1402.mp4",
+    "paper_filename": "Papers/sp_1402.pdf",
+    "type": "slides",
+    "relevant_segments": [
+      {
+        "para_id": "p3",
+        "section_heading": "1 Introduction",
+        "text": "In bandit settings, it is common for the environment to only provide feedback on the rewards of executed actions to the agent, while concealing the rewards of non-executed actions. This type of limited feedback is referred to as partial-information feedback (also called \u201cbandit feedback\u201d). In CBB setting, existing approaches tend to overlook the potential rewards associated with non-executed actions. Instead, they address the challenge of partial-information feedback through an explorationexploitation tradeoff in both the context space and reward space (Han et al., 2020; Zhang et al., 2020). However, CBB agents typically estimate and maintain reward models for the action-selection policy, thereby capturing some information about the potential rewards of non-executed actions. This additional reward structure information is available for policy updating in each episode but remains untapped by existing batched bandit approaches.",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p2",
+        "section_heading": "1 Introduction",
+        "text": "Contextual bandits have gained significant popularity in solving sequential decision-making problems (Li et al., 2010; Lan and Baraniuk, 2016; Yom-Tov et al., 2017; Yang et al., 2021), where the agent continuously updates its decision-making policy fully online (i.e., at each step), considering the context and the received reward feedback to maximize cumulative rewards. In this paper, we address a more general setting called contextual batched bandits (CBB). In CBB, the decision process is divided into N episodes, and within each episode, the agent interacts with the environment for a fixed number of B steps. At the end of each episode, the agent collects reward feedbacks and contexts. Subsequently, the policy is updated using the collected data to guide the decision-making process in the subsequent episode. CBB offers a practical framework for real-world streaming applications (e.g., streaming recommendation (Zhang et al., 2021, 2022)). In the context of CBB settings, the batch size B, can be adjusted by the agent to achieve improved regret guarantees and meet the data throughput requirements based on the available computing resources (Zhou, 2023).",
+        "seg_type": "par"
+      }
+    ]
+  },
+  {
+    "id": "003",
+    "title": "sp_1402_003",
+    "filename": "Videos/sp_1402.mp4",
+    "paper_filename": "Papers/sp_1402.pdf",
+    "type": "slides",
+    "relevant_segments": [
+      {
+        "input_path": "/tmp/megha/PDF-Extract-Kit/Presentation/layout_pap/sp_1402/sp_1402_page_3.png",
+        "cls_id": 14,
+        "label": "algorithm",
+        "score": 0.8309944272041321,
+        "coordinate": [
+          443.7936096191406,
+          302.62725830078125,
+          2091.640625,
+          740.6749267578125
+        ],
+        "text": "NPUT: Batch size B, number of episodes N, action space A = {Aj}j[M], context space S  Rd\nl: Initialize policy p0 \u2190 1/M , sample data buffer D1 = {(s0,b, AI0,6 , R0,b)}b[B] using initial polic\n: for n = 1 to N do\nUpdate the policy pn on Dn\nfor b = 1 to B do\nObserve context sn,b and choose AIn, b  A following the updated policy pn (sn,b)\nend for\nDn+1 \u2190 {(sn,b, AIn,b , Rn,b)}b[B], where Rn,b denotes the reward of action AIn, b on context",
+        "id": "sp_1402_page_3_1",
+        "seg_type": "algo"
+      }
+    ]
+  },
+  {
+    "id": "004",
+    "title": "sp_1402_004",
+    "filename": "Videos/sp_1402.mp4",
+    "paper_filename": "Papers/sp_1402.pdf",
+    "type": "slides",
+    "relevant_segments": [
+      {
+        "para_id": "p15",
+        "section_heading": "2 Problem Formulation and Analysis",
+        "text": "Theorem 1. For any action A \u2208 A and context si \u2208 S, let \u03b8nA be the reward parameter vector estimated by the batched UCB policy in the n-th episode. The upper bound of instantaneous regret (defined by |\u3008\u03b8nA, si\u3009 \u2212 \u3008\u03b8\u2217A, si\u3009|) in the FI-CBB setting is tighter than that in CBB setting (i.e., using the partial-information feedback).",
+        "seg_type": "par"
+      },
+      {
+        "caption": "Figure 1: Average rewards of batch UCB policy (Han et al., 2020) under different proportions of received reward feedbacks, interacting with the synthetic environment in Section 6, where x% feedback means that x% of actions can receive their true rewards",
+        "captionBoundary": {
+          "x1": 317.5509948730469,
+          "x2": 504.4178466796875,
+          "y1": 656.6015625,
+          "y2": 717.1489868164062
+        },
+        "figType": "Figure",
+        "imageText": [
+          "partial-information",
+          "feedback",
+          "(CBB)",
+          "40%",
+          "feedback",
+          "60%",
+          "feedback",
+          "80%",
+          "feedback",
+          "full-information",
+          "feedback",
+          "(FI-CBB)",
+          "rd",
+          "Re",
+          "wa",
+          "ag",
+          "e",
+          "Av",
+          "er",
+          "0.252",
+          "0.250",
+          "0.248",
+          "0.246",
+          "0.244",
+          "0.242",
+          "0.240",
+          "0.238",
+          "0.236",
+          "10",
+          "20",
+          "30",
+          "40",
+          "50",
+          "60",
+          "70",
+          "80",
+          "90",
+          "Number",
+          "of",
+          "Episodes",
+          "N"
+        ],
+        "name": "1",
+        "page": 2,
+        "regionBoundary": {
+          "x1": 328.32,
+          "x2": 491.03999999999996,
+          "y1": 525.12,
+          "y2": 644.64
+        },
+        "renderDpi": 150,
+        "renderURL": "/Users/meghamariam/PROJECTS/PROJ1_Dataset/PROJ1_Crossmodal-Traversal/DATASET/Presentation/pap-seg/fig/sp_1402/sp_1402-Figure1-1.png",
+        "id": "sp_1402-Figure1-1",
+        "seg_type": "fig"
+      }
+    ]
+  },
+  {
+    "id": "005",
+    "title": "sp_1402_005",
+    "filename": "Videos/sp_1402.mp4",
+    "paper_filename": "Papers/sp_1402.pdf",
+    "type": "slides",
+    "relevant_segments": [
+      {
+        "para_id": "p17",
+        "section_heading": "2 Problem Formulation and Analysis",
+        "text": "structures of the non-executed actions have been captured to some extent. Therefore, why not utilize these maintained reward parameters to estimate the unknown rewards for the non-executed actions? In the following, we propose an efficient reward imputation approach that leverages this additional reward structure information to enhance the performance of the bandit policy.",
+        "seg_type": "par"
+      }
+    ]
+  },
+  {
+    "id": "007",
+    "title": "sp_1402_007",
+    "filename": "Videos/sp_1402.mp4",
+    "paper_filename": "Papers/sp_1402.pdf",
+    "type": "slides",
+    "relevant_segments": [
+      {
+        "caption": "Figure 2: Comparison of the stored data corresponding to the action Aj \u2208 A = {Aj}j\u2208[M ] in CBB, CBB with our reward imputation, and full-information CBB, in the (n+ 1)-th episode",
+        "captionBoundary": {
+          "x1": 108.0,
+          "x2": 505.2496337890625,
+          "y1": 188.33255004882812,
+          "y2": 206.34600830078125
+        },
+        "figType": "Figure",
+        "imageText": [
+          "\u02c6",
+          "j",
+          "n",
+          "AR",
+          "n",
+          "AR",
+          "j",
+          "n",
+          "AS",
+          "\u02c6",
+          "j",
+          "n",
+          "AS",
+          "j",
+          "n",
+          "AR",
+          "j",
+          "n",
+          "AS",
+          "j",
+          "CBB",
+          "with",
+          "Our",
+          "Reward",
+          "Imputation",
+          "Full-Information",
+          "CBBCBB",
+          "jN",
+          "\u02c6",
+          "n",
+          "n",
+          "jN",
+          "\u02c6",
+          "n",
+          "jN",
+          "n",
+          "jN",
+          "jN",
+          "\u2026n",
+          "n",
+          "jN",
+          "Reward",
+          "Vector",
+          "Context",
+          "Matrix",
+          "\u2026",
+          "B\u2026",
+          "B",
+          "Reward",
+          "Vector",
+          "B",
+          "\u2026",
+          "\u2026",
+          "Context",
+          "Matrix",
+          "\u2026",
+          "B",
+          "Imputed",
+          "Reward",
+          "Vector",
+          "Reward",
+          "Vector",
+          "Imputed",
+          "Context",
+          "Matrix",
+          "Context",
+          "Matrix",
+          "\u2026",
+          "\u2026"
+        ],
+        "name": "2",
+        "page": 3,
+        "regionBoundary": {
+          "x1": 114.72,
+          "x2": 495.35999999999996,
+          "y1": 72.96,
+          "y2": 176.64
+        },
+        "renderDpi": 150,
+        "renderURL": "/Users/meghamariam/PROJECTS/PROJ1_Dataset/PROJ1_Crossmodal-Traversal/DATASET/Presentation/pap-seg/fig/sp_1402/sp_1402-Figure2-1.png",
+        "id": "sp_1402-Figure2-1",
+        "seg_type": "fig"
+      }
+    ]
+  },
+  {
+    "id": "008",
+    "title": "sp_1402_008",
+    "filename": "Videos/sp_1402.mp4",
+    "paper_filename": "Papers/sp_1402.pdf",
+    "type": "slides",
+    "relevant_segments": [
+      {
+        "para_id": "p28",
+        "section_heading": "3 Reward Imputation for Policy Updating",
+        "text": "Efficient Reward Imputation using Sketching. As shown in the first 4 columns in Table 1, the overall time complexity of the imputation for each action is O(Bd2) in each episode, where B represents the batch size, and d the dimensionality of the input. Thus, for all the M actions in one episode, reward imputation increases the time complexity from O(Bd2) of the approach without imputation to O(MBd2). To address this issue, we design an efficient reward imputation approach using sketching, which reduces the time complexity of each action in one episode from O ( Bd2",
+        "seg_type": "par"
+      },
+      {
+        "caption": "Figure 2: Comparison of the stored data corresponding to the action Aj \u2208 A = {Aj}j\u2208[M ] in CBB, CBB with our reward imputation, and full-information CBB, in the (n+ 1)-th episode",
+        "captionBoundary": {
+          "x1": 108.0,
+          "x2": 505.2496337890625,
+          "y1": 188.33255004882812,
+          "y2": 206.34600830078125
+        },
+        "figType": "Figure",
+        "imageText": [
+          "\u02c6",
+          "j",
+          "n",
+          "AR",
+          "n",
+          "AR",
+          "j",
+          "n",
+          "AS",
+          "\u02c6",
+          "j",
+          "n",
+          "AS",
+          "j",
+          "n",
+          "AR",
+          "j",
+          "n",
+          "AS",
+          "j",
+          "CBB",
+          "with",
+          "Our",
+          "Reward",
+          "Imputation",
+          "Full-Information",
+          "CBBCBB",
+          "jN",
+          "\u02c6",
+          "n",
+          "n",
+          "jN",
+          "\u02c6",
+          "n",
+          "jN",
+          "n",
+          "jN",
+          "jN",
+          "\u2026n",
+          "n",
+          "jN",
+          "Reward",
+          "Vector",
+          "Context",
+          "Matrix",
+          "\u2026",
+          "B\u2026",
+          "B",
+          "Reward",
+          "Vector",
+          "B",
+          "\u2026",
+          "\u2026",
+          "Context",
+          "Matrix",
+          "\u2026",
+          "B",
+          "Imputed",
+          "Reward",
+          "Vector",
+          "Reward",
+          "Vector",
+          "Imputed",
+          "Context",
+          "Matrix",
+          "Context",
+          "Matrix",
+          "\u2026",
+          "\u2026"
+        ],
+        "name": "2",
+        "page": 3,
+        "regionBoundary": {
+          "x1": 114.72,
+          "x2": 495.35999999999996,
+          "y1": 72.96,
+          "y2": 176.64
+        },
+        "renderDpi": 150,
+        "renderURL": "/Users/meghamariam/PROJECTS/PROJ1_Dataset/PROJ1_Crossmodal-Traversal/DATASET/Presentation/pap-seg/fig/sp_1402/sp_1402-Figure2-1.png",
+        "id": "sp_1402-Figure2-1",
+        "seg_type": "fig"
+      },
+      {
+        "box": [
+          348.4275817871094,
+          1243.7772216796875,
+          874.2921142578125,
+          1320.3681640625
+        ],
+        "text": [
+          "\\bar { \\theta } _ { A _ { j } } ^ { n + 1 } = \\operatorname * { a r g \\, m i n } _ { \\theta \\in \\mathbb { R } ^ { d } } \\underbrace { \\Big \\| L _ { A _ { j } } ^ { n } \\theta - T _ { A _ { j } } ^ { n } \\Big \\| _ { 2 } ^ { 2 } } _ { \\mathrm { O b s e r v e d \\; T e r m } } + \\underbrace { \\gamma \\left\\| \\widehat { L } _ { A _ { j } } ^ { n } \\theta - \\widehat { T } _ { A _ { j } } ^ { n } \\right\\| _ { 2 } ^ { 2 } } _ { \\mathrm { I m p u t a t i o n \\; T e r m } } + \\lambda \\| \\theta \\| _ { 2 } ^ { 2 } ,"
+        ],
+        "page": "sp_1402_page_0004",
+        "id": "sp_1402_page_0004-3",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          279.0748596191406,
+          502.56329345703125,
+          943.314208984375,
+          555.7164306640625
+        ],
+        "text": [
+          "\\tilde { \\theta } _ { A _ { j } } ^ { n + 1 } = \\underset { \\theta \\in \\mathbb { R } ^ { d } } { \\mathrm { a r g \\, m i n } } \\left\\| \\mathbf { I } _ { A _ { j } } ^ { n } \\left( \\pmb { L } _ { A _ { j } } ^ { n } \\theta - \\pmb { T } _ { A _ { j } } ^ { n } \\right) \\right\\| _ { 2 } ^ { 2 } + \\gamma \\left\\| \\hat { \\Pi } _ { A _ { j } } ^ { n } \\left( \\hat { \\pmb { L } } _ { A _ { j } } ^ { n } \\theta - \\hat { \\pmb { T } } _ { A _ { j } } ^ { n } \\right) \\right\\| _ { 2 } ^ { 2 } + \\lambda \\| \\theta \\| _ { 2 } ^ { 2 } ,"
+        ],
+        "page": "sp_1402_page_0005",
+        "id": "sp_1402_page_0005-2",
+        "seg_type": "eq"
+      },
+      {
+        "para_id": "p19",
+        "section_heading": "3 Reward Imputation for Policy Updating",
+        "text": "Formulation of Reward Imputation. As shown in Figure 2, in contrast to CBB that ignores the contexts and rewards of the non-executed steps of each action, our reward imputation approach completes the missing values using the imputed contexts and rewards, approximating the fullinformation CBB setting. Specifically, at the end of the (n + 1)-th episode, for each action Aj \u2208 A, j \u2208 [M ], the context vectors and rewards received at the steps where the action Aj is executed are observed, and are stored into a context matrix SnAj \u2208 R Nnj \u00d7d and a reward vector RnAj \u2208 R Nnj , respectively, where Nnj denotes the number of executed steps of Aj in episode n + 1. More importantly, at the steps (in episode n + 1) where the action Aj is NOT executed, the following imputations need to be performed for action Aj : (1) since the contexts are shared by all the actions, we directly store them into an imputed context matrix S\u0302nAj \u2208 R N\u0302nj \u00d7d, where N\u0302nj denotes the number of non-executed steps of Aj (i.e., N\u0302nj = B \u2212Nnj ); (2) since the rewards of Aj are unobserved at the non-executed steps, we estimate them using an imputed reward vector: for any j \u2208 [M ],",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p28",
+        "section_heading": "3 Reward Imputation for Policy Updating",
+        "text": "Efficient Reward Imputation using Sketching. As shown in the first 4 columns in Table 1, the overall time complexity of the imputation for each action is O(Bd2) in each episode, where B represents the batch size, and d the dimensionality of the input. Thus, for all the M actions in one episode, reward imputation increases the time complexity from O(Bd2) of the approach without imputation to O(MBd2). To address this issue, we design an efficient reward imputation approach using sketching, which reduces the time complexity of each action in one episode from O ( Bd2",
+        "seg_type": "par"
+      }
+    ]
+  },
+  {
+    "id": "009",
+    "title": "sp_1402_009",
+    "filename": "Videos/sp_1402.mp4",
+    "paper_filename": "Papers/sp_1402.pdf",
+    "type": "slides",
+    "relevant_segments": [
+      {
+        "para_id": "p38",
+        "section_heading": "4 Theoretical Analysis",
+        "text": "We provide the instantaneous regret bound, prove the approximation error of sketching, and analyze the regret of SPUIR in CBB setting. The detailed proofs can be found in Appendix B. We first demonstrate the instantaneous regret bound of the original solution \u03b8\u0304nA in (1). Theorem 2 (Instantaneous Regret Bound). Let \u03b7 \u2208 (0, 1) be the discount parameter, \u03b3 \u2208 [0, 1] the imputation rate. In the n-th episode, if the rewards {Rn,b}b\u2208[B] are independent4 and bounded by CR, then, for any b \u2208 [B], \u2200A \u2208 A, there exists CImp > 0 such that, with probability at least 1\u2212 \u03b4,",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p39",
+        "section_heading": "4 Theoretical Analysis",
+        "text": "where \u03a8nA = \u03bbId + \u03a6 n A + \u03b3\u03a6\u0302 n A, \u03bd = [2C 2 R log(2MB/\u03b4)] 1 2 . The first term on the right-hand side of (9) can be seen as the bias term for the reward imputation, while the second term is the variance term. The variance term of our algorithm is not larger than that without the reward imputation, i.e, for any s \u2208 Rd,",
+        "seg_type": "par"
+      },
+      {
+        "box": [
+          284.3262939453125,
+          1189.8065185546875,
+          937.9776000976562,
+          1231.4730224609375
+        ],
+        "text": [
+          "\\begin{array} { r } { \\left| \\left\\langle \\bar { \\theta } _ { A } ^ { n } , s _ { n , b } \\right\\rangle - \\left\\langle \\theta _ { A } ^ { * } , s _ { n , b } \\right\\rangle \\right| \\leq \\left[ \\lambda \\| \\theta _ { A } ^ { * } \\| _ { 2 } + \\nu + \\gamma ^ { \\frac { 1 } { 2 } } \\eta ^ { - \\frac { 1 } { 2 } } C _ { \\mathrm { I m p } } \\right] [ s _ { n , b } ^ { \\top } \\left( \\Psi _ { A } ^ { n } \\right) ^ { - 1 } s _ { n , b } ] ^ { \\frac { 1 } { 2 } } , } \\end{array}"
+        ],
+        "page": "sp_1402_page_0006",
+        "id": "sp_1402_page_0006-1",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          419.24383544921875,
+          1327.0611572265625,
+          896.9236450195312,
+          1392.2147216796875
+        ],
+        "text": [
+          "\\begin{array} { c } { [ s ^ { \\mathsf { T } } \\, ( \\Psi _ { A } ^ { n } ) ^ { - 1 } \\, s ] ^ { \\frac { 1 } { 2 } } \\leq [ s ^ { \\mathsf { T } } \\, ( \\lambda I _ { d } + \\Phi _ { A } ^ { n } ) ^ { - 1 } \\, s ] ^ { \\frac { 1 } { 2 } } . } \\\\ { o n \\; r a t e \\; \\gamma \\; l e a d s \\; t o \\; a \\; s m a l l e r \\; \\nu a r i a n c e \\; t e r m \\; [ s ^ { \\mathsf { T } } \\, ( \\Psi _ { A } ^ { n } ) ^ { - 1 } \\; s ] ^ { \\frac { 1 } { 2 } } . } \\end{array}"
+        ],
+        "page": "sp_1402_page_0006",
+        "id": "sp_1402_page_0006-2",
+        "seg_type": "eq"
+      },
+      {
+        "para_id": "p40",
+        "section_heading": "4 Theoretical Analysis",
+        "text": "Further, a larger imputation rate \u03b3 leads to a smaller variance term [s\u1d40 (\u03a8nA) \u22121 s] 1 2 .",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p41",
+        "section_heading": "4 Theoretical Analysis",
+        "text": "Remark 1 (Smaller Variance). From Theorem 2, we can observe that our reward imputation achieves a smaller variance ([s\u1d40n,b (\u03a8 n A) \u22121 sn,b] 1 2 ) than that without the reward imputation. By combining Theorem 2 and the proof of Theorem 1, we can obtain that the variance in instantaneous regret bound of SPUIR is in between the variances in full and partial information scenarios. Thus, reward imputation in SPUIR provides a promising way to use expert advice approaches for bandit problems.",
+        "seg_type": "par"
+      }
+    ]
+  },
+  {
+    "id": "010",
+    "title": "sp_1402_010",
+    "filename": "Videos/sp_1402.mp4",
+    "paper_filename": "Papers/sp_1402.pdf",
+    "type": "slides",
+    "relevant_segments": [
+      {
+        "para_id": "p49",
+        "section_heading": "4 Theoretical Analysis",
+        "text": "where In,b denotes the index of the executed action using the sketched policy p\u0303n (parameterized by {\u03b8\u0303nA}A\u2208A) at step b in the n-th episode. We final prove the regret bound of SPUIR. Theorem 4 (Regret Bound of SPUIR). Let T = BN be the overall number of steps, \u03b7 \u2208 (0, 1) be the discount parameter, \u03b3 \u2208 [0, 1] the imputation rate, \u03bb > 0 the regularization parameter, Cmax\u03b8\u2217 = maxA\u2208A \u2016\u03b8\u2217A\u20162, CImp be the positive constant defined in Theorem 2. Assume that the conditional independence assumption in Theorem 2 holds and the upper bound of rewards is CR, M = O(poly(d)), T \u2265 d2, \u03bd = [2C2R log(2MB/\u03b41)] 1 2 with \u03b41 \u2208 (0, 1), \u03c9 = \u03bbCmax\u03b8\u2217 + \u03bd + \u03b3 1 2 \u03b7\u2212 1 2CImp, \u03b1 = \u03c9C\u03b1, where C\u03b1 > 0 which decreases with increase of 1/\u03b5 and \u03b5 \u2208 (0, 1). Let \u03b42 \u2208 (0, 0.1], \u03c1\u03bb < 1 be the constant defined in Theorem 3, and Creg be a positive constant that decreases with increase of 1/\u03b5. For the sketch matrices {\u03a0nA}A\u2208A,n\u2208[N ] and {\u03a0\u0302}A\u2208A,n\u2208[N ], assuming that the number of blocks in SJLT D = \u0398(\u03b5\u22121 log3(d\u03b4\u221212 )), and the sketch size satisfying",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p50",
+        "section_heading": "4 Theoretical Analysis",
+        "text": "then, for an arbitrary sequence of contexts {sn,b}n\u2208[N ],b\u2208[B], with probability at least 1\u2212N(\u03b41+\u03b42),",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p51",
+        "section_heading": "4 Theoretical Analysis",
+        "text": "Remark 4. SettingB = O( \u221a T/d), \u03c1\u03bb = 1/d yields a sublinear regret bound of order O\u0303( \u221a MdT )5 provided that the sketch size c = \u2126(\u03c12\u03bbd 3 polylog(d\u03b4\u221212 )). We can observe that the lower bound of c is independent of the overall number of steps T , and a theoretical value of the batch size is B = CB \u221a T/d = C2BN/d, where setting CB \u2248 25 is a suitable choice that has been verified in the experiments in Section 6. In particular, when \u03c1\u03bb = O(1/d), the sketch size of order c = \u2126(d polylogd) is sufficient to achieve a sublinear regret.",
+        "seg_type": "par"
+      },
+      {
+        "box": [
+          483.3510437011719,
+          1420.28271484375,
+          739.1088256835938,
+          1449.71142578125
+        ],
+        "text": [
+          "c = \\Omega \\left( d \\; \\mathrm { p o l y l o g } \\left( d \\delta _ { 2 } ^ { - 1 } \\right) / \\varepsilon ^ { 2 } \\right) ,"
+        ],
+        "page": "sp_1402_page_0007",
+        "id": "sp_1402_page_0007-2",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          304.8490905761719,
+          185.2977294921875,
+          920.4403076171875,
+          227.5997772216797
+        ],
+        "text": [
+          "\\mathrm { R e g } ( N , B ) \\leq 2 \\alpha C _ { \\mathrm { r e g } } \\sqrt { 1 0 M } \\log ( T + 1 ) ( \\sqrt { d T } + d B ) + O \\left( T \\sqrt { \\rho _ { \\lambda } \\epsilon d } / B \\right) ."
+        ],
+        "page": "sp_1402_page_0008",
+        "id": "sp_1402_page_0008-1",
+        "seg_type": "eq"
+      }
+    ]
+  },
+  {
+    "id": "011",
+    "title": "sp_1402_011",
+    "filename": "Videos/sp_1402.mp4",
+    "paper_filename": "Papers/sp_1402.pdf",
+    "type": "slides",
+    "relevant_segments": [
+      {
+        "para_id": "p57",
+        "section_heading": "5 Extensions of Our Approach",
+        "text": "RQ1 (Parameter Selection): Can we set the imputation rate \u03b3 without tuning?",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p58",
+        "section_heading": "5 Extensions of Our Approach",
+        "text": "RQ2 (Nonlinear Reward): Can we apply the proposed reward imputation approach to the case where the expectation of true rewards is nonlinear?",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p60",
+        "section_heading": "5 Extensions of Our Approach",
+        "text": "kernelization. Specifically, instead of using the linear imputed reward r\u0303n,b(Aj) := \u3008\u03b8\u0303nAj , sn,b\u3009, we use the following linearized nonlinear imputed rewards, denotes by Tn,b(\u03b8, A): (1) SPUIR-Exp. We assume that the expected reward is an exponential function as GE(\u03b8, s) = exp (\u03b8\u1d40s) . Then Tn,b(\u03b8, A) = \u3008\u03b8,\u2207\u03b8GE(\u03b8, sn,b)\u3009 , where\u2207\u03b8GE(\u03b8, sn,b) = exp (\u03b8\u1d40sn,b) sn,b.",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p61",
+        "section_heading": "5 Extensions of Our Approach",
+        "text": "(2) SPUIR-Poly. When the expected reward is a polynomial function as GP(\u03b8, s) = (\u03b8\u1d40s) 2 . Then Tn,b(\u03b8, A) = \u3008\u03b8,\u2207\u03b8GP(\u03b8, sn,b)\u3009 , where\u2207\u03b8GP(\u03b8, sn,b) = 2 (\u03b8\u1d40sn,b) sn,b. (3) SPUIR-Kernel. Consider that the underlying expected reward in a Gaussian reproducing kernel Hilbert space (RKHS). We use Tn,b(\u03b8, A) = \u3008\u03b8, \u03c6(sn,b)\u3009 in random feature space, where the random feature mapping \u03c6 can be explicitly computed.",
+        "seg_type": "par"
+      }
+    ]
+  },
+  {
+    "id": "012",
+    "title": "sp_1402_012",
+    "filename": "Videos/sp_1402.mp4",
+    "paper_filename": "Papers/sp_1402.pdf",
+    "type": "slides",
+    "relevant_segments": [
+      {
+        "caption": "Table 2: Performance comparison of coupon recommendation on commercial product",
+        "captionBoundary": {
+          "x1": 119.90899658203125,
+          "x2": 489.6002502441406,
+          "y1": 79.7255630493164,
+          "y2": 85.72802734375
+        },
+        "figType": "Table",
+        "imageText": [
+          "DFM-S",
+          "0.8656",
+          "\u00b1",
+          "0.0473",
+          "0.3317",
+          "\u00b1",
+          "0.0218",
+          "302.3140",
+          "\u00b1",
+          "8.3045",
+          "SBUCB",
+          "0.8569",
+          "\u00b1",
+          "0.0037",
+          "0.4277",
+          "\u00b1",
+          "0.0084",
+          "43.5435",
+          "\u00b1",
+          "0.3659",
+          "BEXP3",
+          "0.4846",
+          "\u00b1",
+          "0.0205",
+          "0.2425",
+          "\u00b1",
+          "0.0116",
+          "53.5001",
+          "\u00b1",
+          "0.9220",
+          "BEXP3-IPW",
+          "0.4862",
+          "\u00b1",
+          "0.0187",
+          "0.2436",
+          "\u00b1",
+          "0.0113",
+          "56.0101",
+          "\u00b1",
+          "1.4142",
+          "BLTS-B",
+          "0.8663",
+          "\u00b1",
+          "0.0178",
+          "0.4285",
+          "\u00b1",
+          "0.0157",
+          "218.2109",
+          "\u00b1",
+          "1.8198",
+          "PUIR",
+          "0.8807",
+          "\u00b1",
+          "0.0053",
+          "0.4411",
+          "\u00b1",
+          "0.0029",
+          "184.3575",
+          "\u00b1",
+          "2.2346",
+          "SPUIR",
+          "0.8770",
+          "\u00b1",
+          "0.0059",
+          "0.4397",
+          "\u00b1",
+          "0.0032",
+          "81.5753",
+          "\u00b1",
+          "1.5879",
+          "PUIR-RS",
+          "0.8763",
+          "\u00b1",
+          "0.0056",
+          "0.4389",
+          "\u00b1",
+          "0.0030",
+          "180.4999",
+          "\u00b1",
+          "1.7763",
+          "SPUIR-RS",
+          "0.8758",
+          "\u00b1",
+          "0.0058",
+          "0.4391",
+          "\u00b1",
+          "0.0031",
+          "80.8003",
+          "\u00b1",
+          "2.9030",
+          "Algorithm",
+          "CVR",
+          "(mean",
+          "\u00b1",
+          "std)",
+          "CTCVR",
+          "(mean",
+          "\u00b1",
+          "std)",
+          "Time",
+          "(sec.,",
+          "mean",
+          "\u00b1",
+          "std)"
+        ],
+        "name": "2",
+        "page": 8,
+        "regionBoundary": {
+          "x1": 127.67999999999999,
+          "x2": 484.32,
+          "y1": 93.6,
+          "y2": 225.12
+        },
+        "renderDpi": 150,
+        "renderURL": "/Users/meghamariam/PROJECTS/PROJ1_Dataset/PROJ1_Crossmodal-Traversal/DATASET/Presentation/pap-seg/fig/sp_1402/sp_1402-Table2-1.png",
+        "id": "sp_1402-Table2-1",
+        "seg_type": "tab"
+      }
+    ]
+  },
+  {
+    "id": "013",
+    "title": "sp_1402_013",
+    "filename": "Videos/sp_1402.mp4",
+    "paper_filename": "Papers/sp_1402.pdf",
+    "type": "slides",
+    "relevant_segments": [
+      {
+        "para_id": "p69",
+        "section_heading": "7 Conclusion",
+        "text": "This paper presents a computationally efficient reward imputation approach for contextual batched bandits that addresses the challenge of partial-information feedback in real-world applications. The proposed approach mimics the reward generation mechanism of the environment, approximating full-information feedback. It reduces time complexity using sketching, achieves a relative-error bound for approximation, and exhibits regret with controllable bias and reduced variance. The theoretical formulation and algorithmic implementation may provide an efficient reward imputation scheme for online learning under limited feedback.",
+        "seg_type": "par"
+      }
+    ]
+  }
+]

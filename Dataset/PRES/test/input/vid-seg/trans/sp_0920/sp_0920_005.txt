@@ -1,0 +1,8 @@
+We formally introduced the separator configuration tasks as follows.
+At a high level, we want to select the configuration for each instance and each separation
+
+We married the success of a learning algorithm for a separate third configuration by the relative time improvement from the skipped defaults configuration.
+The search space for the configuration task is enormous, making the task highly challenging.
+
+To address the challenges from the high-dimensionality of the configuration search space, our learning method first construct the restricted subspace A consists of small subset of high-quality separator configurations with a data-driven algorithm.
+We then learn newer networks to select the configuration among

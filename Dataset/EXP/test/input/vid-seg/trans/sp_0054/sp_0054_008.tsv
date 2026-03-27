@@ -1,0 +1,22 @@
+start	end	text
+31	21891	They also do scale invariant fine-tuning where if they fine-tune, which is where you take this model you trained with mask language modeling and then you fine-tune it to NLP tasks, they have a bunch of tricks there like virtual adversarial training and normalizing the embeddings before they do that and that apparently helps a lot.
+22271	26975	But they also say they leave the comprehensive study of this for future work.
+27255	29177	For now, they just want to get the good number.
+29157	32544	And which is understandable because you get published.
+33225	34949	Um, all right.
+35269	40821	So here you can see, uh, actually we can, we can skip most of the tables.
+41141	42083	They are better.
+42704	43506	They are better.
+44007	44989	They are better.
+44969	48334	They're better in language modeling too, which is interesting.
+48474	58910	So you can do kind of bird style denoising, but in classification, you can also do actually other regressive language model, which is pretty cool.
+58950	65840	So here they do an ablation study of the different components where they remove this enhanced the decoder.
+66301	71348	And one time they remove the content to position encodings.
+71328	93825	Sorry attention mechanism and one time they reduce the position to content attention mechanism and in the table it is sort of A wash depends on the task of how you look at but each of the components here gets you some kind of a benefit or a hit when you take it away so
+93805	98093	Yeah, it's not really clear that one of the components gives you all the boost.
+98413	112658	The combination of them is obviously the best and it's really cool when papers do these kinds of ablations rather than just throw a bunch of stuff at you and it's on you to figure out which of that stuff is
+112638	113500	important.
+115303	121295	They compare it to Roberta in terms of training of accuracy after training.
+121335	129090	So how much do you need pre-training for a fine-tuning and the diberta as you can see in these graphs outperforms Roberta.
+129110	135422	So potentially you need less pre-training steps to reach the same accuracy in
+135402	145041	fine-tuning task which is cool also means that if you train for longer you reach or if you train for the same amount of time you reach a higher accuracy.

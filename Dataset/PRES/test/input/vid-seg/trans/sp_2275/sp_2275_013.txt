@@ -1,0 +1,1 @@
+Beyond the workshop-based representation, annotators simply integrate into other LiDAR representations, such as range view and bv view.

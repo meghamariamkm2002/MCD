@@ -1,0 +1,72 @@
+1
+00:00:00,031 --> 00:00:04,818
+these samples in the video description for sure.
+
+2
+00:00:05,660 --> 00:00:07,162
+So I think we've gone over everything.
+
+3
+00:00:07,442 --> 00:00:15,114
+The generator starts off with text, puts that into normalized text, calculates hidden features right here.
+
+4
+00:00:15,475 --> 00:00:27,253
+These hidden features on one hand are used to predict the lengths of each of the tokens in the sound and are also used as an input to the generator here.
+
+5
+00:00:27,233 --> 00:00:42,833
+Now they can only be used as an input to the generator if the generator knows how to align them in time and how to align them in time is predicted from these predicted lengths right here via this aligner algorithm.
+
+6
+00:00:43,314 --> 00:00:45,757
+The lengths are the only thing that is predicted.
+
+7
+00:00:46,238 --> 00:00:48,260
+Everything then is deterministic.
+
+8
+00:00:48,661 --> 00:00:55,890
+The aligner is simply a Gaussian kernel over the predicted locations on the
+
+9
+00:00:55,870 --> 00:01:04,205
+on the time axis, so the Gaussian kernel is to make this alignment a bit fuzzy, to make this prediction fuzzy.
+
+10
+00:01:04,786 --> 00:01:11,859
+You perform a weighted sum with these features and then the generator knows where to put the tokens.
+
+11
+00:01:12,360 --> 00:01:18,030
+Finally, the generator can upsample the now aligned tokens into sound.
+
+12
+00:01:18,010 --> 00:01:20,213
+This goes into the discriminator.
+
+13
+00:01:20,514 --> 00:01:31,970
+The discriminator is actually five different discriminators, which each try to discriminate the generated from the real at different time scales.
+
+14
+00:01:32,892 --> 00:01:44,929
+In addition to that, you have a discriminator on the spectrograms, and you also have an L1 loss on the spectrograms, which helps especially at the beginning of training.
+
+15
+00:01:44,909 --> 00:02:09,297
+For the L1 loss of the spectrograms, you have to again compute an alignment, but you do this in a deterministic way by this thing down here, this dynamic time warping where you simply assume that they are aligned and forgive them for not being aligned with a soft penalty and not a hard zero score.
+
+16
+00:02:10,306 --> 00:02:11,731
+All right, this was the paper.
+
+17
+00:02:11,992 --> 00:02:17,871
+Again, if you like this, leave a like, a comment, share it out, subscribe and have a good day.
+
+18
+00:02:18,092 --> 00:02:18,493
+Bye-bye.
+

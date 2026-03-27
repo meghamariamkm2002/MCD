@@ -1,0 +1,338 @@
+[
+  {
+    "para_id": "p1",
+    "section_heading": "Abstract",
+    "text": "Weight decay is a standard technique to improve generalization performance in modern deep neural network optimization, and is also widely adopted in federated learning (FL) to prevent overfitting in local clients. In this paper, we first explore the choices of weight decay and identify that weight decay value appreciably influences the convergence of existing FL algorithms. While preventing overfitting is crucial, weight decay can introduce a different optimization goal towards the global objective, which is further amplified in FL due to multiple local updates and heterogeneous data distribution. To address this challenge, we develop Federated optimization with Normalized Annealing Regularization (FedNAR), a simple yet effective and versatile algorithmic plug-in that can be seamlessly integrated into any existing FL algorithms. Essentially, we regulate the magnitude of each update by performing co-clipping of the gradient and weight decay. We provide a comprehensive theoretical analysis of FedNAR\u2019s convergence rate and conduct extensive experiments on both vision and language datasets with different backbone federated optimization algorithms. Our experimental results consistently demonstrate that incorporating FedNAR into existing FL algorithms leads to accelerated convergence and heightened model accuracy. Moreover, FedNAR exhibits resilience in the face of various hyperparameter configurations. Specifically, FedNAR has the ability to self-adjust the weight decay when the initial specification is not optimal, while the accuracy of traditional FL algorithms would markedly decline. Our codes are released at https://github.com/ljb121002/fednar.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p2",
+    "section_heading": "1 Introduction",
+    "text": "FL has emerged as a privacy-preserving learning paradigm that eliminates the need for clients\u2019 private data to be transmitted beyond their local devices [1, 2, 3]. FL presents challenges in addition to traditional distributed learning, including communication bottlenecks, heterogeneity in hardware resources and data distributions, privacy concerns, etc [4]. Numerous machine learning applications necessitate training in FL. For instance, hospitals may wish to cooperatively train a predictive healthcare model, but privacy regulations may mandate that each hospital\u2019s data remains local [5].",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p3",
+    "section_heading": "1 Introduction",
+    "text": "In traditional distributed optimization, local gradients are calculated for each client per iteration and subsequently sent to a global server for amalgamation. However, the communication constraints within Federated Learning (FL) entail multiple model updates prior to the aggregation phase at the global server, as exemplified by the widely-employed FedAvg framework [1]. Considering the skewed data distribution and multiple local updates for communication efficiency, it\u2019s pivotal to guard against overfitting models to local data. Algorithms like FedProx [4] and SCAFFOLD [6] were designed to address this issue. They build upon the FedAvg approach by integrating regularization terms during local training and employing weight decay in their local optimizers to combat overfitting on local clients. However, a frequently overlooked trade-off exists: local weight decay introduces an optimization objective that differs from the global one, an issue magnified in FL due to the numerous",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p4",
+    "section_heading": "1 Introduction",
+    "text": "local updates from clients with varied data distributions. As demonstrated in Figure 1, a weight decay just slightly larger than optimal can result in an approximate 10% drop in accuracy. This poses a compelling research question:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p5",
+    "section_heading": "1 Introduction",
+    "text": "How can we strike a balance between averting overfitting on clients using weight decay, and minimizing update divergence in FL?",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p6",
+    "section_heading": "1 Introduction",
+    "text": "In this study, we acknowledge the significant role weight decay coefficients play in FL algorithms and undertake an exhaustive examination of their effects. Our results demonstrate that current FL algorithms are highly susceptible to variations in weight decay values. To reconcile the need to prevent overfitting with the aim to minimize update divergence, we present an adaptive weight decay strategy named Federated Optimization with Normalized Annealing Regularization (FedNAR). FedNAR is a cost-efficient approach that can be effortlessly incorporated into any prevailing FL algorithm as an algorithmic plug-in. At its core, we govern the magnitude of each weight update by limiting the norm of the sum of the gradient and weight decay. We conduct a meticulous theoretical analysis for universally adaptive weight decay functions, proving that our FedNAR is a logically sound choice for achieving convergence from a theoretical perspective. Through an array of experiments spanning computer vision and language tasks, we establish that FedNAR fosters improved convergence and facilitates superior final accuracy.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p7",
+    "section_heading": "1 Introduction",
+    "text": "Our contributions. More specifically, we made the following contributions in this work to the entire federated learning and optimization community",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p8",
+    "section_heading": "1 Introduction",
+    "text": "\u2022 We empirically observed that FL settings make weight decay more crucial in training. \u2022 Based on the observation described above, we designed FedNAR, an algorithmic plug-in to",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p9",
+    "section_heading": "1 Introduction",
+    "text": "control the magnitude of weight decay that is compatible with all existing FL algorithms. \u2022 We propose the first theoretical framework of FL that takes weight decay into account and",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p10",
+    "section_heading": "1 Introduction",
+    "text": "show that FedNAR is guaranteed to converge under FL scenarios. \u2022 We conduct extensive experiments on vision and language tasks by plugging FedNAR into",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p11",
+    "section_heading": "1 Introduction",
+    "text": "state-of-the-art baselines, which demonstrate that adopting FedNAR generally leads to faster training and higher accuracy.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p12",
+    "section_heading": "1.1 Related work",
+    "text": "FL is a paradigm for collaborative learning with decentralized private data [7, 1, 4, 2, 3]. Standard approach to FL tackles it as a distributed optimization problem where the global objective is defined by a weighted combination of clients\u2019 local objectives [8, 4, 9, 10]. Theoretical analysis has demonstrated that federated optimization exhibits convergence guarantees but only under certain conditions, such as a bounded number of local epochs [11]. Other work has tried to improve the averaging-based aggregations [12, 13]. Techniques such as secure aggregation [14, 15, 16] and differential privacy [17, 18] have been widely adopted to further improve privacy in FL [19]. Our FedNAR is based on the standard FedAvg [1] framework and can be adapted to different settings.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p13",
+    "section_heading": "1.1 Related work",
+    "text": "In order to enhance convergence in a communication-efficient framework, addressing the challenges posed by highly imbalanced data, we highlight the significance of weight decay, which is crucial in modern deep neural network (DNN) training. Extensive research in centralized training has explored various methods to incorporate weight decay into optimization algorithms, such as AdamW [20] and WIN [21]. However, the integration of weight decay into FL remains relatively unexplored, both in terms of theoretical understanding and practical implementation. A recent study by [22] delved into the examination of weight decay during server updates in the context of FL. Nevertheless, their focus was primarily on tuning the global weight decay parameter, neglecting the exploration of weight decay in local updates. Additionally, their choice of the global weight decay parameter relied on a proxy dataset, which is unrealistic and lacks theoretical guarantees.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p14",
+    "section_heading": "2 Preliminaries: federated optimization formulation",
+    "text": "Our objective is to minimize the loss function F (x) of a model x, which is trained on data dispersed across M clients, as denoted by:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p15",
+    "section_heading": "2 Preliminaries: federated optimization formulation",
+    "text": "where Fi(x) corresponds to the loss function calculated using the data located on the i-th client. Federated optimization introduces two key constraints: privacy and communication efficiency. The privacy constraint ensures that clients retain their data without sharing, whereas the communication constraint emerges due to the substantial cost and restricted capacity of network bandwidth. As a result, only a fraction of clients can engage in each communication round with the server in practice. To circumvent these constraints, FedAvg has been proposed as a prevalent communication-efficient FL framework [1]. For a round 1  t  T , we show an illustration of FedAvg in Algorithm 1.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p16",
+    "section_heading": "2 Preliminaries: federated optimization formulation",
+    "text": "In the original FedAvg formulation, local updates on each client are realized through (stochastic) gradient descent (SGD/GD) with the loss function Fi(x), identical to the global objective. On the FedAvg foundation, we can further adjust the local loss function to be Fi(x) + \u21e3i(x), where \u21e3i(x) serves as a regularization term, enabling faster convergence in the federated learning context. For instance, \u201cclient drift\u201d, a common problem in federated learning due to multiple local updates preceding aggregation, can be mitigated by adding a proximal term. FedProx [4] employs a local loss Fi(x) + \u00b52 kx x0k 2 that incorporates an additional proximal term \u21e3i(x) = \u00b52 kx x0k 2 to counteract overfitting in local clients. Similarly, SCAFFOLD [6] introduces local control variables ci and a global control variable c and modifies the local gradient to be rFi(x) ci + c. Thus, \u21e3i(x) equates to (c ci)Tx.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p17",
+    "section_heading": "3 An empirical study of weight decay",
+    "text": "Weight decay is a well-established approach in standard centralized deep neural network training, primarily used to prevent overfitting [23, 20]. In the realm of FL, weight decay values generally mirror those employed in centralized training. In this section, we meticulously explore the impact of weight decay on federated optimization. In addition to the original FedAvg, we investigate various methodologies including {FedProx, SCAFFOLD}, which adjust local updates, and {FedAvgm, FedAdam} [9], which utilize SGD with momentum and Adam, respectively, in the global update while treating aggregated local updates as pseudo-gradient. We also assess FedExP [24], which adaptively modulates the global learning rate.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p18",
+    "section_heading": "3 An empirical study of weight decay",
+    "text": "We evaluate all the aforementioned algorithms on the CIFAR-10 dataset, partitioned among 100 clients under three different settings. Following [25], in each setting, we initially sample a class distribution pi \u21e0 Dirichlet(\u21b5, . . . ,\u21b5) for each client i, and subsequently sample training data in accordance with the distributions pi. When the value of \u21b5 is low, the sampled individual probabilities pi exhibit higher concentration, whereas for greater values of \u21b5, the concentration diminishes. Consequently, a larger value of \u21b5 corresponds to a more balanced data distribution across clients.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p19",
+    "section_heading": "3 An empirical study of weight decay",
+    "text": "We train a ResNet-18 for each algorithm on CIFAR-10 for our empirical study. Figure 2 presents the test accuracy plotted against weight decay values from {10 4, 10 3, 10 2, 5\u21e5 10 2, 10 1} for each setting. The y-axis range is maintained consistently between (50, 95) across all settings to facilitate a clear comparative analysis of the influence of weight decay under varied settings.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p20",
+    "section_heading": "3 An empirical study of weight decay",
+    "text": "In the baseline setting (a), the influence of weight decay on the performance of each algorithm is pronounced in two primary ways. Firstly, a noteworthy enhancement in accuracy exceeding 6% is observed when leveraging optimal weight decay as compared to sub-optimal weight decay. This improvement outstrips the differences discerned across various algorithms. Secondly, increasing weight decay to be slightly larger than the optimal value, such as from 0.05 to 0.1 or from 0.01 to 0.05, can cause a considerable plunge in accuracy exceeding 10% and even verging on 30%. This underscores the phenomenon of amplified update deviation in FL. However, both of these elements are tempered when either the number of local updates is curtailed in (b) or a balanced data distribution",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p21",
+    "section_heading": "3 An empirical study of weight decay",
+    "text": "is deployed in (c). In these scenarios, the accuracy curve corresponding to weight decay is more leveled for each algorithm, and the dip in accuracy is significantly reduced when weight decay is slightly elevated from the optimal value.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p22",
+    "section_heading": "3 An empirical study of weight decay",
+    "text": "This finding underscores how the training paradigm in FL can modulate the impact of weight decay. However, prior work has largely overlooked the role of weight decay, both theoretically and experimentally. Convergence analyses in prior studies did not take into account the influence of weight decay and assigned its value as 0. Moreover, previous experiments either adopted values akin to those utilized in centralized training, or fine-tuned it within a restricted range, or simply set it to 0.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p23",
+    "section_heading": "4 FedNAR and its convergence analysis",
+    "text": "Driven by the recognized shortcomings of previous studies, we introduce the first analytical framework for convergence that incorporates local weight decay, examining its resulting deviation and how it impacts global updates. Following this theoretical exploration, we propose our FedNAR algorithm. Designed with the dual aims of ensuring a theoretical guarantee and achieving an optimal rate of convergence, FedNAR marks a significant advancement in this field.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p24",
+    "section_heading": "4.1 A general federated optimization framework",
+    "text": "Our theoretical analysis can cover adaptive learning rate and weight decay. Say the model is of dimension d. We first define two functions , \u00b5 : N \u21e5 Rd \u21e5 Rd ! R+, and for t 0, we denote t = (t, \u00b7, \u00b7), \u00b5t = \u00b5(t, \u00b7, \u00b7) as mappings with the domain of definition on the gradient space and weight space. These two functions stand for learning rate and weight decay respectively. This framework can be adapted to any FL algorithms by making the learning rate and weight decay to be adaptive. We present the framework in Algorithm 2. This framework holds for arbitrary functions and \u00b5. We will clarify the choices of and \u00b5 in FedNAR later in equation 3 and 4 after some theoretical analysis, and make clear where the \u201cNormalized Annealing Regularization\" in FedNAR comes from. In the following, we denote f t,ik (x) to be the loss function computed on a stochastic batch instead of Fi(x). Algorithm 2 is a generalized version of FedAvg that incorporates adaptive local learning rate and adaptive weight decay. We can recover the original FedAvg by setting t(g, x) and \u00b5t(g, x) to be constant functions. It is worth emphasizing that although most previous works like FedAvg and FedProx employed local weight decay, they did not integrate it into their theoretical analysis. However, our empirical investigations in Section 3 demonstrate that weight decay could significantly affect the convergence of federated optimization. Therefore, we argue that thorough empirical and theoretical analysis is needed to better understand this term.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p25",
+    "section_heading": "4.2 Convergence analysis and FedNAR",
+    "text": "To initiate the theoretical analysis, we present three standard assumptions that are widely used in federated optimization literature [24, 10]. The initial two are conventional assumptions utilized in the general analysis of SGD optimizer, while the third one is common in FL theory. Assumption 1 (Smooth loss functions). Every local loss function is L-smooth, i.e., there exists L > 0 such that for any client 1  i  M , the gradient satisfies krFi(x) rFi(y)k  Lkx yk.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p26",
+    "section_heading": "4.2 Convergence analysis and FedNAR",
+    "text": "Assumption 2 (Unbiased gradient and bounded variance). For any client 1  i  M , the stochastic gradient is an unbiased estimator of the full-batch gradient, i.e., E[rf t,ik (x)] = rFi(x), and there exists 2 > 0, such that for any 1  i  M , E[krf t,ik (x) rFi(x)k2]  2. Assumption 3 (Bounded heterogeneity). There exists 2g > 0, such that 1M PM i=1 krFi(x) rF (x)k2  2g holds for any x 2 Rd.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p27",
+    "section_heading": "4.2 Convergence analysis and FedNAR",
+    "text": "Our findings suggest that certain limitations on t and \u00b5t are necessary to ensure the convergence of FedNAR. We begin by presenting a lemma that demonstrates the impact of local adaptive weight decay and gradients on the global update process.1",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p28",
+    "section_heading": "4.2 Convergence analysis and FedNAR",
+    "text": "Lemma 1. For round t 1, the global update is equivalent to be",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p29",
+    "section_heading": "4.2 Convergence analysis and FedNAR",
+    "text": "where",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p30",
+    "section_heading": "4.2 Convergence analysis and FedNAR",
+    "text": "We show the full proof in Appendix B. Lemma 1 highlights that the additional weight decay in local updates introduces a deviation \u00b5t 1g xt 1 in the global update. Previous works on federated optimization [4, 24, 6] did not include weight decay in their theoretical analysis, leading to \u00b5t,ij always being zero, and \u00b5t 1g = g g M \u00b7 M = 0. Moreover, we can see that larger \u2327 further intensifies the deviation, since \u00b5t 1g = g(1 1 M PM i=1 Q\u2327 1 j=0 (1 \u00b5 t,i j )), and larger \u2327 implies that \u00b5t 1g increases and approaches g. This highlights that the communication-efficient training framework of FL amplifies the impact of weight decay.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p31",
+    "section_heading": "4.2 Convergence analysis and FedNAR",
+    "text": "So to achieve convergence with local weight decay, it is necessary to regulate this deviation \u00b5tgxt. Therefore, we present the following result to control the norm of the global model, i.e., kxtk, as the first step. Theorem 1. If the functions t and \u00b5t satisfy that there exists A > 0, such that for any t 0, and (g, x) 2 Rd \u21e5 Rd, k t(g, x)g + \u00b5t(g, x)xk  A, then the norm of global model in Algorithm 2 is at most polynomial increasing with respect to t, i.e., kxtk  O(poly(t)).",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p32",
+    "section_heading": "4.2 Convergence analysis and FedNAR",
+    "text": "We want to emphasize that the condition required for and \u00b5 to achieve polynomial increasing speed in Theorem 1 is practical and commonly used in real-world training. Many previous works, such as",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p33",
+    "section_heading": "4.2 Convergence analysis and FedNAR",
+    "text": "[26, 24], adopt gradient scaling based on norm, which bounds the term k t(g, x)gk by a constant related to the clipping value. Similarly, we can bound k\u00b5t(g, x)xk using norm clipping, for example, by setting \u00b5t(g, x) = \u00b5min{1, c/kxk} for some constant c and \u00b5. Therefore, the condition is easily satisfied from a practical standpoint.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p34",
+    "section_heading": "4.2 Convergence analysis and FedNAR",
+    "text": "Finally, we give the convergence result for FedNAR in the following Theorem. Theorem 2. Under Assumptions 1, 2 and 3, if t and \u00b5t satisfy the condition in Theorem 1, and also if there exists {ut} with an exponential decay speed, such that for any t 0, and any g, x 2 Rd, \u00b5t(g, x)  ut, then the global model {xt} satisfies:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p35",
+    "section_heading": "4.2 Convergence analysis and FedNAR",
+    "text": "where l\u21e4 = maxt{lt}, with lt = maxg,x{ t(g, x)}, and C satisfies utkxtk, utkxtk2  C for any t.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p36",
+    "section_heading": "4.2 Convergence analysis and FedNAR",
+    "text": "Discussions. For the first time, we demonstrate that federated optimization, with non-convex objective functions and stochastic local gradient, achieves convergence when employing adaptive learning rate and weight decay. Our findings resemble previous studies [26, 10], featuring a diminishing term O(1/T ) as well as a non-vanishing term arising from weight decay, client drift, and data heterogeneity in FL. Notably, our bound recovers previous results when weight decay is disregarded, i.e., C = 0. The detailed proof can be found in the Appendix B. Here we briefly explain the condition of exponential decreasing. To tackle the case with deviation caused by local weight decay, one of the key steps is to bound k\u00b5tgxtk by a constant as shown in the complete proof. So for this term, we have",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p37",
+    "section_heading": "4.2 Convergence analysis and FedNAR",
+    "text": "which is a constant unrelated to t. Here the second inequality is from (1 \u21b5)n 1 n\u21b5 for 0  \u21b5  1 and n 1. We can see that the exponential decrease condition can be released as long as the decay of {ut} can control {kxtk}. Since we have already shown a polynomial increasing rate for {kx t k}, a convenient choice for both theory and practice is to set {ut} an exponential decrease. We summarize the conditions of and \u00b5 needed to provide convergence below: Condition 1. There exists A > 0, such that for any t 0 and (g, x) 2 Rd \u21e5 Rd, k t(g, x)g + \u00b5t(g, x)xk  A. There exists {ut} # 0 with exponential decay, such that for any t 0, and any (g, x) 2 Rd \u21e5 Rd, \u00b5t(g, x)  ut.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p38",
+    "section_heading": "4.2 Convergence analysis and FedNAR",
+    "text": "Choice of and \u00b5. In order to meet the requirement of Condition 1, a straightforward and intuitive way is to use clipping. We start by selecting two sequences lt and ut, where ut = u0 t for some < 1 is the control sequence of \u00b5t. The sequence {lt} is the learning rate schedule, and is usually set to be a constant or decrease over training. Then we define",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p39",
+    "section_heading": "4.2 Convergence analysis and FedNAR",
+    "text": "and",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p40",
+    "section_heading": "4.2 Convergence analysis and FedNAR",
+    "text": "We can easily verify that the choices of t and \u00b5t given in equations 3 and 4 satisfy Condition 1. See details in Appendix B. Hence, we choose these functions as the input of Algorithm 2.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p41",
+    "section_heading": "4.3 Understanding FedNAR",
+    "text": "Normalized annealing regularization. Now we can explain why we call our method \u201cNormalized Annealing Regularization\". First, the regularization term is co-normalized with the gradient term.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p42",
+    "section_heading": "4.3 Understanding FedNAR",
+    "text": "Second, the \"annealing\" comes from two aspects: (1) The sequence ut decays with an exponential rate, and \u00b5t(g, x)  ut uniformly for all (g, x). (2) We observe from experiments that the norm of x keeps increasing, so the term kg+utx/ltk will also keep increasing. NAR computes A/kg+utx/ltk which by the preceding argument is a decreasing term, thus introducing another form of decay. We will provide further illustrations of this in the experiment section. Flexibility of FedNAR. Since FedNAR\u2019s convergence analysis does not impose any extra conditions on the local loss functions, it generalizes several FL algorithms with distinct local training objectives, while conferring upon them theoretical assurances comparable to FedNAR. For example, FedProx and SCAFFOLD only differ from FedAvg on local loss functions. Thus, we only need to change Line 6 in Algorithm 2 to the corresponding loss functions in FedProx and SCAFFOLD to obtain FedProx-NAR and SCAFFOLD-NAR. Comparison with gradient clipping. Gradient clipping [27] is a widely used technique in federated optimization to enhance training stability as demonstrated by various studies [26, 24, 28]. It is achieved by constraining the norm of gradients in each iteration. The technique involves setting a threshold value and rescaling the gradients if they exceed this limit. In our framework, gradient clipping can be represented by setting",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p43",
+    "section_heading": "4.3 Understanding FedNAR",
+    "text": "Our proposed FedNAR distinguishes itself from previous gradient clipping strategies in two primary ways. First, both our weight decay and learning rate functions are adaptive, with dependencies on the current gradient and model weights. This contrasts with traditional gradient clipping, which only adapts the learning rate function based on the current gradient. Second, instead of solely employing the norm of the gradient, FedNAR adopts the norm of the sum of the gradient and weight decay as the clipping criterion. This strategy ensures that each local update is bounded, thereby preventing potential explosions caused by large decay terms \u00b5t,ik x t,i k in federated optimization. Consequently, FedNAR not only guarantees convergence but also bolsters training stability within the context of federated optimization. Implementation of FedNAR. Implementing FedNAR merely requires specifying an initial weight decay and a decay rate. Therefore, for state-of-the-art baseline methods that employ gradient clipping [24, 26], no additional hyperparameters are needed. Fundamentally, FedNAR can be interpreted as a modest alteration that adjusts the sequence of gradient clipping and weight decay operations. Consequently, the implementation of FedNAR can be as uncomplicated as modifying a single line of code, resulting in a solution that is both highly effective and efficient.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p44",
+    "section_heading": "5 Experiments",
+    "text": "We show the results of FedNAR for both vision and language datasets in this section.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p45",
+    "section_heading": "5.1 Main results",
+    "text": "Experiments on the CIFAR-10 dataset. As outlined in Section 3, we manually partition the CIFAR-10 dataset into 100 clients, following the methodology described in [25, 24]. Specifically, we randomly assign a distribution pi \u21e0 Dirichlet(\u21b5, . . . ,\u21b5) to each client i, then draw data from the training set in line with these distributions {pi}. We choose \u21b5 from the set {0.3, 1, 10}, with larger \u21b5 values indicating a more balanced data distribution across each client. With \u21b5 = 0.3, the local data distribution is highly skewed, whereas with \u21b5 = 10, the local distribution is nearly balanced across all classes. We adhere to the training parameters and settings, optimally tuned as per [24]. For each algorithm, we conduct 1000 rounds of training for full convergence, with 20 steps of local training per round. In each round, we randomly sample 20 clients. For the baseline algorithms, we apply gradient clipping as suggested in [24, 26]. We set the local learning rate to 0.01 with a decay of 0.998, and cap the maximum norm at 10 for both gradient clipping and FedNAR to ensure a fair comparison.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p46",
+    "section_heading": "5.1 Main results",
+    "text": "Table 1 showcases the performance of FedAvg-NAR, FedProx-NAR, and SCAFFOLD-NAR across different \u21b5 values. The results reveal a consistent performance boost offered by FedNAR across a variety of \u21b5 values, with particularly significant improvements observed for skewed distributions. Test accuracy after each training round is also illustrated in Figure 3.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p47",
+    "section_heading": "5.1 Main results",
+    "text": "The backbone algorithms, FedProx and SCAFFOLD, are variants of FedAvg that modify the local training objective. FedNAR can be tailored to these client-side FedAvg variants, which provide a",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p48",
+    "section_heading": "5.1 Main results",
+    "text": "guarantee of convergence. Moreover, FedNAR can also be incorporated into server-side FedAvg variants, which retain the local training but alter the global update. Table 1 showcases the results of these implementations, using the same hyperparameter configurations. These results corroborate the same conclusion.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p49",
+    "section_heading": "5.1 Main results",
+    "text": "Experiments on the Shakespeare dataset. The Shakespeare dataset [29], derived from The Complete Works of William Shakespeare, assigns each speaking role in every play to a unique client, leading to an inherent non-i.i.d. partition. We select 100 clients and train a model for the task of next-character prediction, incorporating 80 possible characters, following previous studies [29, 26]. We train a transformer model with 6 attention layers for feature extraction alongside a fully connected layer for predictions. Each character is represented by a 128-dimensional vector, and the transformer\u2019s hidden dimension is set to 512. The training regimen spans 300 rounds, with 20 clients chosen at random in each round and 5 local epochs executed on each client. During local training, we utilize a batch size of 100, a learning rate of 0.1 with a decay rate of 0.998 per round, a dropout rate of 0.1, and a maximum norm of 10 for both the baseline algorithms and FedNAR. Global updates are performed with a learning rate of 1.0. As in the previous experiment, FedNAR is integrated into six core algorithms. We also employ two distinct weight decay values to showcase FedNAR works for different hyperparameters. The results are presented in Table 2.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p50",
+    "section_heading": "5.2 Ablation studies",
+    "text": "In this section, we conduct some ablation studies. For all the experiments, we run FedAvg on CIFAR-10 with 100 clients and \u21b5 = 0.3 for 1000 rounds, where each round consists of updates from 20 clients and 20 steps on each client. The local learning rate is 0.01 with a decay of 0.998. FedNAR\u2019s robustness in relation to hyperparameters. As demonstrated in Section 3, weight decay exhibits high sensitivity in federated optimization and requires meticulous tuning. However, due to its co-normalization mechanism, FedNAR has demonstrated a greater robustness towards the selection of the initial weight decay. Employing the same experimental framework as in Section 3, we observed that initiating weight decay at 0.1 in FedAvg significantly compromised model performance,",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p51",
+    "section_heading": "5.2 Ablation studies",
+    "text": "inciting a gradient explosion due to an overly high weight decay. This led to a performance standard similar to a model with no weight decay. Yet, FedNAR was found to navigate this hurdle through selfadjustment, leading to considerable performance enhancements during the latter stages of training, in spite of the initial detrimental impact on performance. Additionally, further experiments on FedProx and SCAFFOLD also manifested a similar occurrence. The test accuracy curve is depicted in Figure 4.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p52",
+    "section_heading": "5.2 Ablation studies",
+    "text": "Frequency and strength of clipping in FedNAR. In Section 4.3, we showcased how FedNAR employs an \u201cannealing\" process to stave off excessive deviation precipitated by weight decay, from two angles. The first angle pertains to the exponential decay in ut, while the second involves coclipping with the gradient. To delve deeper into the frequency and intensity of the clipping operation, we scrutinized the updates that were subjected to clipping. In particular, we evaluated the count of clipped updates and the average norm of the update kg + utlt xk2, signifying the intensity of clipping, for these steps, as depicted in Figure 5. Our analysis points out that both the count and the norm of updates experiencing clipping escalate over time. This observation implies that the co-clipping term gains increasing prominence during the training process, aiding in the annealing of weight decay which is proportional to 1/kg + utlt xk2.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p53",
+    "section_heading": "6 Limitation",
+    "text": "As an inaugural exploration into federated optimization with weight decay, we concentrated on examining the theoretical attributes of FL algorithms that utilize gradient descent updates both server-side and client-side. Future investigations can extend this to encompass different server update methodologies. Furthermore, due to privacy restrictions, we could not carry out experiments using real heterogeneous data, such as hospital data. Instead, we relied on simulated data distributions or naturally non-i.i.d splits, following the conventional methods employed in prior FL algorithm research [1, 26, 10, 24, 3, 29].",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p54",
+    "section_heading": "7 Conclusion",
+    "text": "In this study, we delve into the influence of weight decay in FL, underscoring its paramount importance in traditional FL scenarios characterized by multiple local updates and skewed data distribution. To explore these facets, we present an innovative theoretical framework for FL that integrates weight decay into convergence analysis. Upon discerning the conditions for convergence, we introduce FedNAR, a solution that conforms to these prerequisites. FedNAR boasts a straightforward implementation and can be effortlessly adapted to a variety of backbone FL algorithms. In our experiments on vision and language datasets, we consistently record significant performance improvements across",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p55",
+    "section_heading": "7 Conclusion",
+    "text": "all backbone FL algorithms when we employ FedNAR, leading to accelerated convergence rates. In addition, our ablation studies illustrate FedNAR\u2019s heightened robustness against hyperparameters. Going forward, our aim is to expand this theoretical framework to include a wider array of FL algorithms, incorporating adaptive optimization methods.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p56",
+    "section_heading": "Acknowledgments",
+    "text": "We thank the anonymous reviewers for their valuable insights and recommendations, which have greatly improved our work. This research has been graciously funded by NGA HM04762010002, NSF IIS1955532, NSF CNS2008248, NIGMS R01GM140467, NSF IIS2123952, NSF BCS2040381, an Amazon Research Award, NSF IIS2311990, and DARPA ECOLE HR00112390063.",
+    "seg_type": "par"
+  }
+]

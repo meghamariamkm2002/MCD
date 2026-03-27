@@ -1,0 +1,4 @@
+We design our protocol as a generic compiler that can convert broad categories of robust aggregation algorithms to our improved security model efficiently.
+This modular approach enables practitioners to obtain rigorous security guarantees while selecting the most appropriate model poisoning defense for their use case.
+To demonstrate our framework's flexibility, we generate malicious secure protocols for three existing robust aggregation algorithms.
+And we show empirically that the generated protocols retain their robustness guarantees.

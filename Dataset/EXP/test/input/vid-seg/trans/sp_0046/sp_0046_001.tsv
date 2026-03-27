@@ -1,0 +1,29 @@
+start	end	text
+31	6401	Hi there, today we'll look at Generative Adversarial Nets by ENJ Goodfellow et al.
+6962	12751	So this one is another installment in our series of historical papers that had great impact.
+13553	26393	GANs nowadays, or Generative Adversarial Nets back then, were sort of, this was the starting shot in a long line of research that is still continuing today.
+26373	34066	So, I remember when I started my PhD in 2015, GANs were just about spiking.
+34226	41618	I remember NURIPS or back then NIPS in 2016, and every other paper was about GANs.
+42600	48870	There was also this famous Schmidhuber good fellow moment at the tutorial.
+48850	57845	It was it was a while time and this is the paper that started it all and the paper is quite well written.
+58406	69205	It's very kind of focused on convincing you that this is a sound method mathematically that it does do you know that it doesn't just do wild things.
+69185	78920	And also, it is already quite has a lot of sort of the modern tricks for GANs already sort of built into it.
+79321	85270	So, astounding how much foresight there was already in this paper, but of course,
+85250	102313	Gans have come like a super long way since then and today we'll just go through the paper and look at how it looked back then and what this paper was like so yeah join me in this if you like it please share it out let me know in the comments what you think of
+102293	103936	historic paper reviews.
+104577	109284	This is not going to be like a beginner's tutorial in GANs.
+109365	112029	This is really going to be, we'll go through the paper.
+112209	114533	You'll see right here, the paper is from 2014.
+114914	124409	So it would still be another like two years or so until GANs really take off from this point on.
+124610	129077	But the introduction, of course, was really important.
+129057	131620	Okay, so abstract.
+131680	132141	Here we go.
+132822	154288	We propose a new framework for estimating generative models via an adversarial process in which we simultaneously train two models, a generative model G that captures the data distribution and a discriminative model D that estimates the probability that a sample came from the training data rather than G.
+154268	156711	Okay, this was sort of a new thing now.
+157092	181322	I know I know people disagree with this being a new thing, but this was a new thing and Specifically this this was the first paper that made something like this really work for data So to have a discriminator the and the words generator and discriminator were also introduced in this paper So you train this D model, which is the discriminator and
+181302	191538	And the D model basically decides whether or not a given data point comes from data or comes from the fake distribution.
+192119	201975	And then you have a generative model G that is supposed to just create this data X rather than coming from the database.
+202135	206061	So you want to sample a couple of times from the data
+206041	225605	And sometimes you sample from this model G, and then the discriminator is supposed to decide whether or not it comes from the data set or from your counterfeiter, like from this generator G. And it's supposed to say whether it's data fixed.
+225625	229329	So you train the D model as a simple image classifier.
+229389	229990	So people all

@@ -1,0 +1,172 @@
+1
+00:00:00,031 --> 00:00:02,935
+So here they go for some theoretical analysis.
+
+2
+00:00:03,375 --> 00:00:24,802
+And the first they want to convince you that if the generator, if this all works well, if both parties, this generator and the discriminator optimize their objective to the optimum, then the generator will have captured the data distribution.
+
+3
+00:00:24,882 --> 00:00:27,085
+So the global optimality of this.
+
+4
+00:00:28,330 --> 00:00:31,094
+And they go about convincing you of that.
+
+5
+00:00:31,174 --> 00:00:39,005
+So the first thing that they convince you of is that if you fix the generator, the optimal discriminator is this.
+
+6
+00:00:39,105 --> 00:00:41,409
+And we've already seen this in this drawing right here.
+
+7
+00:00:41,829 --> 00:00:54,507
+So the optimal discriminator is simply the ratio of the data, of the likelihood of data versus the likelihood of the generated data.
+
+8
+00:00:54,487 --> 00:00:59,978
+Okay, so you train, you always train this discriminator in the inner loop.
+
+9
+00:01:01,902 --> 00:01:05,669
+And that's simply the consequence of this, of a point-wise.
+
+10
+00:01:06,110 --> 00:01:10,679
+This is true point-wise, therefore it's true over the entire data distribution.
+
+11
+00:01:12,383 --> 00:01:14,166
+In the next thing,
+
+12
+00:01:14,568 --> 00:01:27,260
+they convinced you that the global minimum of the virtual training criterion, and this is the value function, this min max game, is achieved if and only if this holds.
+
+13
+00:01:27,820 --> 00:01:33,345
+At that point, the training criterion achieves the value of negative log four.
+
+14
+00:01:33,886 --> 00:01:41,453
+And again, this was already here, the fact that this has a global minimum,
+
+15
+00:01:41,433 --> 00:01:46,702
+and it is achieved when the generator matches the data distribution, which is pretty cool.
+
+16
+00:01:47,202 --> 00:01:49,807
+So in the proof, it's pretty simple, actually.
+
+17
+00:01:49,907 --> 00:01:58,561
+They first say, look, if this is the case, we just simply plug that in, the discriminator will be confused.
+
+18
+00:01:58,581 --> 00:02:07,896
+So if the generator exactly captures the data, the discriminator will have no clue what's going on, because it can't, because they're equal.
+
+19
+00:02:07,876 --> 00:02:12,185
+So it must basically output the probability of one half everywhere.
+
+20
+00:02:12,746 --> 00:02:16,253
+And then your objective becomes a constant negative log four.
+
+21
+00:02:17,375 --> 00:02:29,479
+Now, if you then plug that into the other equation, you'll see that the training criterion ends up being negative log four plus twice the Jensen Shannon divergence between the data and the
+
+22
+00:02:29,459 --> 00:02:31,662
+Um, generated distribution.
+
+23
+00:02:31,982 --> 00:02:40,534
+And since this term here is always positive, that means that this thing here can never be less than negative log four.
+
+24
+00:02:41,195 --> 00:02:44,119
+And therefore the negative log four is the optimum.
+
+25
+00:02:45,020 --> 00:02:45,320
+Okay.
+
+26
+00:02:46,201 --> 00:02:49,886
+That's, uh, it's that the proof is, is pretty cool.
+
+27
+00:02:50,087 --> 00:02:54,893
+I have to say to show that this has the optimum at that place.
+
+28
+00:02:56,645 --> 00:03:10,263
+And the last thing they convince you of is that this algorithm actually converges and the converges is simply predicated on the fact that if you look at each of these problems individually, they are convex.
+
+29
+00:03:10,484 --> 00:03:18,354
+So, um, like here is convex in X for every alpha.
+
+30
+00:03:18,374 --> 00:03:21,178
+So each of these are sort of convex problems.
+
+31
+00:03:21,779 --> 00:03:22,500
+And then.
+
+32
+00:03:24,455 --> 00:03:28,019
+it will naturally converge to their minimum.
+
+33
+00:03:29,761 --> 00:03:39,313
+However, in practice adversarial nets represent a limited family of distributions via the function, and we optimize the parameters rather than the distribution itself.
+
+34
+00:03:39,813 --> 00:03:44,859
+Using a multi-layer perceptron to define g introduces multiple critical points in parameter space.
+
+35
+00:03:45,300 --> 00:03:53,770
+However, the excellent performance of the multi-layer perceptrons in practice suggests that they are a reasonable model to use despite their lack of theoretical guarantees.
+
+36
+00:03:53,750 --> 00:04:01,763
+So they say if we could optimize this probability distribution directly, it is a convex problem and we'll always converge.
+
+37
+00:04:01,903 --> 00:04:07,832
+But in practice, of course, we only optimize the parameters of an MLP or a CNN.
+
+38
+00:04:08,253 --> 00:04:14,543
+And that doesn't always converge, but we have reasonable hopes that it will converge.
+
+39
+00:04:14,523 --> 00:04:23,302
+Okay, so again, it's very much focused on convincing me that this is doing something sensible, which I hope now you are convinced.
+
+40
+00:04:23,322 --> 00:04:26,348
+So there is a global optimum point.
+
+41
+00:04:26,468 --> 00:04:32,481
+It's when the generator captures the data distribution perfectly.
+
+42
+00:04:32,461 --> 00:04:52,636
+This can be achieved and will be achieved if you can optimize these probability distributions with a reasonable degree of freedom and the neural networks provide that reasonable degree of freedom and give us good hope that in practice it will work.
+
+43
+00:04:53,459 --> 00:04:55,043
+So they apply this.
+

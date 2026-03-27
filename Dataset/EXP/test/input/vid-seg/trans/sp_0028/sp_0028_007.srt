@@ -1,0 +1,136 @@
+1
+00:00:00,031 --> 00:00:01,313
+pretty cool.
+
+2
+00:00:02,676 --> 00:00:05,240
+And here they go into experiments.
+
+3
+00:00:05,441 --> 00:00:20,487
+So they show that their average reward in these games is kind of noisy, but it improves over time, especially also if you look at the average Q of the max action, it continuously goes up during training.
+
+4
+00:00:20,467 --> 00:00:32,906
+So this is really a successful training, especially this investigative experiment they did right here, where you can see one example of how the Q function, what the Q function says.
+
+5
+00:00:32,966 --> 00:00:40,358
+Remember, the Q function gives us the, whatever the future reward is going to be.
+
+6
+00:00:40,819 --> 00:00:41,099
+Okay.
+
+7
+00:00:41,319 --> 00:00:43,723
+And here we always look at the max action.
+
+8
+00:00:43,703 --> 00:00:49,252
+So in this first frame, you can see this enemy had just appeared.
+
+9
+00:00:50,053 --> 00:00:55,862
+And you can see that from here to here, there's a spike in the queue value because you can shoot enemies.
+
+10
+00:00:56,583 --> 00:00:58,846
+And that gives you reward.
+
+11
+00:00:59,327 --> 00:01:12,327
+The A, this is already, so the enemy isn't shot yet by the simple appearance of the enemy, the queue function also like already jumps in value because it anticipates a future reward.
+
+12
+00:01:12,307 --> 00:01:21,283
+Then the agent shoots, and you can see here the shot is about to land at the enemy, and that's when we're here.
+
+13
+00:01:21,383 --> 00:01:26,893
+So this, now the Q function is very sure that in the future there's going to be a high reward.
+
+14
+00:01:27,574 --> 00:01:31,902
+But then once the enemy is shot,
+
+15
+00:01:31,882 --> 00:01:34,526
+then there is no more enemy to be shot.
+
+16
+00:01:35,408 --> 00:01:48,068
+And the Q function drops drastically because it doesn't see a future reward as being as likely as at the beginning when there was this new enemy to be shot.
+
+17
+00:01:48,088 --> 00:01:50,071
+So that's, you know, pretty interesting.
+
+18
+00:01:50,091 --> 00:01:57,703
+And you can see pretty directly that there is a correlation between what's happening in the game and this learned Q function.
+
+19
+00:02:00,569 --> 00:02:20,258
+If you compare this to other methods and they really say that these other methods, most of them have some kind of very special feature engineered, like, so their method just takes RGB, but the other methods recognize that, oh, in these Atari games, most of the time, you know, there are unique colors for the things.
+
+20
+00:02:20,519 --> 00:02:30,053
+So, you know, the enemies are all like green, like, and they make unique channels for those green enemies, or they even have handcrafted object detectors.
+
+21
+00:02:30,033 --> 00:02:32,838
+and tell the algorithm where these objects are.
+
+22
+00:02:33,379 --> 00:02:42,035
+So the comparison really isn't fair, yet the DQN outperformed these others like almost everywhere.
+
+23
+00:02:42,676 --> 00:02:47,485
+And they also evaluated against a human.
+
+24
+00:02:47,465 --> 00:02:51,813
+And, um, I don't actually know, they just say an expert human.
+
+25
+00:02:52,273 --> 00:02:53,375
+I have no idea.
+
+26
+00:02:53,455 --> 00:02:57,863
+Maybe just put David Silver in front of the computer is like, okay, David, here you go.
+
+27
+00:02:57,903 --> 00:03:03,032
+And you can, you can, uh, like what happened in Pong?
+
+28
+00:03:03,673 --> 00:03:06,418
+Like, come on, David.
+
+29
+00:03:06,989 --> 00:03:16,341
+But you can see there were still problems where the humans were vastly superior and they mainly attribute this to the difficulty of the problem.
+
+30
+00:03:16,781 --> 00:03:26,854
+And it could also be because, for example, in breakout, there's this kind of the most famous example where the agent kind of figured out
+
+31
+00:03:26,834 --> 00:03:36,548
+this strategy of shooting the ball, um, shooting like a hole into this wall that you have to break and then shooting the ball up here.
+
+32
+00:03:36,588 --> 00:03:43,919
+So the ball bounces up and down and basically you win from then on, you just watch the ball go and the agent does nothing anymore.
+
+33
+00:03:44,299 --> 00:03:52,912
+So this deep queue networks figured out that strategy and you need to pull it off very precisely, which of course the, um, the computer can do very well.
+
+34
+00:03:53,393 --> 00:03:55,035
+So it sometimes achieves
+

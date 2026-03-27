@@ -1,0 +1,6 @@
+So, behind the basic workflow, we also proposed two novel designs in MFL.
+The first one is in-contest learning with similarity-based problem retrieval.
+This design aims at improving the RM annotation performance with augmented in-contest theory examples, which extract from a human annotation pool.
+The second one is the design, the second one is variable batch size query.
+Different from traditional equi-size query strategy, we propose like we use equi-size error annotation but sequentially decreased human annotation.
+But in the beginning, we anticipate the human annotation will help GBT to get a better annotation performance through proper retrieval.

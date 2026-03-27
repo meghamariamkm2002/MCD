@@ -1,0 +1,41 @@
+start	end	text
+31	1013	All right.
+2535	5359	So let's go into the experiments.
+6301	11509	Of course they're, um, so what they do, I think, where is the graphic?
+12430	19221	What they do is they take an image net, sorry, they take an efficient net right here.
+22154	34072	And they first train a smaller efficient net, as we said, to be the teacher, and then they train a larger efficient net for the student.
+39379	45669	The best model in our experiments is a result of three iterations of putting back the student as a new teacher.
+46169	50035	We first trained an efficient net B7 on ImageNet as the teacher model.
+51213	54338	So you can see in the table right here what the B7 achieves.
+55279	64873	The EfficientNet B7 here, you can see it has 66 million parameters, which is fairly small compared to these other kind of previous state-of-the-art methods on ImageNet.
+65794	72023	So they first train this, and that will achieve something like an 85% accuracy.
+72003	79201	Now, if you just train a larger model, this efficient net L2 right here that has, you can see 480 million parameters.
+79302	83994	So a lot of more million parameters, but you just train it on the same data set on ImageNet.
+84495	87683	You will get a 0.5% improvement.
+87663	102482	And you can see that here, with noisy student training with the exact same model, so it has the same amount of parameters, you'll actually get an 88.4, so more than a 3% improvement.
+102943	112776	And that's with the same model, just with this different training procedure and inputting these 300 million unlabeled images that you have laying around.
+112756	124792	But all the information about all the label information comes from the ImageNet dataset and comes from this EfficientNet B7 teacher model.
+124952	141193	So that's basically you can, it's a testament that out of this, out of this 85, you can make this 88 just by smartly using the information that the model, that this model has learned about the data and transferring it to new data.
+142861	147490	So they train an efficient net B7, that's the small model, as a teacher model.
+148011	158693	Then by using the B7 model as a teacher, we trained an efficient net L2 model with the unlabeled batch size set to 14 times the labeled batch size.
+158673	162278	And they stress that it's important that you up the batch size.
+162738	166383	That's another thing that makes the student learn more than the teacher.
+167585	169787	Then we trained a new efficient net.
+169908	175835	So by the way, these, these 14 times, it's also, it can be done because now you have more data, right?
+176015	177998	So you can also up the batch size.
+179800	185646	Then we trained a new EfficientNet L2 model with the EfficientNet L2 model as the teacher.
+186087	191552	Lastly, we iterated again and used an unlabeled batch size of 28 times the labeled batch size.
+192033	194375	The detailed result of the three iterations and so on.
+194395	203985	Okay, so you can see that it's a fairly complicated procedure, but you can gain and gain and gain by simply upping the
+203965	208410	by simply iterating on this procedure.
+208630	211573	And I think they have it somewhere here, yes.
+211773	219381	So as you can see, if iteration one, you train the EfficientNet L2, you start it with the B7.
+219401	224346	And you train the EfficientNet A2 with a batch size 14 times larger.
+224486	226569	And you gain significantly, right?
+226649	229872	This gains about 2% over the original EfficientNet.
+229852	242308	then you iterate again with the same batch size and you get like a 5.5% improvement and you iterate again with an even larger batch size and you get a 0.3% improvement.
+242328	257648	So there's diminishing returns, but still you can see that, you know, the more with the introduction of noise, with the introduction of the larger model, with the introduction of the larger batch size, these are all things that help the student basically become better than the teacher.
+259248	262252	All right, so they do a bunch of other experiments.
+262332	284580	So their main comparison is right here, where they say, look, if we, even if we train the same model with this noisy student training, we can make, you know, pretty large gains over the model, over the same model where we do not train it with this noisy student training.
+284560	290254	This really seems to help due to the noise, due to the additional data.
+291884	295043	They do a lot of ablation studies.

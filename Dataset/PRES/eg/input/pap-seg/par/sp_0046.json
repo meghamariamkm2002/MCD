@@ -1,0 +1,1502 @@
+[
+  {
+    "para_id": "p1",
+    "section_heading": "Abstract",
+    "text": "In this paper, we propose an online convex optimization approach with two different levels of adaptivity. On a higher level, our approach is agnostic to the unknown types and curvatures of the online functions, while at a lower level, it can exploit the unknown niceness of the environments and attain problem-dependent guarantees. Specifically, we obtain O(log VT ), O(d log VT ) and Ô( √ VT ) regret bounds for strongly convex, exp-concave and convex loss functions, respectively, where d is the dimension, VT denotes problem-dependent gradient variations and the Ô(·)-notation omits log VT factors. Our result not only safeguards the worstcase guarantees but also directly implies the small-loss bounds in analysis. Moreover, when applied to adversarial/stochastic convex optimization and game theory problems, our result enhances the existing universal guarantees. Our approach is based on a multi-layer online ensemble framework incorporating novel ingredients, including a carefully designed optimism for unifying diverse function types and cascaded corrections for algorithmic stability. Notably, despite its multi-layer structure, our algorithm necessitates only one gradient query per round, making it favorable when the gradient evaluation is time-consuming. This is facilitated by a novel regret decomposition equipped with carefully designed surrogate losses.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p4",
+    "section_heading": "1 Introduction",
+    "text": "Online convex optimization (OCO) is a versatile model that depicts the interaction between a learner and the environments over time [Hazan, 2016, Orabona, 2019]. In each round t ∈ [T ], the learner selects a decision xt from a convex compact set X ⊆ Rd, and simultaneously the environments choose a convex loss function ft : X 7→ R. Subsequently, the learner incurs a loss ft(xt), obtains information about the online function, and updates the decision to xt+1, aiming to optimize the game-theoretical performance measure known as regret [Cesa-Bianchi and Lugosi, 2006]:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p5",
+    "section_heading": "1 Introduction",
+    "text": "which represents the learner’s excess loss compared to the best fixed comparator in hindsight.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p6",
+    "section_heading": "1 Introduction",
+    "text": "In OCO, the type and curvature of online functions significantly impact the minimax regret bounds. Specifically, for convex functions, online gradient descent (OGD) can achieve an O( √ T ) regret guarantee [Zinkevich, 2003]. For α-exp-concave functions, online Newton step (ONS), with prior knowledge of the curvature coefficient α, attains an O(d log T ) regret [Hazan et al., 2007]. For λ-strongly convex functions, OGD with prior knowledge of the curvature coefficient λ and a different parameter configuration enjoys an O(log T ) regret [Hazan et al., 2007]. Note that the above",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p7",
+    "section_heading": "1 Introduction",
+    "text": "algorithms require the function type and curvature beforehand and does not consider the niceness of environments. Recent studies further strengthen the algorithms and results with two levels of adaptivity. The higher-level adaptivity requires an algorithm to be agnostic to the unknown types and curvatures of the online functions. And the lower-level adaptivity requires an algorithm to exploit the unknown niceness of the environments within a specific function family. In the following, we delve into an extensive discussion on these two levels of adaptivity.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p8",
+    "section_heading": "1.1 High Level: Adaptive to Unknown Curvature of Online Functions",
+    "text": "Traditionally, the learner needs to know the function type and curvature in advance to select suitable algorithms (and parameter configurations), which can be burdensome in practice. Universal online learning [van Erven and Koolen, 2016, Wang et al., 2019, Zhang et al., 2022a] aims to develop a single algorithm agnostic to the specific function type and curvature while achieving the same regret guarantees as if they were known. The pioneering work of van Erven and Koolen [2016] proposed a single algorithm called MetaGrad that achieves an O( √ T ) regret for convex functions and an O(d log T ) regret for exp-concave functions. Later, Wang et al. [2019] further obtained the optimal O(log T ) regret for strongly convex functions. Notably, these approaches are efficient regarding the gradient query complexity, by using only one gradient within each round.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p9",
+    "section_heading": "1.1 High Level: Adaptive to Unknown Curvature of Online Functions",
+    "text": "However, the above approaches are not flexible enough since they have to optimize a group of heterogeneous and carefully-designed surrogate loss functions, which can be cumbersome and challenging. To this end, Zhang et al. [2022a] introduced a simple framework that operates on the original online functions with the same optimal results at the expense of O(log T ) gradient queries.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p10",
+    "section_heading": "1.2 Low Level: Adaptive to Unknown Niceness of Online Environments",
+    "text": "Within a specific function family, the algorithm’s performance is also substantially influenced by the niceness of environments. This concept is usually captured through problem-dependent quantities in the literature. Therefore, it becomes essential to develope adaptive algorithms with problemdependent regret guarantees. Specifically, we consider the following problem-dependent quantities:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p11",
+    "section_heading": "1.2 Low Level: Adaptive to Unknown Niceness of Online Environments",
+    "text": "where the small loss FT represents the cumulative loss of the best comparator [Srebro et al., 2010, Orabona et al., 2012] and the gradient variation VT characterizes the variation of the function gradients [Chiang et al., 2012]. In particular, the gradient-variation bound demonstrates its fundamental importance in modern online learning from the following three aspects: (i) it safeguards the worstcase guarantees in terms of T and implies the small-loss bounds in analysis directly; (ii) it draws a profound connection between adversarial and stochastic convex optimization; and (iii) it is crucial for fast convergence rates in game theory. We will explain the three aspects in detail in the next part.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p12",
+    "section_heading": "1.3 Our Contributions and Techniques",
+    "text": "In this paper, we consider the two levels of adaptivity simultaneously and propose a novel universal approach that achieves O(log VT ), O(d log VT ) and Ô( √ VT ) regret bounds for strongly convex,",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p13",
+    "section_heading": "1.3 Our Contributions and Techniques",
+    "text": "exp-concave and convex loss functions, respectively, using only one gradient query per round, where Ô(·)-notation omits factors on log VT . Table 1 compares our results with existing ones. In summary, relying on the basic idea of online ensemble [Zhao et al., 2021], our approach primarily admits a multi-layer online ensemble structure with several important novel ingredients. Specifically, we propose a carefully designed optimism, a hyper-parameter encoding historical information, to handle different kinds of functions universally, particularly exp-concave functions. Nevertheless, it necessitates careful management of the stability of final decisions, which is complicated in the multi-layer structure. To this end, we analyze the negative stability terms in the algorithm and propose cascaded correction terms to realize effective collaboration among layers, thus enhancing the algorithmic stability. Moreover, we facilitate a novel regret decomposition equipped with carefully designed surrogate losses to achieve only one gradient query per round, making our algorithm as efficient as van Erven and Koolen [2016] regarding the gradient complexity. Our result resolves an open problem proposed by Zhang et al. [2022a], who have obtained partial results for exp-concave and strongly convex functions and asked whether it is possible to design designing a single algorithm with universal gradient-variation bounds. Among them, the convex case is particularly important because the improvement from T to VT is polynomial, whereas logarithmic in the other cases.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p14",
+    "section_heading": "1.3 Our Contributions and Techniques",
+    "text": "Next, we shed light on some applications of our approach. First, it safeguards the worst-case guarantees [van Erven and Koolen, 2016, Wang et al., 2019] and directly implies the small-loss bounds of Zhang et al. [2022a] in analysis. Second, gradient variation is shown to play an essential role in the stochastically extended adversarial (SEA) model [Sachs et al., 2022, Chen et al., 2023b], an interpolation between stochastic and adversarial OCO. Our approach resolves a major open problem left in Chen et al. [2023b] on whether it is possible to develop a single algorithm with universal guarantees for strongly convex, exp-concave, and convex functions in the SEA model. Third, in game theory, gradient variation encodes the changes in other players’ actions and can thus lead to fast convergence rates [Rakhlin and Sridharan, 2013b, Syrgkanis et al., 2015, Zhang et al., 2022b]. We demonstrate the universality of our approach by taking two-player zero-sum games as an example.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p15",
+    "section_heading": "1.3 Our Contributions and Techniques",
+    "text": "Technical Contributions. Our first contribution is proposing a multi-layer online ensemble approach with effective collaboration among layers, which is achieved by a carefully-designed optimism to unify different kinds of functions and cascaded correction terms to improve the algorithmic stability within the multi-layer structure. The second contribution arises from efficiency. Although there are multiple layers, our algorithm only requires one gradient query per round, which is achieved by a novel regret decomposition equipped with carefully designed surrogate losses. Two interesting byproducts rises in our approach. The first one is the negative stability term in the analysis of MSMWC [Chen et al., 2021], which serves as an important building block of our algorithm. And the second byproduct contains a simple approach and analysis for the optimal worst-case universal guarantees, using one gradient query within each round.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p16",
+    "section_heading": "1.3 Our Contributions and Techniques",
+    "text": "Organization. The rest of the paper is structured as follows. Section 2 provides preliminaries. Section 3 proposes our multi-layer online ensemble approach for universal gradient-variation bounds. Section 4 further improves the gradient query complexity. Due to page limits, the applications of our proposed algorithm are deferred to Appendix A. All the proofs can be found in the appendices.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p17",
+    "section_heading": "2 Preliminaries",
+    "text": "In this section, we introduce some preliminary knowledge, including our assumptions, the definitions, the formal problem setup, and a review of the latest progress of Zhang et al. [2022a]. To begin with, we list some notations. Specifically, we use ∥ · ∥ for ∥ · ∥2 in default and use ∑ t, ∑ k,∑",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p18",
+    "section_heading": "2 Preliminaries",
+    "text": "i as abbreviations for ∑ t∈[T ], ∑ k∈[K] and ∑ i∈[N ]. a ≲ b represents a ≤ O(b). Ô(·)-notation",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p19",
+    "section_heading": "2 Preliminaries",
+    "text": "omits logarithmic factors on leading terms. For example, Ô( √ V ) omits the dependence of log V .",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p20",
+    "section_heading": "2 Preliminaries",
+    "text": "Assumption 1 (Boundedness). For any x,y ∈ X and t ∈ [T ], the domain diameter satisfies ∥x − y∥ ≤ D, and the gradient norm of the online functions is bounded by ∥∇ft(x)∥ ≤ G. Assumption 2 (Smoothness). All online functions are L-smooth: ∥∇ft(x)−∇ft(y)∥ ≤ L∥x−y∥ for any x,y ∈ X and t ∈ [T ].",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p21",
+    "section_heading": "2 Preliminaries",
+    "text": "Both assumptions are common in the literature. Specifically, the boundedness assumption is common in OCO [Hazan, 2016]. The smoothness assumption is essential for first-order algorithms to",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p22",
+    "section_heading": "2 Preliminaries",
+    "text": "achieve gradient-variation bounds [Chiang et al., 2012]. Strong convexity and exp-concavity are defined as follows. For any x,y ∈ X , a function f is λ-strongly convex if f(x)−f(y) ≤ ⟨∇f(x),x− y⟩− λ2 ∥x−y∥2, and is α-exp-concave if f(x)−f(y) ≤ ⟨∇f(x),x−y⟩− α2 ⟨∇f(x),x−y⟩2. Note that the formal definition of β-exp-concavity states that exp(−βf(·)) is concave. Under Assumption 1, β-exp-concavity leads to our definition with α = 12 min{ 14GD , β} [Hazan, 2016, Lemma 4.3]. For simplicity, we use it as an alternative definition for exp-concavity.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p23",
+    "section_heading": "2 Preliminaries",
+    "text": "In the following, we formally describe the problem setup and briefly review the key insight of Zhang et al. [2022a]. Concretely, we consider the problem where the learner has no prior knowledge about the function type (strongly convex, exp-concave, or convex) or the curvature coefficient (α or λ). Without loss of generality, we study the case where the curvature coefficients α, λ ∈ [1/T , 1]. This requirement is natural because if α (or λ) < 1/T , even the optimal regret is Ω(T ) [Hazan et al., 2007], which is vacuous. Conversely, functions with α (or λ) > 1 are also 1-exp-concave (or 1- strongly convex). Thus using α (or λ) = 1 will only worsen the regret by a constant factor, which can be omitted. This condition is also used in previous works [Zhang et al., 2022a].",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p24",
+    "section_heading": "2 Preliminaries",
+    "text": "A Brief Review of Zhang et al. [2022a]. A general solution to handle the uncertainty is to leverage a two-layer framework, which consists of a group of base learners exploring the environments and a meta learner tracking the best base learner on the fly. To handle the unknown curvature coefficients α and λ, the authors discretize them into the following candidate pool:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p25",
+    "section_heading": "2 Preliminaries",
+    "text": "where |H| ≈ log T . Consequently, they design three groups of base learners: (i) about log T base learners, each of which runs the algorithm for strongly convex functions",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p26",
+    "section_heading": "2 Preliminaries",
+    "text": "with a guess λi ∈ H of the strong convexity coefficient λ; (ii) about log T base learners, each of which runs the algorithm for exp-concave functions with",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p27",
+    "section_heading": "2 Preliminaries",
+    "text": "a guess αi ∈ H of the exp-concavity coefficient α; (iii) 1 base learner that runs the algorithm for convex functions.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p28",
+    "section_heading": "2 Preliminaries",
+    "text": "Overall, they maintain N ≈ log T + log T +1 base learners. Denoting by pt ≜ (pt,1, . . . , pt,N ) the meta learner’s weights and xt,i the i-th base learner’s decision, the learner submits xt = ∑ i pt,ixt,i.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p29",
+    "section_heading": "2 Preliminaries",
+    "text": "In the two-layer framework, the regret (1.1) can be decomposed into two terms:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p30",
+    "section_heading": "2 Preliminaries",
+    "text": "where the meta regret (first term) assesses how well the algorithm tracks the best base learner, and the base regret (second term) measures the performance of it. The best base learner is the one which runs the algorithm matching the ground-truth function type with the most accurate guess of the curvature — taking α-exp-concave functions as an example, there must exist a base learner indexed by i⋆, whose coefficient αi⋆ ∈ H satisfies αi⋆ ≤ α ≤ 2αi⋆ . A direct benefit of the above decomposition is that the meta regret can be bounded by a constant O(1) for exp-concave and strongly convex functions, allowing the algorithm to perfectly inherit the gradient-variation bound from the base learner. Taking α-exp-concave functions as an example, by definition, the meta regret can be bounded by ∑ t rt,i⋆ − α2 ∑ t r 2 t,i⋆ , where the first term rt,i ≜ ⟨∇ft(xt),xt − xt,i⟩ denotes the linearized regret, and the second one is a negative term from exp-concavity. Choosing ADAPT-ML-PROD [Gaillard et al., 2014] as the meta algorithm bounds the first term ∑ t rt,i⋆ by O( √∑ t(rt,i⋆)",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p31",
+    "section_heading": "2 Preliminaries",
+    "text": "2), which can be canceled by the negative term, leading to an O(1) meta regret. Due to the meta algorithm’s benefits, their approach can inherit the gradient-variation guarantees from the base learner. Similar derivation also applies to strongly convex functions. However, their approach is not favorable enough in the convex case and is not efficient enough in terms of the gradient query complexity. We will give more discussions about the above issues in Section 3.1 and Section 4.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p32",
+    "section_heading": "3 Our Approach",
+    "text": "This section presents our multi-layer online ensemble approach with universal gradient-variation bounds. Specifically, in Section 3.1, we provide a novel optimism to unify different kinds of functions. In Section 3.2, we exploit two types of negative terms to cancel the positive term caused by",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p33",
+    "section_heading": "3 Our Approach",
+    "text": "the optimism design. We summarize the overall algorithm in Section 3.3. Finally, in Section 3.4, we present the main results and list several applications of our approach.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p34",
+    "section_heading": "3.1 Universal Optimism Design",
+    "text": "In this part, we propose a novel optimism that simultaneously unifies various kinds of functions. We start by observing that Zhang et al. [2022a] does not enjoy gradient-variation bounds for convex functions, where the main challenge lies in obtaining an O(√VT ) meta regret for convex functions while simultaneously maintaining an O(1) regret for exp-concave and strongly convex functions. In the following, we focus on the meta regret because the base regret optimization is straightforward by employing the optimistic online learning technique [Rakhlin and Sridharan, 2013a,b] in a blackbox fashion. Optimistic online learning is essential in our problem since it can utilize the historical information, e.g., ∇ft−1(·) for our purpose due to the definition of the gradient variation. Shifting our focus to the meta regret, we consider upper-bounding it by a second-order bound of O( √∑",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p35",
+    "section_heading": "3.1 Universal Optimism Design",
+    "text": "t(rt,i⋆ −mt,i⋆)2), where rt,i = ⟨∇ft(xt),xt − xt,i⟩ and the optimism mt,i⋆ can encode historical information. Such a second-order bound can be easily obtained using existing prediction with expert advice algorithms, e.g., ADAPT-ML-PROD [Wei et al., 2016]. Nevertheless, as we will demonstrate in the following, designing an optimism mt,i that effectively unifies various function types is not straightforward, thereby requiring novel ideas in the optimism design.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p36",
+    "section_heading": "3.1 Universal Optimism Design",
+    "text": "To begin with, a natural impulse is to choose the optimism as mt,i = ⟨∇ft−1(xt−1),xt,i − xt⟩,2 which yields the following second-order bound:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p37",
+    "section_heading": "3.1 Universal Optimism Design",
+    "text": "(strongly convex)",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p38",
+    "section_heading": "3.1 Universal Optimism Design",
+    "text": "where the inequality is due to the boundedness assumption (Assumption 1). This optimism design handles the strongly convex functions well since the bound can be canceled by the negative term imported by strong convexity (i.e., −∥xt − xt,i⋆∥2). Moreover, it is quite promising for convex functions because the bound essentially consists of the desired gradient variation and a positive term of ∥xt − xt−1∥2 (we will deal with it later). However, it fails for exp-concave functions because the negative term imported by exp-concavity (i.e., −⟨∇ft(xt),xt − xt,i⋆⟩2) cannot be used for cancellation due to the mismatch of the formulation.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p39",
+    "section_heading": "3.1 Universal Optimism Design",
+    "text": "To unify various kinds of functions, we propose a novel optimism design defined by mt,i = rt−1,i. This design aims to secure a second-order bound of O( √∑ t(rt,i⋆ − rt−1,i⋆)2), which is sufficient to achieve an O(1) meta regret for exp-concave functions (with strong convexity being a subcategory thereof) while maintaining an O(√VT ) meta regret for convex functions. The high-level intuition behind this approach is as follows: although the bound cannot be canceled exactly by the negative term imported by exp-concavity (i.e., −r2t,i⋆ ) within each round, it becomes manageable when aggregated across the whole time horizon as ∑ t(rt,i⋆ − rt−1,i⋆)2 ≲ 4 ∑ t r 2 t,i⋆ , because rt,i⋆ and rt−1,i⋆ differs by merely a single time step. In the following, we propose the key lemma of the universal optimism design and defer the proof to Appendix B.1.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p40",
+    "section_heading": "3.1 Universal Optimism Design",
+    "text": "Lemma 1 (Key Lemma). Under Assumptions 1 and 2, if the optimism is chosen as mt,i = rt−1,i = ⟨∇ft−1(xt−1),xt−1 − xt−1,i⟩, it holds that",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p41",
+    "section_heading": "3.1 Universal Optimism Design",
+    "text": "Moreover, the second part of Lemma 1 shows that the bound for convex functions is also controllable by being further decomposed into three terms. The first term is the desired gradient variation. The",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p42",
+    "section_heading": "3.1 Universal Optimism Design",
+    "text": "second one measures the base learner stability, which can be canceled by optimistic algorithms [Rakhlin and Sridharan, 2013a]. We provide a self-contained analysis of the stability of optimistic online mirror descent (OMD) in Appendix E.2. At last, if the stability term of the final decisions (i.e., ∥xt − xt−1∥2) can be canceled, an O( √ VT ) meta regret for convex functions is achievable.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p43",
+    "section_heading": "3.1 Universal Optimism Design",
+    "text": "To this end, we give the positive term ∥xt − xt−1∥2 a more detailed decomposition, due to the fact that the final decision is the weighted combination of base learners’ decisions (i.e., xt =∑ i pt,ixt,i). A detailed proof is deferred to Lemma 6. Specifically, it holds that",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p44",
+    "section_heading": "3.1 Universal Optimism Design",
+    "text": "where the first part represents the meta learner’s stability while the second one is a weighted version of the base learners’ stability. In Section 3.2, we cancel the two parts respectively.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p45",
+    "section_heading": "3.2 Negative Terms for Cancellation",
+    "text": "In this part, we propose negative terms to cancel the two parts of (3.1). Specifically, Section 3.2.1 analyzes the endogenous negative stability terms of the meta learner to handle the first part, and Section 3.2.2 proposes artificially-injected cascaded corrections to cancel the second part exogenously.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p46",
+    "section_heading": "3.2.1 Endogenous Negativity: Stability Analysis of Meta Algorithms",
+    "text": "In this part, we aim to control the meta learner’s stability, measured by ∥pt − pt−1∥21. To this end, we leverage the two-layer meta algorithm proposed by Chen et al. [2021], where each layer runs the MSMWC algorithm [Chen et al., 2021] but with different parameter configurations. Specifically, a single MSMWC updates via the following rule:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p47",
+    "section_heading": "3.2.1 Endogenous Negativity: Stability Analysis of Meta Algorithms",
+    "text": "where ∆d denotes a d-dimensional simplex, ψt(p) = ∑d i=1 η −1 t,i pi ln pi is the weighted negative entropy regularizer with time-coordinate-varying step size ηt,i, Dψt(p, q) = ψt(p) − ψt(q) − ⟨∇ψt(q),p − q⟩ is the induced Bregman divergence for any p, q ∈ ∆d, mt is the optimism, ℓt is the loss vector and at is a bias term.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p48",
+    "section_heading": "3.2.1 Endogenous Negativity: Stability Analysis of Meta Algorithms",
+    "text": "It is worth noting that MSMWC is based on OMD, which is well-studied and proved to enjoy negative stability terms in analysis. However, the authors omitted them, which turns out to be crucial for our purpose. In Lemma 2 below, we extend Lemma 1 of Chen et al. [2021] by explicitly exhibiting the negative terms in MSMWC. The proof is deferred to Appendix B.2. Lemma 2. If maxt∈[T ],i∈[d]{|ℓt,i|, |mt,i|} ≤ 1, then MSMWC (3.2) with time-invariant step sizes (i.e., ηt,i = ηi for any t [T ])3 enjoys the following guarantee if ηi 1/32",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p49",
+    "section_heading": "3.2.1 Endogenous Negativity: Stability Analysis of Meta Algorithms",
+    "text": "The two-layer meta algorithm is constructed by MSMWC in the following way. Briefly, both layers run MSMWC, but with different parameter configurations. Specifically, the top MSMWC (indicated by MSMWC-TOP) connects with K = O(log T ) MSMWCs (indicated by MSMWC-MID), and each MSMWC-MID is further connected with N base learners (as specified in Section 2). The specific parameter configurations will be illuminated later. The two-layer meta algorithm is provable to enjoy a regret guarantee of O( √ V⋆ lnV⋆) (Theorem 5 of Chen et al. [2021]), where V⋆ is analogous",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p50",
+    "section_heading": "3.2.1 Endogenous Negativity: Stability Analysis of Meta Algorithms",
+    "text": "to ∑ t(ℓt,i⋆ − mt,i⋆)2, but within a multi-layer context (a formal definition will be shown later). By choosing the optimism as mt,i = ⟨ℓt,pt⟩,4, it can recover the guarantee of ADAPT-ML-PROD,",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p51",
+    "section_heading": "3.2.1 Endogenous Negativity: Stability Analysis of Meta Algorithms",
+    "text": "although up to an O(lnV⋆) factor (leading to an Ô( √ VT ) meta regret), but with additional negative",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p52",
+    "section_heading": "3.2.1 Endogenous Negativity: Stability Analysis of Meta Algorithms",
+    "text": "terms in analysis. Note that single MSMWC enjoys an O( √ V⋆ lnT ) bound, where the extra lnT factor would ruin the desired O(log VT ) bound for exp-concave and strongly convex functions. This is the reason for choosing a second-layer meta algorithm, overall resulting in a three-layer structure.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p53",
+    "section_heading": "3.2.1 Endogenous Negativity: Stability Analysis of Meta Algorithms",
+    "text": "For clarity, we summarize the notations of the three-layer structure in Table 2. Besides, previous notions need to be extended analogously. Specifically, instead of (2.2), regret is now decomposed as",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p54",
+    "section_heading": "3.2.1 Endogenous Negativity: Stability Analysis of Meta Algorithms",
+    "text": "The quantity V⋆ is defined as V⋆ ≜ ∑ t(ℓt,k⋆,i⋆ −mt,k⋆,i⋆)2, where ℓt,k,i = ⟨∇ft(xt),xt,k,i⟩ and mt,k,i = ⟨∇ft(xt),xt⟩ − ⟨∇ft−1(xt−1),xt−1 − xt−1,k,i⟩ follows the same sprit as Lemma 1. At the end of this part, we explain why we choose MSMWC as the meta algorithm. Apparently, a direct try is to keep using ADAPT-ML-PROD following Zhang et al. [2022a]. However, it is still an open problem to determine whether ADAPT-ML-PROD contains negative stability terms in the analysis, which is essential to realize effective cancellation in our problem. Another try is to explore the titled exponentially weighted average (TEWA) as the meta algorithm, following another line of research [van Erven and Koolen, 2016], as introduced in Section 1.1. Unfortunately, its stability property is also unclear. Investigating the negative stability terms in these algorithms is an important open problem, but beyond the scope of this work.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p55",
+    "section_heading": "3.2.2 Exogenous Negativity: Cascaded Correction Terms",
+    "text": "In this part, we aim to deal with the second term in (3.1) (i.e., ∑ i pt,i∥xt,i − xt−1,i∥2). Inspired by the work of Zhao et al. [2021] on the gradient-variation dynamic regret in non-stationary online learning,5 we incorporate exogenous correction terms for cancellation. Concretely, we inject cascaded correction terms to both top and middle layers. Specifically, the loss ℓt and the optimism mt of MSMWC-TOP are chosen as",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p56",
+    "section_heading": "3.2.2 Exogenous Negativity: Cascaded Correction Terms",
+    "text": "ℓt,k ≜ ⟨∇ft(xt),xt,k⟩+ λ1∥xt,k − xt−1,k∥2,mt,k ≜ ⟨m̂t,k,pt,k⟩+ λ1∥xt,k − xt−1,k∥2. The loss ℓt,k and optimism mt,k of MSMWC-MID are chosen similarly as",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p57",
+    "section_heading": "3.2.2 Exogenous Negativity: Cascaded Correction Terms",
+    "text": "where m̂t,k ≜ (m̂t,k,1, . . . , m̂t,k,N ) and m̂t,k,i = ⟨∇ft(xt),xt⟩− ⟨∇ft−1(xt−1),xt−1−xt−1,k,i⟩ denotes our optimism, which uses the same idea as Lemma 1 in Section 3.1. To see how the correction term works, consider a simpler problem with regret ∑ t⟨ℓt, qt⟩− ∑ t ℓt,k⋆ . If we instead optimize the corrected loss ℓt + bt and obtain a regret bound of RT , then moving the correction terms to the right-hand side, the original regret is at mostRT− ∑ t ∑ k qt,kbt,k+ ∑ t bt,k⋆ ,",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p58",
+    "section_heading": "3.2.2 Exogenous Negativity: Cascaded Correction Terms",
+    "text": "where the negative term of −∑t ∑ k qt,kbt,k can be leveraged for cancellation. Meanwhile, the",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p59",
+    "section_heading": "3.2.2 Exogenous Negativity: Cascaded Correction Terms",
+    "text": "algorithm is required to handle an extra term of ∑ t bt,k⋆ , which only relies on the k",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p60",
+    "section_heading": "3.2.2 Exogenous Negativity: Cascaded Correction Terms",
+    "text": "⋆-th dimension. In the next part, we will discuss about how cascaded corrections and negative stability terms of meta algorithms realize effective collaboration for cancellation in the multi-layer online ensemble.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p61",
+    "section_heading": "3.2.2 Exogenous Negativity: Cascaded Correction Terms",
+    "text": "It is noteworthy that our work is the first to introduce correction mechanisms to universal online learning, whereas prior works use it for different purposes, such as non-stationary online learn-",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p62",
+    "section_heading": "3.2.2 Exogenous Negativity: Cascaded Correction Terms",
+    "text": "ing [Zhao et al., 2021] and the multi-scale expert problem [Chen et al., 2021]. Distinctively, different from the conventional two-layer algorithmic frameworks seen in prior studies, deploying this technique to a three-layer structure necessitates a comprehensive use and extensive adaptation of it.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p63",
+    "section_heading": "3.3 Overall Algorithm: A Multi-layer Online Ensemble Structure",
+    "text": "In this part, we conclude our three-layer online ensemble approach in Algorithm 1. In Line 3, the decisions are aggregated from bottom to top for the final output. In Line 4, the learner suffers the loss of the decision, and the environments return the gradient information of the loss function. In Line 5, the algorithm constructs the surrogate losses and optimisms for the two-layer meta learner. In Line 6- 11, the update is conducted from top to bottom. Note that in Line 8, our algorithm requires multiple, concretely O(log2 T ), gradient queries per round since it needs to query ∇ft(xt,k,i) for each base learner, making it inefficient when the gradient evaluation is costly. To this end, in Section 4, we improve the algorithm’s gradient query complexity to 1 per round, corresponding to Line 10-11, via a novel regret decomposition and carefully designed surrogate loss functions.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p64",
+    "section_heading": "3.3 Overall Algorithm: A Multi-layer Online Ensemble Structure",
+    "text": "In Figure 1, we illustrate the detailed procedure of the collaboration in our multi-layer online ensemble approach. Specifically, we aim to deal with the positive term of ∥xt − xt−1∥2, which stems from the universal optimism design proposed in Section 3.1. Since xt = ∑ k qt,kxt,k, the posi-",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p65",
+    "section_heading": "3.3 Overall Algorithm: A Multi-layer Online Ensemble Structure",
+    "text": "tive term can be further decomposed into two parts: ∥qt − qt−1∥21 and ∑ k qt,k∥xt,k − xt−1,k∥2, which can be canceled by the negative and correction terms in MSMWC-TOP, respectively. Note that the correction comes at the expense of an extra term of ∥xt,k⋆ − xt−1,k⋆∥2, which can be decomposed similarly into two parts: ∥pt,k⋆ − pt−1,k⋆∥21 and ∑ i pt,k⋆,i∥xt,k⋆,i − xt−1,k⋆,i∥2 be-",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p66",
+    "section_heading": "3.3 Overall Algorithm: A Multi-layer Online Ensemble Structure",
+    "text": "cause of xt,k = ∑ i pt,k,ixt,k,i. The negative term and corrections in the middle layer (specifically, the k⋆-th MSMWC-MID) can be leveraged for cancellation. This correction finally generate ∥xt,k⋆,i⋆ − xt−1,k⋆,i⋆∥2, which can be handled by choosing optimistic OMD as base algorithms. As a final remark, although it is possible to treat the two-layer meta algorithm as a single layer, its analysis will become much more complicated than that in one layer and is unsuitable for extending to more layers. In contrast, our layer-by-layer analytical approach paves a systematic and principled way for analyzing the dynamics of the online ensemble framework with even more layers.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p67",
+    "section_heading": "3.4 Universal Regret Guarantees",
+    "text": "In this part, we conclude our main theoretical result and provide several implications and applications to validate its importance and practical potential. Theorem 1 summarizes the main result, universal regret guarantees in terms of the gradient variation. The proof is deferred to Appendix B.4.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p68",
+    "section_heading": "3.4 Universal Regret Guarantees",
+    "text": "Theorem 1. Under Assumptions 1 and 2, Algorithm 1 obtains O(log VT ), O(d log VT ) and Ô(√VT ) regret bounds for strongly convex, exp-concave and convex functions, respectively.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p69",
+    "section_heading": "3.4 Universal Regret Guarantees",
+    "text": "Theorem 1 improves the results of Zhang et al. [2022a] by not only maintaining the optimal rates for strongly convex and exp-concave functions but also taking advantage of the small gradient variation for convex functions when VT ≪ FT . For example, if f1 = . . . = fT = f and minx∈X f(x) = 1, our bound is much better since VT = 0 while FT = T . Moreover, Algorithm 1 also provably achieves universal small-loss guarantees without any algorithmic modification and thus safeguards the case when FT ≤ VT . We conclude the result below and provide the proof in Appendix B.5. Corollary 1. Under Assumptions 1 and 2, if ft(·) ≥ 0, Algorithm 1 obtains O(logFT ), O(d logFT ) and Ô(√FT ) regret bounds for strongly convex, exp-concave and convex functions.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p70",
+    "section_heading": "3.4 Universal Regret Guarantees",
+    "text": "Due to the connection of the gradient-variation with stochastic and adversarial OCO [Sachs et al., 2022] and game theory [Syrgkanis et al., 2015], our results can be immediately applied and achieve best known universal guarantees therein. Due to page limits, we defer applications to Appendix A.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p71",
+    "section_heading": "4 Improved Gradient Query Complexity",
+    "text": "Though achieving favorable theoretical guarantees in Section 3, one caveat is that our algorithm requires O(log2 T ) gradient queries per round since it needs to query ∇ft(xt,k,i) for all k ∈ [K], i ∈ [N ], making it computational-inefficient when the gradient evaluation is costly, e.g., in nuclear norm optimization [Ji and Ye, 2009] and mini-batch optimization [Li et al., 2014]. The same concern also appears in the approach of Zhang et al. [2022a], who provided small-loss and worst-case regret guarantees for universal online learning. By contrast, traditional algorithms such as OGD typically work under the one-gradient feedback setup, namely, they only require one gradient ∇ft(xt) for the update. In light of this, it is natural to ask whether there is a universal algorithm that can maintain the desired regret guarantees while using only one gradient query per round.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p72",
+    "section_heading": "4 Improved Gradient Query Complexity",
+    "text": "We answer the question affirmatively by reducing the gradient query complexity to 1 per round. To describe the high-level idea, we first consider the case of known λ-strong convexity within a two-layer structure, e.g., adaptive regret minimization for strongly convex functions [Wang et al., 2018]. The regret can be upper-bounded as REGT ≤ [ ∑ t ht(xt)− ∑ t ht(xt,i⋆)]+ [ ∑ t ht(xt,i⋆)−∑",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p73",
+    "section_heading": "4 Improved Gradient Query Complexity",
+    "text": "t ht(x ⋆)], where x⋆ ∈ argminx∈X ∑ t ft(x) and ht(x) ≜ ⟨∇ft(xt),x⟩ + λ∥x − xt∥2/2 is a second-order surrogate of the original function ft. This yields a homogeneous surrogate for both meta and base algorithms — the meta algorithm uses the same evaluation function across all the base learners, who in turn use this function to update their base-level decisions.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p74",
+    "section_heading": "4 Improved Gradient Query Complexity",
+    "text": "In the universal online learning (i.e., unknown λ), a natural adaptation would be a heterogeneous surrogate ht,i(x) ≜ ⟨∇ft(xt),x⟩+ λi∥x− xt∥2/2 for the i-th base learner, where λi is a guess of the true curvature λ from the candidate pool H (2.1). Consequently, the regret decomposition with respect to this surrogate becomes REGT ≤ [ ∑ t ht,i⋆(xt) − ∑ t ht,i⋆(xt,i⋆)] + [ ∑ t ht,i⋆(xt,i⋆) −∑",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p75",
+    "section_heading": "4 Improved Gradient Query Complexity",
+    "text": "t ht,i⋆(x ⋆)], where i⋆ denotes the index of the best base learner whose strong convexity coefficient satisfies λi⋆ ≤ λ ≤ 2λi⋆ . This admits heterogeneous surrogates for both meta and base regret, which",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p76",
+    "section_heading": "4 Improved Gradient Query Complexity",
+    "text": "necessitates designing expert-tracking algorithms with heterogeneous inputs for different experts as required in MetaGrad [van Erven and Koolen, 2016], which is not flexible enough.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p77",
+    "section_heading": "4 Improved Gradient Query Complexity",
+    "text": "To this end, we propose a novel regret decomposition that admits homogeneous surrogates for the meta regret, making our algorithm as flexible as Zhang et al. [2022a], and heterogeneous surrogate for the base regret, making it as efficient as van Erven and Koolen [2016]. Specifically, we remain the heterogeneous surrogates ht,i(x) defined above for the base regret. For the meta regret, we define a homogeneous linear surrogate ℓt(x) ≜ ⟨∇ft(xt),x⟩ such that the meta regret is bounded by ∑ t ℓt(xt) − ∑ t ℓt(xt,i⋆) − λi⋆ ∑ t ∥xt − xt,i⋆∥2/2. As long as we can obtain a second-order bound for the regret defined on this surrogate loss, i.e., t ℓt(xt)− t ℓt(xt,i⋆), it can be canceled by the negative term from strong convexity. Overall, we decompose the regret in the following way:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p79",
+    "section_heading": "4 Improved Gradient Query Complexity",
+    "text": "For clarity, we denote this surrogate for strongly convex functions by hsct,i(x). Similarly, we define the surrogates hexpt,i (x) ≜ ⟨∇ft(xt),x⟩ + αi⟨∇ft(xt),x − xt⟩2/2 and hct,i(x) ≜ ⟨∇ft(xt),x⟩ for α-exp-concave and convex functions, respectively. These surrogates require only one gradient ∇ft(xt) within each round, thus successfully reducing the gradient query complexity. Note that the base regret optimization requires controlling the algorithmic stability, because the empirical gradient variation ∇hsct,i(xt,i)−∇hsct−1,i(xt−1,i) = ∇ft(xt)+λi(xt,i−xt)−∇ft−1(xt−1)− λi(xt−1,i−xt−1) not only contains the desired gradient variation, but also includes the positive stability terms of base and final decisions. Fortunately, as discussed earlier, these stability terms can be effectively addressed through our cancellation mechanism within the multi-layer online ensemble. This stands in contrast to previous two-layer algorithms with worst-case regret bounds [Zhang et al., 2018, Wang et al., 2018], where the algorithmic stability is not examined.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p80",
+    "section_heading": "4 Improved Gradient Query Complexity",
+    "text": "The efficient version is concluded in Algorithm 1 with Line 10-11, which uses only one gradient ∇ft(xt). The only algorithmic modification is that base learners update on the carefully designed surrogate functions, not the original one. We provide the regret guarantee below, which achieves the same guarantees as Theorem 1 with only one gradient per round. The proof is in Appendix C.2. Theorem 2. Under Assumptions 1 and 2, efficient Algorithm 1 enjoys O(log VT ), O(d log VT ) and Ô(√VT ) for strongly convex, exp-concave and convex functions, using only one gradient per round. As a byproduct, we show that this idea can be used to recover the optimal worst-case universal guarantees using one gradient with a simpler approach and analysis, with proof in Appendix C.1. Proposition 1. Under Assumption 1, using the above surrogate loss functions for base learners, and running ADAPT-ML-PROD as the meta learner guarantees O(log T ), O(d log T ) and O( √ T ) regret bounds for strongly convex, exp-concave and convex functions, using one gradient per round.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p81",
+    "section_heading": "5 Conclusion",
+    "text": "In this paper, we obtain universal gradient-variation guarantees via a multi-layer online ensemble approach. We first propose a novel optimism design to unify various kinds of functions. Then we analyze the negative terms of the meta algorithm MSMWC and inject cascaded correction terms to improve the algorithmic stability to realize effective cancellations in the multi-layer structure. Furthermore, we provide a novel regret decomposition combined with carefully designed surrogate functions to achieve one gradient query per round. Finally, we deploy the our approach into two applications, including the stochastically extended adversarial (SEA) model and two-player zerosum games, to validate its effectiveness, and obtain best known universal guarantees therein. Due to page limits, the applications are deferred to Appendix A. Two byproducts rise in our work. The first one is negative stability terms in the analysis of MSMWC. And the second one contains a simple approach and analysis for the optimal worst-case universal guarantees, using one gradient per round.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p82",
+    "section_heading": "5 Conclusion",
+    "text": "An important open problem lies in optimality and efficiency. In the convex case, our results still exhibit an O(log VT ) gap from the optimal O( √ VT ) result. Moreover, our algorithm necessitates O(log2 T ) base learners, as opposed to O(log T ) base learners in two-layer structures. Whether it is possible to achieve the optimal results for all kinds of functions (strongly convex, exp-concave, convex) using a two-layer algorithm remains as an important problem for future investigation.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p83",
+    "section_heading": "Acknowledgements",
+    "text": "This research was supported by National Key R&D Program of China (2022ZD0114800), NSFC (62206125, 61921006), and JiangsuSF (BK20220776). The authors would thank Reviewer #ZhYs of OpenReview for the thorough review and insightful suggestions.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p84",
+    "section_heading": "A Applications",
+    "text": "In this section, we validate the importance and the practical potential of our approach by applying it in two problems, including stochastically extended adversarial (SEA) model in Appendix A.1 and two-player zero-sum games in Appendix A.2.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p85",
+    "section_heading": "A.1 Application I: Stochastically Extended Adversarial Model",
+    "text": "Stochastically extended adversarial (SEA) model [Sachs et al., 2022] serves as an interpolation between stochastic and adversarial online convex optimization, where the environments choose the loss function ft from a distribution Dt (i.e., ft ∼ Dt). They proposed cumulative stochastic variance σ21:T , the gap between ft and its expected version Ft(·) ≜ Eft∼Dt [ft(·)], and cumulative adversarial variation Σ21:T , the gap between Ft( ) and Ft 1( ), to bound the expected regret. Formally,",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p86",
+    "section_heading": "A.1 Application I: Stochastically Extended Adversarial Model",
+    "text": "By specializing different σ21:T and Σ 2 1:T , the SEA model can recover the adversarial and stochastic OCO setup, respectively. Specifically, setting σ21:T = 0 recovers the adversarial setup, where Σ 2 1:T equals to the gradient variation VT . Besides, choosing Σ21:T = 0 recovers the stochastic setup, where σ21:T stands for the variance in stochastic optimization. For smooth expected function Ft(·), Sachs et al. [2022] obtained an optimal O( √ σ21:T +Σ 2 1:T ) expected regret for convex functions and an O((σ2max + Σ2max) log T ) regret for strongly convex functions, where σ2max ≜ maxt∈[T ] maxx∈X Eft∼Dt [∥∇ft(x) − ∇Ft(x)∥2] and Σ2max ≜ maxt∈[T ] supx∈X ∥∇Ft(x)−∇Ft−1(x)∥2. Later, the results are improved by Chen et al. [2023b], where the authors achieved a better O((σ2max+Σ2max) log(σ21:T +Σ21:T )) regret6 for strongly convex functions and a new O(d log(σ21:T +Σ21:T )) regret for exp-concave functions, while maintaining the optimal guarantee for convex functions. Their key observation is that the gradient variation in optimistic algorithms encodes the information of the cumulative stochastic variance σ21:T and cumulative adversarial variation Σ21:T , restated in Lemma 5.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p87",
+    "section_heading": "A.1 Application I: Stochastically Extended Adversarial Model",
+    "text": "A major open problem remains in the work of Chen et al. [2023b] that whether it is possible to get rid of different parameter configurations and obtain universal guarantees in the problem. In the following, we show that our approach can be directly applied and achieves almost the same guarantees as those in Chen et al. [2023b], up to a logarithmic factor in leading term. Notably, our algorithm does not require different parameter setups, thus resolving the open problem proposed by the authors. We conclude our results in Theorem 3 and the proof can be found in Appendix D.1. Theorem 3. Under the same assumptions as Chen et al. [2023b], the efficient version of Algorithm 1 obtains O((σ2max + Σ2max) log(σ21:T + Σ21:T )) regret for strongly convex functions, O(d log(σ21:T + Σ21:T )) regret for exp-concave functions and Ô( √ σ21:T +Σ 2 1:T ) regret for convex functions, where the Ô(·)-notation omits logarithmic factors in leading terms.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p88",
+    "section_heading": "A.1 Application I: Stochastically Extended Adversarial Model",
+    "text": "Note that Sachs et al. [2023] also considered the problem of universal learning and obtained an O(√T log T ) regret for convex functions and an O((σ2max + Σ2max + D2L2) log2 T ) regret for strongly convex functions simultaneously. We conclude the existing results in Table 3. Our results are better than theirs in two aspects: (i) for strongly convex and convex functions, our guarantees are adaptive with the problem-dependent quantities σ1:T and Σ1:T while theirs depends on the time horizon T ; and (ii) our algorithm achieves an additional guarantee for exp-concave functions.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p89",
+    "section_heading": "A.2 Application II: Two-player Zero-sum Games",
+    "text": "Multi-player online games [Cesa-Bianchi and Lugosi, 2006] is a versatile model that depicts the interaction of multiple players over time. Since each player is facing similar players like herself, the theoretical guarantees, e.g., the summation of all players’ regret, can be better than the minimax optimal √ T bound in adversarial environments, thus achieving fast rates.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p90",
+    "section_heading": "A.2 Application II: Two-player Zero-sum Games",
+    "text": "6This bound improves the result of O(min{G2 log(σ21:T +Σ21:T ), (σ2max +Σ2max) log T}) in their conference version [Chen et al., 2023a].",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p91",
+    "section_heading": "A.2 Application II: Two-player Zero-sum Games",
+    "text": "The pioneering works of Rakhlin and Sridharan [2013b], Syrgkanis et al. [2015] investigated optimistic algorithms in multi-player online games and illuminated the importance of the gradient variation. Specifically, Syrgkanis et al. [2015] proved that when each player runs an optimistic algorithm (optimistic OMD or optimistic follow the regularized leader), the summation of the regret, which serves as an upper bound for some performance measures in games, can be bounded by O(1). The above results assume that the players are honest, i.e., they agree to run the same algorithm distributedly. In the dishonest case, where there exist players who do not follow the agreed protocol, the guarantees will degenerate to the minimax result of O( √ T ).",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p92",
+    "section_heading": "A.2 Application II: Two-player Zero-sum Games",
+    "text": "In this part, we consider the simple two-player zero-sum games as an example to validate the effectiveness of our proposed algorithm. The game can be formulated as a min-max optimization problem of minx∈X maxy∈Y f(x,y). We consider the case that the game is either bilinear (i.e., f(x,y) = x⊤Ay), or strongly convex-concave (i.e., f(x,y) is λ-strongly convex in x and λstrongly concave in y). Our algorithm can guarantee the regret summation in the honest case and the individual regret of each player in the dishonest case, without knowing the type of games in advance. We conclude our results in Theorem 4, and the proof can be found in Appendix D.2.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p93",
+    "section_heading": "A.2 Application II: Two-player Zero-sum Games",
+    "text": "Theorem 4. Under Assumptions 1 and 2, for bilinear and strongly convex-concave games, the efficient version of Algorithm 1 enjoys O(1) regret summation in the honest case, Ô( √ T ) and O(log T )",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p94",
+    "section_heading": "A.2 Application II: Two-player Zero-sum Games",
+    "text": "bounds in the dishonest case, where the Ô(·)-notation omits logarithmic factors in leading terms.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p95",
+    "section_heading": "A.2 Application II: Two-player Zero-sum Games",
+    "text": "Table 4 compares our approach with Syrgkanis et al. [2015], Zhang et al. [2022a]. Specifically, ours is better than Syrgkanis et al. [2015] in the strongly convex-concave games in the dishonest case due to its universality, and better than Zhang et al. [2022a] in the honest case since our approach enjoys gradient-variation bounds that are essential in achieving fast rates for regret summation.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p96",
+    "section_heading": "B Proofs for Section 3",
+    "text": "In this section, we provide proofs for Section 3, including Lemma 1, Lemma 2 and Lemma 3. For simplicity, we introduce the following notations denoting the stability of the final and intermediate decisions of the algorithm. Specifically, for any k ∈ [K], i ∈ [N ], we define",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p97",
+    "section_heading": "B.1 Proof of Lemma 1",
+    "text": "Proof. For simplicity, we define gt ≜ ∇ft(xt). For exp-concave functions, we have",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p98",
+    "section_heading": "B.1 Proof of Lemma 1",
+    "text": "For convex function, it holds that",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p100",
+    "section_heading": "B.1 Proof of Lemma 1",
+    "text": "where the last step is due to the definition of the gradient variation, finishing the proof.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p101",
+    "section_heading": "B.2 Proof of Lemma 2",
+    "text": "In this part, we analyze the negative stability terms in the MSMWC algorithm [Chen et al., 2021]. For self-containedness, we restate the update rule of MSMWC in the following:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p102",
+    "section_heading": "B.2 Proof of Lemma 2",
+    "text": "where the bias term at,i = 16ηt,i(ℓt,i −mt,i)2. Below, we give a detailed proof of Lemma 2, following a similar logic flow as Lemma 1 of Chen et al. [2021], while illustrating the negative stability terms. Moreover, for generality, we investigate a more general setting of an arbitrary comparator u ∈ ∆d and changing step sizes ηt,i. This was done hoping that the negative stability term analysis would be comprehensive enough for readers interested solely in the MsMwC algorithm.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p103",
+    "section_heading": "B.2 Proof of Lemma 2",
+    "text": "Proof of Lemma 2. To begin with, the regret with correction can be analyzed as follows:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p104",
+    "section_heading": "B.2 Proof of Lemma 2",
+    "text": "where the first step follows the standard analysis of optimistic OMD, e.g., Theorem 1 of Zhao et al. [2021]. One difference of our analysis from the previous one lies in the second step, where previous work dropped the Dψt(pt, p̂t) term while we keep it to generate the desired negative terms. To begin with, we require an upper bound of ηt,i ≤ 1/32 for the step sizes. To give a lower bound for TERM (C), we notice that for any a, b ∈ ∆d,",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p105",
+    "section_heading": "B.2 Proof of Lemma 2",
+    "text": "where the first inequality is due to x lnx− x+ 1 ≥ 0 for all x > 0, leading to",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p106",
+    "section_heading": "B.2 Proof of Lemma 2",
+    "text": "where the first step is from the above derivation, the second step is due to the Pinsker’s inequality [Pinsker, 1964]: KL(a, b) ≥ 12 ln 2∥a − b∥21 for any a, b ∈ ∆d and the last step is true because of 2x2 + 2y2 ≥ (x+ y)2 for any x, y ∈ R and ∥a+ b∥ ≤ ∥a∥+ ∥b∥ for any a, b ∈ Rd. For TERM (B), the proof is similar to the previous work, where only some constants are modified. For self-containedness, we give the analysis below. Treating pt+1 as a free variable and defining",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p107",
+    "section_heading": "B.2 Proof of Lemma 2",
+    "text": "by the optimality of p⋆, we have",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p108",
+    "section_heading": "B.2 Proof of Lemma 2",
+    "text": "Since [∇ψt(p)]i = 1ηt,i (ln pi + 1), it holds that",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p109",
+    "section_heading": "B.2 Proof of Lemma 2",
+    "text": "Therefore we have",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p110",
+    "section_heading": "B.2 Proof of Lemma 2",
+    "text": "where the first and second steps use the optimality of p⋆, the last inequality uses e−x − 1 + x ≤ x2 for all x ≥ −1, requiring |2ηt,i(ℓt,i −mt,i + at,i)| ≤ 1. It can be satisfied by ηt,i ≤ 1/32 and |ℓt,i − mt,i+at,i| ≤ 16, where the latter requirement can be satisfied by setting at,i = 16ηt,i(ℓt,i−mt,i)2:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p111",
+    "section_heading": "B.2 Proof of Lemma 2",
+    "text": "As a result, we have",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p112",
+    "section_heading": "B.2 Proof of Lemma 2",
+    "text": "where the last step holds because ℓt,i , mt,i 1 and ηt,i 1/32. Finally, it holds that",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p113",
+    "section_heading": "B.2 Proof of Lemma 2",
+    "text": "As for TERM (A), following the same argument as Lemma 1 of Chen et al. [2021], we have",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p114",
+    "section_heading": "B.2 Proof of Lemma 2",
+    "text": "where fKL(a, b) ≜ a ln(a/b) a+ b. Combining all three terms, we have",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p115",
+    "section_heading": "B.2 Proof of Lemma 2",
+    "text": "Moving the correction term Tt=1 at,pt u to the right-hand side gives:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p116",
+    "section_heading": "B.2 Proof of Lemma 2",
+    "text": "Finally, choosing u = ei⋆ and ηt,i = ηi for all t ∈ [T ] finishes the proof.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p117",
+    "section_heading": "B.3 Proof of Lemma 3",
+    "text": "In this part, we give a self-contained analysis of the two-layer meta learner, which mainly follows the Theorem 4 and Theorem 5 of Chen et al. [2021], but with additional negative stability terms. Lemma 3. If |ℓt,k|, |mt,k|, |ℓt,k,i|, |mt,k,i| ≤ 1 and (ℓt,k −mt,k)2 = ⟨ℓt,k −mt,k,pt,k⟩2 for any k [K] and i [N ], then the two-layer MSMWC algorithm satisfies",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p118",
+    "section_heading": "B.3 Proof of Lemma 3",
+    "text": "where V⋆ ≜ ∑ t(ℓt,k⋆,i⋆−mt,k⋆,i⋆)2, S q T ≜ ∑T t=2 ∥qt−qt−1∥21 and S p T,k ≜ ∑T t=2 ∥pt,k−pt−1,k∥21 measure the stability of MSMWC-TOP and MSMWC-MID.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p119",
+    "section_heading": "B.3 Proof of Lemma 3",
+    "text": "Note that we leverage a condition of (ℓt,k − mt,k)2 = ⟨ℓt,k − mt,k,pt,k⟩2 in Lemma 3 only to ensure a self-contained result. When using Lemma 3 (more specifically, in Theorem 2), we will verify that this condition is inherently satisfied by our algorithm.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p120",
+    "section_heading": "B.3 Proof of Lemma 3",
+    "text": "Proof. Using Lemma 2, the regret of MSMWC-TOP can be bounded as",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p121",
+    "section_heading": "B.3 Proof of Lemma 3",
+    "text": "where the first step comes from fKL(a, b) = a ln a/b − a + b ≤ a ln a/b + b for a, b > 0. The second term above (corresponding to the second term in Lemma 2) is zero since the step size is time-invariant. The first term above can be further bounded as",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p122",
+    "section_heading": "B.3 Proof of Lemma 3",
+    "text": "where the first step is due to the initialization of q1,k = η2k/ ∑K k=1 η 2 k. Plugging in the setting of ηk = 1/(C0 · 2k), the second step holds since",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p123",
+    "section_heading": "B.3 Proof of Lemma 3",
+    "text": "Since 1/ηk = C0 2k 2C0, the regret of MSMWC-TOP can be bounded by",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p124",
+    "section_heading": "B.3 Proof of Lemma 3",
+    "text": "Next, using Lemma 2 again, the regret of the k⋆-th MSMWC-MID, whose step size is 2ηk⋆ , can be bounded as",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p125",
+    "section_heading": "B.3 Proof of Lemma 3",
+    "text": "where the first step is due to the initialization of p1,k,i = 1/N . Based on the observation of",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p126",
+    "section_heading": "B.3 Proof of Lemma 3",
+    "text": "where the last step use Cauchy-Schwarz inequality, combining the regret of MSMWC-TOP and the k⋆-th MSMWC-MID finishes the proof.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p127",
+    "section_heading": "B.4 Proof of Theorem 1",
+    "text": "In Appendix C.2, we provide the proof of Theorem 2, the gradient-variation guarantees of the efficient version of Algorithm 1. Therefore, the proof of Theorem 1 can be directly extracted from that of Theorem 2. In the following, we give a proof sketch.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p128",
+    "section_heading": "B.4 Proof of Theorem 1",
+    "text": "Proof Sketch. The proof of the meta regret is the same as Theorem 2 since the meta learners (top and middle layer) are both optimizing the linearized regret of ∑T t=1⟨∇ft(xt),xt − xt,k⋆,i⋆⟩. The only difference lies in the base regret. In Theorem 1, since the base regret is defined on the original function ft, the gradient-variation bound of the base learner can be directly obtained via a blackbox analysis of the optimistic OMD algorithm, e.g., Theorem B.1 of Zhang et al. [2022a] (strongly convex), Theorem 15 (exp-concave) and Theorem 11 (convex) of Chiang et al. [2012]. The only requirement on the base learners is that they need to cancel the positive term of ∥xt,k⋆,i⋆−xt−1,k⋆,i⋆∥2 caused by the universal optimism design (Lemma 1) and cascaded correction terms (Figure 1). The above base algorithms satisfy the requirement. The negative stability term in the optimistic OMD analysis is provided in Appendix E.2.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p129",
+    "section_heading": "B.5 Proof of Corollary 1",
+    "text": "In Appendix C.3, we provide Corollary 2, the small-loss guarantees of the efficient version of Algorithm 1. The proof of Corollary 1 can be directly extracted from that of Corollary 2. We give a proof sketch below.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p130",
+    "section_heading": "B.5 Proof of Corollary 1",
+    "text": "Proof Sketch. The proof sketch is similar to that of Theorem 1 in Appendix B.4. Specifically, the meta regret can be bounded in the same way. Since gradient-variation bounds naturally implies small-loss ones due to (E.3), the small-loss bound of the base learner can be directly obtained via a black-box analysis of the base algorithms mentioned in Appendix B.4, for different kinds of functions. The requirement of being capable of handling ∥xt,k⋆,i⋆ − xt−1,k⋆,i⋆∥2 can be still satisfied, which finishes the proof sketch.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p131",
+    "section_heading": "C Proofs for Section 4",
+    "text": "In this section, we give the proofs for Section 4, including Proposition 1, Theorem 2 and Corollary 2.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p132",
+    "section_heading": "C.1 Proof of Proposition 1",
+    "text": "Proof. To handle the meta regret, we use ADAPT-ML-PROD [Gaillard et al., 2014] to optimize the linear loss ℓt = (ℓt,1, . . . , ℓt,N ), where ℓt,i ≜ ⟨∇ft(xt),xt,i⟩, and obtain the following secondorder bound by Corollary 4 of Gaillard et al. [2014],",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p133",
+    "section_heading": "C.1 Proof of Proposition 1",
+    "text": "For α-exp-concave functions, it holds that",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p134",
+    "section_heading": "C.1 Proof of Proposition 1",
+    "text": "2αi⋆ )",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p135",
+    "section_heading": "C.1 Proof of Proposition 1",
+    "text": "where the second step uses AM-GM inequality: √ xy ≤ ax2 + y 2a for any x, y, a > 0 with a = αi⋆ . To handle the base regret, by optimizing the surrogate loss function h exp t,i⋆ using online Newton step [Hazan et al., 2007], it holds that",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p136",
+    "section_heading": "C.1 Proof of Proposition 1",
+    "text": "where Gexp ≜ maxx∈X ,t∈[T ],i∈[N ] ∥∇hexpt,i (x)∥ ≤ G+GD represents the maximum gradient norm the last step is because α ≤ 2αi⋆ . Combining the meta and base regret, the regret can be bounded by O(d log T ). For λ-strongly convex functions, since it is also α = λ/G2 exp-concave under Assumption 1 [Hazan et al., 2007, Section 2.2], the above meta regret analysis is still applicable. To optimize the base regret, by optimizing the surrogate loss function hsct,i⋆ using online gradient descent [Hazan et al., 2007], it holds that",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p137",
+    "section_heading": "C.1 Proof of Proposition 1",
+    "text": "where Gsc ≜ maxx∈X ,t∈[T ],i∈[N ] ∥∇hsct,i(x)∥ ≤ G + D represents the maximum gradient norm and the last step is because λ ≤ 2λi⋆ . Thus the overall regret can be bounded by O(log T ). For convex functions, the meta regret can be bounded by O( √ T ln lnT ), where the ln lnT factor can be omitted in the O(·)-notation, and the base regret can be bounded by O( √ T ) using OGD, resulting in an O( √ T ) regret overall, which completes the proof.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p138",
+    "section_heading": "C.2 Proof of Theorem 2",
+    "text": "Proof. We first give different decompositions for the regret, then analyze the meta regret, and finally provide the proofs for different kinds of loss functions. Some abbreviations of the stability terms are defined in (B.1).",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p139",
+    "section_heading": "C.2 Proof of Theorem 2",
+    "text": "Regret Decomposition. Denoting by x⋆ ∈ argminx∈X Tt=1 ft(x), for exp-concave functions,",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p140",
+    "section_heading": "C.2 Proof of Theorem 2",
+    "text": "where the second step uses the strong exp-concavity and the last step holds by defining surrogate loss functions hexpt,i (x) ≜ ⟨∇ft(xt),x⟩ + αi2 ⟨∇ft(xt),x − xt⟩2. Similarly, for strongly convex functions, the regret can be upper-bounded by",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p141",
+    "section_heading": "C.2 Proof of Theorem 2",
+    "text": "by defining surrogate loss functions hsct,i(x) ≜ ⟨∇ft(xt),x⟩+ λi2 ∥x− xt∥2. For convex functions, the regret can be decomposed as:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p142",
+    "section_heading": "C.2 Proof of Theorem 2",
+    "text": "Meta Regret Analysis. For the meta regret, we focus on the linearized term since the negative term by exp-concavity or strong convexity only exists in analysis. Specifically,",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p143",
+    "section_heading": "C.2 Proof of Theorem 2",
+    "text": "Next, we investigate the regret of the two-layer meta algorithm (i.e., the first two terms above). To begin with, we validate the conditions of Lemma 3. First, since",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p144",
+    "section_heading": "C.2 Proof of Theorem 2",
+    "text": "rescaling the ranges of losses and optimisms to [−1, 1] only add a constant multiplicative factors on the final result (λ1 and λ2 only consist of constants). Second, by the definition of the losses and the optimisms, it holds that",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p145",
+    "section_heading": "C.2 Proof of Theorem 2",
+    "text": "where ℓt,k,i ≜ ⟨∇ft(xt),xt,k,i⟩. Using Lemma 3, it holds that",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p146",
+    "section_heading": "C.2 Proof of Theorem 2",
+    "text": "where the last step holds by requiring C0 ≥ 4λ1D2. Exp-concave Functions. Using Lemma 1, it holds that",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p147",
+    "section_heading": "C.2 Proof of Theorem 2",
+    "text": "As a result, the meta regret can be bounded by",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p148",
+    "section_heading": "C.2 Proof of Theorem 2",
+    "text": "where the last step holds by αi⋆ ≤ α ≤ 2αi⋆ . For the base regret, according to Lemma 11, the i⋆-th base learner guarantees",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p149",
+    "section_heading": "C.2 Proof of Theorem 2",
+    "text": "where V̄T,k⋆,i⋆ = ∑T t=2 ∥∇h exp t,i⋆(xt,k⋆,i⋆)−∇hexpt−1,i⋆(xt−1,k⋆,i⋆)∥2 denotes the empirical gradient variation of the i⋆-th base learner. For simplicity, we denote by gt ≜ ∇ft(xt), and this term can be further decomposed and bounded as:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p150",
+    "section_heading": "C.2 Proof of Theorem 2",
+    "text": "where the first step uses the definition of ∇hexpt,i (x) = gt + αigtg⊤t (x− xt) and the last step holds by setting C1 = 4 + 32D2G2 and C2 = 4L2 + 32D2G2L2 + 8G4. Then we obtain",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p151",
+    "section_heading": "C.2 Proof of Theorem 2",
+    "text": "Plugging the above result and due to αi⋆ α 2αi⋆ , the base regret can be bounded by",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p152",
+    "section_heading": "C.2 Proof of Theorem 2",
+    "text": "Combining the meta regret and base regret, the overall regret can be bounded by",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p153",
+    "section_heading": "C.2 Proof of Theorem 2",
+    "text": "Strongly Convex Functions. Since a λ-strongly convex function is also α = λ/G2 exp-concave under Assumption 1 [Hazan et al., 2007, Section 2.2], plugging α = λ/G2 into the above analysis, the meta regret can be bounded by",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p154",
+    "section_heading": "C.2 Proof of Theorem 2",
+    "text": "For the base regret, according to Lemma 12, the i⋆-th base learner guarantees",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p155",
+    "section_heading": "C.2 Proof of Theorem 2",
+    "text": "where V̄T,k⋆,i⋆ = ∑T t=2 ∥∇hsct,i⋆(xt,k⋆,i⋆) −∇hsct−1,i⋆(xt−1,k⋆,i⋆)∥2 is the empirical gradient variation and Gsc ≜ maxx∈X ,t∈[T ],i∈[N ] ∥∇hsct,i(x)∥ ≤ G+D represents the maximum gradient norm. For simplicity, we denote by gt ≜ ∇ft(xt), and the empirical gradient variation V̄T,k⋆,i⋆ can be further decomposed as",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p156",
+    "section_heading": "C.2 Proof of Theorem 2",
+    "text": "(by λ ∈ [1/T , 1])",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p157",
+    "section_heading": "C.2 Proof of Theorem 2",
+    "text": "where the first step uses the definition of hsc(x) = gt + λi(x xt). Consequently,",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p158",
+    "section_heading": "C.2 Proof of Theorem 2",
+    "text": "for x ≥ 0) Plugging the above result and due to λi⋆ ≤ λ ≤ 2λi⋆ , the base regret can be bounded by",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p159",
+    "section_heading": "C.2 Proof of Theorem 2",
+    "text": "where C3 = (4 + 4L2)G2sc. Combining the meta regret and base regret, the overall regret satisfies",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p160",
+    "section_heading": "C.2 Proof of Theorem 2",
+    "text": "Convex Functions. Using Lemma 1, it holds that",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p161",
+    "section_heading": "C.2 Proof of Theorem 2",
+    "text": "where the first step is due to ηk = 1/(C0 · 2k) ≤ 1/(2C0) and requiring C0 ≥ 1 and the last step is by Lemma 7 and requiring C0 ≥ 8D. Thus the meta regret can be bounded by",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p162",
+    "section_heading": "C.2 Proof of Theorem 2",
+    "text": "For the base regret, according to Lemma 10, the convex base learner guarantees",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p163",
+    "section_heading": "C.2 Proof of Theorem 2",
+    "text": "where V̄T,k⋆,i⋆ = ∑T t=2 ∥∇ft(xt)−∇ft−1(xt−1)∥2 denotes the empirical gradient variation of the base learner. Via (E.2), the base regret can be bounded by",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p164",
+    "section_heading": "C.2 Proof of Theorem 2",
+    "text": "Combining the meta regret and base regret, the overall regret can be bounded by",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p165",
+    "section_heading": "C.2 Proof of Theorem 2",
+    "text": "(requiring C0 ≥ 4DC4, λ1 ≥ 2C4, γ ≥ 4λ2 + 8G2)",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p166",
+    "section_heading": "C.2 Proof of Theorem 2",
+    "text": "where C4 = 2D2L2 + 2G2 + 10DL2.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p167",
+    "section_heading": "C.2 Proof of Theorem 2",
+    "text": "Overall. At last, we determine the specific values of C0, λ1 and λ2. These parameters need to satisfy the following requirements:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p168",
+    "section_heading": "C.2 Proof of Theorem 2",
+    "text": "As a result, we set C0, λ1, λ2 to be the minimum constants satisfying the above conditions., which completes the proof.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p169",
+    "section_heading": "C.3 Proof of Corollary 2",
+    "text": "In this part, we provide Corollary 2, which obtains the same small-loss bounds as Corollary 1, but only requires one gradient query within each round. Corollary 2. Under Assumptions 1 and 2, if ft(·) ≥ 0 for all t ∈ [T ], the efficient version of Algorithm 1 obtains O(logFT ), O(d logFT ) and Ô( √ FT ) regret bounds for strongly convex, expconcave and convex functions, using only one gradient per round.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p170",
+    "section_heading": "C.3 Proof of Corollary 2",
+    "text": "Proof. For simplicity, we define FxT ≜ ∑T t=1 ft(xt). Some abbreviations are given in (B.1).",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p171",
+    "section_heading": "C.3 Proof of Corollary 2",
+    "text": "Exp-concave Functions. The meta regret can be bounded the same as Theorem 1 (especially (C.1)), and thus we directly move on to the base regret. For simplicity, we denote by gt ≜ ∇ft(xt) and give a different decomposition for V̄T,k⋆,i⋆ = ∑T t=2 ∥∇h exp t,i⋆(xt,k⋆,i⋆) − ∇hexpt−1,i⋆(xt−1,k⋆,i⋆)∥2, the empirical gradient variation of the base learner.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p172",
+    "section_heading": "C.3 Proof of Corollary 2",
+    "text": "where the first step by using the definition of ∇hexpt,i (x) = gt + αigtg⊤t (x− xt), the third step uses the assumption that α ∈ [1/T , 1] without loss of generality, and the last step sets C5 = 16L(2 + 16D2G2). Consequently, it holds that",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p173",
+    "section_heading": "C.3 Proof of Corollary 2",
+    "text": "Plugging the above result and due to αi⋆ α 2αi⋆ , the base regret can be bounded by",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p174",
+    "section_heading": "C.3 Proof of Corollary 2",
+    "text": "Combining the meta regret (C.1) and base regret, the overall regret can be bounded by",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p175",
+    "section_heading": "C.3 Proof of Corollary 2",
+    "text": "where the last uses the following lemma.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p176",
+    "section_heading": "C.3 Proof of Corollary 2",
+    "text": "Lemma 4 (Corollary 5 of Orabona et al. [2012]). If a, b, c, d, x > 0 satisfy x− d ≤ a ln(bx+ c),",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p177",
+    "section_heading": "C.3 Proof of Corollary 2",
+    "text": "Strongly Convex Functions. The meta regret can be bounded the same as Theorem 1 (especially (C.3)), and thus we directly move on to the base regret. For simplicity, we denote by gt ≜ ∇ft(xt) and give a different decomposition for V̄T,k⋆,i⋆ = ∑T t=2 ∥∇hsct,i⋆(xt,k⋆,i⋆) − ∇hsct−1,i⋆(xt−1,k⋆,i⋆)∥2, the empirical gradient variation of the base learner.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p179",
+    "section_heading": "C.3 Proof of Corollary 2",
+    "text": "where the first step uses the definition of ∇hsct,i(x) = gt + λi(x− xt). Consequently,",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p180",
+    "section_heading": "C.3 Proof of Corollary 2",
+    "text": "Plugging the above result and due to λi⋆ λ 2λi⋆ , the base regret can be bounded by",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p181",
+    "section_heading": "C.3 Proof of Corollary 2",
+    "text": "Combining the meta regret (C.3) and base regret, the overall regret can be bounded by",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p182",
+    "section_heading": "C.3 Proof of Corollary 2",
+    "text": "Convex Functions. We first give a different analysis for V⋆ ≜ T t=1(ℓt,k⋆,i⋆ −mt,k⋆,i⋆)2. From Lemma 1, it holds that",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p183",
+    "section_heading": "C.3 Proof of Corollary 2",
+    "text": "Plugging the above analysis back to the meta regret, we obtain",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p184",
+    "section_heading": "C.3 Proof of Corollary 2",
+    "text": "For the base regret, using Lemma 10 and (E.3), it holds that",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p185",
+    "section_heading": "C.3 Proof of Corollary 2",
+    "text": "Combining the meta regret and base regret, the overall regret can be bounded by",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p186",
+    "section_heading": "C.3 Proof of Corollary 2",
+    "text": "where the second step holds by requiring C0 ≥ 8D2G2, λ1 ≥ 4G2 and γ ≥ 4λ2 + 8G2, and the third step uses AM-GM inequality: √ xy ≤ ax2 + y 2a for any x, y, a > 0 with a = 1/(2Dηk⋆). The fourth step is by requiring 1− 1044ηk⋆D2L ≥ 1/2, i.e., ηk ≤ 1/(2088D2L) for any k ∈ [K], which can be satisfied by requiring C0 ≥ 1044D2L. Overall. At last, we determine the specific values of C0, λ1 and λ2. These parameters need to satisfy the following requirements:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p187",
+    "section_heading": "C.3 Proof of Corollary 2",
+    "text": "As a result, we set C0, λ1, λ2 to be the minimum constants satisfying the above conditions. Besides, since the absolute values of the surrogate losses and the optimisms are bounded by problemindependent constants, as shown in the proof of Theorem 1, rescaling them to [−1, 1] only add a constant multiplicative factors on the final result.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p188",
+    "section_heading": "D Proofs for Appendix A",
+    "text": "This section provides the proofs for Appendix A, including Theorem 3 and Theorem 4.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p189",
+    "section_heading": "D.1 Proof of Theorem 3",
+    "text": "A key result in the work of Chen et al. [2023b] is the following decomposition for the empirical gradient variation V̄T ≜ ∑T t=2 ∥∇ft(xt)−∇ft−1(xt−1)∥2, restated as follows.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p190",
+    "section_heading": "D.1 Proof of Theorem 3",
+    "text": "Lemma 5 (Lemma 4 of Chen et al. [2023b]). Under the same assumptions as Chen et al. [2023b],",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p191",
+    "section_heading": "D.1 Proof of Theorem 3",
+    "text": "Proof of Theorem 3. The analysis is almost the same as the proof of Theorem 2. Some abbreviations of the stability terms are defined in (B.1).",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p192",
+    "section_heading": "D.1 Proof of Theorem 3",
+    "text": "Exp-concave Functions. The meta regret remains the same as (C.1) and the only difference is a slightly different decomposition of the empirical gradient variation of the base learner, i.e., V̄T,k⋆,i⋆ in (C.2). Specifically, it holds that",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p193",
+    "section_heading": "D.1 Proof of Theorem 3",
+    "text": "whereC5 = 8(1+8D2G2), C6 = 8L2+64D2G2L2+8G4 and the last step is by taking expectation on both sides and Lemma 5, leading to the following upper bound of the base algorithm:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p194",
+    "section_heading": "D.1 Proof of Theorem 3",
+    "text": "Combining the meta regret and base regret, the overall regret can be bounded by",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p195",
+    "section_heading": "D.1 Proof of Theorem 3",
+    "text": "where the last step holds by requiring C0 ≥ 8C6D2/γ, λ1 ≥ 4C6/γ and γ ≥ λ2 + 8G2. Strongly Convex Functions. The meta regret remains the same as (C.3) and the only difference is a slightly different decomposition of the empirical gradient variation of the base learner:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p196",
+    "section_heading": "D.1 Proof of Theorem 3",
+    "text": "where σ2t ≜ maxx∈X Eft∼Dt [∥∇ft(x) − ∇Ft(x)∥2], Σ2t ≜ E[supx∈X ∥∇Ft(x) − ∇Ft−1(x)∥2], and the last step is by taking expectation on both sides and Lemma 5. Plugging the above empirical gradient variation decomposition into Lemma 12, we aim to control the following term:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p197",
+    "section_heading": "D.1 Proof of Theorem 3",
+    "text": "The last step is due to Lemma 9, which is a generalization of Lemma 5 of Chen et al. [2023b]. Combining the meta regret and base regret, the overall regret can be bounded by",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p198",
+    "section_heading": "D.1 Proof of Theorem 3",
+    "text": "where C7 = 64D2(L2 + 1)2 and the last step holds by requiring C0 ≥ 4C7D2, λ1 ≥ 2C7 and γ ≥ 8λ2 + 256D2(L2 + 1). Convex Functions. We first give a slightly different decomposition for V⋆ ≜ t(ℓt,k⋆,i⋆ − mt,k⋆,i⋆) 2. Starting from Lemma 5, it holds that",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p199",
+    "section_heading": "D.1 Proof of Theorem 3",
+    "text": "where the last step by taking expectation on both sides. Following the same proof as in Theorem 2, taking expectation on both sides, the expected meta regret can be bounded by",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p200",
+    "section_heading": "D.1 Proof of Theorem 3",
+    "text": "where the last step is due to Lemma 7 by requiring C0 ≥ 8D. For the base regret, the only difference is a slightly different decomposition of the empirical gradient variation of the base learner, i.e., V̄T,k⋆,i⋆ in (C.5). Specifically, using Lemma 5, it holds that",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p201",
+    "section_heading": "D.1 Proof of Theorem 3",
+    "text": "Combining the meta regret and base regret, the overall regret can be bounded by",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p202",
+    "section_heading": "D.1 Proof of Theorem 3",
+    "text": "whereC9 = 128(2D2L2+G2)+10DL and the last step holds by requiringC0 ≥ 4D2C9, λ1 ≥ 2C9 and γ ≥ 4λ2 + 512G2. Overall. At last, we determine the specific values of C0, λ1 and λ2. These parameters need to satisfy the following requirements:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p203",
+    "section_heading": "D.1 Proof of Theorem 3",
+    "text": "As a result, we set C0, λ1, λ2 to be the minimum constants satisfying the above conditions. Besides, since the absolute values of the surrogate losses and the optimisms are bounded by problemindependent constants, as shown in the proof of Theorem 1, rescaling them to [−1, 1] only add a constant multiplicative factors on the final result.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p204",
+    "section_heading": "D.2 Proof of Theorem 4",
+    "text": "Proof. The proof of the dishonest case is straightforward by directly applying Theorem 2. In the following, we mainly focus on the honest case. Consider a bilinear game of f(x,y) ≜ x⊤Ay and denote by gxt ≜ Ayt, g y t ≜ Axt the gradients received by the x-player and y-player. The only difference from the proof of Theorem 2 is that the gradient variation can be now decomposed",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p205",
+    "section_heading": "D.2 Proof of Theorem 4",
+    "text": "where the last step holds under the mild assumption of ∥A∥ ≤ 1. The gradient variation of the xplayer is associated with the stability term of the y-player. When summing the regret of the players, the negative terms in the x-player’s algorithm can be leveraged to cancel the gradient variation of the y-player and vise versa. As a result, all gradient variations can be canceled and the summation of regret is bounded by O(1). As for strongly convex-concave games, since it is a special case of the bilinear games, the above derivations still hold, which completes the proof.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p206",
+    "section_heading": "E Supporting Lemmas",
+    "text": "In this section, we present several supporting lemmas used in proving our theoretical results. In Appendix E.1, we provide useful lemmas for the decomposition of two combined decisions and the parameter tuning. And in Appendix E.2, we analyze the stability of the base algorithms for different kinds of loss functions.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p207",
+    "section_heading": "E.1 Useful Lemmas",
+    "text": "In this part, we conclude some useful lemmas for bounding the gap between two combined decisions (Lemma 6), tuning the parameter (Lemma 7 and Lemma 8), and a useful summation (Lemma 9). Lemma 6. Under Assumption 1, if x = ∑N i=1 pixi,y = ∑N i=1 qiyi, where p, q ∈ ∆N ,xi,yi ∈ X for any i ∈ [N ], then it holds that",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p208",
+    "section_heading": "E.1 Useful Lemmas",
+    "text": "Lemma 7. For a step size pool of Hη = {ηk}k∈[K], where η1 = 12C0 ≥ . . . ≥ ηK = 1 2C0T , if C0 ≥ √ X 2T , there exists η ∈ Hη such that",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p209",
+    "section_heading": "E.1 Useful Lemmas",
+    "text": "Lemma 8. Denoting by η⋆ the optimal step size, for a step size pool of Hη = {ηk}k∈[K], where η1 =",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p210",
+    "section_heading": "E.1 Useful Lemmas",
+    "text": "1 2C0 ≥ . . . ≥ ηK = 12C0T , if C0 ≥ 1 2η⋆T , there exists η ∈ Hη such that",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p211",
+    "section_heading": "E.1 Useful Lemmas",
+    "text": "Lemma 9. For a sequence of {at}Tt=1 and b, where at, b > 0 for any t ∈ [T ], denoting by amax ≜ maxt at and A ≜ ⌈b ∑T t=1 at⌉, we have",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p212",
+    "section_heading": "E.1 Useful Lemmas",
+    "text": "Proof of Lemma 6. The term of x y 2 can be decomposed as follows:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p213",
+    "section_heading": "E.1 Useful Lemmas",
+    "text": "where the first inequality is due to (a+ b)2 ≤ 2a2 + 2b2 for any a, b ∈ R, and the last step is due to Cauchy-Schwarz inequality, Assumption 1 and the definition of ℓ1-norm, finishing the proof.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p214",
+    "section_heading": "E.1 Useful Lemmas",
+    "text": "Proof of Lemma 7. Denoting the optimal step size by η⋆ ≜ √",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p215",
+    "section_heading": "E.1 Useful Lemmas",
+    "text": "ln(4XY )/X , if the optimal step size satisfies η ≤ η⋆ ≤ 2η, where η η⋆ can be guaranteed if C0 √ X",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p216",
+    "section_heading": "E.1 Useful Lemmas",
+    "text": "2T , then it holds that",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p217",
+    "section_heading": "E.1 Useful Lemmas",
+    "text": "Otherwise, if the optimal step size is greater than the maximum step size in the parameter pool, i.e., η⋆ ≥ (η = η1 = 12C0 ), then we have",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p218",
+    "section_heading": "E.1 Useful Lemmas",
+    "text": "Overall, it holds that",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p219",
+    "section_heading": "E.1 Useful Lemmas",
+    "text": "which completes the proof.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p220",
+    "section_heading": "E.1 Useful Lemmas",
+    "text": "Proof of Lemma 8. The proof follows the same flow as Lemma 7.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p221",
+    "section_heading": "E.1 Useful Lemmas",
+    "text": "Proof of Lemma 9. This result is inspired by Lemma 5 of Chen et al. [2023b], and we generalize it to arbitrary variables for our purpose. Specifically, we consider two cases: A < T and A ≥ T . For the first case, if A < T , it holds that",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p222",
+    "section_heading": "E.1 Useful Lemmas",
+    "text": "where the last step is due to ∑T A+1 at ≤ ∑T t=1 at ≤ A/b. The case of A < T can be proved similarly, which finishes the proof.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p223",
+    "section_heading": "E.2 Stability Analysis of Base Algorithms",
+    "text": "In this part, we analyze the negative stability terms in optimism OMD analysis, for convex, expconcave and strongly convex functions. For simplicity, we define the empirical gradient variation:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p224",
+    "section_heading": "E.2 Stability Analysis of Base Algorithms",
+    "text": "In the following, we provide two kinds of decompositions that are used in the analysis of gradientvariation and small-loss guarantees, respectively. First, using smoothness (Assumption 2), we have",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p225",
+    "section_heading": "E.2 Stability Analysis of Base Algorithms",
+    "text": "Second, for an L-smooth and non-negative function f : X 7→ R+, ∥∇f(x)∥22 ≤ 4Lf(x) holds for any x [Srebro et al., 2010, Lemma 3.1]. It holds that",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p226",
+    "section_heading": "E.2 Stability Analysis of Base Algorithms",
+    "text": "Next we provide the regret analysis in terms of the empirical gradient-variation V̄T , for convex (Lemma 10), exp-concave (Lemma 11), and strongly convex (Lemma 12) functions.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p227",
+    "section_heading": "E.2 Stability Analysis of Base Algorithms",
+    "text": "Lemma 10. Under Assumptions 1 and 2, if the loss functions are convex, optimistic OGD with the following update rule:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p228",
+    "section_heading": "E.2 Stability Analysis of Base Algorithms",
+    "text": "where ΠX [x] ≜ argminy∈X ∥x − y∥, mt = ∇ft−1(xt−1) and ηt = min{D/ √ 1 + V̄t−1, 1/γ}, enjoys the following empirical gradient-variation bound:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p229",
+    "section_heading": "E.2 Stability Analysis of Base Algorithms",
+    "text": "Lemma 11. Under Assumptions 1 and 2, if the loss functions are α-exp-concave, optimistic OMD with the following update rule:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p230",
+    "section_heading": "E.2 Stability Analysis of Base Algorithms",
+    "text": "where ψt(·) = 12∥ · ∥2Ut ,7 Ut = γI + αG 2 2 I + α 2 ∑t−1 s=1 ∇fs(xs)∇fs(xs)⊤ and mt = ∇ft−1(xt−1), enjoys the following empirical gradient-variation bound:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p231",
+    "section_heading": "E.2 Stability Analysis of Base Algorithms",
+    "text": "Lemma 12. Under Assumptions 1 and 2, if the loss functions are λ-strongly convex, optimistic OGD (E.4) with ηt = 2/(γ+λt) and mt = ∇ft−1(xt−1), enjoys the following empirical gradientvariation bound:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p232",
+    "section_heading": "E.2 Stability Analysis of Base Algorithms",
+    "text": "Proof of Lemma 10. The proof mainly follows Theorem 11 of Chiang et al. [2012]. Following the standard analysis of optimistic OMD, e.g., Theorem 1 of Zhao et al. [2021], it holds that",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p233",
+    "section_heading": "E.2 Stability Analysis of Base Algorithms",
+    "text": "where x⋆ ∈ argminx∈X Tt=1 ft(x) and ψ(·) ≜ 12∥ · ∥2. The adaptivity term satisfies",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p234",
+    "section_heading": "E.2 Stability Analysis of Base Algorithms",
+    "text": "where the last step uses ∑T t=1 at/ √ 1 + ∑t−1 s=1 as ≤ 4 √ 1 + ∑T t=1 at +maxt∈[T ] at [Pogodin and Lattimore, 2019, Lemma 4.8]. Next, we move on to the optimality gap,",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p235",
+    "section_heading": "E.2 Stability Analysis of Base Algorithms",
+    "text": "Finally, we analyze the stability term,",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p236",
+    "section_heading": "E.2 Stability Analysis of Base Algorithms",
+    "text": "Combining the above inequalities completes the proof.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p237",
+    "section_heading": "E.2 Stability Analysis of Base Algorithms",
+    "text": "Proof of Lemma 11. The proof mainly follows Theorem 15 of Chiang et al. [2012]. Denoting by x⋆ argminx T t=1 ft(x), it holds that",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p238",
+    "section_heading": "E.2 Stability Analysis of Base Algorithms",
+    "text": "where the last term is imported by the definition of exp-concavity. First, the optimality gap satisfies",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p239",
+    "section_heading": "E.2 Stability Analysis of Base Algorithms",
+    "text": "We handle the last term by leveraging the negative term imported by exp-concavity:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p240",
+    "section_heading": "E.2 Stability Analysis of Base Algorithms",
+    "text": "OPT-GAP NEGATIVITY",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p241",
+    "section_heading": "E.2 Stability Analysis of Base Algorithms",
+    "text": "where the local norm of the second term above can be transformed into Ut:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p242",
+    "section_heading": "E.2 Stability Analysis of Base Algorithms",
+    "text": "Using the stability of optimistic OMD [Chiang et al., 2012, Proposition 7], the above term can be further bounded by",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p243",
+    "section_heading": "E.2 Stability Analysis of Base Algorithms",
+    "text": "By choosing the optimism as mt = ∇ft−1(xt−1), the above term can be consequently bounded due to Lemma 19 of Chiang et al. [2012]:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p244",
+    "section_heading": "E.2 Stability Analysis of Base Algorithms",
+    "text": "The last step is to analyze the negative stability term:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p245",
+    "section_heading": "E.2 Stability Analysis of Base Algorithms",
+    "text": "Combining existing results, we have",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p246",
+    "section_heading": "E.2 Stability Analysis of Base Algorithms",
+    "text": "which completes the proof.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p247",
+    "section_heading": "E.2 Stability Analysis of Base Algorithms",
+    "text": "Proof of Lemma 12. The proof mainly follows Theorem 3 of Chen et al. [2023b]. Following the almost the same regret decomposition in Lemma 10, it holds that",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p248",
+    "section_heading": "E.2 Stability Analysis of Base Algorithms",
+    "text": "First, we analyze the optimality gap,",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p249",
+    "section_heading": "E.2 Stability Analysis of Base Algorithms",
+    "text": "We handle the last term by leveraging the negative term imported by strong convexity:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p250",
+    "section_heading": "E.2 Stability Analysis of Base Algorithms",
+    "text": "The second term above can be bounded by the stability of optimistic OMD:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p251",
+    "section_heading": "E.2 Stability Analysis of Base Algorithms",
+    "text": "Finally, we lower-bound the stability term as",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p252",
+    "section_heading": "E.2 Stability Analysis of Base Algorithms",
+    "text": "Choosing the optimism as mt = ∇ft−1(xt−1), we have",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p253",
+    "section_heading": "E.2 Stability Analysis of Base Algorithms",
+    "text": "To analyze the first term above, we follow the similar argument of Chen et al. [2023b]. By Lemma 9 with at = ∥∇ft(xt)−∇ft−1(xt−1)∥2, amax = 4G2, A = ⌈λV̄T ⌉, and b = λ, it holds that",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p254",
+    "section_heading": "E.2 Stability Analysis of Base Algorithms",
+    "text": "Since ηt = 2/(γ + λt) ≤ 2/(λt), combining existing results, we have",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p255",
+    "section_heading": "E.2 Stability Analysis of Base Algorithms",
+    "text": "which completes the proof.",
+    "seg_type": "par"
+  }
+]

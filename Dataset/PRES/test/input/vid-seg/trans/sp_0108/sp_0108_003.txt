@@ -1,0 +1,10 @@
+Collaborative learning methods allow the training of machine learning models without requiring the use of large centralized silos of data.
+Federated learning is a popular example of this paradigm, wherein many client processes communicate with a centralized server.
+Rather than sending data directly to the server, clients send model updates based on their data.
+This helps reduce costs and protect privacy.
+However, it poses additional challenges.
+For one, malicious clients may attempt to interfere with the training process by submitting intentionally poisonous or simply faulty updates.
+On the other hand, clients must also still trust the server, as many previous works have shown that client data can be revealed by observing updates even when they're aggregated.
+In our work, we propose methods which are robust to attacks from either side.
+
+In particular, we propose the first collaborative learning protocol, guaranteed security against malicious clients and malicious servers.

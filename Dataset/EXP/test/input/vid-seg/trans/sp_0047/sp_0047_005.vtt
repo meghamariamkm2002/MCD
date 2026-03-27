@@ -1,0 +1,197 @@
+WEBVTT
+
+00:00.031 --> 00:03.537
+They went with this approach called negative sampling.
+
+00:03.897 --> 00:07.303
+Negative sampling has been, it's been very influential.
+
+00:09.507 --> 00:20.605
+Not only in word2vec, but negative sampling is one of the cornerstones of the current trend in self-supervised learning and contrastive estimation and so on.
+
+00:20.585 --> 00:26.812
+So this, all of this, you know, it pops up in unlikely ways in other fields.
+
+00:27.293 --> 00:37.485
+And it sort of, I'm not going to say it originated here, but definitely it was introduced into the popular deep learning world right here.
+
+00:38.266 --> 00:44.854
+So they say an alternative to hierarchical softmax is noise contrastive estimation.
+
+00:44.834 --> 00:54.020
+So in noise contrastive estimation posits that a good model should be able to differentiate data from noise by means of logistic regression.
+
+00:54.441 --> 00:55.885
+That seems very reasonable.
+
+00:56.667 --> 00:59.856
+This is similar to the hinge loss and so on.
+
+00:59.836 --> 01:17.633
+While NCE can be shown to approximately maximize the log probability of the softmax, the skip-gram model is only concerned with learning high-quality vector representations, so we are free to simplify noise-constructive estimation as long as the vector representations retain their quality.
+
+01:18.214 --> 01:21.220
+We define negative sampling by this following objective.
+
+01:21.200 --> 01:22.822
+So this is very interesting.
+
+01:22.842 --> 01:29.049
+They see, okay, noise contrastive estimation, you know, it approximately maximizes the law.
+
+01:29.089 --> 01:35.596
+So the noise contrastive estimation would actually be the correct way to approximate their problem.
+
+01:35.996 --> 01:43.865
+However, they say, well, as long as, you know, as long as something reasonable comes out, we're free to change that up a bit.
+
+01:43.885 --> 01:44.946
+So
+
+01:44.926 --> 01:47.930
+They go with this negative sampling approach right here.
+
+01:49.131 --> 01:53.896
+And you can see that this is almost the same.
+
+01:54.217 --> 02:03.047
+So it's written a bit differently from the original Softmax thing, because the original Softmax thing was written as a fraction, and here it's as a sum.
+
+02:03.508 --> 02:11.457
+But what you're trying to do in the negative sampling framework is you're trying to maximize the following.
+
+02:11.437 --> 02:18.667
+You're trying to maximize the inner product of the word you're considering and the words around them, okay?
+
+02:18.687 --> 02:34.390
+So you're trying to still predict the words around you, but now instead of having this prediction softmax over all of the classes, you only have the softmax over a subset of classes.
+
+02:34.370 --> 02:50.708
+So what you'll do is you sample words from your vocabulary at random and you sample K of them and you're simply trying to now minimize the inner product between those words and your word.
+
+02:50.688 --> 02:54.014
+Okay, so what does that ultimately lead to?
+
+02:55.236 --> 02:57.420
+It ultimately leads to the following.
+
+02:58.302 --> 03:07.579
+You have a word like this word here, negative, and what you're trying to do is you're not trying that much to predict the word sampling.
+
+03:07.879 --> 03:12.848
+What you're trying to do is you're trying to say that in my space right here,
+
+03:12.828 --> 03:20.361
+I simply want sampling to be closer than any other word that's not in the context window.
+
+03:20.802 --> 03:25.710
+Okay, so here is my word negative and here is my word sampling.
+
+03:26.852 --> 03:29.116
+And I want these two to be close.
+
+03:29.577 --> 03:34.245
+And if I sample another word, like here, this is the word cake.
+
+03:34.225 --> 03:42.636
+If I, sorry, if I sample that, I simply want that to be far away, farther than the word sampling.
+
+03:43.418 --> 03:45.220
+So this is now a comparative.
+
+03:45.600 --> 03:48.805
+It's not I classify sampling as the highest class.
+
+03:49.185 --> 03:58.478
+It's simply I want to classify the word sampling against the other classes higher.
+
+03:59.588 --> 04:01.551
+And this is now much, much easier.
+
+04:01.631 --> 04:10.807
+So instead of a thousand or 10,000 or a million way classification, I now maybe have, I have a K plus one way classification, right?
+
+04:10.827 --> 04:11.909
+Pretty easy, right?
+
+04:11.929 --> 04:14.473
+I simply sample K other words.
+
+04:14.493 --> 04:23.588
+And as I assume, because I have so many words, chances that I actually sample one that's in my context window is very small, right?
+
+04:23.568 --> 04:27.374
+So I simply sample other words and I say, well, these other words are random.
+
+04:27.655 --> 04:31.441
+They have nothing to do with the current frame that I'm looking at.
+
+04:31.782 --> 04:42.960
+So they should be, you know, they can be whatever they want, but at least they should be farther away than the words that are actually in my context.
+
+04:44.932 --> 05:04.949
+And that is negative sampling, the process of sampling negatives, this right here, and then making sure that the positives, which are these here, in this case, the words in the context are classified with a higher probability than the negatives for a given input word, right?
+
+05:04.989 --> 05:06.872
+This here is the input word.
+
+05:10.177 --> 05:10.618
+That's it.
+
+05:10.858 --> 05:12.040
+That's negative sampling.
+
+05:12.180 --> 05:30.184
+And of course, yeah, as I said, you recognize this from current things like self supervised learning, where you want to have the same image augmented twice, go through the pipeline, you know, you augment, you put a little bit of different noise, and then you have a different image.
+
+05:30.965 --> 05:37.534
+And at the end, you say, these two should be close together, while this other one should be far apart.
+
+05:37.514 --> 05:45.753
+It's the exact same thing here except that you have a different way of obtaining the positive and the negative samples.
+
+05:46.254 --> 05:50.062
+In this case, positive samples are everything that's in the context.
+
+05:50.423 --> 05:54.392
+Negative samples are just randomly sampled from the data set.
+
+05:56.819 --> 06:00.685
+And that, you know, works, of course, that works much, much, much faster.
+
+06:01.386 --> 06:08.096
+And you can see that this turns out to give you vectors that are pretty good.
+
+06:08.717 --> 06:15.107
+And you can train with higher vectors, sorry, with higher dimensional vectors, you can train with bigger vocabularies with this.
+
+06:15.527 --> 06:18.692
+This has turned out to be very, very influential.
+
+06:18.672 --> 06:32.673
+As I said, now with the rise of BERT and so on, word2vec is kind of getting forgotten, but this was a revolution and distributed vectors, so it wasn't a thing really.
+
+06:33.113 --> 06:37.500
+It kind of was a thing before that, but it wasn't really a thing that people used.
+
+06:37.880 --> 06:44.410
+What people would do is still they would do ngram models before that, so they would kind of
+
+06:44.390 --> 06:54.464
+sort of chunk up their sentences into n grams into overlapping n grams, and then have a big giant table for their where they index their n grams.
+
+06:54.645 --> 07:03.377
+So the word, I don't know, so the word hello is ID one, the word hello there.
+
+07:03.357 --> 07:06.301
+is ID2 and so on.
+
+07:06.341 --> 07:25.945
+So you have a big table for all the ngrams and then what you would try to do is you would try to do this kind of bag of words estimation where you would take a, you know, whatever ngrams appeared in your sentence and you would have this big, you know, classification where you associate the ngrams with each other and so on.
+
+07:26.006 --> 07:29.550
+So distributed word representations were kind of a revolution
+
+07:29.530 --> 07:35.052
+at that point, especially distributed representation that actually outperformed these old
+

@@ -1,0 +1,445 @@
+[
+  {
+    "start_time": 0.0,
+    "end_time": 200.0,
+    "id": "001",
+    "title": "Intro & Overview",
+    "filename": "Videos/sp_0058.mp4",
+    "paper_filename": "Papers/sp_0058.pdf",
+    "type": "exp-vid",
+    "relevant_segments": [
+      {
+        "para_id": "p3",
+        "section_heading": "1 Introduction",
+        "text": "However, prior RL+Search algorithms do not work in imperfect-information games because they make a number of assumptions that no longer hold in these settings. An example of this is illustrated in Figure 1a, which shows a modified form of Rock-Paper-Scissors in which the winner receives two points (and the loser loses two points) when either player chooses Scissors [15]. The figure shows the game in a sequential form in which player 2 acts after player 1 but does not observe player 1’s action.",
+        "seg_type": "par"
+      }
+    ]
+  },
+  {
+    "start_time": 200.0,
+    "end_time": 600.0,
+    "id": "002",
+    "title": "Rock, Paper, and Double Scissor",
+    "filename": "Videos/sp_0058.mp4",
+    "paper_filename": "Papers/sp_0058.pdf",
+    "type": "exp-vid",
+    "relevant_segments": [
+      {
+        "para_id": "p3",
+        "section_heading": "1 Introduction",
+        "text": "However, prior RL+Search algorithms do not work in imperfect-information games because they make a number of assumptions that no longer hold in these settings. An example of this is illustrated in Figure 1a, which shows a modified form of Rock-Paper-Scissors in which the winner receives two points (and the loser loses two points) when either player chooses Scissors [15]. The figure shows the game in a sequential form in which player 2 acts after player 1 but does not observe player 1’s action.",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p4",
+        "section_heading": "1 Introduction",
+        "text": "The optimal policy for both players in this modified version of the game is to choose Rock and Paper with 40% probability, and Scissors with 20%. In that case, each action results in an expected value of zero. However, as shown in Figure 1b, if player 1 were to conduct one-ply lookahead search as is",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p5",
+        "section_heading": "1 Introduction",
+        "text": "done in perfect-information games (in which the equilibrium value of a state is substituted at a leaf node), then there would not be enough information for player 1 to arrive at this optimal policy.",
+        "seg_type": "par"
+      }
+    ]
+  },
+  {
+    "start_time": 600.0,
+    "end_time": 1110.0,
+    "id": "003",
+    "title": "AlphaZero Tree Search",
+    "filename": "Videos/sp_0058.mp4",
+    "paper_filename": "Papers/sp_0058.pdf",
+    "type": "exp-vid",
+    "relevant_segments": [
+      {
+        "para_id": "p1",
+        "section_heading": "Abstract",
+        "text": "The combination of deep reinforcement learning and search at both training and test time is a powerful paradigm that has led to a number of successes in single-agent settings and perfect-information games, best exemplified by AlphaZero. However, prior algorithms of this form cannot cope with imperfect-information games. This paper presents ReBeL, a general framework for self-play reinforcement learning and search that provably converges to a Nash equilibrium in any two-player zerosum game. In the simpler setting of perfect-information games, ReBeL reduces to an algorithm similar to AlphaZero. Results in two different imperfect-information games show ReBeL converges to an approximate Nash equilibrium. We also show ReBeL achieves superhuman performance in heads-up no-limit Texas hold’em poker, while using far less domain knowledge than any prior poker AI.",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p2",
+        "section_heading": "1 Introduction",
+        "text": "Combining reinforcement learning with search at both training and test time (RL+Search) has led to a number of major successes in AI in recent years. For example, the AlphaZero algorithm achieves state-of-the-art performance in the perfect-information games of Go, chess, and shogi [55].",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p6",
+        "section_heading": "1 Introduction",
+        "text": "This illustrates a critical challenge of imperfect-information games: unlike perfect-information games and single-agent settings, the value of an action may depend on the probability it is chosen. Thus, a state defined only by the sequence of actions and observations does not have a unique value and therefore existing RL+Search algorithms such as AlphaZero are not sound in imperfectinformation games. Recent AI breakthroughs in imperfect-information games have highlighted the importance of search at test time [40, 12, 14, 37], but combining RL and search during training in imperfect-information games has been an open problem.",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p9",
+        "section_heading": "2 Related Work",
+        "text": "At a high level, ReBeL resembles past RL+Search algorithms used in perfect-information games [59, 56, 1, 55, 50]. These algorithms train a value network through self play. During training, a search algorithm is used in which the values of leaf nodes are determined via the value function. Additionally, a policy network may be used to guide search. These forms of RL+Search have been critical to achieving superhuman performance in benchmark perfect-information games. For example, so far no AI agent has achieved superhuman performance in Go without using search at both training and test time. However, these RL+Search algorithms are not theoretically sound in imperfect-information games and have not been shown to be successful in such settings.",
+        "seg_type": "par"
+      },
+      {
+        "caption": "Table 1: Head-to-head results of our agent against benchmark bots BabyTartanian8 and Slumbot, as well as top human expert Dong Kim, measured in thousandths of a big blind per game. We also show performance against LBR [39] where the LBR agent must call for the first two betting rounds, and can either fold, call, bet 1× pot, or bet all-in on the last two rounds. The ± shows one standard deviation. For Libratus, we list the score against all top humans in aggregate; Libratus beat Dong Kim by 29 with an estimated ± of 78.",
+        "captionBoundary": {
+          "x1": 107.69100189208984,
+          "x2": 504.1485900878906,
+          "y1": 355.0565185546875,
+          "y2": 400.90899658203125
+        },
+        "figType": "Table",
+        "imageText": [
+          "ReBeL",
+          "(Ours)",
+          "45",
+          "±",
+          "5",
+          "9",
+          "±",
+          "4",
+          "881",
+          "±",
+          "94",
+          "165",
+          "±",
+          "69",
+          "Modicum",
+          "[15]",
+          "11",
+          "±",
+          "5",
+          "6",
+          "±",
+          "3",
+          "-",
+          "-",
+          "Libratus",
+          "[12]",
+          "-",
+          "63",
+          "±",
+          "14",
+          "-",
+          "147",
+          "±",
+          "39",
+          "Bot",
+          "Name",
+          "Slumbot",
+          "BabyTartanian8",
+          "[9]",
+          "LBR",
+          "[39]",
+          "Top",
+          "Humans",
+          "DeepStack",
+          "[40]",
+          "-",
+          "-",
+          "383±",
+          "112",
+          "-"
+        ],
+        "name": "1",
+        "page": 8,
+        "regionBoundary": {
+          "x1": 135.84,
+          "x2": 476.15999999999997,
+          "y1": 260.64,
+          "y2": 345.12
+        },
+        "renderDpi": 150,
+        "renderURL": "//Users/meghamariam/PROJECTS/PROJ1_Dataset/PROJ1_Crossmodal-Traversal/DATASET/pap-seg/fig/sp_0058/sp_0058-Table1-1.png",
+        "id": "sp_0058-Table1-1",
+        "seg_type": "tab"
+      },
+      {
+        "para_id": "p71",
+        "section_heading": "9 Conclusions",
+        "text": "We present ReBeL, an algorithm that generalizes the paradigm of self-play reinforcement learning and search to imperfect-information games. We prove that ReBeL computes an approximate Nash equilibrium in two-player zero-sum games, demonstrate convergence in Liar’s Dice, and demonstrate that it produces superhuman performance in the benchmark game of heads-up no-limit Texas hold’em.",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p73",
+        "section_heading": "9 Conclusions",
+        "text": "Nevertheless, ReBeL achieves low exploitability in benchmark games and superhuman performance in heads-up no-limit Texas hold’em while leveraging far less expert knowledge than any prior bot. We view this as a major step toward developing universal techniques for multi-agent interactions.",
+        "seg_type": "par"
+      }
+    ]
+  },
+  {
+    "start_time": 1110.0,
+    "end_time": 1905.0,
+    "id": "004",
+    "title": "Notation Setup: Infostates & Nash Equilibria",
+    "filename": "Videos/sp_0058.mp4",
+    "paper_filename": "Papers/sp_0058.pdf",
+    "type": "exp-vid",
+    "relevant_segments": [
+      {
+        "para_id": "p16",
+        "section_heading": "3 Notation and Background",
+        "text": "Our notation is based on that of factored observation games [34] which is a modification of partially observable stochastic games [26] that distinguishes between private and public observations. We consider a game with N = {1, 2, ..., N} agents. A world state w ∈ W is a state in the game. A = A1 ×A2 × ...×AN is the space of joint actions. Ai(w) denotes the legal actions for agent i at w and a = (a1, a2, ..., aN ) ∈ A denotes a joint action. After a joint action a is chosen, a transition function T determines the next world state w′ drawn from the probability distribution T (w, a) ∈ ∆W . After joint action a, agent i receives a rewardRi(w, a). Upon transition from world state w to w′ via joint action a, agent i receives a private observation from a function Opriv(i)(w, a,w′). Additionally, all agents receive a public observation from a function Opub(w, a,w′). Public observations may include observations of publicly taken actions by agents. For example, in many recreational games, including poker, all betting actions are public.",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p17",
+        "section_heading": "3 Notation and Background",
+        "text": "A history (also called a trajectory) is a finite sequence of legal actions and world states, denoted h = (w0, a0, w1, a1, ..., wt). An infostate (also called an action-observation history (AOH)) for agent i is a sequence of an agent’s observations and actions si = (O0i , a 0 i , O 1 i , a 1 i , ..., O t i) where",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p18",
+        "section_heading": "3 Notation and Background",
+        "text": "Oki = ( Opriv(i)(wk−1, ak−1, wk),Opub(wk−1, ak−1, wk) ) . The unique infostate corresponding to a history h for agent i is denoted si(h). The set of histories that correspond to si is denotedH(si). A public state is a sequence spub = (O0pub, O1pub, ..., Otpub) of public observations. The unique public state corresponding to a history h and an infostate si is denoted spub(h) and spub(si), respectively. The set of histories that match the sequence of public observation of spub is denotedH(spub). For example, consider a game where two players roll two six-sided dice each. One die of each player is publicly visible; the other die is only observed by the player who rolled it. Suppose player 1 rolls a 3 and a 4 (with 3 being the hidden die), and player 2 rolls a 5 and a 6 (with 5 being the hidden die). The history (and world state) is h = ( (3, 4), (5, 6) ) . The set of histories corresponding to player 2’s",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p19",
+        "section_heading": "3 Notation and Background",
+        "text": "infostate is H(s2) = {( (x, 4), (5, 6) ) | x ∈ {1, 2, 3, 4, 5, 6} } , so |H(s2)| = 6. The set of histories",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p20",
+        "section_heading": "3 Notation and Background",
+        "text": "corresponding to spub isH(spub) = {( (x, 4), (y, 6) ) | x, y ∈ {1, 2, 3, 4, 5, 6} } , so |H(spub)| = 36 .",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p22",
+        "section_heading": "3 Notation and Background",
+        "text": "An agent’s policy πi is a function mapping from an infostate to a probability distribution over actions. A policy profile π is a tuple of policies (π1, π2, ..., πN ). The expected sum of future rewards (also called the expected value (EV)) for agent i in history h when all agents play policy profile π is denoted vπi (h). The EV for the entire game is denoted vi(π). A Nash equilibrium is a policy profile such that no agent can achieve a higher EV by switching to a different policy [42]. Formally, π∗ is a Nash equilibrium if for every agent i, vi(π∗) = maxπi vi(πi, π ∗ −i) where π−i denotes the policy of all agents other than i. A Nash equilibrium policy is a policy π∗i that is part of some Nash equilibrium π∗.",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p23",
+        "section_heading": "3 Notation and Background",
+        "text": "A subgame is defined by a root history h in a perfect-information game and all histories that can be reached going forward. In other words, it is identical to the original game except it starts at h.",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p24",
+        "section_heading": "3 Notation and Background",
+        "text": "A depth-limited subgame is a subgame that extends only for a limited number of actions into the future. Histories at the bottom of a depth-limited subgame (i.e., histories that have no legal actions in the depth-limited subgame) but that have at least one legal action in the full game are called leaf nodes. In this paper, we assume for simplicity that search is performed over fixed-size depth-limited subgame (as opposed to Monte Carlo Tree Search, which grows the subgame over time [23]).",
+        "seg_type": "par"
+      }
+    ]
+  },
+  {
+    "start_time": 1905.0,
+    "end_time": 2700.0,
+    "id": "005",
+    "title": "One Card Poker: Introducing Belief Representations",
+    "filename": "Videos/sp_0058.mp4",
+    "paper_filename": "Papers/sp_0058.pdf",
+    "type": "exp-vid",
+    "relevant_segments": [
+      {
+        "para_id": "p27",
+        "section_heading": "4 From World States to Public Belief States",
+        "text": "For intuition, consider a game in which one of 52 cards is privately dealt to each player. On each turn, a player chooses between three actions: fold, call, and raise. Eventually the game ends and players receive a reward. Now consider a modification of this game in which the players cannot see their private cards; instead, their cards are seen by a “referee”. On a player’s turn, they announce the probability they would take each action with each possible private card. The referee then samples an action on the player’s behalf from the announced probability distribution for the player’s true private card. When this game starts, each player’s belief distribution about their private card is uniform random. However, after each action by the referee, players can update their belief distribution about which card they are holding via Bayes’ Rule. Likewise, players can update their belief distribution about the opponent’s private card through the same operation. Thus, the probability that each player is holding each private card is common knowledge among all players at all times in this game.",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p28",
+        "section_heading": "4 From World States to Public Belief States",
+        "text": "A critical insight is that these two games are strategically identical, but the latter contains no private information and is instead a continuous state (and action) space perfect-information game. While players do not announce their action probabilities for each possible card in the first game, we assume (as stated in Section 3) that all players’ policies are common knowledge, and therefore the probability that a player would choose each action for each possible card is indeed known by all players. Of course, at test time (e.g., when our agent actually plays against a human opponent) the opponent does not actually announce their entire policy and therefore our agent does not know the true probability distribution over opponent cards. We later address this problem in Section 6.",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p29",
+        "section_heading": "4 From World States to Public Belief States",
+        "text": "We refer to the first game as the discrete representation and the second game as the belief representation. In the example above, a history in the belief representation, which we refer to as a public belief state (PBS), is described by the sequence of public observations and 104 probabilities (the probability that each player holds each of the 52 possible private card); an “action” is described by 156 probabilities (one per discrete action per private card). In general terms, a PBS is described by a joint probability distribution over the agents’ possible infostates [43, 45, 19].5 Formally, let Si(spub) be the set of infostates that player i may be in given a public state spub and let ∆S1(spub) denote a probability distribution over the elements of S1(spub). Then PBS β = (∆S1(spub), ...,∆SN (spub)).6 In perfect-information games, the discrete representation and belief representation are identical.",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p6",
+        "section_heading": "1 Introduction",
+        "text": "This illustrates a critical challenge of imperfect-information games: unlike perfect-information games and single-agent settings, the value of an action may depend on the probability it is chosen. Thus, a state defined only by the sequence of actions and observations does not have a unique value and therefore existing RL+Search algorithms such as AlphaZero are not sound in imperfectinformation games. Recent AI breakthroughs in imperfect-information games have highlighted the importance of search at test time [40, 12, 14, 37], but combining RL and search during training in imperfect-information games has been an open problem.",
+        "seg_type": "par"
+      }
+    ]
+  },
+  {
+    "start_time": 2700.0,
+    "end_time": 3320.0,
+    "id": "006",
+    "title": "Solving Games in Belief Representation",
+    "filename": "Videos/sp_0058.mp4",
+    "paper_filename": "Papers/sp_0058.pdf",
+    "type": "exp-vid",
+    "relevant_segments": [
+      {
+        "para_id": "p31",
+        "section_heading": "4 From World States to Public Belief States",
+        "text": "Since any imperfect-information game can be viewed as a perfect-information game consisting of PBSs (i.e., the belief representation), in theory we could approximate a solution of any 2p0s imperfectinformation game by running a perfect-information RL+Search algorithm on a discretization of the belief representation. However, as shown in the example above, belief representations can be very high-dimensional continuous spaces, so conducting search (i.e., approximating the optimal policy in a depth-limited subgame) as is done in perfect-information games would be intractable. Fortunately, in 2p0s games, these high-dimensional belief representations are convex optimization problems. ReBeL leverages this fact by conducting search via an iterative gradient-ascent-like algorithm.",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p32",
+        "section_heading": "4 From World States to Public Belief States",
+        "text": "ReBeL’s search algorithm operates on supergradients (the equivalent of subgradients but for concave functions) of the PBS value function at leaf nodes, rather than on PBS values directly. Specifically, the search algorithms require the values of infostates for PBSs [16, 40]. In a 2p0sum game, the value of infostate si in β assuming all other players play Nash equilibrium π∗ is the maximum value that player i could obtain for si through any policy in the subgame rooted at β. Formally,",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p34",
+        "section_heading": "4 From World States to Public Belief States",
+        "text": "Theorem 1. For any PBS β = (β1, β2) (for the beliefs over player 1 and 2 infostates respectively) and any policy π∗ that is a Nash equilibrium of the subgame rooted at β,",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p35",
+        "section_heading": "4 From World States to Public Belief States",
+        "text": "where ḡ is a supergradient of an extension of V1(β) to unnormalized belief distributions and ŝ1 is the unit vector in direction s1.",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p36",
+        "section_heading": "4 From World States to Public Belief States",
+        "text": "All proofs are presented in the appendix.",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p37",
+        "section_heading": "4 From World States to Public Belief States",
+        "text": "Since ReBeL’s search algorithm uses infostate values, so rather than learn a PBS value function ReBeL instead learns an infostate-value function v̂ : B → R|S1|+|S2| that directly approximates for each si the average of the sampled vπ ∗ i (si|β) values produced by ReBeL at β.8",
+        "seg_type": "par"
+      }
+    ]
+  },
+  {
+    "start_time": 3320.0,
+    "end_time": 3840.0,
+    "id": "007",
+    "title": "The ReBeL Algorithm",
+    "filename": "Videos/sp_0058.mp4",
+    "paper_filename": "Papers/sp_0058.pdf",
+    "type": "exp-vid",
+    "relevant_segments": [
+      {
+        "para_id": "p38",
+        "section_heading": "5 Self Play Reinforcement Learning and Search for Public Belief States",
+        "text": "In this section we describe ReBeL and prove that it approximates a Nash equilibrium in 2p0s games. At the start of the game, a depth-limited subgame rooted at the initial PBS βr is generated. This subgame is solved (i.e., a Nash equilibrium is approximated) by running T iterations of an iterative equilibrium-finding algorithm in the discrete representation of the game, but using the learned value network v̂ to approximate leaf values on every iteration. During training, the infostate values at βr computed during search are added as training examples for v̂ and (optionally) the subgame policies are added as training examples for the policy network. Next, a leaf node z is sampled and the process repeats with the PBS at z being the new subgame root. Appendix B shows detailed pseudocode.",
+        "seg_type": "par"
+      },
+      {
+        "cls_id": 14,
+        "label": "algorithm",
+        "score": 0.9149667024612427,
+        "coordinate": [
+          443.00006103515625,
+          301.2301025390625,
+          2103.2021484375,
+          1225.860107421875
+        ],
+        "text": "Algorithm 1 ReBeL: RL and Search for Imperfect-Information Games function SELFPLAY(r, 0, 0, D, D) > r is the current PBS while !IsTERMINAL(r) do G < CONSTRUCTSUBGAME(r) , twam  INITIALIZEPOLICY(G, 0) > twarm = 0 and o is uniform if no warm start G  SETLEAFVALUES(G, , twam, 0) v(r)  COMPUTEEV(G, twam) tsample ~ unif{twarm + 1, T} > Sample an iteration for t = (twarm + 1)..T do if t = tsample then B'  SAMPLELEAF(G, t-1) > Sample one or multiple leaf PBSs t  UPDATEPOLICY(G,t-1) t G  SETLEAFVALUES(G, , t, 0) v(r)  t+1v(r) + t+1 COMPUTEEV(G, Add{Br,v(r)} to Dv > Add to value net training data. for  e G do > Loop over the PBS at every public state in G Add{,()} to D\" > Add to policy net training data (optional) BrB!",
+        "id": "sp_0058_page_6_1",
+        "seg_type": "algo"
+      },
+      {
+        "para_id": "p39",
+        "section_heading": "5.1 Search in a depth-limited imperfect-information subgame",
+        "text": "In this section we describe the search algorithm ReBeL uses to solve depth-limited subgames. We assume for simplicity that the depth of the subgame is pre-determined and fixed. The subgame is solved in the discrete representation and the solution is then converted to the belief representation. There exist a number of iterative algorithms for solving imperfect-information games [5, 61, 28, 36, 35]. We describe ReBeL assuming the counterfactual regret minimization - decomposition (CFR-D) algorithm is used [61, 16, 40]. CFR is the most popular equilibrium-finding algorithm for imperfect-information games, and CFR-D is an algorithm that solves depth-limited subgames via CFR. However, ReBeL is flexible with respect to the choice of search algorithm and in Section 8 we also show experimental results for fictitious play (FP) [5].",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p40",
+        "section_heading": "5.1 Search in a depth-limited imperfect-information subgame",
+        "text": "On each iteration t, CFR-D determines a policy profile πt in the subgame. Next, the value of every discrete representation leaf node z is set to v̂(si(z)|βπ t z ), where β πt",
+        "seg_type": "par"
+      }
+    ]
+  },
+  {
+    "start_time": 3840.0,
+    "end_time": 4020.0,
+    "id": "008",
+    "title": "Theory & Experiment Results",
+    "filename": "Videos/sp_0058.mp4",
+    "paper_filename": "Papers/sp_0058.pdf",
+    "type": "exp-vid",
+    "relevant_segments": [
+      {
+        "para_id": "p49",
+        "section_heading": "5.2 Self-play reinforcement learning",
+        "text": "Theorem 2 states that, with perfect function approximation, running Algorithm 1 will produce a value network whose error is bounded by O( 1√",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p50",
+        "section_heading": "5.2 Self-play reinforcement learning",
+        "text": "T ) for any PBS that could be encountered during play,",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p51",
+        "section_heading": "5.2 Self-play reinforcement learning",
+        "text": "where T is the number of CFR iterations being run in subgames. Theorem 2. Consider an idealized value approximator that returns the most recent sample of the value for sampled PBSs, and 0 otherwise. Running Algorithm 1 with T iterations of CFR in each subgame will produce a value approximator that has error of at most C√",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p52",
+        "section_heading": "5.2 Self-play reinforcement learning",
+        "text": "T for any PBS that could be",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p53",
+        "section_heading": "5.2 Self-play reinforcement learning",
+        "text": "encountered during play, where C is a game-dependent constant.",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p61",
+        "section_heading": "6 Playing According to an Equilibrium at Test Time",
+        "text": "We now prove that safe search can be achieved without any additional constraints by simply running the same algorithm at test time that we described for training. This result applies regardless of how the value network was trained and so can be applied to prior algorithms that use PBS value functions [40, 53]. Specifically, when conducting search at test time we pick a random iteration and assume all players’ policies match the policies on that iteration. Theorem 3, the proof of which is in Section G, states that once a value network is trained according to Theorem 2, using Algorithm 1 at test time (without off-policy exploration) will approximate a Nash equilibrium. Theorem 3. If Algorithm 1 is run at test time with no off-policy exploration, a value network with error at most δ for any leaf PBS that was trained to convergence as described in Theorem 2, and with T iterations of CFR being used to solve subgames, then the algorithm plays a (δC1 + δC2√T )-Nash equilibrium, where C1, C2 are game-specific constants.",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p76",
+        "section_heading": "9 Conclusions",
+        "text": "Partly for this reason, we have decided not to release the code for poker. We instead open source our implementation for Liar’s Dice, a recreational game that is not played as competitively by humans. The implementation in Liar’s Dice is also easier to understand and the size of Liar’s Dice can be more easily adjusted, which we believe makes the game more suitable as a domain for research.",
+        "seg_type": "par"
+      }
+    ]
+  },
+  {
+    "start_time": 4020.0,
+    "end_time": 4220.0,
+    "id": "009",
+    "title": "Broader Impact",
+    "filename": "Videos/sp_0058.mp4",
+    "paper_filename": "Papers/sp_0058.pdf",
+    "type": "exp-vid",
+    "relevant_segments": [
+      {
+        "para_id": "p74",
+        "section_heading": "9 Conclusions",
+        "text": "Broader Impact We believe ReBeL is a major step toward general equilibrium-finding algorithms that can be deployed in large-scale multi-agent settings while requiring relatively little domain knowledge. There are numerous potential future applications of this work, including auctions, negotiations, cybersecurity, and autonomous vehicle navigation, all of which are imperfect-information multi-agent interactions.",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p75",
+        "section_heading": "9 Conclusions",
+        "text": "The most immediate risk posed by this work is its potential for cheating in recreational games such as poker. While AI algorithms already exist that can achieve superhuman performance in poker, these algorithms generally assume that participants have a certain number of chips or use certain bet sizes. Retraining the algorithms to account for arbitrary chip stacks or unanticipated bet sizes requires more computation than is feasible in real time. However, ReBeL can compute a policy for arbitrary stack sizes and arbitrary bet sizes in seconds.",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p76",
+        "section_heading": "9 Conclusions",
+        "text": "Partly for this reason, we have decided not to release the code for poker. We instead open source our implementation for Liar’s Dice, a recreational game that is not played as competitively by humans. The implementation in Liar’s Dice is also easier to understand and the size of Liar’s Dice can be more easily adjusted, which we believe makes the game more suitable as a domain for research.",
+        "seg_type": "par"
+      }
+    ]
+  },
+  {
+    "start_time": 4220.0,
+    "end_time": 4341,
+    "id": "010",
+    "title": "High-Level Summary",
+    "filename": "Videos/sp_0058.mp4",
+    "paper_filename": "Papers/sp_0058.pdf",
+    "type": "exp-vid",
+    "relevant_segments": []
+  }
+]

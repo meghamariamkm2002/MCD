@@ -1,0 +1,2 @@
+Since the true denoise distribution is not tractable, in this paper we propose using a Gaussian approximation for the denoise distribution.
+The Gaussian distribution's mean has a very well-known analytical form, equivalent to the noise data plus sigma squared times the score.

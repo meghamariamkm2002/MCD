@@ -1,0 +1,17 @@
+start	end	text
+31	2255	So let's dive in.
+2295	4319	They make the following claims.
+5341	7946	Let's just go through them really quick.
+7966	10430	Data account reduces the amount of upstream.
+11372	15079	So think of network reading or augmentation.
+15480	21651	Computation needed to reach a competitive out of sample error rate on various data sets and model architectures.
+21631	25637	Second, data echoing can provide a wall time speed up in practice.
+26117	29983	Third, data echoing can support a wide range of echoing factors.
+30163	33468	And that's the echoing factor is how often you repeat the data.
+34189	42340	Fourth, the effectiveness of data echoing depends on the intersection point in the training pipeline, sorry, in the insertion point.
+42480	45765	That's what that's what our hypothesis was, right?
+45745	52640	Fifth, data echoing can benefit from additional shuffling after echoing, but does not require it.
+53262	61560	And sixth, countering expectations, data echoing reaches the same final error rate as well-tuned baselines.
+61540	71451	So I can absolutely accept one through five, especially in like an actual practical in the wild setting.
+72274	76688	But six, we'll see about six.
+76708	80038	So let's

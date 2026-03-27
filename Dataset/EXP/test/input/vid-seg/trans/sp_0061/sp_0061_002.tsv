@@ -1,0 +1,44 @@
+start	end	text
+31	1894	All right, let's dive in.
+2115	19626	So they say in the abstract, neural architecture search explores a large space of architectural motives, which basically, so it basically means you want to find a neural architecture, let's say you have a multi-layer perceptron.
+19606	22813	Right here couple of layers.
+23414	23514	Okay.
+24136	27884	And they're all connected by, you know, feet forward weights whatnot.
+28385	31892	And each of these weights basically is a multiplication.
+32273	36923	So each one of these is a multiplication of x by your weight w.
+36903	38806	And then there is a nonlinearity.
+39547	42851	So the nonlinearity could be a sigmoid.
+43292	59113	So the sigmoid would be something like one over one plus e to the negative x. Now there's a bit of an extension in a sigmoid where you can do a sigmoid that has like a temperature parameter attached or a slope parameter where you go CX.
+59093	65389	So in one case, you can set C such that the sigmoid has a shape like this.
+65429	71826	And then if you put C to a different value, you can make this slope, you can make it like a shape.
+72327	73871	Well, this is terrible.
+74292	75094	Like this.
+75074	76076	You know what I mean.
+76576	82946	Okay, so this this C right here can potentially change the behavior of your network.
+82966	86932	And you want to find a good parameter C. And this is a hyper parameter.
+86952	89236	Now there are many hyper parameters like this.
+89737	100153	For example, how many units you have in a particular layer in a CNN it could be your filter size in a transformer could be the number of heads and so on.
+100133	115066	It could actually be not only the slope of the nonlinearity, but the actual nonlinearity itself, or famously in recurrent neural networks, you have these recurrent cells and they're like, okay, we have an input signal and a carry signal.
+115106	117231	And then the input here is like,
+117211	128086	Dot multiplied here and then there is like a gate with an own linearity and then it's kind of like multiplied by the carry but then there's also a like a forget gate and whatnot.
+128106	129348	There's a minus right here.
+129388	139843	It's very complicated and so people do architecture search over these kind of problems to find better architectures for particular problems.
+139823	146071	Now, the problem is, of course, that how do you know if a given architecture is good?
+146912	152760	What you have to do is you'll have to go take that cell that you have dreamed up.
+152840	154443	You think, well, I think that's a good cell.
+154823	158148	And you have to train it on the full training data set.
+158188	160791	This is a data set, a database, right?
+160811	162493	This is a full training data set.
+163014	166759	Then you need to evaluate it on your validation data set.
+166739	168521	And then you have like a number.
+168681	170564	You have like, okay, this is eight good.
+171325	175630	And then you go back and you say, okay, what if I change this cell here?
+175730	178674	What if I change it to a plus instead of a minus?
+179074	184281	And you do the entire thing again, train it for, I don't know how much, validate it.
+184621	186123	And then this is like a nine.
+186403	187645	And you can say, oh, cool.
+187705	188646	That's a nine.
+188626	191574	So this is a very basic architecture search.
+191594	195765	And there has been a lot of development in this space.
+195845	204107	So like evolutionary search and so on, but they most of the time they require pretty much evaluating the entire thing on the full data.
+204167	210043	So you get a good, you get a good estimate of what your final performance back here is going to be.

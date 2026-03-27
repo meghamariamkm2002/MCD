@@ -1,0 +1,554 @@
+[
+  {
+    "para_id": "p1",
+    "section_heading": "Abstract",
+    "text": "While numerous works have focused on devising efficient algorithms for reinforcement learning (RL) with uniformly bounded rewards, it remains an open question whether sample or time-efficient algorithms for RL with large state-action space exist when the rewards are heavy-tailed, i.e., with only finite (1 + \u03b5)-th moments for some \u03b5 \u2208 (0, 1]. In this work, we address the challenge of such rewards in RL with linear function approximation. We first design an algorithm, HEAVY-OFUL, for heavy-tailed linear bandits, achieving an instance-dependent T -round regret of \u00d5 ( dT 1\u2212\u03b5 2(1+\u03b5) \u221a\u2211T t=1 \u03bd 2 t + dT 1\u2212\u03b5 2(1+\u03b5) ) , the first of this kind. Here, d is the feature dimension, and \u03bd t is the (1 + \u03b5)-th central moment of the reward at the t-th round. We further show the above bound is minimax optimal when applied to the worst-case instances in stochastic and deterministic linear bandits. We then extend this algorithm to the RL settings with linear function approximation. Our algorithm, termed as HEAVY-LSVI-UCB, achieves the first computationally efficient instance-dependent K-episode regret of \u00d5(d \u221a HU\u2217K 1 1+\u03b5 +d \u221a HV\u2217K). Here, H is length of the episode, and U\u2217,V\u2217 are instance-dependent quantities scaling with the central moment of reward and value functions, respectively. We also provide a matching minimax lower bound \u03a9(dHK 1 1+\u03b5 + d \u221a H3K) to demonstrate the optimality of our algorithm in the worst case. Our result is achieved via a novel robust self-normalized concentration inequality that may be of independent interest in handling heavy-tailed noise in general online regression problems.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p2",
+    "section_heading": "Unknown",
+    "text": "O\u0303 ( dT 1\u2212\u03f5 2(1+\u03f5) \u221a\u2211T t=1 \u03bd 2 t + dT 1\u2212\u03f5 2(1+\u03f5) ) , the first of this kind. Here, d is the feature dimension, and \u03bd1+\u03f5t is the (1 + \u03f5)-th central moment of the reward at the t-th round. We further show the above bound is minimax optimal when applied to the worst-case instances in stochastic and deterministic linear bandits. We then extend this algorithm to the RL settings with linear function approximation. Our algorithm, termed as HEAVY-LSVI-UCB, achieves the first computationally efficient instance-dependent K-episode regret of O\u0303(d \u221a HU\u2217K 1 1+\u03f5 +d \u221a HV\u2217K). Here, H is length of the episode, and U\u2217,V\u2217 are instance-dependent quantities scaling with the central moment of reward and value functions, respectively. We also provide a matching minimax lower bound \u2126(dHK 1 1+\u03f5 + d \u221a H3K) to demonstrate the optimality of our algorithm in the worst case. Our result is achieved via a novel robust self-normalized concentration inequality that may be of independent interest in handling heavy-tailed noise in general online regression problems.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p3",
+    "section_heading": "1 Introduction",
+    "text": "Designing efficient reinforcement learning (RL) algorithms for large state-action space is a significant challenge within the RL community. A crucial aspect of RL is understanding the reward functions, which directly impacts the quality of the agent\u2019s policy. In certain real-world situations, reward distributions may exhibit heavy-tailed behavior, characterized by the occurrence of extremely large values at a higher frequency than expected in a normal distribution. Examples include image noise in signal processing [14], stock price fluctuations in financial markets [12, 18], and value functions in online advertising [11, 19]. However, much of the existing RL literature assumes rewards to be either uniformly bounded or light-tailed (e.g., sub-Gaussian). In such light-tailed settings, the primary challenge lies in learning the transition probabilities, leading most studies to assume deterministic rewards for ease of analysis [5, 22, 15]. As we will demonstrate, the complexity of learning reward",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p4",
+    "section_heading": "1 Introduction",
+    "text": "functions may dominate in heavy-tailed settings. Consequently, the performance of traditional algorithms may decline, emphasizing the need for the development of new, efficient algorithms specifically designed to handle heavy-tailed rewards.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p5",
+    "section_heading": "1 Introduction",
+    "text": "Heavy-tailed distributions have been extensively studied in the field of statistics [9, 27] and in more specific online learning scenarios, such as bandits [7, 28, 31, 34, 40]. However, there is a dearth of theoretical research in RL concerning heavy-tailed rewards, whose distributions only admit finite (1 + \u03f5)-th moment for some \u03f5 \u2208 (0, 1]. One notable exception is Zhuang and Sui [44], which made a pioneering effort in establishing worst-case regret guarantees in tabular Markov Decision Processes (MDPs) with heavy-tailed rewards. However, their algorithm cannot handle RL settings with large state-action space. Moreover, their reliance on truncation-based methods is sub-optimal as these methods heavily depend on raw moments, which do not vanish in deterministic cases. Therefore, a natural question arises:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p6",
+    "section_heading": "1 Introduction",
+    "text": "Can we derive sample and time-efficient algorithms for RL with large state-action space that achieve instance-dependent regret in the presence of heavy-tailed rewards?",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p7",
+    "section_heading": "1 Introduction",
+    "text": "In this work, we focus on linear MDPs [35, 22] with heavy-tailed rewards and answer the above question affirmatively. We say a distribution is heavy-tailed if it only admits finite (1 + \u03f5)-th moment for some \u03f5 \u2208 (0, 1]. Our contributions are summarized as follows.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p8",
+    "section_heading": "1 Introduction",
+    "text": "\u2022 We first propose a computationally efficient algorithm HEAVY-OFUL for heavy-tailed linear bandits. Such a setting can be regarded as a special case of linear MDPs. HEAVY-OFUL achieves",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p9",
+    "section_heading": "1 Introduction",
+    "text": "an instance-dependent T -round regret of O\u0303 ( dT 1\u2212\u03f5 2(1+\u03f5) \u221a\u2211T t=1 \u03bd 2 t + dT 1\u2212\u03f5 2(1+\u03f5) ) , the first of this kind. Here d is the feature dimension and \u03bd1+\u03f5t is the (1 + \u03f5)-th central moment of the reward at the t-th round. The instance-dependent regret bound has a main term that only depends on the summation of central moments, and therefore does not have a \u221a T term. Our regret bound is shown to be",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p10",
+    "section_heading": "1 Introduction",
+    "text": "minimax optimal in both stochastic and deterministic linear bandits (See Remark 4.2 for details). \u2022 We then extend this algorithm to time-inhomogeneous linear MDPs with heavy-tailed rewards,",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p11",
+    "section_heading": "1 Introduction",
+    "text": "resulting in a new computationally efficient algorithm HEAVY-LSVI-UCB, which achieves a K-episode regret scaling as O\u0303(d \u221a HU\u2217K 1 1+\u03f5 + d \u221a HV\u2217K) for the first time. Here, H is the length of the episode and U\u2217,V\u2217 are quantities measuring the central moment of the reward functions and transition probabilities, respectively (See Theorem 5.2 for details). Our regret bound is instance-dependent since the main term only relies on the instance-dependent quantities, which vanishes when the dynamics and rewards are deterministic. When specialized to special cases, our instance-dependent regret recovers the variance-aware regret in Li and Sun [26] (See Remark 5.3 for details) and improves existing first-order regret bounds [33, 26] (See Corollary 5.6 for details).",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p12",
+    "section_heading": "1 Introduction",
+    "text": "\u2022 We provide a minimax regret lower bound \u2126(dHK 1 1+\u03f5 + d \u221a H3K) for linear MDPs with heavy-",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p13",
+    "section_heading": "1 Introduction",
+    "text": "tailed rewards, which matches the worst-case regret bound implied by our instance-dependent regret, thereby demonstrating the minimax optimality of HEAVY-LSVI-UCB in the worst case.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p14",
+    "section_heading": "1 Introduction",
+    "text": "For better comparisons between our algorithms and state-of-the-art results, we summarize the regrets in Table 1 and 2 for linear bandits and linear MDPs, respectively. More related works are deferred to Appendix A. Remarkably, our results demonstrate that \u03f5 = 1 (i.e. finite variance) is sufficient to obtain variance-aware regret bounds of the same order as the case where rewards are uniformly bounded for both linear bandits and linear MDPs. The main technique contribution behind our results is a novel robust self-normalized concentration inequality inspired by Sun et al. [32]. To be more specific, it is a non-trivial generalization of adaptive Huber regression from independent and identically distributed (i.i.d.) case to heavy-tailed online regression settings and gives a self-normalized bound instead of the \u21132-norm bound in Sun et al. [32]. Our result is computationally efficient and only scales with the feature dimension, d, (1 + \u03f5)-th central moment of the noise, \u03bd, and does not depend on the absolute magnitude as in other self-normalized concentration inequalities [42, 41].",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p15",
+    "section_heading": "1 Introduction",
+    "text": "Road Map The rest of the paper is organized as follows. Section 2 introduces heavy-tailed linear bandits and linear MDPs. Section 3 presents the robust self-normalized concentration inequality for general online regression problems with heavy-tailed noise. Section 4 and 5 give the main results for heavy-tailed linear bandits and linear MDPs, respectively. We then conclude in Section 6. Related work, experiments and all proofs can be found in Appendix.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p16",
+    "section_heading": "1 Introduction",
+    "text": "Notations Let \u2225a\u2225 := \u2225a\u22252. Let [t] := {1, 2, . . . , t}. Let Bd(r) := {x \u2208 Rd|\u2225x\u2225 \u2264 r}. Let x[a,b] := max{a,min{x, b}} denote the projection of x onto the close interval [a, b]. Let \u03c3({Xs}s\u2208[t]) be the \u03c3-field generated by random vectors {Xs}s\u2208[t].",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p17",
+    "section_heading": "2.1 Heavy-Tailed Linear Bandits",
+    "text": "Definition 2.1 (Heterogeneous linear bandits with heavy-tailed rewards). Let {Dt}t\u22651 denote a series of fixed decision sets, where all \u03d5t \u2208 Dt satisfy \u2225\u03d5t\u2225 \u2264 L for some known upper bound L. At each round t, the agent chooses \u03d5t \u2208 Dt, then receives a reward Rt from the environment. We define the filtration {Ft}t\u22651 as Ft = \u03c3({\u03d5s, Rs}s\u2208[t] \u222a {\u03d5t+1}) for any t \u2265 1. We assume Rt = \u27e8\u03d5t,\u03b8\u2217\u27e9+ \u03b5t with the unknown coefficient \u03b8\u2217 \u2208 Bd(B) for some known upper bound B. The random variable \u03b5t \u2208 R is Ft-measurable and satisfies E[\u03b5t|Ft\u22121] = 0,E[|\u03b5t|1+\u03f5|Ft\u22121] = \u03bd1+\u03f5t for some \u03f5 \u2208 (0, 1] with \u03bdt being Ft\u22121-measurable.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p18",
+    "section_heading": "2.1 Heavy-Tailed Linear Bandits",
+    "text": "The agent aims to minimize the T -round pseudo-regret defined as Regret(T ) = \u2211T",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p19",
+    "section_heading": "2.1 Heavy-Tailed Linear Bandits",
+    "text": "t=1[\u27e8\u03d5\u2217t ,\u03b8\u2217\u27e9 \u2212 \u27e8\u03d5t,\u03b8\u2217\u27e9], where \u03d5\u2217t = argmax\u03d5\u2208Dt\u27e8\u03d5,\u03b8 \u2217\u27e9.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p20",
+    "section_heading": "2.2 Linear MDPs with Heavy-Tailed Rewards",
+    "text": "We use a tuple M = M(S,A, H, {Rh}h\u2208[H], {Ph}h\u2208[H]) to describe the time-inhomogeneous finitehorizon MDP, where S and A are state space and action space, respectively, H is the length of the episode, Rh : S \u00d7 A \u2192 R is the random reward function with expectation rh : S \u00d7 A \u2192 R, and Ph : S \u00d7A \u2192 \u2206(S) is the transition probability function. More details can be found in Puterman [30]. A time-dependent policy \u03c0 = {\u03c0h}h\u2208H satisfies \u03c0h : S \u2192 \u2206(A) for any h \u2208 [H]. When the policy is deterministic, we use \u03c0h(sh) to denote the action chosen at the h-th step given sh by policy \u03c0. For any state-action pair (s, a) \u2208 S \u00d7A, we define the state-action value function Q\u03c0h(s, a) and state value function V \u03c0h (s) as follows: Q \u03c0 h(s, a) = E [\u2211H h\u2032=h r(sh\u2032 , ah\u2032)|sh = s, ah = a ] , V \u03c0h (s) = Q \u03c0 h(s, \u03c0h(s)), where the expectation is taken with respect to the transition probability of",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p21",
+    "section_heading": "2.2 Linear MDPs with Heavy-Tailed Rewards",
+    "text": "M and the agent\u2019s policy \u03c0. If \u03c0 is randomized, then the definition of V should have an expectation. Denote the optimal value functions as V \u2217h (s) = sup\u03c0 V \u03c0 h (s) and Q \u2217 h(s, a) = sup\u03c0 Q \u03c0 h(s, a).",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p22",
+    "section_heading": "2.2 Linear MDPs with Heavy-Tailed Rewards",
+    "text": "We introduce the following shorthands for simplicity. At the h-th step, for any value function V : S \u2192 R, let [PhV ](s, a) = Es\u2032\u223cPh(\u00b7|s,a)V (s\u2032), [VhV ](s, a) = [PhV 2](s, a) \u2212 [PhV ]2(s, a) denote the expectation and the variance of the next-state value function at the h-th step given (s, a).",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p23",
+    "section_heading": "2.2 Linear MDPs with Heavy-Tailed Rewards",
+    "text": "We aim to minimize the K-episode regret defined as Regret(K) = \u2211K",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p24",
+    "section_heading": "2.2 Linear MDPs with Heavy-Tailed Rewards",
+    "text": "k=1[V \u2217 1 (s k 1)\u2212 V \u03c0",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p25",
+    "section_heading": "2.2 Linear MDPs with Heavy-Tailed Rewards",
+    "text": "k",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p26",
+    "section_heading": "2.2 Linear MDPs with Heavy-Tailed Rewards",
+    "text": "1 (s k 1)].",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p27",
+    "section_heading": "2.2 Linear MDPs with Heavy-Tailed Rewards",
+    "text": "In the rest of this section, we introduce linear MDPs with heavy-tailed rewards. We first give the definition of linear MDPs studied in Yang and Wang [35], Jin et al. [22], with emphasis that the rewards in their settings are deterministic or uniformly bounded. Then we focus on the heavy-tailed random rewards. Definition 2.2. An MDP M = M(S,A, H, {Rh}h\u2208[H], {Ph}h\u2208[H]) is a time-inhomogeneous finitehorizon linear MDP, if there exist known feature maps \u03d5(s, a) : S \u00d7 A \u2192 Bd(1), unknown d-dimensional signed measures {\u00b5\u2217h}h\u2208[H] over S with \u2225\u00b5\u2217h(S)\u2225 := \u222b s\u2208S |\u00b5(s)|ds \u2264 \u221a d and unknown coefficients {\u03b8\u2217h}h\u2208[H] \u2286 Bd(B) for some known upper bound B such that",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p28",
+    "section_heading": "2.2 Linear MDPs with Heavy-Tailed Rewards",
+    "text": "for any state-action pair (s, a) \u2208 S \u00d7A and timestep h \u2208 [H]. Assumption 2.3 (Realizable rewards). For all (s, a, h) \u2208 S \u00d7A\u00d7 [H], the random reward Rh(s, a) is independent of next state s\u2032 \u223c Ph(\u00b7|s, a) and admits the linear structure",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p29",
+    "section_heading": "2.2 Linear MDPs with Heavy-Tailed Rewards",
+    "text": "where \u03b5h(s, a) is a mean-zero heavy-tailed random variable specified below.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p30",
+    "section_heading": "2.2 Linear MDPs with Heavy-Tailed Rewards",
+    "text": "We introduce the notation \u03bdn[X] = E[|X \u2212 EX|n] for the n-th central moment of any random variable X . And for any random reward function at the h-th step Rh : S \u00d7A \u2192 R, let",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p31",
+    "section_heading": "2.2 Linear MDPs with Heavy-Tailed Rewards",
+    "text": "denote its expectation and the (1 + \u03f5)-th central moment given (sh, ah) = (s, a) for short. Assumption 2.4 (Heavy-tailedness of rewards). Random variable \u03b5h(s, a) satisfies [Eh\u03b5h](s, a) = 0. And for some known \u03f5, \u03f5\u2032 \u2208 (0, 1] and constants \u03bdR, \u03bdR\u03f5 \u2265 0, the following unknown moments of \u03b5h(s, a) satisfy",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p32",
+    "section_heading": "2.2 Linear MDPs with Heavy-Tailed Rewards",
+    "text": "Assumption 2.4 generalizes Assumption 2.2 of Li and Sun [26], which is the weakest moment condition on random rewards in the current literature of RL with function approximation. Setting \u03f5 = 1 and \u03f5\u2032 = 1 immediately recovers their settings. Assumption 2.5 (Realizable central moments). There are some unknown coefficients {\u03c8\u2217h}h\u2208[H] \u2286 Bd(W ) for some known upper bound W such that",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p33",
+    "section_heading": "2.2 Linear MDPs with Heavy-Tailed Rewards",
+    "text": "for all (s, a, h) \u2208 S \u00d7A\u00d7 [H]. Remark 2.6. When \u03f5 = 1, that is the rewards have finite variance, Li and Sun [26] use the fact that [\u03bd2Rh](s, a) = [VhRh](s, a) = [EhR2h](s, a) \u2212 [EhRh]2(s, a), assume the linear realizability of the second moment [EhR2h](s, a), and estimate it instead. However, when \u03f5 < 1, there is no such relationship between the (1 + \u03f5)-th central moment [\u03bd1+\u03f5Rh](s, a) and the (1 + \u03f5)-th raw moment [EhR1+\u03f5h ](s, a). Thus, we adopt a new approach to estimate [\u03bd1+\u03f5Rh](s, a) directly, and bound the error by a novel perturbation analysis of adaptive Huber regression in Appendix C.3. Assumption 2.7 (Bounded cumulative rewards). For any policy \u03c0, let {sh, ah, Rh}h\u2208[H] be a random trajectory following policy \u03c0. And define r\u03c0 = \u2211H h=1[EhRh](sh, ah) = \u2211H h=1 rh(sh, ah). We",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p34",
+    "section_heading": "2.2 Linear MDPs with Heavy-Tailed Rewards",
+    "text": "assume (1) 0 \u2264 r\u03c0 \u2264 H. (2) \u2211H h=1[\u03bd1+\u03f5Rh] 2 1+\u03f5 (sh, ah) \u2264 U . (3) Var(r\u03c0) \u2264 V .",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p35",
+    "section_heading": "2.2 Linear MDPs with Heavy-Tailed Rewards",
+    "text": "Here, (1) gives an upper bound of cumulative expected rewards r\u03c0 . (2) assumes the summation of (1+ \u03f5)-th central moment of rewards [\u03bd1+\u03f5Rh](sh, ah) is bounded since [ \u2211H h=1[\u03bd1+\u03f5Rh](sh, ah)]",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p36",
+    "section_heading": "2.2 Linear MDPs with Heavy-Tailed Rewards",
+    "text": "2 1+\u03f5 \u2264\u2211H",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p37",
+    "section_heading": "2.2 Linear MDPs with Heavy-Tailed Rewards",
+    "text": "h=1[\u03bd1+\u03f5Rh] 2",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p38",
+    "section_heading": "2.2 Linear MDPs with Heavy-Tailed Rewards",
+    "text": "1+\u03f5 (sh, ah) \u2264 U due to Jensen\u2019s inequality. And (3) is to bound the variance of r\u03c0 along the trajectory following policy \u03c0.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p39",
+    "section_heading": "3 Adaptive Huber Regression",
+    "text": "At the core of our algorithms for both heavy-tailed linear bandits and linear MDPs is a new approach \u2013 adaptive Huber regression \u2013 to handle heavy-tailed noise. Sun et al. [32] imposed adaptive Huber regression to handle i.i.d. heavy-tailed noise by utilizing Huber loss [17] as a surrogate of squared loss. Li and Sun [26] modified adaptive Huber regression for heterogeneous online settings, where the variances in each round are different. However, it is not readily applicable to deal with heavy-tailed noise. Our contribution in this section is to construct a new self-normalized concentration inequality for general online regression problems with heavy-tailed noise.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p40",
+    "section_heading": "3 Adaptive Huber Regression",
+    "text": "We first give a brief introduction to Huber loss function and its properties. Definition 3.1 (Huber loss). Huber loss is defined as",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p41",
+    "section_heading": "3 Adaptive Huber Regression",
+    "text": "where \u03c4 > 0 is referred as a robustness parameter.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p42",
+    "section_heading": "3 Adaptive Huber Regression",
+    "text": "Huber loss is first proposed by Huber [17] as a robust version of squared loss while preserving the convex property. Specifically, Huber loss is a quadratic function of x when |x| is less than the threshold \u03c4 , while becomes linearly dependent on |x| when |x| grows larger than \u03c4 . It has the property of strongly convex near zero point and is not sensitive to outliers. See Appendix C.1 for more properties of Huber loss.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p43",
+    "section_heading": "3 Adaptive Huber Regression",
+    "text": "Next, we define general online regression problems with heavy-tailed noise, which include heavytailed linear bandits as a special case. Then we utilize Huber loss to estimate \u03b8\u2217. Below we give the main theorem to bound the deviation of the estimated \u03b8t in Algorithm 1 from the ground truth \u03b8\u2217. Definition 3.2. Let {Ft}t\u22651 be a filtration. For all t > 0, let random variables yt, \u03b5t be Ftmeasurable and random vector \u03d5t \u2208 Bd(L) be Ft\u22121-measurable. Suppose yt = \u27e8\u03d5t,\u03b8\u2217\u27e9+ \u03b5t, where \u03b8\u2217 \u2208 Bd(B) is an unknown coefficient and",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p44",
+    "section_heading": "3 Adaptive Huber Regression",
+    "text": "for some \u03f5 \u2208 (0, 1]. The goal is to estimate \u03b8\u2217 at any round t given the realizations of {\u03d5s, ys}s\u2208[t].",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p45",
+    "section_heading": "3 Adaptive Huber Regression",
+    "text": "Theorem 3.3. For the online regression problems in Definition 3.2, we solve for \u03b8t by adaptive Huber regression in Algorithm 1 with c0, c1, \u03c40 in Appendix C.2. Then for any \u03b4 \u2208 (0, 1), with probability at least 1\u2212 3\u03b4, for all t \u2264 T , we have \u2225\u03b8t \u2212 \u03b8\u2217\u2225Ht \u2264 \u03b2t, whereHt is defined in Algorithm 1 and",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p46",
+    "section_heading": "3 Adaptive Huber Regression",
+    "text": "Proof. To derive a tight high-probability bound, we take the most advantage of the properties of Huber loss. A Chernoff bounding technique is used to bound the main error term, which requires a careful analysis of the moment generating function. See Appendix C.2 for a detailed proof.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p47",
+    "section_heading": "3 Adaptive Huber Regression",
+    "text": "We refer to the regression process in Line 6 of Algorithm 1 as adaptive Huber regression in line with Sun et al. [32] to emphasize that the value of robustness parameter \u03c4t is chosen to adapt to data for a better trade-off between bias and robustness. Specifically, since we are in the online setting, \u03d5t are dependent on {\u03d5s}s<t, which is the key difference from the i.i.d. case in Sun et al. [32] where they set \u03c4t = \u03c40, for all t \u2264 T . Thus, as shown in Line 4 of Algorithm 1, inspired by Li and Sun [26], we adjust \u03c4t according to the importance of observations wt = \u2225\u03d5t/\u03c3t\u2225H\u22121t\u22121 , where \u03c3t is specified below. In the case where \u03f5 < 1, different from Li and Sun [26], we first choose \u03c4t to be small for robust purposes, then gradually increase it with t to reduce the bias.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p48",
+    "section_heading": "3 Adaptive Huber Regression",
+    "text": "Next, we illustrate the reason for setting \u03c3t via Line 3 of Algorithm 1. We use \u03bd\u0302t \u2208 Ft\u22121 to estimate the central moment \u03bdt and use moment parameter b to measure the closeness between \u03bd\u0302t and \u03bdt. When we choose \u03bd\u0302t as an upper bound of \u03bdt, b becomes a constant that equals to 1. And \u03c3min is a small positive constant to avoid singularity. The last two terms with respect to c0 and c1 are set according to the uncertainty \u2225\u03d5t\u2225H\u22121t\u22121 . In addition, setting the parameter c0 \u2264 1 yields wt \u2264 1, which is essential to meet the condition of elliptical potential lemma [1].",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p49",
+    "section_heading": "3 Adaptive Huber Regression",
+    "text": "Remark 3.4. The error bound \u03b2t in (3.2) is only related to the feature dimension d and moment parameter b. While the Bernstein-style self-normalized concentration bounds [42, 41] depend on the magnitude of \u03b5t, thus cannot handle heavy-tailed errors.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p50",
+    "section_heading": "4 Linear Bandits",
+    "text": "In this section, we show the algorithm HEAVY-OFUL in Algorithm 2 for heavy-tailed linear bandits in Definition 2.1. We first give a brief algorithm description, and then provide a theoretical regret analysis.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p51",
+    "section_heading": "4.1 Algorithm Description",
+    "text": "HEAVY-OFUL follows the principle of Optimism in the Face of Uncertainty (OFU) [1], and uses adaptive Huber regression in Section 3 to maintain a set Ct that contains the unknown coefficient \u03b8\u2217 with high probability. Specifically, at the t-th round, HEAVY-OFUL estimates the expected reward of any arm \u03d5 as max\u03b8\u2208Ct\u22121\u27e8\u03d5,\u03b8\u27e9, and selects the arm that maximizes the estimated reward. The agent then receives the reward Rt and updates the confidence set Ct based on the information up to round t with its center \u03b8t computed by adaptive Huber regression as in Line 9 of Algorithm 2.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p52",
+    "section_heading": "4.2 Regret Analysis",
+    "text": "We next give the instance-dependent regret upper bound of HEAVY-OFUL in Theorem 4.1.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p53",
+    "section_heading": "4.2 Regret Analysis",
+    "text": "Theorem 4.1. For the heavy-tailed linear bandits in Definition 2.1, we set c0, c1, \u03c40, \u03b2t in Algorithm 2 according to Theorem 3.3 with b = 1. Besides, let \u03bb = d/B2, and \u03c3min = 1/ \u221a T . Then with",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p54",
+    "section_heading": "4.2 Regret Analysis",
+    "text": "probability at least 1\u2212 3\u03b4, the regret of HEAVY-OFUL is bounded by",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p55",
+    "section_heading": "4.2 Regret Analysis",
+    "text": "Proof. The proof uses the self-normalized concentration inequality of adaptive Huber regression and a careful analysis to bound the summation of bonuses. See Appendix D.1 for a detailed proof.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p56",
+    "section_heading": "4.2 Regret Analysis",
+    "text": "Remark 4.2. Theorem 4.1 shows HEAVY-OFUL achieves an instance-dependent regret bound. When we assume \u03bdt,\u2200t \u2265 1 have uniform upper bound \u03bd (which can be treated as a constant), then the bound is reduced to O\u0303(dT 1 1+\u03f5 ). It matches the lower bound \u2126(dT 1 1+\u03f5 ) by Shao et al. [31] up to logarithmic factors. In the deterministic scenario, where \u03f5 = 1 and \u03bdt = 0, for all t \u2265 1, the bound is reduced to O\u0303(d). It matches the lower bound \u2126(d)1 up to logarithmic factors.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p57",
+    "section_heading": "5 Linear MDPs",
+    "text": "In this section, we show the algorithm HEAVY-LSVI-UCB in Algorithm 3 for linear MDP with heavy-tailed rewards defined in Section 2.2. Let \u03d5k,h := \u03d5(sk,h, ak,h) for short. We first give the algorithm description intuitively, then provide the computational complexity and regret bound.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p58",
+    "section_heading": "5.1 Algorithm Description",
+    "text": "HEAVY-LSVI-UCB features a novel combination of adaptive Huber regression in Section 3 and existing algorithmic frameworks for linear MDPs with bounded rewards [22, 15]. At a high level, HEAVY-LSVI-UCB employs separate estimation techniques to handle heavy-tailed rewards and transition kernels. Specifically, we utilize adaptive Huber regression proposed in Section 3 to estimate heavy-tailed rewards and weighted ridge regression [42, 15] to estimate the expected next-state value functions. Then, it follows the value iteration scheme to update the optimistic and pessimistic estimation of the optimal value function Qkh, V k h and Q\u030c k h, V\u030c k h , respectively, via a rare-switching policy as in Line 7 to 15 of Algorithm 3. We highlight the key steps of HEAVY-LSVI-UCB as follows.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p59",
+    "section_heading": "5.1 Algorithm Description",
+    "text": "Estimation for expected heavy-tailed rewards Since the expected rewards have linear structure in linear MDPs, i.e., rh(s, a) = \u27e8\u03d5(s, a),\u03b8\u2217h\u27e9, we use adaptive Huber regression to estimate \u03b8\u2217h:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p60",
+    "section_heading": "5.1 Algorithm Description",
+    "text": "where \u03bdi,h will be specified later.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p61",
+    "section_heading": "5.1 Algorithm Description",
+    "text": "Estimation for central moment of rewards By Assumption 2.5, the (1 + \u03f5)-th central moment of rewards is linear in \u03d5, i.e., [\u03bd1+\u03f5Rh](s, a) = \u27e8\u03d5(s, a),\u03c8\u2217h\u27e9. Motivated by this, we estimate \u03c8\u2217h by adaptive Huber regression as",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p62",
+    "section_heading": "5.1 Algorithm Description",
+    "text": "where W is the upper bound of \u2225\u03c8\u2217h\u2225 defined in Assumption 2.5. Since \u03b5i,h is intractable, we estimate it by \u03b5\u0302i,h = Ri,h \u2212 \u27e8\u03d5i,h,\u03b8i,h\u27e9, which gives \u03c8\u0302k,h as",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p63",
+    "section_heading": "5.1 Algorithm Description",
+    "text": "The inevitable error between \u03c8k,h and \u03c8\u0302k,h can be quantified by a novel perturbation analysis of adaptive Huber regression in Appendix C.3.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p64",
+    "section_heading": "5.1 Algorithm Description",
+    "text": "We then set the weight \u03bdk,h for adaptive Huber regression as",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p65",
+    "section_heading": "5.1 Algorithm Description",
+    "text": "where \u03bdmin is a small positive constant to avoid the singularity, \u03bd\u03021+\u03f5k,h = [\u03bd\u03021+\u03f5Rh](sk,h, ak,h)+Wk,h is a high-probability upper bound of rewards\u2019 central moment [\u03bd1+\u03f5Rh](sk,h, ak,h) with",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p66",
+    "section_heading": "5.1 Algorithm Description",
+    "text": "where \u03ba is defined in Algorithm 3, \u03b2R\u03f5,k = O\u0303( \u221a d\u03bdR\u03f5k 1\u2212\u03f5\u2032 2(1+\u03f5\u2032) /\u03bdmin) and \u03b2R,k = O\u0303( \u221a dk 1\u2212\u03f5 2(1+\u03f5) ).",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p67",
+    "section_heading": "5.1 Algorithm Description",
+    "text": "Estimation for expected next-state value functions For any value function f : S \u2192 R, we define the following notations for simplicity:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p68",
+    "section_heading": "5.1 Algorithm Description",
+    "text": "where \u03c3i,h will be specified later. Note for any state-action pair (s, a) \u2208 S \u00d7A, by linear structure of transition probabilities, we have",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p69",
+    "section_heading": "5.1 Algorithm Description",
+    "text": "In addition, for any f, g : S \u2192 R, it holds that wh[f + g] = wh[f ] + wh[g] and w\u0302k,h[f + g] = w\u0302k,h[f ] + w\u0302k,h[g] due to the linear property of integration and ridge regression.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p70",
+    "section_heading": "5.1 Algorithm Description",
+    "text": "We remark w\u0302k,h[f ] is the estimation ofwh[f ] by weighted ridge regression on {\u03d5i,h, f(si,h+1)}i\u2208[k]. And we estimate the coefficients w\u0302k,h, w\u030ck,h, w\u0303k,h",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p71",
+    "section_heading": "5.1 Algorithm Description",
+    "text": "where V kh and V\u030c k h are optimistic and pessimistic estimation of the optimal value functions.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p72",
+    "section_heading": "5.1 Algorithm Description",
+    "text": "Estimation for variance of next-state value functions Inspired by He et al. [15], we set the weight \u03c3k,h for weighted ridge regression in (5.7) as",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p73",
+    "section_heading": "5.1 Algorithm Description",
+    "text": "where \u03c3min is a small constant to avoid singularity, \u03c3\u03022k,h = [V\u0302hV kh+1](sk,h, ak,h) + Ek,h with",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p74",
+    "section_heading": "5.1 Algorithm Description",
+    "text": "where \u03b20 = O\u0303( d3HH2/\u03c3min). Here \u03c3\u03022k,h and Dk,h are upper bounds of [VhV \u2217h+1](sk,h, ak,h) and max{[Vh ( V kh+1 \u2212 V \u2217h+1 ) ](sk,h, ak,h), [Vh ( V \u2217h+1 \u2212 V\u030c kh+1 ) ](sk,h, ak,h)}, respectively.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p75",
+    "section_heading": "5.2 Computational Complexity",
+    "text": "Theorem 5.1. For the linear MDPs with heavy-tailed rewards defined in Section 2.2, the computational complexity of HEAVY-LSVI-UCB is O\u0303(d4|A|H3K +HKR). Here R is the cost of the optimization algorithm for solving adaptive Huber regression in (5.1). Furthermore, we can specialize R by adopting the Nesterov accelerated method, which gives R = O\u0303(d+ d\u2212 1\u2212\u03f5 2(1+\u03f5)H 1\u2212\u03f5 2(1+\u03f5)K 1+2\u03f5 2(1+\u03f5) ).",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p76",
+    "section_heading": "5.2 Computational Complexity",
+    "text": "Proof. See Appendix E for a detailed proof.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p77",
+    "section_heading": "5.2 Computational Complexity",
+    "text": "Such a complexity allows us to focus on the complexity introduced by the RL algorithm rather than the optimization subroutine for solving adaptive Huber regression. Compared to that of LSVI-UCB++ [15], O\u0303(d4|A|H3K), the extra term O\u0303(HKR) causes a slightly worse computational time in terms of K. This is due to the absence of a closed-form solution of adaptive Huber regression in (5.1). Thus extra optimization steps are unavoidable. Nevertheless, Nesterov accelerated method gives R = O\u0303 ( K 1+2\u03f5 2(1+\u03f5) ) with respect to K, which implies the computational complexity of HEAVY-LSVI-UCB",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p78",
+    "section_heading": "5.2 Computational Complexity",
+    "text": "is better than that of LSVI-UCB [22], O\u0303(d2|A|HK2) in terms of K, thanks to the rare-switching updating policy. We conduct numerical experiments in Appendix B to further corroborate the computational efficiency of adaptive Huber regression.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p79",
+    "section_heading": "5.3 Regret Bound",
+    "text": "Theorem 5.2 (Informal). For the linear MDPs with heavy-tailed rewards defined in Section 2.2, we set parameters in Algorithm 3 as follows: \u03bbR = d/max { B2,W 2 } , \u03bbV = 1/H2, \u03bdmin, \u03c3min, c0, c1, \u03c40, \u03c4\u03030, \u03b2R\u03f5 , \u03b20, \u03b2R, \u03b2V in Appendix F.1. Then for any \u03b4 \u2208 (0, 1), with probability at least 1\u2212 16\u03b4, the regret of HEAVY-LSVI-UCB is bounded by",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p80",
+    "section_heading": "5.3 Regret Bound",
+    "text": "where \u03f5 \u2208 (0, 1], U\u2217 = min{U\u22170 ,U}, V\u2217 = min{V\u22170 ,V} with U\u22170 , V\u22170 defined in Appendix F.2 and H,U ,V defined in Assumption 2.7.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p81",
+    "section_heading": "5.3 Regret Bound",
+    "text": "Proof. See Appendix F.2 for a formal version of Theorem 5.2 and its detailed proof.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p82",
+    "section_heading": "5.3 Regret Bound",
+    "text": "Quantities U\u2217, V\u2217 We make a few explanations for the quantities U\u2217, V\u2217. On one hand, U\u2217 is upper bounded by U , which is the upper bound of the sum of the (1 + \u03f5)-th central moments of reward functions along a single trajectory. On the other hand, U\u2217 is no more than U\u22170 , which is the sum of the (1 + \u03f5)-th central moments with respect to the averaged occupancy measure of the first K episodes. V\u2217 is defined similar to U\u2217, but measures the randomness of transition probabilities. Remark 5.3. When \u03f5 = 1, we can show that this regret is bounded by O\u0303(d \u221a HG\u2217K), where G\u2217 is an variance-dependent quantity defined by Li and Sun [26]. Thus, our result recovers their variance-aware regret bound. See Remark F.15 in Appendix F.2 for a detailed proof.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p83",
+    "section_heading": "5.3 Regret Bound",
+    "text": "To demonstrate the optimality of our results and establish connections with existing literature, we can specialize Theorem 5.2 to obtain the worst-case regret [22, 2, 15] and first-order regret [33]. Corollary 5.4 (Worst-case regret). For the linear MDPs with heavy-tailed rewards defined in Section 2.2 and for any \u03b4 \u2208 (0, 1), with probability at least 1\u2212 16\u03b4, the regret of HEAVY-LSVI-UCB is bounded by",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p84",
+    "section_heading": "5.3 Regret Bound",
+    "text": "Proof. Notice U\u2217 and V\u2217 are upper bounded by H\u03bd2R and H2 (total variance lemma in Jin et al. [21]) respectively. When H = H , and we treat \u03bdR as a constant, the result follows.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p85",
+    "section_heading": "5.3 Regret Bound",
+    "text": "Next, we give the regret lower bound of linear MDPs with heavy-tailed rewards in Theorem 5.5, which shows our proposed HEAVY-LSVI-UCB is minimax optimal in the worst case. Theorem 5.5. For any algorithm, there exists an H-episodic, d-dimensional linear MDP with heavy-tailed rewards such that for any K, the algorithm\u2019s regret is",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p86",
+    "section_heading": "5.3 Regret Bound",
+    "text": "Proof. Intuitively, the proof of Theorem 5.5 follows from a combination of the lower bound constructions for heavy-tailed linear bandits in Shao et al. [31] and linear MDPs in Zhou et al. [42]. See Appendix G for a detailed proof.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p87",
+    "section_heading": "5.3 Regret Bound",
+    "text": "Theorem 5.5 shows that for sufficiently large K, the reward term dominates in the regret bound. Thus, in heavy-tailed settings, the main difficulty is learning the reward functions. Corollary 5.6 (First-order regret). For the linear MDPs with heavy-tailed rewards defined in Section 2.2 and for any \u03b4 \u2208 (0, 1), with probability at least 1\u2212 16\u03b4, the regret of HEAVY-LSVI-UCB is bounded by",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p88",
+    "section_heading": "5.3 Regret Bound",
+    "text": "And when the rewards are uniformly bounded in [0, 1], the result is reduced to the first-order regret bound of O\u0303(d \u221a H2V \u22171 K).",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p89",
+    "section_heading": "5.3 Regret Bound",
+    "text": "Proof. See Section F.3 for a detailed proof. Our first-order regret O\u0303(d \u221a H2V \u22171 K) is minimax optimal in the worst case since V \u2217 1 \u2264 H . And it",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p90",
+    "section_heading": "5.3 Regret Bound",
+    "text": "improves the state-of-the-art result O\u0303(d \u221a H3V \u22171 K) [26] by a factor of \u221a H .",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p91",
+    "section_heading": "6 Conclusion",
+    "text": "In this work, we propose two computationally efficient algorithms for heavy-tailed linear bandits and linear MDPs, respectively. Our proposed algorithms, termed as HEAVY-OFUL and HEAVY-LSVI-UCB, are based on a novel self-normalized concentration inequality for adaptive Huber regression, which may be of independent interest. HEAVY-OFUL and HEAVY-LSVI-UCB achieve minimax optimal and instance-dependent regret bounds scaling with the central moments. We also provide a lower bound for linear MDPs with heavy-tailed rewards to demonstrate the optimality of HEAVY-LSVI-UCB. To the best of our knowledge, we are the first to study heavy-tailed rewards in RL with function approximation and provide a new algorithm for this setting which is both statistically and computationally efficient.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p92",
+    "section_heading": "Acknowledgments",
+    "text": "Liwei Wang is supported by National Key R&D Program of China (2022ZD0114900) and National Science Foundation of China (NSFC62276005). Lin F. Yang is supported in part by NSF grant 2221871, and an Amazon Research Grant.",
+    "seg_type": "par"
+  }
+]

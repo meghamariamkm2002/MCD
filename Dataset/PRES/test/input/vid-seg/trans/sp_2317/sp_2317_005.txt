@@ -1,0 +1,5 @@
+We make the following enhancement.
+First, we use complex-valued recurrency to improve the model's expressiveness.
+Second, we set a momentarily increasing lower bound on the forgetting data value to ensure the network to handle short-term and long-term dependencies.
+Third, we try the input and forget data to reduce the number of parameters.
+And finally, we add output gates to the recurrence layer to stable training.

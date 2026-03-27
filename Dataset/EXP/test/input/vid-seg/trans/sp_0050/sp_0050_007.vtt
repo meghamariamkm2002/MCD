@@ -1,0 +1,116 @@
+WEBVTT
+
+00:00.031 --> 00:00.713
+biology.
+
+00:02.097 --> 00:07.974
+Now what we want to do is we want to investigate higher order functions.
+
+00:08.355 --> 00:10.682
+So here
+
+00:12.046 --> 00:15.451
+we're interested in these contact maps, right?
+
+00:15.751 --> 00:21.098
+So how likely is it that two amino acids are in contact?
+
+00:21.178 --> 00:24.603
+And we'll look at it through the lens of attention as we did before.
+
+00:25.203 --> 00:38.241
+So here is the percentage of each head, of each head's attention that is aligned with contact maps, averaged over a data set, suggesting that head 12.4 is uniquely specialized for contact prediction.
+
+00:38.281 --> 00:39.943
+So look at this.
+
+00:39.923 --> 00:44.670
+This head here is just spiking.
+
+00:44.931 --> 01:07.905
+So remember before we said our analysis is whenever we're basically measuring the correlation of two things being in contact because we know it from our simulator or from our data set, the correlation of that with an attention connection being particularly strong.
+
+01:07.885 --> 01:12.472
+and we find it in this attention head right here.
+
+01:13.433 --> 01:20.904
+So this layer 12, head number 4, will always peek out whenever two things are in contact.
+
+01:20.924 --> 01:29.657
+Now you can see that it's not like always, it's like 25% of its attention, but significantly more than anything else right here.
+
+01:30.835 --> 01:37.002
+In fact, if you group the things by this attention, you can build the following plot.
+
+01:37.363 --> 01:53.181
+So you can see right here, probability two amino acids are in contact as a function of attention between the amino acids in head 12.4, showing attention approximates perfectly calibrated estimator, which would be the green line.
+
+01:53.161 --> 02:09.028
+So here we simply, for each pair of amino acids, we make a histogram right here of what they're, sorry, not a histogram.
+
+02:09.208 --> 02:10.731
+We plot the probability
+
+02:12.820 --> 02:21.420
+if they have the attention weight 0.9, we plot how likely is it that they are in contact.
+
+02:22.583 --> 02:31.183
+So this is this, if we just look at the data and we simply take this attention weight as a measure, as a predictor of being in contact,
+
+02:31.163 --> 02:46.590
+we get the blue curve and the green curve would be if we could perfectly predict from this attention head what the probably of contact would be and you can see that the fit is fairly good you can't predict
+
+02:46.570 --> 03:03.178
+with super high accuracy, but the fit is fairly good and you can see the general trend that as the attention in this head rises, the probability of the two amino acids being in contact with each other also rises.
+
+03:05.521 --> 03:17.802
+So we can sort of confidently say that Bert has learned something about a higher level biological structure just from the language modeling objective.
+
+03:18.223 --> 03:19.385
+How can we interpret this?
+
+03:20.908 --> 03:28.761
+This must somehow mean that it is possible, it is vital to
+
+03:28.741 --> 03:33.609
+It is vital for reconstructing the sequence from its surroundings.
+
+03:33.649 --> 03:44.286
+So if we delete this right here, if these two are in contact in the 3D structure,
+
+03:44.266 --> 03:51.875
+That probably means that this thing right here is a very good predictor of what was here.
+
+03:52.575 --> 03:59.003
+If we mask this out and we're asked to reconstruct which amino acid was there, then it probably helps to look at its neighbors.
+
+03:59.203 --> 04:04.128
+It probably always helps to look at one's neighbors, especially also in natural language.
+
+04:04.689 --> 04:08.333
+But if these two are in contact,
+
+04:08.313 --> 04:13.503
+They have very special connection to each other.
+
+04:13.884 --> 04:18.653
+You can basically read out from this one which one this was.
+
+04:19.736 --> 04:29.595
+This is sort of like if you have a sentence and you say, does
+
+04:32.292 --> 04:46.032
+I don't know, I can't come up with one right now, but if it's like da-da-da-da-da, and then there is a name, like mark, and then da-da-da-da-da-da, and then there is him, right?
+
+04:46.553 --> 04:55.245
+And you would expect if I drop out, okay, let's do it the other way around, if I drop out him, then...
+
+04:55.225 --> 04:59.753
+from the text right here, you can probably determine that it is some sort of pronoun.
+
+05:00.074 --> 05:10.974
+But then you go back and you see, ah, it's Mark, okay, so it's not like it or she, it's probably he or him.
+
+05:13.359 --> 05:16.845
+This is sort of the analogous structure right here in biology.
+

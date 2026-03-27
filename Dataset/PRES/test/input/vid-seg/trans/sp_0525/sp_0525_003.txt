@@ -1,0 +1,3 @@
+After training, a diffusion model learns rich knowledge about data distribution, making them very valuable assets.
+And so we are motivated to study the approach to transferring knowledge from between different models to other generating models, especially the implicit generating models, or we can call it a generator.
+and the basic settings.

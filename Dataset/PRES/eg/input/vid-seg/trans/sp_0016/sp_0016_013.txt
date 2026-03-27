@@ -1,0 +1,2 @@
+I want to mention one thing about the architecture and in particular the attention mask.
+Here the attention mask is sharing information between the observed points or the context but not about the test location where we want to make predictions.

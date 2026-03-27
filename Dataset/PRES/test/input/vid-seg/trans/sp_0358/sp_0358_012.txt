@@ -1,0 +1,2 @@
+However, we know that the delayed PSBI is not sufficiently efficient in the high-dimensional settings.
+As a result, we resort to the approximate Bayesian inference methods.

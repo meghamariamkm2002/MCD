@@ -1,0 +1,158 @@
+WEBVTT
+
+00:01.010 --> 00:01.711
+Hello there.
+
+00:02.111 --> 00:04.074
+I hope you have all seen this.
+
+00:04.174 --> 00:07.438
+This is a new system by Facebook AI.
+
+00:07.878 --> 00:14.426
+And what you're seeing here is a visualization of the attention maps of that neural network.
+
+00:14.446 --> 00:16.589
+In the middle is a supervised baseline.
+
+00:17.009 --> 00:20.213
+And on the right is this new system called dyno.
+
+00:20.634 --> 00:27.642
+It's not as much a system as it is a methodology for unsupervised pre-training
+
+00:27.622 --> 00:55.536
+visual transformers and you can see that the system has neither been trained to learn what a dog is nor has it been trained to do any sort of segmentation yet if you look at the attention maps it clearly can track objects it knows what to pay attention to in the images and it can do much more than that so here you can see that it can sort of track
+
+00:55.516 --> 01:10.538
+objects behind occlusion, so the ship goes behind the waves, the horse goes behind the grass, and you can see in the attention map that this is well reflected.
+
+01:10.518 --> 01:12.521
+You can do more than that, though, even.
+
+01:12.901 --> 01:29.826
+So if you use this feature representation that this model gives you for ImageNet, then as the model gets trained and you represent ImageNet in its feature space, it will cluster the
+
+01:29.806 --> 01:57.197
+Same the images of the same class will cluster them together, which is already pretty cool because it has no labels at training time, but also it will cluster similar classes with each other, which you know speaks to the it kind of speaks to the fact that this might be the next step in unsupervised representation learning for images and
+
+01:57.177 --> 02:10.718
+Specifically, it appears that the features that come out of a network that is trained with dyno are extremely valuable for the kinds of things we, you know, we are interested in when working with natural images.
+
+02:11.239 --> 02:14.764
+So this is image retrieval.
+
+02:14.744 --> 02:16.727
+and classification.
+
+02:17.348 --> 02:20.754
+So this system, let's just switch over to the paper right here.
+
+02:21.215 --> 02:25.822
+The paper is called Emerging Properties in Self-Supervised Vision Transformers.
+
+02:25.962 --> 02:28.026
+It presents a system called Dino.
+
+02:28.507 --> 02:41.528
+It's by Mathilde Caron, Hugo Touvrand, Ishan Misra, Hervé Gégo, Julia Mayral, Piotr Boyanovsky, and Armo Joulin of Facebook Air Research, India, and Sorbonne University.
+
+02:41.508 --> 02:50.500
+You can see a bit more here in these pictures, where again, this is the self-attention.
+
+02:50.580 --> 02:59.753
+So the attention map from a vision transformer that was trained with dyno and no supervision.
+
+02:59.733 --> 03:00.194
+Okay.
+
+03:00.735 --> 03:13.400
+And you can clearly see that in all the cases, the attention falls on what you would consider as a human, the relevant things in the image.
+
+03:13.440 --> 03:20.273
+Now, I have my hypotheses, why this is the case, like completely without labels, and we'll see about that.
+
+03:20.253 --> 03:26.162
+But the representations that come out of the systems are really useful.
+
+03:26.283 --> 03:34.656
+For example, you can fine tune linear classifiers on top of these representations and that gives you really good image classifiers.
+
+03:34.816 --> 03:36.018
+They do that with ImageNet.
+
+03:36.459 --> 03:43.290
+You can use these for image retrieval because similar images are clustered together.
+
+03:43.270 --> 03:50.499
+use even do zero shot classification simply by doing a k nearest neighbor classifier in that feature space.
+
+03:51.180 --> 03:58.669
+And yeah, here you can also do some sort of proto image segmentation by looking at the attention maps.
+
+03:58.689 --> 04:02.653
+You don't even have to do something special to visualize this like you have to do in CNNs.
+
+04:03.174 --> 04:10.543
+The attention map directly gives you the sort of segmentation map or something pretty close to it.
+
+04:11.283 --> 04:27.598
+As an overview, the system dyno is simply a, they push the self-supervised learning and they specifically make the case that self-supervised and visual transformer, they go together really well.
+
+04:28.258 --> 04:33.503
+And they, as I said, the dyno is called self distillation with no labels.
+
+04:33.783 --> 04:36.185
+So that is dyno.
+
+04:37.006 --> 04:41.290
+And yeah, they push various kind of,
+
+04:41.270 --> 04:59.413
+metrics in in self supervised systems or, you know, then linear classifier trained on top of them, for example, 80.1% top one on ImageNet in linear evaluation with the with a visual transformer base.
+
+04:59.393 --> 05:03.780
+A quick overview over the system is right here.
+
+05:03.840 --> 05:10.890
+So two things they say are important next to all the other self-supervised systems.
+
+05:11.291 --> 05:15.076
+First of all, they have a kind of student teacher.
+
+05:15.116 --> 05:17.139
+That's the self-distillation part.
+
+05:18.021 --> 05:27.595
+The teacher is a momentum teacher, and it does this centering, and it also does sharpening in the softmax right here.
+
+05:27.575 --> 05:31.040
+And then there is no contrastive learning.
+
+05:31.080 --> 05:41.553
+There's no negative samples that the sharpening and the centering sort of take care of keeping the model from mode collapse or from collapsing.
+
+05:42.014 --> 05:43.115
+Also, there's no batch norm.
+
+05:43.536 --> 05:52.688
+So if those things don't don't mean anything to you, maybe stay tuned, we'll we'll discuss them in a bit more detail as we go through the paper.
+
+05:52.668 --> 06:05.128
+If you like paper summaries like this and other content, for example, our cooking video, feel free to share this out and tell your friends about it.
+
+06:05.228 --> 06:07.252
+By the way, the cooking video did terribly.
+
+06:07.492 --> 06:08.113
+I don't know why.
+
+06:09.575 --> 06:14.603
+I guess my YouTuber skills are just not on par.
+
+06:15.284 --> 06:16.587
+But yeah, I don't know.
+
+06:17.949 --> 06:19.992
+Yeah, if anyone has any ideas.
+

@@ -1,0 +1,37 @@
+is a model that simply detects these bounding boxes in single images.
+But now we consider the situation where we have a camera that records images for a long, long time.
+So in these wild trap cameras, they often sit there for months.
+And it's not that easy to make use of them because
+In addition to there being a lot of data, they have motion triggers.
+So that could be there is no nothing for a long time.
+And then there's the animal walks in the trap.
+And then you have a bunch of images, like one per second for 10 seconds.
+And then you have nothing again for like a day or two days.
+And then you have 10 images again, because another animal walks in or maybe doesn't and so on and another.
+So you have irregular sampling frequencies.
+You have very, very different distance between the frames.
+All of this makes it very, very not suited for models like temporal convolutions or things like LSTMs because
+they don't work super well with data like this.
+Now, I know there are formulations where LSTMs can do this, but they don't work very well with these super long contexts and irregular sampling frequencies and so on.
+So the idea is if we have a frame right here, like this one, and we want to detect what's on it, we should be able to pull information from other frames that the same camera has seen, like from this one, or from this one, or from this one right here.
+And we should be able to do so in a dynamic way.
+Now, why could that help?
+If you look at, for example, down here, these images have been taken, they say images were taken on separate days, but you can see this thing right here is in both images.
+So, or a very similar thing.
+is probably that bus's regular route.
+So in order to classify whether or not this here is a bus, it might be very helpful to also look at this picture right here and see, ah, you know, it's about at the same location, it looks the same and also it looks like a bus.
+So, you know, that kind of gives evidence that this could be, this other thing could also be a bus.
+Then also there are background objects.
+So sometimes the single frame detectors get confused.
+It might be labeling this here as a car, because just the lighting, the exact lighting in this picture is just off by the correct amount that it is confused.
+But considering this picture over here, maybe it recognizes here.
+No, that's not a car.
+It can bring over this evidence to that frame and and consider ah, maybe maybe you know, this is the same thing So it's it's not a car.
+So this is this is not the same than simply adding training data We really consider the fact here that these images they come from the same camera that is in the same location or maybe you know
+that is filming the same thing so this all of this is going to be within the same camera not just adding adding iid training data and with animals as well like often the same animal has like its regular route
+or within these 10, these burst of 10s, the same as animal will kind of walk around a bit and maybe, you know, here it's half occluded, but maybe in a different image you see, ah, here I see the nose.
+So it helps you make a better prediction.
+Also animals are often in kind of crowds and that helps if you see that there are other deer around.
+The probability that this is a deer increases rapidly.
+So how are we going to do this?
+What we're going to do is we're going to build an attention mechanism that can do these kinds of look into the past and also a little bit of the future as we will see, but mainly we'll look into other images from the same camera in a dynamic way and we'll learn how to address those other images from a memory bank.

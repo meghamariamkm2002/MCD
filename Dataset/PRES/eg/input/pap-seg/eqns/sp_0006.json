@@ -1,0 +1,208 @@
+{
+  "sp_0006_page_0001": {
+    "bboxes": [
+      {
+        "box": [
+          507.91802978515625,
+          1386.838134765625,
+          714.870849609375,
+          1430.22021484375
+        ],
+        "text": [
+          "\\mathbb { E } _ { \\mathbf { x } } \\big [ \\frac { \\partial ^ { | \\tau | } f ( \\mathbf { x } ) } { \\partial x _ { i _ { 1 } } \\partial x _ { i _ { 2 } } . . . \\partial x _ { i _ { k } } } \\big ] ^ { 2 } > 0 ,"
+        ],
+        "page": "sp_0006_page_0001",
+        "id": "sp_0006_page_0001-1",
+        "seg_type": "eq"
+      }
+    ]
+  },
+  "sp_0006_page_0003": {
+    "bboxes": [
+      {
+        "box": [
+          228.30592346191406,
+          914.16357421875,
+          995.0980224609375,
+          1039.4102783203125
+        ],
+        "text": [
+          "\\begin{array} { r l } & { f ( \\mathbf { x } ) = \\sum _ { \\Delta } \\mathbb { 1 } ( \\mathbf { x } \\in \\Delta ) \\cdot \\mathrm { R e L U } ( W _ { \\Delta , i } ^ { ( L ) } \\mathbf { x } + b _ { \\Delta , i } ^ { ( L ) } ) = \\sum _ { \\Delta } \\mathbb { 1 } ( \\mathbf { x } \\in \\Delta ) \\cdot \\mathrm { R e L U } ( \\frac { W _ { \\Delta , i } ^ { ( L ) } \\mathbf { x } + b _ { \\Delta , i } ^ { ( L ) } | | W _ { \\Delta , i } ^ { ( L ) } | | } { | W _ { \\Delta , i } ^ { ( L ) } | } ) } \\\\ & { \\qquad = \\sum _ { \\Delta } \\underbrace { \\mathbb { 1 } ( \\mathbf { x } \\in \\Delta _ { 1 } ) \\mathrm { d i s t } ( \\mathbf { x } , H _ { \\Delta , i , L } ) } _ { \\mathrm { a t e n i o n } } \\underbrace { | | W _ { \\Delta , i } ^ { ( L ) } | | } _ { \\mathrm { v a l u c o n } \\ \\Delta _ { 1 } } \\ \\ + \\ \\underbrace { \\mathbb { 1 } ( \\mathbf { x } \\in \\Delta _ { 2 } ) \\mathrm { d i s t } ( \\mathbf { x } , H _ { \\Delta , i , L } ) } _ { \\mathrm { a t e n i o n } } \\underbrace { \\mathrm { d o } } _ { \\mathrm { v a l u e \\; o n } } \\Delta _ { 2 } } \\end{array}"
+        ],
+        "page": "sp_0006_page_0003",
+        "id": "sp_0006_page_0003-1",
+        "seg_type": "eq"
+      }
+    ]
+  },
+  "sp_0006_page_0004": {
+    "bboxes": [
+      {
+        "box": [
+          357.1097106933594,
+          512.1421508789062,
+          869.3418579101562,
+          630.3630981445312
+        ],
+        "text": [
+          "\\begin{array} { r l } & { a _ { \\Delta } ( \\mathbf x ) = \\qnmid ( \\mathbf x \\in \\Delta ) \\prod _ { H \\in \\mathcal { H } _ { \\Delta } } \\operatorname* { m i n } ( \\mathrm { d i s t } ( \\mathbf x , H ) , \\frac { 2 U _ { H } } { | | W _ { H } | | } ) } \\\\ & { \\qquad = \\! \\prod _ { H \\in \\mathcal { H } _ { \\Delta } } \\, \\mathbb { 1 } ( W _ { H } \\mathbf x + b _ { H } \\geq 0 ) \\operatorname* { m i n } ( \\mathrm { d i s t } ( \\mathbf x , H ) , \\frac { 2 U _ { H } } { | | W _ { H } | | } ) } \\\\ & { \\qquad = \\! \\prod _ { H \\in \\mathcal { H } _ { \\Delta } } \\, \\operatorname* { m a x } \\left( \\operatorname* { m i n } \\left( \\frac { W _ { H } \\mathbf x + b _ { H } } { | | W _ { H } | | } , \\frac { 2 U _ { H } } { | | W _ { H } | | } \\right) , 0 \\right) , } \\end{array}"
+        ],
+        "page": "sp_0006_page_0004",
+        "id": "sp_0006_page_0004-1",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          413.40283203125,
+          1367.2705078125,
+          790.4119262695312,
+          1395.470458984375
+        ],
+        "text": [
+          "\\begin{array} { r } { f _ { P A M } ( \\mathbf { x } ) = V ( \\mathbf { x } ; \\theta _ { G } ) + \\sum _ { \\Delta } a _ { \\Delta } ( \\mathbf { x } ) V ( \\mathbf { x } ; \\theta _ { \\Delta } ) , } \\end{array}"
+        ],
+        "page": "sp_0006_page_0004",
+        "id": "sp_0006_page_0004-2",
+        "seg_type": "eq"
+      }
+    ]
+  },
+  "sp_0006_page_0005": {
+    "bboxes": [
+      {
+        "box": [
+          438.65948486328125,
+          594.6492309570312,
+          784.4832763671875,
+          658.8327026367188
+        ],
+        "text": [
+          "\\begin{array} { r l } & { \\Delta _ { n _ { L } } = \\{ \\mathbf x \\in \\Delta _ { n } | \\; W _ { n } \\mathbf x + b _ { n } \\geq - U _ { n } \\} , } \\\\ & { \\Delta _ { n _ { R } } = \\{ \\mathbf x \\in \\Delta _ { n } | \\; - W _ { n } \\mathbf x - b _ { n } \\geq - U _ { n } \\} , } \\end{array}"
+        ],
+        "page": "sp_0006_page_0005",
+        "id": "sp_0006_page_0005-1",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          225.74844360351562,
+          936.9879150390625,
+          977.1915283203125,
+          974.3609619140625
+        ],
+        "text": [
+          "\\begin{array} { r } { a _ { n } ( \\mathbf x ) = \\prod _ { i \\in \\mathcal { P } _ { n } ^ { l } } \\operatorname* { m a x } ( \\operatorname* { m i n } ( \\frac { W _ { i } \\mathbf x + b _ { i } + U _ { i } } { | | W _ { i } | | } , \\frac { 2 U _ { i } } { | | W _ { i } | | } ) , 0 ) \\prod _ { i \\in \\mathcal { P } _ { n } ^ { r } } \\operatorname* { m a x } ( \\operatorname* { m i n } ( \\frac { - W _ { i } \\mathbf x - b _ { i } + U _ { i } } { | | W _ { i } | | } , \\frac { 2 U _ { i } } { | | W _ { i } | | } ) , 0 ) , } \\end{array}"
+        ],
+        "page": "sp_0006_page_0005",
+        "id": "sp_0006_page_0005-2",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          269.231201171875,
+          842.153076171875,
+          954.6702880859375,
+          872.3297119140625
+        ],
+        "text": [
+          "\\begin{array} { r } { \\Delta _ { n } = \\{ \\mathbf x \\in \\mathbb R ^ { p } : \\ W _ { i } \\mathbf x + b _ { i } \\geq - U _ { i } , \\forall i \\in \\mathcal P _ { n } ^ { l } , \\ \\mathrm { a n d } \\ - W _ { j } \\mathbf x - b _ { j } \\geq - U _ { j } , \\forall j \\in \\mathcal P _ { n ^ { r } } \\} . } \\end{array}"
+        ],
+        "page": "sp_0006_page_0005",
+        "id": "sp_0006_page_0005-3",
+        "seg_type": "eq"
+      }
+    ]
+  },
+  "sp_0006_page_0006": {
+    "bboxes": [
+      {
+        "box": [
+          414.53033447265625,
+          427.7645568847656,
+          810.9483032226562,
+          461.76641845703125
+        ],
+        "text": [
+          "\\begin{array} { r } { f _ { P A M } ( \\mathbf { x } ) = V ( \\mathbf { x } , \\theta _ { G } ) + \\sum _ { n \\in \\mathcal { S } _ { \\Delta } ^ { - } } a _ { n } ( \\mathbf { x } ) V ( \\mathbf { x } , \\theta _ { n } ) } \\end{array}"
+        ],
+        "page": "sp_0006_page_0006",
+        "id": "sp_0006_page_0006-1",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          251.66339111328125,
+          1310.989501953125,
+          599.5852661132812,
+          1359.6220703125
+        ],
+        "text": [
+          "\\begin{array} { r } { \\phi _ { \\mathbb { Z } } ( \\mathbf { x } ) = \\left\\{ g ( \\mathbf { 0 } ^ { - \\frac { \\gamma } { 2 } } \\odot \\mathbf { x } ) - \\sum _ { \\mathbb { Z } ^ { \\prime } \\subset \\mathbb { Z } } \\phi _ { \\mathbb { Z } ^ { \\prime } } ( \\mathbf { x } ) , \\ \\ \\mathbb { Z } \\neq \\emptyset , \\right. } \\\\ { \\left. g ( \\mathbf { 0 } ) , \\ \\ \\right. } \\end{array}"
+        ],
+        "page": "sp_0006_page_0006",
+        "id": "sp_0006_page_0006-2",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          224.2218780517578,
+          527.218017578125,
+          981.3245849609375,
+          560.6802368164062
+        ],
+        "text": [
+          "\\begin{array} { r } { a _ { n } ( \\mathbf x ) = \\prod _ { i \\in \\mathcal { P } _ { n } ^ { l } } \\operatorname* { m a x } ( \\operatorname* { m i n } ( W _ { i } \\mathbf x + b _ { i } + U _ { i } , 2 U _ { i } ) , 0 ) \\prod _ { i \\in \\mathcal { P } _ { n } ^ { r } } \\operatorname* { m a x } ( \\operatorname* { m i n } ( - W _ { i } \\mathbf x - b _ { i } + U _ { i } , 2 U _ { i } ) , 0 ) . } \\end{array}"
+        ],
+        "page": "sp_0006_page_0006",
+        "id": "sp_0006_page_0006-3",
+        "seg_type": "eq"
+      }
+    ]
+  },
+  "sp_0006_page_0007": {
+    "bboxes": [
+      {
+        "box": [
+          412.78302001953125,
+          637.7184448242188,
+          807.9989013671875,
+          680.9406127929688
+        ],
+        "text": [
+          "| | f | | _ { W ^ { n , \\infty } ( [ 0 , 1 ] ^ { p } ) } = \\operatorname* { m a x } _ { \\mathbf { n } : | \\mathbf { n } | \\leq n } e s s \\operatorname* { s u p } _ { \\mathbf { x } \\in [ 0 , 1 ] ^ { p } } | D ^ { n } f ( \\mathbf { x } ) | ,"
+        ],
+        "page": "sp_0006_page_0007",
+        "id": "sp_0006_page_0007-1",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          471.0813293457031,
+          1169.4796142578125,
+          752.768798828125,
+          1199.39794921875
+        ],
+        "text": [
+          "P r ( f _ { P A M } \\left( \\mathbf { x } \\right) = f _ { D N N } ( \\mathbf { x } ) ) \\rightarrow 1 ."
+        ],
+        "page": "sp_0006_page_0007",
+        "id": "sp_0006_page_0007-2",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          389.87213134765625,
+          935.2715454101562,
+          833.8951416015625,
+          962.4918823242188
+        ],
+        "text": [
+          "F _ { n , p } = \\{ f \\in \\mathcal { W } ^ { n , \\infty } ( [ 0 , 1 ] ^ { p } ) : | | f | | _ { \\mathcal { W } ^ { n , \\infty } } ( [ 0 , 1 ] ^ { p } ) \\leq 1 \\} ."
+        ],
+        "page": "sp_0006_page_0007",
+        "id": "sp_0006_page_0007-3",
+        "seg_type": "eq"
+      }
+    ]
+  }
+}

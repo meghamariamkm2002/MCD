@@ -1,0 +1,80 @@
+WEBVTT
+
+00:00.031 --> 00:03.036
+the same network, but that it does not work.
+
+00:04.077 --> 00:08.604
+So if you don't have negative samples, your main goal is to avoid what's called collapse.
+
+00:09.285 --> 00:14.674
+If the network just maps everything to the same representation, then it always wins, right?
+
+00:14.834 --> 00:20.082
+It always is like, well, you know, okay, the two things are the same, because everything's the same.
+
+00:20.062 --> 00:21.666
+you don't want that.
+
+00:22.308 --> 00:25.075
+So a trick is to have two different models.
+
+00:25.596 --> 00:28.143
+One you call the student and one you call the teacher.
+
+00:28.223 --> 00:33.316
+And they're called student and teacher because from distillation.
+
+00:33.737 --> 00:35.522
+So in distillation,
+
+00:35.907 --> 00:38.591
+what you usually have is you have a data set.
+
+00:39.493 --> 00:44.401
+And then you train a big model, which is the teacher.
+
+00:45.703 --> 00:54.777
+And now what you want to do is you want to make you want to make that model maybe smaller, right, such that it runs on a mobile phone.
+
+00:54.757 --> 00:56.258
+And that's then the student.
+
+00:56.859 --> 01:09.972
+And there is a procedure where you take the data set and you take the teacher model and you sort of transfer the knowledge from the teacher model to the student model while using, you can use the data set to do so.
+
+01:10.312 --> 01:13.656
+And that usually works better than training the student model from scratch.
+
+01:14.136 --> 01:16.819
+It's very interesting why that even works.
+
+01:17.119 --> 01:20.022
+But this process is called distillation.
+
+01:21.436 --> 01:23.499
+So that's why it's called teacher and student.
+
+01:24.621 --> 01:27.726
+However, in this case, it's kind of a self distillation.
+
+01:27.746 --> 01:30.651
+So the teacher and the student, they're not big or small.
+
+01:30.691 --> 01:32.354
+They're the same architectures.
+
+01:32.854 --> 01:36.520
+In fact, we only train the student.
+
+01:37.322 --> 01:38.143
+Okay.
+
+01:38.163 --> 01:41.949
+And the teacher is made from the student.
+
+01:42.009 --> 01:44.653
+So here is where the terms break down a bit.
+
+01:45.054 --> 01:50.042
+Like, so in the distillation sense, the teacher is the teacher in the distillation.
+

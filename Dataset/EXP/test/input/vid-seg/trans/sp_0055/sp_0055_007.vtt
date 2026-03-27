@@ -1,0 +1,35 @@
+WEBVTT
+
+00:00.031 --> 00:01.693
+you've decided on a subdivision.
+
+00:03.074 --> 00:05.697
+Let's say you decided on this one right here.
+
+00:05.797 --> 00:09.421
+You say, I want to pass through that point on my way to the goal.
+
+00:10.202 --> 00:16.409
+Now you have to subdivide that in this sub problem into two problems.
+
+00:16.629 --> 00:19.272
+Again, every possible black square.
+
+00:19.292 --> 00:23.176
+I'm not saying which one is a good thing to subdivide the problem.
+
+00:23.537 --> 00:26.460
+I'm just asking what is a possible candidate.
+
+00:26.440 --> 00:33.089
+every single black square here is a possible candidate for a path from here to here.
+
+00:34.250 --> 00:38.035
+And again, for this particular subproblem, you have to do the same thing.
+
+00:38.356 --> 00:54.557
+So the search tree here, even though we said before, this one is very deep, and this one is probably only log 2D deep,
+
+00:54.537 --> 00:59.063
+its width is going to be enormous and
+

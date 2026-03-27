@@ -1,0 +1,107 @@
+WEBVTT
+
+00:00.031 --> 00:05.498
+The second thing we're looking at is these binding sites.
+
+00:05.558 --> 00:17.213
+Now these are single properties of different amino acids and we're simply looking at all the other tokens that focuses their attention.
+
+00:17.393 --> 00:18.595
+Why is this important?
+
+00:18.695 --> 00:26.044
+Because these binding sites are central to the structure or to the function of the protein.
+
+00:26.245 --> 00:28.047
+If this here is a binding site,
+
+00:28.027 --> 00:31.735
+then that's a very central important point of the protein.
+
+00:32.657 --> 00:39.311
+So a lot of these other things are going to be determined by what this binding site is.
+
+00:40.072 --> 00:47.588
+This binding site needs to have a very particular function and therefore probably needs to be a very particular amino acid.
+
+00:47.568 --> 00:54.478
+And the other things here are sort of supporting this binding site because they form the 3D structure around it and so on.
+
+00:54.498 --> 01:01.488
+So you would expect a lot of attention to be put on this binding site.
+
+01:01.508 --> 01:02.549
+And what do we find?
+
+01:04.011 --> 01:08.277
+We find that it's a bit more murky than before.
+
+01:08.257 --> 01:11.984
+So, you can see that the attention is kind of spread out.
+
+01:12.485 --> 01:15.530
+Percentage of each head's attention that focuses on binding sites.
+
+01:15.971 --> 01:21.922
+Especially in the deeper layers, binding sites are targeted at much higher frequency than would occur by chance.
+
+01:22.643 --> 01:26.991
+Head 7.1 has the highest percentage, with 34%.
+
+01:27.798 --> 01:39.696
+So also here, you can see that it is spread out, but this is because multiple heads are now focusing on these binding sites, because probably binding sites come in different variations.
+
+01:40.076 --> 01:44.764
+So you'll have lots of heads specializing on attending to binding sites.
+
+01:45.124 --> 01:48.930
+And they say it is much higher frequency than would occur by chance.
+
+01:49.010 --> 01:56.421
+And you can see here, this head is the highest with 34% of its attention focused on binding sites.
+
+01:56.401 --> 02:05.373
+You can also see the general trend of the attention being rather in the later layers, which we would expect from a tertiary structure.
+
+02:06.094 --> 02:10.019
+Now, yeah, it would be interesting here.
+
+02:10.480 --> 02:16.047
+Here you also see that actually most of the things are in the last layer.
+
+02:16.027 --> 02:25.025
+which points to points to rather maybe lower lower level information, because we reasoned before about the last layer, or I was just wrong.
+
+02:25.365 --> 02:35.385
+But also in a general trend, you can see that the attention is rather shifted towards the later layers, because this is sort of a higher order function.
+
+02:37.255 --> 02:37.656
+Okay.
+
+02:38.377 --> 02:45.748
+If you look at the same calibration experiment, you can see that the picture is not as clear.
+
+02:45.808 --> 02:49.313
+There is the general trend at the beginning, but then it sort of flattens out.
+
+02:49.734 --> 02:58.808
+So you can sort of differentiate the very probably not a binding site from the somewhat probably a binding site.
+
+02:58.788 --> 03:01.973
+but it's not a perfectly calibrated classifier.
+
+03:02.333 --> 03:08.562
+And that might just be because there are many things specializing in different types of binding sites.
+
+03:08.842 --> 03:10.905
+So you can't just go to this one head.
+
+03:10.945 --> 03:12.828
+So this is just for this one head.
+
+03:13.890 --> 03:26.027
+You can't just go to that one and expect that to classify all the binding sites because you might want to combine all of the high ranking ones here.
+
+03:27.897 --> 03:29.150
+to form a classifier.
+

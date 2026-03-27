@@ -1,0 +1,21 @@
+start	end	text
+31	10564	But when they do this, they do outperform the current or the single frame baselines by quite a bit.
+10945	23220	So this SS and this CCT are these wildlife data sets, whereas this CC, I think this is the city, something city cam, these are this street data set.
+23200	28711	As you can see, they do outperform the single frame baseline and buy quite a bit.
+29472	42357	Now, interesting, as you can see right here, as they increase the time horizon of this long term memory, so they can now choose how much information do they want to put in that long term memory.
+42337	60417	As they increase the time horizon for one minute, one hour, one day, and so on, the performance goes up and up and up, which is a strong indication that these features actually help from the time horizon because you don't have more parameters.
+61077	67264	You simply increase the amount of information in the memory bank and
+68459	78427	If the performance goes up, you can make a very strong claim that this is actually due to the fact that you have more information in that memory bank.
+78849	83582	Couldn't really guess any other explanation right here.
+85148	88594	They do investigate different memory strategies.
+88614	95366	They do a lot of ablations right here, where they also say, okay, what if we only have the short-term attention?
+95786	97770	What if we only have the long-term attention?
+97890	106465	What do only, if we only have self-attention, that means attention only into the current frame, but across regions of interest.
+106605	109570	That's interesting if you have like a herd of animals and so on.
+109550	110692	and they all help.
+110932	116841	But as you can see, the long-term attention tends to help the most in this data set.
+118123	124272	And the short-term attention helps a lot in this data set if you just compare to the other owner.
+124392	127437	These are two different metrics, not data sets.
+127697	129079	Sorry about that.
+129260	134427	But in essence, it helps the most when you combine the two.
+135289	138814	And that's pretty cool to see.

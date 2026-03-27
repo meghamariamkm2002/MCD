@@ -1,0 +1,112 @@
+1
+00:00:00,031 --> 00:00:02,615
+problem formulation as they see it.
+
+2
+00:00:04,979 --> 00:00:10,889
+The entire problem formulation is you want to find these best meta learning parameters.
+
+3
+00:00:11,930 --> 00:00:13,413
+And they call this the outer level.
+
+4
+00:00:13,934 --> 00:00:21,666
+So on an outer level, you want to run gradient descent to find the best meta learning parameters to minimize this function f right here.
+
+5
+00:00:22,488 --> 00:00:24,030
+Now what is f?
+
+6
+00:00:24,010 --> 00:00:28,374
+F is the average of the validation loss function.
+
+7
+00:00:28,434 --> 00:00:33,940
+So here this is the loss function on the test sets of the individual tasks.
+
+8
+00:00:33,960 --> 00:00:52,718
+And the neural network that we evaluate on the test set is the neural network that is trained, the algorithm is trained on the training set of that particular task while starting from these parameters theta.
+
+9
+00:00:52,698 --> 00:00:56,584
+Now you see there is no dependence on the task here.
+
+10
+00:00:56,604 --> 00:01:02,633
+There is no I down here for these meta parameters because these are always the same, right?
+
+11
+00:01:02,653 --> 00:01:03,675
+That's the crucial point.
+
+12
+00:01:04,196 --> 00:01:12,208
+All the tasks start from the same initial parameters, then they optimize on their own training data set.
+
+13
+00:01:12,188 --> 00:01:15,372
+And then they evaluate on their own test data set.
+
+14
+00:01:15,913 --> 00:01:19,497
+And that will give you the loss for that particular task.
+
+15
+00:01:19,557 --> 00:01:28,288
+And your goal is to find the meta parameters such that this function here, the average loss that results from this procedure is minimal.
+
+16
+00:01:29,690 --> 00:01:30,031
+Okay.
+
+17
+00:01:30,992 --> 00:01:35,918
+So where they say, um,
+
+18
+00:01:37,670 --> 00:01:41,516
+right here, the inner level is this algorithm component.
+
+19
+00:01:41,536 --> 00:01:49,849
+So the algorithm starts from these meta parameters and runs gradient steps on the training dataset loss.
+
+20
+00:01:50,270 --> 00:01:53,815
+Now, this is just the first step right here of this procedure.
+
+21
+00:01:54,336 --> 00:02:00,606
+Of course, in the next step, these are going to be replaced by the phi that
+
+22
+00:02:00,586 --> 00:02:03,450
+by the phi i that results from the previous step.
+
+23
+00:02:03,470 --> 00:02:10,459
+So the first step is run on the met parameters and then subsequently the task specific parameters are updated.
+
+24
+00:02:11,380 --> 00:02:20,812
+The important thing here is that this doesn't need to be gradient descent actually with their method because their method doesn't need to back propagate through the optimization.
+
+25
+00:02:21,233 --> 00:02:25,278
+You can think of any inner optimization procedure that you want.
+
+26
+00:02:25,318 --> 00:02:29,023
+It can be like a black box solver, whatever you want.
+
+27
+00:02:29,003 --> 00:02:37,228
+I'm going to be just interesting to see how this is going to affect something like reinforcement learning and so on.
+
+28
+00:02:37,248 --> 00:02:40,043
+This might have already happened and I have not looked.
+

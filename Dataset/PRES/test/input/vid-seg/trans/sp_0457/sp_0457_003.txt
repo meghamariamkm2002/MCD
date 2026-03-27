@@ -1,0 +1,11 @@
+companies.
+So the motivation of our works comes from the application of zero-order optimization in vertical federated learning.
+So the most common vertical federated learning frameworks showed in sub-Figure A use first-order automatizations, which has several severe problems.
+So first is that the transmission of partial derivative has a risk of a privacy leakage.
+and therefore to protect the privacy, extra privacy protection scheme should be added, which will reduce the communication efficiency and computational efficiency.
+A recent work on zero-order optimization, which showed in subfigure B, enhanced the privacy protection by concealing the gradient information.
+However,
+Two significant problems of applying zero-order optimization in VFL has yet to be solved.
+There's a first slow convergence rate limited by the global model size.
+And second is the privacy partition of zero-order optimization has not been theoretically expanded.
+And we solved both problems and propose a unified solution.

@@ -1,0 +1,66 @@
+jump in.
+So they basically make a point of saying that machine learning doesn't happen in just one thing.
+It's not like sklearn.fit anymore.
+It is more of a pipeline.
+So what do we mean by this?
+If you have, if you think of something like you want to train an ImageNet model, what you want to do is you have like your data set somewhere.
+And that could be on in a database, it could be in the network somewhere.
+So if you have even something larger than ImageNet, you'll probably store it on a central server on an Amazon bucket somewhere.
+So this is in AWS.
+And the first thing you actually need to do is you need to read that data set.
+Now, usually you're not going to have enough memory on a machine to just load in the entire data set into memory.
+So that means this process here is streaming.
+So this is continuously streaming data points.
+And once you have used the data point, you're going to throw it away because you need space for the next one.
+And so the streaming is done continuously.
+The next process is read and decode.
+That means you have to read it from the network and actually bring it into a format where you can use it, usually something like an umpire array or a TensorFlow tensor.
+You need to apply some shuffling because usually you can't really trust the order that it is stored in.
+Often times there is a bias in the ordering, so you need some sort of a shuffle buffer here.
+Then often you want to apply some data augmentation to it.
+That means that you have one image.
+And we know for these models, if this is your cat, we know for these models that what can help is to basically make many, many different images from one image.
+So this could be by cropping part of it and saying, well, if it was a cat before the small upper right part here is still a cat.
+So this is one date, it's called data augmentation.
+and you're gonna apply a whole bunch of these things.
+So you can crop, you can rotate the image a bit, it's still a cat, right?
+And you can also change its luminance and a bit of its colors, you can jitter the colors, you can horizontally flip it and it'll still be a cat.
+And that's basically how you make many data points from one data point.
+And we know that helps.
+Then what you want to do is you want to batch this data.
+So you want to put it into mini batches.
+Since you've shuffled here, that means when the next time the same data point comes along, it's going to be batched with a different group of images and of course augmented differently.
+with a different group of images and that basically means it's a different training batch for the model.
+So this entire pipeline is basically a way that we take data points that we have and we make a whole bunch of variations and various groupings and batchings of it.
+And we know that helps enormously with the generalization capability of your final models.
+And then here you do your apply your SGD update.
+So that's usually where you forward propagate your data through your network, which here is F, you'll get like some Y hat as an output.
+And then you have your labels that also come through the pipeline.
+And you have some sort of loss function L that takes both as an input and gives you an output.
+And then you do your back propagation.
+So the back propagation would go through your loss function through your network and update the network parameters.
+search that your network learned something.
+Now this step to the right here is usually what we focus on when we do deep learning.
+The step on the right here, all of this, this can be done on a GPU or is usually done on something like a GPU or a TPU.
+But these things are getting faster and faster.
+The point the paper makes is that the TPUs and GPUs of the world are getting faster.
+But this entire other thing right here, this is basically CPU land.
+Now, I know there is some data augmentation now happening on the GPU and so on.
+But in essence, you can think of a pipeline where the thing to the left is happening on CPU and the thing to the right is happening on TPU.
+And even worse, let's say, the speed is continuously increasing.
+So in your pipeline, the kind of speed would be... So here is the network reading.
+And here over here is the GPU SGD step.
+And this is speed.
+Basically, the further to the right in your pipeline you go, the faster your hardware gets.
+And that means that if this is a continuous pipeline, right?
+That basically means that if I input something here,
+It goes through the pipeline.
+And even if this is all running in parallel, this thing over here is going to idle.
+Since this is the fastest part of the pipeline, it is going to just idle a lot.
+Because it can only consume things as fast as this thing can produce.
+Now, if you have some sort of a multi GPU machine and just train ImageNet, like you just run the code, usually, this is not the bottleneck.
+Usually, your GPUs here are at 100% capacity.
+So this paper is not for you.
+But if you are, let's say, a big company, have this network storage, have a big data set, have very expensive data augmentation,
+This happens, for example, this can happen in NLP and so on.
+This can be quite your situation where the earlier in the pipeline, the slower it is.

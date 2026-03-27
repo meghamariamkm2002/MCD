@@ -1,0 +1,84 @@
+1
+00:00:00,031 --> 00:00:01,293
+Hi there.
+
+2
+00:00:01,313 --> 00:00:11,868
+Today we'll look at distributed representations of words and phrases and their compositionality by Thomas Mikolov, Ilya Sotskyver, Kai Chen, Greg Corrado and Jeffrey Dean.
+
+3
+00:00:12,449 --> 00:00:14,672
+This is another historical paper.
+
+4
+00:00:14,872 --> 00:00:16,254
+It's one of three papers.
+
+5
+00:00:16,354 --> 00:00:20,540
+It's the middle one that introduces the original word-to-vec algorithm.
+
+6
+00:00:21,041 --> 00:00:24,165
+And if you, as you might know, word-to-vec
+
+7
+00:00:24,145 --> 00:00:39,607
+was extremely influential in NLP since this paper, basically until recently, where it's sort of gone out of fashion a bit in research with the rise of things like Elmo and Bert, but it's still very, very relevant.
+
+8
+00:00:40,088 --> 00:00:46,677
+So we'll look at this historical paper today with kind of the hindsight of being a couple years into the future, in fact,
+
+9
+00:00:46,657 --> 00:00:48,140
+as you see right here.
+
+10
+00:00:48,540 --> 00:00:50,023
+This was released in 2013.
+
+11
+00:00:50,965 --> 00:00:53,089
+So it's seven years later now.
+
+12
+00:00:53,690 --> 00:00:58,759
+And we'll look back and we'll see what they said back then about the system.
+
+13
+00:00:58,779 --> 00:01:05,391
+This is not going to be like a very, you know, well-enhanced PowerPointy presentation of how we're to vex
+
+14
+00:01:05,438 --> 00:01:05,919
+works.
+
+15
+00:01:06,499 --> 00:01:09,604
+We're going to look at the paper and read it together.
+
+16
+00:01:09,924 --> 00:01:16,232
+If you like content like this, if you like historical paper readings, let me know in the comments.
+
+17
+00:01:17,073 --> 00:01:18,375
+Share it out if you do like it.
+
+18
+00:01:18,636 --> 00:01:28,449
+And of course, subscribe, because these kind of historical papers, I enjoy them, but many people might already know what these things are.
+
+19
+00:01:28,569 --> 00:01:29,590
+So yeah.
+
+20
+00:01:30,532 --> 00:01:38,208
+Okay, let's, you know, go through the paper and pick up their ideas and kind of put them in context.
+
+21
+00:01:38,889 --> 00:01:49,992
+They say the recently introduced continuous skip gram model is an efficient method for learning high quality distributed vector representations that capture a large number of precise syntactic and semantic
+

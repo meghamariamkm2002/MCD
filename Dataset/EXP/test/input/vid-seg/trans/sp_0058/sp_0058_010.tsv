@@ -1,0 +1,15 @@
+start	end	text
+31	30038	the paper we started with the notion of info states and info states are kind of like states in classic reinforcement learning and we determined that we can't really use the sort of alpha zero way of doing things because the value of info states not only depends on downstream things but also on upstream things and the values here yeah that makes the values at the end of the tree not constant
+30018	35166	And that means we can't really use that as we saw in this poker thing.
+35947	47925	Then we converted the game from an info state representation to a public belief state representation, where now it's again a everyone knows everything game.
+49070	52736	Therefore, we could use the alpha zero way of doing things.
+53197	63435	However, since these states and the actions are so large because it consists of these giant tables of numbers, we can't use the alpha zero for computational reasons.
+63956	66741	Luckily, they find a way to connect
+66721	84763	the value function of public belief states to the value functions of info states and therefore we can use a solver in the classic in the discrete representation to approximate or to
+84743	93244	to use in this search procedure, as long as we run it multiple times and sort of keep updating its values.
+94206	102567	By doing that, we can use this in this self play, simply iteratively doing this in each step, and
+102547	114925	We can use bootstrapping and play, as we said, self-play between two agents, and that will provably converge to a good value function and to an ash equilibrium.
+116307	117889	All right, that was the paper.
+118110	119011	Thanks for listening.
+119492	120213	I'll see you next time.
+120533	120994	Bye-bye.

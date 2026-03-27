@@ -1,0 +1,38 @@
+start	end	text
+31	5419	for poker, because that's what they discuss in the broader impact statement.
+5439	8584	So let's quickly look at broader impact, then we're done.
+9406	17398	So just to say I love this broader impact statement, it is, it describes like
+17378	18839	it praises the paper.
+18879	21422	So it's kind of more advertisement for the paper.
+22403	27988	It does almost like no harm to the paper itself, to its reputation.
+29029	30610	It is actually accurate.
+30670	42942	So this broader impact statement actually makes tangible predictions and it doesn't go beyond the, or it mostly doesn't go beyond the tangible things you can say about this algorithm.
+43302	44483	And it actually
+45087	49236	has as a conclusion an action that they take.
+49777	58156	So, and further, it is nothing like what the original specification of broader impact statement says.
+58517	60581	And that makes me happy.
+61002	63568	So good job on this one.
+64797	79883	We believe Rebel is a major step towards general agreement finding algorithm, yada yada yada, so they say if this is good because many things are, sorry, sort of these kind of games, if you can extend it to multi-agent and so on.
+79903	84171	So this is the technology good section, but then the bad section is interesting.
+84531	89640	The most immediate risk posed by this work is its potential for cheating in recreational games such as poker.
+89620	100865	While a algorithm already exists, they say why they're better, why this particular algorithm could be used for cheating, where the others can't be done so easily.
+101226	106498	By the way, this algorithm, by nature of performing this search is over and over again.
+106478	108282	It needs a lot of compute.
+108763	110086	Like it needs a lot of compute.
+110106	111309	The learning isn't the problem.
+111349	115337	The problem is performing these searches over and over and over again.
+115378	119466	Yeah, so it's not super easy to replicate.
+119507	121551	Like don't try this at home.
+122071	127943	However, if they were to release the pre-trained network, that would make it easy.
+128404	134076	And they also say if they release the code, that would maybe make it easier to cheat if you can simply run.
+134136	140569	Maybe you don't have the hardware, but given massive poker winnings, who knows.
+141477	148007	Retraining the algorithms to account for arbitrary cheek size requires more computational as feasible in real time.
+148147	149509	That's about the other algorithms.
+149830	155418	However, Rebel can compute a policy for arbitrary stack size and arbitrary bet size in seconds.
+155839	156960	So that's at inference time.
+157481	161607	Partly for this reason, we have decided to not to release the code for poker.
+162048	167957	We instead open-sourcer implementation for Liars Dice Recreational Game that is not played competitively by humans.
+168697	174246	Okay, so it's a concrete prediction of the impact of this work.
+175107	193375	It has a concrete action to kind of its conclusion, and it doesn't dabble in who knows if we now solve these two player imperfect information games, then surely in the future bombs will fly and stuff like this.
+194056	196560	Yeah, good job on this again.
+196540	200037	All right, so this was the overview of

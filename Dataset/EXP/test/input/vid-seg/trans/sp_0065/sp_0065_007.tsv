@@ -1,0 +1,24 @@
+start	end	text
+31	2040	or what I call the alignment problem.
+2522	7223	So if you take a piece of text like this entire paragraph right here,
+8570	9872	Let's look at this paragraph.
+10413	14138	This paragraph to read it out takes like 30 to 60 seconds.
+14739	19466	You can train really models that output this long of sound.
+19606	22250	It would be, it would be too big of a sample.
+22350	24173	You want to train ideally on segments.
+24493	31363	They train segments that are, I believe here, two second windows from each examples.
+31984	38273	So because they say if we train on 20 seconds, that would just be wasteful and prohibitively expensive.
+39451	58793	Now the problem, of course, is if I simply take a window here, like this one, of two seconds, and I have my human that has read this entire paragraph in one go, I have no clue, again, which part of the entire sound wave of this paragraph.
+58773	80562	this this subsequence corresponds to a good guess would be to go like well this is about 50% in so maybe here to here maybe who knows okay and even within that and that's what we discussed before you have no clue how long this word here is going to take up within this piece of sound
+80542	83609	And that's the general alignment problem right here.
+83990	93192	So in this entire sound wave, where is the piece and how do these words distribute across the wave of sound?
+94094	96981	The original model had, as I understand it,
+96961	102690	such alignments and therefore this generator could work really well because you had these alignments.
+102730	105735	Without these alignments it doesn't work as well.
+106095	113367	And you can, on their website that I've shown you initially, you can listen to samples where they disable each of these things.
+113347	119881	So this generator is really good at producing sound when it has these alignments.
+120202	125153	So the challenging task here is how do you compute these alignments?
+125273	131908	How do you compute this thing if you don't have it, if you don't have it in your training data?
+132970	134414	So it needs to be part of the loss.
+135175	137921	So that's what this entire architecture down here is.
+138643	140046	All right, so the text is

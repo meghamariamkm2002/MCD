@@ -1,0 +1,3 @@
+To conclude, we studied a posterior sampling with the episode of delayed feedback in linear MDPs.
+We introduced two value-based algorithms, namely delayed PSVI and delayed LPSVI, which achieved the high probability worst case regret bomb.
+By incorporating LMC, we also reduced the computational overhead.

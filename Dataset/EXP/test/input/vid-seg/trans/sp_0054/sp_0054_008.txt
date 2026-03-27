@@ -1,0 +1,21 @@
+They also do scale invariant fine-tuning where if they fine-tune, which is where you take this model you trained with mask language modeling and then you fine-tune it to NLP tasks, they have a bunch of tricks there like virtual adversarial training and normalizing the embeddings before they do that and that apparently helps a lot.
+But they also say they leave the comprehensive study of this for future work.
+For now, they just want to get the good number.
+And which is understandable because you get published.
+Um, all right.
+So here you can see, uh, actually we can, we can skip most of the tables.
+They are better.
+They are better.
+They are better.
+They're better in language modeling too, which is interesting.
+So you can do kind of bird style denoising, but in classification, you can also do actually other regressive language model, which is pretty cool.
+So here they do an ablation study of the different components where they remove this enhanced the decoder.
+And one time they remove the content to position encodings.
+Sorry attention mechanism and one time they reduce the position to content attention mechanism and in the table it is sort of A wash depends on the task of how you look at but each of the components here gets you some kind of a benefit or a hit when you take it away so
+Yeah, it's not really clear that one of the components gives you all the boost.
+The combination of them is obviously the best and it's really cool when papers do these kinds of ablations rather than just throw a bunch of stuff at you and it's on you to figure out which of that stuff is
+important.
+They compare it to Roberta in terms of training of accuracy after training.
+So how much do you need pre-training for a fine-tuning and the diberta as you can see in these graphs outperforms Roberta.
+So potentially you need less pre-training steps to reach the same accuracy in
+fine-tuning task which is cool also means that if you train for longer you reach or if you train for the same amount of time you reach a higher accuracy.

@@ -1,0 +1,1 @@
+In this work, we resort to the posterior sampling algorithms, which are a class of randomized patient algorithms that is tantamount sampling to reinforcement learning.

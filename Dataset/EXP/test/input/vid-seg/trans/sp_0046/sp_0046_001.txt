@@ -1,0 +1,28 @@
+Hi there, today we'll look at Generative Adversarial Nets by ENJ Goodfellow et al.
+So this one is another installment in our series of historical papers that had great impact.
+GANs nowadays, or Generative Adversarial Nets back then, were sort of, this was the starting shot in a long line of research that is still continuing today.
+So, I remember when I started my PhD in 2015, GANs were just about spiking.
+I remember NURIPS or back then NIPS in 2016, and every other paper was about GANs.
+There was also this famous Schmidhuber good fellow moment at the tutorial.
+It was it was a while time and this is the paper that started it all and the paper is quite well written.
+It's very kind of focused on convincing you that this is a sound method mathematically that it does do you know that it doesn't just do wild things.
+And also, it is already quite has a lot of sort of the modern tricks for GANs already sort of built into it.
+So, astounding how much foresight there was already in this paper, but of course,
+Gans have come like a super long way since then and today we'll just go through the paper and look at how it looked back then and what this paper was like so yeah join me in this if you like it please share it out let me know in the comments what you think of
+historic paper reviews.
+This is not going to be like a beginner's tutorial in GANs.
+This is really going to be, we'll go through the paper.
+You'll see right here, the paper is from 2014.
+So it would still be another like two years or so until GANs really take off from this point on.
+But the introduction, of course, was really important.
+Okay, so abstract.
+Here we go.
+We propose a new framework for estimating generative models via an adversarial process in which we simultaneously train two models, a generative model G that captures the data distribution and a discriminative model D that estimates the probability that a sample came from the training data rather than G.
+Okay, this was sort of a new thing now.
+I know I know people disagree with this being a new thing, but this was a new thing and Specifically this this was the first paper that made something like this really work for data So to have a discriminator the and the words generator and discriminator were also introduced in this paper So you train this D model, which is the discriminator and
+And the D model basically decides whether or not a given data point comes from data or comes from the fake distribution.
+And then you have a generative model G that is supposed to just create this data X rather than coming from the database.
+So you want to sample a couple of times from the data
+And sometimes you sample from this model G, and then the discriminator is supposed to decide whether or not it comes from the data set or from your counterfeiter, like from this generator G. And it's supposed to say whether it's data fixed.
+So you train the D model as a simple image classifier.
+So people all

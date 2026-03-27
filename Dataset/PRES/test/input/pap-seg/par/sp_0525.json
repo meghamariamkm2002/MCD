@@ -1,0 +1,650 @@
+[
+  {
+    "para_id": "p1",
+    "section_heading": "Abstract",
+    "text": "Due to the ease of training, ability to scale, and high sample quality, diffusion models (DMs) have become the preferred option for generative modeling, with numerous pre-trained models available for a wide variety of datasets. Containing intricate information about data distributions, pre-trained DMs are valuable assets for downstream applications. In this work, we consider learning from pre-trained DMs and transferring their knowledge to other generative models in a data-free fashion. Specifically, we propose a general framework called Diff-Instruct to instruct the training of arbitrary generative models as long as the generated samples are differentiable with respect to the model parameters. Our proposed Diff-Instruct is built on a rigorous mathematical foundation where the instruction process directly corresponds to minimizing a novel divergence we call Integral Kullback-Leibler (IKL) divergence. IKL is tailored for DMs by calculating the integral of the KL divergence along a diffusion process, which we show to be more robust in comparing distributions with misaligned supports. We also reveal non-trivial connections of our method to existing works such as DreamFusion [54], and generative adversarial training. To demonstrate the effectiveness and universality of Diff-Instruct, we consider two scenarios: distilling pre-trained diffusion models and refining existing GAN models. The experiments on distilling pre-trained diffusion models show that Diff-Instruct results in state-of-the-art single-step diffusion-based models. The experiments on refining GAN models show that the Diff-Instruct can consistently improve the pre-trained generators of GAN models across various settings. Our official code is released through https://github.com/pkulwj1994/diff_instruct.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p2",
+    "section_heading": "1 Introduction",
+    "text": "Over the last decade, the field of deep generative models has made significant strides across various domains such as data generation [30, 32, 51, 53, 24, 54, 25, 34], density estimation [35, 7], image-editing [46, 8] and others. Notably, recent advancements in text-driven high-resolution image generation [60, 59, 58] have pushed the limits of using generative models for Artificial Intelligence Generated Content (AIGC). Behind the empirical success are fruitful developments of a wide variety of deep generative models, among which, diffusion models (DMs) are the most prominent. DMs leverage the diffusion processes and model the data across a wide spectrum of noise levels. Their ease of training, ability to scale, and high sample quality have made DMs the preferred option for generative modeling, with numerous pre-trained models available for a wide variety of datasets and applications. The trained DMs contain intricate information about the data distribution, making them valuable assets for downstream applications.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p3",
+    "section_heading": "1 Introduction",
+    "text": "Compared with training from scratch, extracting knowledge from a zoo of pre-trained models enables us to learn more efficiently. For instance, [15] employed a variety of pre-trained feature extractors and significantly boosted the state-of-the-art performance on domain generalization benchmarks. [9, 52, 16] exploited the rich multi-modal information stored in off-the-shelf CLIP models [55] for efficient textguided image generation. Currently, we are witnessing a rising trend of learning from models, especially when accessing large amounts of high-quality data is difficult. Such a model-driven learning scheme can be particularly appealing for handling new tasks by providing a solid base model, which can be further improved by additional training data. While this research direction has been extensively investigated for discriminative models and supervised learning tasks [71, 38, 3, 72, 57, 56], its application to generative models remains largely unexplored. To this end, we are motivated to study the following question.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p4",
+    "section_heading": "1 Introduction",
+    "text": "(Q1): Can we transfer knowledge from pre-trained DMs to other generative models instead of learning from original training data?",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p5",
+    "section_heading": "1 Introduction",
+    "text": "The seminal work DreamFusion [54] demonstrated the feasibility of such a quest for text-to-3D generation. Without a large text-labeled 3D dataset, [54] took advantage of the rich text-to-image knowledge stored in a large-scale diffusion model, the Imagen [23], to learn the 3D Neural Radiance Fields (NeRF) and achieved surprisingly good performance without using any 3D data. DreamFusion is a rare success and for general scenarios, the task can be difficult due to the vast difference among generative models. DMs represent a class of explicit generative models wherein the data\u2019s score function is modeled. Conversely, in various downstream applications, implicit generative models are favored due to their inherent flexibility and efficiency. An implicit model typically learns a neural transformation (i.e., a generator) that maps from a latent space to the data space, such as in generative adversarial networks (GANs), thereby enabling expeditious generation.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p6",
+    "section_heading": "1 Introduction",
+    "text": "By exploring diverse architectural designs and latent space configurations, implicit models can readily adapt to structural constraints (e.g., molecules must be chemically valid, etc. [14, 10, 63]), assimilate prior knowledge [6, 13, 76, 45], and exhibit other advantageous properties. For implicit models that lack explicit score information, how to receive supervision from DM\u2019s multi-level score network is technically challenging, which greatly limits the potential use cases of pre-trained DMs. Therefore, we would like to further address the following question:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p7",
+    "section_heading": "1 Introduction",
+    "text": "(Q2): Can we tackle this challenge so that knowledge from DMs can be more broadly transferred?",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p8",
+    "section_heading": "1 Introduction",
+    "text": "In this work, we give affirmative answers to (Q2) and propose a universal framework, Diff-Instruct (DI), to leverage pre-trained DMs to instruct the training of arbitrary implicit generative models as long as the generated samples from the implicit model are differentiable with respect to model parameters. When applied to single-step generation models such as GANs, Diff-Instruct provides an alternative non-adversarial training scheme. When the student model is a U-Net (with a fixed time), our method enters as a strong contender in the diffusion distillation literature [43, 61, 66], providing extreme acceleration for sampling from DMs with even one single step.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p9",
+    "section_heading": "1 Introduction",
+    "text": "Our proposed Diff-Instruct is built on a rigorous mathematical foundation where the instruction process directly corresponds to minimizing a novel divergence we call Integral Kullback-Leibler (IKL) divergence. IKL is tailored for DMs by calculating the integral of the KL divergence along a diffusion process, which we show to be more robust in comparing distributions with misaligned supports (Section 3.2). We also reveal non-trivial connections of our method to existing works such as DreamFusion (Section 3.3.1) and generative adversarial training (Section 3.3.2). Interestingly, we show that the SDS objective can be seen as a special case of our Diff-Instruct on the scenario that the generator outputs a Dirac\u2019s Delta distribution.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p10",
+    "section_heading": "1 Introduction",
+    "text": "To demonstrate the effectiveness and universality of Diff-Instruct, we consider two scenarios mentioned earlier: distilling pre-trained diffusion models to single step (Section 4.1) and improving pre-trained GAN generators (Section 4.2). The experiments on distilling pre-trained diffusion models on the ImageNet dataset of a resolution of 64\u00d764 show that Diff-Instruct results in state-of-the-art single-step diffusion-based models over both diffusion distillation, such as the consistency distillation [66] and direct training methods [66, 83, 73]. The experiments on improving GAN generators show that the Diff-Instruct can consistently improve the pre-trained generators across various settings.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p11",
+    "section_heading": "2 Preliminary",
+    "text": "Assume we observe data from the underlying distribution pd(x). In generative modeling, we want to generate new samples x\u223cpd(x), where there are mainly two approaches, explicit and implicit. Currently, DMs are the most powerful explicit models while GANs are the most powerful implicit models.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p12",
+    "section_heading": "2 Preliminary",
+    "text": "Diffusion models. The forward diffusion process of DM transforms any initial distribution p(0) towards some simple noise distribution,",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p13",
+    "section_heading": "2 Preliminary",
+    "text": "where F is a pre-defined drift function, G(t) is a pre-defined scalar-value diffusion coefficient, and wt denotes an independent Wiener process. A multiple-level or continuous-indexed score network s\u03d5(x,t) is usually employed in order to approximate marginal score functions of the forward diffusion process (2.1). The learning of marginal score functions is achieved by minimizing a weighted denoising score matching objective [69, 65],",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p14",
+    "section_heading": "2 Preliminary",
+    "text": "Here the weighting function w(t) controls the importance of the learning at different time levels and pt(xt|x0) denotes the conditional transition of the forward diffusion (2.1). High-quality samples from a DM can be drawn by simulating SDE which is implemented by learned score network [65]. However, the simulation of an SDE is significantly slower than that of other models such as implicit models.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p15",
+    "section_heading": "2 Preliminary",
+    "text": "Generative adversarial networks. GANs are representative implicit generative models [30, 75, 67, 77]. They leverage neural networks (generators) to map an easy-to-sample latent vector to generate a sample. Therefore they are efficient. However, the training of GANs is challenging, particularly because of the reliance on adversarial training. To train a GAN model, a neural discriminator h is optimized to distinguish the data and generated samples. This leads to the creation of a surrogate probability metric Dh(\u00b7,\u00b7) between pg(x) and pd(x). The generator is updated based on this metric, with the aim of improving the quality of the generated samples [19, 2, 44]. The objective of a most commonly used GAN [19] can be written as",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p16",
+    "section_heading": "2 Preliminary",
+    "text": "where the training alternates between minimizing Lh and Lg with the other part fixed. For a fixed g, the optimal h should recover the density ratio pd(x)/(pd(x) + pg(x)), and in turn, Dh is the Jensen-Shannon divergence. There are variants of objectives that minimize other divergences. For instance, if the L(KL)g = Ez\u223cpz [log 1\u2212h(g(z)) h(g(z)) ], the objective aims to minimize the KL divergence between generator and data distribution. In Section 3.3.2, we establish the equivalence of our Diff-Instruct with the adversarial training that aims to minimize the KL divergence.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p17",
+    "section_heading": "2 Preliminary",
+    "text": "Neural radiance fields. The neural radius field (NeRF) [48] is a kind of 3D object model that uses a multi-layer-perceptron (MLP) to map coordinates of a mesh grid to volume properties such as color and density. Given the camera parameters, a rendering algorithm can output a 2D image that is a view projection of the 3D NeRF. The rendering algorithm is usually differentiable to learnable parameters of NeRF\u2019s MLP, this makes the NeRF can be updated through proper instructions on the rendered 2D image.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p18",
+    "section_heading": "3 Diff-Instruct",
+    "text": "The main goal of Diff-Instruct is to transfer the knowledge of a pre-trained DM to other generative models. To demonstrate the universality of our approach, we consider the more general case where the student model is an implicit model, i.e., a generator.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p19",
+    "section_heading": "3 Diff-Instruct",
+    "text": "Problem setup. Recall our setting that we have a pre-trained diffusion model with the multi-level score net denoted as sp(t)(xt) :=\u2207xt logp(t)(xt) where p(t)(xt)\u2019s are the underlying distributions diffused at time t according to (2.1). Assume the pre-trained diffusion model provides a sufficiently good approximation of data distribution, i.e., p(0)\u2248pd. For ease of mathematical treatment, we use",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p20",
+    "section_heading": "3 Diff-Instruct",
+    "text": "p(0),pd interchangeably. The goal of our Diff-Instruct is to train an implicit model g\u03b8 without any training data, such that the distribution of the generated samples, denoted as pg, matches that of the pre-trained DM. The instruction process involves minimizing certain probability divergences between the implicit distribution and the data distribution.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p21",
+    "section_heading": "3 Diff-Instruct",
+    "text": "Instruction criterion. In order to receive supervision from the multi-level score functions sp(t)(xt), introducing the same diffusion process to the generated samples seems inevitable. Consider diffusing pg along the same forward process as the instructor DM and let q(t) be the corresponding densities at time t. Let sq(t)(xt) :=\u2207xt logq(t)(xt) be the marginal score functions. At each time level, how to design the instruction criterion and how to combine different time levels are of critical importance. To this end, we consider integrating the Kullback-Leibler divergence along the forward diffusion process with a proper weighting function, such as in (2.2). The resulting Integral Kullback-Leibler (IKL) divergence is a valid probability divergence with two important properties: 1) IKL is more robust than KL in comparing distributions with misaligned supports; 2) The gradient of IKL with respect to the generator\u2019s parameters only requires the marginal score functions of the diffusion process, making it a suitable divergence for incorporating the scoring network of pre-trained diffusion models.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p22",
+    "section_heading": "3 Diff-Instruct",
+    "text": "In the following sections, we first formally define the IKL and then go into detail about the mathematical ground of our Diff-Instruct algorithms. We then establish the connections of Diff-Instruct to existing methods and discuss in detail a novel application of Diff-Instruct on data-free diffusion distillation, together with a comparison to existing diffusion distillation approaches.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p23",
+    "section_heading": "3.1 Integral Kullback-Leibler divergence",
+    "text": "The IKL is tailored to incorporate knowledge of pre-trained DMs in multiple time levels. It generalizes the concept of KL divergence to involve all time levels of the diffusion process. Definition 3.1 (Integral KL divergence). Given a diffusion process (2.1) and a proper weighting function w(t)>0, t\u2208 [0,T ], the IKL divergence between two distributions p,q is defined as",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p24",
+    "section_heading": "3.1 Integral Kullback-Leibler divergence",
+    "text": "where q(t) and p(t) denote the marginal densities of the diffusion process (2.1) at time t initialized with q(0)=q and p(0)=p respectively.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p25",
+    "section_heading": "3.1 Integral Kullback-Leibler divergence",
+    "text": "The IKL divergence integrates the KL divergence along a diffusion process, which enables us to amalgamate knowledge from pre-trained DM at multiple diffusion times. For simplicity, we use the notation DIKL(p,q) to represent D[0,\u221e)IKL (p,q) if the integral exists. Since the KL divergence is well-defined, the proposed IKL divergence, as the integral of KL divergence, is also well-defined. Proposition 3.2. The DIKL(q,p) satisfies that DIKL(q,p)\u22650, \u2200q,p. Furthermore, the equality holds if and only if q=p, almost everywhere under measure p.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p26",
+    "section_heading": "3.1 Integral Kullback-Leibler divergence",
+    "text": "One of the advantages of using IKL instead of KL is its robustness. For instance, with proper weighting function, the IKL is well-defined even when the vanilla KL divergence degenerates to infinity. This demonstrates that the IKL divergence is more robust than the KL divergence for two distributions with misaligned supports. We consider a famous example in [2] where the generator distribution pg and target distribution pd have disjoint support. In this case, the KL divergence between pg and pd degenerates to positive infinity, while the IKL divergence has a finite value for all generator parameters and unique minima that match the generator and data distribution. Check Appendix A.1 for details.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p27",
+    "section_heading": "3.2 Instruct algorithm",
+    "text": "Let g\u03b8 be the generator of the implicit model. Let q(0) denote the implicit distribution for samples which are obtained by x0=g\u03b8(z),z\u223cpz and denote q(t) as the marginal distribution of the forward SDE ((2.1)) initialized with q(0). Let {p(t)}t\u2208[0,\u221e] and {sp(t)(.)}t\u2208[0,\u221e] represent the marginal densities and score functions of the pre-trained diffusion model. Our Diff-Instruct aims to minimize the IKL between q(0) and p(0) so as to update the generator\u2019s parameters. Following the notations of definition (3.1), we give a non-trivial gradient formula for minimizing the IKL in Theorem 3.3 that includes only the score functions.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p28",
+    "section_heading": "3.2 Instruct algorithm",
+    "text": "Theorem 3.3. The gradient of the IKL in (3.1) between q(0) and p(0) is",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p29",
+    "section_heading": "3.2 Instruct algorithm",
+    "text": "Theorem 3.3 gives an explicit gradient to minimize the IKL divergence w.r.t. the parameter of the generator. Note that the gradient estimation only requires the marginal score functions sp(t) and sq(t) . If the marginal score functions of the implicit distribution can be approximated by another diffusion model s\u03d5(xt,t), we can utilize the gradient formula (3.2) to update the generator\u2019s parameter \u03b8.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p30",
+    "section_heading": "3.2 Instruct algorithm",
+    "text": "Now we formally propose Diff-Instruct as in Algorithm 1, which trains the implicit model through two alternative phases between learning the marginal score functions s\u03d5, and updating the implicit model with gradient (3.2). The former phase follows the standard DM learning procedure, i.e., minimizing loss function (2.2), with a slight change that the data is generated from the generator. The resulting s\u03d5(xt,t) provides an estimation of sq(t)(xt). The latter phase updates the generator\u2019s parameter \u03b8 using gradient from (3.2), where two needed functions are provided by pre-trained DM sp(t)(xt) and learned DM s\u03d5(xt,t). When the algorithm converges, s\u03d5(xt,t)\u2248 sp(t)(xt), and the gradient (3.2) is approximately zero.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p31",
+    "section_heading": "3.3 Connections to existing methods",
+    "text": "In this section, we establish the connections of Diff-Instruct to two typical methods, the score distillation sampling proposed in DreamFusion [54], and the generative adversarial training in Goodfellow et al. [19].",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p32",
+    "section_heading": "3.3.1 Connection to score distillation sampling",
+    "text": "The score distillation sampling (SDS) algorithm was proposed by Poole et al. [54] to distill the knowledge of a large-scale text-to-image diffusion model into a 3D NeRF model. The idea of SDS has been applied in various contexts, including the text-to-3D NeRF generation based on text-to-2D diffusion models [54, 39, 47], and the text-guided image editing [20].",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p33",
+    "section_heading": "3.3.1 Connection to score distillation sampling",
+    "text": "It turns out that the SDS algorithm is a special case of our Diff-Instruct when the generator\u2019s output is a Dirac\u2019s Delta distribution with learnable parameters. More precisely, we find that Diff-Instruct\u2019s gradient formula (3.2) will degenerate to the gradient formula of SDS under the assumption that the generator outputs a Delta distribution. Corollary 3.4. If the generator\u2019s output is a Dirac\u2019s Delta distribution with learnable parameters, i.e. q(x0)=\u03b4g(\u03b8)(x0) 3. Then the gradient formula (3.2) becomes",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p34",
+    "section_heading": "3.3.1 Connection to score distillation sampling",
+    "text": "(3.3) does not depends on another diffusion model sq(t) as in (3.2). So under the assumption of Corollary 3.4, there is no need for using another DM to estimate the generator\u2019s marginal score functions. This is because when the generator outputs a Delta distribution, there is no randomness in x0. So the marginal score functions are only determined by pt(xt|x0). The gradient (3.3) is equivalent to the score distillation sampling proposed in DreamFusion [54].",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p35",
+    "section_heading": "3.3.1 Connection to score distillation sampling",
+    "text": "The fact that SDS is a special case of Diff-Instruct is not a coincidence, as in DreamFusion, the rendered image of a NeRF model from a certain camera view is a 2D image that is differentiable to NeRF\u2019s parameters. Therefore, using SDS to learn a NeRF model is essentially an application of using Diff-Instruct to distill a pre-trained text-to-2D diffusion model in order to obtain a 3D NeRF object. However, the path we obtain (3.3) is totally different from that in DreamFusion. In DreamFusion, the authors obtained (3.3) by taking the data gradient of the diffusion model\u2019s loss function (2.2) and empirically omitted the Jacobian term of the pre-trained score network. However, in this work, we first propose the general formulation of Diff-Instruct and then specialize it to obtain SDS in a natural way.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p36",
+    "section_heading": "3.3.2 Connection to GANs",
+    "text": "Our proposed Diff-Instruct without integral on time is equivalent to the adversarial training [19] that aims to minimize the KL divergence. Following the same notation as in Section 2, the adversarial training uses a discriminator h(.) to learn the density ratio to construct the objective for the generator.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p37",
+    "section_heading": "3.3.2 Connection to GANs",
+    "text": "Corollary 3.5. If the discriminator h learns the perfect density ratio, i.e. h(x) = pd(x)pd(x)+pg(x) , then updating the generator to minimize the KL divergence (L(KL)g in Section 2) is equivalent to Diff-Instruct with a weighting function w(0)=1 and w(t)=0,\u2200t>0.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p38",
+    "section_heading": "3.3.2 Connection to GANs",
+    "text": "The Diff-Instruct is essentially a different method from adversarial training in three aspects. First, the adversarial training relies on a discriminator network to learn the density ratio between the model distribution and data distribution. However, Diff-Instruct employs DMs instead of discriminators to instruct the generator updates. Second, in scenarios where only a pre-trained diffusion model is available without any real data samples, Diff-Instruct can distill knowledge from the pre-trained model to the implicit generative model, which is not achievable with adversarial training. Third, Diff-Instruct uses the IKL as the minimization divergence, which overcomes the degeneration problem of the KL divergence via a novel use of diffusion processes and can potentially overcome the drawbacks such as mode-drop issues of adversarial training.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p39",
+    "section_heading": "3.4 Related works",
+    "text": "The pre-trained diffusion models on large-scale datasets contain rich knowledge of the data distribution. There is a growing interest in distilling this knowledge to other models [43] that are more sampling-efficient, such as implicit generators [50, 26] and neural radiance fields models [48, 54].",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p40",
+    "section_heading": "3.4 Related works",
+    "text": "One significant advantage of our Diff-Instruct framework is its ability to update the generator without real data x\u223cpd. Instead, the knowledge of the data distribution to update the generator is contained",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p41",
+    "section_heading": "3.4 Related works",
+    "text": "3We switch the notation from g\u03b8(z) to g(\u03b8) since under the assumptions the generator has no randomness.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p42",
+    "section_heading": "3.4 Related works",
+    "text": "in the marginal score function sp(t) as in (3.2). This enables our Diff-Instruct to distill knowledge from pre-trained DMs into flexible generators in a data-free manner and provides a major advantage over other diffusion distillation methods that require either the real data or synthetic data from pre-trained DMs. More precisely, There are three kinds of diffusion distillation methods depending on how to use the data for distillation. The first is the data synthetic distillation, which requires using the pre-trained DM to synthesize data from random noises. The student model then learns the mechanism between random noise and synthetic data in order to enhance the efficiency of data generation. Representative methods of data-synthetic distillation are Knowledge Distillation (KD [42]), Rectified Flow (ReFlow [40]) and DFNO ([82]). The second method does not require synthetic data from diffusion models but involves real data when distilling. The consistency distillation (CD [66]) is a representative method. The third method is pure data-free distillation, which requires neither real data nor synthetic data. The Diff-Instruct and the Propgressive Distillation (PD [61]) are representative pure data-free distillation. Generally, we use the word \"data-free distillation\" to include both data-synthetic distillation and pure data-free distillation. To give a comprehensive comparison of diffusion distillation methods, we summarize three main features of diffusion distillation methods in Table 6. The efficiency represents the computational cost of the distillation method. Methods that require synthesizing dataset is inefficient. The data-synthetic distillation requires simulations with pre-trained DMs, thus is inefficient. The flexibility represents whether the distillation approach is capable of distilling knowledge of pre-trained DM to flexible generator architectures, for example, the generator whose input and output dimension is different. Diff-Instruct is the only method that can apply to a wide variety of downstream generators.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p43",
+    "section_heading": "3.4 Related works",
+    "text": "Furthermore, Diff-Instruct offers very high flexibility to the generator, distinguishing it from traditional diffusion distillation methods that impose strict constraints on the generator selection. For instance, the generator can be a convolutional neural network (CNN)-based or a Transformer-based image generator such as StyleGAN [28, 30, 31, 37], or an UNet-based generator [73] adapted from pre-trained diffusion models [32, 65, 22]. The versatility of Diff-Instruct allows it to be adapted to different types of generators, expanding its applicability across a wide range of generative modeling tasks. In the experiment sections, we show that Diff-Instruct is capable of transferring knowledge to generator architectures including both UNet-based and GAN generators respectively. To the best of our knowledge, the Diff-Instruct is the first approach to efficiently enable such a data-free knowledge transfer from diffusion models to generic implicit generators.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p44",
+    "section_heading": "4 Experiments",
+    "text": "With the abundance of powerful pre-trained DMs with diverse expertise, our proposed Diff-Instruct unlocks their potential as sources of knowledge to instruct a wide variety of models. To demonstrate, we choose the state-of-the-art DMs from the seminal work by [32] (we denote as EDMs) as instructors and consider transferring their knowledge to implicit generators. In this section, we evaluate the efficacy of DI through two downstream applications: diffusion distillation and improvement of GAN\u2019s generator. These two experiments correspond to using UNet and GAN\u2019s generator to absorb the knowledge from DMs. In the diffusion distillation experiments, we use Diff-Instruct to distill pre-trained DMs to single-step generative models. On the ImageNet 64\u00d764 dataset, our Diff-Instruct achieves state-of-the-art performance in terms of FID among all single-step diffusion-based generative models. Furthermore, in the GAN-improving experiments, we use Diff-Instruct to improve existing GAN models that are pre-trained to convergence with adversarial training. The Diff-Instruct is shown to be able to consistently enhance the generative performance of pre-trained StyleGAN-2 models on the CIFAR10 dataset by incorporating knowledge of pre-trained DMs.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p45",
+    "section_heading": "4.1 Single-step diffusion distillation",
+    "text": "Diffusion distillation is a hot research area that aims to accelerate the generation speed of diffusion models. In our experiments, we utilize our Diff-Instruct framework to train single-step generators on CIFAR-10 [36] and ImageNet 64\u00d764 [11] from pre-trained EDM [32] models. We evaluate the performance of the trained generator via Frechet Inception Distance (FID) [21], the lower the better, and Inception Score (IS) [62]), the higher the better. For additional details about the generator\u2019s architecture, pre-trained models, and the hyper-parameters on our experimental setup, please refer to Appendix B.1.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p46",
+    "section_heading": "4.1 Single-step diffusion distillation",
+    "text": "Performances. Table 1 and 2 summarize the FID and IS of the single-step generator that we trained with Diff-Instruct from pre-trained EDMs on the CIFAR10 datasets (unconditional without labels)",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p47",
+    "section_heading": "4.1 Single-step diffusion distillation",
+    "text": "and the conditional generation on the ImageNet 64\u00d764 data. Diff-Instruct performs competitively across all datasets among single-step and multiple-step diffusion-based generative models, which involve both models from diffusion distillation or direct training.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p48",
+    "section_heading": "4.1 Single-step diffusion distillation",
+    "text": "As shown in Table 2, on the ImageNet dataset of the resolution of 64\u00d764, Diff-Instruct outperforms diffusion-based single-step generative models in terms of FID, including both distillation methods that require real data or synthetic data, and even models that are trained from scratch. On the unconditional generation of the CIFAR10 dataset, Diff-Instruct achieves the state-of-the-art IS among diffusion-based single-step generative models but achieves the second-best FID, only worse than the consistency distillation (CD) [66] which requires both real data for distillation and the learned neural image metric (e.g. LPIPS [79]). The conditional generation experiment on the CIFAR10 dataset shows that the Diff-Instruct performs better than a 20-NFE diffusion sampling from EDM model [32] with Euler\u2013Maruyama discretization but worse than a 20-NEF Heun discretization.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p49",
+    "section_heading": "4.1 Single-step diffusion distillation",
+    "text": "Remark 4.1. In Table 1 and Table 2, PD, CD, and Diff-Instruct all use the EDM teacher, and the same UNet student with the same architecture as the teacher model (The author of consistency distillation re-implemented the PD for EDM, so the reported FID for PD is lower than that in PD\u2019s original paper). The Diff-Instruct generator uses the same UNet architecture as the teacher diffusion model, so the number of sampling steps (NFE) represents its inference time costs. As we show in the upper part of Table 2, sampling from our learned one-step generator with 1 NFE results in an FID of 4.19, which is significantly better than its teachers with 10 NFEs with an FID of 15.56. So we conclude that the one-step generator trained with Diff-Instruct achieves at least 10+ times acceleration (more efficient) than its teacher diffusion model.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p50",
+    "section_heading": "4.1 Single-step diffusion distillation",
+    "text": "Fast convergence speed. Another advantage of applying Diff-Instruct for diffusion distillation is the fast convergence speed. We empirically find that Diff-Instruct has a much faster convergence speed than other distillation methods and has a tolerance for a large learning rate for optimization. In Figure 3, we show the convergence of FID with respect to the optimization iterations of the generator trained on an unconditional DM on the CIFAR10 dataset. We set the optimization step size of Diff-Instruct to be 1e\u22124 and the FID of the generator trained with Diff-Instruct converges fast within 7k iterations. However, the FID of the distilled diffusion model with consistency distillation algorithms does not converge with less than 7k iterations. One possible reason for the fast convergence speed is that Diff-Instruct\u2019s student model is a one-step generator that does not need to take multiple-time indexes in contrast to student models of other distillation methods such as CD and PD. This makes Diff-Instruct efficient when distillation without the need for learning at multiple time levels.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p51",
+    "section_heading": "4.2 Improving generative adversarial networks",
+    "text": "Another application of Diff-Instruct is to improve the generator of GAN models that are pre-trained with adversarial training 3.3.2.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p52",
+    "section_heading": "4.2 Improving generative adversarial networks",
+    "text": "Experiement settings. We take the pre-trained EDM model [32] on the CIFAR10 datasets as the instructor and the pre-trained StyleGAN-2 [29] models that are assumed to converge with adversarial training under different settings (conditional or unconditional with different data augmentation strategies). Our goal is to use pre-trained DMs to further improve pre-trained generators. We initialize the generator in the Diff-Instruct algorithm with the pre-trained StyleGAN-2 generator and initialize DMs for implicit distributions with the pre-trained EDM models. We then use Diff-Instruct to update the generator. We put more details in Appendix B.2.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p53",
+    "section_heading": "4.2 Improving generative adversarial networks",
+    "text": "Performance. As shown in Table 3 and 4, our Diff-Instruct can consistently improve the pre-trained generator\u2019s performance in terms of FID. More precisely, the FID of the pre-trained StyleGAN-2 with Adaptive Data Augmentation (ADA) is improved from 2.42 to 2.27 for the conditional setting and",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p54",
+    "section_heading": "4.2 Improving generative adversarial networks",
+    "text": "from 2.92 to 2.71 for the unconditional setting. The experiment shows that Diff-Instruct is able to inject the knowledge of pre-trained diffusion models to enhance the generators further.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p55",
+    "section_heading": "4.2 Improving generative adversarial networks",
+    "text": "The results demonstrate that Diff-Instruct is a powerful method capable of improving existing GAN models that are supposed to converge with adversarial training. There are two possible reasons for such improvements. First, our Diff-Instruct utilizes well-trained diffusion models to supervise the generator. For instance, on the CIFAR10 dataset with conditional labels, the teacher EDM model can achieve the FID of 1.79, which is significantly better than StyleGAN2 with an FID of 2.42. Second, Diff-Instruct takes diffused data into account when minimizing the IKL, overcoming the potential degeneration issues of the divergences that adversarial training intends to minimize.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p56",
+    "section_heading": "5 Discussion",
+    "text": "This work presents a novel learning paradigm, Diff-Instruct, which is to our best knowledge, the first method that enables knowledge transfer from pre-trained diffusion models into generic generators in a data-free manner. The theoretical foundations and practical methods introduced in this work hold promise for advancing the utilization of diffusion generative models and implicit models across various domains and applications.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p57",
+    "section_heading": "5 Discussion",
+    "text": "Nonetheless, Diff-Instruct has its limitations that call for further research along this line. First, with the abundance of powerful pre-trained DMs with diverse expertise, levering multiple models as instructors is another promising direction that is not investigated in this work. Second, even though data-free is a feature of our method, utilizing real data can potentially boost the learning process. The potential benefits of incorporating both Diff-Instruct and training data have not been explored yet. Lastly, in the extreme case where we have only data and no pre-trained DMs, our DI framework can still be adapted. Potentially we can train a teacher diffusion model with data, and concurrently, use it to instruct the student model. This indirect way of training may enable other generative models such as GANs, to enjoy the benefits of diffusion models, e.g., ease of training, ability to scale, and high sample quality, etc.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p58",
+    "section_heading": "5 Discussion",
+    "text": "Acknowledgments and Disclosure of Funding",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p59",
+    "section_heading": "5 Discussion",
+    "text": "W. Luo and Z. Zhang have been supported by the Beijing Natural Science Foundation (Z190001) and the National Natural Science Foundation of China (No. 12271011).",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p60",
+    "section_heading": "A Technical details",
+    "text": "A.1 Robustness of Integral KL divergence",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p61",
+    "section_heading": "A Technical details",
+    "text": "One of the benefits of using the Integral KL divergence over the traditional KL divergence is its robustness to misaligned density support. To illustrate this advantage, we consider a well-known example in [2]. Letz be a random variable following the uniform distribution on the unit interval [0,1]. ConsiderP0 to be the distribution of (0,z)\u2208R2. Now let g\u03b8(z)=(\u03b8,z), where \u03b8 is a single real parameter. The density of P0 and P\u03b8 are p0(x,z)= Ix=0(x)I[0,1](z) and p\u03b8(x,z)= I\u03b8(x)I[0,1](z). Since for each \u03b8 \u0338=0, the support of p\u03b8 and p0 does not intersect, the KL divergence between P\u03b8 and P0 is ill-defined with",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p62",
+    "section_heading": "A Technical details",
+    "text": "The same is also true for the Jensen-Shannon divergence where",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p63",
+    "section_heading": "A Technical details",
+    "text": "So minimizing the KL divergence with a gradient-based algorithm does not lead the generator to converge to the correct parameter \u03b8= 0. However, IKL provides a finite and reliable objective for training the generator. More precisely, considering a simple diffusion",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p64",
+    "section_heading": "A Technical details",
+    "text": "The marginal distribution of (x,z) under diffusion (A.3) initialized with P0 and P\u03b8 writes",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p65",
+    "section_heading": "A Technical details",
+    "text": "which are defined on (x,z)\u2208R2. The notation N (x;\u00b5,\u03c32) represents the density function of Gaussian distribution with mean \u00b5 and variance \u03c32. The IKL divergence with weight function w(t) thus has the expression",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p66",
+    "section_heading": "A Technical details",
+    "text": "By properly choosing the weighting function w(t), DIKL is finite as long as \u222b T 0 w(t) 2t dt is finite. For instance, w(t)=1/t if t\u2265 1 and w(t)= t if t\u2264 1 as a simple choice 4. The IKL divergence in (A.4) is a differentiable quadratic function of parameter \u03b8 with a single minima \u03b8 = 0 which lead to the DIKL(P\u03b8,P0)=0.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p67",
+    "section_heading": "A Technical details",
+    "text": "A.2 Proof of Theorem 3.3",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p68",
+    "section_heading": "A Technical details",
+    "text": "Proof. Recall the definition of q(t), the sample is obtained by x0 = g\u03b8(z), z \u223c pz , and xt|x0\u223cpt(xt|x0) according to forward SDE (2.1). Since the solution of forward, SDE is uniquely determined by the initial point x0 and a trajectory of Wiener process wt\u2208[0,T ], we slightly abuse the notation and let xt=F(g\u03b8(z),w) to represent the solution of xt generated by x0 and w. We let w[0,1]\u223cPw to demonstrate a trajectory from the Wiener process wherePw represents the path measure of Weiner process on t\u2208 [0,T ]. There are two terms that contain the generator\u2019s parameter \u03b8. The term xt contains parameter through x0=g\u03b8(z),z\u223cpz . The marginal density q(t) also contains parameter \u03b8 implicitly since q(t) is initialized with q(0) which is generated by the generator. To demonstrate the parameter dependence, we may use q(t)\u03b8 to represent q (t).",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p69",
+    "section_heading": "A Technical details",
+    "text": "The p(t) is defined through the pre-trained diffusion models with score functions sp(t) . The IKL divergence between q(t) and p(t) is defined with,",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p70",
+    "section_heading": "A Technical details",
+    "text": "Taking the \u03b8 gradient of IKL (A.5), we have",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p71",
+    "section_heading": "A Technical details",
+    "text": "The term A in equation (A.6) writes",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p72",
+    "section_heading": "A Technical details",
+    "text": "We show that the term B in equation (A.6) vanishes.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p73",
+    "section_heading": "A Technical details",
+    "text": "The equality (A.8) holds if function q(t)\u03b8 (x) satisfies the conditions (1). q (t) \u03b8 (x) is Lebesgue integrable for x with each \u03b8; (2). For almost all x\u2208RD, the partial derivative \u2202q(t)\u03b8 (x)/\u2202\u03b8 exists for all \u03b8\u2208\u0398. (3) there exists an integrable function h(.) :RD\u2192R, such that q(t)\u03b8 (x)\u2264h(x) for all x in its domain. Then the derivative w.r.t \u03b8 can be exchanged with the integral over x, i.e.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p74",
+    "section_heading": "A Technical details",
+    "text": "Remark A.1. In practice, most commonly used forward diffusion processes can be expressed as a form of scale and noise addition:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p75",
+    "section_heading": "A Technical details",
+    "text": "So the term z \u223c pz, w \u223c Pw, xt = F(x0, w) in equation (A.5) can be instantiated as z\u223cpz, \u03f5\u223cN (\u03f5;0,I), xt=\u03b1(t)x0+\u03b2(t)\u03f5.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p76",
+    "section_heading": "A Technical details",
+    "text": "A.3 Proof of Corollary 3.4",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p77",
+    "section_heading": "A Technical details",
+    "text": "Proof. Since the q(x0) = \u03b4g(\u03b8)(x0), thus the conditional distribution and marginal distribution coincides, i.e.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p78",
+    "section_heading": "A Technical details",
+    "text": "So the marginal score function writes",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p79",
+    "section_heading": "A Technical details",
+    "text": "So the gradient formula (3.2) turns to",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p80",
+    "section_heading": "A Technical details",
+    "text": "If we define a \u03f5-network \u03f5p(x, t) := \u2212sp(t)(xt)/\u03c3(t) and consider the forward diffusion pt(xt|x0) = N (xt; \u03b1(t)x0, \u03c3(t)I), the forward diffusion can be implemented with xt=\u03b1(t)x0+\u03c3(t)\u03f5, \u03f5\u223cN (\u03f5;0,I), then the objective turns to",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p81",
+    "section_heading": "A Technical details",
+    "text": "which recovers the SDS gradient estimation proposed in DreamFusion [54]. In summary, we have shown that our Diff-Instruct\u2019s gradient is equivalent to the gradient formula of score distillation sampling (SDS) when the generator outputs a single data that is differentiable to the generator\u2019s parameters. This is not a coincidence, as a NeRF model can be viewed as a generator that outputs a Dirac\u2019s Delta distribution when the view direction is fixed. Therefore, using SDS to learn a text-conditioned NeRF model is essentially an application of using an approximated version of Diff-Instruct to distill a pre-trained text-to-2D diffusion model in order to obtain a NeRF.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p82",
+    "section_heading": "A Technical details",
+    "text": "A.4 Proof of Corollary 3.5",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p83",
+    "section_heading": "A Technical details",
+    "text": "Proof. Following the same notation as in section 2, consider the adversarial training that minimizes the KL divergence as we introduced in Section 2. The learning objective is",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p84",
+    "section_heading": "A Technical details",
+    "text": "Assume the discriminator h(.) is optimal, then",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p85",
+    "section_heading": "A Technical details",
+    "text": "Then gradient for the generator parameter \u03b8 turn to",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p86",
+    "section_heading": "A Technical details",
+    "text": "where sg(x)=\u2207xlogpg(x) and sd(x)=\u2207xlogpd(x) denote the score function of the generator and the data distribution. The equation (A.13) shows that the adversarial training that minimizes the KL divergence is equivalent to the gradient formula (3.2) with a special weight function w(0) = 1 and w(t)>0 for all t>0, if the discriminator can be trained to be optimal.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p87",
+    "section_heading": "A Technical details",
+    "text": "A.4.1 Comparison of Distillation Methods",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p88",
+    "section_heading": "B More on experiments",
+    "text": "To demonstrate the efficacy of our proposed Diff-Instruct, we choose the state-of-the-art EDMs [32] as instructors, which have achieved state-of-the-art generative performance on several benchmarks",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p89",
+    "section_heading": "B More on experiments",
+    "text": "such as CIFAR10 and ImageNet 64\u00d764. The EDM model depends on the diffusion process",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p90",
+    "section_heading": "B More on experiments",
+    "text": "Samples from the forward process (B.1) can be generated by adding random noise to the output of the generator function, i.e., xt = x0 + \u03c3(t)\u03f5 where \u03f5 \u223c N (0, I) is a Gaussian vector and \u03c3(t) := \u221a\u222b t 0 G2(s)ds is a function with explicit expressions. We download the pre-trained model checkpoints from the official website5 and consider transferring their knowledge to implicit generative models, specifically UNet and StyleGAN as generators.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p91",
+    "section_heading": "B More on experiments",
+    "text": "We calculate the FID and IS in the same way as the StyleGAN2-ADA6 codebase. For the ImageNet 64\u00d764 dataset, we use the same pre-processing scripts as the EDM model on ImageNet 64\u00d764 dataset.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p92",
+    "section_heading": "B More on experiments",
+    "text": "B.1 Detailed experimental settings of diffusion distillation",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p93",
+    "section_heading": "B More on experiments",
+    "text": "When the downstream generative model is a UNet generator, our DI provides another way for diffusion distillation, directly competing with progressive distillation [61] or consistency distillation [66].",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p94",
+    "section_heading": "B More on experiments",
+    "text": "We initialize the diffusion model for the implicit distribution s\u03d5 with the weight parameters of pre-trained DM. The initialization of the generator is put in the following paragraph. With the pre-trained DM, initialized generator, and the initialized DM for implicit distribution, we use our Diff-Instruct algorithm 1 to update the DM for implicit distribution and the generator\u2019s parameters. We use the Adam optimizer for both the DM and the generator. For the generator, we use the same exponential moving average (EMA) technique as the EDM model\u2019s training scripts.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p95",
+    "section_heading": "B More on experiments",
+    "text": "To make a fair comparison, we do not compare approaches that involve other components such as classifier guidance or additional architectures for the generation as [82] because these models have significantly larger model sizes for inference.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p96",
+    "section_heading": "B More on experiments",
+    "text": "Initialization of the generator. When the generator is chosen to have the same architecture as the pre-trained diffusion models (i.e. UNet in most cases), we can initialize the generator with a special method with the score network of the pre-trained DM. Taking the forward diffusion process (B.1) as an instance. The time-indexed score functions explicitly define a data-prediction transform through Tweedie\u2019s formula",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p97",
+    "section_heading": "B More on experiments",
+    "text": "This formula tells that the marginal score functions can be converted to a data-prediction transform which can transform noisy data to clean data. Motivated by this property, we initialize the implicit generator g\u03b8 for Diff-Instruct in Algorithm 1 via a score network-induced data-prediction transform of the teacher diffusion models at some fixed time t\u2217:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p98",
+    "section_heading": "B More on experiments",
+    "text": "where z\u223cN (z;0,\u03c32(t\u2217)I) is the latent vector. This generator takes a Gaussian noise with the variance \u03c3(t\u2217) and zero mean as an input latent vector.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p99",
+    "section_heading": "B More on experiments",
+    "text": "We find that each noise level \u03c3(t\u2217) can give a comparable initialization, so we roughly selected an \u03c3(t\u2217) for different datasets. We put detailed hyper-parameters for distilling in Table 7. The left hand of Figure 4 gives a demonstration of the samples with the same latent vectors from different generators during training. The top line is the initialized generator (i.e. modified from pre-trained diffusion models). During the training, the initialized generator is trained to generate high-quality samples. The right hand of Figure 4 shows class-conditioned samples from a one-step model (generator) distilled from a class-conditional EDM model on the CIFAR10 dataset.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p100",
+    "section_heading": "B More on experiments",
+    "text": "Comparison of Computational Costs The Diff-Instruct algorithm involves training an additional auxiliary diffusion model during the training phases. It is worth noting that although this auxiliary diffusion model brings additional memory cost, this additional memory cost is very limited because the memory bottleneck of training lies in the computational graph of the backpropagation, instead of only saving one more model.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p101",
+    "section_heading": "B More on experiments",
+    "text": "In the Diff-Instruct algorithm, the model and the generator are updated alternatively, which means that the other model\u2019s parameters are fixed and do not participate in back-propagation when one model is being updated. So the memory cost for back-propagating through the computational graph is almost the same as one model.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p102",
+    "section_heading": "B More on experiments",
+    "text": "To quantitatively measure how much additional computational costs are brought in, we run an experiment to compare the computational and memory costs of Diff-Instruct with our baseline method, the Consistency Distillation, in 8. The test was run on 2 Nvidia V100 GPUs with 128 batch size and PyTorch distributed data-parallel mechanism.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p103",
+    "section_heading": "B More on experiments",
+    "text": "The result shows that Diff-Instruct brings in minor additional memory costs than CD (10.40 over 9.55). This is because the Diff-Instruct only needs additional GPU memory to save the auxiliary model s\u03d5. But the s\u03d5 and generator g\u03b8 are updated alternatively, so their computational graph does not interact. As a result, the memory bottleneck caused by computational graph and back-propagation does not bring more costs to Diff-Instruct.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p104",
+    "section_heading": "B More on experiments",
+    "text": "As for the wall-clock time for 1K iterations, we see that Diff-Instruct costs 0.0728 seconds, while the CD costs 0.0489 seconds. This is because each iteration of Diff-Instruct consists of two alternate steps as we show in Algorithm 1. Overall, the Diff-Instruct costs almost the same GPU and CPU memory as the baseline CD, but about 1.5 times wall-clock time than the CD for each iteration.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p105",
+    "section_heading": "B More on experiments",
+    "text": "B.2 Detailed experimental settings of GAN improvement",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p106",
+    "section_heading": "B More on experiments",
+    "text": "This experiment aims to show the power of Diff-Instruct to improve GAN\u2019s generator under different settings by transferring knowledge from pre-trained DMs.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p107",
+    "section_heading": "B More on experiments",
+    "text": "Experiment settings. The StyleGAN-2 model is a competitive GAN model on benchmarking datasets such as the CIFAR10 dataset, so we take StyleGAN-2 as the representative GAN model. We take the pre-trained EDM models with VP architecture 7 on the CIFAR10 datasets as pre-trained diffusion models.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p108",
+    "section_heading": "B More on experiments",
+    "text": "We download the checkpoint of the pre-trained StyleGAN-2 models with Adaptive Data Augmentation (ADA)[29] from the official website8. We pre-train a StyleGAN-2 model [30] following the same configuration of the original paper. All models converge with adversarial training under different settings (conditional or unconditional with different data augmentation strategies). We initialize the generator with the weights of pre-trained GAN generators. We initialize the DM s\u03d5 for implicit distribution with the same weights as the pre-trained DMs. We then use the Diff-Instruct with pre-trained DMs to improve the generator. For both the implicit DM s\u03d5 and the generator g\u03b8, we use the Adam optimizer to update the parameters. For the generator, we use the same exponential moving average technique as the official implementation of StyleGAN-ADA with Pytorch. We put detailed hyper-parameters for each experiment in Table 9.",
+    "seg_type": "par"
+  }
+]

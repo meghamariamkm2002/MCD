@@ -1,0 +1,33 @@
+start	end	text
+31	1033	All right, let's dive in.
+1093	5402	So vision transformers are a new thing, right?
+5843	7005	Vision transformers.
+7546	11113	I've also made a video about vision transformers.
+11514	18748	They are the easy, the simple application of the transformer architecture, which was
+18728	28082	prevalent in natural language processing with the introduction of attention is all you need and follow up papers, BERT and so on.
+28863	32308	And applying this to images.
+32769	34431	And the concept is very simple.
+35293	38117	You have an image and you divide this into patches.
+38598	40821	So you divide the image into patches.
+42404	45831	And then you simply unroll that array sort of.
+45951	47374	So you unroll that array.
+47394	51483	So you have patch, patch, patch, patch, and so on.
+52304	61864	And then you simply consider this as a sequence, like a sentence, like, Hello, my name is, and so on.
+61844	66633	you simply consider the sequence of patches as word embeddings.
+66994	74848	So there's like one, I think there is one fully connected layer to actually get the word embedding or the token embedding.
+75229	80659	And then you put a transformer as you would in an LP.
+80679	83785	So there is a transformer
+84710	84990	here.
+85972	88957	And you do whatever you do with a transformer.
+89137	102820	So usually, if you don't know, people prepend a special token, that special token is usually called something where I might not draw this, that special token is usually called CLS token.
+102800	109229	And that is also passed through the transformer and the transformer in its base configuration.
+110852	113616	It keeps the length of the sequence the same.
+113716	117722	It's actually not necessary to do this, but that's just how we do things.
+118503	127997	So for every input token, you'll get a corresponding output token or output embedding or output signal, whatever you want to call it.
+127977	140517	And such that none of the input tokens is, you know, kind of preferred because every input token sort of refers to some little patch here in the image.
+141538	146165	If you want to say something about the entire image, you don't want to prefer any one of them.
+146586	150492	So what you do is you have this special token, the CLS token.
+150472	153476	which is associated with no location in the image.
+153496	161486	And that's ultimately what you use to classify the image or also here to do representation learning.
+161546	169336	So the representation we're looking to get out is the final layer embedding of the CLS token.
+169816	179989	And that through the transformer architecture had aggregated all the information or we hope so from all the visual tokens in the image.

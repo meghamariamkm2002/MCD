@@ -1,0 +1,56 @@
+WEBVTT
+
+00:00.031 --> 00:02.634
+Sorry, the gradient of the log probability.
+
+00:03.736 --> 00:21.779
+Because optimal denoising theory says that for zero mean and Gaussian noise, the optimal denoising function, the optimal denoising function for zero mean Gaussian corruption is this thing right here.
+
+00:22.419 --> 00:28.367
+So it is, if you give me x and you tell me,
+
+00:28.347 --> 00:36.366
+X has been corrupted by zero mean Gaussian noise of size sigma n.
+
+00:38.017 --> 00:43.083
+then the best, and you simply tell me, give me back the original image.
+
+00:43.143 --> 00:57.340
+The best thing I can do is to take what you gave me and add this gradient of the log probability of X, if I can, if I have a model of the log probability, right?
+
+00:57.360 --> 00:59.502
+So that's the best thing I can do.
+
+01:01.507 --> 01:04.258
+And that's the best denoising function.
+
+01:04.439 --> 01:06.427
+And now you have to think a bit of in reverse.
+
+01:06.507 --> 01:09.559
+If we train a denoising auto encoder.
+
+01:11.007 --> 01:16.173
+that is going to approximate this best function that there is.
+
+01:17.134 --> 01:20.357
+So we know that the best possible denoising function is this.
+
+01:20.697 --> 01:27.725
+We train a denoising autoencoder, which in the optimal case is going to converge to the best denoising function.
+
+01:28.025 --> 01:34.112
+So if we then reformulate and we do denoising autoencoder,
+
+01:34.092 --> 01:40.822
+of x minus or x tilde minus x tilde.
+
+01:40.842 --> 01:43.726
+That is divided by the standard deviation.
+
+01:45.008 --> 01:45.809
+Sorry, the variance.
+
+01:46.651 --> 01:55.003
+That is going to give us this quantity right here, the gradient of the log probability.
+

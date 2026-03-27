@@ -1,0 +1,197 @@
+WEBVTT
+
+00:00.031 --> 00:08.723
+And first they look simply, can we find attention heads that correlate with a given amino acid?
+
+00:09.384 --> 00:13.990
+So here you see the attention to the amino acid.
+
+00:14.291 --> 00:15.993
+This is proline, I believe.
+
+00:16.013 --> 00:19.458
+And this is phenylalanine.
+
+00:19.758 --> 00:21.100
+Is that the same in English?
+
+00:21.200 --> 00:23.423
+Yes, phenylalanine.
+
+00:23.403 --> 00:27.270
+phenylalanine and proline right here.
+
+00:29.094 --> 00:44.483
+So you can see that the plots here are, there's almost no attention pretty much throughout the network that pays special attention to the amino acid proline.
+
+00:44.463 --> 00:55.101
+except this head right here seems to have, if you look at the scale, over like a 70% of attention always goes to proline in this particular head.
+
+00:55.122 --> 01:01.172
+So this is layer one, head number 11, focuses
+
+01:02.941 --> 01:06.066
+78% of its attention on pro-lean.
+
+01:06.607 --> 01:23.194
+Now this is not that special if you think about it because in language models as well, in natural language models, you might want to think that you have some mechanism in your neural network that's especially specialized on like a very particular word in the language because
+
+01:23.174 --> 01:27.538
+that might just be an often occurring very particular word.
+
+01:28.179 --> 01:33.684
+For example, in English, maybe the is very important or the word what.
+
+01:34.585 --> 01:38.709
+These are like very indicative, very often occurring words.
+
+01:39.150 --> 01:51.342
+So it is reasonable to expect to find an attention head that pays a lot of attention to these things, especially here where our vocabulary size is 20 instead of like 30,000 in natural language.
+
+01:53.279 --> 02:02.977
+And the same goes for this phenylalanine, where you can see that in the layer in the last layer, and in the first layer, you have attention.
+
+02:03.077 --> 02:05.262
+And also in the proline you have in the last layer.
+
+02:05.622 --> 02:06.845
+So why does this make sense?
+
+02:07.205 --> 02:14.038
+Because what we would expect from like single tokens, these are not interactions yet, these are not biological functions yet.
+
+02:14.018 --> 02:22.647
+So, we know that in the lower layers of a neural network, we have these kind of basic features, basic feature extractors.
+
+02:22.728 --> 02:33.179
+And here, these basic feature extractors appear to be simply paying attention to one specific token in the vocabulary a lot.
+
+02:33.339 --> 02:39.486
+So, these heads sort of specialize for single amino acids.
+
+02:39.466 --> 02:41.688
+And the same in the last layer.
+
+02:41.768 --> 02:50.656
+So in the very last layer, the task of the very last layer is to prepare for the classification task.
+
+02:50.676 --> 02:55.220
+So if you remember the BERT model, you have layer, layer, layer, layer.
+
+02:55.581 --> 02:59.865
+And at the end, you'll have to predict which ones are masked down here.
+
+03:00.365 --> 03:03.528
+So at the end, you'll have to predict single amino acids again.
+
+03:03.628 --> 03:09.253
+So if there's a proline masked here, you'll have to predict the proline.
+
+03:09.233 --> 03:15.560
+So it also makes sense that the last layers would very much specialize to single tokens.
+
+03:16.982 --> 03:18.884
+So this does make sense.
+
+03:19.765 --> 03:25.952
+Now, our question is going to be, do we find the biological function?
+
+03:26.032 --> 03:27.434
+Where would you expect them?
+
+03:27.474 --> 03:38.667
+We would expect, let's say, the secondary structures, which are sort of one level higher than the primary structures, we would expect to find them maybe here.
+
+03:38.647 --> 03:44.495
+And then we would expect to find the tertiary structures maybe somewhere here, okay?
+
+03:44.535 --> 03:46.665
+Because these are most highest level.
+
+03:48.552 --> 03:50.335
+And then it goes back again.
+
+03:50.575 --> 03:57.925
+Or maybe it's like we find the tertiary structures rather here and here again.
+
+03:58.346 --> 04:02.732
+And then in the middle, we'll find the most high-level tertiary structures.
+
+04:02.752 --> 04:04.335
+Sorry, yeah, blue secondary.
+
+04:05.056 --> 04:08.801
+This drawing is getting too weird.
+
+04:09.702 --> 04:13.528
+But there could be multiple scenarios that could fit here.
+
+04:14.149 --> 04:17.293
+But until now, it sort of makes sense.
+
+04:17.273 --> 04:26.648
+So they do an additional investigation where, as I told you, sometimes you can substitute an amino acid and nothing really happens.
+
+04:27.829 --> 04:31.816
+And in fact, this probably happens in you right now.
+
+04:31.876 --> 04:40.690
+You probably might have some mutation that changed some amino acid and you don't even realize because it's fine.
+
+04:42.072 --> 04:43.534
+No notice.
+
+04:43.514 --> 04:51.185
+The biologists can build these matrices of how much you can substitute proteins with each other.
+
+04:51.265 --> 04:57.994
+So here you see this Blossom 62 substitution scores, which are very, I guess, very high.
+
+04:58.395 --> 05:07.007
+If you can substitute two protein, two amino acids with each other and the effect is negligible.
+
+05:08.810 --> 05:12.175
+and it's very low if it's the other way around.
+
+05:13.217 --> 05:18.245
+Now this is interesting so far, but you compare this to this matrix right here.
+
+05:19.046 --> 05:21.029
+This is the attention similarity.
+
+05:21.069 --> 05:33.990
+So what we'll do is for each two amino acids, we take those two attention things, those two attention matrices, and we'll calculate the correlation between the attention matrices.
+
+05:33.970 --> 05:44.748
+And our hypothesis is that the more correlated the attention patterns are between the two amino acids, the more likely we are to substitute them.
+
+05:45.168 --> 05:55.185
+Because as a direct result of our language model, our language model is reconstructing these things.
+
+05:56.752 --> 06:03.945
+Our language model is going to treat, if in natural language it's like a synonym, right?
+
+06:05.167 --> 06:11.619
+Our language model is going to treat synonyms very similar to each other because they're synonyms, they can be exchanged.
+
+06:11.900 --> 06:20.295
+So a good language model should learn that they are almost the same and therefore the attention pattern is going to be almost the same.
+
+06:20.275 --> 06:31.993
+So a high correlation we hypothesize means that the function of the amino acid is similar and therefore we can substitute it easily.
+
+06:32.694 --> 06:40.967
+So this here is the matrix of the correlations between each two attention patterns of these amino acid.
+
+06:40.947 --> 06:45.556
+And if you compare the two right here, they look extremely similar.
+
+06:47.840 --> 06:58.441
+Just have a look for a little while, and you'll see that the patterns, they do not match perfectly, but they are very, very similar.
+
+06:58.761 --> 07:02.589
+The dark spots are in the same places, the light spots are in the same places.
+
+07:03.210 --> 07:10.043
+So this already makes a good case that the language model here has learned something about
+

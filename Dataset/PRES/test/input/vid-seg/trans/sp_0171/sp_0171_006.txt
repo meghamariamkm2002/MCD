@@ -1,0 +1,2 @@
+Here, I show the full algorithm presented in the paper, but to sum up, this is just the agglomerative clustering algorithm with the modification that clusters emerge on maximum dot product and the average linkage function is used.
+In the paper, we show that under a suitable metric, the output of this algorithm provides a consistent estimate of hidden tree structure.

@@ -1,0 +1,1 @@
+When specialized special cases, our instance-dependent regret improves existing first-order regret bounds, and we provide a minimax regret lower bound to demonstrate the optimality of our algorithm in the worst case.

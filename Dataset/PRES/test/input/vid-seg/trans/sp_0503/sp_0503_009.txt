@@ -1,0 +1,6 @@
+In the numerical experiment, we consider two types of graph learning tasks.
+The first one is the subgraph alignment.
+The subgraph alignment problem involves determining the isomorphism between a query graph and a subgraph of a larger target graph.
+We can view the nodes in the large graph that are not in the query graph at outer layers and apply RGW to obtain the corresponding relationship.
+We compare our methods with the methods for computing the original GW distance and some reverence of GW distance, including semi-relased GW, partial GW, and unbalanced GW.
+Our method achieves the highest matching accuracy.

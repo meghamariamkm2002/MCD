@@ -1,0 +1,107 @@
+WEBVTT
+
+00:00.031 --> 00:05.022
+The algorithm is pretty simple in this case.
+
+00:05.804 --> 00:10.094
+So this algorithm rests on this traverse procedure.
+
+00:11.157 --> 00:17.010
+So we're going to traverse what they call these OR nodes.
+
+00:16.990 --> 00:21.454
+So they divide the problem into and nodes and or nodes.
+
+00:21.574 --> 00:28.521
+I don't believe that's particularly necessary for us to think about, but here's how this works.
+
+00:28.641 --> 00:31.684
+So they traverse the or node s to s prime.
+
+00:32.144 --> 00:44.095
+This is simply, again, this is a node, but the node is a path from s to s prime, where we don't know yet what happens in between, right?
+
+00:45.560 --> 00:51.510
+So what we'll do is we'll run this procedure select and select it.
+
+00:52.372 --> 01:01.948
+You can see it outputs an S prime and the S prime is going to be a node here somewhere in the middle where the model says this is your subdivision point.
+
+01:03.363 --> 01:09.874
+and then it will recursively traverse the left and the right branch of this tree.
+
+01:09.934 --> 01:16.586
+So it will subdivide the problem into two problems and then recursively call this traverse.
+
+01:16.806 --> 01:19.110
+You see that's the function that we're defining.
+
+01:19.090 --> 01:22.074
+call this traverse function on these.
+
+01:23.356 --> 01:39.941
+So it will subdivide this problem into these problems and for the next step again it will for each of the problems propose a middle node and subdivide it further and so on until you have a full plan.
+
+01:40.281 --> 01:43.005
+At some point you're going to have a full plan.
+
+01:42.985 --> 01:47.271
+Now, here, again, is the important thing to remember.
+
+01:47.291 --> 01:50.956
+This is just one branch of the search.
+
+01:51.016 --> 01:52.898
+This is just one possible plan.
+
+01:53.239 --> 01:57.905
+And we are going to do a tree search over these plans.
+
+01:58.526 --> 02:08.059
+So this select function here, it has returned this s prime, but it could have returned any point between s and s double prime.
+
+02:08.079 --> 02:11.203
+So let, in it, this is just one branch.
+
+02:11.183 --> 02:17.490
+I'm going to, I don't have space to draw here, but I'm going to draw it down here again.
+
+02:17.510 --> 02:30.325
+So it could have also returned this particular node here, like it's a different s' and then subdivided the problem into different problems.
+
+02:31.046 --> 02:37.073
+And then of course those problems are now different, so they would be subdivided differently again and so on.
+
+02:37.053 --> 02:45.187
+So this top part here is just, if you consider this thing here, your root node, this is where you search from.
+
+02:45.207 --> 02:55.626
+This top part is just one node, one branch in the tree, but we could also subdivide like this, and then that would be another branch in your tree.
+
+02:56.066 --> 03:01.035
+And this tree here is the thing that you're searching over.
+
+03:01.015 --> 03:04.201
+So, it's important to keep this in mind.
+
+03:04.241 --> 03:07.407
+We're searching over these different possibilities.
+
+03:08.168 --> 03:14.720
+Now, the rest of this algorithm here is basically the carryover from Monte Carlo Tree Search.
+
+03:15.081 --> 03:18.467
+And I don't want to go into that in this video.
+
+03:18.447 --> 03:32.584
+But if you're interested in how to actually implement this, you'll have to go look at MCTS and then all of this just carries over from that algorithm because you have to keep estimates of value and visit counts in this tree and so on.
+
+03:33.144 --> 03:35.387
+And also you have some sort of a value estimator.
+
+03:36.128 --> 03:41.434
+But yeah, I'm mainly concerned with how the tree is constructed right here.
+
+03:41.414 --> 03:53.061
+So basically, here's the difference between the Monte Carlo tree search and the divide and conquer Monte Carlo.
+

@@ -1,0 +1,4 @@
+And we will use neural process in our architecture.
+Neural process are meta models that are very useful because they combine the flexibility of neural nets with the prediction of uncertainty, like probabilistic models.
+And they take in as input context information and target locations.
+And in a single forward pass, they'll output a distribution of the target outputs.

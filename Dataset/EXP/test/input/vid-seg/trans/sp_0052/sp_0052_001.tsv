@@ -1,0 +1,7 @@
+start	end	text
+1162	12615	Hi there, today we'll look at context RCNN long-term temporal context for per-camera object detection by Sara Beery, Guan Hongwu, Vivek Rathad, Ronnie Votel and Jonathan Huang.
+13276	21606	So on a high level, this paper tries to do object detection for cameras where the camera is in the same place for a long time.
+21966	26832	For example, these wild trap cameras or traffic cameras right here.
+26812	38069	It proposes to do object detection by incorporating data from the images that the camera has seen in the past to help the detection in the current frame.
+38950	46862	And it does so via an attention mechanism that it runs over a memory of past data.
+46842	69998	So we're going to take a look at how this is done and how well it works and Yes, take a round if you want to know As always if you enjoy content like this then consider sharing it out telling your friends about it Subscribe if you haven't and tell me what you think in the comments So the paper starts off and describes the process

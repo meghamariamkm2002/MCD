@@ -1,0 +1,188 @@
+WEBVTT
+
+00:00.031 --> 00:15.973
+But of course, you'd run into the same problem as I said, and the fact that if you have two spectrograms, they don't necessarily align again.
+
+00:16.013 --> 00:20.399
+And here, they use this dynamic time warping loss.
+
+00:20.739 --> 00:27.709
+Now, this looks very, very similar to the aligner, but it is something different.
+
+00:27.689 --> 00:34.982
+Because now you have two, the difference here is you have two things that you know should match, right?
+
+00:35.022 --> 00:37.006
+You have this thing and you have this thing.
+
+00:37.326 --> 00:39.791
+And they both have the same amount of entries.
+
+00:40.151 --> 00:47.725
+So they both have A, B, C, D, E. This has an A, a B, a C, a D and an E slot.
+
+00:48.146 --> 00:52.093
+And this also has an A, a B, a C, a D and an E slot.
+
+00:52.073 --> 00:59.561
+And you know that you assume, so here's something you assume, you assume that the beginning and the ends match.
+
+01:00.122 --> 01:06.849
+This is not true, of course, because we could have completely unaligned, but they say, in practice, this works.
+
+01:06.869 --> 01:11.514
+So you assume that sort of at least a little bit, these are aligned.
+
+01:13.977 --> 01:14.858
+All right, so
+
+01:16.542 --> 01:33.319
+They have, by the way, there's so much to this paper, by the way, they have an auxiliary loss where the produced lengths, all the lengths that this length prediction module produces, they, I don't remember where that is,
+
+01:33.299 --> 01:37.544
+But they have an auxiliary loss where all the lengths must add up, right here.
+
+01:38.165 --> 01:45.774
+All the lengths that these length predictors produce must add up to the total length of the sound, which in our case, I guess, is the two seconds.
+
+01:46.455 --> 01:47.056
+Okay.
+
+01:47.076 --> 02:01.213
+So that's how they, if so really quickly, these length predictions will sort of, at least the least thing they can do is they can all predict like L over N.
+
+02:01.193 --> 02:12.425
+And that will give you a sort of a rough alignment such that it kind of makes sense to do this dynamic time-warping to assume that the beginnings and the endings align.
+
+02:13.206 --> 02:14.487
+All right, so we have two things.
+
+02:14.847 --> 02:17.510
+They have the same amount of slots.
+
+02:17.971 --> 02:21.214
+We know the beginnings and ends align, or we assume that.
+
+02:21.555 --> 02:22.876
+How do we make it?
+
+02:23.156 --> 02:24.838
+How do we
+
+02:24.818 --> 02:36.063
+find out which slots align to which and this is a dynamic programming they formulate this as a dynamic programming problem that you might you know from.
+
+02:37.466 --> 02:44.582
+You might know from from like these are often taught in algorithms and data structure courses and so on.
+
+02:44.562 --> 02:48.968
+where you can figure out which of these align.
+
+02:49.008 --> 02:55.676
+So if you go a step here, that means that you go one step in each of the sequences.
+
+02:55.776 --> 03:04.787
+And then if you go a step here, that means only this one advances and this one still corresponds to this one right here.
+
+03:05.688 --> 03:08.071
+And okay, I formulated wrong at the beginning.
+
+03:08.131 --> 03:10.975
+You don't have ABCDE.
+
+03:10.955 --> 03:16.261
+I guess you would actually have all of these slots and you would figure out which ones correspond to which.
+
+03:17.402 --> 03:22.888
+But I hope you recognize these sort of problems where and here you align them again.
+
+03:22.908 --> 03:27.333
+So these are classic dynamic programming alignment problems.
+
+03:28.314 --> 03:29.696
+And they align it like this.
+
+03:30.237 --> 03:38.606
+And they simply say the more that this path deviates from the straight path, the larger penalty we give.
+
+03:39.227 --> 03:40.388
+So they give a penalty.
+
+03:41.870 --> 03:45.057
+with respect to how much this path deviates.
+
+03:45.217 --> 03:54.336
+So here you can see how much the spectrogram of the generated sound aligns with the spectrogram of the ground truth.
+
+03:54.977 --> 04:02.292
+And here is a penalty for each time that the two spectrograms don't align correctly.
+
+04:02.272 --> 04:17.293
+they do this in a soft way so they do every single possible path right here and you can again do this using dynamic programming and the entire catch here is that the alignment must be monotonic because
+
+04:17.273 --> 04:26.382
+no matter how long or short the sequences are, they always follow one after another in both of the spectrograms and both of the sounds.
+
+04:26.763 --> 04:28.785
+So that's why you can optimize it in a way.
+
+04:28.825 --> 04:45.542
+So over all the possible paths that you can align them, you weigh these paths by their score that you give them here, and then you calculate the loss across all these different paths.
+
+04:45.522 --> 04:49.766
+And that will give you, that is sort of a fuzzy loss.
+
+04:49.906 --> 04:56.952
+So you don't compare the spectrograms directly, but you compare them and you sort of forgive them for not aligning too well.
+
+04:57.813 --> 05:03.618
+But the more they don't align, you give a penalty and that's how you sort of force the generator.
+
+05:03.718 --> 05:08.182
+Again, you force the generator to produce things that are aligned.
+
+05:08.202 --> 05:14.348
+You produce these length predictions that make the spectrograms closer to each other.
+
+05:14.328 --> 05:17.677
+So that's how you calculate the spectrogram loss.
+
+05:17.978 --> 05:20.184
+This is entirely deterministic.
+
+05:20.204 --> 05:22.751
+There's no learned weights right here.
+
+05:23.352 --> 05:23.633
+Okay.
+
+05:25.278 --> 05:25.418
+Cool.
+
+05:26.258 --> 05:28.881
+Last thing they say is that they use this phony miser.
+
+05:30.844 --> 05:34.048
+That's the very beginning, but they also ablate that.
+
+05:34.529 --> 05:42.118
+So in the results, they do a lot, lot of ablation studies, which I don't want to go into right now.
+
+05:42.178 --> 05:43.700
+I've already shown you some.
+
+05:44.441 --> 05:47.585
+They do even, I think they do a human evaluation.
+
+05:48.787 --> 05:50.208
+Do they do a human evaluation?
+
+05:51.050 --> 05:52.992
+I know this might have been in another paper.
+
+05:52.972 --> 05:57.667
+but as you have heard from the examples, this sounds extremely realistic.
+
+05:58.151 --> 06:00.045
+I'll link the website to
+

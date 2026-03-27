@@ -1,0 +1,71 @@
+WEBVTT
+
+00:00.031 --> 00:01.834
+therefore this derivation wouldn't work.
+
+00:03.256 --> 00:05.039
+Now why is this important?
+
+00:05.099 --> 00:19.241
+Because if you look back into your drawing, what you're basically doing is you are imposing a quadratic regularizer around this initial point right here.
+
+00:20.263 --> 00:27.895
+And that creates this very strong connection between the end gradient and the initial gradient.
+
+00:27.875 --> 00:40.266
+So now when you're optimizing, when you have a training loss of the inner task, and maybe the training loss looks something like, it looks something like, like this right here.
+
+00:41.968 --> 00:48.814
+So SGD will, it would go right to the very inner point right here.
+
+00:49.094 --> 00:51.656
+If you're just let SGD run, it would go there.
+
+00:52.117 --> 00:57.882
+But now since you have this regularizer, SGD needs to find a trade off point between the two.
+
+00:57.862 --> 01:02.131
+So what it will do is it will probably go somewhere and stop somewhere here.
+
+01:02.693 --> 01:04.897
+So it will now have two forces pulling on it.
+
+01:05.058 --> 01:16.242
+The first force will be this quantity right here and the second force will be pulling it back towards this.
+
+01:16.222 --> 01:23.480
+You can pretty much count, so now SGD cannot just go to any point right here.
+
+01:23.520 --> 01:25.465
+It cannot go to any isoline.
+
+01:25.485 --> 01:26.769
+These are not equal anymore.
+
+01:27.731 --> 01:33.285
+Mainly it will go to the one point that points into the direction of this quadratic right here.
+
+01:33.265 --> 01:44.476
+So since it's a quadratic, we have closed form formulas for relating one gradient on the quadratic, namely the one out here, with the gradient back here.
+
+01:44.516 --> 02:02.715
+So we can express this Jacobian in closed form because this is a quadratic, because we have this regularizer, because you have these basically two forces pulling on this point in opposite direction, one pointing towards the training loss and one pointing towards the inside of the quadratic.
+
+02:02.695 --> 02:06.202
+So that's why this method works.
+
+02:07.084 --> 02:08.387
+Okay.
+
+02:09.709 --> 02:13.317
+I can recommend Farin Hussar's blog post.
+
+02:13.417 --> 02:19.991
+He has some very nice animations of why this basically restricts where gradient descent can go.
+
+02:21.554 --> 02:23.638
+I can link to it in the description.
+
+02:24.300 --> 02:25.041
+It's pretty cool to
+

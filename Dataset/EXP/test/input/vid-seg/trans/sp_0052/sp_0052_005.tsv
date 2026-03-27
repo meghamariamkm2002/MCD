@@ -1,0 +1,64 @@
+start	end	text
+31	432	here.
+612	3336	The first way is this short term memory.
+3737	7082	And the second way is the long term memory.
+7744	9567	Now the two are slightly different.
+9887	17079	As you can guess, the short term memory is going to be only over a short time period around the current frame.
+17439	25012	And the long term memory is going to be basically across a very long time horizon into the past.
+25032	26494	You can see
+26474	31301	We're trying to classify this blue frame right here that what we call the key frame.
+31421	33625	So what we'll do is we'll run it through stage one.
+33845	34105	Cool.
+34225	37590	So we have features for each region of interest.
+37951	45462	And then you can see this goes here and through these residual connections, this goes into stage two over here.
+45442	49794	So basically, stage two still receives the same input.
+50035	53204	It receives whatever stage one outputs for the keyframe.
+53725	56493	But we're going to add to that twice.
+56754	59923	So we're going to add two things as I said.
+60680	64346	So the short term memory is added right here.
+64947	67752	Now, how do we build the short term memory?
+68233	73061	We built the short term memory simply by considering all the frames around the key frame.
+73081	85101	And this you can see right here, the current window around the key frame, which can be like one frame around it or two frames or three frames, just a few frames around the current frame.
+85081	95155	And this can be fairly helpful, as we said, for example, if the deer moves a bit, the car moves a bit, you know, it gets into a slightly different lighting and so on.
+95795	105148	This can help us very much to classify the current keyframe if we also have features from the surrounding frames.
+105128	115383	So for each of these surrounding frames, we also run them through the stage one detector to also extract regions of interest.
+116425	123475	And that all of these features go into this memory short term memory bank right here.
+123455	124616	There's different strategies.
+124636	127740	You don't always have to extract all of the regions of interest.
+128101	136011	You can also extract just the top one and so on, or you can extract the mean, since these are fairly consistent.
+136031	137332	The camera is at the same place.
+137753	143640	There are many ways you can do this, but what you'll ultimately end up with is a short-term memory bank that
+143620	157882	You'll have a bank and you have lots of these feature vectors in here for your regions of interest of the surrounding frames.
+157902	164852	Now, if this here is your half occluded deer, so this is the half occluded deer,
+164832	170222	And you want to consider information from the surrounding frames.
+170643	177295	Maybe in the next frame, so maybe this is three frames, like one, two, three, and two is the key frame.
+177716	180801	Maybe in the next frame, the deer moves a bit and you see its nose.
+181342	185490	And this particular region of interest here is relevant.
+185470	195169	So how do you know how do you now get from this entire memory this feature vector that would be helpful?
+195990	199397	And the answer is you get it through an attention mechanism.
+199938	201000	You can see that right here.
+201340	205268	The way the short term memory is added is through this attention block.
+205248	207291	They describe the attention block right here.
+207732	210617	It is a fairly standard attention mechanism.
+210637	213161	So I've done a video on attention is all you need.
+213261	216567	If you don't know what an attention mechanism is, go check it out.
+218630	221455	But you can see it's very, very standard.
+221855	226463	So you have these input features, which are the features that come from the keyframe.
+226443	231408	and you have the context features which are all the features in your memory bank.
+232129	239436	You encode the input features into a query using a fully connected layers and the context features into keys.
+240076	252028	And then you match the queries with the keys and the softmax in order to get a weighting over the context features and then you aggregate the values from the context features.
+252008	255074	So this is a standard attention mechanism.
+255335	255976	What does it mean?
+256397	268482	It basically means that each of these vectors right here, they will emit a key that kind of describes what kind of information is contained in that vector.
+268462	281775	The vector over here will emit a query that describes what sort of information it is looking for to in order to describe what's in the region of interest as well as possible.
+282156	285424	And then you simply match the query with the keys.
+285404	303226	to determine which key fits best to that query and whichever one fits best, let's say this one here, then you take that vector from the memory bank and incorporate it together with your current information that you already have.
+303687	310095	So that's how you address things that from other frames using an attention mechanism.
+311122	315512	Okay, now if this were all, you know, we could train this right now.
+316053	321085	We could train all of this because all of this is differentiable, right?
+321646	324733	This stage one detector right here is differentiable.
+325294	330947	It goes here and here, you know, the information, the attention mechanism is differentiable.
+332030	335297	The stage two detector is differentiable, all differentiable.
+335618	335818	Cool.
+336119	337522	We can train this end to end.
+338605	340048	Now what's the problem?

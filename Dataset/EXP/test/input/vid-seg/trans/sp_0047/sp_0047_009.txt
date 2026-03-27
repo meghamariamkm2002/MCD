@@ -1,0 +1,16 @@
+So, yeah, as I said, this paper is very different from other research papers in that it's sort of half an engineering paper and all of these papers are.
+They're kind of hard to read because they just kind of state some things in the order is kind of weird sometimes, why they do things is kind of weird sometimes, but you can't deny that it had quite the effect on the community.
+And it is a very cool paper, a very cool series of papers.
+And it's very cool that actually they released the code and they made the code such that it is super duper efficient even like on a single machine.
+And that was
+very cool because, you know, being Google, they could have just released code that is very efficient on a distributed data center.
+And they didn't do that.
+So that this is, it's sort of not really like today anymore.
+Like today, when they release code, it's always you need, you need like 50 cloud TPUs to do it.
+I mean, it's still cool that they release code, but this was
+This was really a step into kind of democratizing AI.
+And yeah, so that was my rant about Word2Vec.
+I hope you enjoyed this.
+I hope this still was useful to you, even though most of you probably already knew Word2Vec.
+And yeah, so I'll see you next time.
+Bye bye.

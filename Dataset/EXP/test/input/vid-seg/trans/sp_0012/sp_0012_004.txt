@@ -1,0 +1,16 @@
+So let's dive in.
+They make the following claims.
+Let's just go through them really quick.
+Data account reduces the amount of upstream.
+So think of network reading or augmentation.
+Computation needed to reach a competitive out of sample error rate on various data sets and model architectures.
+Second, data echoing can provide a wall time speed up in practice.
+Third, data echoing can support a wide range of echoing factors.
+And that's the echoing factor is how often you repeat the data.
+Fourth, the effectiveness of data echoing depends on the intersection point in the training pipeline, sorry, in the insertion point.
+That's what that's what our hypothesis was, right?
+Fifth, data echoing can benefit from additional shuffling after echoing, but does not require it.
+And sixth, countering expectations, data echoing reaches the same final error rate as well-tuned baselines.
+So I can absolutely accept one through five, especially in like an actual practical in the wild setting.
+But six, we'll see about six.
+So let's

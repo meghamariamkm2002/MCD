@@ -1,0 +1,4 @@
+To additionally do some theoretical analysis, we build this general federated optimization framework.
+So compared with FAT average, we introduce the VDK term into the algorithm explicitly for theoretical analysis.
+And also we replace fixed values with flexible learning rate and VDK functions.
+And we will make the specific choices of learning rate and VDK later after some theoretical analysis.

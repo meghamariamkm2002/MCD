@@ -1,0 +1,20 @@
+these super high scores by pulling something off precisely.
+But in games where they say where you have to plan ahead for longer, it kind of fails.
+And we know that this long planning was about to be a problem for years to come, and it's still not solved.
+So still Go Explorer is highly controversial that can solve these kind of long exploration games.
+And
+Those are still games, right?
+So we are basically not, we are very much further than they were in this paper, but also we are basically nowhere yet.
+Yeah, if I'm allowed to say that.
+So I enjoyed reading this paper.
+I, this is, it's very, it's very well written.
+If you somehow know how to think about reinforcement learning, like this, this Q function, what the Q function means and why you would learn it in this way.
+I find this is not super well described.
+This kind of requires a bit of a knowledge of
+not of RL, but just of how to think of RL.
+But apart from this, everything else is written incredibly well, easy, straightforward.
+And you know, this was just a nice work of its time.
+And I appreciate it for that.
+All right, I'll see you next time.
+And I appreciate your time too.
+Bye.

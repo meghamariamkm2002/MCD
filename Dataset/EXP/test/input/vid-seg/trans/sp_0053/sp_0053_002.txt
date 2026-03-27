@@ -1,0 +1,32 @@
+All right, let's dive in.
+So vision transformers are a new thing, right?
+Vision transformers.
+I've also made a video about vision transformers.
+They are the easy, the simple application of the transformer architecture, which was
+prevalent in natural language processing with the introduction of attention is all you need and follow up papers, BERT and so on.
+And applying this to images.
+And the concept is very simple.
+You have an image and you divide this into patches.
+So you divide the image into patches.
+And then you simply unroll that array sort of.
+So you unroll that array.
+So you have patch, patch, patch, patch, and so on.
+And then you simply consider this as a sequence, like a sentence, like, Hello, my name is, and so on.
+you simply consider the sequence of patches as word embeddings.
+So there's like one, I think there is one fully connected layer to actually get the word embedding or the token embedding.
+And then you put a transformer as you would in an LP.
+So there is a transformer
+here.
+And you do whatever you do with a transformer.
+So usually, if you don't know, people prepend a special token, that special token is usually called something where I might not draw this, that special token is usually called CLS token.
+And that is also passed through the transformer and the transformer in its base configuration.
+It keeps the length of the sequence the same.
+It's actually not necessary to do this, but that's just how we do things.
+So for every input token, you'll get a corresponding output token or output embedding or output signal, whatever you want to call it.
+And such that none of the input tokens is, you know, kind of preferred because every input token sort of refers to some little patch here in the image.
+If you want to say something about the entire image, you don't want to prefer any one of them.
+So what you do is you have this special token, the CLS token.
+which is associated with no location in the image.
+And that's ultimately what you use to classify the image or also here to do representation learning.
+So the representation we're looking to get out is the final layer embedding of the CLS token.
+And that through the transformer architecture had aggregated all the information or we hope so from all the visual tokens in the image.

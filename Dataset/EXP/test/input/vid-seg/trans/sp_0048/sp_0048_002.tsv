@@ -1,0 +1,87 @@
+start	end	text
+31	4499	Now, if you don't know what meta learning is, let me quickly introduce the term.
+5140	9869	So in meta learning, you assume you have some sort of a distribution of tasks ahead.
+10410	11592	So let's make some examples.
+12153	22933	For example, task one could be you get an image, you have a data set of images, and you want to classify them into cats or dogs.
+24314	28819	And you know, you have a little data set with labeled images and you can train, test, split that.
+29220	30401	And that's one task.
+31002	43216	Now task two is going to be, again, you have a small data set of different images, but let's just all make image examples here, but you want to locate the pedestrian.
+43356	46220	So you want to locate the human in the image.
+46960	50284	So where is the human, right?
+50605	52667	And the task three could be,
+54503	69323	Again, a small database of tasks as sorry of images and in each of the image you want to visually question answer you want to or let's say you want to point out
+70552	74598	All right, there is a ground, there is a tree, and there is a question about it.
+74979	77002	Yeah, let's take visual question answering, right?
+77263	80969	We wish, which give you yes or no questions, something like this.
+83593	87499	Now let's just say you have to segment, you have to segment that image.
+88020	91125	So down here would be ground, you have to segment the ground.
+91105	94812	Okay, so these are all image tasks, right?
+94832	99881	These are all perfectly fine independent tasks, each for each one you have a small data set.
+100442	108496	Now, sometimes these data sets are very, very small, such that you cannot really train a state of the art model on them.
+109157	111882	For example, if you have medical images,
+111862	115347	Oftentimes the labels of these are very hard to get.
+115427	122458	I mean, there's privacy concerns and then, you know, doctors have to look at it to produce the images costs money and so on.
+123399	128026	So it's not like you have a lot of images and you could profit from more images.
+128286	133654	So one method that people come up with is called transfer learning.
+133834	138261	So in transfer learning, you say, I have this giant database of images.
+138321	141025	Let's, let's, let's say this is image net, right?
+141005	144630	I have this giant database image net with labeled images.
+145031	149517	What I can do is I can use this to train a neural network.
+150779	153683	Let's this are the bunch of layers of neural network.
+153703	159992	And I can train the neural network on this big database and get parameters theta, right?
+159972	162897	These are the parameters of the neural network.
+163378	167825	And then I will basically adapt these parameters to each task individually.
+168206	175237	So in task one, sorry about that, I would then take these parameters as an input to the neural network.
+175277	178362	I would initialize the neural network with these parameters.
+178863	185013	And then I would use this training set in order to fine tune.
+185073	186756	This is what's called fine tuning.
+186736	190843	to the task specific parameters here, phi.
+191243	193788	So phi one, because it's task one.
+194168	205707	For task two, I would also take these as a starting point in order to train its neural network to fine tune it on this bounding box task.
+205687	208812	in order to obtain the parameters for task two.
+209093	215624	So you can see that there's a pre-training stage here to obtain good initial parameters.
+216245	223257	And then we adapt these initial parameters for each task separately in a fine tuning stage.
+223237	225180	So this is one way we can do it.
+225901	229245	Another way we can do it is called multitask learning.
+229826	243404	What we do in multitask learning is we say, well, see, probably an neural network that can segment the grounds is also pretty good at doing bounding boxes, like it'll use some of the same features.
+243825	249953	So can't we just kind of pull together these data sets into one bigger data set?
+249933	257064	And then train on, like if it's an image from task one, we'll train on the loss of task one.
+257444	261010	And if it's an image from task two, we'll train on the loss of task two and so on.
+261431	264415	But we'll sort of use the same neural network basis.
+264475	267820	We just have kind of different heads on top of them.
+268521	276193	And we'll basically, so this is called multitask learning, have one shared neural network with different outputs for the different tasks.
+276173	284441	And basically counting on the fact that you can sort of learn from one task what's useful in the other.
+284481	301118	Now, this is a good method to combine the tasks and to basically share data information, but it will also limit you because you now have to trade off between the tasks, like this neural network right here, this joint encoder.
+301098	313240	will never be able to, will never be able to fully gear to one task because it all also has to, you know, it has to perform for the other tasks as well.
+313640	316986	So you kind of limit yourself in your top out accuracy.
+317908	319731	Now, maybe the regularization effect is good.
+320217	322200	So these are two methods.
+322260	328190	The first is called transfer learning here on the left and the other is called multitask learning.
+329051	332777	Now, meta learning goes a different direction.
+333018	340470	Meta learning is like transfer learning, but it says, well, what if we don't have this giant data set right here?
+340450	348785	What if we find a way to learn these initial parameters, right?
+348805	354877	So what we'll do is we'll start out with a guess, a guess of good initial parameters.
+355478	357261	Let's call that theta zero.
+357241	371628	And now we have all of these three tasks take Theta0 and run their fine tuning to come up with their own parameters, starting at Theta0.
+371689	375997	So this is Phi1 started from Theta0.
+376117	379283	And we'll also give it to Task2 and to Task3.
+379263	379924	Right.
+379944	392506	And each of these tasks is going to train on its own training data set and then evaluate on its own validation data set and then report back a number.
+393748	402283	So we do this for every task and every task basically trains this runs through the validation data set reports back a generalization error.
+402263	409942	And then we know, once we get all the information from all the tasks, we know how good were these initial parameters, right?
+409962	418483	We get a measure of how easy is it for the tasks to adapt these initial parameters to their own data set.
+420033	427828	And then we somehow need to figure out a way, okay, these parameters were on average 81% good.
+428429	434420	Can we come up with a better set of initial parameters theta one in some way?
+434741	443357	Can we somehow find a better set of initial parameters such that it is easier for the tasks to adapt these initial parameters, right?
+443337	451718	And even more so, there could be task four, which we are not seeing during this training phase, right?
+451758	456550	This is kind of our, so these up here could be our train training tasks.
+456771	459658	And this down here could be our validation task.
+459638	476858	So basically, we're trying to come up with a set of initial parameters that if a new task comes along and it takes this thing as its initial parameters, it will be able to adapt very quickly these initial parameters to its own data set.
+477439	479922	And most importantly, it can do that.
+480462	488852	It will result in a much better model than had the task just trained on its own small data set from scratch.
+488832	500424	So our task is in meta learning is basically to come up with a learning procedure to generate to iteratively generate better and better and better initial parameters, right?
+500444	504495	And what better way to do this than using gradient descent?
+504475	514134	So, this is meta-learning using gradient descent is the core of this paper, basically.
+515737	517400	Now, what do you need for gradient descent?
+517480	526297	So, if you want to go from one task to the next using SGD or even GD, gradient descent, you need to come up with a gradient.
+526638	530044	Now, why is this a problem in this case?

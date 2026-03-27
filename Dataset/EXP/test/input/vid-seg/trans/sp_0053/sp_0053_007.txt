@@ -1,0 +1,52 @@
+not cross product inner product, or you do L two distance between the representations or something.
+Here we do cross entropy.
+And the cross entropy after a softmax and the way I interpret this is the following.
+A softmax is like, what you get out is a normalized distribution, right?
+However, we have no class labels here.
+So what you do is you simply choose, you choose a number, any number, right?
+This is you as an implementer of this algorithm, choose what dimension you want to output here.
+Now, after the softmax, whatever your input is going to be, a distribution over the amount of things that you have input.
+And you can interpret this as classes, right?
+There's class zero, one, two, three, and so on.
+And you're gonna get class zero is probability 10%, class one, zero percent, class two, 40%, and so on.
+right?
+You don't know what it means, but you know, you get this as an output.
+And the teacher having this sharpening, it will have a much more peaked distribution.
+So for the same thing, it might have a distribution that's
+not as much class zero, not as much class one, very much class two.
+Alright, this even goes off screen for you.
+Yeah, very much class two, and so on.
+And since this is the since the teacher is the target for the student, you see here is a stop gradient.
+The student is sort of, this is a common
+I guess, I guess this is a common trick in distillation, like the teacher is very sure.
+And that means the student gets a better learning signal to match the teacher.
+So this this sharpening of the teacher gives these less noisy for the student.
+And also, I think it also helps prevent this.
+I'm not sure.
+So they speak of sharpening and centering.
+And one, I think one, they claim furthers collapse, probably the sharpening and one prevents it, which might be the centering, I might mix them up.
+But, you know, one sort of reduces the noise, but encourages, I think the sharpening must reduce noise, but encourage collapse.
+And then the centering counteracts that counteracts the collapse.
+Yeah, probably.
+Though there's an argument to be made that the sharpening might also counter collapse because, oh yes, that's what they say.
+Now I remember.
+So they say the sharp, so they, they say, uh, naturally this would then be biased towards the uniform distribution, um, with the centering, I believe, but the sharpening then counteracts that again.
+I don't know.
+It's in the text somewhere.
+I'm more interested in why this is even a softmax in the first place.
+So I interpret this as you force the model to come up with an k-dimensional classification problem by itself.
+And it has to choose by itself what the classes are, right?
+So it has to somehow make representations that allow itself to come up with a classification problem that it can solve.
+And I think that's, that's pretty smart.
+Um, you know, you instead of giving it a classification problem, you simply ask it to come up with one.
+Um, now this could go horribly wrong, right?
+But, uh, apparently if you do it like this, it goes well.
+So that's the dino architecture.
+Again, we augment image, we augment it in different ways.
+We put all the things through the student and through the teacher.
+The teacher is an exponential moving average of the student.
+That gives us different representations of different augmentations of the same image.
+We require the representations to be the same in terms of their
+So we take the representations, we ship them through a classifier, through a softmax, into a distribution.
+We require the outputs to be the same of the student and the teacher, while the teacher has centering, which is centering the logits by an exponential running average of all the representations it has ever seen.
+also it has a sharper softmax all of this together and yeah the teacher has a stop gradient so it's we train the student of this together gives us a system that comes up with good representations and does not collide

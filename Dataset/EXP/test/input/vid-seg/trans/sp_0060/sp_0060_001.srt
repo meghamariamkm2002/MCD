@@ -1,0 +1,36 @@
+1
+00:00:00,706 --> 00:00:10,779
+Hi there, today we'll look at self-training with noisy student improves ImageNet classification by T. Z. Sie, Min Tan Luong, Edward Hovey and Kwok Wili.
+
+2
+00:00:11,721 --> 00:00:24,638
+So this paper takes an ImageNet classifier that's been trained on the ImageNet dataset and uses that classifier as a teacher model to label a whole bunch of unlabeled images.
+
+3
+00:00:24,618 --> 00:00:31,186
+And then it trains a student model that is larger than the original teacher model on those teacher labeled images.
+
+4
+00:00:31,666 --> 00:00:37,253
+And that turns out to improve the classification on the ImageNet validation set.
+
+5
+00:00:37,734 --> 00:00:43,020
+Now that there is a couple of things that make this all work.
+
+6
+00:00:43,861 --> 00:00:50,389
+And today we're going to explore how this paper does it and what they say is important.
+
+7
+00:00:50,369 --> 00:00:57,526
+If you enjoy content like this, as always, don't hesitate to share it out or tell your friends about it.
+
+8
+00:00:58,187 --> 00:01:00,292
+And if you're not subscribed yet, then do so.
+
+9
+00:01:01,435 --> 00:01:05,003
+I would appreciate that and you'll get more content.
+

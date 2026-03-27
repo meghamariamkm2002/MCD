@@ -1,0 +1,2 @@
+In our model, for each sample, rather than using just one distance to form the attention, we calculate the attention score with the interaction effect from all distance to all boundary.
+And instead of constant value, the value function is constructed by a DNN with trainable parameters.

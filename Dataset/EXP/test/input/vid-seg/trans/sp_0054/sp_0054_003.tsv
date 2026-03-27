@@ -1,0 +1,110 @@
+start	end	text
+31	2174	the multi-edit tension mechanism is a single vector.
+2575	28873	This paper says that is not ideal because the positions are too much mixed with the signal of the content of the words and we'd rather have this in a disentangled representation such that the network can sort of reason about the words in one line and it can reason about the position of the words in another line.
+28853	41434	So their goal is to disentangle these two vectors and basically design a new attention mechanism that always treats the content and the position as separate things.
+42075	45221	So the new attention mechanism they propose is right here.
+45301	48006	Of course, they can't stay separate, right?
+48426	53595	But they can be disentangled through the layers.
+53575	57000	So their new algorithm sort of is here.
+57220	63029	The way they obtain the attention matrix is due to the following thing.
+63049	66955	So how do you usually obtain the attention matrix?
+66975	77690	You have your input X here, this is your sequence, and you produce two values from it, Q and K. So these are matrices.
+78091	79633	So if X is a sequence,
+81014	86001	then every single sequence element emits one key, which is a vector, right?
+86341	86742	One key.
+87823	90908	And then every single one also emits one query.
+91809	93271	So like this, like this.
+93551	101642	And the key sort of, the key is supposed to say what is in, what information is this token about?
+102043	107190	And the query is kind of supposed to say, what information does it request from other tokens?
+107170	111239	So now you route the information wherever the inner products line up.
+111319	116109	For example, probably this thing would go to be routed here and so on.
+116129	117953	It's not a hard routing, it's a soft routing.
+118474	125348	So by transforming x by linear transformations into keys and queries,
+125328	153782	you obtain your attention matrix by multiplying together queries and keys such that you have sort of the inner product between each of these vectors and this is quadratic and this is the big bottleneck in transformers but you have the inner product between each of the two you get a giant matrix and the giant matrix basically says how much does token two attend to token three that's the position two three of that matrix
+153762	163397	and that's that seek that element is going to be the inner product of the query of token two with the key of token three.
+164118	166862	So that's how you do the attention matrix.
+166882	173572	And these vectors right here, they if you do regular bird, they always have they're always everything at the same time.
+173612	176817	So you feed, you feed content and position
+176797	185249	Somewhere down the layers, you feed that in, you add it together, and the network is supposed to figure out itself how to use these two pieces of information.
+186090	188594	This paper says, no, wait, we can do better.
+189094	203935	What we can do is, for us, each sequence element, it does not only produce one key and one query, it actually, we think it should be contained, it should be made up of two vectors.
+203915	210533	So each of these things has two different two different components.
+210694	214785	One is this kind of H component, which is
+216976	222144	the, which is the content, content information.
+222544	226571	And one is the P component, which is the positional information.
+227051	234002	So here, how should, how should token I attend to token J?
+234342	238048	They say, well, that is going to be, it's going to be the same thing.
+238108	241313	It's going to be the inner product between the
+242440	258855	between the, this is the query of token I, and this is the key of token J. However, now the queries and keys are made up of two different parts.
+259095	265481	One is the content part, one is the position part, and the position, as you can see, maybe, is J-conditioned.
+265501	269325	And now the position is going to be a relative positioning.
+269305	276565	So if you have your sequence right here, what each token would do is it would emit one vector.
+276786	277809	Oh, sorry.
+277829	283264	It would emit one vector that is the content of the token.
+285522	290428	like before, and then another vector would come in from the position.
+291389	300519	So the same we did at the beginning, but now in each layer, this positional information comes in irrespective of what word there is, right?
+301100	307547	Irrespective of what word is in the position, the position gets an encoding right here.
+307527	312614	And then the interesting thing is we don't add the two together, we treat them actually separately.
+312715	317902	So here the keys are two vectors and the queries are also two vectors.
+317942	319845	So I'm just going to draw one up here.
+320326	326795	So the query is going to be a vector and the query for the position is also going to be a vector.
+326815	330721	And that also, it depends only on the position and not on the incoming signal.
+331763	332083	Okay.
+333346	336671	So now, how do we route information?
+336851	340336	Now, we have four different routings.
+340777	343481	First, we only consider dark blue, dark blue.
+343822	346285	So this is kind of the classic attention, right?
+346566	349390	This and this, they match really well.
+349430	350231	So that goes here.
+350251	353636	That one probably doesn't go there.
+354117	354898	And so on.
+354878	360631	But then we also, so this is what they call content to content routing.
+360992	367568	But then we also have content to position, position to content and position to position routing.
+368269	372820	And in all of these, so for example in content to position,
+372800	387902	There's a 50-50 chance I'm going to mix this up and I'm sure I'm going to, but in content to position, what we're going to do is we're going to look at this vector right here, which is the content vector of the query that is produced from the token.
+388222	396334	The content is produced from the token and we're going to attend to the position vector of the key.
+396474	400039	So we're going to attend to the light blue things.
+400019	405851	So, essentially, this part is like the classic attention part.
+405871	408076	It is, I am the word am.
+408116	417876	I'm requesting all informations from all the nouns in the sentence because I'm a verb and I would like to know who are the nouns in the sentence.
+417856	425027	Then the content to position encodings is, I am the verb am.
+425829	428633	I would like to know what is around me.
+428773	431037	The positions are relative positions.
+431177	437207	So I can request the vector for, you know, the plus one position of me or the plus two.
+437327	441113	So the word can attend to its surroundings.
+441093	445662	So given that it's the word M, it might be particularly interesting.
+445682	452394	Maybe it has already figured out it's not a question, right, from the previous layers.
+452535	454739	So it's particularly interested in what's before it.
+455280	462814	So because, you know, M, actually, it probably isn't particularly interesting because it's always going to be I. So
+462794	484971	Actually, maybe it's exactly a counter example where it wouldn't want information from there, but it can sort of attend, it can say, I want to attend to things after myself because I already have figured out that before me must be an I, I want to attend to things after me, like one position after me, what's right after me, what's two words after me and so on.
+484951	488075	position to content is exactly the opposite.
+488456	505778	It is saying, so the token can say, well, I am in position plus four to, you know, what kind of information do I want to send to things that are four away from me, right?
+505758	507901	irrespective of what the content is.
+508121	515071	So here we simply consider what position is the token with respect to its neighbors.
+515832	520279	And what kind of information does it want to aggregate from each of the words?
+521500	523543	It is a bit, it's a bit weird, right?
+523864	528390	So it says, it says, like, I, I am in in position
+529990	532373	a word that is two words after me.
+533394	535737	What kind of information do I want to get from it?
+537079	546752	And since it's attending to content, that can be dependent on, that can be dependent on what word there is, but not its position.
+546792	555643	And then position to position is simply, well, what kind of information do I in position three want to send to something in position seven?
+555623	567942	which would be useful, but this is relative position encoding, which simply means I am always kind of in the middle, and so this isn't really helpful, so they decide to leave this away.
+568542	574932	So we end up with the three different attention mechanisms, so to say.
+574912	588702	We end up, so there's this one, there's this one, and there's this one, okay, corresponding to the three out of four different ways we can combine the dark blue and the light blue keys and queries.
+590420	598230	Now, you can see right here, that's what they do, and their final attention matrix is simply the addition of all of those together.
+598770	615111	So we construct one attention from like the classic attention, we construct one attention that is content to position, we construct one attention that is position to content, and we construct one that is position to position, but then we leave it away because it's
+615091	616893	we deal with relative position.
+616913	619476	So it would sort of be the same for every token.
+620257	624041	And that's not particularly helpful.
+624061	629888	Reason I'm going to repeat it again, the H information contains actual signal from the last layer.
+630308	637216	While the P has no idea about the signal, it simply contains information about the position of the tokens.
+637877	637977	Okay.
+637957	652117	So you can decide to send information to a word that's two positions ahead of you, or to request information from word that's three positions behind you, depending on what word you yourself are.
+652858	657484	So that's the content to position and position to content attention.
+657464	659409	These things are all added together.
+659729	662516	And that makes up the final attention matrix.
+662536	668109	So a final entry in the attention matrix could be influenced by multiple ones of them.
+668149	673482	It could say, you know, I am the word, I'm the word M. I'm in position two.
+673462	677612	I request a lot of information from other nouns.
+677752	685029	If any noun is here, I want information, but I also want information from things that are one or two positions ahead of me.
+685710	700043	So that, that is, and, and, you know, uh, since I'm the word am, and also since I'm in position number two, I am very interested to know what the subject of the sentences now we have.

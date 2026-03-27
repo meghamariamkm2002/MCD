@@ -1,0 +1,589 @@
+[
+  {
+    "id": "002",
+    "title": "sp_0440_002",
+    "filename": "Videos/sp_0440.mp4",
+    "paper_filename": "Papers/sp_0440.pdf",
+    "type": "slides",
+    "relevant_segments": [
+      {
+        "para_id": "p1",
+        "section_heading": "Abstract",
+        "text": "While numerous works have focused on devising efficient algorithms for reinforcement learning (RL) with uniformly bounded rewards, it remains an open question whether sample or time-efficient algorithms for RL with large state-action space exist when the rewards are heavy-tailed, i.e., with only finite (1 + \u03b5)-th moments for some \u03b5 \u2208 (0, 1]. In this work, we address the challenge of such rewards in RL with linear function approximation. We first design an algorithm, HEAVY-OFUL, for heavy-tailed linear bandits, achieving an instance-dependent T -round regret of \u00d5 ( dT 1\u2212\u03b5 2(1+\u03b5) \u221a\u2211T t=1 \u03bd 2 t + dT 1\u2212\u03b5 2(1+\u03b5) ) , the first of this kind. Here, d is the feature dimension, and \u03bd t is the (1 + \u03b5)-th central moment of the reward at the t-th round. We further show the above bound is minimax optimal when applied to the worst-case instances in stochastic and deterministic linear bandits. We then extend this algorithm to the RL settings with linear function approximation. Our algorithm, termed as HEAVY-LSVI-UCB, achieves the first computationally efficient instance-dependent K-episode regret of \u00d5(d \u221a HU\u2217K 1 1+\u03b5 +d \u221a HV\u2217K). Here, H is length of the episode, and U\u2217,V\u2217 are instance-dependent quantities scaling with the central moment of reward and value functions, respectively. We also provide a matching minimax lower bound \u03a9(dHK 1 1+\u03b5 + d \u221a H3K) to demonstrate the optimality of our algorithm in the worst case. Our result is achieved via a novel robust self-normalized concentration inequality that may be of independent interest in handling heavy-tailed noise in general online regression problems.",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p6",
+        "section_heading": "1 Introduction",
+        "text": "Can we derive sample and time-efficient algorithms for RL with large state-action space that achieve instance-dependent regret in the presence of heavy-tailed rewards?",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p91",
+        "section_heading": "6 Conclusion",
+        "text": "In this work, we propose two computationally efficient algorithms for heavy-tailed linear bandits and linear MDPs, respectively. Our proposed algorithms, termed as HEAVY-OFUL and HEAVY-LSVI-UCB, are based on a novel self-normalized concentration inequality for adaptive Huber regression, which may be of independent interest. HEAVY-OFUL and HEAVY-LSVI-UCB achieve minimax optimal and instance-dependent regret bounds scaling with the central moments. We also provide a lower bound for linear MDPs with heavy-tailed rewards to demonstrate the optimality of HEAVY-LSVI-UCB. To the best of our knowledge, we are the first to study heavy-tailed rewards in RL with function approximation and provide a new algorithm for this setting which is both statistically and computationally efficient.",
+        "seg_type": "par"
+      }
+    ]
+  },
+  {
+    "id": "003",
+    "title": "sp_0440_003",
+    "filename": "Videos/sp_0440.mp4",
+    "paper_filename": "Papers/sp_0440.pdf",
+    "type": "slides",
+    "relevant_segments": [
+      {
+        "para_id": "p1",
+        "section_heading": "Abstract",
+        "text": "While numerous works have focused on devising efficient algorithms for reinforcement learning (RL) with uniformly bounded rewards, it remains an open question whether sample or time-efficient algorithms for RL with large state-action space exist when the rewards are heavy-tailed, i.e., with only finite (1 + \u03b5)-th moments for some \u03b5 \u2208 (0, 1]. In this work, we address the challenge of such rewards in RL with linear function approximation. We first design an algorithm, HEAVY-OFUL, for heavy-tailed linear bandits, achieving an instance-dependent T -round regret of \u00d5 ( dT 1\u2212\u03b5 2(1+\u03b5) \u221a\u2211T t=1 \u03bd 2 t + dT 1\u2212\u03b5 2(1+\u03b5) ) , the first of this kind. Here, d is the feature dimension, and \u03bd t is the (1 + \u03b5)-th central moment of the reward at the t-th round. We further show the above bound is minimax optimal when applied to the worst-case instances in stochastic and deterministic linear bandits. We then extend this algorithm to the RL settings with linear function approximation. Our algorithm, termed as HEAVY-LSVI-UCB, achieves the first computationally efficient instance-dependent K-episode regret of \u00d5(d \u221a HU\u2217K 1 1+\u03b5 +d \u221a HV\u2217K). Here, H is length of the episode, and U\u2217,V\u2217 are instance-dependent quantities scaling with the central moment of reward and value functions, respectively. We also provide a matching minimax lower bound \u03a9(dHK 1 1+\u03b5 + d \u221a H3K) to demonstrate the optimality of our algorithm in the worst case. Our result is achieved via a novel robust self-normalized concentration inequality that may be of independent interest in handling heavy-tailed noise in general online regression problems.",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p3",
+        "section_heading": "1 Introduction",
+        "text": "Designing efficient reinforcement learning (RL) algorithms for large state-action space is a significant challenge within the RL community. A crucial aspect of RL is understanding the reward functions, which directly impacts the quality of the agent\u2019s policy. In certain real-world situations, reward distributions may exhibit heavy-tailed behavior, characterized by the occurrence of extremely large values at a higher frequency than expected in a normal distribution. Examples include image noise in signal processing [14], stock price fluctuations in financial markets [12, 18], and value functions in online advertising [11, 19]. However, much of the existing RL literature assumes rewards to be either uniformly bounded or light-tailed (e.g., sub-Gaussian). In such light-tailed settings, the primary challenge lies in learning the transition probabilities, leading most studies to assume deterministic rewards for ease of analysis [5, 22, 15]. As we will demonstrate, the complexity of learning reward",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p5",
+        "section_heading": "1 Introduction",
+        "text": "Heavy-tailed distributions have been extensively studied in the field of statistics [9, 27] and in more specific online learning scenarios, such as bandits [7, 28, 31, 34, 40]. However, there is a dearth of theoretical research in RL concerning heavy-tailed rewards, whose distributions only admit finite (1 + \u03f5)-th moment for some \u03f5 \u2208 (0, 1]. One notable exception is Zhuang and Sui [44], which made a pioneering effort in establishing worst-case regret guarantees in tabular Markov Decision Processes (MDPs) with heavy-tailed rewards. However, their algorithm cannot handle RL settings with large state-action space. Moreover, their reliance on truncation-based methods is sub-optimal as these methods heavily depend on raw moments, which do not vanish in deterministic cases. Therefore, a natural question arises:",
+        "seg_type": "par"
+      }
+    ]
+  },
+  {
+    "id": "004",
+    "title": "sp_0440_004",
+    "filename": "Videos/sp_0440.mp4",
+    "paper_filename": "Papers/sp_0440.pdf",
+    "type": "slides",
+    "relevant_segments": [
+      {
+        "para_id": "p1",
+        "section_heading": "Abstract",
+        "text": "While numerous works have focused on devising efficient algorithms for reinforcement learning (RL) with uniformly bounded rewards, it remains an open question whether sample or time-efficient algorithms for RL with large state-action space exist when the rewards are heavy-tailed, i.e., with only finite (1 + \u03b5)-th moments for some \u03b5 \u2208 (0, 1]. In this work, we address the challenge of such rewards in RL with linear function approximation. We first design an algorithm, HEAVY-OFUL, for heavy-tailed linear bandits, achieving an instance-dependent T -round regret of \u00d5 ( dT 1\u2212\u03b5 2(1+\u03b5) \u221a\u2211T t=1 \u03bd 2 t + dT 1\u2212\u03b5 2(1+\u03b5) ) , the first of this kind. Here, d is the feature dimension, and \u03bd t is the (1 + \u03b5)-th central moment of the reward at the t-th round. We further show the above bound is minimax optimal when applied to the worst-case instances in stochastic and deterministic linear bandits. We then extend this algorithm to the RL settings with linear function approximation. Our algorithm, termed as HEAVY-LSVI-UCB, achieves the first computationally efficient instance-dependent K-episode regret of \u00d5(d \u221a HU\u2217K 1 1+\u03b5 +d \u221a HV\u2217K). Here, H is length of the episode, and U\u2217,V\u2217 are instance-dependent quantities scaling with the central moment of reward and value functions, respectively. We also provide a matching minimax lower bound \u03a9(dHK 1 1+\u03b5 + d \u221a H3K) to demonstrate the optimality of our algorithm in the worst case. Our result is achieved via a novel robust self-normalized concentration inequality that may be of independent interest in handling heavy-tailed noise in general online regression problems.",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p6",
+        "section_heading": "1 Introduction",
+        "text": "Can we derive sample and time-efficient algorithms for RL with large state-action space that achieve instance-dependent regret in the presence of heavy-tailed rewards?",
+        "seg_type": "par"
+      },  
+      {
+        "para_id": "p8",
+        "section_heading": "1 Introduction",
+        "text": "\u2022 We first propose a computationally efficient algorithm HEAVY-OFUL for heavy-tailed linear bandits. Such a setting can be regarded as a special case of linear MDPs. HEAVY-OFUL achieves",
+        "seg_type": "par"
+      },
+      {
+        "caption": "Table 1: Comparisons with previous works on linear bandits. d, T , {\u03c3t}t\u2208[T ], {\u03bdt}t\u2208[T ] are feature dimension, the number of rounds, the variance or central moment of the reward at the t-th round.",
+        "captionBoundary": {
+          "x1": 107.69100189208984,
+          "x2": 503.9988098144531,
+          "y1": 80.44351959228516,
+          "y2": 97.35498046875
+        },
+        "figType": "Table",
+        "imageText": [
+          "HEAVY-OFUL",
+          "(Ours)",
+          "O\u0303",
+          "(",
+          "dT",
+          "1\u2212\u03f5",
+          "2(1+\u03f5)",
+          "\u221a\u2211T",
+          "t=1",
+          "\u03bd",
+          "2",
+          "t",
+          "+",
+          "dT",
+          "1\u2212\u03f5",
+          "2(1+\u03f5)",
+          ")",
+          "Yes",
+          "Yes",
+          "Yes",
+          "Yes",
+          "\u03f5",
+          "=",
+          "1",
+          "MENU",
+          "and",
+          "TOFU",
+          "[31]",
+          "O\u0303",
+          "(",
+          "dT",
+          "1",
+          "1+\u03f5",
+          ")",
+          "No",
+          "Yes",
+          "No",
+          "Yes",
+          "No",
+          "No",
+          ")",
+          "Yes",
+          "Yes",
+          "Yes",
+          "t=1",
+          "\u03c3",
+          "2",
+          "t",
+          "+",
+          "d",
+          "O\u0303",
+          "(",
+          "d",
+          "\u221a\u2211T",
+          "Weighted",
+          "OFUL+",
+          "[41]",
+          "AdaOFUL",
+          "[26]",
+          "No",
+          "Yes",
+          "No",
+          "No",
+          "IDS-UCB",
+          "[24]",
+          "Rewards?",
+          "OFUL",
+          "[1]",
+          "O\u0303",
+          "(",
+          "d",
+          "\u221a",
+          "T",
+          ")",
+          "Heavy-",
+          "Tailed",
+          "Algorithm",
+          "Regret",
+          "Instance-",
+          "dependent?",
+          "Minimax",
+          "Optimal?",
+          "Deterministic-",
+          "Optimal?"
+        ],
+        "name": "1",
+        "page": 2,
+        "regionBoundary": {
+          "x1": 109.92,
+          "x2": 502.08,
+          "y1": 98.88,
+          "y2": 202.07999999999998
+        },
+        "renderDpi": 150,
+        "renderURL": "/Users/meghamariam/PROJECTS/PROJ1_Dataset/PROJ1_Crossmodal-Traversal/DATASET/Presentation/pap-seg/fig/sp_0440/sp_0440-Table1-1.png",
+        "id": "sp_0440-Table1-1",
+        "seg_type": "tab"
+      }
+    ]
+  },
+  {
+    "id": "005",
+    "title": "sp_0440_005",
+    "filename": "Videos/sp_0440.mp4",
+    "paper_filename": "Papers/sp_0440.pdf",
+    "type": "slides",
+    "relevant_segments": [
+      {
+        "para_id": "p10",
+        "section_heading": "1 Introduction",
+        "text": "minimax optimal in both stochastic and deterministic linear bandits (See Remark 4.2 for details). \u2022 We then extend this algorithm to time-inhomogeneous linear MDPs with heavy-tailed rewards,",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p11",
+        "section_heading": "1 Introduction",
+        "text": "resulting in a new computationally efficient algorithm HEAVY-LSVI-UCB, which achieves a K-episode regret scaling as O\u0303(d \u221a HU\u2217K 1 1+\u03f5 + d \u221a HV\u2217K) for the first time. Here, H is the length of the episode and U\u2217,V\u2217 are quantities measuring the central moment of the reward functions and transition probabilities, respectively (See Theorem 5.2 for details). Our regret bound is instance-dependent since the main term only relies on the instance-dependent quantities, which vanishes when the dynamics and rewards are deterministic. When specialized to special cases, our instance-dependent regret recovers the variance-aware regret in Li and Sun [26] (See Remark 5.3 for details) and improves existing first-order regret bounds [33, 26] (See Corollary 5.6 for details).",
+        "seg_type": "par"
+      },
+      {
+        "caption": "Table 2: Comparisons with previous works on time-inhomogeneous linear MDPs. d, H , K, V \u2217 1 , G\u2217 are feature dimension, the length of the episode, the number of episodes, optimal value function, variance-dependent quantity defined in Li and Sun [26]. U\u2217, V\u2217 are defined in Theorem 5.2.",
+        "captionBoundary": {
+          "x1": 107.69100189208984,
+          "x2": 505.24725341796875,
+          "y1": 222.13052368164062,
+          "y2": 249.9520263671875
+        },
+        "figType": "Table",
+        "imageText": [
+          "HEAVY-LSVI-UCB",
+          "(Ours)",
+          "O\u0303",
+          "(",
+          "d",
+          "\u221a",
+          "HU\u2217K",
+          "1",
+          "1+\u03f5",
+          "+",
+          "d",
+          "\u221a",
+          "HV\u2217K",
+          ")",
+          "Yes",
+          "Yes",
+          "Yes",
+          "Yes",
+          "Yes",
+          "VARA",
+          "[26]",
+          "O\u0303",
+          "(",
+          "d",
+          "\u221a",
+          "HG\u2217K",
+          ")",
+          "Yes",
+          "Yes",
+          "Yes",
+          "Yes",
+          "\u03f5",
+          "=",
+          "1",
+          "(",
+          "d",
+          "\u221a",
+          "H3K",
+          ")",
+          "No",
+          "No",
+          "Yes",
+          "Yes",
+          "No",
+          "VOQL",
+          "[2]",
+          "LSVI-UCB++",
+          "[15]",
+          "O\u0303",
+          ")",
+          "No",
+          "Yes",
+          "No",
+          "No",
+          "No",
+          "d3H3V",
+          "\u2217",
+          "1",
+          "K",
+          "No",
+          "No",
+          "No",
+          "Yes",
+          "No",
+          "FORCE",
+          "[33]",
+          "O\u0303",
+          "(\u221a",
+          "LSVI-UCB[22]",
+          "O\u0303",
+          "(\u221a",
+          "d3H4K",
+          ")",
+          "Computa-",
+          "tionally",
+          "Efficient?",
+          "Heavy-",
+          "Tailed",
+          "Rewards?",
+          "First-",
+          "Order?",
+          "Minimax",
+          "Optimal?",
+          "Moment-",
+          "Dependent?",
+          "Algorithm",
+          "Regret",
+          "Central"
+        ],
+        "name": "2",
+        "page": 2,
+        "regionBoundary": {
+          "x1": 109.92,
+          "x2": 502.08,
+          "y1": 252.95999999999998,
+          "y2": 351.36
+        },
+        "renderDpi": 150,
+        "renderURL": "/Users/meghamariam/PROJECTS/PROJ1_Dataset/PROJ1_Crossmodal-Traversal/DATASET/Presentation/pap-seg/fig/sp_0440/sp_0440-Table2-1.png",
+        "id": "sp_0440-Table2-1",
+        "seg_type": "tab"
+      }
+    ]
+  },
+  {
+    "id": "006",
+    "title": "sp_0440_006",
+    "filename": "Videos/sp_0440.mp4",
+    "paper_filename": "Papers/sp_0440.pdf",
+    "type": "slides",
+    "relevant_segments": [
+      {
+        "para_id": "p14",
+        "section_heading": "1 Introduction",
+        "text": "For better comparisons between our algorithms and state-of-the-art results, we summarize the regrets in Table 1 and 2 for linear bandits and linear MDPs, respectively. More related works are deferred to Appendix A. Remarkably, our results demonstrate that \u03f5 = 1 (i.e. finite variance) is sufficient to obtain variance-aware regret bounds of the same order as the case where rewards are uniformly bounded for both linear bandits and linear MDPs. The main technique contribution behind our results is a novel robust self-normalized concentration inequality inspired by Sun et al. [32]. To be more specific, it is a non-trivial generalization of adaptive Huber regression from independent and identically distributed (i.i.d.) case to heavy-tailed online regression settings and gives a self-normalized bound instead of the \u21132-norm bound in Sun et al. [32]. Our result is computationally efficient and only scales with the feature dimension, d, (1 + \u03f5)-th central moment of the noise, \u03bd, and does not depend on the absolute magnitude as in other self-normalized concentration inequalities [42, 41].",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p39",
+        "section_heading": "3 Adaptive Huber Regression",
+        "text": "At the core of our algorithms for both heavy-tailed linear bandits and linear MDPs is a new approach \u2013 adaptive Huber regression \u2013 to handle heavy-tailed noise. Sun et al. [32] imposed adaptive Huber regression to handle i.i.d. heavy-tailed noise by utilizing Huber loss [17] as a surrogate of squared loss. Li and Sun [26] modified adaptive Huber regression for heterogeneous online settings, where the variances in each round are different. However, it is not readily applicable to deal with heavy-tailed noise. Our contribution in this section is to construct a new self-normalized concentration inequality for general online regression problems with heavy-tailed noise.",
+        "seg_type": "par"
+      },
+      {
+        "input_path": "/tmp/megha/PDF-Extract-Kit/Presentation/layout_pap/sp_0440/sp_0440_page_5.png",
+        "cls_id": 14,
+        "label": "algorithm",
+        "score": 0.9229331016540527,
+        "coordinate": [
+          441.7348937988281,
+          299.1463317871094,
+          2099.12890625,
+          972.2135009765625
+        ],
+        "text": "equire: Number of total rounds T, confidence level \u03b4, regularization parameter \u03bb, \u03c3min, param\nfor adaptive Huber regression C0, C1, T0, estimated central moment vt and moment parame\nthat satisfy \u03bdt/vt \u2264 b for all t \u2264 T.\nnsure: The estimated coefficient \u03b8t.\n1: \u03ba = dlog(1 + TL2/(d\u03bb\u03c3\nmin)\n2\n2: Set Ht\u22121 = \u03bbI + \u2211t=1\n\u22121\nT\ns\n\u2225\u03c6t||\nH1\n\u221aLB\nHIN\n: Set \u03c3 =\n\u03bd, min\n\u22121\n||\u03c6t|\nmax\nc\n1\n\nH\n\u22121\nc4\n(2\u03bab2)\n\u22121\nt 2(1+e) with wt = |\u03c6t/\u03c3tH\u22121 .\n1\u2212\u20ac\n4: Set Tt = T0\nWt\n\u22121\n5: Define the loss function Lt(\u03b8) := \u03bbk|\u03b82 + \u2211ts=1 \u03c4s (\nys\u2212\u03c6s,\u03b8\n\u03c3 s\n5: Compute \u03b8t = argminecB.(R) Lt(\u03b8).",
+        "id": "sp_0440_page_5_1",
+        "seg_type": "algo"
+      },
+      {
+        "para_id": "p40",
+        "section_heading": "3 Adaptive Huber Regression",
+        "text": "We first give a brief introduction to Huber loss function and its properties. Definition 3.1 (Huber loss). Huber loss is defined as",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p41",
+        "section_heading": "3 Adaptive Huber Regression",
+        "text": "where \u03c4 > 0 is referred as a robustness parameter.",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p42",
+        "section_heading": "3 Adaptive Huber Regression",
+        "text": "Huber loss is first proposed by Huber [17] as a robust version of squared loss while preserving the convex property. Specifically, Huber loss is a quadratic function of x when |x| is less than the threshold \u03c4 , while becomes linearly dependent on |x| when |x| grows larger than \u03c4 . It has the property of strongly convex near zero point and is not sensitive to outliers. See Appendix C.1 for more properties of Huber loss.",
+        "seg_type": "par"
+      },
+      {
+        "box": [
+          474.486328125,
+          782.5734252929688,
+          748.1971435546875,
+          850.0242309570312
+        ],
+        "text": [
+          "\\ell _ { \\tau } ( x ) = \\left\\{ { \\frac { x ^ { 2 } } { 2 } } \\qquad { \\mathrm { i f ~ } } | x | \\leq \\tau , \\right."
+        ],
+        "page": "sp_0440_page_0005",
+        "id": "sp_0440_page_0005-1",
+        "seg_type": "eq"
+      }
+    ]
+  },
+  {
+    "id": "007",
+    "title": "sp_0440_007",
+    "filename": "Videos/sp_0440.mp4",
+    "paper_filename": "Papers/sp_0440.pdf",
+    "type": "slides",
+    "relevant_segments": [
+      {
+        "para_id": "p51",
+        "section_heading": "4.1 Algorithm Description",
+        "text": "HEAVY-OFUL follows the principle of Optimism in the Face of Uncertainty (OFU) [1], and uses adaptive Huber regression in Section 3 to maintain a set Ct that contains the unknown coefficient \u03b8\u2217 with high probability. Specifically, at the t-th round, HEAVY-OFUL estimates the expected reward of any arm \u03d5 as max\u03b8\u2208Ct\u22121\u27e8\u03d5,\u03b8\u27e9, and selects the arm that maximizes the estimated reward. The agent then receives the reward Rt and updates the confidence set Ct based on the information up to round t with its center \u03b8t computed by adaptive Huber regression as in Line 9 of Algorithm 2.",
+        "seg_type": "par"
+      },
+      {
+        "input_path": "/tmp/megha/PDF-Extract-Kit/Presentation/layout_pap/sp_0440/sp_0440_page_6.png",
+        "cls_id": 14,
+        "label": "algorithm",
+        "score": 0.9128726720809937,
+        "coordinate": [
+          438.0790100097656,
+          300.30706787109375,
+          2098.762939453125,
+          1044.6199951171875
+        ],
+        "text": "gorithm 2 HEAVY-OFUL\nRequire: Number of total rounds T, confidence level \u03b4, regularization parameter \u03bb, \u03c3min, parai\nfor adptive Huber regression c0, c1, T0, confidence radius \u03b2t.\n1: \u03ba = d log(1 +\nTL 2\n), C0 = B(B), H0 = \u03bbI.\nd\u03bb\u03c3\n2\nmin\nfor t = 1, . . . , T do\nObserve Dt.\nSet (\u03c6t, \u00b7) = argmax\u03c6Dt,\u03b8t\u22121 |\u03c6, \u03b8j.\nPlay \u03c6t and observe Rt, \u03bdt.\n\u2225t k H\u22121\nSet \u03c3t = max { \u03bdt, \u03c3min,\n\u22121\n\u221aLB\n||t||\nc0\n\n\u2212 1\n(2\u03ba)\n\u2212 1\n/1+w2\nt 21+e) with wt = ||\u03c6t/\u03c3 k Hi\n1\u2212\nSet T = T0\n\u22121\nwt\nUpdate Ht = Ht\u22121 + \u03c3\u22122\u03c6t\u03c6T .\n\u22121\nSolve for \u03b8t by Algorithm 1 and set Ct = {\u03b8  Rd|\u03b8 \u2212 \u03b8t | Ht \u2264 \u03b2t }.",
+        "id": "sp_0440_page_6_1",
+        "seg_type": "algo"
+      }
+    ]
+  },
+  {
+    "id": "008",
+    "title": "sp_0440_008",
+    "filename": "Videos/sp_0440.mp4",
+    "paper_filename": "Papers/sp_0440.pdf",
+    "type": "slides",
+    "relevant_segments": [
+      {
+        "para_id": "p9",
+        "section_heading": "1 Introduction",
+        "text": "an instance-dependent T -round regret of O\u0303 ( dT 1\u2212\u03f5 2(1+\u03f5) \u221a\u2211T t=1 \u03bd 2 t + dT 1\u2212\u03f5 2(1+\u03f5) ) , the first of this kind. Here d is the feature dimension and \u03bd1+\u03f5t is the (1 + \u03f5)-th central moment of the reward at the t-th round. The instance-dependent regret bound has a main term that only depends on the summation of central moments, and therefore does not have a \u221a T term. Our regret bound is shown to be",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p1",
+        "section_heading": "Abstract",
+        "text": "While numerous works have focused on devising efficient algorithms for reinforcement learning (RL) with uniformly bounded rewards, it remains an open question whether sample or time-efficient algorithms for RL with large state-action space exist when the rewards are heavy-tailed, i.e., with only finite (1 + \u03b5)-th moments for some \u03b5 \u2208 (0, 1]. In this work, we address the challenge of such rewards in RL with linear function approximation. We first design an algorithm, HEAVY-OFUL, for heavy-tailed linear bandits, achieving an instance-dependent T -round regret of \u00d5 ( dT 1\u2212\u03b5 2(1+\u03b5) \u221a\u2211T t=1 \u03bd 2 t + dT 1\u2212\u03b5 2(1+\u03b5) ) , the first of this kind. Here, d is the feature dimension, and \u03bd t is the (1 + \u03b5)-th central moment of the reward at the t-th round. We further show the above bound is minimax optimal when applied to the worst-case instances in stochastic and deterministic linear bandits. We then extend this algorithm to the RL settings with linear function approximation. Our algorithm, termed as HEAVY-LSVI-UCB, achieves the first computationally efficient instance-dependent K-episode regret of \u00d5(d \u221a HU\u2217K 1 1+\u03b5 +d \u221a HV\u2217K). Here, H is length of the episode, and U\u2217,V\u2217 are instance-dependent quantities scaling with the central moment of reward and value functions, respectively. We also provide a matching minimax lower bound \u03a9(dHK 1 1+\u03b5 + d \u221a H3K) to demonstrate the optimality of our algorithm in the worst case. Our result is achieved via a novel robust self-normalized concentration inequality that may be of independent interest in handling heavy-tailed noise in general online regression problems.",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p56",
+        "section_heading": "4.2 Regret Analysis",
+        "text": "Remark 4.2. Theorem 4.1 shows HEAVY-OFUL achieves an instance-dependent regret bound. When we assume \u03bdt,\u2200t \u2265 1 have uniform upper bound \u03bd (which can be treated as a constant), then the bound is reduced to O\u0303(dT 1 1+\u03f5 ). It matches the lower bound \u2126(dT 1 1+\u03f5 ) by Shao et al. [31] up to logarithmic factors. In the deterministic scenario, where \u03f5 = 1 and \u03bdt = 0, for all t \u2265 1, the bound is reduced to O\u0303(d). It matches the lower bound \u2126(d)1 up to logarithmic factors.",
+        "seg_type": "par"
+      },
+      {
+        "box": [
+          390.88726806640625,
+          181.06640625,
+          833.4002685546875,
+          246.6837921142578
+        ],
+        "text": [
+          "\\begin{array} { r l } & { \\mathrm { R e g r e t } ( T ) = \\widetilde { O } \\left( d T ^ { \\frac { 1 - \\epsilon } { 2 ( 1 + \\epsilon ) } } \\sqrt { \\sum _ { t = 1 } ^ { T } \\nu _ { t } ^ { 2 } } + d T ^ { \\frac { 1 - \\epsilon } { 2 ( 1 + \\epsilon ) } } \\right) . } \\end{array}"
+        ],
+        "page": "sp_0440_page_0007",
+        "id": "sp_0440_page_0007-4",
+        "seg_type": "eq"
+      }
+    ]
+  },
+  {
+    "id": "009",
+    "title": "sp_0440_009",
+    "filename": "Videos/sp_0440.mp4",
+    "paper_filename": "Papers/sp_0440.pdf",
+    "type": "slides",
+    "relevant_segments": [
+      {
+        "para_id": "p7",
+        "section_heading": "1 Introduction",
+        "text": "In this work, we focus on linear MDPs [35, 22] with heavy-tailed rewards and answer the above question affirmatively. We say a distribution is heavy-tailed if it only admits finite (1 + \u03f5)-th moment for some \u03f5 \u2208 (0, 1]. Our contributions are summarized as follows.",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p58",
+        "section_heading": "5.1 Algorithm Description",
+        "text": "HEAVY-LSVI-UCB features a novel combination of adaptive Huber regression in Section 3 and existing algorithmic frameworks for linear MDPs with bounded rewards [22, 15]. At a high level, HEAVY-LSVI-UCB employs separate estimation techniques to handle heavy-tailed rewards and transition kernels. Specifically, we utilize adaptive Huber regression proposed in Section 3 to estimate heavy-tailed rewards and weighted ridge regression [42, 15] to estimate the expected next-state value functions. Then, it follows the value iteration scheme to update the optimistic and pessimistic estimation of the optimal value function Qkh, V k h and Q\u030c k h, V\u030c k h , respectively, via a rare-switching policy as in Line 7 to 15 of Algorithm 3. We highlight the key steps of HEAVY-LSVI-UCB as follows.",
+        "seg_type": "par"
+      },
+      {
+        "input_path": "/tmp/megha/PDF-Extract-Kit/Presentation/layout_pap/sp_0440/sp_0440_page_8.png",
+        "cls_id": 14,
+        "label": "algorithm",
+        "score": 0.9540207386016846,
+        "coordinate": [
+          442.12579345703125,
+          300.1947937011719,
+          2103.11474609375,
+          1922.5133056640625
+        ],
+        "text": "Require: Number of episodes K, confidence level \u03b4, regularization parameter \u03bbR, \u03bbV , Vmin, O\nconfidence radius \u03b2Re , \u03b2o, \u03b2R, \u03b2V .\n1: \u03ba = dlog(1 +\nK\n).\nd\u03bbR\u03bd2\nmin\n: \u03b80,h = w0,h = w0,h = 0, H0,h = \u03bbRI, \u03a30,h = \u03bbV I, UPDATE = TRUE.\n: for k = 1, . . . , K do\nV H+1(\u00b7) = V H +1 (\u00b7) = 0.\nfor h = H, . . . , 1 do\nCompute \u03b8k\u22121,h, wk\u22121,h and wk\u22121,h via (5.1) and (5.8).\nif UPDATE then\nQh(, \u00b7) = h\u03c6(\u00b7, \u00b7), \u03b8k\u22121,h + wk\u22121,h\u03bb + \u03b2R,k\u22121\u2225|\u03c6(\u00b7, \u00b7)H\u221211\n+ \u03b2v\u2225|\u03c6(\u2234,\u00b7)||\n\u22121\n\u2211\nk\u22121\nk\u22121,h\nQh(, \u00b7) = h\u03c6(\u00b7, \u00b7), \u03b8k\u22121,h + k\u22121,h\u03bb \u2212 \u03b2R,k\u22121\u2225|\u03c6(, \u00b7)\u2225Hk\n\u2212 \u03b2v\u2225\u03c6(., \u00b7)||\n\u22121\n\u22121\nk\u22121,h\nQh(, \u00b7) = min{Qh(, \u00b7, Qk\u22121(, \u00b7), H}, Qh(, \u00b7) = max{Qh(, \u00b7), Qk\u22121(, \u00b7), 0}.\nSet klast = k.\nelse\nQh(, \u00b7) = Qk\u22121(, \u00b7, Qh(, \u00b7) = Qk\u22121(\u00b7, \u00b7).\nend if\nV k(\u00b7) = maxa Qh(, a), V k(\u00b7) = maxa h(\u00b7, a), \u03c0k(\u00b7) = argmaxa Qh(, a).\nend for\nObserve initial state Sk,1.\nfor h = 1, . . . , H do\nSet \u03bdk,h and \u03c3k,h according to (5.4) and (5.9) respectively.\n/1+\u03c9\n2\n1\u2212\n1-\u2032\nSet Tk,h = T0\nk,h\nk 2(1+)\n, \u03c4k,h = \u03c40\nWk,h\nWk,h\n\u03c6k,h\u03c6t,h.\nUpdate Hk,h = Hk\u22121,h +\n1\n\u03c6k,h\u03c6k,h and \u03a3k,h = \u03a3k\u22121,h +\n1\n2\nk,h\nend for\nif \u2203h\u2032  [H] such that det(Hk,h\u2032) \u2265 2 det(Hklast,h\u2032) or det(\u2211k, h\u2032) \u2265 2 det(\u2211klast,h\u2032) th\nSet UPDATE = TRUE.\nelse\nSet UPDATE = FALSE.\nend if",
+        "id": "sp_0440_page_8_1",
+        "seg_type": "algo"
+      }
+    ]
+  },
+  {
+    "id": "010",
+    "title": "sp_0440_010",
+    "filename": "Videos/sp_0440.mp4",
+    "paper_filename": "Papers/sp_0440.pdf",
+    "type": "slides",
+    "relevant_segments": [
+      {
+        "para_id": "p58",
+        "section_heading": "5.1 Algorithm Description",
+        "text": "HEAVY-LSVI-UCB features a novel combination of adaptive Huber regression in Section 3 and existing algorithmic frameworks for linear MDPs with bounded rewards [22, 15]. At a high level, HEAVY-LSVI-UCB employs separate estimation techniques to handle heavy-tailed rewards and transition kernels. Specifically, we utilize adaptive Huber regression proposed in Section 3 to estimate heavy-tailed rewards and weighted ridge regression [42, 15] to estimate the expected next-state value functions. Then, it follows the value iteration scheme to update the optimistic and pessimistic estimation of the optimal value function Qkh, V k h and Q\u030c k h, V\u030c k h , respectively, via a rare-switching policy as in Line 7 to 15 of Algorithm 3. We highlight the key steps of HEAVY-LSVI-UCB as follows.",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p79",
+        "section_heading": "5.3 Regret Bound",
+        "text": "Theorem 5.2 (Informal). For the linear MDPs with heavy-tailed rewards defined in Section 2.2, we set parameters in Algorithm 3 as follows: \u03bbR = d/max { B2,W 2 } , \u03bbV = 1/H2, \u03bdmin, \u03c3min, c0, c1, \u03c40, \u03c4\u03030, \u03b2R\u03f5 , \u03b20, \u03b2R, \u03b2V in Appendix F.1. Then for any \u03b4 \u2208 (0, 1), with probability at least 1\u2212 16\u03b4, the regret of HEAVY-LSVI-UCB is bounded by",
+        "seg_type": "par"
+      },
+      {
+        "box": [
+          410.91436767578125,
+          1306.0267333984375,
+          810.57763671875,
+          1348.6788330078125
+        ],
+        "text": [
+          "\\mathrm { R e g r e t } ( K ) = \\tilde { O } \\left( d \\sqrt { H \\mathscr { U } ^ { * } } K ^ { \\frac { 1 } { 1 + \\epsilon } } + d \\sqrt { H \\mathscr { V } ^ { * } K } \\right) ,"
+        ],
+        "page": "sp_0440_page_0009",
+        "id": "sp_0440_page_0009-2",
+        "seg_type": "eq"
+      },
+      {
+        "para_id": "p83",
+        "section_heading": "5.3 Regret Bound",
+        "text": "To demonstrate the optimality of our results and establish connections with existing literature, we can specialize Theorem 5.2 to obtain the worst-case regret [22, 2, 15] and first-order regret [33]. Corollary 5.4 (Worst-case regret). For the linear MDPs with heavy-tailed rewards defined in Section 2.2 and for any \u03b4 \u2208 (0, 1), with probability at least 1\u2212 16\u03b4, the regret of HEAVY-LSVI-UCB is bounded by",
+        "seg_type": "par"
+      },
+      {
+        "box": [
+          504.8074951171875,
+          465.5668029785156,
+          719.1587524414062,
+          498.8108825683594
+        ],
+        "text": [
+          "\\widetilde { \\cal O } ( d H K ^ { \\frac { 1 } { 1 + \\epsilon } } + d \\sqrt { H ^ { 3 } K } ) ."
+        ],
+        "page": "sp_0440_page_0010",
+        "id": "sp_0440_page_0010-1",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          505.6639404296875,
+          696.0318603515625,
+          717.7604370117188,
+          729.3123168945312
+        ],
+        "text": [
+          "\\Omega ( d H K ^ { \\frac { 1 } { 1 + \\epsilon } } + d \\sqrt { H ^ { 3 } K } ) ."
+        ],
+        "page": "sp_0440_page_0010",
+        "id": "sp_0440_page_0010-2",
+        "seg_type": "eq"
+      },
+      {
+        "para_id": "p10",
+        "section_heading": "1 Introduction",
+        "text": "minimax optimal in both stochastic and deterministic linear bandits (See Remark 4.2 for details). \u2022 We then extend this algorithm to time-inhomogeneous linear MDPs with heavy-tailed rewards,",
+        "seg_type": "par"
+      }
+    ]
+  },
+  {
+    "id": "011",
+    "title": "sp_0440_011",
+    "filename": "Videos/sp_0440.mp4",
+    "paper_filename": "Papers/sp_0440.pdf",
+    "type": "slides",
+    "relevant_segments": [
+      {
+        "para_id": "p78",
+        "section_heading": "5.2 Computational Complexity",
+        "text": "is better than that of LSVI-UCB [22], O\u0303(d2|A|HK2) in terms of K, thanks to the rare-switching updating policy. We conduct numerical experiments in Appendix B to further corroborate the computational efficiency of adaptive Huber regression.",
+        "seg_type": "par"
+      }
+    ]
+  }
+]

@@ -1,0 +1,2 @@
+We compare our factorized attention with linear attention on a 128 by 128 2D flow problem.
+We find we observe that our proposed mechanism not only improves training efficiency, but also improves the row-out simulation accuracy.

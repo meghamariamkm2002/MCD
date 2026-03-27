@@ -1,0 +1,6 @@
+In summary, we have shown a variety of properties on a multi-objective framework with epitas applications under fixed-level objectives.
+We further use these properties to epirize several examples of bounds for an OID.
+However, these bounds may not be tight, so improving them is an open challenge.
+More structural properties that may show us may yet be used to gain insights in regions beyond the context of them.
+It is also interesting to see how much our findings hold in more general structures like 3DOS,
+as well.

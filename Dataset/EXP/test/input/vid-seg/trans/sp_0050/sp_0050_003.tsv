@@ -1,0 +1,40 @@
+start	end	text
+31	3919	and takes a model that has been trained on protein data.
+4360	9270	So if you look at this protein, it is simply a sequence of amino acids.
+9290	11314	And these amino acids, they all have names.
+11494	13358	I think I have a table somewhere here.
+14741	14921	Yes.
+15242	18428	So these are the different amino acids that exist.
+18408	25279	And you can see a protein is simply a sequence of these names.
+25479	31629	So usually they're abbreviated by like a three-letter abbreviation or just a one-letter abbreviation.
+31949	40483	So a protein might be A, V, M, M, V, A, G and so on.
+40463	42867	And this is just a string of text, right?
+43167	46853	So what I can do is I can train a language model on this.
+46953	54545	A language model is simply a model that takes a piece of text and tells you what's the next piece of text.
+54726	55747	So what's the next letter?
+55807	56709	What's the next word?
+56929	59333	In this case, what's the next amino acid?
+59313	63060	And we can use tools from NLP for that.
+63080	66006	Specifically, we can train a BERT model.
+66066	70294	A BERT works a bit differently than a standard language model.
+70354	72959	BERT does what is called masked language modeling.
+73300	77709	So you would take this string, you would feed it into a BERT model right here.
+77769	82097	And I've made an entire video on BERT if you want to check that out.
+82077	87243	And what you'll do by inputting that, you'll mask out some of the tokens.
+87483	93049	So you'll maybe mask out this one, mask out this one, and then you ask the model to reconstruct those.
+93590	97194	We say that here is an M and here is an A without seeing them.
+97474	106064	So the model somehow has to learn from the surrounding amino acids what this amino acid could be.
+107205	109468	So it has to reconstruct this sequence.
+109448	118059	So, the hope here is in natural language is that Burt somehow learns something about language itself.
+118499	126049	By being able to reconstruct these things, it has learned something about language, about which words appear together and when.
+126509	133498	It might even learn very long distance relationships between words just because it has to predict those.
+134812	137556	the idea carries over to biology.
+137997	151879	So we might hope that a BERT trained on an amino acid sequence will learn something about the language of proteins about the amino acid sequence.
+152220	155385	And our goal here is to be to ask
+155365	164473	Can we somehow infer the 3D shape of a protein, which is the important part, from its sequence right here?
+164593	169157	So given its sequence, can we infer the 3D shape?
+169698	174222	Now, as I understand it, usually this has to be done in like a simulation.
+174302	185372	So you would build this in a simulator and then you do like some sort of a molecule simulation to see how this ends up in a 3D shape.
+185352	202528	you could train a model to just predict the 3D shape but in this case we're just interested what does the BERT model learn about the 3D shape while only ever having been trained on predicting the next or predicting the sequence of amino acids.
+202548	207297	So it's never been trained to to look at the 3D shape and that's our goal here.
+208380	210043	So specifically we'll look at two

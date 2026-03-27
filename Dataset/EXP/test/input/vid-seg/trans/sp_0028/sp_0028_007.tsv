@@ -1,0 +1,35 @@
+start	end	text
+31	1313	pretty cool.
+2676	5240	And here they go into experiments.
+5441	20487	So they show that their average reward in these games is kind of noisy, but it improves over time, especially also if you look at the average Q of the max action, it continuously goes up during training.
+20467	32906	So this is really a successful training, especially this investigative experiment they did right here, where you can see one example of how the Q function, what the Q function says.
+32966	40358	Remember, the Q function gives us the, whatever the future reward is going to be.
+40819	41099	Okay.
+41319	43723	And here we always look at the max action.
+43703	49252	So in this first frame, you can see this enemy had just appeared.
+50053	55862	And you can see that from here to here, there's a spike in the queue value because you can shoot enemies.
+56583	58846	And that gives you reward.
+59327	72327	The A, this is already, so the enemy isn't shot yet by the simple appearance of the enemy, the queue function also like already jumps in value because it anticipates a future reward.
+72307	81283	Then the agent shoots, and you can see here the shot is about to land at the enemy, and that's when we're here.
+81383	86893	So this, now the Q function is very sure that in the future there's going to be a high reward.
+87574	91902	But then once the enemy is shot,
+91882	94526	then there is no more enemy to be shot.
+95408	108068	And the Q function drops drastically because it doesn't see a future reward as being as likely as at the beginning when there was this new enemy to be shot.
+108088	110071	So that's, you know, pretty interesting.
+110091	117703	And you can see pretty directly that there is a correlation between what's happening in the game and this learned Q function.
+120569	140258	If you compare this to other methods and they really say that these other methods, most of them have some kind of very special feature engineered, like, so their method just takes RGB, but the other methods recognize that, oh, in these Atari games, most of the time, you know, there are unique colors for the things.
+140519	150053	So, you know, the enemies are all like green, like, and they make unique channels for those green enemies, or they even have handcrafted object detectors.
+150033	152838	and tell the algorithm where these objects are.
+153379	162035	So the comparison really isn't fair, yet the DQN outperformed these others like almost everywhere.
+162676	167485	And they also evaluated against a human.
+167465	171813	And, um, I don't actually know, they just say an expert human.
+172273	173375	I have no idea.
+173455	177863	Maybe just put David Silver in front of the computer is like, okay, David, here you go.
+177903	183032	And you can, you can, uh, like what happened in Pong?
+183673	186418	Like, come on, David.
+186989	196341	But you can see there were still problems where the humans were vastly superior and they mainly attribute this to the difficulty of the problem.
+196781	206854	And it could also be because, for example, in breakout, there's this kind of the most famous example where the agent kind of figured out
+206834	216548	this strategy of shooting the ball, um, shooting like a hole into this wall that you have to break and then shooting the ball up here.
+216588	223919	So the ball bounces up and down and basically you win from then on, you just watch the ball go and the agent does nothing anymore.
+224299	232912	So this deep queue networks figured out that strategy and you need to pull it off very precisely, which of course the, um, the computer can do very well.
+233393	235035	So it sometimes achieves

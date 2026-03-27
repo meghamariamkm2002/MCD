@@ -1,0 +1,3 @@
+For the single agenda of LionRL, it has a behavior-revolverized MDP and a policy evaluation operator.
+Therefore, for the multi-agenda of LionRL, we can extend it to the MAPO MDP with global value realization and it has a global policy evaluation operator.
+Due to the KKT conditions of Lagrangian function, we can obtain the formula shown in the fever and establish a relationship among optimal global policy and behavior policy, global queue function, and state-wide function.

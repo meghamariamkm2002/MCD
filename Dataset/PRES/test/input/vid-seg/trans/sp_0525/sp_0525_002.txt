@@ -1,0 +1,5 @@
+The diffusion model is a powerful generative modeling method.
+And it relies on a forward stochastic differential equation to gradually add noise to data.
+And sampling is tractable via reversed SDE.
+Note that the score function in reversed SDE can be
+Approximately, approximated with so-called neural score network S theta.

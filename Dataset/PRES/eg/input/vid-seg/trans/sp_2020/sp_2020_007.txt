@@ -1,0 +1,2 @@
+To verify the effectiveness of our proposed adversarial attack method, we conduct experiments on five models and different tasks including the multi-model task and the single-model task.
+As shown in the tables here, for both of tasks and models, our proposed method achieves the state-of-the-art performance, which demonstrates the effectiveness of our proposed VL attack method.

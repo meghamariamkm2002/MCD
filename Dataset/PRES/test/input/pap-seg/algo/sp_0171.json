@@ -1,0 +1,44 @@
+[
+  {
+    "input_path": "/tmp/megha/PDF-Extract-Kit/Presentation/layout_pap/sp_0171/sp_0171_page_14.png",
+    "page_index": null,
+    "boxes": [
+      {
+        "cls_id": 14,
+        "label": "algorithm",
+        "score": 0.8695908188819885,
+        "coordinate": [
+          439.1997985839844,
+          839.051513671875,
+          2099.1748046875,
+          1415.31298828125
+        ],
+        "text": "nput: data vectors Y1, . . . , Yn  Rp.\n1: for r  {1, .., min(n, p)} do\n2:\nLet V  Rpxr denote the matrix whose columns are orthonormal eigenvectors associa\nYYT\nwith the r largest eigenvalues of \u2211 \n[n/2]\ni=1\nOrthogonally project Y1, . . . , Y [n/2] onto the column space of V, i := VVTYi\nCompute Wasserstein distance dr between i, . . . , Y [n/2] and Y[n/2]+1, . . . , Yn (as p\nsets in RP)\n: end for\nutput: selected dimension r = argmin {dr }.",
+        "input_path": "/tmp/megha/PDF-Extract-Kit/Presentation/layout_pap/sp_0171/sp_0171_page_14.png",
+        "id": "sp_0171_page_14_1",
+        "seg_type": "algo"
+      }
+    ]
+  },
+  {
+    "input_path": "/tmp/megha/PDF-Extract-Kit/Presentation/layout_pap/sp_0171/sp_0171_page_4.png",
+    "page_index": null,
+    "boxes": [
+      {
+        "cls_id": 14,
+        "label": "algorithm",
+        "score": 0.8990903496742249,
+        "coordinate": [
+          436.833984375,
+          1302.22021484375,
+          2093.01806640625,
+          2105.053466796875
+        ],
+        "text": "Input: pairwise affinities \u00e2(., \u00b7) between n data points\n1: Initialise partition P0 := {{1}, . . . , {n}}, vertex set  := P0 and edge set  to the empty set\n2: for m  {1, . . . , n \u2212 1} do\nFind distinct pair u, v  Pm\u22121 with largest affinity\nUpdate Pm\u22121 to Pm by merging u, v to form w := u U v\nAppend vertex w to V and directed edges w \u2192 u and w \u2192 v to \nDefine affinity between w and other members of Pm as\n|n|\n|a|\n\u03b1(w, \u00b7) :=\n\u03b1(u,\u00b7)+\n\u03b1(v, \u00b7),\n|w|\n|w|\nand \u03b1(w, w) := \u00e2(u, v).\n7: end for\nutput: Dendrogram D := (T , h), comprising tree T = (v, \u03b5) and heights h(v) := \u03b1(v, v) fo\nv \\ Po and h(v) := max{h(Pa,), \u03b1(v, v)} for v  Po",
+        "input_path": "/tmp/megha/PDF-Extract-Kit/Presentation/layout_pap/sp_0171/sp_0171_page_4.png",
+        "id": "sp_0171_page_4_1",
+        "seg_type": "algo"
+      }
+    ]
+  }
+]

@@ -1,0 +1,104 @@
+WEBVTT
+
+00:00.031 --> 00:04.152
+So the architecture is described right here.
+
+00:05.515 --> 00:10.922
+Now, as you can see, we are still in the business of doing object detection.
+
+00:11.303 --> 00:16.390
+So what we'll do is we'll sort of hijack a existing object detector.
+
+00:16.750 --> 00:24.601
+And the object detector we're going to hijack is going to be this FRCNN, this faster RCNN object detector.
+
+00:24.621 --> 00:30.289
+That's an object detector for a single frame problem.
+
+00:30.389 --> 00:34.695
+So that means you have one image and you're supposed to detect what's on it.
+
+00:34.675 --> 00:37.037
+It has two stages, as you can see.
+
+00:37.117 --> 00:44.464
+So stage one, if you have an image, and let's say there's some stuff on it, stuff, stuff, stuff, there's stuff.
+
+00:44.484 --> 00:45.525
+Okay.
+
+00:45.705 --> 00:50.550
+What stage one is supposed to do is it's supposed to extract regions of interest.
+
+00:51.130 --> 00:53.993
+This could be, okay, all of these are regions of interest.
+
+00:54.994 --> 01:01.780
+So it simply says what there is something, there might be something right here in these regions of interest.
+
+01:01.760 --> 01:07.736
+And then it describes each of these regions of interest using features.
+
+01:08.458 --> 01:14.835
+Okay, so it extracts these regions of interest and each region of interest gets features assigned to it.
+
+01:15.156 --> 01:17.963
+So what these are?
+
+01:17.943 --> 01:22.428
+I think these are like seven by seven by 2048 features.
+
+01:22.468 --> 01:31.339
+But let's just say for the sake of describing it that these are just a vector of features for each region of interest.
+
+01:31.359 --> 01:38.568
+So each region of interest is going to be associated with one vector of features that this model extracts.
+
+01:40.350 --> 01:47.258
+And the next region of interest also has a vector and the next region of interest also has a vector and so on.
+
+01:47.238 --> 01:57.331
+Stage two then takes each one of these vectors and assigns a class to it.
+
+01:57.472 --> 01:59.414
+So this would be deer right here.
+
+02:00.155 --> 02:09.027
+Okay, so stage one proposes regions of interest along with features, then stage two takes each of these regions of interest and classifies them basically.
+
+02:11.369 --> 02:14.112
+And I guess there's many in between stages.
+
+02:14.133 --> 02:15.554
+Like this is massively simplified.
+
+02:15.574 --> 02:17.036
+There's non-maximum suppression.
+
+02:17.096 --> 02:23.605
+There is kind of an alignment stage where you can refine the bounding box and so on.
+
+02:24.065 --> 02:26.188
+But in essence, these are two stages.
+
+02:26.308 --> 02:31.174
+And you can see that this system here, it goes in between the two stages.
+
+02:31.354 --> 02:35.740
+So all of this right here, we shove in between the two stages.
+
+02:37.036 --> 02:52.301
+So we'll still use the stage one and we'll still use the stage two, but in between, in this thing right here, we'll try to sort of pimp these features such that the stage two detector has an easier time classifying.
+
+02:53.163 --> 03:03.600
+So we're going to pimp these features by incorporating, because these features right now, if you just do it vanilla, these are just from the current frame.
+
+03:03.580 --> 03:09.814
+And we're going to add to them information from other frames of the same camera.
+
+03:09.834 --> 03:12.709
+And we're going to do it in two different ways.
+
+03:13.373 --> 03:15.042
+So the first way, as you can see,
+

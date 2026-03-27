@@ -1,0 +1,5 @@
+with them.
+We demonstrate the tightness of our upper bound estimate in four standard data sets and hear the result on the adult and compass data.
+We apply reduction and fair projections which are state-of-the-art fairness interventions and compute them with our upper bound estimate.
+As shown in this figure, our upper bound matches with the lower bounds.
+It demonstrates the tightness of our upper bound estimate and also shows that state of the art fairness interventions have already achieved near optimal fairness accuracy curves on this standard and overused data

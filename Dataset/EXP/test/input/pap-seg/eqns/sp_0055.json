@@ -1,0 +1,148 @@
+{
+  "sp_0055_page_0002": {
+    "bboxes": [
+      {
+        "box": [
+          668.7916259765625,
+          604.0816650390625,
+          987.16357421875,
+          633.9638671875
+        ],
+        "text": [
+          "v ^ { \\pi } ( s _ { 0 } , s _ { \\infty } \\vert c _ { \\mathcal { M } } ) = P ( s _ { \\infty } \\in \\tau _ { s _ { 0 } } ^ { \\pi _ { s _ { \\infty } } } \\vert c _ { \\mathcal { M } } ) ,"
+        ],
+        "id": "sp_0055_page_0002-1",
+        "page": "sp_0055_page_0002"
+      }
+    ]
+  },
+  "sp_0055_page_0003": {
+    "bboxes": [
+      {
+        "box": [
+          159.13418579101562,
+          1135.6705322265625,
+          529.9140625,
+          1215.2587890625
+        ],
+        "text": [
+          "\\begin{array} { r c l } { L ( \\sigma ^ { l } \\circ \\sigma ^ { r } ) } & { = } & { L ( \\sigma ^ { l } ) L ( \\sigma ^ { r } ) } \\\\ { v ^ { * } ( s _ { 0 } , s _ { \\infty } ) } & { = } & { \\operatorname* { m a x } \\ \\, v ^ { * } ( s _ { 0 } , s ) \\cdot v ^ { * } ( s , s _ { \\infty } ) . } \\end{array}"
+        ],
+        "id": "sp_0055_page_0003-1",
+        "page": "sp_0055_page_0003"
+      },
+      {
+        "box": [
+          119.51732635498047,
+          1266.6541748046875,
+          531.5258178710938,
+          1323.940185546875
+        ],
+        "text": [
+          "\\underset { s \\in \\mathcal { S } } { \\arg \\operatorname* { m a x } } \\, \\left( \\underset { \\sigma _ { l } \\in s _ { 0 } \\mathcal { S } ^ { * _ { s } } } { \\arg \\operatorname* { m a x } } \\, L ( \\sigma ^ { l } ) \\right) \\cdot \\left( \\underset { \\sigma _ { r } \\in s \\mathcal { S } ^ { * _ { s } } \\infty } { \\arg \\operatorname* { m a x } } \\, L ( \\sigma ^ { r } ) \\right) \\, ."
+        ],
+        "id": "sp_0055_page_0003-2",
+        "page": "sp_0055_page_0003"
+      }
+    ]
+  },
+  "sp_0055_page_0004": {
+    "bboxes": [
+      {
+        "box": [
+          621.733642578125,
+          336.18316650390625,
+          1051.7354736328125,
+          394.6971740722656
+        ],
+        "text": [
+          "V ( s , s ^ { \\prime } ) \\cdot V ( s ^ { \\prime } , s ^ { \\prime \\prime } ) + c \\cdot p ( s ^ { \\prime } | s , s ^ { \\prime \\prime } ) \\cdot \\frac { \\sqrt { N ( s , s ^ { \\prime \\prime } ) } } { 1 + N ( s , s ^ { \\prime } , s ^ { \\prime \\prime } ) } ,"
+        ],
+        "id": "sp_0055_page_0004-1",
+        "page": "sp_0055_page_0004"
+      },
+      {
+        "box": [
+          201.9438934326172,
+          567.333740234375,
+          357.0365905761719,
+          593.708251953125
+        ],
+        "text": [
+          "G \\gets G _ { \\mathrm { l e f t } } \\cdot G _ { \\mathrm { r i g h t } }"
+        ],
+        "id": "sp_0055_page_0004-2",
+        "page": "sp_0055_page_0004"
+      }
+    ]
+  },
+  "sp_0055_page_0012": {
+    "bboxes": [
+      {
+        "box": [
+          308.89056396484375,
+          617.28125,
+          884.760986328125,
+          682.396240234375
+        ],
+        "text": [
+          "P ( ( \\sigma _ { 0 } , \\ldots , \\sigma _ { m } ) \\subseteq \\tau _ { s _ { 0 } } ^ { \\pi _ { \\sigma } } ) = \\prod _ { i = 1 } ^ { m } P \\left( \\sigma _ { i } \\in \\tau _ { \\sigma _ { i - 1 } } ^ { \\pi _ { \\sigma _ { i } } } \\; | \\; ( \\sigma _ { 0 } , \\ldots , \\sigma _ { i - i } ) \\subseteq \\tau _ { s _ { 0 } } ^ { \\pi _ { \\sigma } } \\right) ."
+        ],
+        "id": "sp_0055_page_0012-1",
+        "page": "sp_0055_page_0012"
+      },
+      {
+        "box": [
+          323.2791442871094,
+          303.190185546875,
+          868.3446044921875,
+          372.02313232421875
+        ],
+        "text": [
+          "P ( ( \\sigma _ { 0 } , \\ldots , \\sigma _ { i } ) \\subseteq \\tau _ { s _ { 0 } } ^ { \\pi _ { \\sigma } } ) = P \\left( \\bigwedge _ { i ^ { \\prime } = 1 } ^ { i } ( \\sigma _ { i ^ { \\prime } } \\in \\tau _ { s _ { 0 } } ^ { \\pi _ { \\sigma } } ) \\; \\wedge \\; ( t _ { i ^ { \\prime } - 1 } < t _ { i ^ { \\prime } } ) \\; \\right) ,"
+        ],
+        "id": "sp_0055_page_0012-2",
+        "page": "sp_0055_page_0012"
+      },
+      {
+        "box": [
+          391.6064453125,
+          771.8429565429688,
+          797.1906127929688,
+          907.710205078125
+        ],
+        "text": [
+          "\\begin{array} { r c l } { { P ( ( \\sigma _ { 0 } , \\ldots , \\sigma _ { m } ) \\subseteq \\tau _ { s _ { 0 } } ^ { \\pi _ { \\sigma } } ) } } & { { = } } & { { \\displaystyle \\prod _ { i = 1 } ^ { m } P \\left( \\sigma _ { i } \\in \\tau _ { \\sigma _ { i - 1 } } ^ { \\pi _ { \\sigma _ { i } } } \\right) } } \\\\ { { } } & { { = } } & { { \\displaystyle \\prod _ { i = 1 } ^ { m } v ^ { \\pi } \\left( \\sigma _ { i - 1 } , \\sigma _ { i } \\right) . } } \\end{array}"
+        ],
+        "id": "sp_0055_page_0012-3",
+        "page": "sp_0055_page_0012"
+      },
+      {
+        "box": [
+          245.12728881835938,
+          496.12628173828125,
+          948.5651245117188,
+          561.1814575195312
+        ],
+        "text": [
+          "{ \\cal P } ( ( \\sigma _ { 0 } , \\ldots , \\sigma _ { m } ) \\subseteq \\tau _ { s _ { 0 } } ^ { \\pi _ { \\sigma } } ) = \\prod _ { i = 1 } ^ { m } { \\cal P } \\left( ( \\sigma _ { i } \\in \\tau _ { s _ { 0 } } ^ { \\pi _ { \\sigma } } ) \\; \\wedge \\; ( t _ { i - 1 } < t _ { i } ) \\; | \\; ( \\sigma _ { 0 } , \\ldots , \\sigma _ { i - i } ) \\subseteq \\tau _ { s _ { 0 } } ^ { \\pi _ { \\sigma } } \\right) ."
+        ],
+        "id": "sp_0055_page_0012-4",
+        "page": "sp_0055_page_0012"
+      },
+      {
+        "box": [
+          425.2359619140625,
+          423.801025390625,
+          769.2796630859375,
+          453.5165710449219
+        ],
+        "text": [
+          "\\begin{array} { r } { P ( ( \\sigma _ { 0 } , \\ldots , \\sigma _ { m } ) \\subseteq \\tau _ { s _ { 0 } } ^ { \\pi _ { \\sigma } } ) \\le P ( s _ { \\infty } \\in \\tau _ { s _ { 0 } } ^ { \\pi _ { \\sigma } } ) . } \\end{array}"
+        ],
+        "id": "sp_0055_page_0012-5",
+        "page": "sp_0055_page_0012"
+      }
+    ]
+  }
+}

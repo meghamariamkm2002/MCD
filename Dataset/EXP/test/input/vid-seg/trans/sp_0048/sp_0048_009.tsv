@@ -1,0 +1,39 @@
+start	end	text
+31	3902	theory of that this still works.
+4524	8455	They compare this, of course, to the other algorithms.
+8715	15053	They observe that their algorithm uses substantially less memory.
+15033	21641	And well, substantially less memory and substantially less compute time.
+22182	31193	Um, once you go up to a number of inner gradient steps and it works better than this first order mammal.
+31253	34857	So this first order mammal was our kind of initial guess of how we could do this.
+35217	36980	This tends to perform very poorly.
+37360	41445	As you can see, uh, their, their, um,
+43737	45761	Oh, you can't actually see that here.
+46122	55101	Their method is better, but their method is better and uses less time because you have this inner conjugate gradient optimizer.
+55401	59029	Sorry, this is the outer optimizer.
+59009	59670	Okay.
+60291	71211	So this is the error plot of how well are these methods are able to approximate the true gradient.
+71231	78604	So if you could compute this true outer gradient, you know, that we did with mammal, but we optimize to the end.
+78584	82174	How close are you getting?
+82595	93606	Of course, the problem with this method right here is that you do these approximations.
+93586	95348	and those could hurt you.
+95748	105419	But the problem with mammal is that you're back propagating through the optimization procedure, and that means the non-linear errors could sort of accumulate.
+106380	117332	And as you can see here, even though both might eventually get to the zero error, if you give them enough inner gradient steps,
+117312	124442	Especially at the low inner gradient step regime, the implicit mammal is much better than mammal.
+124983	140805	Now, I've just said the errors accumulate, but the effect probably here is that the fact that with mammal, you don't actually do enough inner steps to reach a good enough optimum of the inner tasks.
+141145	143168	So these inner gradient of the tasks,
+143148	147215	their gradients when they're still very not optimized.
+147315	153807	And therefore they are a very bad estimate for your outer gradient than when you do more gradient steps.
+153827	159397	So that actually hurts you more, which is also a bit surprising to me.
+159698	162743	And then at the end you see
+162723	164346	these conjugate gradient steps.
+164487	167533	This is when you approximate this matrix inverse.
+167553	171201	If you just do two steps, then at some point that error dominates.
+171601	175590	But if you do more steps, you can reach a much lower error.
+175971	179177	And 10 steps isn't that much for an algorithm like this.
+179738	183887	As you can see here, the 10 steps
+183867	194367	Your computation time will still in the regime of many gradient steps will still be lower than the original mammal.
+196574	198337	And then they actually test this thing.
+198417	202023	And of course, they're the best at pretty much everything.
+202043	205468	I don't want to go into the exact details here.
+205949	213581	I invite you to check out the paper for that, check out if you're interested in the proofs and the approximation guarantees.
+214483	217047	And with that, bye-bye.

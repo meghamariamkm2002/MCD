@@ -1,0 +1,2 @@
+Moreover, we consider a simple memax game.
+Our results are better than those of game papers due to universality and better than those of universal papers due to the gradient-virus bounds.

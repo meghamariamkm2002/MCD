@@ -1,0 +1,4 @@
+This tool named direct prior analysis.
+This will demonstrate how, over the course of training, the distance between the global distribution, estimated by DPA, and the real distribution evolves.
+It's observable that convergence typically occurs around 80 rounds.
+The estimates provided by DPA offer valuable global insights for the design of subsequent local training phrases.

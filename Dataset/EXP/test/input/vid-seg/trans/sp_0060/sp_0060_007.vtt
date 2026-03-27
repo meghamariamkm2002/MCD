@@ -1,0 +1,122 @@
+WEBVTT
+
+00:00.031 --> 00:01.013
+All right.
+
+00:02.535 --> 00:05.359
+So let's go into the experiments.
+
+00:06.301 --> 00:11.509
+Of course they're, um, so what they do, I think, where is the graphic?
+
+00:12.430 --> 00:19.221
+What they do is they take an image net, sorry, they take an efficient net right here.
+
+00:22.154 --> 00:34.072
+And they first train a smaller efficient net, as we said, to be the teacher, and then they train a larger efficient net for the student.
+
+00:39.379 --> 00:45.669
+The best model in our experiments is a result of three iterations of putting back the student as a new teacher.
+
+00:46.169 --> 00:50.035
+We first trained an efficient net B7 on ImageNet as the teacher model.
+
+00:51.213 --> 00:54.338
+So you can see in the table right here what the B7 achieves.
+
+00:55.279 --> 01:04.873
+The EfficientNet B7 here, you can see it has 66 million parameters, which is fairly small compared to these other kind of previous state-of-the-art methods on ImageNet.
+
+01:05.794 --> 01:12.023
+So they first train this, and that will achieve something like an 85% accuracy.
+
+01:12.003 --> 01:19.201
+Now, if you just train a larger model, this efficient net L2 right here that has, you can see 480 million parameters.
+
+01:19.302 --> 01:23.994
+So a lot of more million parameters, but you just train it on the same data set on ImageNet.
+
+01:24.495 --> 01:27.683
+You will get a 0.5% improvement.
+
+01:27.663 --> 01:42.482
+And you can see that here, with noisy student training with the exact same model, so it has the same amount of parameters, you'll actually get an 88.4, so more than a 3% improvement.
+
+01:42.943 --> 01:52.776
+And that's with the same model, just with this different training procedure and inputting these 300 million unlabeled images that you have laying around.
+
+01:52.756 --> 02:04.792
+But all the information about all the label information comes from the ImageNet dataset and comes from this EfficientNet B7 teacher model.
+
+02:04.952 --> 02:21.193
+So that's basically you can, it's a testament that out of this, out of this 85, you can make this 88 just by smartly using the information that the model, that this model has learned about the data and transferring it to new data.
+
+02:22.861 --> 02:27.490
+So they train an efficient net B7, that's the small model, as a teacher model.
+
+02:28.011 --> 02:38.693
+Then by using the B7 model as a teacher, we trained an efficient net L2 model with the unlabeled batch size set to 14 times the labeled batch size.
+
+02:38.673 --> 02:42.278
+And they stress that it's important that you up the batch size.
+
+02:42.738 --> 02:46.383
+That's another thing that makes the student learn more than the teacher.
+
+02:47.585 --> 02:49.787
+Then we trained a new efficient net.
+
+02:49.908 --> 02:55.835
+So by the way, these, these 14 times, it's also, it can be done because now you have more data, right?
+
+02:56.015 --> 02:57.998
+So you can also up the batch size.
+
+02:59.800 --> 03:05.646
+Then we trained a new EfficientNet L2 model with the EfficientNet L2 model as the teacher.
+
+03:06.087 --> 03:11.552
+Lastly, we iterated again and used an unlabeled batch size of 28 times the labeled batch size.
+
+03:12.033 --> 03:14.375
+The detailed result of the three iterations and so on.
+
+03:14.395 --> 03:23.985
+Okay, so you can see that it's a fairly complicated procedure, but you can gain and gain and gain by simply upping the
+
+03:23.965 --> 03:28.410
+by simply iterating on this procedure.
+
+03:28.630 --> 03:31.573
+And I think they have it somewhere here, yes.
+
+03:31.773 --> 03:39.381
+So as you can see, if iteration one, you train the EfficientNet L2, you start it with the B7.
+
+03:39.401 --> 03:44.346
+And you train the EfficientNet A2 with a batch size 14 times larger.
+
+03:44.486 --> 03:46.569
+And you gain significantly, right?
+
+03:46.649 --> 03:49.872
+This gains about 2% over the original EfficientNet.
+
+03:49.852 --> 04:02.308
+then you iterate again with the same batch size and you get like a 5.5% improvement and you iterate again with an even larger batch size and you get a 0.3% improvement.
+
+04:02.328 --> 04:17.648
+So there's diminishing returns, but still you can see that, you know, the more with the introduction of noise, with the introduction of the larger model, with the introduction of the larger batch size, these are all things that help the student basically become better than the teacher.
+
+04:19.248 --> 04:22.252
+All right, so they do a bunch of other experiments.
+
+04:22.332 --> 04:44.580
+So their main comparison is right here, where they say, look, if we, even if we train the same model with this noisy student training, we can make, you know, pretty large gains over the model, over the same model where we do not train it with this noisy student training.
+
+04:44.560 --> 04:50.254
+This really seems to help due to the noise, due to the additional data.
+
+04:51.884 --> 04:55.043
+They do a lot of ablation studies.
+

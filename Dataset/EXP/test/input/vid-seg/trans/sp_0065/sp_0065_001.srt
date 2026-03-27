@@ -1,0 +1,64 @@
+1
+00:00:01,820 --> 00:00:17,927
+In this work, we take on the challenging task of learning to synthesize speech from normalized text or phonemes in an end-to-end manner, resulting in models which operate directly on character or phoneme input sequences and produce raw speech audio outputs.
+
+2
+00:00:17,947 --> 00:00:19,650
+Okay, that wasn't the real model.
+
+3
+00:00:19,710 --> 00:00:21,413
+I just thought it sounded really funny.
+
+4
+00:00:22,435 --> 00:00:27,844
+This is a text-to-speech model, and it actually sounds like this.
+
+5
+00:00:29,090 --> 00:00:42,745
+In this work, we take on the challenging task of learning to synthesize speech from normalized text or phonemes in an end-to-end manner, resulting in models which operate directly on character or phoneme input sequences and produce raw speech audio outputs.
+
+6
+00:00:45,475 --> 00:00:46,416
+Okay.
+
+7
+00:00:46,436 --> 00:00:54,408
+Now, you've probably, if you have listened to the text and not just how the text sounds, you have gotten what this paper is about.
+
+8
+00:00:54,749 --> 00:01:09,711
+So the paper is called End to End Adversarial Text to Speech by Jeff Donoway, Sander Diehlmann, Mikolaj Binkowski, Eric Elson, and Karen Simonian of, I believe, of mostly deep mind.
+
+9
+00:01:11,159 --> 00:01:23,830
+And this paper on a high level, it produces speech, so sound, the sound waves of speech directly from text or from what they call normalized text or phoneme text.
+
+10
+00:01:24,191 --> 00:01:28,455
+And it does so without any intermediate supervised representations.
+
+11
+00:01:29,095 --> 00:01:31,798
+And that's a challenging task.
+
+12
+00:01:31,818 --> 00:01:41,166
+And the main problems here are the alignment problem that they have to solve and actually making, making this work in an adversarial manner.
+
+13
+00:01:41,146 --> 00:01:43,813
+So, we're going to look at this paper.
+
+14
+00:01:44,094 --> 00:01:49,127
+As always, if you like work like this, consider subscribing and sharing it out.
+
+15
+00:01:49,328 --> 00:01:52,256
+And if you have any comments, leave them in the comment section.
+
+16
+00:01:53,078 --> 00:01:55,003
+Okay, so what's the problem with text
+

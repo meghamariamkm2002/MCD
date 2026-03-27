@@ -1,0 +1,40 @@
+start	end	text
+31	2414	Okay.
+3595	4536	So how do they do it?
+5317	11324	Via what they call trajectory, via regularization of trajectory optimization.
+11924	14527	So in essence, what do we want to regularize here?
+14768	25920	There are many things we could do to solve this, but the way this paper goes is they say we not only do we want the most return, we also
+25900	32914	want a high log probability of our taken path.
+33375	39446	So this here, as you can see, this is observation action and so on, observation action.
+39767	41310	So this is the future.
+41691	44837	This right here is the future.
+46994	55210	So this, this sequence here is going, is what is going to give me the reward right here.
+55550	56131	Right.
+56152	60881	So G is also dependent on these things, but it's not said explicitly here.
+60961	64788	So G is dependent on your plan or maybe let's not call this the future.
+64828	65830	This is the plan.
+67058	67439	Okay.
+67719	69101	This is the plan you came up with.
+70122	74508	So this is directly going to influence G and G is the reward you're going to get under your model.
+74828	79314	But also you want the log probability of the plan itself to be high.
+80216	88246	Now there, I think there is a bit, there is something missing here and that is conditioned on your training distribution right here.
+88847	91451	And I think that's a actually a rather crucial part.
+92092	94635	No, that's, that's the KL thing.
+94615	96478	So this is conditioned on your training.
+96738	104972	So what you want is you want the plan to be basically in your training distribution.
+105533	116050	So you want your plan that you're going to execute if that is actually part of your training data set.
+116030	130071	then you know I have already executed this once before and it's reasonable to assume that therefore my world model has learned from this experience and is going to give me an accurate reward.
+130611	134477	If we go back to our rooms example then
+134457	136762	up here somewhere.
+137183	146161	If we go back to our room's example, you see that anywhere in the green area where I have already explored, the world model is fairly good.
+146462	153597	It's going to give me accurate reflection of the world, but as soon as I go outside the green area, it is not.
+153577	158805	And inside the green area is basically where my training data is.
+159286	165735	Now, if I in the future actually take a path here, crash into a wall right here, right?
+165915	172666	You saw in the algorithm, at the end of an episode, I'm going to add my trajectory to the training data for the world model.
+172686	176351	So this green part here expands to include that.
+176852	180377	And now, if I go here again,
+180357	187585	If my plan goes there again, now I can trust the world model, but also now it has, it is actually correct because it has a wall here.
+188105	204062	So you see that the regularization basically, not only do I want the biggest reward possible under my world model, I also want that the plan that I'm about to execute is, has a high probability under my training distribution.
+204582	204862	Okay.
+205463	209267	And the way we do this is by denoising auto-encoders.
+211424	220050	So I want the log probability here to be high and you do this via a denoising autoencoder.

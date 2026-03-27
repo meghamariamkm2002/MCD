@@ -1,0 +1,62 @@
+Here you see it's even a bit more complicated.
+So this is the pseudo code.
+So we want to augment the image.
+We get two different versions of the image.
+We push both of these versions through the student and through the teacher.
+And then we want, I don't know if you can track that, but T1 is the X1 that went through the teacher.
+That needs to be the same as X2 that went through the student.
+And then the X2 went through the teacher should be the same as X1 going through the student.
+So we want to augment the image differently two times.
+Then that gives us two different views of the same image.
+Then we want to run them through both through the teacher and student.
+And then we want sort of everything to be consistent with everything else.
+So we want the one augmentation in the one model to be consistent with another augmentation through another model.
+Now,
+There are two more things here.
+The first one is these centering, what's called centering.
+And that's what something the teacher does.
+And also something they say in the text is that in the teacher, they only use the global cropping.
+whereas in the student, they use both the global and the local cropping.
+So the student uses both and the teacher only uses the global crops.
+So essentially, if the student gets a local crop and the teacher gets a global crop,
+The goal here is that both things predict the same representation.
+And that means the student has somehow learned that, you know, whatever I see here is a little piece of whatever the teacher has, even though it doesn't, I should reformulate this because it doesn't see what the teacher has, right?
+So the student somehow has to, from a very small sub patch,
+it has to know it has to output something that it would that itself or the teacher which is itself averaged would also output if it sees more context in the image.
+So you train the network to for all of these crops and for all the different augmentations output the same thing
+without knowing what the other thing is.
+And I think that is the advantage to contrastive representations, honestly, because in contrastive representation, in contrastive learning, you sort of contrast with the negative, with the negative samples.
+And here it's really like you don't know anything and you need to output something and that needs to match whatever, whatever
+you yourself would output if you saw a different part of the image.
+So you have no choice, but to output, you know, either the same thing all the time, which is prevented here, or to output something that's on the image.
+And you can't just output something that's only in your patch, right?
+Otherwise, another patch wouldn't show the same thing.
+Like if there's like a little tiny structure here,
+you would not output that because the other patches don't have it.
+However, if there is something big in the image, right, like, you know, our traditional cat right here, and you recognize that because you see a little cat ear, if you output a representation for cat, and, you know, since you would also do this for the other ear and for the paws and so on, you this whiskers, you then would you then win like your loss is small.
+So you're intrinsically pushed towards outputting something that describes the image as a whole, right?
+And that differentiates it from other images.
+So what what encourages you to be different, that's this centering.
+And also in the softmax there is a
+There is a sharpening.
+So first of all, the centering is simply what you do in the teacher.
+You keep a running average here.
+Again, you can see that you keep a running average of all the representations that the teacher sees.
+You just you keep you keep that as a list or a running list, all the representations that the teacher sees running average, and you simply subtract that from the logits down here.
+Yeah, that's that's centering.
+It's something like a normalization, but not really what it does is it, it keeps the keeps the logits sort of close in a in a range that's manageable and and has some variants and so on.
+And, you know, within as a proxy, it also does that to the student because the student is trained to be like the teacher.
+So centering is a bit like a normalization here.
+And then the second thing is that there is a different.
+parameter in the softmax as a temperature parameter.
+So the softmax function is at the end.
+And that has a temperature.
+Where is it?
+Where are you?
+This is the softmax function.
+You can see it has a temperature parameter, right?
+And that temperature is much lower for the teacher than for the student.
+And they call this sharpening.
+Now, why is there even a softmax?
+That's what I asked myself.
+Like, if you think of a of what you do with a representation, usually when you do something like a contrastive loss, you may just do a contrastive loss or a self supervised loss on the representation itself, like you do cross product or

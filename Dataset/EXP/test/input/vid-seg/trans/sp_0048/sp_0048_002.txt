@@ -1,0 +1,86 @@
+Now, if you don't know what meta learning is, let me quickly introduce the term.
+So in meta learning, you assume you have some sort of a distribution of tasks ahead.
+So let's make some examples.
+For example, task one could be you get an image, you have a data set of images, and you want to classify them into cats or dogs.
+And you know, you have a little data set with labeled images and you can train, test, split that.
+And that's one task.
+Now task two is going to be, again, you have a small data set of different images, but let's just all make image examples here, but you want to locate the pedestrian.
+So you want to locate the human in the image.
+So where is the human, right?
+And the task three could be,
+Again, a small database of tasks as sorry of images and in each of the image you want to visually question answer you want to or let's say you want to point out
+All right, there is a ground, there is a tree, and there is a question about it.
+Yeah, let's take visual question answering, right?
+We wish, which give you yes or no questions, something like this.
+Now let's just say you have to segment, you have to segment that image.
+So down here would be ground, you have to segment the ground.
+Okay, so these are all image tasks, right?
+These are all perfectly fine independent tasks, each for each one you have a small data set.
+Now, sometimes these data sets are very, very small, such that you cannot really train a state of the art model on them.
+For example, if you have medical images,
+Oftentimes the labels of these are very hard to get.
+I mean, there's privacy concerns and then, you know, doctors have to look at it to produce the images costs money and so on.
+So it's not like you have a lot of images and you could profit from more images.
+So one method that people come up with is called transfer learning.
+So in transfer learning, you say, I have this giant database of images.
+Let's, let's, let's say this is image net, right?
+I have this giant database image net with labeled images.
+What I can do is I can use this to train a neural network.
+Let's this are the bunch of layers of neural network.
+And I can train the neural network on this big database and get parameters theta, right?
+These are the parameters of the neural network.
+And then I will basically adapt these parameters to each task individually.
+So in task one, sorry about that, I would then take these parameters as an input to the neural network.
+I would initialize the neural network with these parameters.
+And then I would use this training set in order to fine tune.
+This is what's called fine tuning.
+to the task specific parameters here, phi.
+So phi one, because it's task one.
+For task two, I would also take these as a starting point in order to train its neural network to fine tune it on this bounding box task.
+in order to obtain the parameters for task two.
+So you can see that there's a pre-training stage here to obtain good initial parameters.
+And then we adapt these initial parameters for each task separately in a fine tuning stage.
+So this is one way we can do it.
+Another way we can do it is called multitask learning.
+What we do in multitask learning is we say, well, see, probably an neural network that can segment the grounds is also pretty good at doing bounding boxes, like it'll use some of the same features.
+So can't we just kind of pull together these data sets into one bigger data set?
+And then train on, like if it's an image from task one, we'll train on the loss of task one.
+And if it's an image from task two, we'll train on the loss of task two and so on.
+But we'll sort of use the same neural network basis.
+We just have kind of different heads on top of them.
+And we'll basically, so this is called multitask learning, have one shared neural network with different outputs for the different tasks.
+And basically counting on the fact that you can sort of learn from one task what's useful in the other.
+Now, this is a good method to combine the tasks and to basically share data information, but it will also limit you because you now have to trade off between the tasks, like this neural network right here, this joint encoder.
+will never be able to, will never be able to fully gear to one task because it all also has to, you know, it has to perform for the other tasks as well.
+So you kind of limit yourself in your top out accuracy.
+Now, maybe the regularization effect is good.
+So these are two methods.
+The first is called transfer learning here on the left and the other is called multitask learning.
+Now, meta learning goes a different direction.
+Meta learning is like transfer learning, but it says, well, what if we don't have this giant data set right here?
+What if we find a way to learn these initial parameters, right?
+So what we'll do is we'll start out with a guess, a guess of good initial parameters.
+Let's call that theta zero.
+And now we have all of these three tasks take Theta0 and run their fine tuning to come up with their own parameters, starting at Theta0.
+So this is Phi1 started from Theta0.
+And we'll also give it to Task2 and to Task3.
+Right.
+And each of these tasks is going to train on its own training data set and then evaluate on its own validation data set and then report back a number.
+So we do this for every task and every task basically trains this runs through the validation data set reports back a generalization error.
+And then we know, once we get all the information from all the tasks, we know how good were these initial parameters, right?
+We get a measure of how easy is it for the tasks to adapt these initial parameters to their own data set.
+And then we somehow need to figure out a way, okay, these parameters were on average 81% good.
+Can we come up with a better set of initial parameters theta one in some way?
+Can we somehow find a better set of initial parameters such that it is easier for the tasks to adapt these initial parameters, right?
+And even more so, there could be task four, which we are not seeing during this training phase, right?
+This is kind of our, so these up here could be our train training tasks.
+And this down here could be our validation task.
+So basically, we're trying to come up with a set of initial parameters that if a new task comes along and it takes this thing as its initial parameters, it will be able to adapt very quickly these initial parameters to its own data set.
+And most importantly, it can do that.
+It will result in a much better model than had the task just trained on its own small data set from scratch.
+So our task is in meta learning is basically to come up with a learning procedure to generate to iteratively generate better and better and better initial parameters, right?
+And what better way to do this than using gradient descent?
+So, this is meta-learning using gradient descent is the core of this paper, basically.
+Now, what do you need for gradient descent?
+So, if you want to go from one task to the next using SGD or even GD, gradient descent, you need to come up with a gradient.
+Now, why is this a problem in this case?

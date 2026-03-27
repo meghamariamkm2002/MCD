@@ -1,0 +1,13 @@
+functions.
+All of this is not perfect, of course, but it's still an open question, I guess, whether or not it's not perfect because we haven't built a strong enough language model yet.
+Do I want to say GPT-4 is now for biology and not for language?
+Or is it because you really can't very well predict these things just from a language model?
+I mean, you should, technically all the information is there, but maybe the language model objective as such isn't able to capture that information.
+So, yeah, this was the paper.
+It's pretty simple.
+In the appendix, they have a lot of these additional experiments or full experiments, I believe, for all the amino acids and so on.
+And I invite you to check that out.
+In general, I like this kind of work because it's very applied and it can tell us something about the nature of both these language models and the biological things that we care about in biology.
+Okay, I'm just talking crap right now.
+Thanks for being here.
+I hope you enjoyed it and bye-bye.

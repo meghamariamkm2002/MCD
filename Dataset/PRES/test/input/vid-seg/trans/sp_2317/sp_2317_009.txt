@@ -1,0 +1,2 @@
+Our model performs better than other masters with similar sizes.
+For image modeling, our model achieves better image classification accuracy than transformer-based masters and TNM on ImageNet 1K benchmark.

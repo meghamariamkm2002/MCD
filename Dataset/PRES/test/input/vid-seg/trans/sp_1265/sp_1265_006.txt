@@ -1,0 +1,4 @@
+So another key question is, how can we identify which sample will send to human or to RM annotation?
+So we propose this exploration, exploitation query strategy that aims at leveraging human annotation for exploitation by maximizing information, informativeness, role, and certain sampling.
+And the RM annotation for exploration by enhancing, representativeness, role, diverse sampling.
+So this is a mixture of the two-stage selection.

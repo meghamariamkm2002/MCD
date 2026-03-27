@@ -1,0 +1,304 @@
+1
+00:00:00,031 --> 00:00:04,578
+Alright, let's get back to this rock, paper, scissors example right here.
+
+2
+00:00:05,679 --> 00:00:13,530
+Interestingly to note is that these dashed lines here means that player two cannot decide which of these states they're in.
+
+3
+00:00:13,871 --> 00:00:16,915
+So player two doesn't know what states are in.
+
+4
+00:00:16,935 --> 00:00:19,179
+For player two, this is all basically the same state.
+
+5
+00:00:19,599 --> 00:00:28,452
+It would be really easy, right, if player one plays first and then player two sees what player one does and then they just act like they always win.
+
+6
+00:00:28,938 --> 00:00:35,831
+However, player two doesn't, so they have to sort of decide what to do, independent of which state they're in.
+
+7
+00:00:36,973 --> 00:00:39,919
+Especially, this is a symmetric game, right?
+
+8
+00:00:39,959 --> 00:00:42,944
+This is a two-player game, because it has two players.
+
+9
+00:00:43,225 --> 00:00:49,697
+It's zero sum, because whenever one player wins a reward, the other player loses the same reward.
+
+10
+00:00:49,677 --> 00:01:03,568
+And that makes it symmetric, so both players play at the same time, though that is not necessary in general, but here it's the case.
+
+11
+00:01:04,578 --> 00:01:10,285
+This means in this particular case, whatever strategy player one has, player two must have as well.
+
+12
+00:01:10,425 --> 00:01:12,487
+So we'll just do the analysis for player one.
+
+13
+00:01:13,428 --> 00:01:17,453
+So let's say you deviate from this optimal strategy, right?
+
+14
+00:01:17,513 --> 00:01:22,439
+We claim that this here is the optimal strategy, playing 20% of scissors.
+
+15
+00:01:23,300 --> 00:01:25,602
+Let's say player one doesn't believe it.
+
+16
+00:01:25,762 --> 00:01:28,105
+Player one deviates from it and says, nah,
+
+17
+00:01:28,085 --> 00:01:29,589
+There is so much reward there.
+
+18
+00:01:29,609 --> 00:01:30,873
+I'm going to get some more of that.
+
+19
+00:01:30,933 --> 00:01:32,176
+So they up this, right?
+
+20
+00:01:32,216 --> 00:01:39,857
+They up this to like, let's say point, I don't know, point three, three, like doing the classic one third or even higher, right?
+
+21
+00:01:39,877 --> 00:01:41,902
+They up this, go more scissors.
+
+22
+00:01:42,243 --> 00:01:43,346
+Okay.
+
+23
+00:01:43,426 --> 00:01:44,068
+And
+
+24
+00:01:44,048 --> 00:01:47,775
+They probably want to take this mask because they have to take it from somewhere.
+
+25
+00:01:48,016 --> 00:01:50,861
+They probably want to take this from rock and paper.
+
+26
+00:01:50,881 --> 00:01:58,176
+Let's say they just take it equally from rock and paper towards scissors to up the probability that they play scissors.
+
+27
+00:01:58,236 --> 00:02:01,382
+So from paper and from rock, they go towards scissors.
+
+28
+00:02:01,936 --> 00:02:06,065
+Now, player two observes this, right?
+
+29
+00:02:06,085 --> 00:02:13,321
+They can just play against player one for a while, or what we're going to assume is that everyone announces their strategy publicly.
+
+30
+00:02:14,183 --> 00:02:14,905
+It's the same thing.
+
+31
+00:02:15,005 --> 00:02:21,058
+You can just observe someone for a while, or they can just announce their strategy.
+
+32
+00:02:21,038 --> 00:02:23,162
+We'll treat this equally.
+
+33
+00:02:23,503 --> 00:02:27,631
+So player two observes player one, playing scissors too often.
+
+34
+00:02:28,212 --> 00:02:33,983
+So player two knows they are very often in this situation right here, in this right state.
+
+35
+00:02:34,084 --> 00:02:42,540
+They can't directly observe, but they infer, I must be very often in this right most state where player one chooses scissors.
+
+36
+00:02:42,520 --> 00:02:45,344
+And therefore, you see player two's payoffs.
+
+37
+00:02:45,825 --> 00:02:49,030
+It's zero here, minus two here, and two here.
+
+38
+00:02:49,391 --> 00:02:54,960
+So they'll say, well, I also have this optimal strategy of 0.4, 0.4, 0.2.
+
+39
+00:02:55,280 --> 00:03:04,735
+What I can do is I can simply, knowing that I'm a lot in this state, I can simply take some mass from paper and put it on rock.
+
+40
+00:03:04,755 --> 00:03:07,920
+So I play rock way more often.
+
+41
+00:03:08,272 --> 00:03:24,188
+and I reduce the amount I play paper right scissors doesn't matter but now I lose to less often and I win too much more often and player one in turn loses too much more often and wins
+
+42
+00:03:24,168 --> 00:03:26,030
+much less often, right?
+
+43
+00:03:26,230 --> 00:03:31,876
+So player one wanted to get more reward, but they're sort of being punished by player two for playing this too often.
+
+44
+00:03:32,317 --> 00:03:35,020
+Now you can say, well, player one can do the same thing.
+
+45
+00:03:35,420 --> 00:03:38,904
+Knowing that player two plays rock too often now, right?
+
+46
+00:03:38,924 --> 00:03:41,207
+They've taken away mass from paper towards rock.
+
+47
+00:03:41,527 --> 00:03:50,597
+Knowing that player two has taken rock, player one knows that either they're here or they're here, right?
+
+48
+00:03:50,797 --> 00:03:56,949
+And in this case, player one can say, all right, you play rock too often.
+
+49
+00:03:57,029 --> 00:04:03,422
+Obviously, if I play scissors, then I'm going to lose, but I've already decided I want to play scissors much more.
+
+50
+00:04:03,462 --> 00:04:05,265
+So they're trying to make it up right here.
+
+51
+00:04:05,646 --> 00:04:09,193
+So what they can do in this case is they can say,
+
+52
+00:04:09,173 --> 00:04:24,600
+when i play paper i win one instead of if i play rock two i win zero so i know player two is playing rock way more often than they should so i'm going to punish player two by playing paper more often so
+
+53
+00:04:24,580 --> 00:04:26,482
+Let's erase this arrow.
+
+54
+00:04:26,582 --> 00:04:29,526
+Let's say we play scissors Sorry, we play scissors.
+
+55
+00:04:29,846 --> 00:04:50,250
+No, let's not erase this We play scissors by moving from rock and we also move from rock to paper like we're almost never playing rock We're just playing scissors more often because that's what we started with and we're playing also now paper more often So now we basically do the same thing that player 2 did to us we are
+
+56
+00:04:50,230 --> 00:04:55,076
+Upping the likelihood of this thing happening and decreasing the likelihood of this thing happening.
+
+57
+00:04:55,096 --> 00:04:59,461
+So now we can say, now I also, I play paper more often.
+
+58
+00:05:00,623 --> 00:05:04,668
+Now I also win more often here and you lose more often.
+
+59
+00:05:04,988 --> 00:05:12,357
+But you see, because the rewards are doubled over here, the fact that player two can achieve this,
+
+60
+00:05:13,484 --> 00:05:17,789
+is much more meaningful than the fact that player one can achieve this.
+
+61
+00:05:18,370 --> 00:05:24,537
+And that's why player one will be punished harder for deviating here.
+
+62
+00:05:24,998 --> 00:05:27,641
+So that's sort of how you reason about these strategies.
+
+63
+00:05:27,801 --> 00:05:37,532
+So if player one will play this point too often, they will be punished harder than player two for deviating in response to that.
+
+64
+00:05:38,013 --> 00:05:40,656
+And the same counts for the symmetric part.
+
+65
+00:05:41,041 --> 00:05:44,988
+This is a very important concept right here.
+
+66
+00:05:45,008 --> 00:05:52,040
+Namely, you can see player 2 strategy depends on player 1 strategy.
+
+67
+00:05:52,561 --> 00:05:57,008
+Even though you could conceptualize this game of player 1 plays a move,
+
+68
+00:05:57,730 --> 00:06:01,394
+And then they play a move, but they don't show it yet, right?
+
+69
+00:06:01,455 --> 00:06:08,483
+They play a move, they take like a picture of their hands doing rock, paper, scissors, and they just don't show the picture yet.
+
+70
+00:06:09,064 --> 00:06:10,926
+And then player two plays a move.
+
+71
+00:06:11,527 --> 00:06:17,915
+So now we're basically back in, we're in this game where it's sequential in nature.
+
+72
+00:06:18,495 --> 00:06:21,940
+And usually in a sequential game, you can just do a sub game analysis.
+
+73
+00:06:22,400 --> 00:06:24,683
+So you can just say, okay,
+
+74
+00:06:24,781 --> 00:06:33,394
+and do a sub game analysis, but the sub game analysis depends on the strategy of player one because you don't know the situation.
+
+75
+00:06:33,755 --> 00:06:37,530
+This is different than a full information game.
+
+76
+00:06:38,654 --> 00:06:40,039
+And this is illustrated
+

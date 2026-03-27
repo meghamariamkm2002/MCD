@@ -1,0 +1,1 @@
+We formulate it as an optimization problem that minimizes the distortion to the synthetic data distribution while making the post-process synthetic data meet the utility requirements.

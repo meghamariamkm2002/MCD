@@ -1,0 +1,27 @@
+start	end	text
+31	3036	the same network, but that it does not work.
+4077	8604	So if you don't have negative samples, your main goal is to avoid what's called collapse.
+9285	14674	If the network just maps everything to the same representation, then it always wins, right?
+14834	20082	It always is like, well, you know, okay, the two things are the same, because everything's the same.
+20062	21666	you don't want that.
+22308	25075	So a trick is to have two different models.
+25596	28143	One you call the student and one you call the teacher.
+28223	33316	And they're called student and teacher because from distillation.
+33737	35522	So in distillation,
+35907	38591	what you usually have is you have a data set.
+39493	44401	And then you train a big model, which is the teacher.
+45703	54777	And now what you want to do is you want to make you want to make that model maybe smaller, right, such that it runs on a mobile phone.
+54757	56258	And that's then the student.
+56859	69972	And there is a procedure where you take the data set and you take the teacher model and you sort of transfer the knowledge from the teacher model to the student model while using, you can use the data set to do so.
+70312	73656	And that usually works better than training the student model from scratch.
+74136	76819	It's very interesting why that even works.
+77119	80022	But this process is called distillation.
+81436	83499	So that's why it's called teacher and student.
+84621	87726	However, in this case, it's kind of a self distillation.
+87746	90651	So the teacher and the student, they're not big or small.
+90691	92354	They're the same architectures.
+92854	96520	In fact, we only train the student.
+97322	98143	Okay.
+98163	101949	And the teacher is made from the student.
+102009	104653	So here is where the terms break down a bit.
+105054	110042	Like, so in the distillation sense, the teacher is the teacher in the distillation.

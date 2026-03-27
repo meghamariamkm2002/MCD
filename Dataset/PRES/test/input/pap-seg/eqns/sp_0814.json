@@ -1,0 +1,517 @@
+{
+  "sp_0814_page_0001": {
+    "bboxes": [
+      {
+        "box": [
+          312.7747497558594,
+          1225.30126953125,
+          910.7547607421875,
+          1276.2484130859375
+        ],
+        "text": [
+          "\\mathrm { K L } ( p _ { d } | | q _ { \\theta } ) \\doteq - \\int p _ { d } ( x ) \\log q _ { \\theta } ( x ) \\, \\mathrm { d } x \\doteq - \\int p _ { d } ( x ) f _ { \\theta } ( x ) \\, \\mathrm { d } x - \\log Z ( \\theta ) ,"
+        ],
+        "page": "sp_0814_page_0001",
+        "id": "sp_0814_page_0001-1",
+        "seg_type": "eq"
+      }
+    ]
+  },
+  "sp_0814_page_0002": {
+    "bboxes": [
+      {
+        "box": [
+          410.6361999511719,
+          243.11399841308594,
+          813.9215698242188,
+          295.185302734375
+        ],
+        "text": [
+          "\\mathrm { F D } ( { p } _ { d } | | { q } _ { \\theta } ) = \\frac { 1 } { 2 } \\int { p } _ { d } ( x ) | | s _ { p _ { d } } ( x ) - s _ { q _ { \\theta } } ( x ) | | _ { 2 } ^ { 2 } \\, \\mathrm { d } x ,"
+        ],
+        "page": "sp_0814_page_0002",
+        "id": "sp_0814_page_0002-1",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          362.74755859375,
+          343.00799560546875,
+          859.5082397460938,
+          394.0429382324219
+        ],
+        "text": [
+          "\\mathrm { F D } ( { p } _ { d } | | { q } _ { \\theta } ) \\doteq \\frac { 1 } { 2 } \\int { p } _ { d } ( x ) \\left( | | s _ { q _ { \\theta } } ( x ) | | _ { 2 } ^ { 2 } + 2 \\, \\mathrm { T r } ( \\nabla _ { x } s _ { q _ { \\theta } } ( x ) ) \\right) \\mathrm { d } x ,"
+        ],
+        "page": "sp_0814_page_0002",
+        "id": "sp_0814_page_0002-2",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          334.3743591308594,
+          663.2186279296875,
+          888.8073120117188,
+          826.8067016601562
+        ],
+        "text": [
+          "\\begin{array} { l } { \\displaystyle \\mathrm { F D } ( \\bar { p } _ { d } | | \\bar { q } _ { \\theta } ) = \\frac 1 2 \\int \\tilde { p } ( \\bar { x } ) | | s _ { \\bar { p } _ { d } } ( \\bar { x } ) - s _ { \\bar { q } _ { \\theta } } ( \\bar { x } ) | | _ { 2 } ^ { 2 } \\, \\mathrm { d } \\bar { x } } \\\\ { \\displaystyle \\qquad \\qquad \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, } \\\\ { \\displaystyle \\qquad \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, } \\\\ { \\displaystyle \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, } \\\\ { \\displaystyle \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, } \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, "
+        ],
+        "page": "sp_0814_page_0002",
+        "id": "sp_0814_page_0002-3",
+        "seg_type": "eq"
+      }
+    ]
+  },
+  "sp_0814_page_0003": {
+    "bboxes": [
+      {
+        "box": [
+          380.75604248046875,
+          1070.5662841796875,
+          842.8700561523438,
+          1122.3486328125
+        ],
+        "text": [
+          "\\mathrm { F D } ( \\tilde { p } _ { d } | | \\tilde { q } _ { \\theta } ) \\doteq \\frac { 1 } { 2 \\sigma ^ { 4 } } \\iint p ( \\tilde { x } | x ) p _ { d } ( x ) \\left| | x - \\mu ( \\tilde { x } ) | \\right| _ { 2 } ^ { 2 } \\mathrm { d } \\tilde { x } \\, \\mathrm { d } x ,"
+        ],
+        "page": "sp_0814_page_0003",
+        "id": "sp_0814_page_0003-1",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          504.40521240234375,
+          628.558837890625,
+          719.1392822265625,
+          678.8875122070312
+        ],
+        "text": [
+          "q ( x ) = \\int p ( x | \\tilde { x } ) \\tilde { q } _ { \\theta } ( \\tilde { x } ) d \\tilde { x } ,"
+        ],
+        "page": "sp_0814_page_0003",
+        "id": "sp_0814_page_0003-2",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          520.3175659179688,
+          1006.830322265625,
+          704.5389404296875,
+          1036.1121826171875
+        ],
+        "text": [
+          "\\mu ( \\tilde { x } ) = \\tilde { x } + \\sigma ^ { 2 } s _ { \\tilde { q } { \\boldsymbol { \\theta } } } ( \\tilde { x } ) ;"
+        ],
+        "page": "sp_0814_page_0003",
+        "id": "sp_0814_page_0003-3",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          402.25994873046875,
+          897.0149536132812,
+          822.4816284179688,
+          929.8709716796875
+        ],
+        "text": [
+          "\\mu ( \\tilde { x } ) = \\langle x \\rangle _ { p ( x | \\tilde { x } ) } , \\quad \\Sigma ( \\tilde { x } ) = \\langle x ^ { 2 } \\rangle _ { p ( x | \\tilde { x } ) } - \\langle x \\rangle _ { p ( x | \\tilde { x } ) } ^ { 2 } ."
+        ],
+        "page": "sp_0814_page_0003",
+        "id": "sp_0814_page_0003-4",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          427.1429748535156,
+          1294.805419921875,
+          798.0408935546875,
+          1323.758056640625
+        ],
+        "text": [
+          "\\Sigma ( \\tilde { x } ) = \\sigma ^ { 2 } \\nabla _ { \\tilde { x } } \\mu ( \\tilde { x } ) = \\sigma ^ { 4 } \\nabla _ { \\tilde { x } } ^ { 2 } \\log \\tilde { q } _ { \\theta } ( \\tilde { x } ) + \\sigma ^ { 2 } I ."
+        ],
+        "page": "sp_0814_page_0003",
+        "id": "sp_0814_page_0003-5",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          373.7322082519531,
+          1411.6298828125,
+          849.7116088867188,
+          1440.6051025390625
+        ],
+        "text": [
+          "p ( x | \\tilde { x } ) \\approx \\mathcal { N } ( \\tilde { x } + \\sigma ^ { 2 } \\nabla _ { \\tilde { x } } \\log \\tilde { q } _ { \\theta } ( \\tilde { x } ) , \\sigma ^ { 4 } \\nabla _ { \\tilde { x } } ^ { 2 } \\log \\tilde { q } _ { \\theta } ( \\tilde { x } ) + \\sigma ^ { 2 } I ) ."
+        ],
+        "page": "sp_0814_page_0003",
+        "id": "sp_0814_page_0003-6",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          413.5556335449219,
+          757.394775390625,
+          810.3280029296875,
+          784.7466430664062
+        ],
+        "text": [
+          "\\tilde { x } _ { k - 1 } \\sim p ( \\tilde { x } | \\boldsymbol { x } = x _ { k - 1 } ) , \\quad x _ { k } \\sim p ( x | \\tilde { x } = \\tilde { x } _ { k - 1 } ) ,"
+        ],
+        "page": "sp_0814_page_0003",
+        "id": "sp_0814_page_0003-7",
+        "seg_type": "eq"
+      }
+    ]
+  },
+  "sp_0814_page_0004": {
+    "bboxes": [
+      {
+        "box": [
+          427.79034423828125,
+          799.518798828125,
+          797.3350830078125,
+          837.0233764648438
+        ],
+        "text": [
+          "q ^ { * } = \\arg \\operatorname* { m i n } _ { q } \\mathrm { K L } ( p ( \\tilde { x } | x ) p _ { d } ( x ) | | q ( x | \\tilde { x } ) \\tilde { p } _ { d } ( \\tilde { x } ) )"
+        ],
+        "page": "sp_0814_page_0004",
+        "id": "sp_0814_page_0004-1",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          309.3848571777344,
+          440.14910888671875,
+          914.4776611328125,
+          491.0263366699219
+        ],
+        "text": [
+          "\\mathrm { K L } ( p ( \\tilde { x } | x ) p _ { d } ( x ) \\| q _ { \\theta } ( x | \\tilde { x } ) ) \\tilde { p } _ { d } ( \\tilde { x } ) ) \\doteq - \\int \\! \\! \\int p _ { d } ( x ) p ( \\tilde { x } | x ) \\log q _ { \\theta } ( x | \\tilde { x } ) \\, \\mathrm { d } \\tilde { x } \\, \\mathrm { d } x ,"
+        ],
+        "page": "sp_0814_page_0004",
+        "id": "sp_0814_page_0004-2",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          433.7254943847656,
+          873.1194458007812,
+          790.5302734375,
+          904.3548583984375
+        ],
+        "text": [
+          "\\mu _ { q } ^ { * } ( \\tilde { x } ) = \\langle x \\rangle _ { p ( x | \\tilde { x } ) } , \\quad \\Sigma _ { q } ^ { * } ( \\tilde { x } ) = \\sigma ^ { 2 } \\nabla _ { \\tilde { x } } \\mu _ { q } ^ { * } ( \\tilde { x } ) ,"
+        ],
+        "page": "sp_0814_page_0004",
+        "id": "sp_0814_page_0004-3",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          387.5635070800781,
+          552.0551147460938,
+          836.3303833007812,
+          578.6484985351562
+        ],
+        "text": [
+          "\\mathrm { K L } ( p ( \\tilde { x } | x ) p _ { d } ( x ) \\| q _ { \\theta } ( x | \\tilde { x } ) ) \\tilde { p } _ { d } ( \\tilde { x } ) ) \\geq \\mathrm { K L } ( p _ { d } ( x ) | | q _ { \\theta } ( x ) ) ,"
+        ],
+        "page": "sp_0814_page_0004",
+        "id": "sp_0814_page_0004-4",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          285.3174133300781,
+          1320.1358642578125,
+          938.2805786132812,
+          1367.3209228515625
+        ],
+        "text": [
+          "\\sigma _ { q } ^ { * 2 } = \\arg \\operatorname* { m i n } _ { \\sigma _ { q } } \\mathrm { K L } ( p ( \\tilde { x } | x ) p _ { d } ( x ) \\| q _ { \\theta } ( x | \\tilde { x } ) ) \\tilde { p } _ { d } ( \\tilde { x } ) ) = \\frac { 1 } { d } \\left\\langle \\mathrm { T r } \\left( \\mathrm { C o v } _ { q ( x | \\tilde { x } ) } [ x ] \\right) \\right\\rangle _ { \\tilde { p } _ { d } ( \\tilde { x } ) } ,"
+        ],
+        "page": "sp_0814_page_0004",
+        "id": "sp_0814_page_0004-5",
+        "seg_type": "eq"
+      }
+    ]
+  },
+  "sp_0814_page_0005": {
+    "bboxes": [
+      {
+        "box": [
+          459.901611328125,
+          179.9183349609375,
+          764.024658203125,
+          227.41964721679688
+        ],
+        "text": [
+          "\\sigma _ { q } ^ { * 2 } = \\sigma ^ { 2 } - \\sigma ^ { 4 } / d \\Bigl \\langle \\bigl \\| s _ { q _ { \\theta } } ( \\tilde { x } ) \\bigr \\| _ { 2 } ^ { 2 } \\Bigr \\rangle _ { \\tilde { p } _ { d } ( \\tilde { x } ) } \\, ."
+        ],
+        "page": "sp_0814_page_0005",
+        "id": "sp_0814_page_0005-1",
+        "seg_type": "eq"
+      }
+    ]
+  },
+  "sp_0814_page_0006": {
+    "bboxes": [
+      {
+        "box": [
+          468.7315368652344,
+          1191.751220703125,
+          754.9262084960938,
+          1237.32275390625
+        ],
+        "text": [
+          "\\operatorname { D i a g } ( H ) \\approx 1 / S \\sum _ { s = 1 } ^ { S } v _ { s } \\odot H v _ { s } ,"
+        ],
+        "page": "sp_0814_page_0006",
+        "id": "sp_0814_page_0006-1",
+        "seg_type": "eq"
+      }
+    ]
+  },
+  "sp_0814_page_0014": {
+    "bboxes": [
+      {
+        "box": [
+          511.6953125,
+          1097.4385986328125,
+          711.8189086914062,
+          1126.5191650390625
+        ],
+        "text": [
+          "q = \\mathcal { F } ^ { - 1 } ( \\mathcal { F } ( \\tilde { q } _ { \\theta } ) / \\mathcal { F } ( k ) ) ,"
+        ],
+        "page": "sp_0814_page_0014",
+        "id": "sp_0814_page_0014-1",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          383.8160400390625,
+          373.70941162109375,
+          839.2411499023438,
+          400.6296691894531
+        ],
+        "text": [
+          "\\tilde { p } _ { d } = \\tilde { q } _ { \\theta } \\Leftrightarrow q \\ast k = p _ { d } \\ast k \\Leftrightarrow \\mathcal { F } ( q ) \\mathcal { F } ( k ) = \\mathcal { F } ( p _ { d } ) \\mathcal { F } ( k ) ,"
+        ],
+        "page": "sp_0814_page_0014",
+        "id": "sp_0814_page_0014-2",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          334.5904541015625,
+          492.298095703125,
+          889.0106201171875,
+          521.74560546875
+        ],
+        "text": [
+          "\\tilde { p } _ { d } = \\tilde { q } _ { \\theta ^ { * } } \\Leftrightarrow \\mathcal { F } ( q ) \\mathcal { F } ( \\! \\! \\! \\mathscr { k } \\! \\! \\! \\! \\slash ; \\! \\! \\! \\! \\slash \\! \\! \\! \\! \\! \\! \\slash \\! = \\mathcal { F } ( \\! \\! \\! \\! \\! \\slash \\! \\! \\! \\! \\slash \\! \\! \\! \\! \\slash ; \\! \\! \\! \\! \\slash \\! \\! \\! \\! \\! \\! \\slash \\! \\! \\! \\! \\! \\! \\! \\! \\slash \\! \\! \\! \\! \\! \\! \\! \\! \\! \\! \\leq \\mathcal { F } ( q ) \\Leftrightarrow \\mathcal { F } ( \\! \\! \\! \\! \\! \\slash \\! \\! \\! \\! \\slash \\! \\! \\! \\! \\! \\! \\! \\! \\slash \\! \\! \\! \\! \\! \\! \\! \\! \\! \\! \\mathscr { F } ( \\! \\! \\! \\! \\! \\! \\! \\slash \\! \\! \\! \\! \\slash \\! \\! \\! \\! \\! \\! \\! \\! \\! \\! \\! \\! \\! \\! \\! \\slash ) \\! \\! \\! \\! \\! \\! \\! \\! \\! \\! \\subset \\mathcal { F } ( \\! \\! \\! \\! \\! \\! \\! \\! \\! \\! \\slash \\! \\! \\! \\! \\! \\! \\! \\! \\! \\! \\! \\! \\! \\! \\! \\! \\! \\! \\! \\! \\! \\! \\! \\! \\! \\! \\! \\! \\! \\! \\! \\! \\! \\! \\! \\! \\! \\! \\! \\! \\! \\! \\! \\! \\! \\! \\! \\! \\! \\! \\! \\! \\! \\! \\! \\! \\! \\! \\! \\! \\! \\! \\! \\! \\! \\! \\! \\! \\! \\! \\! \\! \\! \\! \\! \\! \\! \\! \\! \\! \\! \\! \\! \\! \\! \\! \\! \\! \\! \\! \\! \\! \\! \\! \\! \\! \\! \\! \\! \\! \\! \\! \\! \\! \\! \\! \\! \\! \\! \\! \\! \\! \\! \\! \\! \\! \\! \\! \\! \\! \\! \\! \\! { q \\! \\! \\! \\! \\! \\! \\! \\! \\! \\! \\! \\! \\! \\! \\! \\! \\! \\! \\! \\! \\! \\! \\! \\! \\! \\! \\! \\! \\! \\! \\! \\! \\!"
+        ],
+        "page": "sp_0814_page_0014",
+        "id": "sp_0814_page_0014-3",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          477.1963806152344,
+          308.5232849121094,
+          746.7671508789062,
+          335.2150573730469
+        ],
+        "text": [
+          "\\tilde { q } _ { \\theta } ( \\tilde { x } ) = q * k , \\quad \\tilde { p } _ { d } ( \\tilde { x } ) = p _ { d } * k ,"
+        ],
+        "page": "sp_0814_page_0014",
+        "id": "sp_0814_page_0014-4",
+        "seg_type": "eq"
+      }
+    ]
+  },
+  "sp_0814_page_0015": {
+    "bboxes": [
+      {
+        "box": [
+          229.16539001464844,
+          774.9417724609375,
+          992.7948608398438,
+          1088.5445556640625
+        ],
+        "text": [
+          "\\begin{array} { r l } & { \\qquad \\nabla _ { \\hat { z } } ^ { 2 } \\log \\hat { q } _ { \\theta } ( \\bar { x } ) = - \\frac { 1 } { \\sigma ^ { 2 } } \\int \\nabla _ { \\hat { z } } \\left( ( \\bar { x } - x ) \\frac { k ( \\bar { x } ) [ \\mathcal { H } ( x ) ] } { \\bar { q } _ { \\theta } ( \\bar { x } ) } \\right) \\mathrm { d } x } \\\\ & { = - \\frac { 1 } { \\sigma ^ { 2 } } \\int \\frac { k ( \\bar { x } [ z ] \\cup \\{ \\alpha \\} ) } { \\hat { \\varphi } _ { \\theta } ( \\bar { x } ) } \\mathrm { d } x + \\frac { 1 } { \\sigma ^ { 2 } } \\int ( \\bar { x } - x ) \\frac { \\nabla _ { \\bar { z } } k [ \\bar { x } ] \\cdot [ \\bar { y } ] \\bar { q } _ { \\theta } ( \\bar { x } ) [ \\theta _ { \\Gamma } - \\nabla _ { \\bar { z } } \\bar { q } _ { \\theta } ( \\bar { x } ) k ( \\bar { x } ) [ z ] \\cup \\{ \\alpha \\} } { \\hat { \\varphi } _ { \\theta } ( \\bar { x } ) } \\mathrm { d } x } \\\\ & { \\qquad \\Longrightarrow \\sigma ^ { 2 } \\nabla _ { \\bar { z } } ^ { 2 } \\log \\bar { q } _ { \\theta } ( \\bar { x } ) + 1 = \\int ( \\bar { x } - x ) \\frac { \\nabla _ { \\bar { z } } k [ \\bar { x } ] \\cdot [ \\bar { y } ] \\bar { q } _ { \\Gamma } ] \\varphi ( x ) - \\nabla _ { \\bar { z } } \\log \\bar { q } _ { \\theta } ( \\bar { x } ) k ( \\bar { z } | z ) \\varphi _ { \\theta } ( x ) } { \\bar { \\varphi } _ { \\theta } ( \\bar { x } ) } \\mathrm { d } x } \\\\ & { \\qquad \\qquad \\qquad \\qquad \\qquad \\qquad \\left- \\int ( \\bar { x } - x ) \\frac { - \\bar { y } } { - \\bar { x } ^ { 2 } } ( \\bar { x } - x ) k ( \\bar { x } | z ) \\psi _ { \\theta } ( x ) + \\frac { 1 } { \\sigma ^ { 2 } } ( \\bar { x } - \\langle x \\rangle _ { \\bar { \\alpha } ( z ) ( \\bar { x } ) ) } k ( \\bar { x } | z ) \\psi _ { \\theta } ( x ) \\, \\mathrm { d } x \\right. } \\\\ & { \\qquad \\qquad \\qquad \\qquad \\left. \\Longrightarrow \\sigma ^ { 4 } \\nabla _ { \\bar { z } } ^ { 2 } \\log \\bar { q } _ { \\theta } ( \\bar { x } ) + \\sigma ^ { 2 } \\int \\left( - ( \\bar { x } - x ) ^ { 2 } + ( \\bar { x } - \\langle x \\rangle ( \\bar { x } - \\langle x \\rangle _ { \\theta ( z ) } ) \\right) \\psi _ { \\theta } ( x ) \\right) \\mathrm { d } x } \\\\ & { \\Longrightarrow \\sigma ^ { 4 } \\nabla _ { \\bar { z } } ^ { 2 } \\log \\bar { q } _ { \\theta } ( \\bar { x } ) - \\ \\ \\left[ \\begin{array} { c } { \\qquad \\quad \\mathrm { ~ ( ~ }"
+        ],
+        "page": "sp_0814_page_0015",
+        "id": "sp_0814_page_0015-1",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          354.305908203125,
+          256.4962463378906,
+          871.9000244140625,
+          425.92437744140625
+        ],
+        "text": [
+          "\\begin{array} { c } { { \\displaystyle \\nabla _ { \\bar { x } } \\log \\tilde { q } _ { \\theta } ( \\bar { x } ) = \\frac { \\nabla _ { \\bar { x } } \\bar { q } _ { \\theta } ( \\bar { x } ) } { \\bar { q } _ { \\theta } ( \\bar { x } ) } = \\frac { \\int \\nabla _ { \\bar { x } } k ( \\bar { x } | x ) q _ { \\theta } ( x ) \\, \\mathrm { d } x } { \\bar { q } _ { \\theta } ( \\bar { x } ) } } } \\\\ { { = - \\frac { 1 } { \\sigma ^ { 2 } } \\int \\left( ( \\bar { x } - x ) \\frac { k ( \\bar { x } | x ) q _ { \\theta } ( x ) } { \\bar { q } _ { \\theta } ( \\bar { x } ) } \\right) \\mathrm { d } x } } \\\\ { { \\longrightarrow \\sigma ^ { 2 } \\nabla _ { \\bar { x } } \\log \\tilde { q } _ { \\theta } ( \\bar { x } ) + \\bar { x } = \\displaystyle \\int x \\frac { k ( \\bar { x } | x ) q _ { \\theta } ( x ) } { \\bar { q } _ { \\theta } ( \\bar { x } ) } \\, \\mathrm { d } x = \\langle x \\rangle _ { q _ { \\theta } ( x | \\bar { x } ) } } } \\end{array}"
+        ],
+        "page": "sp_0814_page_0015",
+        "id": "sp_0814_page_0015-2",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          520.8155517578125,
+          1124.453857421875,
+          703.9791259765625,
+          1155.4757080078125
+        ],
+        "text": [
+          "\\Sigma _ { q } ( \\tilde { x } ) = \\sigma ^ { 2 } \\nabla _ { \\tilde { x } } \\mu _ { q } ( \\tilde { x } ) ."
+        ],
+        "page": "sp_0814_page_0015",
+        "id": "sp_0814_page_0015-3",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          437.33526611328125,
+          624.248291015625,
+          788.0553588867188,
+          655.4168090820312
+        ],
+        "text": [
+          "\\mu _ { q } ( \\tilde { x } ) \\equiv \\langle x \\rangle _ { q _ { \\theta } ( x \\vert \\tilde { x } ) } = \\sigma ^ { 2 } \\nabla _ { \\tilde { x } } \\log { \\tilde { q } } _ { \\theta } ( \\tilde { x } ) + \\tilde { x } ."
+        ],
+        "page": "sp_0814_page_0015",
+        "id": "sp_0814_page_0015-4",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          455.6146240234375,
+          699.3718872070312,
+          768.1561279296875,
+          729.1923217773438
+        ],
+        "text": [
+          "\\sigma ^ { 2 } \\nabla _ { \\tilde { x } } \\mu _ { q } ( \\tilde { x } ) = \\sigma ^ { 4 } \\nabla _ { \\tilde { x } } ^ { 2 } \\log { \\tilde { q } _ { \\theta } ( \\tilde { x } ) } + \\sigma ^ { 2 } I ."
+        ],
+        "page": "sp_0814_page_0015",
+        "id": "sp_0814_page_0015-5",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          282.5889892578125,
+          486.464111328125,
+          941.929931640625,
+          539.1409301757812
+        ],
+        "text": [
+          "\\nabla _ { \\tilde { x } } k ( \\tilde { x } | x ) = \\frac { 1 } { \\sqrt { 2 \\pi \\sigma ^ { 2 } } } \\nabla _ { \\tilde { x } } e ^ { \\frac { - ( \\tilde { x } - x ) ^ { 2 } } { 2 \\sigma ^ { 2 } } } = - \\frac { \\tilde { x } - x } { \\sigma ^ { 2 } } \\frac { 1 } { \\sqrt { 2 \\pi \\sigma ^ { 2 } } } e ^ { \\frac { - ( \\tilde { x } - x ) ^ { 2 } } { 2 \\sigma ^ { 2 } } } = - \\frac { \\tilde { x } - x } { \\sigma ^ { 2 } } k ( \\tilde { x } | x ) ."
+        ],
+        "page": "sp_0814_page_0015",
+        "id": "sp_0814_page_0015-6",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          379.46539306640625,
+          1272.926513671875,
+          845.33837890625,
+          1301.673583984375
+        ],
+        "text": [
+          "\\mathrm { K L } ( p | | q ) = \\mathrm { K L } ( \\mathcal { N } ( \\mu _ { p } , \\Sigma _ { p } ) | | q ) + \\mathrm { H } ( \\mathcal { N } ( \\mu _ { p } , \\Sigma _ { p } ) ) - \\mathrm { H } ( p )"
+        ],
+        "page": "sp_0814_page_0015",
+        "id": "sp_0814_page_0015-7",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          365.931884765625,
+          1410.791015625,
+          857.9029541015625,
+          1443.28173828125
+        ],
+        "text": [
+          "\\mathrm { K L } ( p ( { \\tilde { x } } | x ) p _ { d } ( x ) \\| q ( x | { \\tilde { x } } ) { \\tilde { p } } _ { d } ( { \\tilde { x } } ) ) = \\langle \\mathrm { K L } ( p ( x | { \\tilde { x } } ) | \\vert q ( x | { \\tilde { x } } ) ) \\rangle _ { { \\tilde { p } } ( { \\tilde { x } } ) }"
+        ],
+        "page": "sp_0814_page_0015",
+        "id": "sp_0814_page_0015-8",
+        "seg_type": "eq"
+      }
+    ]
+  },
+  "sp_0814_page_0016": {
+    "bboxes": [
+      {
+        "box": [
+          468.4754333496094,
+          668.9260864257812,
+          755.708984375,
+          722.561767578125
+        ],
+        "text": [
+          "\\sigma _ { q } ^ { * 2 } = \\sigma ^ { 2 } - \\frac { \\sigma ^ { 4 } } { d } \\left\\langle \\lVert s _ { q _ { \\theta } } ( \\tilde { x } ) \\rVert _ { 2 } ^ { 2 } \\right\\rangle _ { \\tilde { p } _ { d } ( \\tilde { x } ) } ."
+        ],
+        "page": "sp_0814_page_0016",
+        "id": "sp_0814_page_0016-1",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          300.4595642089844,
+          200.30064392089844,
+          919.3828735351562,
+          387.8190002441406
+        ],
+        "text": [
+          "\\begin{array} { r l } & { q ^ { * } = \\arg \\operatorname* { m i n } \\mathrm { K L } ( p ( \\bar { x } | x ) p _ { d } ( x ) | | q ( x | \\bar { x } ) \\bar { p } _ { d } ( \\bar { x } ) ) } \\\\ & { \\quad = \\arg \\operatorname* { m i n } _ { \\scriptstyle \\atop \\scriptstyle q } \\left\\langle \\mathrm { K L } ( p ( x | \\bar { x } ) | | q ( x | \\bar { x } ) ) \\right\\rangle _ { \\scriptstyle \\bar { p } ( \\bar { x } ) } } \\\\ & { \\quad = \\arg \\operatorname* { m i n } \\left\\langle \\mathrm { K L } ( \\mathcal { N } ( \\mu _ { p } , \\Sigma _ { p } ) | | q ( x | \\bar { x } ) ) + \\mathrm { H } ( \\mathcal { N } ( \\mu _ { p } , \\Sigma _ { p } ) ) - \\mathrm { H } ( p ( x | \\bar { x } ) ) \\right\\rangle _ { \\scriptstyle \\bar { p } ( \\bar { x } ) } } \\\\ & { \\quad = \\arg \\operatorname* { m i n } _ { \\scriptstyle \\bar { q } } \\left\\langle \\mathrm { K L } ( \\mathcal { N } ( \\mu _ { p } , \\Sigma _ { p } ) | | q ( x | \\bar { x } ) ) \\right\\rangle _ { \\scriptstyle \\bar { p } ( \\bar { x } ) } + c o n s t . } \\end{array}"
+        ],
+        "page": "sp_0814_page_0016",
+        "id": "sp_0814_page_0016-2",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          317.6041259765625,
+          784.9173583984375,
+          904.4379272460938,
+          897.58154296875
+        ],
+        "text": [
+          "\\begin{array} { l } { { \\displaystyle \\sigma _ { q } ^ { * 2 } = \\sigma ^ { 2 } + \\frac { \\sigma ^ { 4 } } { d } \\mathrm { T r } \\Big \\langle \\nabla _ { x } ^ { 2 } \\log q _ { \\theta } ( \\tilde { x } ) \\Big \\rangle _ { \\tilde { p } _ { d } ( \\tilde { x } ) } } } \\\\ { { \\displaystyle \\qquad = \\sigma ^ { 2 } - \\frac { \\sigma ^ { 4 } } { d } \\mathrm { T r } \\left\\langle s _ { q _ { \\theta } } ( \\tilde { x } ) s _ { q _ { \\theta } } ( \\tilde { x } ) ^ { T } \\right\\rangle _ { \\tilde { p } _ { d } ( \\tilde { x } ) } = \\sigma ^ { 2 } - \\frac { \\sigma ^ { 4 } } { d } \\left\\langle \\left\\lVert s _ { q _ { \\theta } } ( \\tilde { x } ) \\right\\rVert _ { 2 } ^ { 2 } \\right\\rangle _ { \\tilde { p } _ { d } ( \\tilde { x } ) } , } } \\end{array}"
+        ],
+        "page": "sp_0814_page_0016",
+        "id": "sp_0814_page_0016-3",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          286.753173828125,
+          576.2393798828125,
+          936.8984375,
+          626.199951171875
+        ],
+        "text": [
+          "\\sigma _ { q } ^ { * 2 } = \\arg \\operatorname* { m i n } _ { \\sigma _ { q } } \\mathrm { K L } ( p ( \\tilde { x } | x ) p _ { d } ( x ) \\| q _ { \\theta } ( x | y ) ) \\tilde { p } _ { d } ( \\tilde { x } ) ) = \\frac { 1 } { d } \\left\\langle \\mathrm { T r } \\left( \\mathrm { C o v } _ { q ( x | \\tilde { x } ) } [ x ] \\right) \\right\\rangle _ { \\tilde { p } _ { d } ( \\tilde { x } ) } ,"
+        ],
+        "page": "sp_0814_page_0016",
+        "id": "sp_0814_page_0016-4",
+        "seg_type": "eq"
+      }
+    ]
+  },
+  "sp_0814_page_0017": {
+    "bboxes": []
+  }
+}

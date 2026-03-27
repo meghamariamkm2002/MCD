@@ -1,0 +1,86 @@
+WEBVTT
+
+00:00.031 --> 00:01.092
+Hi there.
+
+00:01.112 --> 00:07.480
+Today we'll look at playing Atari with Deep Reinforcement Learning by Vladimir Mne at All of DeepMind.
+
+00:07.960 --> 00:12.625
+So this is another one of our series of impactful past papers.
+
+00:13.206 --> 00:18.552
+This paper right here kicked off an entire revolution in reinforcement learning.
+
+00:18.692 --> 00:23.558
+Specifically, it sort of started the Deep Reinforcement Learning hype.
+
+00:23.538 --> 00:30.769
+Before that I reinforcement learning was kind of this weird field of Markov decision processes and so on.
+
+00:30.869 --> 00:35.136
+Now I know there were successes and all and stuff was happening.
+
+00:35.477 --> 00:42.728
+But this really made a lot of waves because it brought the power of deep neural networks.
+
+00:42.708 --> 01:01.982
+to reinforcement learning and with a pretty simple application of convolutional networks managed to solve these reinforcement learning games where previous algorithms really couldn't either or were heavily reliant on hand engineered features.
+
+01:01.962 --> 01:11.360
+So we'll take a look here and what people did back then, what was the state of the art and what they are telling us about that.
+
+01:11.380 --> 01:13.865
+Kind of set it in relation to today.
+
+01:13.925 --> 01:23.042
+Alright, if you do like papers like this, commentary like this, share it out, leave a like and tell me in the comments what you think.
+
+01:23.022 --> 01:24.765
+So, let's dive in.
+
+01:25.366 --> 01:35.986
+They say we present the first deep learning model to successfully learn control policies directly from high-dimensional sensory input using reinforcement learning.
+
+01:37.109 --> 01:42.178
+The model is a convolutional neural network trained with a variant of Q-learning,
+
+01:42.158 --> 01:48.209
+whose input is raw pixels and whose output is a value function estimating future rewards.
+
+01:48.890 --> 01:57.906
+We apply our method to seven Atari 2600 games from the arcade learning environment with no adjustment of the architecture or learning algorithm.
+
+01:58.667 --> 02:06.040
+We find that it outperforms all approaches on six of the games and surpasses a human expert on three of them.
+
+02:06.020 --> 02:08.044
+So there's a lot packed into this.
+
+02:08.264 --> 02:15.437
+First of all, I wanted to recognize the absolute Lattec savagery right here and here.
+
+02:17.541 --> 02:20.927
+Yeah, you know, it's just something.
+
+02:21.709 --> 02:23.913
+I'm not OCD about that kind of stuff.
+
+02:23.993 --> 02:26.297
+I think we should ditch Lattec, honestly.
+
+02:26.878 --> 02:27.319
+But
+
+02:27.299 --> 02:31.767
+So there's a lot of information packed in this abstract right here.
+
+02:32.368 --> 02:38.158
+So they say this is the first deep learning model to learn control policies.
+
+02:38.399 --> 02:47.795
+So that's the task of these reinforcement learning algorithms directly from high dimensional sensory inputs using using reinforcement learning.
+
+02:48.216 --> 02:49.999
+So what do they mean, these are
+

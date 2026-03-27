@@ -1,0 +1,254 @@
+[
+  {
+    "para_id": "p1",
+    "section_heading": "Abstract",
+    "text": "Active learning, a label-efficient paradigm, empowers models to interactively query an oracle for labeling new data. In the realm of LiDAR semantic segmentation, the challenges stem from the sheer volume of point clouds, rendering annotation labor-intensive and cost-prohibitive. This paper presents Annotator, a general and efficient active learning baseline, in which a voxel-centric online selection strategy is tailored to efficiently probe and annotate the salient and exemplar voxel girds within each LiDAR scan, even under distribution shift. Concretely, we first execute an in-depth analysis of several common selection strategies such as Random, Entropy, Margin, and then develop voxel confusion degree (VCD) to exploit the local topology relations and structures of point clouds. Annotator excels in diverse settings, with a particular focus on active learning (AL), active source-free domain adaptation (ASFDA), and active domain adaptation (ADA). It consistently delivers exceptional performance across LiDAR semantic segmentation benchmarks, spanning both simulation-to-real and real-to-real scenarios. Surprisingly, Annotator exhibits remarkable efficiency, requiring significantly fewer annotations, e.g., just labeling five voxels per scan in the SynLiDAR ! SemanticKITTI task. This results in impressive performance, achieving 87.8% fully-supervised performance under AL, 88.5% under ASFDA, and 94.4% under ADA. We envision that Annotator will offer a simple, general, and efficient solution for label-efficient 3D applications.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p2",
+    "section_heading": "1 Introduction",
+    "text": "3D perception and understanding have become indispensable for machines to effectively interact with the real world. LiDAR (Light Detection And Ranging) [50, 52] is a widely-used methodology for capturing precise geometric information about the environment, spurring significant advancements in areas like autonomous vehicles and robotics [16, 25]. However, semantic segmentation of LiDAR presents an enormous challenge. The high-speed collection of millions of point clouds per second by on-board sensors sharply contrasts with the laborious and cost-prohibitive nature of annotating them. Consider, for instance, the vast number of outdoor scenes an autopilot can encounter, which is practically limitless. Yet, acquiring annotations for these large-scale point clouds entails intensive human labor. This underscores the urgency of establishing a label-efficient learning mechanism capable of boosting performance in the low-data regime [19, 76, 90, 97] or facilitating the adaptation of models to new domains [55, 64, 74, 85].",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p3",
+    "section_heading": "1 Introduction",
+    "text": "Extensive solutions encompass semi-supervised [8, 11, 29, 31, 83], weakly-supervised [22, 36, 76, 99] or self-supervised [5, 14, 63, 73, 101] learning. Semi- and weakly-supervised learning methods aim to alleviate the annotation burden by harnessing partially labeled or weakly labeled data. In contrast, selfsupervised ones learn representations from point clouds via pretext tasks and then transfer to downstream tasks for weight initialization. Although these works offer scalability and practicality for real-world utility, they also confront new challenges, such as variations in LiDAR configurations, sensor biases, and environmental conditions. That is, the majority of prior works has endeavored to in-distribution scenarios, with limited consideration for label-efficient paradigms in out-ofdistribution scenarios, especially for sparse outdoor point clouds. Recent efforts turn to large-scale auxiliary datasets [56, 84] and delve into domain adaptation (DA) algorithms [1, 28, 51, 92] to significantly reduce the annotation workload under a domain shift. Nevertheless, the performance of these methods still lags behind the fully-supervised approaches. In Figure 1, we provide an intuitive comparison of results across various paradigms. It becomes evident that there is ample room for improvement in the performance of these methods.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p4",
+    "section_heading": "1 Introduction",
+    "text": "To surmount these obstacles and promote performance in the domain of interest, active learning (AL) is being an optimal paradigm [27, 35, 60, 82]. Given the limited annotation budget, a common scenario is that only an unlabeled target domain of large amounts of point clouds is available with the goal to interactively select a minimal subset of data to be annotated to maximally improve the segmentation performance. In reality, this setting faces a significant hurdle known as cold start problem: the lack of prior information to guide the initial selection of annotated data. A recent work has explored the impact of seeding strategies on the performance of AL methods [58]. Differently, we put forward a new path to access an auxiliary model via pre-training on the open-access auxiliary (source) dataset. This auxiliary model serves as a warm-up stage, allowing for smart target data selection for initial annotation. We formulate this new setting as active source-free domain adaptation, termed ASFDA. Take a further step, drawing inspiration from recent trends in 2D images [38, 44, 87, 88], we delve into the third setting, active domain adaptation (ADA) for semantic segmentation of 3D point clouds. In this setting, a labeled auxiliary dataset is available, and the objective is to select target instances for annotating and learn a model with higher segmentation performance on the target test set.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p5",
+    "section_heading": "1 Introduction",
+    "text": "Overall, in this work, we benchmark three distinct active learning settings for LiDAR semantic segmentation and deliver a simple and general baseline, Annotator, as illustrated in Figure 2. Borrowing the idea of modeling and computational techniques in geometry processing, we introduce a voxel-centric selection strategy dedicated to point clouds. Specifically, an input LiDAR scene is first voxelized into voxel grids, with a large voxel size to expand the local areas during the selection process. After obtaining final network predictions, importance estimation is carried out for each voxel grid using several common strategies such as Random, the softmax entropy (Entropy), and the margin between highest softmax scores (Margin). But considering only uncertainty for selection would be suboptimal [2, 44, 86]. Therefore, we introduce the concept of voxel confusion degree (VCD), which takes into account nearby predictions, capturing diversity and redundancy within a voxel grid. VCD enables the exploitation of local topology relations and point cloud structures. As a result, VCD can represent both uncertainty and diversity of a voxel grid in the LiDAR scene. In each active round, we query the top one voxel grid within each scan for annotation until the budget is exhausted. Despite the simplicity of our Annotator, it achieves performance on par with the fully-supervised counterpart requiring 1000\u21e5 fewer annotations and significantly outperforms all prevailing acquisition strategies.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p6",
+    "section_heading": "1 Introduction",
+    "text": "The contribution of this paper can be summarized in three aspects. First, we present a voxel-centric active learning baseline that significantly reduces the labeling cost and effectively facilitates learning with a limited budget, achieving near performance to that of fully-supervised methods with 1000\u21e5 fewer annotations. Second, we introduce a label acquisition strategy, the voxel confusion degree (VCD), which is more robust and diverse to select point clouds under a domain shift. Third, Annotator is generally applicable for various network architectures (voxel-, range- and bev-views), settings (in-distribution and out-of-distribution), and scenarios (simulation-to-real and real-to-real) with consistent gains. We hope this work could lay a solid foundation for label-efficient 3D applications.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p7",
+    "section_heading": "2.1 Preliminaries and overview",
+    "text": "Problem setup. In the context of LiDAR semantic segmentation, a LiDAR scan is made of a set of point clouds and let X 2 RN\u21e54 , Y 2 KN respectively denote N points and the corresponding labels. K is a predefined semantic class vocabulary K = {1 , ... ,K} of K categorical labels. Each point xi in X is a 1 \u21e5 4 vector with a 3D Cartesian coordinate relative to the scanner (ai , bi , ci) and an intensity value of returning laser beam. Our baseline works in the following settings: active learning (AL), active source-free domain adaptation (ASFDA), and active domain adaptation (ADA). First, we are given an unlabeled target domain Dt = {Xt [Xa}, where Xt denotes unlabeled target point clouds and Xa denotes the selected points to be annotated and is initialized as empty set, i.e., Xa = ;. Next, for ASFDA and ADA, a labeled source domain Ds = {Xs, Y s} can be utilized only in pre-training stage and anytime respectively. Ultimately, given a limited budget, our goal is to iteratively select a subset of data points from Dt to annotate until the budget is exhausted, all the while catching up with the performance of the fully-supervised model.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p8",
+    "section_heading": "2.1 Preliminaries and overview",
+    "text": "Overview. Figure 2 displays an overview of Annotator, which is a label-efficient baseline for LiDAR semantic segmentation. It is composed of two parts: 1) a generalist Annotator which contains a voxelization process to get voxel grids and an active function with online selection for picking the most valuable voxel grid of each input scan in each active round; 2) the pipelines of distinct active",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p9",
+    "section_heading": "2.1 Preliminaries and overview",
+    "text": "learning settings are described. For AL, we interactively select a subset of voxels from the current scan to be annotated and train the network with these sparse annotated voxel grids. In the case of ASFDA, we begin by pre-training a network on the source domain through standard supervised learning. This warm-up network then serves as a strong initialization to aid the initial selection. As for ADA, except for the pre-training stage, we also make use of annotated source domain to promote the selection in each round and facilitate domain alignment. In the following, we will detail why we select salient and exemplar data points from a voxel-centric perspective and how to address cold start problem via an auxiliary model. After that, overall objectives for all three settings are elaborated.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p10",
+    "section_heading": "2.1 Preliminaries and overview",
+    "text": "2.2 A generalist Annotator",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p11",
+    "section_heading": "2.1 Preliminaries and overview",
+    "text": "In this section, we proposed a general active learning baseline called Annotator. The core idea is to select salient and exemplar voxel grids from each LiDAR scan. It\u2019s important to note that previous researches have proposed frame-based [13, 94], region-based [82], and point-based [35] selection strategies. The first two usually require an offline stage, which may be infeasible at large scales. The last one is costly due to the sparsity of outdoor point clouds. By contrast, our voxel-centric selection focuses on querying salient and exemplar areas and annotating all points within those areas. This approach is more efficient and flexible. Moreover, it can be seamlessly applied to various network architectures, including voxel-, range- and bev-views, as demonstrated in the experiment section.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p12",
+    "section_heading": "2.1 Preliminaries and overview",
+    "text": "To implement it, we begin with the voxelization process as introduced in [9, 102]. Each input LiDAR scan X is transformed into a 3D voxel grid set V . This process involves sampling the continuous 3D input space into discrete voxel grids, where points falling into the same grid are merged. Each voxel grid serves as a selection unit. Mathematically, for a point xi 2 X , the corresponding voxel grid coordinate is (avi , bvi , cvi ) = b(ai , bi , ci)/4c, with 4 denoting predefined voxel size. In our experiments, we have found that using a large voxel grid is more robust against noise and sparsity. Unless otherwise specified, we use 41 = 0.05 for training and 42 = 0.25 for the selection process. Selection strategies. For each voxel grid vj 2 V , we assess its importance and select the best voxel grid per LiDAR scan in each active round. Initially, we employ a Random selection strategy. Subsequently, we explore softmax entropy (Entropy) and the margin between highest softmax scores (Margin). It\u2019s essential to note that while these common selection strategies are not technical contributions, they are necessary to build our baseline. Detailed calculations are provided below.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p13",
+    "section_heading": "2.1 Preliminaries and overview",
+    "text": "\u2022 Random: randomly select a target voxel grid vj from V to be annotated in each round. \u2022 Entropy: first calculate the softmax entropy of each point xi 2 vj and then adopt the maximum",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p14",
+    "section_heading": "2.1 Preliminaries and overview",
+    "text": "value as the Entropy score of this grid, i.e., Entropy(vj) = maxxi2vj pi log pi, where pi is the softmax score of point xi. The voxel grid with the highest Entropy score is selected in each scan. \u2022 Margin: first calculate the margin between highest softmax score of each point xi 2 vj and then adopt the maximum value as the Margin score of this grid, i.e., Margin(vj) = maxxi2vj (max(pi) max2(pi)), where max2(\u00b7) is the second-largest value operator. In each scan, the voxel grid with the lowest Margin score is chosen.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p15",
+    "section_heading": "2.1 Preliminaries and overview",
+    "text": "The VCD strategy. Our voxel confusion degree (VCD) is motivated by an important observation: the previously mentioned selection strategies become less effective when models are applied in new domains due to mis-calibrated uncertainty estimation. Therefore, the VCD is designed to estimate category diversity within a voxel grid rather than uncertainty, making it more robust under domain shift. Here\u2019s how it works: we begin by obtaining pseudo label y\u0302i for each point xi. Next, we divide points within vj into K clusters: v<k>j = {x<k>i |xi 2 vj , y\u0302i = k}. This allows us to collect statistical information about the categories present in the voxel grid. With this information, we calculate VCD to assess the significance of voxel grids as follows:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p16",
+    "section_heading": "2.1 Preliminaries and overview",
+    "text": "where | \u00b7 | denotes the number of points in a set. Finally, voxel grid with the highest VCD score is selected in each scan. The insight is that a higher score indicates a greater category diversity within a voxel, which would be beneficial for model training once being annotated. In all experiments, Annotator is equipped with VCD by default, and the results indicate the superiority of VCD strategy.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p17",
+    "section_heading": "2.1 Preliminaries and overview",
+    "text": "Making a good first impression. To avoid the cold start problem mentioned before, we introduce a warm start mechanism that pre-trains an auxiliary model with an auxiliary (source) dataset, and then it is used to select voxel grids in the first round. This warm start stage is applied in ASFDA and ADA.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p18",
+    "section_heading": "2.1 Preliminaries and overview",
+    "text": "Discussion: balancing annotation cost and computation cost. Our primary focus is on reducing annotation cost while maintaining performance comparable to fully-supervised approaches. Let\u2019s consider simulation-to-real tasks as an example. The simplest setup involves active learning within the real dataset. However, this setup yields less satisfactory results due to the cold-start problem: the lack of prior information for selecting an initial annotated set. To address this, we utilize a synthetic dataset to train an auxiliary model in a brief warm-up stage, enabling smarter data selection in the first round. Importantly, this warm-up process is short, conducted only once, and results in minimal costs (both annotation and computation). For a detailed analysis, please refer to Appendix B.1.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p19",
+    "section_heading": "2.3 Optimization",
+    "text": "The overall loss function is the standard cross-entropy loss, which is defined as:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p20",
+    "section_heading": "2.3 Optimization",
+    "text": "where K is the number of categories, yi is the one-hot label of point xi and pki is the predicted probability of point xi belonging to category k. Hereafter, for AL, the objective is min\u2713 Lce(Xa); for ASFDA, the objective is min\u2713s Lce(Xa); for ADA, the objective is min\u2713s Lce(Xs)+Lce(Xa). Here, \u2713 and \u2713s denote training from scratch and training from the source pre-trained model, respectively.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p21",
+    "section_heading": "3 Experiments",
+    "text": "In this section, we conduct extensive experiments on several public benchmarks under three active learning scenarios: (i) AL setting where all available data points are from unlabeled target domain; (ii) ASFDA setting where we can only access a pre-trained model from the source domain; (iii) ADA setting where all data points from source domain can be utilized and a portion of unlabeled target data is selected to be annotated. We first introduce the dataset used in this work and experimental setup and then present experimental results of baseline methods and extensive analyses of Annotator.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p22",
+    "section_heading": "3.1 Experiment setup",
+    "text": "Datasets. We build all benchmarks upon SynLiDAR [84], SemanticKITTI [3], SemanticPOSS [42], and nuScenes [4], constructing two simulation-to-real and two real-to-real adaptation scenarios. SynLiDAR [84] is a large-scale synthetic dataset, which has 198,396 LiDAR scans with point-level segmentation annotations over 32 semantic classes. Following [84], we use 19,840 point clouds as the training data. SemanticKITTI (KITTI) [3] is a popular LiDAR segmentation dataset, including 2,9130 training scans and 6,019 validation scans with 19 categories. SemanticPOSS (POSS) [42] consists of 2,988 real-world scans with point-level annotations over 14 semantic classes. As suggested in [42], we use the sequence 03 for validation and the remaining sequences for training. nuScenes [4] contains 19,130 training scans and 4,071 validation scans with 16 object classes.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p23",
+    "section_heading": "3.1 Experiment setup",
+    "text": "Class mapping. To ensure compatibility between source and target labels across datasets, we perform class mapping. Specifically, we map SynLiDAR labels into 19 common categories for SynLiDAR ! KITTI and 13 classes for SynLiDAR ! POSS. Similarly, we map labels into 7 classes for KITTI ! nuScenes and nuScenes ! KITTI. We refer readers to Appendix A.1 for detailed class mappings. Implementation details. We primarily adopt MinkNet [9] and SPVCNN [71] as the segmentation backbones. Note that, all experiments share the same backbones and are within the same codebase, which are implemented using PyTorch [43] on a single NVIDIA Tesla A100 GPU. We use the SGD optimizer and adopt a cosine learning rate decay schedule with initial learning rate of 0.01. And the batch size for both source and target data is 16. For additional details, please consult Appendix A.2. Finally, we evaluate the segmentation performance before and after adaptation, following the typical evaluation protocol [47] in LiDAR domain adaptive semantic segmentation [29, 31, 55, 82, 83].",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p24",
+    "section_heading": "3.2 Experimental results",
+    "text": "Quantitative results summary. We initially evaluate Annotator on four benchmarks and two backbones while adhering to a fixed budget of selecting and annotating five voxel grids in each scan.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p25",
+    "section_heading": "3.2 Experimental results",
+    "text": "The results in Table 1 and Table 2 paint a clear picture overall: all baseline methods achieve significant improvements over the Source-Only model, especially for Annotator with VCD strategy, underscoring the success of the proposed voxel-centric online selection strategy. In particular, Annotator achieves the best results across all simulation-to-real and real-to-real tasks. For SynLiDAR ! KITTI task, Annotator achieves 87.8% / 88.5% / 94.4% fully-supervised performance under AL / ASFDA / ADA settings respectively. For SynLiDAR ! POSS task, they are 79.0% / 85.0% / 91.7% respectively. On the task of KITTI ! nuScenes, they are 85.3% / 87.8% / 92.0% respectively. And on the task of nuScenes ! KITTI, they are 92.2% / 90.3% / 98.2%, respectively. It is also clear that domain shift between simulation and real-world is more significant than those between real-world datasets. Therefore, simulation-to-real tasks show poorer performance. Further, we compare Annotator with additional AL algorithms and extend it to indoor semantic segmentation in Appendix B.2 and B.3.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p26",
+    "section_heading": "3.2 Experimental results",
+    "text": "Per-class performance. To sufficiently realize the capacity of our Annotator, we also provide the class-wise IoU scores on two simulation-to-real tasks (Table 3 and Table 4) for different algorithms and comparison results with state-of-the-art DA methods [55, 83]. Other results of the remainder",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p27",
+    "section_heading": "3.2 Experimental results",
+    "text": "tasks and backbones are listed in Appendix B.4. It is noteworthy that Annotator under any active learning settings significantly outperform DA methods with respect to some specific categories such as \u201ctraf.\u201d, \u201cpole\", \u201cgarb.\u201d and \u201ccone\u201d etc. These results also showcase the class-balanced selection of the proposed Annotator, which is testified in Figure 6 as well.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p28",
+    "section_heading": "3.2 Experimental results",
+    "text": "Results with varying budgets. We investigate the impact of varying budgets and compare the performance with baseline methods, as illustrated in Figure 3, Figure 4 and Figure 5. A consistent",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p29",
+    "section_heading": "3.2 Experimental results",
+    "text": "observation across these experiments is that Annotator consistently outperforms the baseline methods regardless of the budget allocation. In particular, Annotator achieves the best performance with about five voxel grids of each LiDAR scan, highlighting the effectiveness of our method in selecting informative areas for active learning. Additionally, we notice that the performance of Annotator tends to saturate when the budget exceeds four voxel grids, particularly in the nuScenes ! KITTI adaptation task. This phenomenon can be attributed to the fact that the selected voxels at this point provide a sufficient foundation for training a highly competent segmentation model.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p30",
+    "section_heading": "3.3 Analysis",
+    "text": "More network architectures. As a general baseline, Annotator can be easily applied to other nonvoxelization based backbones. Here, we conduct experiments on both SalsaNext [10] (range-view) and PolarNet [100] (bev-view) and per-class results are presented in Table 5. The findings reveal that Annotator continues to yield significant gains, even when applied to range- or bev-view backbones, with a limited budget. However, the performance gains in these cases are somewhat less pronounced compared to the voxel-view counterparts. Also, to achieve a fully-supervised performance of 85%, a budget twice as large is required. We suspect that some annotations derived from voxel-centric selection may not be entirely applicable to other non-voxelization based methods.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p31",
+    "section_heading": "3.3 Analysis",
+    "text": "Effect of voxel size 42. We conduct experiments on different 42 while keeping the same budget for selection process and results are listed in Table 6. We can observe that active rounds (# round) decreases as 42 increases since the number of voxels (# voxel) will be small when 42 is large. Notably, the performance of the large voxel grid ( 0.2) is more adequate and robust.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p32",
+    "section_heading": "3.3 Analysis",
+    "text": "Category frequency. To obtain deep insight into Annotator, we also visualize a detailed plot of the class frequencies of 5 voxel grids selected by Annotator (AL, ASFDA. ADA) and true class",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p33",
+    "section_heading": "3.3 Analysis",
+    "text": "frequencies of the SemanticPOSS train in Figure 6. As expected, we clearly see that the true distribution is exactly a long-tail distribution while Annotator is able to pick out more voxels that contain rare classes. Particularly, it asks labels for more annotations of \u201crider\u201d, \u201cpole\u201d, \u201ctrunk\u201d, \u201ctraf.\u201d, \u201cgrab.\u201d and \u201ccone\". This, along with the apparent gains in these classes in Table 4, confirms the diversity and balance of voxel grids selected by Annotator.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p34",
+    "section_heading": "3.3 Analysis",
+    "text": "Qualitative results. Figure 7 visualizes segmentation results for Source-/Target-Only, our Annotator under AL, ASFDA, and ADA approaches on SemanticKITTI val. The illustration demonstrates the ability of Annotator to enhance predictions not only in distant regions but also to effectively eliminate false predictions across a wide range of directions around the center. By employing voxel-centric selection, Annotator successes in enhancing segmentation accuracy even when faced with extremely limited annotation availability. More qualitative results are shown in Appendix B.5.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p35",
+    "section_heading": "3.4 Limitations",
+    "text": "Currently, Annotator has two main limitations. First, high annotation cost and potential biases. Annotator has made substantial strides in enhancing LiDAR semantic segmentation with human involvement. Nonetheless, the annotation cost remains a challenge. It\u2019s imperative to acknowledge the existence of label and sensor biases, which can be a safety concern in real-world deployments. Second, expansion beyond semantic segmentation. Annotator current focus on LiDAR semantic segmentation represents a significant limitation in fully realizing its potential. In the future work, we plan to extend Annotator to other 3D tasks, such as LiDAR object detection. This may involve two key changes: i) shifting to frame-level selection; ii) reformulating the VCD strategy to consider the diversity for each box annotation.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p36",
+    "section_heading": "4 Related Work",
+    "text": "LiDAR perception. Deep learning has made LiDAR perception tasks such as classification [17, 49, 70, 98] and detection [7, 30, 65, 93] easy to solve, allowing deployment in outdoor scenarios. Differently, LiDAR semantic segmentation [3, 23, 32, 33, 40, 45, 46], receiving a class label for each point, is an indispensable technology to understand a scene that is beyond the scope of modern object detectors [35]. There exist various techniques to segment the 3D LiDAR point clouds, e.g., point [32, 45, 79], voxel [18, 39, 103], range [80, 81], bird\u2019s eye [100], and multiple view [68, 89, 96] methods. As the best approaches for LiDAR perception are typically trained under full supervision, which can be costly more than capturing data itself, several methods resort to more frugal learning techniques [14], such as semi- [29, 31], weak- [22, 34] and self-supervision [73, 101], zero-shot [21] and few-shot [63] learning and, as studied here, active learning [66] and domain adaptation [74].",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p37",
+    "section_heading": "4 Related Work",
+    "text": "Active learning for LiDAR point clouds. To avoid the burden of complete point cloud annotation, these methods iteratively select and request the most exemplar scans [94], regions [82], points [35], or",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p38",
+    "section_heading": "4 Related Work",
+    "text": "boxes [37] to be labeled during the network training. Most selection strategies lean on uncertainty [24, 88] or diversity [60, 91] criteria. Uncertainty sampling can be measured over each point prediction scores of the model, e.g., softmax entropy [78] or the margin between the two highest scores [53], to select the most confusing of the current model. For example, Hu et al. [24] estimate the inconsistency across frames to exploit the inter-frame uncertainty embedded in LiDAR sequences. On the other side, diversity sampling has been ensured by selecting core sets [59]. Leveraging the unique geometric structure of LiDAR point clouds, Liu et al. [35] partition the point could into a collection of components then annotate a few points for each component. Recently, the need for an initially annotated fraction of the data to bootstrap an active learning method has been investigated [6, 20, 58, 95, 104], which is termed as cold start problem. In this work, we show that a smart selection of the first set of data with the aid of an auxiliary model can boost all baseline methods drastically.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p39",
+    "section_heading": "4 Related Work",
+    "text": "Domain adaptation for LiDAR point clouds. To tackle the sensor-bias problem encountered in LiDAR deployment, a large body of literature on domain adaptation (DA) [12, 28, 54\u201357, 74, 92] has been developed. These methods aim to overcome the challenges posed by variations in data collection, sensor characteristics, and environmental conditions, enabling machines to perceive the real world more accurately and reliably. To name a few, Kong et al. [28] explore cross-city adaptation for uni-modal LiDAR segmentation. Rochan et al. [51] propose a self-supervised adaptation technique with gated adapters. Saltori et al. [55] mitigate the domain shift by creating two new intermediate domains via sample mixing. Similarly, with the intermediate domain, Ding et al. [12] propose a data-oriented framework with a pretraining and a self-training stage for 3D indoor scenes. Despite the significant progress made in DA, the label scarcity of target domain severely handicaps its utility as the performance of such models often lags far behind the supervised learning counterparts. With this consideration, given an acceptable annotation budget, we explore a simple annotating strategy to assist adaptation process and significantly boost the performance of target domain.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p40",
+    "section_heading": "4 Related Work",
+    "text": "Up to now, active learning coupled with domain adaptation has great practical significance [15, 38, 41, 44, 48, 62, 61, 67, 69, 86]. Nevertheless, rather little work has been done to consider the problem in 3D domains. A recent effort, UniDA3D [13], effectively tackles domain adaptation and active domain adaptation tasks for 3D semantic segmentation. UniDA3D employs a unified multi-modal sampling strategy, selecting informative pairs of 2D-3D data from both source and target domains through a domain discriminator, primarily for ADA tasks. The primary distinction is that our Annotator serves as a benchmark for active learning, active source-free domain adaptation, and active domain adaptation tasks, delivering a simple and general AL algorithm for LiDAR point clouds. Annotator focuses on enabling AL in both in-distribution and out-of-distribution scenarios. In contrast, UniDA3D places a greater emphasis on adaptation tasks. On the other hand, Annotator minimizes human labor in a new domain, regardless of the availability of samples from an auxiliary domain. Methodically, Annotator adopts a voxel-centric representation for structured LiDAR data, which is different from the scan-based representation in UniDA3D. Furthermore, Annotator is more efficient than UniDA3D in terms of both computation and annotation cost.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p41",
+    "section_heading": "5 Conclusion",
+    "text": "In this work, we present Annotator, a generalist active learning baseline, to tackle LiDAR semantic segmentation under three distinct label-efficient settings: active learning (AL), active source-free domain adaptation (ASFDA), and active domain adaptation (ADA). Annotator harnesses the power of a purpose-designed voxel confusion degree selection strategy, enabling it to make optimal use of limited budgets while achieving efficient selection and effective performance. Experiments conducted on widely-used simulation-to-real and real-to-real LiDAR semantic segmentation benchmarks demonstrate a substantial performance improvement. Looking forward, we believe the effectiveness and simplicity of Annotator has the potential to serve as a powerful tool for label-efficient 3D applications.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p42",
+    "section_heading": "Acknowledgements",
+    "text": "This paper was supported by National Key R&D Program of China (No. 2021YFB3301503), the National Natural Science Foundation of China (No. 62376026), and also sponsored by Beijing Nova Program (No. 20230484296).",
+    "seg_type": "par"
+  }
+]

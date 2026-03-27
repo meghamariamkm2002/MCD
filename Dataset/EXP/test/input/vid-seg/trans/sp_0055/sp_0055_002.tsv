@@ -1,0 +1,98 @@
+start	end	text
+31	171	Right.
+552	3115	So what does this thing do?
+3355	9062	It is a planning algorithm and planning might be not really familiar for you.
+9502	20976	So let's say you are in this room and or this set of rooms right here, there's a bunch of walls and you are up here and you want to reach the goal down here.
+20956	30977	So first of all, this is a goal directed problem, right here, it says goal directed goal directed means that you give the algorithm a goal to reach.
+31498	36028	And this could be a different goal each time you're on the algorithm, right?
+36008	37489	So you give it a goal to reach.
+38170	41293	Then the second thing here we see is planning.
+41793	43415	So it is a planning algorithm.
+43495	44476	What does planning mean?
+44516	62291	Planning means if you're traditionally reinforcement learning, you would think, ah, I'm just going to go ahead and run my agent here, and maybe you can move in the four different directions, run my agent here, do some things, right?
+62592	65374	Maybe I hit a wall, I get a negative reward, I try again.
+65354	70563	In planning, you don't have to move initially.
+70803	75852	What you can do is think about moving and you can think ahead of what's going to happen.
+76273	79839	And that's usually because you have some sort of model what happens.
+80279	90737	This is very famous applied in, for example, AlphaGo or AlphaZero, where you have, you know, if I move to the right here, I'm going to be here.
+90717	94586	So you will know once you've reached the goal, right?
+94666	96972	If I'm here, I go down, I reach the goal.
+97252	97473	Cool.
+98395	102024	So you can think all of this without actually moving in the environment.
+102044	103647	You can think yourself ahead.
+104048	107376	What would happen if I did certain things?
+107356	113005	And that in turn also means that you can think ahead multiple different paths.
+113326	115409	So you can think ahead, what would happen if I move right?
+115650	116852	What would happen if I move down?
+117633	124004	And then you can think in the next layer, if I move right, what would happen if I moved right again?
+124064	127069	What would happen if I moved down instead?
+127049	132235	So, you can easily see the planning problem becomes a tree search problem.
+132656	136641	In this case, we've done a breadth-first search.
+137021	141327	And eventually, you'll see that this will get you to the goal.
+142047	147454	So, this breadth-first search, or maybe you want to employ a depth-first search,
+147434	149737	will ultimately get you to the goal.
+150117	152119	We can represent this as a search tree.
+152239	159908	So you're here in a particular state and you have a bunch of actions, in this case four to move left, up, down, or right.
+160949	165494	And you can choose any of them and you will get into a new state.
+165514	167997	And from each of those, you could choose any again.
+168197	172202	And you can think ahead, all of this, you can construct this entire tree.
+172562	177087	And one of these branches will lead you to the goal.
+177067	177608	promise.
+179390	180191	What is the problem?
+180251	191304	The problem is, if the path to the goal here is, let's say D steps long, then this tree here is going to be D layers deep.
+191945	198373	And in our case, that means we'll have four to the D nodes in that tree before we even reach the goal.
+199394	204220	And that is just a long, long, or a big tree.
+204660	206803	And we can construct all of it.
+206783	214753	So algorithms have come along, for example, the A star algorithm, where you can incorporate something like a heuristic.
+214813	221061	And the heuristic would be, well, it's generally good if I'm close to the goal in L2 distance.
+221081	230052	So you would not build the entire tree here, but you would prefer nodes that will bring you towards this heuristic.
+230173	234478	So this node down here is closer to the green node in terms of L2 distance.
+234458	237522	And this note down here is even closer, but then you're kind of stuck.
+237923	242669	So A star will explore a bit, probably along this wall here.
+244111	248397	And once you're here, you have a clear path again, right?
+248458	251542	So you can simply take the actions that minimize this L2 distance.
+251562	256088	So this will already get you to a real good point.
+256689	263098	Monte Carlo Tree Search, as it was employed in AlphaGo or AlphaStar, has a similar
+263078	293085	Structure where it after a certain while it stops and it evaluates a heuristic to say what's the the value here and so on so it isn't for some problems an even better method of Constructing the search tree in a way where you don't get overblown by the number So the Monte Carlo search tree in this algorithm refers to the fact that we are generalizing Monte Carlo Tree search from the let's say the AlphaGo paper
+293065	296950	So, what's the idea here?
+296970	298432	So far, we've known everything.
+299053	300174	The idea is the following.
+300555	316715	If I had an oracle, if I am the master here and I can tell the agent, agent, look, I guarantee you that this state right here in the middle, you will pass that state.
+316755	321081	If you want to reach the goal, you will pass this.
+321179	321780	For sure.
+321820	325829	If I tell this to the agent, now what can the agent do?
+325869	331240	The agent could say, oh, okay, if I know that, I can simply, I don't have to search for a way to the goal.
+331280	340639	I'd much rather search for a way from my start point to that point where I know that I'm guaranteed to be at some place.
+340619	346734	And then I can search also from a way from there to the goal.
+348117	354132	So this now, remember our path was D steps long for the original problem.
+354473	357480	This is now let's say D half long.
+357460	359143	each of these paths.
+359163	361428	And that means we just construct two trees.
+361909	364874	Each one of them is going to be four to the D half.
+365496	367900	And the other one is also four to the D half.
+367920	374052	And if we add them, that is much smaller than the original four to the D tree that we build.
+374032	383304	So right there, we have subdivided our problem into two sub problems, and each of them are much easier than the original problem.
+384285	387229	This paper basically does this recursively.
+387569	395179	So it will subdivide the problem by proposing some middle state where you are going to be at some point for sure.
+395159	397484	and that for sure we're going to take a look at.
+397845	410194	And then for each of those problems, again, it will try to subdivide it into subproblems and therefore recursively solve the subproblems until they're small enough that they can be basically solved in one step.
+412158	413421	So that's the big idea here.
+414970	417415	And this is illustrated in this point right here.
+417635	425632	So you are in this S0, the start state, and you want to go to this S infinity, the goal state in your case.
+426233	434430	What this paper does is it proposes to split the problem here in the middle and then simply solve the two problems recursively.
+434410	443420	Now, what is a bit confusing right here is that it is the planning already is a tree search, right?
+443460	448907	So a plan is like a tree, but we are searching over plans.
+448947	457937	So we're searching for the best plan, which means that we are searching over trees and that search itself is a tree search.
+457917	467247	So the search itself is a problem where we go down one route and then, oh no, and then we maybe go down another route and here and then here.
+467587	470029	So the search is a tree.
+470370	473193	So we're now tree searching over trees.
+473753	476256	That's the kind of tricky thing to remember.
+476776	484645	So each of these plans, even if it's half, if it's only half done, like this is only half a plan, we don't know what's going to happen in here.
+485305	487047	This half a plan
+487027	491552	is a node in the tree that we're searching over.
+492293	496939	And then it splits as you can see here into two sub-problems.
+497299	501424	The two sub-problems also are nodes in that search tree.
+501524	509894	So you see that this top thing here would correspond to this node, even though in itself it is a plan, a tree, a string in this case.
+510515	516882	And each of the two sub-problems would become these nodes in the search tree.
+516862	521400	So keep that in mind as we go through this paper.
+522524	526500	It is very easy to get confused in this respect.

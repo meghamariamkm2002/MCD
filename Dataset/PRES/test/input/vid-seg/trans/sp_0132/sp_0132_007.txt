@@ -1,0 +1,5 @@
+Next, we will introduce how to implement and parametrize above kernel integral with attention.
+So first, we use a learnable projection operator to project the high-dimensional input function into several sub-function with single-dimensional domain.
+Based on these single-dimensional functions, we then use them to calculate each sub-axial kernel using dot product attention.
+Meanwhile, we compute value based on linear transformation of the input.
+And then finally, axial kernels and value are composed together via tensor matrix product.

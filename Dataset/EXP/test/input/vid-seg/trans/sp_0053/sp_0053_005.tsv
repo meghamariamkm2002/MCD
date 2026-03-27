@@ -1,0 +1,14 @@
+start	end	text
+31	4459	But now it breaks down because the teacher is constructed from the student.
+5460	12152	So we have a teacher, we train the student to predict the same thing as the teacher does, like learning from the teacher.
+12452	18242	But then at the same time, after we have done after we've updated the student, we then
+18222	21947	have we then build the teacher from the new student.
+22387	26913	And the way we do this you can see right here is by exponentially moving average.
+27294	37427	So we keep the teacher model and then as we update the student model we simply update the teacher a little bit into the direction of the student model.
+37727	46238	And there is also a schedule associated with this exponentially moving average like how much the exponential decay is and so on.
+46218	52607	This seems all to be loaded with hyperparameters, but again, the results are really cool.
+53408	60097	And I guess it's yet going to turn out how sensitive to hyperparameters this whole setup is.
+60858	67467	They do make ablations, but we'll see how other people with other datasets fare.
+68780	73882	Alright, so we have the teacher that is built from the student exponentially moving average.
+74424	83162	And we want to make the two predict the same represents or the same output for different augmentations of the same image.
+84146	85050	Okay, in fact,

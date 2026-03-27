@@ -1,0 +1,3 @@
+Our algorithm was also tested on MNEST dataset.
+Comparing it with other approaches, we attained better sample quality using only one fixed noise level during both training and sample generation.
+Additionally, our algorithm successfully generated better digital samples using still one noise level during training and generation.

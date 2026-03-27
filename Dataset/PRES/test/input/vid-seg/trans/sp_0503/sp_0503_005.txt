@@ -1,0 +1,1 @@
+Going back to the previous example, when we compute the RGW, it can be observed that a robust transfer plan, a robust estimate of GW distance can be obtained.

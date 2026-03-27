@@ -1,0 +1,113 @@
+WEBVTT
+
+00:00.031 --> 00:00.992
+word relationships.
+
+00:01.373 --> 00:10.566
+So the skipgram model was already introduced by Mikloff in an earlier paper that came out, I believe, not like one or two months prior to this one.
+
+00:11.047 --> 00:13.731
+As I said, Word2Vec is a series of papers.
+
+00:13.831 --> 00:16.876
+I don't think there is a paper called Word2Vec.
+
+00:16.916 --> 00:21.422
+Rather, they here have released the code along with the with the paper.
+
+00:22.003 --> 00:24.587
+The code was called Word2Vec.
+
+00:24.567 --> 00:29.936
+So the skipgram model was introduced previously, but it is replicated right here.
+
+00:30.376 --> 00:37.708
+So in the skipgram model, what you're trying to do is you're trying to get a distributed word representation.
+
+00:38.229 --> 00:39.090
+So what does that mean?
+
+00:39.151 --> 00:43.698
+That means that for each word in your language, let's take these words right here.
+
+00:44.038 --> 00:51.891
+For each word in the language, you want to come up with a vector that somehow describes that word in a continuous fashion.
+
+00:51.871 --> 00:58.104
+In the two might be mapped to, I don't know, 0.1, 0.9 and 0.3.
+
+01:00.348 --> 01:04.417
+Learn might be mapped to negative 0.5 and so on.
+
+01:04.437 --> 01:09.407
+So each word gets assigned a vector in the same dimensional space.
+
+01:09.387 --> 01:17.562
+And what the previous paper kind of discovered is that if you do this correctly, then these vectors, they have some kind of properties.
+
+01:17.602 --> 01:24.995
+And we can already kind of jump ahead because this was already a bit researched in the last paper.
+
+01:25.877 --> 01:29.303
+The semantics of these vectors will be something like this.
+
+01:29.283 --> 01:38.065
+So here they have a two dimensional PCA, so these are the first two dimensions of the 1000 dimensional skipgram vectors.
+
+01:38.085 --> 01:45.925
+So the vectors they obtain, they can do things like this, where they can show that in these spaces, for example,
+
+01:45.905 --> 01:51.734
+there appears to be a vector direction that characterizes the capital of a country.
+
+01:52.675 --> 02:04.233
+So if you take a few countries and their capitals and you average that vector, you get a kind of a direction for capitalness of a city given a country.
+
+02:04.293 --> 02:07.879
+You can see that there is a pretty clear relation here.
+
+02:07.859 --> 02:17.490
+Now some of these things have later been revised to such that they are ultimately ended up being not that impressive.
+
+02:17.530 --> 02:21.755
+For example, there was always this kind of math with vectors.
+
+02:22.736 --> 02:25.819
+And I don't, I believe this is, this might not be in this.
+
+02:26.160 --> 02:30.745
+This is in the last paper where they discovered that if you take the vector for
+
+02:30.725 --> 02:43.926
+king and you subtract the vector for man and you add the vector for woman, then that would result in the vector for queen.
+
+02:44.927 --> 02:56.445
+So the way they did it was basically they did this calculation right here and then they searched in the point they ended up, they searched for the nearest neighbor in their vocabulary.
+
+02:56.425 --> 02:58.608
+And that turned out to be queen.
+
+02:58.708 --> 03:04.817
+But in order to make it queen, actually, you have to exclude the original word king.
+
+03:04.837 --> 03:15.492
+And people quickly discovered that if you don't exclude the original word, the result of this kind of arithmetic will almost always lead back to the original word.
+
+03:15.773 --> 03:20.239
+And then a lot of these analogy tasks are simply the result of you
+
+03:20.219 --> 03:23.646
+Then discarding that word during the nearest neighbor search.
+
+03:23.666 --> 03:27.314
+And then Queen just happens to be one of the closest words.
+
+03:27.795 --> 03:33.466
+And it's sort of much less dependent on which exact calculation you do here.
+
+03:33.747 --> 03:39.138
+So there's been a lot of follow-up work kind of analyzing, criticizing these vector masks.
+
+03:39.158 --> 03:50.040
+But definitely we know that these word vectors turned out to be extremely, extremely helpful and syntactically and semantically relevant in downstream tasks.
+

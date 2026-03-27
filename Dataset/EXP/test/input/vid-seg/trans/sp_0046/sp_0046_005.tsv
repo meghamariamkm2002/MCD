@@ -1,0 +1,29 @@
+start	end	text
+31	11092	Okay, now here is the algorithm, as you can see, this was already quite the algorithm we use nowadays.
+11613	16723	So for K steps, this is the inner maximization, and here they say that we use K equals one.
+16703	20148	So this is pretty much what we use today.
+20188	25717	The early days of GAN were still like, how much do I need to discriminate per generator and so on.
+26378	33649	Nowadays everyone's just using one step here, one step there, or even training and jointly works in some cases.
+33629	42405	So you want to sample a mini batch of noise samples, and then you will sample a mini batch of m examples from training data generation.
+44188	49358	So from this data, you want to update the discriminator by ascending its stochastic gradient.
+50139	52363	And this is simply the gradient of the objective.
+52343	61084	And then after those case steps you want to sample another mini batch of noise samples and update the generator by descending its stochastic gradient.
+61145	69846	And you can see right here already there is this reduced objective that doesn't include this because it falls away in the gradient, right?
+71632	75419	And they say the gradient based updates can use any standard learning based rule.
+75760	78065	We use momentum in our experiments.
+79006	79447	Very cool.
+80049	84898	So I believe they already also say that.
+86414	87436	It is somewhere here.
+88818	95388	It's pretty fun that they say, oh, in our generator, we only input noise at the lowest layer.
+95949	106144	This is also something that, if you think that G here is a multi-layer network, so it's kind of a multi-layer network that outputs an image.
+106124	110512	And if you ask yourself, if I have noise, how would I input that into there?
+110892	114158	It's so clear nowadays that, you know, we just put it here.
+114699	116442	But this was not clear at all.
+116502	122652	This was kind of an invention of this paper because you could, you know, put it pretty much at all layers.
+122712	124536	You could distribute it and so on.
+124576	127761	You could add some right here.
+127741	138347	It was this paper that already established the fact that we input noise kind of as a vector at the very beginning and then just let the neural network produce the image from that.
+138548	141455	So yeah, pretty, pretty cool.
+141495	149996	It's pretty sneaky how many things are hidden in these initial papers, how many decisions that are made there then are just taken over.
+150056	153244	And, you know, this one, I guess turned out to be fairly, fairly good.
+154487	155048	Okay.

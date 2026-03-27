@@ -1,0 +1,4 @@
+Here we show a proof sketch for the convergence of sounds.
+The proof for sounds follows from a similar idea.
+The key in this proof is to find the upper and lower bound for the inner product of the gradient and the difference between Wt hat and Wt.
+We use the properties of Moral envelope to show the lower bound.

@@ -1,0 +1,72 @@
+So this is in this figure.
+So this meta learning using gradients was done in this technique called mammal.
+And essentially what you can see here is that if you have this set of initial parameters, this is your current best guess of these good initial parameters.
+And you want to come up with a gradient of how to get an even better set.
+Now this gradient here is indicated by this arrow.
+So let's imagine you don't know the gradient yet, you want to come up with a gradient.
+So what you'll need to do is you'll basically have to compute the loss function and you have to differentiate that loss function with respect to your parameters.
+That's down here, what the description of the orange arrow.
+So your loss function of your meta parameters is going to be the average or the sum of the loss functions across all of the different tasks individually.
+So the gradient is going to be the sum of the gradients of these loss functions with respect to your original parameter.
+Now, this is the difference, right?
+Usually, we differentiate with respect to the parameters that we input into the loss function, but not here.
+What we input into the loss function is what is at the end of the task adapting to its own parameters.
+So this thing we input here is a function of our initial parameters, but it's not our initial parameters.
+So what we have is initial parameters, we
+give them to a task, this task runs SGD for K steps, it runs it for a number of steps, comes up with the adapted version to its own problem, that goes into a loss function, right?
+So this thing here is the neural network that finally determines the loss function.
+So if we want to back propagate, we can back propagate this loss function, right?
+Through the neural network, the F, the neural network is right here, is parameterized by these things.
+We can back propagate through that, but then we'll have to back propagate through the optimization procedure that was used to derive these things.
+So that's the problem right here.
+You can see this here.
+You start out with the initial parameters and let's say you give them to task one.
+Task one is going to take these as initialization and then run SGD.
+So maybe it will perturb these parameters to come up with here phi one, these parameters.
+These parameters are the adapted version for task one.
+And then at the end of task one, you use these characterize neural network and you can calculate a gradient.
+So how would you need to update these parameters in order to make the loss go down?
+And the neural network or sorry, the computation will maybe result.
+Well, you need to go up a bit.
+Well, this is too strong.
+it will maybe say you need to go into this direction right here with respect to these parameters.
+But now the question is, how do you have to adjust your initial parameters such that your final parameters will go into that direction?
+And that's not really clear.
+You could make a guess, right?
+You could make a guess and say, well, if my initial parameters just go up a bit, maybe the optimization procedure will just, you know, sort of look the same, but shifted up here.
+So something like this.
+And then I will end up here, but that's not guaranteed.
+Like this is a super nonlinear procedure that you're running it through this SGD thing.
+And it will basically, it's an iterative recursive procedure.
+So it will sort of accumulate its own nonlinear errors.
+And that's why what you have to do is basically you forward propagate.
+through SGD, and then you have to back propagate this gradient right here.
+You have to back propagate this through the entire SGD optimization procedure.
+And that is computationally very expensive, because if you have to compute the loss once here for a neural network, you have to forward pass once, and the back propagation will cost as much as the forward propagation, or maybe twice as much, constant number.
+But if you run k steps of SGD, you basically have to trace back those k steps via backpropagating it through each step.
+So basically, this is k times a backpropagation step.
+And computationally, that's just not feasible for more than very few steps.
+And so you can only ever do very few steps.
+You basically accumulate your nonlinear error because gradient descent is a linear procedure.
+And then you get some estimation of the gradient at the end.
+Now, if you do that for all of your tasks, then finally you can decide.
+So maybe for a task one here, the result will be in order to make this go up a bit, you need to shift this a bit to up and the right, right?
+Because then the gradient descent will kind of sort of end up here.
+And you do this for all tasks, you average the gradient like here, then you can come up with a final gradient for your inner, sorry, for your outer model, for your initial parameters.
+So this is a big load of computation that mammal does here.
+Now there is a naive approximation.
+And this is exactly what we said at the beginning, right?
+This first order mammal is the guess that if we want to go up a bit at the end here, why don't we shift the beginning up a bit, right?
+And so the first order mammal would just result in basically looking at the gradients at the end.
+and sort of aggregating them right here and then coming up with a gradient.
+But this is very inaccurate and generally doesn't work well because you have to understand how your end gradient is connected to your initial gradient.
+because this is very nonlinear, you can't just basically transfer it over.
+Now implicit mammal, this paper right here circumvents that.
+It circumvents the step to have to explicitly back propagate this gradient along the forward pass, but it's still able to come up with an expression for how the final gradient relates to the initial gradient.
+In this video, I would basically like to explore how this comes about and why this comes about.
+We won't go through all the theory and the proofs, but I would like you to understand that this comes about by basically them imposing a quadratic regularizer.
+And therefore this quadratic regularizer makes a very, it kind of gives rise to a very strong connection between this final gradient and this initial gradient.
+So they can basically transform one into the other.
+And therefore they can compute the initial gradient in a closed form setting, or at least in theory.
+All right, this was this.
+Now let's go into the

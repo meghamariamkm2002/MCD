@@ -1,0 +1,80 @@
+1
+00:00:00,031 --> 00:00:03,096
+these super high scores by pulling something off precisely.
+
+2
+00:00:03,717 --> 00:00:10,126
+But in games where they say where you have to plan ahead for longer, it kind of fails.
+
+3
+00:00:10,146 --> 00:00:17,818
+And we know that this long planning was about to be a problem for years to come, and it's still not solved.
+
+4
+00:00:18,038 --> 00:00:25,089
+So still Go Explorer is highly controversial that can solve these kind of long exploration games.
+
+5
+00:00:25,169 --> 00:00:25,650
+And
+
+6
+00:00:25,630 --> 00:00:27,514
+Those are still games, right?
+
+7
+00:00:28,396 --> 00:00:38,438
+So we are basically not, we are very much further than they were in this paper, but also we are basically nowhere yet.
+
+8
+00:00:39,701 --> 00:00:42,627
+Yeah, if I'm allowed to say that.
+
+9
+00:00:42,607 --> 00:00:45,012
+So I enjoyed reading this paper.
+
+10
+00:00:45,152 --> 00:00:48,499
+I, this is, it's very, it's very well written.
+
+11
+00:00:48,960 --> 00:00:59,701
+If you somehow know how to think about reinforcement learning, like this, this Q function, what the Q function means and why you would learn it in this way.
+
+12
+00:01:00,362 --> 00:01:02,787
+I find this is not super well described.
+
+13
+00:01:02,807 --> 00:01:05,492
+This kind of requires a bit of a knowledge of
+
+14
+00:01:05,472 --> 00:01:08,680
+not of RL, but just of how to think of RL.
+
+15
+00:01:09,162 --> 00:01:15,418
+But apart from this, everything else is written incredibly well, easy, straightforward.
+
+16
+00:01:16,140 --> 00:01:19,068
+And you know, this was just a nice work of its time.
+
+17
+00:01:19,629 --> 00:01:20,832
+And I appreciate it for that.
+
+18
+00:01:21,314 --> 00:01:23,539
+All right, I'll see you next time.
+
+19
+00:01:23,720 --> 00:01:25,545
+And I appreciate your time too.
+
+20
+00:01:25,565 --> 00:01:26,046
+Bye.
+

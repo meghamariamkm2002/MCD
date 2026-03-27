@@ -1,0 +1,3 @@
+In this work, we are interested at designing neural networks to solve partial differential equations in a data-driven manner.
+For example, in a fluid flow problem, the neural network is trained to predict the future time steps given previous time steps as input.
+Or for a steady state problem, the neural network estimates the steady state flow field given the coefficient function.

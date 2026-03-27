@@ -1,0 +1,581 @@
+[
+  {
+    "id": "002",
+    "title": "sp_0814_002",
+    "filename": "Videos/sp_0814.mp4",
+    "paper_filename": "Papers/sp_0814.pdf",
+    "type": "slides",
+    "relevant_segments": [
+      {
+        "para_id": "p2",
+        "section_heading": "1 Energy-Based Models",
+        "text": "Energy-Based Models (EBMs) have attracted a lot of attention in the generative model literature [25, 46, 7, 35]. EBMs are a type of non-normalized probabilistic model that determines the probability density function without a known normalizing constant. For continuous data x, the density function of an EBM is specified as q\u03b8(x) = exp(\u2212f\u03b8(x))/Z(\u03b8) where the f\u03b8(x) is a nonlinear function with parameter \u03b8 and Z(\u03b8) = \u222b exp(\u2212f\u03b8(x)) dx is the normalization constant that is independent of x. The energy parameterization allows for greater flexibility in model parameterization and the ability to model a wider range of probability distributions. However, the lack of a known normalizing constant makes training these models challenging. We start by giving a brief introduction of how to estimate \u03b8 in EBMs and refer the reader to [37] for a detailed overview of different training techniques for continuous EBMs.",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p4",
+        "section_heading": "1 Energy-Based Models",
+        "text": "where we use .= to denote the equivalence up to a constant that is independent of \u03b8. The integration of pd(x) can be approximated by Monte Carlo with the training dataset Xtrain = {x1, \u00b7 \u00b7 \u00b7 , xN} \u223c pd(x); in this case, it is equivalent to the maximum likelihood estimate (MLE) [5]. However, for EBMs, minimizing the KL divergence requires the estimation of Z(\u03b8), which is intractable for nonlinear f\u03b8(x) defined by a neural network. Various methods have been proposed to alleviate the",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p8",
+        "section_heading": "1 Energy-Based Models",
+        "text": "which does not require estimation of the intractable Z(\u03b8). However, this objective needs to calculate the Hessian trace\u2207xsq\u03b8 (x) = \u2212\u22072xf\u03b8(x) in every gradient step during training, which is computationally expensive and does not scale to high dimensional data or requires approximation [38]. In this paper, we will focus on another training method, denoising score matching [41], which overcomes the tractability and scalability issues mentioned above, and is introduced in the next section.",
+        "seg_type": "par"
+      }
+    ]
+  },
+  {
+    "id": "003",
+    "title": "sp_0814_003",
+    "filename": "Videos/sp_0814.mp4",
+    "paper_filename": "Papers/sp_0814.pdf",
+    "type": "slides",
+    "relevant_segments": [
+      {
+        "para_id": "p44",
+        "section_heading": "3 Scalable Implementations for Image Data",
+        "text": "Scalable Diagonal Hessian Approximation As we discussed in Section 2.3, the proposed full covariance Gaussian approximation in Equation 10 requires calculating an D\u00d7D Hessian\u22072x\u0303 log q\u0303(x\u0303) for each x\u0303 with size D, which brings both memory and computation difficulties for high-dimensional data. A naive diagonal Hessian method (only using the diagonal entries in the Hessian) will address the memory bottleneck but still needs D times backward passes for the exact computation of the diagonal term [22]. In this paper, we use the following diagonal Hessian approximation [3],",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p6",
+        "section_heading": "1 Energy-Based Models",
+        "text": "Score-based training: Alternatively, [16] proposes to minimize the Fisher divergence to learn \u03b8, which is defined as",
+        "seg_type": "par"
+      },
+      {
+        "box": [
+          410.6361999511719,
+          243.11399841308594,
+          813.9215698242188,
+          295.185302734375
+        ],
+        "text": [
+          "\\mathrm { F D } ( { p } _ { d } | | { q } _ { \\theta } ) = \\frac { 1 } { 2 } \\int { p } _ { d } ( x ) | | s _ { p _ { d } } ( x ) - s _ { q _ { \\theta } } ( x ) | | _ { 2 } ^ { 2 } \\, \\mathrm { d } x ,"
+        ],
+        "page": "sp_0814_page_0002",
+        "id": "sp_0814_page_0002-1",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          362.74755859375,
+          343.00799560546875,
+          859.5082397460938,
+          394.0429382324219
+        ],
+        "text": [
+          "\\mathrm { F D } ( { p } _ { d } | | { q } _ { \\theta } ) \\doteq \\frac { 1 } { 2 } \\int { p } _ { d } ( x ) \\left( | | s _ { q _ { \\theta } } ( x ) | | _ { 2 } ^ { 2 } + 2 \\, \\mathrm { T r } ( \\nabla _ { x } s _ { q _ { \\theta } } ( x ) ) \\right) \\mathrm { d } x ,"
+        ],
+        "page": "sp_0814_page_0002",
+        "id": "sp_0814_page_0002-2",
+        "seg_type": "eq"
+      },
+      {
+        "para_id": "p7",
+        "section_heading": "1 Energy-Based Models",
+        "text": "where we use sp(x) to denote the score function of distribution p: sp(x) \u2261 \u2207x log p(x). Under certain regularity conditions, the Fisher divergence is equivalent to the score-matching (SM) objective [16],",
+        "seg_type": "par"
+      }
+    ]
+  },
+  {
+    "id": "004",
+    "title": "sp_0814_004",
+    "filename": "Videos/sp_0814.mp4",
+    "paper_filename": "Papers/sp_0814.pdf",
+    "type": "slides",
+    "relevant_segments": [
+      {
+        "para_id": "p9",
+        "section_heading": "1.1 Denoising Score Matching",
+        "text": "For the target data density pd(x), a noise distribution p(x\u0303|x) = N (x, \u03c32I) is introduced to construct a noised data distribution p\u0303d(x\u0303) = \u222b pd(x)p(x\u0303|x) dx. Denoising score matching (DSM) [41] minimizes the Fisher divergence between the noised data distribution p\u0303d(x\u0303) and an energy-based model q\u0303\u03b8(x\u0303) = exp(\u2212f\u03b8(x\u0303))/Z(\u03b8), with",
+        "seg_type": "par"
+      }
+    ]
+  },
+  {
+    "id": "005",
+    "title": "sp_0814_005",
+    "filename": "Videos/sp_0814.mp4",
+    "paper_filename": "Papers/sp_0814.pdf",
+    "type": "slides",
+    "relevant_segments": [
+      {
+        "box": [
+          334.3743591308594,
+          663.2186279296875,
+          888.8073120117188,
+          826.8067016601562
+        ],
+        "text": [
+          "\\begin{array} { l } { \\displaystyle \\mathrm { F D } ( \\bar { p } _ { d } | | \\bar { q } _ { \\theta } ) = \\frac 1 2 \\int \\tilde { p } ( \\bar { x } ) | | s _ { \\bar { p } _ { d } } ( \\bar { x } ) - s _ { \\bar { q } _ { \\theta } } ( \\bar { x } ) | | _ { 2 } ^ { 2 } \\, \\mathrm { d } \\bar { x } } \\\\ { \\displaystyle \\qquad \\qquad \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, } \\\\ { \\displaystyle \\qquad \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, } \\\\ { \\displaystyle \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, } \\\\ { \\displaystyle \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, } \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, \\, "
+        ],
+        "page": "sp_0814_page_0002",
+        "id": "sp_0814_page_0002-3",
+        "seg_type": "eq"
+      }
+    ]
+  },
+  {
+    "id": "006",
+    "title": "sp_0814_006",
+    "filename": "Videos/sp_0814.mp4",
+    "paper_filename": "Papers/sp_0814.pdf",
+    "type": "slides",
+    "relevant_segments": [
+      {
+        "para_id": "p10",
+        "section_heading": "1.1 Denoising Score Matching",
+        "text": "where the last equation is due to\u2207x\u0303 log p(x\u0303|x) being tractable for the Gaussian distribution p(x\u0303|x). Compared to the KL or SM objectives, the DSM objective is scalable and well-defined when the data distribution is singular2 [49] and can alleviate the blindness problem of score matching [35, 45, 51]. On the other hand, there is a notable disadvantage associated with the DSM objective: for a fixed \u03c3 > 0, the DSM objective is not a consistent objective for learning the underlying data distribution pd since FD(p\u0303d||q\u0303\u03b8) = 0 =\u21d2 p\u0303d = q\u0303\u03b8 \u0338= pd. A common solution is to anneal \u03c3 \u2192 0 during training. However, Equation 4 is not defined when \u03c3 = 0 since the division in Equation 4 will make (x\u0303\u2212x)/\u03c32 unbounded, which results in an inconsistent objective. Annealing \u03c3 increases the variance of the training gradients [37, 42], which makes the optimization challenging in practice.",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p16",
+        "section_heading": "2 Clean Model Identification",
+        "text": "For a fixed \u03c3 > 0, DSM can only learn a \u2018noisy\u2019 data distribution q\u0303\u03b8(x\u0303) even in the ideal case where the Fisher divergence is exactly minimized, since FD(p\u0303d||q\u0303\u03b8\u2217) = 0\u2192 p\u0303d = q\u0303\u03b8 \u0338= pd. In this case, the following theorem shows that there exists a \u2018clean\u2019 model that is implicitly defined that learns the true data distribution. Theorem 2.1 (Existence of the underlying clean model for optimal q\u0303\u03b8(x\u0303)). When the Fisher divergence goes to 0, FD(p\u0303d||q\u0303\u03b8) = 0 \u2192 p\u0303d = q\u0303\u03b8, there exists an unique underlying clean model q(x) such that q\u0303\u03b8(x\u0303) = \u222b q(x)p(x\u0303|x) dx and q(x) = pd(x).",
+        "seg_type": "par"
+      }
+    ]
+  },
+  {
+    "id": "007",
+    "title": "sp_0814_007",
+    "filename": "Videos/sp_0814.mp4",
+    "paper_filename": "Papers/sp_0814.pdf",
+    "type": "slides",
+    "relevant_segments": [
+      {
+        "box": [
+          413.5556335449219,
+          757.394775390625,
+          810.3280029296875,
+          784.7466430664062
+        ],
+        "text": [
+          "\\tilde { x } _ { k - 1 } \\sim p ( \\tilde { x } | \\boldsymbol { x } = x _ { k - 1 } ) , \\quad x _ { k } \\sim p ( x | \\tilde { x } = \\tilde { x } _ { k - 1 } ) ,"
+        ],
+        "page": "sp_0814_page_0003",
+        "id": "sp_0814_page_0003-7",
+        "seg_type": "eq"
+      }
+    ]
+  },
+  {
+    "id": "008",
+    "title": "sp_0814_008",
+    "filename": "Videos/sp_0814.mp4",
+    "paper_filename": "Papers/sp_0814.pdf",
+    "type": "slides",
+    "relevant_segments": [
+      {
+        "box": [
+          520.3175659179688,
+          1006.830322265625,
+          704.5389404296875,
+          1036.1121826171875
+        ],
+        "text": [
+          "\\mu ( \\tilde { x } ) = \\tilde { x } + \\sigma ^ { 2 } s _ { \\tilde { q } { \\boldsymbol { \\theta } } } ( \\tilde { x } ) ;"
+        ],
+        "page": "sp_0814_page_0003",
+        "id": "sp_0814_page_0003-3",
+        "seg_type": "eq"
+      },
+      {
+        "para_id": "p22",
+        "section_heading": "2.1 Gibbs Sampling with Gaussian Moment Matching",
+        "text": "The classic Gaussian moment matching method [24] specifies a Gaussian approximation p(x|x\u0303) \u2248 N (\u00b5(x\u0303),\u03a3(x\u0303)), which matches the first and second moment of p(x|x\u0303). When q\u0303\u03b8 = p\u0303d, the first mean of the denoised distribution has a well-known analytical form [39, 2, 9, 29]",
+        "seg_type": "par"
+      }
+    ]
+  },
+  {
+    "id": "009",
+    "title": "sp_0814_009",
+    "filename": "Videos/sp_0814.mp4",
+    "paper_filename": "Papers/sp_0814.pdf",
+    "type": "slides",
+    "relevant_segments": [
+      {
+        "box": [
+          427.1429748535156,
+          1294.805419921875,
+          798.0408935546875,
+          1323.758056640625
+        ],
+        "text": [
+          "\\Sigma ( \\tilde { x } ) = \\sigma ^ { 2 } \\nabla _ { \\tilde { x } } \\mu ( \\tilde { x } ) = \\sigma ^ { 4 } \\nabla _ { \\tilde { x } } ^ { 2 } \\log \\tilde { q } _ { \\theta } ( \\tilde { x } ) + \\sigma ^ { 2 } I ."
+        ],
+        "page": "sp_0814_page_0003",
+        "id": "sp_0814_page_0003-5",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          373.7322082519531,
+          1411.6298828125,
+          849.7116088867188,
+          1440.6051025390625
+        ],
+        "text": [
+          "p ( x | \\tilde { x } ) \\approx \\mathcal { N } ( \\tilde { x } + \\sigma ^ { 2 } \\nabla _ { \\tilde { x } } \\log \\tilde { q } _ { \\theta } ( \\tilde { x } ) , \\sigma ^ { 4 } \\nabla _ { \\tilde { x } } ^ { 2 } \\log \\tilde { q } _ { \\theta } ( \\tilde { x } ) + \\sigma ^ { 2 } I ) ."
+        ],
+        "page": "sp_0814_page_0003",
+        "id": "sp_0814_page_0003-6",
+        "seg_type": "eq"
+      },
+      {
+        "para_id": "p24",
+        "section_heading": "2.1 Gibbs Sampling with Gaussian Moment Matching",
+        "text": "where we can see that the Fisher divergence only depends on \u00b5(x\u0303). Since FD(p\u0303d||q\u0303\u03b8) = 0\u21d4 q = pd (Theorem 2.1), the function \u00b5(x\u0303) fully characterizes the distribution q. Therefore, \u00b5(x\u0303) and p(x\u0303|x) = N (x, \u03c32I) can provide sufficient information to determine p(x|x\u0303) \u221d q(x)p(x\u0303|x). As a consequence, the following theorem shows that the covariance function can also be analytically derived. Theorem 2.2 (Analytical Covariance Identity). Given a clean model q(x) such that\u222b q(x)p(x\u0303|x) dx = q\u0303\u03b8(x\u0303) = p\u0303d(x\u0303) with p(x\u0303|x) = N (x, \u03c32I), the \u00b5(x\u0303) and \u03a3(x\u0303) of the p(x|x\u0303) \u221d q(x)p(x\u0303|x) has the following relations",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p25",
+        "section_heading": "2.1 Gibbs Sampling with Gaussian Moment Matching",
+        "text": "See Appendix A.3 for proof. This analytical covariance identity can be seen as a high-dimensional generalization of the 2nd-order Tweedie\u2019s Formula [9, 29]. Therefore, the analytical full-covariance moment matching approximation can be written as",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p26",
+        "section_heading": "2.1 Gibbs Sampling with Gaussian Moment Matching",
+        "text": "We want to highlight that since the Gaussian moment matching is only an approximation of p(x|x\u0303), the sampling scheme in Equation 6 is a \u2018pseudo\u2019 Gibbs sampler unless the true p(x|x\u0303) is also a Gaussian distribution3, which is not true for general non-Gaussian pd. However, since \u00b5(x\u0303) and p(x\u0303|x) = N (x, \u03c32I) are already sufficient to specify p(x|x\u0303), it should be possible to derive expressions for higher-order moments which themselves involve only \u00b5(x\u0303) and \u03c3; we leave this to future work. To our knowledge, the x\u0303-conditioned full covariance Gaussian moment matching approximation to p(x|x\u0303) has not been derived previously. In the next section, we briefly discuss the connections between our method and other related approaches.",
+        "seg_type": "par"
+      }
+    ]
+  },
+  {
+    "id": "010",
+    "title": "sp_0814_010",
+    "filename": "Videos/sp_0814.mp4",
+    "paper_filename": "Papers/sp_0814.pdf",
+    "type": "slides",
+    "relevant_segments": [
+      {
+        "caption": "Figure 2: Samples from a single chain Gibbs sampling",
+        "captionBoundary": {
+          "x1": 278.405029296875,
+          "x2": 495.95831298828125,
+          "y1": 444.5705261230469,
+          "y2": 450.572998046875
+        },
+        "figType": "Figure",
+        "imageText": [
+          "(i)",
+          "True",
+          "data",
+          "(j)",
+          "Learn.",
+          "diag.",
+          "(k)",
+          "Analytic",
+          "iso.",
+          "(l)",
+          "Analytic",
+          "full",
+          "(e)",
+          "True",
+          "data",
+          "(f)",
+          "Learn.",
+          "diag.",
+          "(g)",
+          "Analytic",
+          "iso.",
+          "(h)",
+          "Analytic",
+          "full",
+          "(a)",
+          "True",
+          "data",
+          "(b)",
+          "Learn.",
+          "diag.",
+          "(c)",
+          "Analytic",
+          "iso.",
+          "(d)",
+          "Analytic",
+          "full"
+        ],
+        "name": "2",
+        "page": 5,
+        "regionBoundary": {
+          "x1": 270.71999999999997,
+          "x2": 504.0,
+          "y1": 216.95999999999998,
+          "y2": 434.88
+        },
+        "renderDpi": 150,
+        "renderURL": "/Users/meghamariam/PROJECTS/PROJ1_Dataset/PROJ1_Crossmodal-Traversal/DATASET/Presentation/pap-seg/fig/sp_0814/sp_0814-Figure2-1.png",
+        "id": "sp_0814-Figure2-1",
+        "seg_type": "fig"
+      }
+    ]
+  },
+  {
+    "id": "011",
+    "title": "sp_0814_011",
+    "filename": "Videos/sp_0814.mp4",
+    "paper_filename": "Papers/sp_0814.pdf",
+    "type": "slides",
+    "relevant_segments": [
+      {
+        "caption": "Figure 3: Figures (a,b,c) show the MNIST experiment comparisons, where we compare samples generated by pseudo-Gibbs sampling with three different q(x|x\u0303). We plot samples from 25 independent Markov Chains with t \u2208 {0, 1, 5, 10, 20} time steps. We can find the samples generated by the proposed analytical covariance moment matching with diagonal approximation achieved the best sample quality.",
+        "captionBoundary": {
+          "x1": 108.0,
+          "x2": 505.6572570800781,
+          "y1": 368.0215148925781,
+          "y2": 417.6600036621094
+        },
+        "figType": "Figure",
+        "imageText": [
+          "(c)",
+          "Diagonal",
+          "covariance",
+          "learned",
+          "by",
+          "KL",
+          "minimization",
+          "[4]",
+          "(b)",
+          "Isotropic",
+          "x\u0303-independent",
+          "covariance",
+          "moment",
+          "matching",
+          "[2]",
+          "(a)",
+          "Diagonal",
+          "x\u0303-dependent",
+          "covariance",
+          "moment",
+          "matching",
+          "(Ours)"
+        ],
+        "name": "3",
+        "page": 6,
+        "regionBoundary": {
+          "x1": 108.0,
+          "x2": 505.44,
+          "y1": 70.56,
+          "y2": 358.08
+        },
+        "renderDpi": 150,
+        "renderURL": "/Users/meghamariam/PROJECTS/PROJ1_Dataset/PROJ1_Crossmodal-Traversal/DATASET/Presentation/pap-seg/fig/sp_0814/sp_0814-Figure3-1.png",
+        "id": "sp_0814-Figure3-1",
+        "seg_type": "fig"
+      }
+    ]
+  },
+  {
+    "id": "013",
+    "title": "sp_0814_013",
+    "filename": "Videos/sp_0814.mp4",
+    "paper_filename": "Papers/sp_0814.pdf",
+    "type": "slides",
+    "relevant_segments": [
+      {
+        "para_id": "p56",
+        "section_heading": "4 Image Generation with a Single Noise Level",
+        "text": "Limitation: In the CIFAR experiment, we observe a mode collapse phenomenon when running multiple independent Markov chains for a longer time. This phenomenon is likely due to the small noise level \u03c3 = 0.3, which prevents the sampler from exploring the full space, as commonly found with MCMC methods [30]. This effect is visually represented in Figure 8, where we assess the Fr\u00e9chet Inception Distance (FID) values for 50,000 images sampled with varying numbers of Gibbs steps. Notably, the FID increases beyond 40 Gibbs steps, and visual evidence of mode collapse is observed (Figure 12). In the ensuing section, we will demonstrate the application of our method to settings with multiple noise levels, an approach that may help mitigate the issue of mode collapse.",
+        "seg_type": "par"
+      },
+      {
+        "caption": "Figure 8: FID evaluation with Increased Gibbs Steps. We can find the FID increases after 40 Gibbs steps.",
+        "captionBoundary": {
+          "x1": 345.60198974609375,
+          "x2": 505.6512451171875,
+          "y1": 504.478515625,
+          "y2": 532.2990112304688
+        },
+        "figType": "Figure",
+        "imageText": [],
+        "name": "8",
+        "page": 8,
+        "regionBoundary": {
+          "x1": 344.64,
+          "x2": 505.44,
+          "y1": 390.71999999999997,
+          "y2": 496.32
+        },
+        "renderDpi": 150,
+        "renderURL": "/Users/meghamariam/PROJECTS/PROJ1_Dataset/PROJ1_Crossmodal-Traversal/DATASET/Presentation/pap-seg/fig/sp_0814/sp_0814-Figure8-1.png",
+        "id": "sp_0814-Figure8-1",
+        "seg_type": "fig"
+      },
+      {
+        "caption": "Figure 12: Mode Collapse visualization of 25 Markov chains, we plot the samples every 20 Gibbs steps, we can find less modes are covered if we run the Gibbs sampling for a longer time.",
+        "captionBoundary": {
+          "x1": 108.0,
+          "x2": 503.9975891113281,
+          "y1": 606.4955444335938,
+          "y2": 623.406982421875
+        },
+        "figType": "Figure",
+        "imageText": [],
+        "name": "12",
+        "page": 16,
+        "regionBoundary": {
+          "x1": 108.0,
+          "x2": 504.0,
+          "y1": 519.84,
+          "y2": 598.0799999999999
+        },
+        "renderDpi": 150,
+        "renderURL": "/Users/meghamariam/PROJECTS/PROJ1_Dataset/PROJ1_Crossmodal-Traversal/DATASET/Presentation/pap-seg/fig/sp_0814/sp_0814-Figure12-1.png",
+        "id": "sp_0814-Figure12-1",
+        "seg_type": "fig"
+      }
+    ]
+  },
+  {
+    "id": "014",
+    "title": "sp_0814_014",
+    "filename": "Videos/sp_0814.mp4",
+    "paper_filename": "Papers/sp_0814.pdf",
+    "type": "slides",
+    "relevant_segments": [
+      {
+        "cls_id": 14,
+        "label": "algorithm",
+        "score": 0.9341177344322205,
+        "coordinate": [
+          1283.0369873046875,
+          348.4590759277344,
+          2097.544921875,
+          949.76904296875
+        ],
+        "text": "Algorithm 2 Sampling with the proposed\nGibbs Sampling\n: {\u03c3t}T=0, K\nRequire:\nInittilize xT\nfor t \u2190 T to 1 do\nfor k \u2190 1 to K do\nDraw xk+1 \u223c p(xt+1|xt = xk)\nDraw xk \u223c q\u03b8(xt|xt+1 = xk+1)\nend for\n\u2190 x\nK\nend for\nreturn x0",
+        "input_path": "/tmp/megha/PDF-Extract-Kit/Presentation/layout_pap/sp_0814/sp_0814_page_9.png",
+        "id": "sp_0814_page_9_1",
+        "seg_type": "algo"
+      },
+      {
+        "cls_id": 14,
+        "label": "algorithm",
+        "score": 0.9225366115570068,
+        "coordinate": [
+          445.5477600097656,
+          349.3739318847656,
+          1258.829833984375,
+          949.1834106445312
+        ],
+        "text": "Algorithm 1 Sampling with Langevin D.\nRequire: {\u03c3t}t=0, \u03b4, K\nInitialize x0\nfor t \u2190 T to 1 do\n.2\nfor k \u2190 1 to K do\nDraw zk ~ N (0, I)\n\u2190xt\nk\u22121\n+\u03b1ts\u03b8(xk\u22121, \u03c3t) + \u221a2\u03b1\nend for\n0\nK\nend for\nreturn x0 + \u03c32s\u03b8(x0,",
+        "input_path": "/tmp/megha/PDF-Extract-Kit/Presentation/layout_pap/sp_0814/sp_0814_page_9.png",
+        "id": "sp_0814_page_9_2",
+        "seg_type": "algo"
+      },
+      {
+        "para_id": "p1",
+        "section_heading": "Abstract",
+        "text": "Energy-Based Models (EBMs) offer a versatile framework for modeling complex data distributions. However, training and sampling from EBMs continue to pose significant challenges. The widely-used Denoising Score Matching (DSM) method [41] for scalable EBM training suffers from inconsistency issues, causing the energy model to learn a \u2018noisy\u2019 data distribution. In this work, we propose an efficient sampling framework, (pseudo)-Gibbs sampling with moment matching, which enables effective sampling from the underlying clean model when given a \u2018noisy\u2019 model that has been well-trained via DSM. We explore the benefits of our approach compared to related methods and demonstrate how to scale the method to high-dimensional datasets.",
+        "seg_type": "par"
+      }
+    ]
+  },
+  {
+    "id": "015",
+    "title": "sp_0814_015",
+    "filename": "Videos/sp_0814.mp4",
+    "paper_filename": "Papers/sp_0814.pdf",
+    "type": "slides",
+    "relevant_segments": [
+      {
+        "caption": "Figure 9: CIFAR 10 Samples Figure 10: CelebA Samples",
+        "captionBoundary": {
+          "x1": 146.69500732421875,
+          "x2": 464.4682312011719,
+          "y1": 610.0125732421875,
+          "y2": 616.0150146484375
+        },
+        "figType": "Figure",
+        "imageText": [],
+        "name": "9",
+        "page": 9,
+        "regionBoundary": {
+          "x1": 116.64,
+          "x2": 495.35999999999996,
+          "y1": 425.76,
+          "y2": 602.4
+        },
+        "renderDpi": 150,
+        "renderURL": "/Users/meghamariam/PROJECTS/PROJ1_Dataset/PROJ1_Crossmodal-Traversal/DATASET/Presentation/pap-seg/fig/sp_0814/sp_0814-Figure9-1.png",
+        "id": "sp_0814-Figure9-1",
+        "seg_type": "fig"
+      },
+      {
+        "caption": "Table 2: CIFAR10 Inception and FID Scores",
+        "captionBoundary": {
+          "x1": 313.6820068359375,
+          "x2": 492.0523681640625,
+          "y1": 269.1105041503906,
+          "y2": 275.11297607421875
+        },
+        "figType": "Table",
+        "imageText": [
+          "Model",
+          "Inception",
+          "FID",
+          "NCSNv2",
+          "(Langevin",
+          "[36])",
+          "8.40\u00b1",
+          "0.07",
+          "10.87",
+          "NCSNv2",
+          "(Gibbs,",
+          "Ours)",
+          "8.28\u00b1",
+          "0.07",
+          "10.75",
+          "DDPM",
+          "[14]",
+          "9.46\u00b1",
+          "0.11",
+          "3.17",
+          "NCSN++",
+          "[39]",
+          "9.89",
+          "2.20"
+        ],
+        "name": "2",
+        "page": 9,
+        "regionBoundary": {
+          "x1": 301.92,
+          "x2": 505.44,
+          "y1": 284.64,
+          "y2": 337.44
+        },
+        "renderDpi": 150,
+        "renderURL": "/Users/meghamariam/PROJECTS/PROJ1_Dataset/PROJ1_Crossmodal-Traversal/DATASET/Presentation/pap-seg/fig/sp_0814/sp_0814-Table2-1.png",
+        "id": "sp_0814-Table2-1",
+        "seg_type": "tab"
+      }
+    ]
+  },
+  {
+    "id": "016",
+    "title": "sp_0814_016",
+    "filename": "Videos/sp_0814.mp4",
+    "paper_filename": "Papers/sp_0814.pdf",
+    "type": "slides",
+    "relevant_segments": [
+      {
+        "para_id": "p61",
+        "section_heading": "6 Conclusion",
+        "text": "This paper focuses on addressing the inconsistency problem in training energy-based models (EBMs) using denoising score matching. Specifically, we identify the presence of an underlying clean model within a \u2018noisy\u2019 EBM and propose an efficient sampling scheme for the clean model. We demonstrate how this method can be effectively applied to high-dimensional data and showcase image generation results in both single and multi-level noise settings. More broadly, we hope our more accurate denoising posterior opens new avenues for future work on score-based methods in machine learning.",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p1",
+        "section_heading": "Abstract",
+        "text": "Energy-Based Models (EBMs) offer a versatile framework for modeling complex data distributions. However, training and sampling from EBMs continue to pose significant challenges. The widely-used Denoising Score Matching (DSM) method [41] for scalable EBM training suffers from inconsistency issues, causing the energy model to learn a \u2018noisy\u2019 data distribution. In this work, we propose an efficient sampling framework, (pseudo)-Gibbs sampling with moment matching, which enables effective sampling from the underlying clean model when given a \u2018noisy\u2019 model that has been well-trained via DSM. We explore the benefits of our approach compared to related methods and demonstrate how to scale the method to high-dimensional datasets. 1 Energy-Based Models Energy-Based Models (EBMs) have attracted a lot of attention in the generative model literature [25, 46, 7, 35]. EBMs are a type of non-normalized probabilistic model that determines the probability density function without a known normalizing constant. For continuous data x, the density function of an EBM is specified as q\u03b8(x) = exp(\u2212f\u03b8(x))/Z(\u03b8) where the f\u03b8(x) is a nonlinear function with parameter \u03b8 and Z(\u03b8) = \u222b exp(\u2212f\u03b8(x)) dx is the normalization constant that is independent of x. The energy parameterization allows for greater flexibility in model parameterization and the ability to model a wider range of probability distributions. However, the lack of a known normalizing constant makes training these models challenging. We start by giving a brief introduction of how to estimate \u03b8 in EBMs and refer the reader to [37] for a detailed overview of different training techniques for continuous EBMs. Likelihood-based training: A classic method to learn \u03b8 is to minimize the KL divergence between the data distribution pd and the model density q\u03b8, which is defined as where we use . = to denote the equivalence up to a constant that is independent of \u03b8. The integration of pd(x) can be approximated by Monte Carlo with the training dataset Xtrain = {x1, \u00b7 \u00b7 \u00b7 , xN} \u223c pd(x); in this case, it is equivalent to the maximum likelihood estimate (MLE) [5]. However, for EBMs, minimizing the KL divergence requires the estimation of Z(\u03b8), which is intractable for nonlinear f\u03b8(x) defined by a neural network. Various methods have been proposed to alleviate the intractability by introducing techniques like Markov chain Monte Carlo (MCMC) [13, 26, 8, 11] or adversarial training [18, 47, 6]. Score-based training: Alternatively, [16] proposes to minimize the Fisher divergence to learn \u03b8, which is defined as where we use sp(x) to denote the score function of distribution p: sp(x) \u2261 \u2207x log p(x). Under certain regularity conditions, the Fisher divergence is equivalent to the score-matching (SM) objective [16], which does not require estimation of the intractable Z(\u03b8). However, this objective needs to calculate the Hessian trace\u2207xsq\u03b8 (x) = \u2212\u2207xf\u03b8(x) in every gradient step during training, which is computationally expensive and does not scale to high dimensional data or requires approximation [38]. In this paper, we will focus on another training method, denoising score matching [41], which overcomes the tractability and scalability issues mentioned above, and is introduced in the next section. 1.1 Denoising Score Matching For the target data density pd(x), a noise distribution p(x\u0303|x) = N (x, \u03c3I) is introduced to construct a noised data distribution p\u0303d(x\u0303) = \u222b pd(x)p(x\u0303|x) dx. Denoising score matching (DSM) [41] minimizes the Fisher divergence between the noised data distribution p\u0303d(x\u0303) and an energy-based model q\u0303\u03b8(x\u0303) = exp(\u2212f\u03b8(x\u0303))/Z(\u03b8), with where the last equation is due to\u2207x\u0303 log p(x\u0303|x) being tractable for the Gaussian distribution p(x\u0303|x). Compared to the KL or SM objectives, the DSM objective is scalable and well-defined when the data distribution is singular2 [49] and can alleviate the blindness problem of score matching [35, 45, 51]. On the other hand, there is a notable disadvantage associated with the DSM objective: for a fixed \u03c3 > 0, the DSM objective is not a consistent objective for learning the underlying data distribution pd since FD(p\u0303d||q\u0303\u03b8) = 0 =\u21d2 p\u0303d = q\u0303\u03b8 \u0338= pd. A common solution is to anneal \u03c3 \u2192 0 during training. However, Equation 4 is not defined when \u03c3 = 0 since the division in Equation 4 will make (x\u0303\u2212x)/\u03c3 unbounded, which results in an inconsistent objective. Annealing \u03c3 increases the variance of the training gradients [37, 42], which makes the optimization challenging in practice. To overcome the challenges, we propose an alternative data generation scheme: we use DSM with a fixed \u03c3 > 0 to train a \u2018noisy\u2019 energy model and then construct a sampler which targets the underlying \u2018clean\u2019 model. Specifically, our contributions are summarized as follows: \u2022 We demonstrate that for an EBM that learns a noisy data distribution, there exists a unique underlying clean model which recovers the true data distribution. \u2022 We introduce a pseudo-Gibbs sampling scheme incorporating an analytical momentmatching approximation of the denoising distribution. This allows us to sample from the underlying clean model without requiring additional training. \u2022 We illustrate how to scale our method for high-dimensional data and demonstrate the generation of high-quality images using only a single level of fixed noise. Furthermore, we showcase the application of our proposed method in multi-level noise scenarios, closely resembling a diffusion model. The singular distribution is not absolutely continuous (a.c.) with respect to the Lebesgue measure, thus doesn\u2019t allow a density function [40, p.172]. A typical example is a data distribution supported on a lowerdimensional manifold. In this case, the KL divergence is ill-defined and cannot be used to train the models. When using DSM, the distribution after Gaussian convolution would always be a.c., thus can be a valid training objective, see Zhang et al. [49] or Arjovsky et al. [1] for a detailed introduction. 2 Clean Model Identification For a fixed \u03c3 > 0, DSM can only learn a \u2018noisy\u2019 data distribution q\u0303\u03b8(x\u0303) even in the ideal case where the Fisher divergence is exactly minimized, since FD(p\u0303d||q\u0303\u03b8\u2217) = 0\u2192 p\u0303d = q\u0303\u03b8 \u0338= pd. In this case, the following theorem shows that there exists a \u2018clean\u2019 model that is implicitly defined that learns the true data distribution. Theorem 2.1 (Existence of the underlying clean model for optimal q\u0303\u03b8(x\u0303)). When the Fisher divergence goes to 0, FD(p\u0303d||q\u0303\u03b8) = 0 \u2192 p\u0303d = q\u0303\u03b8, there exists an unique underlying clean model q(x) such that q\u0303\u03b8(x\u0303) = \u222b q(x)p(x\u0303|x) dx and q(x) = pd(x). See Appendix A.1 for proof. This theorem shows that despite training an EBM on noisy data, there is an implicit model within it that can recover the true data distribution. Therefore, instead of annealing the noise \u03c3 \u2192 0 to recover the true data distribution, we will demonstrate how to directly sample from the implicitly-defined clean model given the noisy energy-based model in the next section. We want to highlight that the \u2018perfect fit\u2019 assumption, i.e. achieving FD(p\u0303d||q\u0303\u03b8) = 0, may not hold for a complex data distribution pd or underpowered EBMs. Therefore, we provide general sufficient conditions for the existence of the clean model for an imperfect EBM in Appendix A.2. 2.1 Gibbs Sampling with Gaussian Moment Matching Given a well-trained noisy energy-based model q\u0303\u03b8(x\u0303) = p\u0303d(x\u0303), the clean model has the form where the denoising distribution can be written as p(x|x\u0303) \u221d p(x\u0303|x)q(x). We notice that, since the noise distribution p(x\u0303|x) = N (x, \u03c3I) is known, a Gibbs sampling scheme can be constructed to sample from the underlying clean model if we know the denoising distribution p(x|x\u0303), with where the initial sample x0 \u223c p0(x) can be drawn from a standard Gaussian p0(x) = N (0, I). However, as the denoising distribution p(x|x\u0303) is usually intractable for complex pd, we propose an analytical Gaussian moment matching approximation of p(x|x\u0303). Denote the mean and covariance of p(x|x\u0303) as The classic Gaussian moment matching method [24] specifies a Gaussian approximation p(x|x\u0303) \u2248 N (\u03bc(x\u0303),\u03a3(x\u0303)), which matches the first and second moment of p(x|x\u0303). When q\u0303\u03b8 = p\u0303d, the first mean of the denoised distribution has a well-known analytical form [39, 2, 9, 29] we include the derivation in Appendix A.3. Using this identity, we can rewrite Equation 4 as where we can see that the Fisher divergence only depends on \u03bc(x\u0303). Since FD(p\u0303d||q\u0303\u03b8) = 0\u21d4 q = pd (Theorem 2.1), the function \u03bc(x\u0303) fully characterizes the distribution q. Therefore, \u03bc(x\u0303) and p(x\u0303|x) = N (x, \u03c3I) can provide sufficient information to determine p(x|x\u0303) \u221d q(x)p(x\u0303|x). As a consequence, the following theorem shows that the covariance function can also be analytically derived. Theorem 2.2 (Analytical Covariance Identity). Given a clean model q(x) such that \u222b q(x)p(x\u0303|x) dx = q\u0303\u03b8(x\u0303) = p\u0303d(x\u0303) with p(x\u0303|x) = N (x, \u03c3I), the \u03bc(x\u0303) and \u03a3(x\u0303) of the p(x|x\u0303) \u221d q(x)p(x\u0303|x) has the following relations See Appendix A.3 for proof. This analytical covariance identity can be seen as a high-dimensional generalization of the 2nd-order Tweedie\u2019s Formula [9, 29]. Therefore, the analytical full-covariance moment matching approximation can be written as We want to highlight that since the Gaussian moment matching is only an approximation of p(x|x\u0303), the sampling scheme in Equation 6 is a \u2018pseudo\u2019 Gibbs sampler unless the true p(x|x\u0303) is also a Gaussian distribution3, which is not true for general non-Gaussian pd. However, since \u03bc(x\u0303) and p(x\u0303|x) = N (x, \u03c3I) are already sufficient to specify p(x|x\u0303), it should be possible to derive expressions for higher-order moments which themselves involve only \u03bc(x\u0303) and \u03c3; we leave this to future work. To our knowledge, the x\u0303-conditioned full covariance Gaussian moment matching approximation to p(x|x\u0303) has not been derived previously. In the next section, we briefly discuss the connections between our method and other related approaches. 2.2 Connection to Covariance Learning Approaches Bengio et al. [4] proposes to approximate the true posterior p(x|x\u0303) \u221d pd(x)p(x\u0303|x) with a variational distribution q\u03b8(x|x\u0303). The parameter \u03b8 is then learned by minimizing the joint KL divergence where p\u0303d(x\u0303) = \u222b pd(x)p(x\u0303|x) dx. The joint KL divergence in Equation 12 encourages q\u03b8(x|x\u0303) to match the moments of the true posterior p(x|x\u0303), and defines an upper bound of the marginal KL [48] where the model is implicitly defined as the marginal of the joint q\u03b8(x) = \u222b q\u03b8(x|x\u0303)p\u0303d(x\u0303). When q\u03b8(x|x\u0303) is a consistent estimator of p(x|x\u0303), this asymptotic distribution of the Gibbs sampling will converge to the true data distribution pd(x) [4]. For continuous data, the variational distribution is chosen as a Gaussian distribution q\u03b8(x|x\u0303) = N (\u03bc\u03b8(x\u0303),\u03a3\u03b8(x\u0303)), where the mean \u03bc\u03b8(\u00b7) and the covariance \u03a3\u03b8(\u00b7) are parameterized by neural networks. We note that the only difference between the KL and DSM objective (Equation 9) is that the KL objective additionally learns the covariance. We thus show that the optimal covariance under KL minimization is the proposed analytical covariance. Theorem 2.3 (Optimal Gaussian Approximation). Let p(x\u0303|x) = N (0, \u03c3I) and assume Gaussian distribution q\u03b8(x|x\u0303) = N (\u03bcq(x\u0303),\u03a3q(x\u0303)), then the optimal q\u2217 such that has the mean and covariance with the form see Appendix A.4 for proof. Therefore, when the optimal mean function is learned \u03bc\u03b8(x\u0303) = \u03bcq(x\u0303), the optimal \u03a3(x\u0303) can be analytically derived, making the learning of \u03a3\u03b8(x\u0303) redundant. In addition to the training inefficiency caused by more parameters, the amortized covariance network may suffer from poor generalization [50]. Moreover, the KL objective is also not well-defined for learning data distributions which lie on a low-dimensional manifold, e.g. MNIST, see Section 4 for a detailed discussion. In this case, the learned \u03a3\u03b8(x\u0303) may be a degenerate matrix, making the Gaussian density function q(x|x\u0303) ill-defined [49] which impedes the training, see Figure 5 for an example. Paper[23] proposes a higher-order score-matching loss to simultaneously learn both the first order score \u2207x\u0303 log q\u0303\u03b8(x\u0303) and the second order score \u2207x\u0303 log q\u0303\u03b8(x\u0303). However, our findings indicate that the mean function \u03bc(x\u0303) (or the first order score\u2207x\u0303 log p(x\u0303)) already contains all the moment information of the underlying true distribution pd, and the optimal moment can be derived using the mean function. Therefore, learning the second-order score is redundant and may lead to sub-optimal inference. 2.3 Connection to Analytic DDPM The recent paper Bao et al. [2] considers a constrained variational family q\u03b8(x|x\u0303) = N (\u03bc\u03b8(x\u0303), \u03c3 qI) in the context of diffusion model and derive the optimal \u03c3\u2217 q as For example, when pd(x) = N (\u03bcd, \u03c3d), the true posterior p(x|x\u0303) \u221d pd(x)p(x\u0303|x) will be a Gaussian with mean \u03bc(x\u0303) = (\u03c3\u03bcd + \u03c3 dx\u0303)/(\u03c3 2 + \u03c3 d) and variance \u03a3(x\u0303) = \u03c3 2 d\u03c3 /(\u03c3 + \u03c3 d), we can verify that \u03a3(x\u0303) = \u03c3\u2207x\u0303\u03bc(x\u0303). which can also be rewritten using the score function In Appendix B, we provide a detailed derivation to show how this approximation can be linked to our method using the Fisher information identity [10]. This approximation has two potential limitations: first, compared to full covariance moment matching, the assumed isotropic covariance structure may be insufficiently flexible to capture the true posterior; second, the covariance is independent of x\u0303. Figure 1: Figure (a) shows the clean data distribution pd(x) and the corresponding noisy distribution p\u0303d(x\u0303). Figure (b) shows 4 conditioned samples in the noisy space. Figures (c, d, e) visualize the true posterior p(x|x\u0303) (green) and three posterior approximations (orange). We find that only the proposed x\u0303-dependent analytical full-covariance moment matching can capture the variance of the true posterior, whereas the other two methods underestimate the variance. The second assumption only holds when \u03bc(x\u0303) is a linear function of x\u03034 (e.g. when pd(x) is Gaussian) and does not hold for other nonGaussian pd(x). Therefore, our x\u0303-dependent full-covariance approximation offers a more versatile approximation family, which ultimately results in a more precise estimation. However, in certain applications such as accelerating the sampling procedure of a diffusion model [2], it is advantageous to use a x\u0303-independent isotropic covariance due to its inexpensive estimation. On the other hand, our x\u0303-dependent covariance necessitates the computation of the Hessian for each x\u0303, making it inefficient for highdimensional data. In Section 3, we will explore approaches to mitigate this limitation. 2.4 Posterior Approximation Comparison We now consider a toy example to compare the three denoising posterior approximations discussed above. Let pd(x) be a Mixture of Gaussians (MoG) pd(x) = 14 \u2211k=4 k=1 gk(x) whose components g[1:4] are 2D Gaussians with means [\u22121,\u22121], [\u22121, 1], [1, 1], [1,\u22121] and isotropic covariance \u03c3 gI with \u03c3g = 0.2. The noise distribution is p(x\u0303|x) = N (x, \u03c3I) with \u03c3 = 0.2, so p\u0303(x\u0303) = \u222b p(x)p(x\u0303|x) dx is an MoG with the same component means and diagonal covariance (\u03c3 g + \u03c3 )I; see Figure 1a for a visualization. In this case the true posterior p(x|x\u0303) does not allow a tractable form. Fortunately, given a noisy sample x\u0303\u2032 and an evaluation point x\u2032, we can evaluate the true density p(x|x\u0303\u2032) using Bayes rule: p(x\u2032|x\u0303 = x\u0303\u2032) = p(x\u0303\u2032|x = x)pd(x )/p\u0303d(x\u0303 \u2032). Figure 1 shows the true posteriors given four different x\u0303\u2032 where we use grid data in x-space to visualize the density. To train the model, we sample 10,000 data points from pd as our training data. For the KL-trained Gibbs sampler described in Section 2.2, we use a network with 3 hidden layers with 400 hidden units, Swish activation [28] and output size 4 to generate both mean and log standard deviation of the Gaussian approximation. For the moment-matching Gibbs sampler (including both full and isotropic covariance), we use the same network architecture but with output size 1 to get the scalar energy and DSM as the training objective. Both networks are trained with batch size 100 and Adam [19] optimizer with learning rate 1\u00d710\u22124 for 100 epochs. For the x\u0303-independent isotropic covariance, we use the Monte Carlo approximation to estimate the variance [2] with 10000 samples from p\u0303d(x\u0303). Figure 1 visualizes the approximations to the denoising posterior p(x|x\u0303) estimated by each of the three methods described in the previous sections. We surprisingly find that although the KL objective in Equation 12 encourages q\u03b8(x|x\u0303) to match the moments of p(x|x\u0303), the learned covariance in Figure 1e still underestimates the variance of the posterior. This shows the redundancy of covariance learning can degrade the variational approximation performance. Additionally, the x\u0303-independent covariance fails to account for the relative positions of x\u0303\u2032 and lacks the ability to predict the posterior\u2019s elliptical shape due to its isotropic nature. In contrast, our x\u0303-dependent full covariance approximation overcomes these limitations, enabling more accurate predictions that capture the intricate geometry of the posterior distribution. We then use the estimated posterior to conduct (pseudo) Gibbs sampling to generate samples5. Specifically, we initialize the first sample x0 \u223c N (0, 0.1) and run one Markov Chain with 10,000 time steps to generate 10,000 samples. In addition to the mixture of Gaussian datasets, we also train and generate samples from the 2D Swiss roll and two-ring datasets. For numerical evaluation, we calculate the Maximum Mean Discrepancy (MMD) [12] between 10k samples generated by a single-chain Gibbs sampler and 10k samples from the training dataset respectively. The kernel insides MMD is a sum over 5 Gaussian kernels with bandwidth ranging over [2\u22122, 2\u22121, 2, 2, 2]. The MMD results (including both mean and std) are calculated using 5 random seeds. We find that Gibbs sampling with the proposed analytical full covariance achieves the best results; numerical results are in Table 1, with a visual comparison in Figure 2. 3 Scalable Implementations for Image Data Scalable Diagonal Hessian Approximation As we discussed in Section 2.3, the proposed full covariance Gaussian approximation in Equation 10 requires calculating an D\u00d7D Hessian\u2207x\u0303 log q\u0303(x\u0303) for each x\u0303 with size D, which brings both memory and computation difficulties for high-dimensional data. A naive diagonal Hessian method (only using the diagonal entries in the Hessian) will address the memory bottleneck but still needs D times backward passes for the exact computation of the diagonal term [22]. In this paper, we use the following diagonal Hessian approximation [3], where vs \u223c p(v) is a Rademacher random variable with entries \u00b11 and \u2299 denotes the element-wise product6. This estimator will converge to the exact Hessian diagonals when S \u2192 \u221e [3]. The computation for each vs can be computed by two forward-backward passes. It is worth emphasizing that our x\u0303-dependent diagonal moment matching approach provides a comparable level of flexibility to the variational method proposed in [4] while eliminating the need for additional training of the diagonal covariance. Furthermore, our method remains more flexible than the isotropic x\u0303-independent moment matching method proposed by [2]. Energy or Score Parameterization For the full-covariance moment matching in Equation 10, we require \u2207x\u0303 log q\u0303\u03b8(x\u0303) to be symmetric to obtain a valid Gaussian approximation. However, if we learn the score function\u2207x\u0303 log p(x\u0303) = s\u03b8(x\u0303) using a network s\u03b8(\u00b7) : R \u2192 R, its Jacobian is not guaranteed to be symmetric. In this case, we follow [34] and directly parameterize the density function q\u0303\u03b8(\u00b7) with a neural network f\u03b8(\u00b7) : R \u2192 R and let the score function \u2207x\u0303 log q\u0303\u03b8(x\u0303) = \u2212\u2207xf\u03b8(x\u0303). This can be obtained by AutoDiff packages like PyTorch [27], and this parameterization guarantees \u2207x\u0303f\u03b8(x\u0303) to be symmetric. We also notice that when using the diagonal Hessian approximation (Equation 18), we only need entries in Diag(H) to be positive in order to obtain a valid Gaussian approximation. In this case, the score parameterization remains applicable and offers more efficient training compared to the energy parameterization. Therefore, the combination of full/diagonal covariance and energy/score parameterization provides a tradeoff between flexibility and inference speed, allowing for a flexible approach while maintaining computational efficiency during training. 4 Image Generation with a Single Noise Level We then apply the proposed method to model the grey-scale MNIST [21] dataset. We use the standard U-Net architecture [35, 31] with a single fixed noise level \u03c3 = 0.5; the effect of varying \u03c3 is explored in Appendix C.1. For the KL training objective, the output channel size is 2 to generate both mean and log-std at the same time. For DSM training, we take the sum of the U-Net output to obtain the scalar energy evaluation which also relates to the product-of-experts model described in [34]. We train both networks for 300 epochs with learning rate 1\u00d710\u22124 and batch-size 100. Figure 4: Figures (a,b,c) visualize the covariance approximations q(x|x\u0303 = x+ \u03c3\u03b5), \u03b5 \u223c N (0, \u03c3I) on 25 x\u0303 samples. We use a sigmoid function to map the real value noise into grayscale pixels for the visualization. As discussed in Section 1.1, the KL divergence is not well-defined for manifold data distributions. This limitation becomes evident when working with MNIST, where the presence of constant black pixels in the boundary areas leads to a rapid decrease towards 0 in the variance of q\u03b8(x|x\u0303) during training. Consequently, the likelihood value log q\u03b8(x|x\u0303) tends to approach infinity, resulting in unstable training. In contrast, the DSM objective is welldefined for manifold data, providing a stable training process even in the presence of such boundary effects. Figure 5 provides a visual comparison of the two training procedures, demonstrating the improved stability and effectiveness of the DSM objective in handling manifold data distributions. For the sample generation process, calculating the full-covariance Gaussian posterior becomes challenging. We therefore apply the scalable diagonal Hessian approximation described in Section 3 to approximate the diagonal Gaussian covariance of p(x|x\u0303). We find that the estimated diagonal Hessian occasionally contains small negative values due to approximation error; we, therefore, use the max(\u00b7, \u03b5) function with \u03b5 > 0 to ensure the positivity of the diagonal covariance. The x\u0303-independent isotropic covariance and the proposed x\u0303dependent diagonal covariance share the same mean function. We first visualize the covariance estimated by three different methods in Figure 4. We use 100 Rademacher samples in estimating the diagonal Hessian (Equation 18) and 50,000 samples in estimating the isotropic variance (Equation 17). We find that both x\u0303-dependent diagonal covariance approximations can capture the posterior structure whereas the isotropic x\u0303-independent covariance is just Gaussian noise since the variance is shared between different digit and pixel locations. In Figure 3, we plot the sample comparison for three methods. Since the isotropic covariance has the same variance in each dimension, the generated samples in Figure 3b contain white noise in the black background, whereas the proposed full-covariance sampler can generate a clean black background in Figure 3a. On the other hand, the samples generated by the KL-trained Gibbs sampler (Figure 3c) have worse sample quality due to the unstable training. We then apply the same method to model the more complicated CIFAR 10 [20] dataset. We use the same U-Net structure as used in [36] and directly parameterize the score function rather than the energy function to speed up the training. The noise level is fixed at 0.3. We train the model using Adam optimizer with learning rate 1\u00d710\u22124 and batch size 100 for 1000 epochs. We visualize the denoising posterior diagonal covariance in Figure 6 when using different numbers of Rademacher samples (Equation 18). We observe that better covariance estimation can be obtained by increasing the number of samples. To balance efficiency and accuracy, we use a sample number of 10 in the subsequent Gibbs sampling stage. Figure 7 shows three independent Markov chains with the samples plotted every 10 Gibbs steps, which demonstrates that sharp images can be generated with even one fixed level of noise. Limitation: In the CIFAR experiment, we observe a mode collapse phenomenon when running multiple independent Markov chains for a longer time. This phenomenon is likely due to the small noise level \u03c3 = 0.3, which prevents the sampler from exploring the full space, as commonly found with MCMC methods [30]. This effect is visually represented in Figure 8, where we assess the Fr\u00e9chet Inception Distance (FID) values for 50,000 images sampled with varying numbers of Gibbs steps. Notably, the FID increases beyond 40 Gibbs steps, and visual evidence of mode collapse is observed (Figure 12). In the ensuing section, we will demonstrate the application of our method to settings with multiple noise levels, an approach that may help mitigate the issue of mode collapse. 5 Image Generation Using Multiple Noise Levels The success of diffusion models and lessons from prior work on score-based generative models point to the importance of using multiple noise levels [14, 35] when modelling data with complex multi-modal distributions. Intuitively, by learning to denoise data at a range of noise levels, a single network can learn both the fine and global structure of the distribution, which in turn allows for more effective sampling algorithms capable of efficiently exploring diverse modes [35]. We therefore propose to adapt the denoising Gibbs sampling procedure to sample from distributions corrupted with multiple noise levels. For this purpose, we use a noise-conditioned score network trained by Song and Ermon [36], who generated high-quality samples using a procedure inspired by annealed Langevin dynamics [43]. This procedure involves generating samples from a sequence of distributions pT (xT ), ..., p0(x0), corrupted by progressively decreasing levels of Gaussian noise (parameterized via standard deviations \u03c3t, with \u03c3T >, \u00b7 \u00b7 \u00b7 , > \u03c30). At a given step t in the sequence, Langevin dynamics is used to sample from the corresponding noised distribution pt(xt), using the score network s\u03b8(xt, \u03c3t) to approximate the gradient of the noised distribution. The outputs of this Langevin dynamics run are then used to initialize the same procedure at the next noise level, leading the sampling procedure to converge gradually towards the data distribution as the noise level tends to zero (i.e. p0(x0) \u2248 pd(x), \u03c30 \u2248 0). The algorithm of the annealed Langevin dynamics with multi-level noise used in [35, 36] is summarized in Algorithm 1. We show that the proposed Gibbs sampling scheme can be directly applied to a pre-trained scorebased generative model as a drop-in replacement for Langevin dynamics MCMC in the generation stage. At each noise level, we use samples xt+1 from the previous noise level to initialise a Gibbs sampling chain targeting the marginal distribution at the current noise level pt(xt), which now plays the role of the \u2018clean\u2019 distribution in Equation 5. Therefore, the noisy distribution at time step t is a Gaussian p(xt+1|xt) = N (xt, \u03c3 t+1 \u2212 \u03c3 t ). The optimal denoising distribution q(xt|xt+1) is thus a function of the level of noise at step t relative to the level of noise at the previous step t+ 1. For generation efficiency, we employ 3 Gibbs steps at each noise level, using 3 Rademacher samples to approximate the diagonal Hessian. The sampling procedure is summarized in Algorithm 2. In Figure 9 and 10, we visualize the samples from models that are trained on CIFAR10 and CelebA separately. Further experimental details can be found in Appendix C.2. For direct comparison with the results of [36] on CIFAR10, we retain the same schedule of noise levels used to generate samples with Langevin dynamics. We generate 50000 samples using this approach and report FID and Inception scores in Table 2. Our multi-level Gibbs sampling scheme produces samples of equivalent quality to the multi-level Langevin dynamics of [36], confirming its applicability to complex natural image data. The FID is also notably superior to that of the single-noise level Gibbs sampling, and the samples exhibit significant visual diversity (Figure 9). This underlines the importance of employing multi-level noise in our approach. Recent advances in sampling strategies for score-based models leveraging the framework of stochastic differential equations [39] have led to significant further improvements in generation quality as shown in Table 2; we leave the exploration of possible applications of our method to this framework to future work.",
+        "seg_type": "par"
+      }
+    ]
+  }
+]

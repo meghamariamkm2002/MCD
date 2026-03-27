@@ -1,0 +1,86 @@
+WEBVTT
+
+00:00.031 --> 00:11.092
+Okay, now here is the algorithm, as you can see, this was already quite the algorithm we use nowadays.
+
+00:11.613 --> 00:16.723
+So for K steps, this is the inner maximization, and here they say that we use K equals one.
+
+00:16.703 --> 00:20.148
+So this is pretty much what we use today.
+
+00:20.188 --> 00:25.717
+The early days of GAN were still like, how much do I need to discriminate per generator and so on.
+
+00:26.378 --> 00:33.649
+Nowadays everyone's just using one step here, one step there, or even training and jointly works in some cases.
+
+00:33.629 --> 00:42.405
+So you want to sample a mini batch of noise samples, and then you will sample a mini batch of m examples from training data generation.
+
+00:44.188 --> 00:49.358
+So from this data, you want to update the discriminator by ascending its stochastic gradient.
+
+00:50.139 --> 00:52.363
+And this is simply the gradient of the objective.
+
+00:52.343 --> 01:01.084
+And then after those case steps you want to sample another mini batch of noise samples and update the generator by descending its stochastic gradient.
+
+01:01.145 --> 01:09.846
+And you can see right here already there is this reduced objective that doesn't include this because it falls away in the gradient, right?
+
+01:11.632 --> 01:15.419
+And they say the gradient based updates can use any standard learning based rule.
+
+01:15.760 --> 01:18.065
+We use momentum in our experiments.
+
+01:19.006 --> 01:19.447
+Very cool.
+
+01:20.049 --> 01:24.898
+So I believe they already also say that.
+
+01:26.414 --> 01:27.436
+It is somewhere here.
+
+01:28.818 --> 01:35.388
+It's pretty fun that they say, oh, in our generator, we only input noise at the lowest layer.
+
+01:35.949 --> 01:46.144
+This is also something that, if you think that G here is a multi-layer network, so it's kind of a multi-layer network that outputs an image.
+
+01:46.124 --> 01:50.512
+And if you ask yourself, if I have noise, how would I input that into there?
+
+01:50.892 --> 01:54.158
+It's so clear nowadays that, you know, we just put it here.
+
+01:54.699 --> 01:56.442
+But this was not clear at all.
+
+01:56.502 --> 02:02.652
+This was kind of an invention of this paper because you could, you know, put it pretty much at all layers.
+
+02:02.712 --> 02:04.536
+You could distribute it and so on.
+
+02:04.576 --> 02:07.761
+You could add some right here.
+
+02:07.741 --> 02:18.347
+It was this paper that already established the fact that we input noise kind of as a vector at the very beginning and then just let the neural network produce the image from that.
+
+02:18.548 --> 02:21.455
+So yeah, pretty, pretty cool.
+
+02:21.495 --> 02:29.996
+It's pretty sneaky how many things are hidden in these initial papers, how many decisions that are made there then are just taken over.
+
+02:30.056 --> 02:33.244
+And, you know, this one, I guess turned out to be fairly, fairly good.
+
+02:34.487 --> 02:35.048
+Okay.
+

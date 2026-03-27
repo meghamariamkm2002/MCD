@@ -1,0 +1,44 @@
+WEBVTT
+
+00:00.031 --> 00:03.816
+in divide and conquer Monte Carlo tree search.
+
+00:03.836 --> 00:05.578
+You're not searching over actions.
+
+00:05.898 --> 00:10.604
+You are searching over the best way to subdivide this problem, right?
+
+00:10.624 --> 00:20.857
+You're searching over which of these all the black squares should I use to subdivide my problem into sub-problems, and that's what you build your search tree from.
+
+00:21.338 --> 00:29.228
+So naturally, you can already see what kind of possibilities do we have here to subdivide this problem.
+
+00:29.208 --> 00:35.618
+I drew one white square, but any of the black squares are candidates to subdivide this problem, right?
+
+00:36.038 --> 00:39.904
+Any of the black squares could be potential subdivisions.
+
+00:40.365 --> 00:42.388
+And this is what we search over.
+
+00:42.749 --> 00:51.722
+So in Monte Carlo tree search, we search over the actions, which gives us this four to the D tree.
+
+00:52.143 --> 00:54.186
+But in divide and conquer,
+
+00:55.853 --> 00:59.423
+we're searching over all the ways to subdivide the problem.
+
+00:59.724 --> 01:03.314
+And as you can see there, that are many, many more possibilities.
+
+01:03.735 --> 01:13.783
+So from this first starting node, we have like, like a hundred possibilities to subdivide this problem into two problems, right?
+
+01:14.084 --> 01:17.052
+And each of those, again, if you now
+

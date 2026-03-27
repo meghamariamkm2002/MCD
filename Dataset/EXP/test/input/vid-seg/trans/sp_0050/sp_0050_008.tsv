@@ -1,0 +1,36 @@
+start	end	text
+31	5498	The second thing we're looking at is these binding sites.
+5558	17213	Now these are single properties of different amino acids and we're simply looking at all the other tokens that focuses their attention.
+17393	18595	Why is this important?
+18695	26044	Because these binding sites are central to the structure or to the function of the protein.
+26245	28047	If this here is a binding site,
+28027	31735	then that's a very central important point of the protein.
+32657	39311	So a lot of these other things are going to be determined by what this binding site is.
+40072	47588	This binding site needs to have a very particular function and therefore probably needs to be a very particular amino acid.
+47568	54478	And the other things here are sort of supporting this binding site because they form the 3D structure around it and so on.
+54498	61488	So you would expect a lot of attention to be put on this binding site.
+61508	62549	And what do we find?
+64011	68277	We find that it's a bit more murky than before.
+68257	71984	So, you can see that the attention is kind of spread out.
+72485	75530	Percentage of each head's attention that focuses on binding sites.
+75971	81922	Especially in the deeper layers, binding sites are targeted at much higher frequency than would occur by chance.
+82643	86991	Head 7.1 has the highest percentage, with 34%.
+87798	99696	So also here, you can see that it is spread out, but this is because multiple heads are now focusing on these binding sites, because probably binding sites come in different variations.
+100076	104764	So you'll have lots of heads specializing on attending to binding sites.
+105124	108930	And they say it is much higher frequency than would occur by chance.
+109010	116421	And you can see here, this head is the highest with 34% of its attention focused on binding sites.
+116401	125373	You can also see the general trend of the attention being rather in the later layers, which we would expect from a tertiary structure.
+126094	130019	Now, yeah, it would be interesting here.
+130480	136047	Here you also see that actually most of the things are in the last layer.
+136027	145025	which points to points to rather maybe lower lower level information, because we reasoned before about the last layer, or I was just wrong.
+145365	155385	But also in a general trend, you can see that the attention is rather shifted towards the later layers, because this is sort of a higher order function.
+157255	157656	Okay.
+158377	165748	If you look at the same calibration experiment, you can see that the picture is not as clear.
+165808	169313	There is the general trend at the beginning, but then it sort of flattens out.
+169734	178808	So you can sort of differentiate the very probably not a binding site from the somewhat probably a binding site.
+178788	181973	but it's not a perfectly calibrated classifier.
+182333	188562	And that might just be because there are many things specializing in different types of binding sites.
+188842	190905	So you can't just go to this one head.
+190945	192828	So this is just for this one head.
+193890	206027	You can't just go to that one and expect that to classify all the binding sites because you might want to combine all of the high ranking ones here.
+207897	209150	to form a classifier.

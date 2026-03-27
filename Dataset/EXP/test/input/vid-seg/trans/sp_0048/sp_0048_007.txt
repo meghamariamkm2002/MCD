@@ -1,0 +1,23 @@
+therefore this derivation wouldn't work.
+Now why is this important?
+Because if you look back into your drawing, what you're basically doing is you are imposing a quadratic regularizer around this initial point right here.
+And that creates this very strong connection between the end gradient and the initial gradient.
+So now when you're optimizing, when you have a training loss of the inner task, and maybe the training loss looks something like, it looks something like, like this right here.
+So SGD will, it would go right to the very inner point right here.
+If you're just let SGD run, it would go there.
+But now since you have this regularizer, SGD needs to find a trade off point between the two.
+So what it will do is it will probably go somewhere and stop somewhere here.
+So it will now have two forces pulling on it.
+The first force will be this quantity right here and the second force will be pulling it back towards this.
+You can pretty much count, so now SGD cannot just go to any point right here.
+It cannot go to any isoline.
+These are not equal anymore.
+Mainly it will go to the one point that points into the direction of this quadratic right here.
+So since it's a quadratic, we have closed form formulas for relating one gradient on the quadratic, namely the one out here, with the gradient back here.
+So we can express this Jacobian in closed form because this is a quadratic, because we have this regularizer, because you have these basically two forces pulling on this point in opposite direction, one pointing towards the training loss and one pointing towards the inside of the quadratic.
+So that's why this method works.
+Okay.
+I can recommend Farin Hussar's blog post.
+He has some very nice animations of why this basically restricts where gradient descent can go.
+I can link to it in the description.
+It's pretty cool to

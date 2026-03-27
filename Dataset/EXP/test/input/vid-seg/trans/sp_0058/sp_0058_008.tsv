@@ -1,0 +1,26 @@
+start	end	text
+31	4055	All right, that's the rebel algorithm.
+4836	9621	And they also describe how they actually sample data for learning with the exploration.
+10222	23997	And they also show that running algorithm one with T iterations of CFR in each sub game will produce a value approximator that has an error of at most this for any PBS that could be encountered during play.
+23977	42183	So they're going to say that the value approximator, given that it is sort of idealized, will actually converge to a good value approximator if you sample it depending on how many iterations of CF are you do.
+42603	46889	But you can see that the more iterations you do, the better of an approximation you get.
+47470	53258	And if you have a good value estimator, as we already said, you basically have solved the game.
+53238	59225	The last thing is that they determine now, what do we do at test time?
+59245	60526	You might not have thought of this.
+60786	74862	This seems sort of obvious if you know alpha zero, but they determine that at inference time, you can simply run this same algorithm except you don't want to produce training data from it and you don't want to learn anything.
+75242	77064	You simply want to run this algorithm too.
+77465	82030	If you run that algorithm at test time, that will actually give you a
+82010	83834	Nash equilibrium.
+84395	86380	So that's theorem three right here.
+86961	98466	If algorithm run one runs a test time with no off policy exploration value network with error at most this and this, and was trained as described in theorem two, with T iterations of that.
+98446	126124	Then the algorithm plays a this kind of approximation Nash equilibrium where C1 and C2 are game specific constants Okay, so you can see right here that the Nash equilibrium is going to be perfect depending on how many iterations you do and Depending on I believe how accurate in your neural network is yes your value network error
+126526	130054	Okay, if you make that smaller, your Nash equilibrium is going to be better.
+130578	131828	Pretty pretty cool.
+132466	134509	So that was the algorithm.
+134549	142581	They do a bunch of experiments where they say, what kind of network they use, if they use the value net or not, if they use self play or not.
+143522	150713	And they can also introduce a policy net, I believe for initializing or searching more effectively.
+151994	157242	They compare against previous things like deep stack, Libratus and so on.
+157222	158806	they do beat top humans.
+159227	168070	As you can see, poker has been for a long time kind of an not so solved game by machine learning, but this area has been over for a while right now.
+168491	174927	And they do release the code of, I believe, of the Liarstice.
+174947	180040	So they have the code released for rebel and the implementation for Liarstice, but not for

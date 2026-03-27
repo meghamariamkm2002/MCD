@@ -1,0 +1,6 @@
+In summary, in this work, we investigate the problem universal only learning with gradient variation.
+Our approach is mainly a multi-layer ensemble approach.
+As for results, we obtain the best known and nearly optimal universal gradient variation bounds.
+Moreover, our results can be applied to the SCA model and games and advance the best known universal results theory.
+This is all of my talks.
+Thanks for listening.

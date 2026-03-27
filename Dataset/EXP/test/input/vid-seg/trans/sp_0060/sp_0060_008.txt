@@ -1,0 +1,37 @@
+pretty interesting.
+And they also do these studies on this special ImageNet dataset.
+For example, ImageNet C, you can see that there are quite a bit of distortions right here.
+I don't even see if you can see it on this video, but this is a swing.
+So the swing right here is like something like this, but you almost can't see it.
+And you see that the bold on the left is always the prediction of their model, while the thing on the right is the prediction of the original model.
+So this model they claim is significantly more robust to these kinds of perturbations, and they do an analysis of this where they show, yes, in fact, it is.
+So I think we've already seen this at the beginning that the noisy student is significantly more robust to these perturbations and they also test this to adversarial perturbations.
+So right here you can see that the original model drops pretty quickly as you increase the epsilon.
+The epsilon is kind of the strength of the adversarial perturbation.
+And the original model drops very quickly to fairly low accuracy, while as the noisy student training drops much, much less quickly.
+Now, this is another testament to the fact that what you do, I think what's happening is you have your data space, right?
+And you have your data points in it.
+Now, when you do the like normal data augmentation, what you'll do is you not only force the model to predict those points correctly, but you'll sort of make a bit of a cloud around them.
+And you force the model to predict that cloud correctly.
+Now, if you introduce more data and you do even more noise, what you do is you'll make these clouds kind of larger.
+And that means the model is more robust to any sort of perturbations in these clouds, right?
+And that means it's probably also going to be more robust to adversarial perturbations.
+So that's sort of how you can think of this introduction of noise to make it more generalizable.
+How does this generalize better?
+So if you think of this data point right here, if I'm looking to generalize, that means I have this IID data set.
+Probably my test data is going to be related to the training data.
+So I might get a data point that's fairly close to that data point and generalizing means I classified correctly.
+Now, if this cloud is very small, like it is here, my decision boundary could be like
+here, right?
+And even though the test data set is fairly close to the original training data point, it won't be classified incorrectly.
+However, if my original cloud during training is larger, you can see if I train a model, it can maybe put the decision boundary here, and then my test data point will be included in on that same side.
+So that's kind of the idea behind generalizing better.
+Of course, that's a vast simplification.
+And also to say that this here is an FGSM attack.
+So this is kind of the weakest attack in the adversarial perturbation spectrum.
+They do say under a stronger attack, PGD, which is a fairly strong attack with 10 iterations at epsilon equals 16,
+noisy student training improves efficient netl2's accuracy from 1.1% to 4.4% like this.
+1.1% really means the model is almost dead.
+This is like random performance.
+And 4.4% is still a bit above random performance, but you could probably get there by simply using any sort of noise in that case.
+But still, you can see that it is more robust, especially to natural distortions, and therefore it generalizes better.

@@ -1,0 +1,2 @@
+We consider the finite horizon at the solid linear MDPs, where the transition dynamics and the rewards are linear in the feature map.
+As a result, the Q-functions are also linear in the feature map as well.

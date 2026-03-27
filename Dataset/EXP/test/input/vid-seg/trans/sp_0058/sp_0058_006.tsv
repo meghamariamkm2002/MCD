@@ -1,0 +1,93 @@
+start	end	text
+31	4957	are massive amounts, but in theory that makes no difference, right?
+4977	29548	So they say, since any imperfect information game can be viewed as a perfect information game consisting of public belief representations or public belief states, in theory, we could approximate a solution of any two player zero sum imperfect information game by running a perfect information RL plus search algorithm on a discretization of the belief representation.
+29528	44060	Okay, so nothing stops you from simply taking this and running alpha zero on this new thing, on this new thing, with the states being public belief states and the actions being descending around of these giant tables.
+44481	48644	You might have to discretize it as it says, but that's feasible.
+50786	59333	So you can think of constructing this game tree, but each node here is going to be a public belief state.
+59313	70065	Okay, instead of a world state like an alpha zero or like an info state like we started these imperfect information games with and then you can construct your tree down here.
+71260	79037	And then, you know, but this is infeasible because these public belief states are just too large and the actions are also too large.
+79438	80740	There are so many actions.
+81362	83226	These are super high dimensional.
+83546	84990	So this is not feasible.
+86052	89860	And we're going to, so they have to find a way.
+90920	99188	to do this thing, but to sort of do it in the domain of the original game.
+99609	117127	And that's the, I feel that's the entire trick of this rebel paper is to take this idea, let's do this search over the public belief states, but somehow this thing down here, because what we need is we need the values of these, right?
+117227	119509	If we figure out the value
+119624	129741	of this public belief state and the value of this one, right, this is of beta one, this is of beta two, then we would know which action to take.
+129942	137074	And then action is this huge thing, but if we knew the values of these, we would know which action to take.
+137675	140440	However, this is not feasible.
+140640	145328	So we need to find a way to figure out these values using
+145561	147703	the original formulation of the game.
+148764	152068	And that's what they do in the exact next section right here.
+154430	159576	So they go on saying, however, as shown in the example above, belief representation can be very high dimensional.
+159636	165102	So conducting search is, as is done in perfect information games would be intractable.
+165282	172750	They say, fortunately, in two player zero sum games, these high dimensional belief representations are convex optimization problems.
+173455	178583	Rebel leverages this fact via conducting search via an iterative gradient ascent-like algorithm.
+179123	191221	So I don't know what this sentence means, that the belief representations are convex optimization problems, maybe this is misformulated or I'm just not understanding it well enough.
+192182	202838	In general, this section here is a bit of a mystery to me, but I can sort of tell you what I understand of it, okay?
+203172	216490	So they say rebels search algorithm operates on super gradients of the PBS value function at the leaf nodes rather than on PBS values directly.
+216773	218135	This is the first indication.
+218235	219657	We don't want to work.
+219678	222181	So we want to construct this search tree.
+222802	226568	And at the leaf nodes, we need value functions, right?
+226588	227530	Like an alpha zero.
+227950	233599	Now, since we operate on public belief states, we would need value functions of public belief states.
+234340	239288	However, rebel finds a way to not do that.
+240483	246931	Specifically, the search algorithms require the values of info states for PBS.
+247912	255400	So they find a way to connect the values of info states to the values of public belief states.
+255420	265212	And just as a reminder, an info state is a state that as it looks to one player, that could have many different histories.
+265913	267975	A public belief state
+268664	274736	has all the info states that could lead to the public observation.
+274836	285998	So all the info states that you could be in, right, with all their histories, here, basically a distribution over all these info states, that entire thing
+286957	289100	is one public belief state.
+290462	297592	Now they are going to say we can determine the value of a public belief state.
+297753	306305	So the value of this is going to be equal to, and we can somehow approximate this with the values of these things here.
+306385	310371	We somehow don't need the value of the entire public belief state.
+310391	315478	We connect this to the values of the individual info states.
+315796	319940	And that's, I mean, that's done fairly easily because you simply sum over.
+320681	339999	So you can say the value of a given info state conditioned that you're in public belief state beta is simply going to be kind of the expectation over all the histories that could lead to this info state multiplied by the value of each history.
+340099	342782	Like you can have the value of a history
+342762	349519	given some policy and therefore you can approximate the value at a given info state.
+349940	356516	And this theorem one here is where they connect the value of a public belief state to the value of an info state.
+357538	358982	So they say
+358962	370895	For any public belief state, for the beliefs of player one and player two info states respectively, and any policy pi star that is a Nash equilibrium of the sub game rooted at beta.
+370915	373984	So now we root sub games at public belief states.
+375483	377125	this thing holds right here.
+377685	382470	So as you can see, this connects the value of the public belief states.
+382530	387415	This is what we sort of need in order for the search algorithm to work.
+387995	398826	It connects it to the value of an info of info states and info states are way lower dimensional than public belief states.
+399046	403110	So it connects, it connects
+404862	420538	the value of this right here to the value of let's say this, okay, this, this might be an info state here s. And the value, it connects the value of the global public belief set to the value of this particular info state.
+421119	423361	And it does so via this term right here.
+423801	429267	So this term right here, this is just the unit vector in the direction of that particular info state.
+429247	439387	And this here is a super gradient of an extension of the value function to unnormalize belief distributions.
+440429	448504	As I understand it, this G is the gradient with respect to
+449142	456615	probably beta one, if we care about S1 to V1 of beta, something like this.
+457416	462785	As I said, this is where I don't 100% see through it.
+463226	469817	But what I understand is that this connects the value of the public belief state, this thing
+469797	475663	to the value of the individual info states that are part of this public belief state.
+476084	480008	So we don't need a value function for public belief states.
+480609	486435	We can simply get away with learning a value function for the individual info states.
+486915	488057	And that's what they do.
+488097	494083	So the only, the learned part here in this algorithm, this is the first time we see like a neural network.
+494063	503912	Since rebel search algorithm uses info state values rather than learn a PBS value function rebel instead learns an info state value function.
+504614	508545	So we're going to input a public belief state.
+509723	510003	Yes.
+510885	515853	And we're going to get a value for each info state.
+515913	517235	We're going to get a value here.
+517355	521562	So we'll simply learn a value function as sort of a vector output.
+521582	526329	You could also input the public belief state and the info state and get out a single number.
+526790	529234	I guess that would turn out to be the same thing.
+529214	539129	Okay, so the info state value function directly approximates for each info state the average of the sampled values produced by rebel at beta.
+539670	546140	So we're going to learn this in a sort of bootstrap fashion like like alpha zero does it a bit like temporal difference learning.
+546701	554192	So what we're going to do in this algorithm is we're going to start out, then we're going to construct this sort of this subtree.
+554172	558276	And we're going to do this in the discrete representation of the game.
+558577	560699	Now that's the genius of the rebel algorithm.
+561019	566925	We're going to sort of evaluate these things in the discrete representation in the info state representation.
+567926	579538	And then we're going to be able to use what we find right here in order to determine the value of the next actions to take as far as I can tell.
+581763	586487	Okay, so there is only one thing left to do, right?
+587908	592332	We need to know how does this step here work?
+592532	599057	So we said we want to do this research over the public belief states, but we can't.
+599318	600579	It's too cumbersome.
+601740	611668	Therefore, we can now, we can evaluate values of a public belief state, but
+612003	619498	We still need to do to determine the policies and that's where the self-play reinforcement learning comes in.

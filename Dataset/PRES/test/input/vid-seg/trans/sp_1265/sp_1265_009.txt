@@ -1,0 +1,1 @@
+And compare with the pure GBT annotations, we can see our performance is much better than all GBT-175 annotation performance on all four data sets.

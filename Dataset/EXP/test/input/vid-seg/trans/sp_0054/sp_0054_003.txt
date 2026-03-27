@@ -1,0 +1,109 @@
+the multi-edit tension mechanism is a single vector.
+This paper says that is not ideal because the positions are too much mixed with the signal of the content of the words and we'd rather have this in a disentangled representation such that the network can sort of reason about the words in one line and it can reason about the position of the words in another line.
+So their goal is to disentangle these two vectors and basically design a new attention mechanism that always treats the content and the position as separate things.
+So the new attention mechanism they propose is right here.
+Of course, they can't stay separate, right?
+But they can be disentangled through the layers.
+So their new algorithm sort of is here.
+The way they obtain the attention matrix is due to the following thing.
+So how do you usually obtain the attention matrix?
+You have your input X here, this is your sequence, and you produce two values from it, Q and K. So these are matrices.
+So if X is a sequence,
+then every single sequence element emits one key, which is a vector, right?
+One key.
+And then every single one also emits one query.
+So like this, like this.
+And the key sort of, the key is supposed to say what is in, what information is this token about?
+And the query is kind of supposed to say, what information does it request from other tokens?
+So now you route the information wherever the inner products line up.
+For example, probably this thing would go to be routed here and so on.
+It's not a hard routing, it's a soft routing.
+So by transforming x by linear transformations into keys and queries,
+you obtain your attention matrix by multiplying together queries and keys such that you have sort of the inner product between each of these vectors and this is quadratic and this is the big bottleneck in transformers but you have the inner product between each of the two you get a giant matrix and the giant matrix basically says how much does token two attend to token three that's the position two three of that matrix
+and that's that seek that element is going to be the inner product of the query of token two with the key of token three.
+So that's how you do the attention matrix.
+And these vectors right here, they if you do regular bird, they always have they're always everything at the same time.
+So you feed, you feed content and position
+Somewhere down the layers, you feed that in, you add it together, and the network is supposed to figure out itself how to use these two pieces of information.
+This paper says, no, wait, we can do better.
+What we can do is, for us, each sequence element, it does not only produce one key and one query, it actually, we think it should be contained, it should be made up of two vectors.
+So each of these things has two different two different components.
+One is this kind of H component, which is
+the, which is the content, content information.
+And one is the P component, which is the positional information.
+So here, how should, how should token I attend to token J?
+They say, well, that is going to be, it's going to be the same thing.
+It's going to be the inner product between the
+between the, this is the query of token I, and this is the key of token J. However, now the queries and keys are made up of two different parts.
+One is the content part, one is the position part, and the position, as you can see, maybe, is J-conditioned.
+And now the position is going to be a relative positioning.
+So if you have your sequence right here, what each token would do is it would emit one vector.
+Oh, sorry.
+It would emit one vector that is the content of the token.
+like before, and then another vector would come in from the position.
+So the same we did at the beginning, but now in each layer, this positional information comes in irrespective of what word there is, right?
+Irrespective of what word is in the position, the position gets an encoding right here.
+And then the interesting thing is we don't add the two together, we treat them actually separately.
+So here the keys are two vectors and the queries are also two vectors.
+So I'm just going to draw one up here.
+So the query is going to be a vector and the query for the position is also going to be a vector.
+And that also, it depends only on the position and not on the incoming signal.
+Okay.
+So now, how do we route information?
+Now, we have four different routings.
+First, we only consider dark blue, dark blue.
+So this is kind of the classic attention, right?
+This and this, they match really well.
+So that goes here.
+That one probably doesn't go there.
+And so on.
+But then we also, so this is what they call content to content routing.
+But then we also have content to position, position to content and position to position routing.
+And in all of these, so for example in content to position,
+There's a 50-50 chance I'm going to mix this up and I'm sure I'm going to, but in content to position, what we're going to do is we're going to look at this vector right here, which is the content vector of the query that is produced from the token.
+The content is produced from the token and we're going to attend to the position vector of the key.
+So we're going to attend to the light blue things.
+So, essentially, this part is like the classic attention part.
+It is, I am the word am.
+I'm requesting all informations from all the nouns in the sentence because I'm a verb and I would like to know who are the nouns in the sentence.
+Then the content to position encodings is, I am the verb am.
+I would like to know what is around me.
+The positions are relative positions.
+So I can request the vector for, you know, the plus one position of me or the plus two.
+So the word can attend to its surroundings.
+So given that it's the word M, it might be particularly interesting.
+Maybe it has already figured out it's not a question, right, from the previous layers.
+So it's particularly interested in what's before it.
+So because, you know, M, actually, it probably isn't particularly interesting because it's always going to be I. So
+Actually, maybe it's exactly a counter example where it wouldn't want information from there, but it can sort of attend, it can say, I want to attend to things after myself because I already have figured out that before me must be an I, I want to attend to things after me, like one position after me, what's right after me, what's two words after me and so on.
+position to content is exactly the opposite.
+It is saying, so the token can say, well, I am in position plus four to, you know, what kind of information do I want to send to things that are four away from me, right?
+irrespective of what the content is.
+So here we simply consider what position is the token with respect to its neighbors.
+And what kind of information does it want to aggregate from each of the words?
+It is a bit, it's a bit weird, right?
+So it says, it says, like, I, I am in in position
+a word that is two words after me.
+What kind of information do I want to get from it?
+And since it's attending to content, that can be dependent on, that can be dependent on what word there is, but not its position.
+And then position to position is simply, well, what kind of information do I in position three want to send to something in position seven?
+which would be useful, but this is relative position encoding, which simply means I am always kind of in the middle, and so this isn't really helpful, so they decide to leave this away.
+So we end up with the three different attention mechanisms, so to say.
+We end up, so there's this one, there's this one, and there's this one, okay, corresponding to the three out of four different ways we can combine the dark blue and the light blue keys and queries.
+Now, you can see right here, that's what they do, and their final attention matrix is simply the addition of all of those together.
+So we construct one attention from like the classic attention, we construct one attention that is content to position, we construct one attention that is position to content, and we construct one that is position to position, but then we leave it away because it's
+we deal with relative position.
+So it would sort of be the same for every token.
+And that's not particularly helpful.
+Reason I'm going to repeat it again, the H information contains actual signal from the last layer.
+While the P has no idea about the signal, it simply contains information about the position of the tokens.
+Okay.
+So you can decide to send information to a word that's two positions ahead of you, or to request information from word that's three positions behind you, depending on what word you yourself are.
+So that's the content to position and position to content attention.
+These things are all added together.
+And that makes up the final attention matrix.
+So a final entry in the attention matrix could be influenced by multiple ones of them.
+It could say, you know, I am the word, I'm the word M. I'm in position two.
+I request a lot of information from other nouns.
+If any noun is here, I want information, but I also want information from things that are one or two positions ahead of me.
+So that, that is, and, and, you know, uh, since I'm the word am, and also since I'm in position number two, I am very interested to know what the subject of the sentences now we have.

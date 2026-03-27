@@ -1,0 +1,3 @@
+This is how our algorithm work.
+We apply an existing DP mechanism to generate a synthetic data set.
+Then we resample from that data set to filter our samples that do not accurately represent the real data on the selected set of utility measures.

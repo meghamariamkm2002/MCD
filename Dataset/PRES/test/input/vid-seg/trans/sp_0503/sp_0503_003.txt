@@ -1,0 +1,6 @@
+We calculate the GW distance between two measures, where the source is represented in orange and the target is in blue.
+When the source is a rotated version of the target, the GW distance between these measures is zero.
+However, when the source is corrupted with outlier samples, the transfer plan is affected, resulting in a much bigger GW distance.
+The reason for outlier sensitivity of GW distance is because hard marginal constraint
+needs to be satisfied.
+Since all the hard marginal constraints are exactly satisfied, the outliers are matched to some of the input samples, which leads to a large AWD value.

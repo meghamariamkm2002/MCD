@@ -1,0 +1,2 @@
+Finally, we ran some experiments with random alternative MSD instances, with varying numbers, residences, and edges in comparison with global ZMOPs, another randomized search algorithms with proven runtime guarantees on these problems.
+Overall, we found that MOED succeeded consistently in finding all extreme points within the evaluation budgets, whereas global ZMOP only covers a small portion of extreme points in most run, albeit it gets very close in the OCT space, or refers to paper for full results.

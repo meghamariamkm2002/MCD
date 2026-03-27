@@ -1,0 +1,86 @@
+WEBVTT
+
+00:00.031 --> 00:02.615
+problem formulation as they see it.
+
+00:04.979 --> 00:10.889
+The entire problem formulation is you want to find these best meta learning parameters.
+
+00:11.930 --> 00:13.413
+And they call this the outer level.
+
+00:13.934 --> 00:21.666
+So on an outer level, you want to run gradient descent to find the best meta learning parameters to minimize this function f right here.
+
+00:22.488 --> 00:24.030
+Now what is f?
+
+00:24.010 --> 00:28.374
+F is the average of the validation loss function.
+
+00:28.434 --> 00:33.940
+So here this is the loss function on the test sets of the individual tasks.
+
+00:33.960 --> 00:52.718
+And the neural network that we evaluate on the test set is the neural network that is trained, the algorithm is trained on the training set of that particular task while starting from these parameters theta.
+
+00:52.698 --> 00:56.584
+Now you see there is no dependence on the task here.
+
+00:56.604 --> 01:02.633
+There is no I down here for these meta parameters because these are always the same, right?
+
+01:02.653 --> 01:03.675
+That's the crucial point.
+
+01:04.196 --> 01:12.208
+All the tasks start from the same initial parameters, then they optimize on their own training data set.
+
+01:12.188 --> 01:15.372
+And then they evaluate on their own test data set.
+
+01:15.913 --> 01:19.497
+And that will give you the loss for that particular task.
+
+01:19.557 --> 01:28.288
+And your goal is to find the meta parameters such that this function here, the average loss that results from this procedure is minimal.
+
+01:29.690 --> 01:30.031
+Okay.
+
+01:30.992 --> 01:35.918
+So where they say, um,
+
+01:37.670 --> 01:41.516
+right here, the inner level is this algorithm component.
+
+01:41.536 --> 01:49.849
+So the algorithm starts from these meta parameters and runs gradient steps on the training dataset loss.
+
+01:50.270 --> 01:53.815
+Now, this is just the first step right here of this procedure.
+
+01:54.336 --> 02:00.606
+Of course, in the next step, these are going to be replaced by the phi that
+
+02:00.586 --> 02:03.450
+by the phi i that results from the previous step.
+
+02:03.470 --> 02:10.459
+So the first step is run on the met parameters and then subsequently the task specific parameters are updated.
+
+02:11.380 --> 02:20.812
+The important thing here is that this doesn't need to be gradient descent actually with their method because their method doesn't need to back propagate through the optimization.
+
+02:21.233 --> 02:25.278
+You can think of any inner optimization procedure that you want.
+
+02:25.318 --> 02:29.023
+It can be like a black box solver, whatever you want.
+
+02:29.003 --> 02:37.228
+I'm going to be just interesting to see how this is going to affect something like reinforcement learning and so on.
+
+02:37.248 --> 02:40.043
+This might have already happened and I have not looked.
+

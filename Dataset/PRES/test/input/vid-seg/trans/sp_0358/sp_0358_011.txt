@@ -1,0 +1,1 @@
+We prove that our algorithm achieved the worst case regret guarantee along with its computational complexity.

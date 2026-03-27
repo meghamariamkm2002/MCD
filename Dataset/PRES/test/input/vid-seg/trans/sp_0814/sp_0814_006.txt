@@ -1,0 +1,2 @@
+However, for a positive sigma noise, when featured divergence between the noisy data distribution and the model approaches zero, the model does not recover the true data distribution.
+Fortunately, we found a unique online model queue emerges, which is defined by the denoised version of the noisy model, and this queue of X effectively recovers the true data distribution.

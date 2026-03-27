@@ -1,0 +1,40 @@
+start	end	text
+31	2274	is this long-term memory right here.
+2694	12927	So in this memory, ideally, we would want to fit, let's say, an entire day, an entire week, or even an entire month of data from one of these cameras.
+13507	22478	And it's just not feasible that we expand this current window here to an entire month or an entire week.
+22458	35338	for many of those of those cameras because even though they have a low frame rate and so on it's still too much in order to then be all differentiable all back propagatable and so on.
+36200	47217	So we can't really back prop in for this long term memory in essence what we want to do is exactly the same we want to build up a memory
+47197	66302	of all of the regions of interest or maybe selected regions or all of the best regions of interest, whatever heuristic strategy we have of the past, whatever this camera has seen, let's say in the last month or in the current week or something like this, we want to build all of this up.
+66282	71347	and then use an attention mechanism, just the same in order to incorporate it.
+71688	80197	But we have to come up with these things right here in some other way than a way where we can backprop.
+80237	90568	So we can't really use this stage one detector right here because this is the one we're training and so we have to backprop through it.
+90548	98084	Now an easy proposal is to simply use it anyway, but do like a stop gradient on it, so we don't back prop through it.
+98585	102854	That is one way, but the paper decides on a different way.
+102995	111072	The paper decides that all of the past basically, right here, right here, and so on,
+111052	114495	we'll take a pre-trained object detector.
+114795	133471	So not the one we're training currently, but we'll take a pre-trained one that was pre-trained either on something like Coco, which is an object detection dataset, or you can pre-train it on Coco and then fine-tune it on a detask you're interested in, in a single frame fashion.
+134472	141058	For whatever way, we'll take a pre-trained object detector or region of interest extractor,
+141038	150613	And that will give us, for each frame in the past, will give us also the regions of interest along with the features.
+152235	152515	Okay?
+153477	161068	And these are the features that we then go and put into the memory bank.
+161088	162811	Sorry, my tablet just crashed a bit.
+163472	164093	There we go.
+165659	169784	Okay, so we'll take a pre-trained extractor right here.
+171186	173409	That will give us features for regions of interest.
+173469	178897	We'll put that into the memory bank and then we will use an attention mechanism to incorporate it.
+179257	186807	Now the attention mechanism we can train, but we cannot train the extractor for the features.
+186787	196379	And this is the difference to the short-term memory where we can actually train the feature extractor in order to help us with building the memory.
+197100	201085	Now the memory is simply built without a goal in mind, basically.
+201545	210116	And the attention mechanism basically has to learn that it doesn't work with features that are meant for its task.
+210176	216203	It works with features that have been originally created for a different task, and they're not going to change.
+216183	219528	But as we'll see, this, you know, can be handled.
+220549	222191	So that's what they do.
+222412	228200	They incorporate short term and long term memory into their stage two prediction.
+228300	234949	And then the stage two prediction simply takes in all of those features and classifies the class of the object.
+236070	239595	And that's the architecture of context RCNN.
+239756	243000	It's RCNN with long and short term context.
+245444	252263	So they describe very different ways of how they built the memory and so on, how they built the features.
+252964	255692	I kind of glossed over this right now.
+255732	258861	There's a lot of consideration in building these things.
+258881	263914	And you have to look at the paper how they exactly do this.
+264376	270051	I'm more interested in the high level architecture and the sort of ideas behind it.

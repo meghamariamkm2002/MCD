@@ -1,0 +1,32 @@
+WEBVTT
+
+00:00.031 --> 00:23.490
+Now we get into the empirical results and the empirical results in this case were already sort of given in the previous paper, but here They have these the analogical reasoning task Where you can see that the negative sampling Did outperform the others by quite a bit right here.
+
+00:23.670 --> 00:25.633
+So the negative sampling approaches are
+
+00:25.613 --> 00:43.740
+outperformed the hierarchical softmax and the noise contrastive estimation and in the previous paper they also compared with other baselines and saw that it also outperforms those while being quite time efficient.
+
+00:43.720 --> 00:56.706
+So you can see that, especially with the subsampling approaches, the time here is 36 minutes for, and I think they have like a huge corpus that they train on.
+
+00:57.127 --> 01:01.496
+These Word2Vec code turned out to be really, really efficient code.
+
+01:02.177 --> 01:05.003
+And that's why it got so popular as well.
+
+01:06.147 --> 01:08.611
+They did the same thing for phrases right here.
+
+01:08.651 --> 01:13.138
+So for phrases like New York Times and so on.
+
+01:13.678 --> 01:19.187
+But this was kind of more of a, this was more of a side thing.
+
+01:19.207 --> 01:28.020
+The phrase vectors turned out to be, you know, rather a side thing from the actual code right here.
+

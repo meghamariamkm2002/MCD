@@ -1,0 +1,21 @@
+start	end	text
+1195	13656	Hi there, today we'll look at deburta, decoding enhanced BERT with disentangled attention by Peng Chenghe, Xiaodong Liu, Zhang Fenggao, and Waiju Zhen of Microsoft.
+14298	20128	This paper is an improvement on BERT, the language model and the Roberto variant of it.
+20548	25617	Specifically, it suggests two improvements, namely,
+25597	35897	First is this disentangled attention where they disentangle positional information and content information of the individual tokens in the attention mechanism.
+36378	45495	And the second improvement is kind of results from the first improvement as this decoding enhanced decoder, I guess enhanced decoder.
+45475	60088	where because they only use relative positional information in the transformer part of the model, they have to re-feed the absolute positional information at the end, which gives them another bit of improvement.
+60809	74301	All together with this, they reach state-of-the-art in various NLP tasks, and this model, Deberta, is now available in Huggingface for you to download for all of your NLP needs.
+74281	79970	So we're going to go through the paper and look at the two improvements and what they give.
+81092	83215	Let's see if that's relevant.
+84357	91208	As always, if you like content like this, don't hesitate to share it out to all of your friends and leave a like and a comment.
+92209	95935	I still read all the comments, so give me your opinion.
+95915	100025	And please also give me your opinions on the new recording setup.
+100065	103874	There should be a title somewhere here, a picture somewhere here.
+103894	109106	I absolutely want to hear feedback because I have no idea what I'm doing.
+109387	111291	So, yeah.
+111271	115536	All right, let's dive in Deberta or Deberta or Deberta.
+115897	116217	I don't know.
+116237	119862	I think it's Deberta because it's from decoding enhanced.
+119882	123626	Deberta is a new model architecture they say here.
+124447	135000	We propose a new model architecture Deberta, decoding enhanced BERT with disentangled attention that improves the BERT and ROBERTA models using two novel

@@ -1,0 +1,131 @@
+WEBVTT
+
+00:00.031 --> 00:02.697
+Now, what do these people say?
+
+00:02.737 --> 00:09.651
+They say, this procedure often suffers from exploiting inaccuracies of the learned model.
+
+00:10.733 --> 00:11.355
+What does that mean?
+
+00:11.856 --> 00:16.285
+That basically means that if I have a world model and it is not accurate,
+
+00:16.265 --> 00:29.419
+then it is basically the thing that tries to find the best green path here, the optimizer, is sort of trying to find the best path against this world model.
+
+00:30.059 --> 00:34.844
+Now, if that world model is inaccurate, that can lead to devastating consequences.
+
+00:35.005 --> 00:36.046
+So what do we mean by this?
+
+00:37.207 --> 00:38.068
+I'll give you an example.
+
+00:38.969 --> 00:41.091
+If you have a room, right,
+
+00:41.071 --> 00:51.106
+And the room is, let's take our classic room like this, and you are here and you would like to go here.
+
+00:52.188 --> 00:54.611
+And so you're a reinforcement learning agent.
+
+00:54.651 --> 00:56.314
+You do some exploration, right?
+
+00:56.374 --> 00:58.116
+You explore a bit here.
+
+00:58.176 --> 01:01.602
+The next episode, you might go here and you might go here and so on.
+
+01:01.642 --> 01:06.589
+And over time, in this framework, you're going to build a model of the world.
+
+01:06.569 --> 01:09.475
+At the beginning, we won't tell you how these rooms look.
+
+01:09.495 --> 01:11.119
+You have to discover it by yourself.
+
+01:11.520 --> 01:15.548
+So maybe at the beginning, we only tell you there's these four walls.
+
+01:15.648 --> 01:16.811
+The rest you have to figure out.
+
+01:17.332 --> 01:20.298
+So on and on, you're going to fill in your blanks.
+
+01:20.338 --> 01:24.848
+You do your first explorations and you thought, there's a bit of a wall here, right?
+
+01:24.828 --> 01:26.973
+And there might be some wall here.
+
+01:27.054 --> 01:28.337
+I crashed into that, right?
+
+01:28.357 --> 01:33.610
+You go into here, you crash into a wall, you say, ah, there's a wall here and here, ah, there's a wall here.
+
+01:33.770 --> 01:34.612
+You go maybe here.
+
+01:35.073 --> 01:35.996
+Oh, there's no wall.
+
+01:36.036 --> 01:36.978
+So you go further.
+
+01:37.038 --> 01:38.883
+There's no wall anywhere here.
+
+01:38.943 --> 01:39.785
+You crash here.
+
+01:39.905 --> 01:41.790
+Okay, we already knew there's a wall.
+
+01:41.770 --> 01:43.051
+Maybe you crash here.
+
+01:43.953 --> 01:44.233
+All right.
+
+01:44.293 --> 01:46.876
+So right now you have, okay, you go here.
+
+01:47.196 --> 01:52.723
+You have a model of the world in this situation where there's a wall here, a wall down.
+
+01:53.644 --> 01:59.851
+And if you now try to do trajectory optimization, remember you have to go from here to here.
+
+01:59.891 --> 02:04.336
+If you try to do trajectory optimization, what is it going to turn out?
+
+02:04.576 --> 02:06.799
+It's going to turn out like, look.
+
+02:06.779 --> 02:07.541
+There you go.
+
+02:07.581 --> 02:09.505
+That works just fine.
+
+02:10.286 --> 02:13.332
+And that's not because you're so good at planning.
+
+02:13.493 --> 02:27.201
+I mean, you are good at planning, but because your model is inaccurate here, because it has never seen this, your entire training distribution that you trained the world model on only explored the area over here.
+
+02:27.181 --> 02:51.450
+So you see how the more efficient this planning algorithm is, like the blue arrow, the thing that finds the blue arrow, the more efficient that is, the more consequential it is when your learned world model has mistakes because it will exactly exploit these mistakes in order to get the shortest path possible or the highest reward in that case.
+
+02:51.430 --> 02:59.500
+And they call this like almost an adversarial attack on the world model, which is a pretty good way of framing it.
+

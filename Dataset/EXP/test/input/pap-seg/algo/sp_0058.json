@@ -1,0 +1,40 @@
+[
+  {
+    "input_path": "layout_results/sp_0058/sp_0058_page_15.png",
+    "page_index": null,
+    "boxes": [
+      {
+        "cls_id": 14,
+        "label": "algorithm",
+        "score": 0.923921525478363,
+        "coordinate": [
+          441.9215393066406,
+          694.335693359375,
+          2106.248779296875,
+          2600.05859375
+        ],
+        "text": "Algorithm 2 ReBeL function REBEL-LINEAR-CFR-D(r, 0, 0, D, D) > 3r is the current PBS while !IsTERMINAL(r) do G  CONSTRUCTSUBGAME(r) , twam  INITIALIZEPOLICY(G, 0) G  SETLEAFVALUES(r, twarm, 0) v(r)  COMPUTEEV(G, twarm) tsample ~ linear{twarm + 1,T} > Probability of sampling iteration t is proportional to t for t = (twarm + 1)..T do if t = tsample then B'  SAMPLELEAF(G, t-1) > Sample one or multiple leaf PBSs t  UPDATEPOLICY(G, t-1) G  SETLEAFVALUES(r, t, 0) v(Br)  t+2v(r) + t+2 COMPUTEEV(G,t) Add{r,v(Br)} to Dv > Add to value net training data for 3 E G do > Loop over the PBS at every public state in G. Add{,()} to D\" > Add to policy net training data (optional). Brr function SETLEAFVALUES(, , 0) if IsLEAF() then for si E  do > For each infostate s; corresponding to . v(Si) = u(si|B,0v) else for a E A() do SETLEAFVALUES(T(, , a), , 0) function SAMPLELEAF(G, ) i* ~ unif{1, N}, h ~ r > Sample a history randomly from the root PBS and a random player while !IsLEAF(h) do c ~ unif[0,1] for i = 1..N do if i == i* and c < e then > we set e = 0.25 during training, e = 0 at test time. sample an action a; uniform random. else sample an action a; according to ,(s(h)) h ~T(h,a) return n > Return the PBS corresponding to leaf node h",
+        "id": "sp_0058_page_15_1"
+      }
+    ]
+  },
+  {
+    "input_path": "layout_results/sp_0058/sp_0058_page_6.png",
+    "page_index": null,
+    "boxes": [
+      {
+        "cls_id": 14,
+        "label": "algorithm",
+        "score": 0.9149667024612427,
+        "coordinate": [
+          443.00006103515625,
+          301.2301025390625,
+          2103.2021484375,
+          1225.860107421875
+        ],
+        "text": "Algorithm 1 ReBeL: RL and Search for Imperfect-Information Games function SELFPLAY(r, 0, 0, D, D) > r is the current PBS while !IsTERMINAL(r) do G < CONSTRUCTSUBGAME(r) , twam  INITIALIZEPOLICY(G, 0) > twarm = 0 and o is uniform if no warm start G  SETLEAFVALUES(G, , twam, 0) v(r)  COMPUTEEV(G, twam) tsample ~ unif{twarm + 1, T} > Sample an iteration for t = (twarm + 1)..T do if t = tsample then B'  SAMPLELEAF(G, t-1) > Sample one or multiple leaf PBSs t  UPDATEPOLICY(G,t-1) t G  SETLEAFVALUES(G, , t, 0) v(r)  t+1v(r) + t+1 COMPUTEEV(G, Add{Br,v(r)} to Dv > Add to value net training data. for  e G do > Loop over the PBS at every public state in G Add{,()} to D\" > Add to policy net training data (optional) BrB!",
+        "id": "sp_0058_page_6_1"
+      }
+    ]
+  }
+]

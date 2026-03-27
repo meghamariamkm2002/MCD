@@ -1,0 +1,27 @@
+start	end	text
+31	12488	Now, people have come up with methods to counter that and they say, well, if we can sort of encode the cell structure, let's go with the RNN cell.
+12508	17595	If we could encode the cell structure in a sort of continuous way.
+17996	21280	So, you know, we can encode text in a continuous way.
+21260	27747	We could also encode a cell structure because the cell structure, I can write it down as an equation.
+27948	47790	I can say like, okay, it's the forget gate of the carry times the sigmoid output of X plus the, so this is the plus here, and plus the sigmoid output of X multiplied by the input, let's call that I.
+47770	49012	Something like this, right?
+49312	74470	This is text I can like write it down and then I can encode that into a vector much I can for example build another RNN ironically or something to To encode that or I can represent it as a computation graph like it is here and use a graph neural network to encode that into a single vector and then I have sort of an embedding space where each
+74450	77894	cell that I could build is a point in that embedding space.
+78816	81239	And then I can evaluate a couple of them.
+81339	92073	I can, for example, say, okay, this one here, this one here, this one here, this one here, I'm going to train them, these cells, I'm going to do the full training, eval and so on, get their scores.
+92614	97660	And then I can learn basically in this latent space, I can learn a predictor.
+97840	103748	I can say, okay, here, I got an eight, I got a nine, I got a two, and I got a
+103728	104169	four.
+104950	115685	So it appears to be that in this direction, the good cells are in this direction, and then I can do it again, I can sample, or I can do gradient descent in this space.
+115725	122775	Since this is now a continuous space, I'm going to gradient descent on the model that gives me the space.
+123597	129465	So this method basically tries to take in the building plan of a cell
+129445	133329	and learn to predict the performance just by looking at it.
+133830	145943	If you're thinking of a Turing machine right now, then I immediately thought of this halting problem because it appears to be exactly what it is.
+145983	152550	So you're trying to build a machine that takes the building plan of another machine and tries to predict its performance
+152530	167197	Now, in a general sense, we can already state that this problem is sort of, the difficulty of this problem is equivalent to the difficulty of the original problem.
+167658	173088	So I'm not sure, but it appears to work if you throw lots of compute at it.
+173148	174130	But of course, that's a problem.
+174150	175973	You need lots of compute.
+175953	194527	So either your option one is to run all of these things and kind of iterate them in a neural, sorry, in an evolutionary way, or your second option is to take the building plan and predict the performance from that.
+194988	197673	Both are not satisfactory and both use lots of compute.
+198274	200037	Now, neural Petri dish is a

@@ -1,0 +1,176 @@
+WEBVTT
+
+00:00.031 --> 00:02.295
+And don't you just love these graphics?
+
+00:03.698 --> 00:06.302
+So here's time.
+
+00:06.322 --> 00:10.630
+And apparently it goes in both directions.
+
+00:11.551 --> 00:13.896
+And so does it go like this?
+
+00:13.916 --> 00:18.664
+I think what they mean is just time goes in this direction.
+
+00:18.644 --> 00:22.668
+And you're here and your upstream.
+
+00:23.830 --> 00:25.411
+So your upstream is your network.
+
+00:25.692 --> 00:30.777
+This is your network reading or your pre processing and the downstream, this is the GPU.
+
+00:31.939 --> 00:40.228
+So as you are pre processing things, you, you, um, and this should be, this should be different.
+
+00:41.049 --> 00:45.073
+It should mean, okay, to correct this right here.
+
+00:45.173 --> 00:48.617
+This is idle and this is running.
+
+00:50.639 --> 00:53.443
+So as your upstream processes images, right?
+
+00:53.483 --> 01:00.492
+At the beginning, your GPU is idle, but then as soon as it ships off the first batch of images, your GPU can run.
+
+01:00.532 --> 01:01.533
+Now it's running.
+
+01:01.993 --> 01:13.768
+While you're doing that, your upstream, your network is still reading new images, pre-processing them and so on, but it cannot, is too slow to insert a batch at the time that the GPU is done.
+
+01:14.189 --> 01:20.477
+The time the GPU is done, it's still processing this batch, so the GPU is idle.
+
+01:20.457 --> 01:45.891
+Until here where it finally manages to process that batch and then the GPU is running again I think that would have been a much better graphic But you know so their goal basically is that what you'll have is Right here for example after the batch what you'll do is you scrap this connection You take this and you put it into a smaller buffer
+
+01:47.542 --> 01:50.256
+And the buffer is a repeat buffer.
+
+01:50.738 --> 01:53.552
+So what it does is it simply will repeat.
+
+01:56.317 --> 02:01.365
+the whatever you have in the buffer until something new comes in, right?
+
+02:01.385 --> 02:06.432
+So new data point comes in, you just output that data point again, again, again, again.
+
+02:06.492 --> 02:13.083
+The for the GPU, it's going to feel like these are all new batches and they will continuously come in.
+
+02:13.543 --> 02:21.295
+But it's always the same until the next data point comes in, and then you output that one again, and again, and again, and again.
+
+02:21.275 --> 02:28.233
+Now the actual factor here you can of course tune by hand or you can just say repeat until something else comes in.
+
+02:29.596 --> 02:36.634
+In this paper they have an explicit factor where they say we repeat each data point four times or three times or so on.
+
+02:36.614 --> 02:38.477
+So this is data echoing.
+
+02:38.537 --> 02:41.882
+You basically echo the data point multiple times.
+
+02:43.265 --> 02:46.790
+And this can be done in various places.
+
+02:47.171 --> 02:51.057
+So they experiment with echoing in any of these places right here.
+
+02:51.317 --> 02:58.088
+So they experiment with it right here after reading and decoding, after shuffling.
+
+02:59.170 --> 03:02.335
+No, I think always before shuffling.
+
+03:02.315 --> 03:11.957
+Because if you have a shuffle buffer anyway, they say it makes sense that if you do the echoing, you do your shuffle buffer after your echoing.
+
+03:11.977 --> 03:16.206
+So here, then after augmentation and after batching.
+
+03:16.473 --> 03:22.401
+So they experiment with these three locations in echoing.
+
+03:22.902 --> 03:25.545
+Now, what could be the downturn of something like this?
+
+03:26.006 --> 03:40.646
+The downturn, of course, is that this SGD procedure right here, basically, it relies on the data incoming being an IID sample from your data distribution, right?
+
+03:40.786 --> 03:45.332
+That's how we formulate SGD, is that there's always new data incoming.
+
+03:45.312 --> 03:53.421
+Now, if you just output the same data point all the time, that is like no new information, first of all.
+
+03:53.702 --> 04:06.797
+And second of all, it could bias the SGD update, because it sees the same information over and over, it's going to think that's the whole data set.
+
+04:06.777 --> 04:10.781
+potentially it can make too many steps into the wrong direction.
+
+04:11.661 --> 04:15.405
+That just happens to be the bias in this particular data point.
+
+04:16.205 --> 04:19.789
+So the IID assumption is invalid.
+
+04:21.270 --> 04:24.753
+Now, why do you experiment with this in different locations?
+
+04:24.913 --> 04:32.100
+Because what you expect is that it hurts more or it hurts less the earlier you introduce this.
+
+04:32.580 --> 04:36.784
+So if you introduce echoing right here, so if you echo,
+
+04:36.764 --> 04:43.278
+your data until new data from the network comes in, it's still going to be shuffled differently, right?
+
+04:43.659 --> 04:46.464
+And it's still going to be augmented differently.
+
+04:46.505 --> 04:57.608
+So each time the data point comes out of the echo buffer, it is going to be shuffled and it is going to be augmented in a different way than the last time the same data point came out.
+
+04:57.588 --> 05:01.473
+And this is going to be batched together because you've shuffled differently.
+
+05:01.833 --> 05:05.397
+It's going to be batched together with a different bunch of data points.
+
+05:05.517 --> 05:08.401
+And that means SGD gets new information.
+
+05:08.962 --> 05:24.080
+But if you go onto the very last thing where you just after the batch right here, or you input the echo, that means SGD just gets to see the same batch of data augmented in the same way all the time, right?
+
+05:24.961 --> 05:26.903
+So the
+
+05:26.883 --> 05:31.910
+Of course, where you exactly have to echo, you have to trade this off.
+
+05:32.270 --> 05:43.185
+So you have to trade off the how much you basically violate the IID fresh data assumption against where in your data pipeline is the bottleneck.
+
+05:43.205 --> 05:52.738
+So if your bottleneck is in the data augmentation, it may make little sense to echo before that because your bottleneck is the data augmentation.
+
+05:52.718 --> 06:00.216
+And that being said, if the bottleneck is that you don't have enough GPUs, then it probably doesn't make sense to data echo at all.
+
+06:00.960 --> 06:05.040
+Though their experiments are somehow wonky on this.
+

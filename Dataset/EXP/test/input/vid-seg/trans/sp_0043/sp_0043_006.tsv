@@ -1,0 +1,24 @@
+start	end	text
+31	1219	denoising autoencoder.
+1240	5147	A denoising autoencoder is basically
+6848	22404	So if you have, for example, an image and the image is of a, our trusty cat whiskers, and adeno is an autoencoder is an unsupervised method where you have, it's basically an autoencoder.
+22705	29552	So there is a bunch of layers compressing to a hidden representation, then uncompressing it again.
+29612	30713	Okay.
+32212	38503	And at the end, you want to output the same as at the beginning.
+38583	40126	So it's basically an autoencoder.
+40887	49602	But the special part about the denoising autoencoder is that first you take your input and you put some noise on it.
+50023	53950	So that could mean anything here, but
+53930	67090	Here what they do is they do they make some Gaussian noise on it now I can't really draw Gaussian noise here, but it would be kind of convolved with Gaussian Gaussian noise So I'm just going to add some noise like this.
+67450	77946	So noise noise noise So there's some noise You see and then you feed that that's now what you feed in here
+77926	83792	And the algorithm is supposed to reconstruct this, this original image.
+83832	87616	So the algorithm is basically supposed to take away the noise.
+87676	90820	It doesn't see the original image, but it's supposed to produce it.
+91340	93122	And you do this with your training data.
+93142	97066	So what does that mean ultimately for our trajectory optimization?
+97947	105115	It means that if I have a trajectory that I did before and it maybe goes here,
+105095	114708	What I can do is I can make a noisy version of it, which would be the black one right here.
+114828	117772	So I put some noise on it, some noise.
+119234	121697	It's kind of the same, but okay.
+121717	125702	And the denoising auto encoder is supposed to give me back the red one.
+125682	132030	This will simply give me some sort of a probabilistic model of my training distribution.
+132352	140046	So they go through the math here and show that these denoising autoencoders actually naturally output this log probability.

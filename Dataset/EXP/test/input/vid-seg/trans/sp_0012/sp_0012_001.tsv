@@ -1,0 +1,6 @@
+start	end	text
+824	1184	Hi there.
+1425	12094	Today we're looking at faster neural network training with data echoing by Dummy Choi, Alexander Passo, Christopher J. Shalu and George E. Dahl.
+12555	22404	So on a high level, this paper basically says you should repeat data that's already in memory in order to speed up the entire process of neural network training.
+22964	29430	And it also says that this can speed up your wall time without hurting your performance too much.
+29410	32991	and I have mixed feelings about it.

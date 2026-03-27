@@ -1,0 +1,22 @@
+[
+  {
+    "input_path": "layout_results/sp_0061/sp_0061_page_6.png",
+    "page_index": null,
+    "boxes": [
+      {
+        "cls_id": 14,
+        "label": "algorithm",
+        "score": 0.7715078592300415,
+        "coordinate": [
+          1274.645263671875,
+          279.6861877441406,
+          2257.830322265625,
+          1587.323486328125
+        ],
+        "text": "hetic Petri Dish\nInput: Set of motifs already evaluated X = . Initia\nset of motifs for ground-truth evaluation Xeval. Perfo\nmance of motifs P = . Number of motifs to generat\nM. Number of motifs to select K s.t. K << M. Num\nber of NAS search iterations L. Additional Petri dis\nhyperparameters (Appendix A.2 and A.3).\nfor l = 1 to L do\nGround-truth Evaluation: Train each motif in Xeva\nin the full-scale setting and obtain full-scale validatio\nset performance Peval. Enlarge P : P = P ∪ Peva\nEnlarge X : X = X ∪ Xeval.\nPetri dish Training: Train the Petri dish model usin\nX and P (see sub-section 3.1).\nArchitecture Search: Generate a set of M new motif\n(Xnew) using X and P as inputs to the NAS method\nPerformance Prediction: Run Synthetic Petri Dis\ninference for Xnew (sub-section 3.2) to obtain moti\nperformance predictions.\nSelection: Pick top K motifs (denoted by set Xtop) ou\nof the set Xnew based on their predicted performanc\nSet Xeval = Xtop.\nend for\nOutput: The motif within X with the best ground-tru\normance",
+        "id": "sp_0061_page_6_1",
+        "seg_type": "algo"
+      }
+    ]
+  }
+]

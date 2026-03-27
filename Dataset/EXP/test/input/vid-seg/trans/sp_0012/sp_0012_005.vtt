@@ -1,0 +1,197 @@
+WEBVTT
+
+00:00.031 --> 00:07.344
+jump into their models, they train the following four models.
+
+00:07.845 --> 00:13.475
+So they train a transformer on these two data sets, LM1B and Common Crawl.
+
+00:13.495 --> 00:17.382
+So technically it's five models on language modeling.
+
+00:20.028 --> 00:28.644
+They train the ResNet32 on C410, they train the ResNet50 on ImageNet, and they train SSD on Cocoa.
+
+00:29.385 --> 00:31.349
+Now, here is the accuracies they get.
+
+00:31.449 --> 00:35.877
+And here is, sorry, this is the target.
+
+00:35.857 --> 00:42.229
+So what they do is they train these models and then they say, okay, what's the accuracy we reach?
+
+00:42.590 --> 00:44.233
+And then they set a target value.
+
+00:44.754 --> 00:54.473
+So on ResNet 50 on ImageNet, a very common number to reach is something like 76.5.
+
+00:54.453 --> 00:58.859
+If you look at, for example, torch vision models, they reach something like this.
+
+00:59.700 --> 01:06.049
+And so they say, well, our target accuracy here is just a little bit below that.
+
+01:06.429 --> 01:13.119
+And then we just measure how many steps or how many their measurement here is fresh data points.
+
+01:13.219 --> 01:18.486
+So how many actual fresh training samples do we need to reach this target?
+
+01:18.466 --> 01:42.955
+And this is this is where it gets wonky because for example take the the 91% here on C for 10 that is quite quite low and Also the res net 50 is I mean this is standard, but still image net is much further nowadays and I think the effectiveness of something like that
+
+01:42.935 --> 01:47.279
+this has a lot to do with how competitive you want to get.
+
+01:47.499 --> 01:54.345
+Maybe this is all just an effect of how much under par this target performance really is.
+
+01:55.166 --> 02:12.081
+And I would expect that even though they say it doesn't hurt their performance in their experiments, I would at least expect it will hurt your performance in general if you try to get competitive.
+
+02:12.061 --> 02:22.965
+Because these things aren't as as as of now at least the ones I know like the the Resonance aren't really competitive, but
+
+02:24.262 --> 02:25.484
+And so what do they do?
+
+02:25.524 --> 02:30.630
+They measure data echoing with an echoing factor of two.
+
+02:31.211 --> 02:35.276
+So that means data that's incoming is output twice in a row.
+
+02:35.617 --> 02:40.623
+And every data point that's coming in is just emitted twice from the buffer.
+
+02:40.643 --> 02:44.228
+And then the next data point is emitted twice and so on.
+
+02:44.208 --> 02:49.276
+And what they measure, again, is the fresh examples read.
+
+02:49.456 --> 02:53.242
+So how many fresh data points do you need to achieve something?
+
+02:53.262 --> 02:57.129
+This is a good measurement because this is kind of independent of hardware.
+
+02:58.371 --> 03:08.106
+So if you're really in the situation where your GPU is twice as fast as the rest of your pipeline,
+
+03:08.086 --> 03:16.822
+then an echoing factor of two will speed up at most your training procedure by factor of two.
+
+03:17.985 --> 03:24.677
+All right, so you have the baseline in red, and then you have a batch echoing, which is where you echo
+
+03:24.657 --> 03:41.434
+What we said at the worst possible time right after batching so this might hurt your performance the most but also it has the potential to be the fastest if your if maybe your augmentation is very expensive then sorry or your batching.
+
+03:41.414 --> 03:45.000
+You have example echoing after augmentation.
+
+03:45.281 --> 03:49.127
+So that would mean the augmentation is very expensive.
+
+03:49.167 --> 03:58.944
+So you save the augmented data point and then you emit it multiple times, but each time it is batched differently.
+
+03:59.725 --> 04:03.672
+So it is shuffled and then batched with different other data points.
+
+04:03.692 --> 04:05.295
+So you have a shuffle buffer after it.
+
+04:05.275 --> 04:08.240
+And then you have example echoing before data augmentation.
+
+04:08.561 --> 04:15.914
+So that means the same data point emitted multiple times will be augmented in different ways and basically will lead to slightly different data points.
+
+04:16.435 --> 04:27.975
+So the results here are pretty much what you could expect in that the earlier you do the echoing, as you can see here, the more this echoing helps.
+
+04:27.955 --> 04:33.066
+So the number, for example, this is the object segmentation task.
+
+04:33.086 --> 04:38.397
+The baseline needs this many fresh examples to reach this target accuracy.
+
+04:38.778 --> 04:48.158
+With batch echoing, you need less fresh training examples.
+
+04:48.138 --> 04:58.879
+So that means even though you kind of train on the same data twice, this helps you more or this helps you.
+
+05:00.162 --> 05:04.290
+It doesn't help you fully because the dash line here is the if
+
+05:05.755 --> 05:10.602
+If it would help you as much as a fresh data point, you'd be at the dash line, right?
+
+05:10.622 --> 05:13.627
+This is exactly half of this because the echoing factor is two.
+
+05:14.067 --> 05:21.819
+So if a repeated data point was as useful as a fresh data point, you'd be at the dash line.
+
+05:22.380 --> 05:26.887
+As you can see right here, you're not at the dash line, but at least it doesn't hurt.
+
+05:27.427 --> 05:29.791
+You might expect that it hurts, but it doesn't hurt.
+
+05:29.871 --> 05:30.893
+It actually speeds up.
+
+05:30.933 --> 05:35.239
+So the repeated data points at least have some utility.
+
+05:35.219 --> 05:41.247
+Again, this is only useful if you have this asymmetry in your pipeline.
+
+05:41.507 --> 06:01.294
+If your pipeline is actually symmetric and you do an echoing factor of two, the wall time here, the wall time plot would look this for the baseline and then almost twice as high for the batch echoing because even though it needs the same amount of fresh or almost the same amount of fresh example,
+
+06:01.274 --> 06:09.550
+you echo each one twice, so it needs to process it twice, so it'll take much longer.
+
+06:09.570 --> 06:17.606
+So again, this is useful if you have this asymmetry, and if the echoing factor is kind of smaller than your asymmetry.
+
+06:18.929 --> 06:23.097
+Otherwise, you're simply wasting time repeating data points.
+
+06:23.077 --> 06:31.090
+Then if you do example echoing here after augmentation, you use even less fresh data points.
+
+06:31.150 --> 06:34.094
+And if you do it before augmentation, this is really surprising.
+
+06:35.056 --> 06:42.047
+You almost get the benefit of fresh data points, which is something you might expect, right?
+
+06:42.027 --> 06:57.893
+an augmented newly shuffled data point is kind of almost a new data point, but still it's quite surprising that you almost get to the level of the theoretical possible.
+
+06:59.307 --> 07:15.160
+And also here on the ImageNet task, now here is actually an example where you can see that it hurts to do this batch echoing, because the reasons why it could hurt is just that you have, you violate this IID assumption, you basically have correlated data points.
+
+07:15.221 --> 07:20.151
+This is a big, big problem, for example, in reinforcement learning.
+
+07:20.131 --> 07:30.146
+where already by nature of you running episodes and then feeding the episodes back into the training procedure, you have correlated data points.
+
+07:30.868 --> 07:36.576
+And that hurts your performance here, actually compared to the baseline.
+
+07:36.977 --> 07:47.193
+But then if you go to example echoing and the example echoing before augmentation, again, you get a speedup, which is pretty cool.
+
+07:49.276 --> 07:50.037
+Okay.
+

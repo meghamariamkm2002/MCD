@@ -1,0 +1,23 @@
+[
+  {
+    "input_path": "/tmp/megha/PDF-Extract-Kit/Presentation/layout_pap/sp_0525/sp_0525_page_5.png",
+    "page_index": null,
+    "boxes": [
+      {
+        "input_path": "/tmp/megha/PDF-Extract-Kit/Presentation/layout_pap/sp_0525/sp_0525_page_5.png",
+        "cls_id": 14,
+        "label": "algorithm",
+        "score": 0.900659441947937,
+        "coordinate": [
+          437.9192810058594,
+          311.0444641113281,
+          2096.10009765625,
+          988.8343505859375
+        ],
+        "text": "input: pre-trained DM sp(t) , generator g\u03b8, prior distribution pz, DM s\u03c6; forward diffusion (2.1).\nhile not converge do\nupdate \u03c6 using SGD with gradient\n\u2032T\n\u2202\nGrad(\u03c6) =\nw(t)E z\u223cpz,x0=g\u03b8(z) | s\u03c6(xt,t) \u2212 xtlogpt(xt|x0)2dt.\n\u2202\u03c6Jt=0\nxt |x0 \u223cpt (xt |x0)\nupdate \u03b8 using SGD with the gradient\ncT\n\u2202xt\nGrad(\u03b8) =\nw(t)E z\u223cpz,x0=g\u03b8(z),\n[s\u03c6(xt,t) \u2212 sp(t)(xt)]\ndt.\n\u2202\u03b8\nJt=0\nxt |x0 \u223cpt (xt |x0)\nd",
+        "id": "sp_0525_page_5_1",
+        "seg_type": "algo"
+      }
+    ]
+  }
+]

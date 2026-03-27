@@ -1,0 +1,245 @@
+WEBVTT
+
+00:00.537 --> 00:04.464
+They propose actually to solve this problem.
+
+00:04.764 --> 00:13.659
+They say we propose to regularize trajectory optimization by means of a denoising autoencoder that is trained on the same trajectories as the model of the environment.
+
+00:14.500 --> 00:21.432
+We show that the proposed regularization leads to improved planning with both gradient based and gradient free optimizers.
+
+00:21.412 --> 00:35.671
+We also demonstrate that using regularized trajectory optimization leads to rapid initial learning in a set of popular motor control tasks, which suggests that the proposed approach can be a useful tool for improving sample efficiency.
+
+00:37.073 --> 00:39.476
+So, in essence, what do they do?
+
+00:40.457 --> 00:46.305
+They basically say, okay, we want to regularize this using a denoising autoencoder.
+
+00:47.838 --> 00:52.988
+And I think it's best if we look at the math for doing this.
+
+00:54.335 --> 01:02.084
+So the math here starts off as follows saying you want to learn a world model.
+
+01:02.324 --> 01:03.185
+This is F here.
+
+01:03.305 --> 01:04.326
+F is the world model.
+
+01:04.466 --> 01:10.874
+It takes in a state and an action and it gives you the next state or an approximation to it.
+
+01:11.494 --> 01:17.521
+And the parameters here indicate that this is some sort of function that you learn like a deep neural network.
+
+01:17.541 --> 01:20.865
+You can do this in fully or partially observed environments.
+
+01:22.837 --> 01:30.269
+Now, when you plan, what you want to do is you say, I have a planning horizon H, right?
+
+01:30.309 --> 01:31.751
+And I have a reward function.
+
+01:33.134 --> 01:37.761
+And the reward function is going to give me a reward for each state action pair.
+
+01:38.502 --> 01:38.642
+Right?
+
+01:38.662 --> 01:42.909
+So if I'm in a state and I do a certain action, I'm going to get some reward.
+
+01:43.230 --> 01:49.620
+This could be you have reached the target, or this could be, you know, how much money you've collected or whatnot.
+
+01:49.600 --> 01:59.418
+So you're going to look a horizon H, you're going to look H steps into the future, and you want to maximize the sum of all the rewards here.
+
+02:00.200 --> 02:09.938
+So in the limit, this reduces to simply like, for example, reaching the target in our room's case, if H is infinite.
+
+02:09.918 --> 02:11.905
+But you can consider a lower planning horizon.
+
+02:11.925 --> 02:18.067
+So you want to find the action sequence that maximizes this reward in the future.
+
+02:18.107 --> 02:19.351
+Okay.
+
+02:19.813 --> 02:21.278
+And now this reward.
+
+02:22.861 --> 02:25.827
+relies on your environment model.
+
+02:28.031 --> 02:29.875
+Here's the algorithm.
+
+02:31.118 --> 02:32.801
+First, you collect some data.
+
+02:33.302 --> 02:34.204
+That's how you start off.
+
+02:34.845 --> 02:40.617
+Then train the dynamics model, the world model, using the data you've already collected.
+
+02:40.597 --> 02:45.964
+Then for each time step T, you want to optimize this trajectory.
+
+02:45.984 --> 02:52.913
+So I want to find the best next action sequence and take the first action, implement the first action and get the new observation.
+
+02:53.694 --> 02:55.737
+And do you do this in a loop until the end?
+
+02:55.757 --> 03:00.223
+And at the end you say add this data to D. So that's what you do.
+
+03:00.323 --> 03:02.065
+You use your world model.
+
+03:03.412 --> 03:05.837
+to get the best action sequence.
+
+03:05.877 --> 03:07.521
+That's how you optimize the trajectory.
+
+03:08.403 --> 03:12.412
+And then at the end of the episode, you've, you've done an episode, right?
+
+03:12.452 --> 03:17.944
+You went somewhere, you put all of this into your training data to make the world model better.
+
+03:19.460 --> 03:27.016
+Important to note here is that the world model will only learn about things that you have done, right?
+
+03:28.038 --> 03:29.781
+So there is kind of an interaction effect.
+
+03:29.841 --> 03:31.304
+That's the green area here.
+
+03:31.585 --> 03:33.970
+The world model only knows the paths.
+
+03:34.070 --> 03:40.303
+The world model only can accurately estimate the world where you have been.
+
+03:40.283 --> 03:50.310
+And that's going to turn out to be the entire problem because this blue arrow finder can now go away from there from that.
+
+03:53.851 --> 03:54.793
+That's explained here.
+
+03:55.173 --> 04:00.982
+Potential inaccuracies of the trained model cause substantial difficulties for the planning process.
+
+04:02.144 --> 04:09.156
+Rather than optimizing what really happens, planning can easily end up exploiting the weaknesses of the predictive model.
+
+04:09.777 --> 04:14.244
+Planning is effectively an adversarial attack against the agent's own forward model.
+
+04:14.324 --> 04:21.175
+This results in a wide gap between expectations based on the model and what actually happens.
+
+04:21.155 --> 04:27.142
+Okay, and they have this example here, where it's like an industrial control process.
+
+04:27.643 --> 04:33.590
+And what you have to imagine, there's like some sort of a container here with a liquid in it.
+
+04:34.371 --> 04:40.819
+And there are two pipes that lead to this container, pipe one and pipe two.
+
+04:41.240 --> 04:42.561
+And there are valves here.
+
+04:42.601 --> 04:44.864
+So there's this valve right here.
+
+04:44.884 --> 04:47.647
+And there's this valve right here.
+
+04:47.687 --> 04:50.571
+So these are valve one and valve two.
+
+04:50.551 --> 04:56.062
+And there is also an output pipe right here, and that's another valve right here.
+
+04:56.443 --> 05:07.405
+So you can control these three valves, the two inputs and one output, and you have to somehow optimize the reaction in here.
+
+05:07.485 --> 05:12.154
+So this is a chemical reaction made up out of the two liquids that flow in here.
+
+05:12.134 --> 05:30.480
+and you have to somehow optimize a property of that and that's highly non-linear and has maybe like a time shift so when you open a valve it's going to take a while and then it's very non-linear and then you are not supposed to break the pressure limit so you have to also outflow some stuff.
+
+05:30.460 --> 05:35.285
+And if you just do this with a learned model, it looks like this.
+
+05:35.305 --> 05:38.768
+So first of all, here is a classic controller.
+
+05:38.848 --> 05:44.194
+Like people have been doing this stuff in industry and they basically build controllers for it.
+
+05:45.395 --> 05:49.439
+And you can do that and that works out really okay-ish.
+
+05:50.000 --> 05:54.564
+As you can see right here, this is the product rate, what you're supposed to optimize.
+
+05:54.884 --> 05:58.408
+And you see some sort of a smooth
+
+05:58.388 --> 06:01.332
+You're supposed to actually bring it to this dashed line right here.
+
+06:02.513 --> 06:05.457
+And this is some sort of smooth thing, right?
+
+06:06.118 --> 06:11.305
+And you're supposed to, I guess, bring the pressure here and the A in purge.
+
+06:11.605 --> 06:19.215
+I don't know what these quantities are, but you're supposed to bring them to the dashed line and it's very nonlinear and very time dependent.
+
+06:19.195 --> 06:20.478
+So that works.
+
+06:20.738 --> 06:24.386
+And you see here kind of the smoothness by which the variables are manipulated.
+
+06:24.807 --> 06:38.858
+Now, if you just learn a world model and then do this trajectory optimization, basically, this is some sort of a planning based reinforcement learning with a world model.
+
+06:38.838 --> 06:43.784
+You see right here, it works, but it's super jittery.
+
+06:44.184 --> 06:49.991
+The pressure spikes here, and apparently this here is a pressure limit, so it spikes the pressure limit.
+
+06:50.532 --> 07:00.964
+And you can see that the manipulated variables are up and down and up and down and up and down, because at each step, it basically completely overestimates its potential reward.
+
+07:01.004 --> 07:08.052
+It thinks like, wow, this is really good, but all it does is find a weakness in the model and not a really good action per se.
+
+07:08.032 --> 07:19.796
+Now, with their method to already take it away, you can see that now the control task super smoothly and very quickly converges to these optimal things.
+
+07:20.157 --> 07:25.748
+And you can see that the variables being manipulated are also rather smoothly manipulated.
+
+07:26.149 --> 07:33.043
+And that's an indication that the model is accurately estimating their rewards.
+

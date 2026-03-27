@@ -1,0 +1,47 @@
+WEBVTT
+
+00:00.031 --> 00:04.698
+aggregate the information within the same camera across the frames.
+
+00:06.140 --> 00:15.054
+To be said, of course, their trained test split is such that there's not the same camera in the training data as in the testing data.
+
+00:15.074 --> 00:24.688
+They have different, entirely different cameras in the testing data than in the training data, just so there is no information leakage.
+
+00:25.951 --> 00:30.940
+Yeah, so that's the model right here, how it works.
+
+00:31.101 --> 00:32.042
+It's pretty cool.
+
+00:32.503 --> 00:38.775
+It kind of wedges itself in between any single frame object detector that has these two stages.
+
+00:39.296 --> 00:45.748
+And it's a pretty neat idea to bring in context from the...
+
+00:45.728 --> 00:49.373
+past or even the future of the same camera.
+
+00:49.393 --> 00:51.417
+Just a quick glance at the appendix.
+
+00:51.437 --> 00:53.500
+They have lots of different examples right here.
+
+00:53.820 --> 00:58.347
+In one example, their camera kind of fell over and they say, well, it still worked.
+
+00:58.367 --> 01:08.462
+The system was still able to kind of do attention across this failure, this kind of tipping over of the camera.
+
+01:08.442 --> 01:20.743
+They have more examples right here, which I find pretty impressive, like these super low light things where it correctly detects like the opossum.
+
+01:21.966 --> 01:31.222
+And yeah, I invite you to check out the paper, the code they say should be out soon, and I'll see you next time.
+
+01:31.302 --> 01:32.003
+Bye-bye.
+

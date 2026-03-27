@@ -1,0 +1,14 @@
+start	end	text
+31	692	functions.
+2697	13760	All of this is not perfect, of course, but it's still an open question, I guess, whether or not it's not perfect because we haven't built a strong enough language model yet.
+15543	20233	Do I want to say GPT-4 is now for biology and not for language?
+20213	31375	Or is it because you really can't very well predict these things just from a language model?
+31455	42036	I mean, you should, technically all the information is there, but maybe the language model objective as such isn't able to capture that information.
+42016	45445	So, yeah, this was the paper.
+45465	46407	It's pretty simple.
+46748	53927	In the appendix, they have a lot of these additional experiments or full experiments, I believe, for all the amino acids and so on.
+54569	57055	And I invite you to check that out.
+57035	76005	In general, I like this kind of work because it's very applied and it can tell us something about the nature of both these language models and the biological things that we care about in biology.
+76125	80092	Okay, I'm just talking crap right now.
+80713	81534	Thanks for being here.
+81594	84038	I hope you enjoyed it and bye-bye.

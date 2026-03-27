@@ -1,0 +1,4 @@
+This diagram illustrates that after local training, the prediction accuracy for different classes tend to adapt to the local data distribution.
+Our aim is to optimize according to the global long-tailed characteristics.
+A crucial question arises, how do we leverage global long-tailed statistics?
+We need a tool to evaluate and measure the extent of the long-tailed data.

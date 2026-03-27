@@ -1,0 +1,3 @@
+Now we show an application.
+In two-way partial ALC maximization, we restrict the false positive rate by an upper bound and the true positive rate by a lower bound.
+It will result in a coupled compositional problem with non-smooth outer and inner functions, which can be solved by the proposed method.

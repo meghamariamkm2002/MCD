@@ -1,0 +1,1 @@
+So we can see that in CIFR 10 to decide our algorithm improve the performance and accelerate convergence on every algorithm.

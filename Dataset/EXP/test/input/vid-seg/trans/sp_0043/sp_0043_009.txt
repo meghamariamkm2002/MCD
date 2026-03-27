@@ -1,0 +1,42 @@
+like that's about it.
+Let's look at the experiments.
+So they're experiments.
+Basically, I actually want to go down here to this industry, sorry, not the industrial control process, but to the Mujoko experiment.
+So these are kind of continuous control tasks.
+You might have seen it.
+So there's
+One is a, the ant here is basically this 3D ant.
+It's like a blob and it has I think four legs and each leg has two joints and it just needs to walk as far as possible or reach some sort of goal.
+And the half cheetah is like a 2D thing where I think it's something like this.
+It also has these two legs and it's supposed to walk forward and not fall over.
+And you can put force basically on each of the joints here.
+So you see that their baselines are Gaussian processes and this pets thing is a previous baseline to also do model-based control with a learned model.
+And here they
+There's is the main, their main one is the red one.
+And as you can see that it goes much faster.
+Well, it basically outperforms the rest in these high, in these more complicated tasks.
+And then card poll or something like this is, is a lower dimensional, easier tasks.
+And you can see that at least it does not hurt.
+They make, they say here, something they don't show in the plots, they say that if you let this run for a while, then basically their method doesn't make any improvement anymore, whereas the baseline methods will sort of at some point surpass it.
+And the reason that is, and I'm not sure if it's on this exact task, but they mentioned that, which I respect so far, is because they say, since we only plan where we know,
+Where did I draw it?
+Since we only plan where we know, we basically do much less exploration than others.
+We kind of stick to what we know when we plan.
+So inherently we do less exploration and in our conversation with Hari, he basically said that this is intended and the intention is that you want to do your planning
+Where you know and then explicitly add a component that does exploration so you have control over so you can basically say I. I've never been here sort of now you would be in an expression phase you would explicitly go there.
+rather than intermingle your planning with your exploration and basically rely on your planning to screw up and your exploring because if you're planning
+never screws up, then you won't explore either, right?
+Then you will always reach your goal or your planning will always be correct.
+And these other methods that don't have this explicitly, they explore every time their planning screws up and you don't want that.
+You want your planning to be as good as possible and they do that by sticking to what they know.
+And then the next step, which is not in this paper, would be to add an explicit exploration policy to reach areas they've never reached before.
+Okay.
+So that's the reason why they don't ultimately reach the best accuracy, but they do reach the initial accuracy much faster than the other tasks because they plan better.
+They have a long discussion here of what still problems are, like local minima or the planning horizon problem, open loop versus closed loop, compounding errors in planning.
+But I'm going to leave this out for now.
+And I thank you for being here.
+I very much invite you to check out the paper for more details.
+It's pretty cool, pretty easy to read actually.
+It's very written very well.
+And with that, see you next time.
+Bye bye.

@@ -1,0 +1,627 @@
+[
+  {
+    "para_id": "p1",
+    "section_heading": "Abstract",
+    "text": "A core capability of intelligent systems is the ability to quickly learn new tasks by drawing on prior experience. Gradient (or optimization) based meta-learning has recently emerged as an effective approach for few-shot learning. In this formulation, meta-parameters are learned in the outer loop, while task-specific models are learned in the inner-loop, by using only a small amount of data from the current task. A key challenge in scaling these approaches is the need to differentiate through the inner loop learning process, which can impose considerable computational and memory burdens. By drawing upon implicit differentiation, we develop the implicit MAML algorithm, which depends only on the solution to the inner level optimization and not the path taken by the inner loop optimizer. This effectively decouples the meta-gradient computation from the choice of inner loop optimizer. As a result, our approach is agnostic to the choice of inner loop optimizer and can gracefully handle many gradient steps without vanishing gradients or memory constraints. Theoretically, we prove that implicit MAML can compute accurate meta-gradients with a memory footprint no more than that which is required to compute a single inner loop gradient and at no overall increase in the total computational cost. Experimentally, we show that these benefits of implicit MAML translate into empirical gains on few-shot image recognition benchmarks."
+  },
+  {
+    "para_id": "p2",
+    "section_heading": "1 Introduction",
+    "text": "A core aspect of intelligence is the ability to quickly learn new tasks by drawing upon prior experience from related tasks. Recent work has studied how meta-learning algorithms [51, 55, 41] can acquire such a capability by learning to efficiently learn a range of tasks, thereby enabling learning of a new task with as little as a single example [50, 57, 15]. Meta-learning algorithms can be framed in terms of recurrent [25, 50, 48] or attention-based [57, 38] models that are trained via a meta-learning objective, to essentially encapsulate the learned learning procedure in the parameters of a neural network. An alternative formulation is to frame meta-learning as a bi-level optimization procedure [35, 15], where the “inner” optimization represents adaptation to a given task, and the “outer” objective is the meta-training objective. Such a formulation can be used to learn the initial parameters of a model such that optimizing from this initialization leads to fast adaptation and generalization. In this work, we focus on this class of optimization-based methods, and in particular the model-agnostic meta-learning (MAML) formulation [15]. MAML has been shown to be as expressive as black-box approaches [14], is applicable to a broad range of settings [16, 37, 1, 18], and recovers a convergent and consistent optimization procedure [13]."
+  },
+  {
+    "para_id": "p3",
+    "section_heading": "1 Introduction",
+    "text": "Despite its appealing properties, meta-learning an initialization requires backpropagation through the inner optimization process. As a result, the meta-learning process requires higher-order derivatives, imposes a non-trivial computational and memory burden, and can suffer from vanishing gradients. These limitations make it harder to scale optimization-based meta learning methods to tasks involving medium or large datasets, or those that require many inner-loop optimization steps. Our goal is to develop an algorithm that addresses these limitations."
+  },
+  {
+    "para_id": "p4",
+    "section_heading": "1 Introduction",
+    "text": "∗ Equal contributi ew/imaml"
+  },
+  {
+    "para_id": "p5",
+    "section_heading": "1 Introduction",
+    "text": "The main contribution of our work is the development of the implicit MAML (iMAML) algorithm, an approach for optimization-based meta-learning with deep neural networks that removes the need for differentiating through the optimization path. Our algorithm aims to learn a set of parameters such that an optimization algorithm that is initialized at and regularized to this parameter vector leads to good generalization for a variety of learning tasks. By leveraging the implicit differentiation approach, we derive an analytical expression for the meta (or outer level) gradient that depends only on the solution to the inner optimization and not the path taken by the inner optimization algorithm, as depicted in Figure 1. This decoupling of meta-gradient computation and choice of inner level optimizer has a number of appealing properties."
+  },
+  {
+    "para_id": "p6",
+    "section_heading": "1 Introduction",
+    "text": "First, the inner optimization path need not be stored nor differentiated through, thereby making implicit MAML memory efficient and scalable to a large number of inner optimization steps. Second, implicit MAML is agnostic to the inner optimization method used, as long as it can find an approximate solution to the inner-level optimization problem. This permits the use of higher-order methods, and in principle even non-differentiable optimization methods or components like samplebased optimization, line-search, or those provided by proprietary software (e.g. Gurobi). Finally, we also provide the first (to our knowledge) non-asymptotic theoretical analysis of bi-level optimization. We show that an –approximate meta-gradient can be computed via implicit MAML using Õ(log(1/ )) gradient evaluations and Õ(1) memory, meaning the memory required does not grow with number of gradient steps."
+  },
+  {
+    "para_id": "p7",
+    "section_heading": "2 Problem Formulation and Notations",
+    "text": "We first present the meta-learning problem in the context of few-shot supervised learning, and then generalize the notation to aid the rest of the exposition in the paper."
+  },
+  {
+    "para_id": "p8",
+    "section_heading": "2.1 Review of Few-Shot Supervised Learning and MAML",
+    "text": "In this setting, we have a collection of meta-training tasks {Ti}Mi=1 drawn from P (T ). Each task Ti is associated with a dataset Di, from which we can sample two disjoint sets: Dtri and Dtesti . These datasets each consist of K input-output pairs. Let x ∈ X and y ∈ Y denote inputs and outputs, respectively. The datasets take the form Dtri = {(xki ,yki )}Kk=1, and similarly for Dtesti . We are interested in learning models of the form hφ(x) : X → Y , parameterized by φ ∈ Φ ≡ Rd. Performance on a task is specified by a loss function, such as the cross entropy or squared error loss. We will write the loss function in the form L(φ,D), as a function of a parameter vector and dataset. The goal for task Ti is to learn task-specific parameters φi using Dtri such that we can minimize the population or test loss of the task, L(φi,Dtesti ). In the general bi-level meta-learning setup, we consider a space of algorithms that compute taskspecific parameters using a set of meta-parameters θ ∈ Θ ≡ Rd and the training dataset from the task, such that φi = Alg(θ,Dtri ) for task Ti. The goal of meta-learning is to learn meta-parameters that produce good task specific parameters after adaptation, as specified below:"
+  },
+  {
+    "para_id": "p9",
+    "section_heading": "2.1 Review of Few-Shot Supervised Learning and MAML",
+    "text": "We view this as a bi-level optimization problem since we typically interpret Alg ( θ,Dtri ) as either explicitly or implicitly solving an underlying optimization problem. At meta-test (deployment) time, when presented with a dataset Dtrj corresponding to a new task Tj ∼ P (T ), we can achieve good generalization performance (i.e., low test error) by using the adaptation procedure with the metalearned parameters as φj = Alg(θ∗ML,Dtrj )."
+  },
+  {
+    "para_id": "p10",
+    "section_heading": "2.1 Review of Few-Shot Supervised Learning and MAML",
+    "text": "In the case of MAML [15], Alg(θ,D) corresponds to one or multiple steps of gradient descent initialized at θ. For example, if one step of gradient descent is used, we have:"
+  },
+  {
+    "para_id": "p11",
+    "section_heading": "2.1 Review of Few-Shot Supervised Learning and MAML",
+    "text": "Typically, α is a scalar hyperparameter, but can also be a learned vector [34]. Hence, for MAML, the meta-learned parameter (θ∗ML) has a learned inductive bias that is particularly well-suited for finetuning on tasks from P (T ) using K samples. To solve the outer-level problem with gradient-based methods, we require a way to differentiate through Alg. In the case of MAML, this corresponds to backpropagating through the dynamics of gradient descent."
+  },
+  {
+    "para_id": "p12",
+    "section_heading": "2.2 Proximal Regularization in the Inner Level",
+    "text": "To have sufficient learning in the inner level while also avoiding over-fitting, Alg needs to incorporate some form of regularization. Since MAML uses a small number of gradient steps, this corresponds to early stopping and can be interpreted as a form of regularization and Bayesian prior [20]. In cases like ill-conditioned optimization landscapes and medium-shot learning, we may want to take many gradient steps, which poses two challenges for MAML. First, we need to store and differentiate through the long optimization path of Alg, which imposes a considerable computation and memory burden. Second, the dependence of the model-parameters {φi} on the meta-parameters (θ) shrinks and vanishes as the number of gradient steps in Alg grows, making meta-learning difficult. To overcome these limitations, we consider a more explicitly regularized algorithm:"
+  },
+  {
+    "para_id": "p13",
+    "section_heading": "2.2 Proximal Regularization in the Inner Level",
+    "text": "The proximal regularization term in Eq. 3 encourages φi to remain close to θ, thereby retaining a strong dependence throughout. The regularization strength (λ) plays a role similar to the learning rate (α) in MAML, controlling the strength of the prior (θ) relative to the data (DtrT ). Like α, the regularization strength λ may also be learned. Furthermore, both α and λ can be scalars, vectors, or full matrices. For simplicity, we treat λ as a scalar hyperparameter. In Eq. 3, we use ? to denote that the optimization problem is solved exactly. In practice, we use iterative algorithms (denoted byAlg) for finite iterations, which return approximate minimizers. We explicitly consider the discrepancy between approximate and exact solutions in our analysis."
+  },
+  {
+    "para_id": "p14",
+    "section_heading": "2.3 The Bi-Level Optimization Problem",
+    "text": "For notation convenience, we will sometimes express the dependence on task Ti using a subscript instead of arguments, e.g. we write:"
+  },
+  {
+    "para_id": "p15",
+    "section_heading": "2.3 The Bi-Level Optimization Problem",
+    "text": "With this notation, the bi-level meta-learning problem can be written more generally as:"
+  },
+  {
+    "para_id": "p16",
+    "section_heading": "2.4 Total and Partial Derivatives",
+    "text": "We use d to denote the total derivative and∇ to denote partial derivative. For nested function of the form Li(φi) where φi = Algi(θ), we have from chain rule"
+  },
+  {
+    "para_id": "p17",
+    "section_heading": "2.4 Total and Partial Derivatives",
+    "text": "Note the important distinction between dθLi(Algi(θ)) and ∇φLi(Algi(θ)). The former passes derivatives through Algi(θ) while the latter does not. ∇φLi(Algi(θ)) is simply the gradient function, i.e. ∇φLi(φ), evaluated at φ = Algi(θ). Also note that dθLi(Algi(θ)) and ∇φLi(Algi(θ)) are d–dimensional vectors, while dAlgi(θ)dθ is a (d × d)–size Jacobian matrix. Throughout this text, we will also use dθ and ddθ interchangeably."
+  },
+  {
+    "para_id": "p18",
+    "section_heading": "3 The Implicit MAML Algorithm",
+    "text": "Our aim is to solve the bi-level meta-learning problem in Eq. 4 using an iterative gradient based algorithm of the form θ ← θ − η dθF (θ). Although we derive our method based on standard gradient descent for simplicity, any other optimization method, such as quasi-Newton or Newton methods, Adam [28], or gradient descent with momentum can also be used without modification. The gradient descent update be expanded using the chain rule as"
+  },
+  {
+    "para_id": "p19",
+    "section_heading": "3 The Implicit MAML Algorithm",
+    "text": "Here, ∇φLi(Alg?i (θ)) is simply ∇φLi(φ) |φ=Alg?i (θ) which can be easily obtained in practice via automatic differentiation. For this update rule, we must compute dAlg"
+  },
+  {
+    "para_id": "p20",
+    "section_heading": "3 The Implicit MAML Algorithm",
+    "text": "? i (θ) dθ , where Alg ? i is implicitly"
+  },
+  {
+    "para_id": "p21",
+    "section_heading": "3 The Implicit MAML Algorithm",
+    "text": "defined as an optimization problem (Eq. 4), which presents the primary challenge. We now present an efficient algorithm (in compute and memory) to compute the meta-gradient.."
+  },
+  {
+    "para_id": "p22",
+    "section_heading": "3.1 Meta-Gradient Computation",
+    "text": "IfAlg?i (θ) is implemented as an iterative algorithm, such as gradient descent, then one way to compute dAlg"
+  },
+  {
+    "para_id": "p23",
+    "section_heading": "3.1 Meta-Gradient Computation",
+    "text": "? i (θ) dθ is to propagate derivatives through the iterative process, either in forward mode or"
+  },
+  {
+    "para_id": "p24",
+    "section_heading": "3.1 Meta-Gradient Computation",
+    "text": "reverse mode. However, this has the drawback of depending explicitly on the path of the optimization, which has to be fully stored in memory, quickly becoming intractable when the number of gradient steps needed is large. Furthermore, for second order optimization methods, such as Newton’s method, third derivatives are needed which are difficult to obtain. Furthermore, this approach becomes impossible when non-differentiable operations, such as line-searches, are used. However, by recognizing that Alg?i is implicitly defined as the solution to an optimization problem, we may employ a different strategy that does not need to consider the path of the optimization but only the final result. This is derived in the following Lemma. Lemma 1. (Implicit Jacobian) ConsiderAlg?i (θ) as defined in Eq. 4 for task Ti. Let φi = Alg?i (θ) be the result of Alg?i (θ). If ( I + 1λ∇ 2 φL̂i(φi) ) is invertible, then the derivative Jacobian is"
+  },
+  {
+    "para_id": "p25",
+    "section_heading": "3.1 Meta-Gradient Computation",
+    "text": "Note that the derivative (Jacobian) depends only on the final result of the algorithm, and not the path taken by the algorithm. Thus, in principle any approach of algorithm can be used to compute Alg?i (θ), thereby decoupling meta-gradient computation from choice of inner level optimizer. Practical Algorithm: While Lemma 1 provides an idealized way to compute the Alg?i Jacobians and thus by extension the meta-gradient, it may be difficult to directly use it in practice. Two issues are particularly relevant. First, the meta-gradients require computation of Alg?i (θ), which is the exact solution to the inner optimization problem. In practice, we may be able to obtain only approximate solutions. Second, explicitly forming and inverting the matrix in Eq. 6 for computing the Jacobian may be intractable for large deep neural networks. To address these difficulties, we consider approximations to the idealized approach that enable a practical algorithm."
+  },
+  {
+    "para_id": "p26",
+    "section_heading": "3.1 Meta-Gradient Computation",
+    "text": "First, we consider an approximate solution to the inner optimization problem, that can be obtained with iterative optimization algorithms like gradient descent. Definition 1. (δ–approx. algorithm) Let Algi(θ) be a δ–accurate approximation of Alg?i (θ), i.e."
+  },
+  {
+    "para_id": "p27",
+    "section_heading": "3.1 Meta-Gradient Computation",
+    "text": "Algorithm 1 Implicit Model-Agnostic Meta-Learning (iMAML) 1: Require: Distribution over tasks P (T ), outer step size η, regularization strength λ, 2: while not converged do 3: Sample mini-batch of tasks {Ti}Bi=1 ∼ P (T ) 4: for Each task Ti do 5: Compute task meta-gradient gi = Implicit-Meta-Gradient(Ti,θ, λ) 6: end for 7: Average above gradients to get ∇̂F (θ) = (1/B) ∑B i=1 gi"
+  },
+  {
+    "para_id": "p28",
+    "section_heading": "3.1 Meta-Gradient Computation",
+    "text": "8: Update meta-parameters with gradient descent: θ ← θ − η∇̂F (θ) // (or Adam) 9: end while"
+  },
+  {
+    "para_id": "p29",
+    "section_heading": "3.1 Meta-Gradient Computation",
+    "text": "Algorithm 2 Implicit Meta-Gradient Computation 1: Input: Task Ti, meta-parameters θ, regularization strength λ 2: Hyperparameters: Optimization accuracy thresholds δ and δ′ 3: Obtain task parameters φi using iterative optimization solver such that: ‖φi −Alg?i (θ)‖ ≤ δ 4: Compute partial outer-level gradient vi = ∇φLT (φi) 5: Use an iterative solver (e.g. CG) along with reverse mode differentiation (to compute Hessian"
+  },
+  {
+    "para_id": "p30",
+    "section_heading": "3.1 Meta-Gradient Computation",
+    "text": "vector products) to compute gi such that: ‖gi − ( I + 1λ∇ 2L̂i(φi) )−1"
+  },
+  {
+    "para_id": "p31",
+    "section_heading": "3.1 Meta-Gradient Computation",
+    "text": "vi‖ ≤ δ′ 6: Return: gi"
+  },
+  {
+    "para_id": "p32",
+    "section_heading": "3.1 Meta-Gradient Computation",
+    "text": "Second, we will perform a partial or approximate matrix inversion given by: Definition 2. (δ′–approximate Jacobian-vector product) Let gi be a vector such that"
+  },
+  {
+    "para_id": "p33",
+    "section_heading": "3.1 Meta-Gradient Computation",
+    "text": "where φi = Algi(θ) and Algi is based on definition 1."
+  },
+  {
+    "para_id": "p34",
+    "section_heading": "3.1 Meta-Gradient Computation",
+    "text": "Note that gi in definition 2 is an approximation of the meta-gradient for task Ti. Observe that gi can be obtained as an approximate solution to the optimization problem:"
+  },
+  {
+    "para_id": "p35",
+    "section_heading": "3.1 Meta-Gradient Computation",
+    "text": "The conjugate gradient (CG) algorithm is particularly well suited for this problem due to its excellent iteration complexity and requirement of only Hessian-vector products of the form ∇2L̂i(φi)v. Such hessian-vector products can be obtained cheaply without explicitly forming or storing the Hessian matrix (as we discuss in Appendix C). This CG based inversion has been successfully deployed in Hessian-free or Newton-CG methods for deep learning [36, 44] and trust region methods in reinforcement learning [52, 47]. Algorithm 1 presents the full practical algorithm. Note that these approximations to develop a practical algorithm introduce errors in the meta-gradient computation. We analyze the impact of these errors in Section 3.2 and show that they are controllable. See Appendix A for how iMAML generalizes prior gradient optimization based meta-learning algorithms."
+  },
+  {
+    "para_id": "p36",
+    "section_heading": "3.2 Theory",
+    "text": "In Section 3.1, we outlined a practical algorithm that makes approximations to the idealized update rule of Eq. 5. Here, we attempt to analyze the impact of these approximations, and also understand the computation and memory requirements of iMAML. We find that iMAML can match the minimax computational complexity of backpropagating through the path of the inner optimizer, but is substantially better in terms of memory usage. This work to our knowledge also provides the first non-asymptotic result that analyzes approximation error due to implicit gradients. Theorem 1 provides the computational and memory complexity for obtaining an –approximate meta-gradient. We assume Li is smooth but do not require it to be convex. We assume that Gi in Eq. 4 is strongly convex, which can be made possible by appropriate choice of λ. The key to our analysis is a second order Lipshitz assumption, i.e. L̂i(·) is ρ-Lipshitz Hessian. This assumption and setting has received considerable attention in recent optimization and deep learning literature [26, 42]."
+  },
+  {
+    "para_id": "p37",
+    "section_heading": "3.2 Theory",
+    "text": "Table 1: Compute and memory for computing the meta-gradient when using a δ–accurate Algi, and the corresponding approximation error. Our compute time is measured in terms of the number of ∇L̂i computations. All results are in Õ(·) notation, which hide additional log factors; the error bound hides additional problem dependent Lipshitz and smoothness parameters (see the respective Theorem statements). κ ≥ 1 is the condition number for inner objective Gi (see Equation 4), and D is the diameter of the search space. The notions of error are subtly different: we assume all methods solve the inner optimization to error level of δ (as per definition 1). For our algorithm, the error refers to the `2 error in the computation of dθLi(Alg?i (θ)). For the other algorithms, the error refers to the `2 error in the computation of dθLi(Algi(θ)). We use Prop 3.1 of Shaban et al. [53] to provide the guarantee we use. See Appendix D for additional discussion."
+  },
+  {
+    "para_id": "p38",
+    "section_heading": "3.2 Theory",
+    "text": "Table 1 summarizes our complexity results and compares with MAML and truncated backpropagation [53] through the path of the inner optimizer. We use κ to denote the condition number of the inner problem induced by Gi (see Equation 4), which can be viewed as a measure of hardness of the inner optimization problem. Mem(∇L̂i) is the memory taken to compute a single derivative ∇L̂i. Under the assumption that Hessian vector products are computed with the reverse mode of autodifferentiation, we will have that both: the compute time and memory used for computing a Hessian vector product are with a (universal) constant factor of the compute time and memory used for computing∇L̂i itself (see Appendix C). This allows us to measure the compute time in terms of the number of ∇L̂i computations. We refer readers to Appendix D for additional discussion about the algorithms and their trade-offs."
+  },
+  {
+    "para_id": "p39",
+    "section_heading": "3.2 Theory",
+    "text": "Our main theorem is as follows: Theorem 1. (Informal Statement; Approximation error in Algorithm 2) Suppose that: Li(·) is B Lipshitz and L smooth function; that Gi(·,θ) (in Eq. 4) is a µ-strongly convex function with condition number κ; that D is the diameter of search space for φ in the inner optimization problem (i.e. ‖Alg?i (θ)‖ ≤ D); and L̂i(·) is ρ-Lipshitz Hessian. Let gi be the task meta-gradient returned by Algorithm 2. For any task i and desired accuracy level , Algorithm 2 computes an approximate task-specific meta-gradient with the following guarantee:"
+  },
+  {
+    "para_id": "p40",
+    "section_heading": "3.2 Theory",
+    "text": "Furthermore, under the assumption that the Hessian vector products are computed by the reverse mode of autodifferentiation (Assumption 1), Algorithm 2 can be implemented using at most Õ (√ κ log ( poly(κ,D,B,L,ρ,µ,λ) )) gradient computations of L̂i(·) and using at most 2 ·Mem(∇L̂i) memory."
+  },
+  {
+    "para_id": "p41",
+    "section_heading": "3.2 Theory",
+    "text": "The formal statement of the theorem and the proof are provided the appendix. Importantly, the algorithm’s memory requirement is equivalent to the memory needed for Hessian-vector products which is a small constant factor over the memory required for gradient computations, assuming the reverse mode of auto-differentiation is used. Finally, the next corollary shows that iMAML efficiently finds a stationary point of F (·), due to iMAML having controllable exact-solve error. Corollary 1. (iMAML finds stationary points) Suppose the conditions of Theorem 1 hold and that F (·) is an LF smooth function. Then the implicit MAML algorithm (Algorithm 1), when the batch size is M (so that we are doing gradient descent), will find a point θ such that:"
+  },
+  {
+    "para_id": "p42",
+    "section_heading": "3.2 Theory",
+    "text": "in a number of calls to Implicit-Meta-Gradient that is at most 4MLf (F (0)−minθ F (θ)) 2 . Furthermore, the total number of gradient computations (of ∇L̂i) is at most Õ ( M √ κ Lf (F (0)−minθ F (θ)) 2 log ( poly(κ,D,B,L,ρ,µ,λ) )) , and only Õ(Mem(∇L̂i)) memory is"
+  },
+  {
+    "para_id": "p43",
+    "section_heading": "3.2 Theory",
+    "text": "required throughout."
+  },
+  {
+    "para_id": "p44",
+    "section_heading": "4 Experimental Results and Discussion",
+    "text": "In our experimental evaluation, we aim to answer the following questions empirically: (1) Does the iMAML algorithm asymptotically compute the exact meta-gradient? (2) With finite iterations, does iMAML approximate the meta-gradient more accurately compared to MAML? (3) How does the computation and memory requirements of iMAML compare with MAML? (4) Does iMAML lead to better results in realistic meta-learning problems? We have answered (1) - (3) through our theoretical analysis, and now attempt to validate it through numerical simulations. For (1) and (2), we will use a simple synthetic example for which we can compute the exact meta-gradient and compare against it (exact-solve error, see definition 3). For (3) and (4), we will use the common few-shot image recognition domains of Omniglot and Mini-ImageNet."
+  },
+  {
+    "para_id": "p45",
+    "section_heading": "4 Experimental Results and Discussion",
+    "text": "To study the question of meta-gradient accuracy, Figure 2 considers a synthetic regression example, where the predictions are linear in parameters. This provides an analytical expression for Alg?i allowing us to compute the true meta-gradient. We fix gradient descent (GD) to be the inner optimizer for both MAML and iMAML. The problem is constructed so that the condition number (κ) is large, thereby necessitating many GD steps. We find that both iMAML and MAML asymptotically match the exact meta-gradient, but iMAML computes a better approximation in finite iterations. We observe that with 2 CG iterations, iMAML incurs a small terminal error. This is consistent with our theoretical analysis. In Algorithm 2, δ is dominated by δ′ when only a small number of CG steps are used. However, the terminal error vanishes with just 5 CG steps. The computational cost of 1 CG step is comparable to 1 inner GD step with the MAML algorithm, since both require 1 hessianvector product (see section C for discussion). Thus, the computational cost as well as memory of iMAML with 100 inner GD steps is significantly smaller than MAML with 100 GD steps."
+  },
+  {
+    "para_id": "p46",
+    "section_heading": "4 Experimental Results and Discussion",
+    "text": "To study (3), we turn to the Omniglot dataset [30] which is a popular few-shot image recognition domain. Figure 2 presents compute and memory trade-off for MAML and iMAML (on 20-way, 5-shot Omniglot). Memory for iMAML is based on Hessian-vector products and is independent of the number of GD steps in the inner loop. The memory use is also independent of the number of CG iterations, since the intermediate computations need not be stored in memory. On the other hand, memory for MAML grows linearly in grad steps, reaching the capacity of a 12 GB GPU in approximately 16 steps. First-order MAML (FOMAML) does not back-propagate through the optimization process, and thus the computational cost is only that of performing gradient descent, which is needed for all the algorithms. The computational cost for iMAML is also similar to FOMAML along with a constant overhead for CG that depends on the number of CG steps. Note however, that FOMAML does not compute an accurate meta-gradient, since it ignores the Jacobian. Compared to FOMAML, the compute cost of MAML grows at a faster rate. FOMAML requires only gradient computations, while backpropagating through GD (as done in MAML) requires a Hessian-vector products at each iteration, which are more expensive."
+  },
+  {
+    "para_id": "p47",
+    "section_heading": "4 Experimental Results and Discussion",
+    "text": "Finally, we study empirical performance of iMAML on the Omniglot and Mini-ImageNet domains. Following the few-shot learning protocol in prior work [57], we run the iMAML algorithm on the"
+  },
+  {
+    "para_id": "p48",
+    "section_heading": "4 Experimental Results and Discussion",
+    "text": "dataset for different numbers of class labels and shots (in the N-way, K-shot setting), and compare two variants of iMAML with published results of the most closely related algorithms: MAML, FOMAML, and Reptile. While these methods are not state-of-the-art on this benchmark, they provide an apples-to-apples comparison for studying the use of implicit gradients in optimization-based meta-learning. For a fair comparison, we use the identical convolutional architecture as these prior works. Note however that architecture tuning can lead to better results for all algorithms [27]."
+  },
+  {
+    "para_id": "p49",
+    "section_heading": "4 Experimental Results and Discussion",
+    "text": "The first variant of iMAML we consider involves solving the inner level problem (the regularized objective function in Eq. 4) using gradient descent. The meta-gradient is computed using conjugate gradient, and the meta-parameters are updated using Adam. This presents the most straightforward comparison with MAML, which would follow a similar procedure, but backpropagate through the path of optimization as opposed to invoking implicit differentiation. The second variant of iMAML uses a second order method for the inner level problem. In particular, we consider the Hessian-free or Newton-CG [44, 36] method. This method makes a local quadratic approximation to the objective function (in our case, G(φ′,θ) and approximately computes the Newton search direction using CG. Since CG requires only Hessian-vector products, this way of approximating the Newton search direction is scalable to large deep neural networks. The step size can be computed using regularization, damping, trust-region, or linesearch. We use a linesearch on the training loss in our experiments to also illustrate how our method can handle non-differentiable inner optimization loops. We refer the readers to Nocedal & Wright [44] and Martens [36] for a more detailed exposition of this optimization algorithm. Similar approaches have also gained prominence in reinforcement learning [52, 47]."
+  },
+  {
+    "para_id": "p50",
+    "section_heading": "4 Experimental Results and Discussion",
+    "text": "Tables 2 and 3 present the results on Omniglot and Mini-ImageNet, respectively. On the Omniglot domain, we find that the GD version of iMAML is competitive with the full MAML algorithm, and substatially better than its approximations (i.e., first-order MAML and Reptile), especially for the harder 20-way tasks. We also find that iMAML with Hessian-free optimization performs substantially better than the other methods, suggesting that powerful optimizers in the inner loop can offer benifits to meta-learning. In the Mini-ImageNet domain, we find that iMAML performs better than MAML and FOMAML. We used λ = 0.5 and 10 gradient steps in the inner loop. We did not perform an extensive hyperparameter sweep, and expect that the results can improve with better hyperparameters. 5 CG steps were used to compute the meta-gradient. The Hessian-free version also uses 5 CG steps for the search direction. Additional experimental details are Appendix F."
+  },
+  {
+    "para_id": "p51",
+    "section_heading": "5 Related Work",
+    "text": "Our work considers the general meta-learning problem [51, 55, 41], including few-shot learning [30, 57]. Meta-learning approaches can generally be categorized into metric-learning approaches that learn an embedding space where non-parametric nearest neighbors works well [29, 57, 54, 45, 3], black-box approaches that train a recurrent or recursive neural network to take datapoints as input"
+  },
+  {
+    "para_id": "p52",
+    "section_heading": "5 Related Work",
+    "text": "and produce weight updates [25, 5, 33, 48] or predictions for new inputs [50, 12, 58, 40, 38], and optimization-based approaches that use bi-level optimization to embed learning procedures, such as gradient descent, into the meta-optimization problem [15, 13, 8, 60, 34, 17, 59, 23]. Hybrid approaches have also been considered to combine the benefits of different approaches [49, 56]. We build upon optimization-based approaches, particularly the MAML algorithm [15], which metalearns an initial set of parameters such that gradient-based fine-tuning leads to good generalization. Prior work has considered a number of inner loops, ranging from a very general setting where all parameters are adapted using gradient descent [15], to more structured and specialized settings, such as ridge regression [8], Bayesian linear regression [23], and simulated annealing [2]. The main difference between our work and these approaches is that we show how to analytically derive the gradient of the outer objective without differentiating through the inner learning procedure."
+  },
+  {
+    "para_id": "p53",
+    "section_heading": "5 Related Work",
+    "text": "Mathematically, we view optimization-based meta-learning as a bi-level optimization problem. Such problems have been studied in the context of few-shot meta-learning (as discussed previously), gradient-based hyperparameter optimization [35, 46, 19, 11, 10], and a range of other settings [4, 31]. Some prior works have derived implicit gradients for related problems [46, 11, 4] while others propose innovations to aid back-propagation through the optimization path for specific algorithms [35, 19, 24], or approximations like truncation [53]. While the broad idea of implicit differentiation is well known, it has not been empirically demonstrated in the past for learning more than a few parameters (e.g., hyperparameters), or highly structured settings such as quadratic programs [4]. In contrast, our method meta-trains deep neural networks with thousands of parameters. Closest to our setting is the recent work of Lee et al. [32], which uses implicit differentiation for quadratic programs in a final SVM layer. In contrast, our formulation allows for adapting the full network for generic objectives (beyond hinge-loss), thereby allowing for wider applications."
+  },
+  {
+    "para_id": "p54",
+    "section_heading": "5 Related Work",
+    "text": "We also note that prior works involving implicit differentiation make a strong assumption of an exact solution in the inner level, thereby providing only asymptotic guarantees. In contrast, we provide finite time guarantees which allows us to analyze the case where the inner level is solved approximately. In practice, the inner level is likely to be solved using iterative optimization algorithms like gradient descent, which only return approximate solutions with finite iterations. Thus, this paper places implicit gradient methods under a strong theoretical footing for practically use."
+  },
+  {
+    "para_id": "p55",
+    "section_heading": "6 Conclusion",
+    "text": "In this paper, we develop a method for optimization-based meta-learning that removes the need for differentiating through the inner optimization path, allowing us to decouple the outer metagradient computation from the choice of inner optimization algorithm. We showed how this gives us significant gains in compute and memory efficiency, and also conceptually allows us to use a variety of inner optimization methods. While we focused on developing the foundations and theoretical analysis of this method, we believe that this work opens up a number of interesting avenues for future study."
+  },
+  {
+    "para_id": "p56",
+    "section_heading": "6 Conclusion",
+    "text": "Broader classes of inner loop procedures. While we studied different gradient-based optimization methods in the inner loop, iMAML can in principle be used with a variety of inner loop algorithms, including dynamic programming methods such as Q-learning, two-player adversarial games such as GANs, energy-based models [39], and actor-critic RL methods, and higher-order model-based trajectory optimization methods. This significantly expands the kinds of problems that optimizationbased meta-learning can be applied to."
+  },
+  {
+    "para_id": "p57",
+    "section_heading": "6 Conclusion",
+    "text": "More flexible regularizers. We explored one very simple regularization, `2 regularization to the parameter initialization, which already increases the expressive power over the implicit regularization that MAML provides through truncated gradient descent. To further allow the model to flexibly regularize the inner optimization, a simple extension of iMAML is to learn a vector- or matrix-valued λ, which would enable the meta-learner model to co-adapt and co-regularize various parameters of the model. Regularizers that act on parameterized density functions would also enable meta-learning to be effective for few-shot density estimation."
+  },
+  {
+    "para_id": "p58",
+    "section_heading": "Acknowledgements",
+    "text": "Aravind Rajeswaran thanks Emo Todorov for valuable discussions about implicit gradients and potential application domains; Aravind Rajeswaran also thanks Igor Mordatch and Rahul Kidambi for helpful discussions and feedback. Sham Kakade acknowledges funding from the Washington Research Foundation for innovation in Data-intensive Discovery; Sham Kakade also graciously acknowledges support from ONR award N00014-18-1-2247, NSF Award CCF-1703574, and NSF CCF 1740551 award."
+  },
+  {
+    "para_id": "p59",
+    "section_heading": "A Relationship between iMAML and Prior Algorithms",
+    "text": "The presented iMAML algorithm has close connections, as well as notable differences, to a number of related algorithms like MAML [15], first-order MAML, and Reptile [43]. Conventionally, these algorithms do not consider any explicit regularization in the inner-level and instead rely on early stopping, through only a few gradient descent steps. In our problem setting described in Eq. 4, we consider an explicitly regularized inner-level problem (refer to discussion in Section 2.2). We describe the connections between the algorithms in this explicitly regularized setting below."
+  },
+  {
+    "para_id": "p60",
+    "section_heading": "A Relationship between iMAML and Prior Algorithms",
+    "text": "MAML. The MAML algorithm first invokes an iterative algorithm to solve the inner optimization problem (see definition 1). Subsequently, it backpropagates through the path of the optimization algorithm to update the meta-parameters as:"
+  },
+  {
+    "para_id": "p61",
+    "section_heading": "A Relationship between iMAML and Prior Algorithms",
+    "text": "Since Algi(θ) approximates Alg?i (θ), it can be viewed that both MAML and iMAML intend to perform the same idealized update in Eq. 5. However, they perform the meta-gradient computation very differently. MAML backpropagates through the path of an iterative algorithm, while iMAML computes the meta-gradient through the implicit Jacobian approach outlined in Section 3.1 (see"
+  },
+  {
+    "para_id": "p62",
+    "section_heading": "A Relationship between iMAML and Prior Algorithms",
+    "text": "Figure 1 for a visual depiction). As a result, iMAML can be vastly more efficient in memory while having lesser or comparable computational requirements. It also allows for higher order optimization methods and non-differentiable components."
+  },
+  {
+    "para_id": "p63",
+    "section_heading": "A Relationship between iMAML and Prior Algorithms",
+    "text": "First-order MAML ignores the effect of meta-parameters θ on task parameters {φi} in the metagradient computation and updates the meta-parameters as:"
+  },
+  {
+    "para_id": "p64",
+    "section_heading": "A Relationship between iMAML and Prior Algorithms",
+    "text": "Note that iMAML strictly generalizes this, since first-order MAML is simply iMAML when the conjugate gradient procedure is not invoked (or corresponds to 0 steps of CG). Thus, iMAML allows for an easy way to interpolate from first-order MAML to the full MAML algorithm."
+  },
+  {
+    "para_id": "p65",
+    "section_heading": "A Relationship between iMAML and Prior Algorithms",
+    "text": "Reptile [43], similar to first-order MAML, ignores the dependence of task-parameters on metaparameters. However, instead of following the gradients at φi = Algi(θk), Reptile uses the taskparameters as targets and slowly moves meta-parameters towards them:"
+  },
+  {
+    "para_id": "p66",
+    "section_heading": "A Relationship between iMAML and Prior Algorithms",
+    "text": "From the proximal point equation in the proof of Lemma 1, we have φi = θk − 1λ∇φLi(φi), using which we see that the Reptile equation becomes: θk+1 = θk − ηλM ∑M i=1∇φLi(φi). Thus, Reptile and first-order MAML are identical in our problem formulation up to the choice of learning rate. Making the regularization explicit allows us to illustrate this equivalence."
+  },
+  {
+    "para_id": "p67",
+    "section_heading": "B Optimization Preliminaries",
+    "text": "Let f : Rd → R. A function f is B Lipschitz (or B-bounded gradient norm) if for all x ∈ Rd"
+  },
+  {
+    "para_id": "p68",
+    "section_heading": "B Optimization Preliminaries",
+    "text": "Similarly, we say that a matrix valued function M : Rd × Rd′ → R is ρ-Lipschitz if"
+  },
+  {
+    "para_id": "p69",
+    "section_heading": "B Optimization Preliminaries",
+    "text": "where ‖ · ‖ denotes the spectral norm."
+  },
+  {
+    "para_id": "p70",
+    "section_heading": "B Optimization Preliminaries",
+    "text": "We say that f is L-smooth if for all x, x′ ∈ Rd"
+  },
+  {
+    "para_id": "p71",
+    "section_heading": "B Optimization Preliminaries",
+    "text": "and that f is µ-strongly convex if f is convex and if for all x, x′ ∈ Rd,"
+  },
+  {
+    "para_id": "p72",
+    "section_heading": "B Optimization Preliminaries",
+    "text": "We will make use of the following black-box complexity of first-order gradient methods for minimizing strongly convex and smooth functions."
+  },
+  {
+    "para_id": "p73",
+    "section_heading": "B Optimization Preliminaries",
+    "text": "Lemma 2. (δ-approximate solver; see [9]) Suppose f is a function that is L-smooth and µ strongly convex. Define κ := L/µ, and let x? = argmin f(x). Nesterov’s accelerated gradient descent can be used to find a point x such that:"
+  },
+  {
+    "para_id": "p74",
+    "section_heading": "B Optimization Preliminaries",
+    "text": "using a number of gradient computations of f that is bounded as follows:"
+  },
+  {
+    "para_id": "p75",
+    "section_heading": "C Review: Time and Space Complexity of Hessian-Vector Products",
+    "text": "We briefly discuss the time and space complexity of Hessian-vector product computation using the reverse mode of automatic differentiation. The reverse mode of automatic differentiation [6, 22] is the widely used method for automatic differentiation in modern software packages like TensorFlow and PyTorch [7]. Recall that for a differentiable function f(x), the reverse mode of automatic differentiation computes ∇f(x) in time that is no more than a factor of 5 of the time it takes to compute f(x) itself (see [22] for review). As our algorithm makes use of Hessian vector products, we will make use of the following assumption as to how Hessian vector products will be computed when executing Algorithm 2."
+  },
+  {
+    "para_id": "p76",
+    "section_heading": "C Review: Time and Space Complexity of Hessian-Vector Products",
+    "text": "Assumption 1. (Complexity of Hessian-vector product) We assume that the time to compute the Hessian-vector product ∇2φL̂i(φ)v is no more than a (universal) constant over the time used to compute ∇L̂i(φ) (typically, this constant is 5). Furthermore, we assume that the memory used to compute the Hessian-vector product ∇2φL̂i(φ)v is no more than twice the memory used when computing∇L̂i(φ). This assumption is valid if the reverse mode of automatic differentiation is used to compute Hessian vector products (see [21])."
+  },
+  {
+    "para_id": "p77",
+    "section_heading": "C Review: Time and Space Complexity of Hessian-Vector Products",
+    "text": "A few remarks about this assumption are in order. With regards to computation, first observe that the gradient of the scalar function ∇φL̂i(φ)>v is the desired Hessian vector product ∇2φL̂i(φ)v. Thus computing the Hessian vector product using the reverse mode is within a constant factor of computing the function itself, which is simply the cost of computing ∇L̂i(φ)>v. The issue of memory is more subtle (see [21]), which we now discuss. The memory used to compute the gradient of a scalar cost function f(x) using the reverse mode of auto-differentiation is proportional to the size of the computation graph; precisely, the memory required to compute the gradient is equal to the total space required to store all the intermediate variables used when computing f(x). In practice, this is often much larger than the memory required to compute f(x) itself, due to that all intermediate variables need not be simultaneously stored in memory when computing f(x). However, for the special case of computing the gradient of the function f(φ) = ∇φL̂i(φ)>v, the factor of 2 in the memory bound is a consequence of the following reason: first, using the reverse mode to compute f(φ) means we already have stored the computation graph of L̂i(φ) itself. Furthermore, the size of the computation graph for computing f(φ) = ∇φL̂i(φ)>v is essentially the same size as the computation graph of L̂i(φ). This leads to the factor of 2 memory bound; see Griewank [21] for further discussion."
+  },
+  {
+    "para_id": "p78",
+    "section_heading": "D Additional Discussion About Compute and Memory Complexity",
+    "text": "Our main complexity results are summarized in Table 1. For these results, we consider two notions of error that are subtly different, which we explicitly define below. Let gi be the computed metagradient for task Ti. Then, the errors we consider are:"
+  },
+  {
+    "para_id": "p79",
+    "section_heading": "D Additional Discussion About Compute and Memory Complexity",
+    "text": "Definition 3. Exact-solve error (our notion of error): Our goal is to accurately compute the gradient of F (θ) as defined in Equation 4, where Alg?i (θ) is an exact algorithm. Specifically, we seek to compute a gi such that:"
+  },
+  {
+    "para_id": "p80",
+    "section_heading": "D Additional Discussion About Compute and Memory Complexity",
+    "text": "where is the error in the gradient computation."
+  },
+  {
+    "para_id": "p81",
+    "section_heading": "D Additional Discussion About Compute and Memory Complexity",
+    "text": "Definition 4. Approx-solve error: Here we suppose that Algi computes a δ–accurate solution to the inner optimization problem over Gi in Eq. 4, i.e. that Algi satisfies ‖Algi(θ)−Alg?i (θ)‖ ≤ δ, as per definition 1. Then the objective is to compute a g such that:"
+  },
+  {
+    "para_id": "p82",
+    "section_heading": "D Additional Discussion About Compute and Memory Complexity",
+    "text": "where is the error in the gradient computation of dθLi(Algi(θ)). Subtly, note that the gradient is with respect to the δ-approximate algorithm, as opposed to using Alg?i ."
+  },
+  {
+    "para_id": "p83",
+    "section_heading": "D Additional Discussion About Compute and Memory Complexity",
+    "text": "For the complexity results, we assume that MAML invokesAlgi to get a δ-approximate solution for inner problem (recall definition 1). The exact-solve error for MAML is not known in the literature; in particular, even as δ → 0 it is not evident if the approx-solve solution tends to the exact-solve solution, unless further regularity conditions are imposed. The approx-solve error for MAML is 0, ignoring finite-precision and numerical issues, since it backpropagates through the path. Truncated backprop [53] also invokes Algi to obtain a δ-approximate solution but instead performs a truncated or partial back-propagation so that it uses a smaller number of iterations when computing the gradient through the path of Algi(θ). Exact-solve error for truncated backprop is also not known, but a small approx-solve error can be obtained with less memory than full back-prop. We use Prop 3.1 of Shaban et al. [53] to provide a guarantee that leads to an –accurate approximation of the full-backprop (i.e. MAML) gradient. It is not evident how accurate the truncated procedure is when an accelerated method is used instead. Finally, our iMAML algorithm also invokes an approximate solver Algi rather than Alg?i . However, importantly, we guarantee a small exact-solve error even though we do not require access toAlg?i . Furthermore, the iMAML algorithm also requires substantially less memory. Up to small constant factors, it only utilizes the memory required for computing a single gradient of L̂i(·)."
+  },
+  {
+    "para_id": "p84",
+    "section_heading": "E Proofs",
+    "text": "Lemma 1, restated. Consider Alg?i (θ) as defined in Eq. 4 for task Ti. Let φi = Alg?i (θ) be the result of Alg?i (θ). If ( I + 1λ∇ 2 φL̂i(φi) ) is invertible, then the derivative Jacobian is"
+  },
+  {
+    "para_id": "p85",
+    "section_heading": "E Proofs",
+    "text": "Proof. We drop the task i subscripts in the proof for convenience. Since φ = Alg?(θ) is the minimizer of G(φ′,θ) in Eq. 4, the stationary point conditions imply that"
+  },
+  {
+    "para_id": "p86",
+    "section_heading": "E Proofs",
+    "text": "which is an implicit equation that often arises in proximal point methods. When the derivative exists, we can differentiate the above equation to obtain:"
+  },
+  {
+    "para_id": "p87",
+    "section_heading": "E Proofs",
+    "text": "which completes the proof."
+  },
+  {
+    "para_id": "p88",
+    "section_heading": "E Proofs",
+    "text": "Recall that:"
+  },
+  {
+    "para_id": "p89",
+    "section_heading": "E Proofs",
+    "text": "Assumption 2. (Regularity conditions) Suppose the following holds for all tasks i:"
+  },
+  {
+    "para_id": "p90",
+    "section_heading": "E Proofs",
+    "text": "1. Li(·) is B Lipshitz and L smooth."
+  },
+  {
+    "para_id": "p91",
+    "section_heading": "E Proofs",
+    "text": "2. For all θ, Gi(·,θ) is both a β-smooth function and a µ-strongly convex function. Define:"
+  },
+  {
+    "para_id": "p92",
+    "section_heading": "E Proofs",
+    "text": "3. L̂i(·) is ρ-Lipshitz Hessian, i.e. ∇2L̂i(·) is ρ-Lipshitz."
+  },
+  {
+    "para_id": "p93",
+    "section_heading": "E Proofs",
+    "text": "4. For all θ, suppose the arg-minimizer of Gi(·,θ) is unique and bounded in a ball of radius D, i.e. for all θ,"
+  },
+  {
+    "para_id": "p94",
+    "section_heading": "E Proofs",
+    "text": "Lemma 3. (Implicit Gradient Accuracy) Suppose Assumption 2 holds. Fix a task i. Suppose that φi satisfies:"
+  },
+  {
+    "para_id": "p95",
+    "section_heading": "E Proofs",
+    "text": "and that gi satisfies:"
+  },
+  {
+    "para_id": "p96",
+    "section_heading": "E Proofs",
+    "text": "Assuming that δ < µ/(2ρ), we have that:"
+  },
+  {
+    "para_id": "p97",
+    "section_heading": "E Proofs",
+    "text": "Proof. First, observe that:"
+  },
+  {
+    "para_id": "p98",
+    "section_heading": "E Proofs",
+    "text": "For notational convenience, we drop the i subscripts within the proof. We have:"
+  },
+  {
+    "para_id": "p99",
+    "section_heading": "E Proofs",
+    "text": "where the first inequality uses the triangle inequality."
+  },
+  {
+    "para_id": "p100",
+    "section_heading": "E Proofs",
+    "text": "We now bound each of these terms. For the second term,"
+  },
+  {
+    "para_id": "p101",
+    "section_heading": "E Proofs",
+    "text": "where we the second inequality uses that∇φL is L-smooth and the final inequality uses that G is µ strongly convex."
+  },
+  {
+    "para_id": "p102",
+    "section_heading": "E Proofs",
+    "text": "For the first term, we have:"
+  },
+  {
+    "para_id": "p103",
+    "section_heading": "E Proofs",
+    "text": "using that∇φL is B Lipshitz. Now let"
+  },
+  {
+    "para_id": "p104",
+    "section_heading": "E Proofs",
+    "text": "Due to that∇2L̂(·) is Lipshitz Hessian, ‖∆‖ ≤ ρδ. Also, by our assumption on δ, we have that:"
+  },
+  {
+    "para_id": "p105",
+    "section_heading": "E Proofs",
+    "text": "which implies that ‖ ( I +M−1∆ )−1 ‖ ≤ 2. Hence,"
+  },
+  {
+    "para_id": "p106",
+    "section_heading": "E Proofs",
+    "text": "The proof is completed by substitution."
+  },
+  {
+    "para_id": "p107",
+    "section_heading": "E Proofs",
+    "text": "Theorem 2. (Approximate Implicit Gradient Computation) Suppose Assumption 2 holds. Fix a task i. Let"
+  },
+  {
+    "para_id": "p108",
+    "section_heading": "E Proofs",
+    "text": "Suppose Nesterov’s accelerated gradient descent algorithm is used to compute φ (as desired in Algorithm 2), using a number of iterations that is:"
+  },
+  {
+    "para_id": "p109",
+    "section_heading": "E Proofs",
+    "text": "and suppose Nesterov’s accelerated gradient descent algorithm (or the conjugate gradient algorithm 1) is used to compute gi using a number of iterations that is:"
+  },
+  {
+    "para_id": "p110",
+    "section_heading": "E Proofs",
+    "text": "We have that:"
+  },
+  {
+    "para_id": "p111",
+    "section_heading": "E Proofs",
+    "text": "Proof. The result will follow from the guarantees in Lemma 2. Specifically, let us set δ = min{ /(2B1), µ/(2ρ)} and δ′ = /2. To ensure the bound of δ, by Lemma 3, it suffices to use a number of iterations that is bounded by:"
+  },
+  {
+    "para_id": "p112",
+    "section_heading": "E Proofs",
+    "text": "1The conjugate gradient descent algorithm also suffices and give a slightly improved iteration complexity in terms of log factors."
+  },
+  {
+    "para_id": "p113",
+    "section_heading": "E Proofs",
+    "text": "To ensure the bound of δ′, the algorithm will be solving the sub-problem in Equation 7. First observe that in the context of in Lemma 2, note that ‖x?‖ = ‖ ( I + 1λ ∇ 2L̂i(φ) )−1 ∇Li(φ)‖ ≤ (λ/µ)B, and so it suffices to use a number of iterations that is bounded by:"
+  },
+  {
+    "para_id": "p114",
+    "section_heading": "E Proofs",
+    "text": "which completes the proof."
+  },
+  {
+    "para_id": "p115",
+    "section_heading": "F Experiment Details",
+    "text": "Here, we provide additional details of the experimental set-up for the experiments in Section 4. All training runs were conducted on a single NVIDIA (Titan Xp) GPU."
+  },
+  {
+    "para_id": "p116",
+    "section_heading": "F Experiment Details",
+    "text": "F.1 Synthetic Experiments"
+  },
+  {
+    "para_id": "p117",
+    "section_heading": "F Experiment Details",
+    "text": "For the synthetic experiments, we consider a linear regression problem. We consider parametric models of the form hφ(x) = φTx, where x can either be the raw inputs or features (e.g. Fourier features) of the input. For task Ti, we can equivalently write a quadratic objective that represents the task loss as:"
+  },
+  {
+    "para_id": "p118",
+    "section_heading": "F Experiment Details",
+    "text": "where Ai = E(x,y)∼Dtri [ xxT ] and bi = E(x,y)∼Dtri [ xTy ] . Thus, the inner level objective and corresponding minimizer can be written as:"
+  },
+  {
+    "para_id": "p119",
+    "section_heading": "F Experiment Details",
+    "text": "Thus, the exact meta-gradient can be written as"
+  },
+  {
+    "para_id": "p120",
+    "section_heading": "F Experiment Details",
+    "text": "We compare this gradient with the gradients computed by the iMAML and MAML algorithms. We considered the case of x ∈ R50, y ∈ R, λ = 5.0, and κ = 50, for the presented results."
+  },
+  {
+    "para_id": "p121",
+    "section_heading": "F Experiment Details",
+    "text": "F.2 Omniglot and Mini-ImageNet experiments"
+  },
+  {
+    "para_id": "p122",
+    "section_heading": "F Experiment Details",
+    "text": "We follow the standard training and evaluation protocol as in prior works [50, 57, 15]."
+  },
+  {
+    "para_id": "p123",
+    "section_heading": "F Experiment Details",
+    "text": "Omniglot Experiments The GD version of iMAML uses 16 gradient steps for 5-way 1-shot and 5-way 5-shot settings, and 25 gradient steps for 20-way 1-shot and 20-way 5-shot settings. A regularization strength of λ = 2.0 was used for both. 5 steps of conjugate gradient was used to compute the meta-gradient for each task in the mini-batch, and the meta-gradients were averaged before taking a step with the default parameters of Adam in the outer loop."
+  },
+  {
+    "para_id": "p124",
+    "section_heading": "F Experiment Details",
+    "text": "The Hessian-free version of MAML proceeds by using Hessian-free or Newton-CG method for solving the inner optimization problem (with respect to φ) with objective Gi(φ,θ). This method proceeds by constructing a local quadratic approximation to the objective and approximately computing the Newton direction with conjugate gradient. 5 CG steps are used for this process in our experiments. This allows us to compute the search direction, following which a step size has to be picked. We pick the step size through line-search. This procedure of computing the approximate Newton direction and linesearch is repeated 3 times in our experiments to solve the inner optimization problem well."
+  },
+  {
+    "para_id": "p125",
+    "section_heading": "F Experiment Details",
+    "text": "Mini-ImageNet For the GD version of iMAML, 10 GD steps were used with regularization strength of λ = 0.5. Again, 5 CG steps are used to compute the meta-gradient. Similarly, in the Hessian-Free variant, we again use 5 CG steps to compute the search direction followed by line search. This process is repeated 3 times to solve the inner level optimization. Again, to compute the meta-gradient, 5 steps of CG are used."
+  }
+]

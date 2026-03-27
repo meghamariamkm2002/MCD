@@ -1,0 +1,59 @@
+start	end	text
+31	993	And so on.
+1834	4920	So the question, of course, is how do you train this model?
+5080	8867	How do you train a model that gives you good candidates for subdivision?
+9508	15880	And the answer here comes from the idea of hindsight experience replay.
+15860	19764	So let's say, again, you are here and you want to go here.
+20304	24468	And you're not very good at it initially.
+25069	30655	So they train this model, as I understand, along with letting their agent act in this environment.
+31075	34458	So the agent uses the model to plan, but initially it's not very good.
+34719	37321	So maybe the agent will fail a lot of times.
+37681	44348	So instead of going to the blue square, it will reach this white square right here.
+44328	53851	It will go here here and here who reached the white square instead of saying I failed what you can do and this is the idea of hindsight experience replay is.
+54513	60868	To say well I did fail but I did reach something right I have reached a thing.
+60848	68155	And it's actually possible that that thing could have been the goal, but this particular episode, this was the goal.
+68315	69917	Remember, the goal changes every time.
+69957	72679	It's a goal directed policy.
+72940	75762	So it says, well, this could have been the goal, possibly.
+76043	83550	So if I just pretend this was the goal, then I have a training example for a successful run.
+84010	88054	So the hindsight experience replay basically pretends that what you
+88034	91497	have achieved, even if you failed, was your actual goal.
+91998	96082	And that gives you a positive training example for an episode with that as a goal.
+96623	102088	And it could have been the goal because the goal is chosen at random.
+103229	105752	So this gives you a good training example.
+106232	112278	Now this paper just generalizes the hindsight experience replay or applies it to their particular framework.
+112598	116202	And they say, well, if I reach this thing, that means
+116182	125353	Any point on this path is a good candidate for subdividing the path, because I did actually reach the point.
+125594	132983	Remember, the goal is to propose a point where your foreshore are going to pass through.
+133023	141594	Now, since I've taken this path to this goal, I have passed through any of the squares in between, and so these are my possible sub-candidates.
+141754	145058	And all other black squares, I don't want that.
+145038	153430	So now I have a classifier I can train, I can say any of these squares on my path are good squares to subdivide and any not on my path are bad ones.
+153890	165847	They go a step further, I believe, and they actually say we're, so if this was m steps, we're actually going to take the particular square that is reached after m half steps.
+165907	171315	So the exact middle point of that path is going to be our,
+171295	174901	training example for subdivisions.
+174961	182052	So you have a classifier that has exactly one target to train.
+182072	185858	So this you train along with acting in the environment.
+185978	191667	And of course, your model for proposing subdivisions is going to be better and better and better and better.
+191647	196071	And that makes your planning algorithm better and better, and that makes you collect better episodes.
+196471	204558	And so you can sort of bootstrap yourself up this thing.
+205719	209482	Now, this is the basic experiment of the paper.
+209543	215187	They also do this in a 3D manner, where they move this little spider here around.
+215227	221653	So the spider was trained to just move from one block to the next block, and the planner basically has to tell it where to go.
+221633	228007	And they show that they outperformed the traditional Monte Carlo tree search.
+228027	238470	Now, I have to say this is cool, but you have to remember this is only advantageous in very, very specific types of problems.
+238490	241296	So first of all, it has to be this goal-directed nature.
+241276	247488	Otherwise, you probably couldn't train this predictor here super well.
+247949	254222	Then, given that you have such a good predictor, the problem needs to be such that
+256126	261619	If you have a start state, there could be many ways to go about reaching the end.
+262000	265608	And if you have an end state, there could be many ways from where you could come from.
+266110	274810	But there is some bottleneck state in the middle where you're pretty sure that you're going to have to pass through it.
+274790	290487	If your problem is of that nature, if it has these bottleneck states where you can predict with reasonable accuracy that you're going to have to pass through, then this is a good algorithm to consider.
+290467	306452	is intuitively outperforming the original Monte Carlo tree search because you have much less deep search tree and you can effectively limit its width by using that model.
+307253	314044	They also have made this website where they show videos of their spider and
+314024	318088	I haven't seen it in a while, but it is, it is like next to the mouse.
+318508	319249	If you can see it.
+319709	325955	So, so you, you see, this is kind of a continuous control problem that also requires planning.
+326475	331680	And they also have these kind of gifts of how they're, they're, what order their plans are constructed in.
+332541	334763	So I invite you to check this out, read the paper.
+335303	341228	Uh, if you like this, uh, subscribe, leave a like, leave a comment, and thank you for listening.
+341589	341989	Bye-bye.

@@ -1,0 +1,116 @@
+WEBVTT
+
+00:00.031 --> 00:03.902
+theory of that this still works.
+
+00:04.524 --> 00:08.455
+They compare this, of course, to the other algorithms.
+
+00:08.715 --> 00:15.053
+They observe that their algorithm uses substantially less memory.
+
+00:15.033 --> 00:21.641
+And well, substantially less memory and substantially less compute time.
+
+00:22.182 --> 00:31.193
+Um, once you go up to a number of inner gradient steps and it works better than this first order mammal.
+
+00:31.253 --> 00:34.857
+So this first order mammal was our kind of initial guess of how we could do this.
+
+00:35.217 --> 00:36.980
+This tends to perform very poorly.
+
+00:37.360 --> 00:41.445
+As you can see, uh, their, their, um,
+
+00:43.737 --> 00:45.761
+Oh, you can't actually see that here.
+
+00:46.122 --> 00:55.101
+Their method is better, but their method is better and uses less time because you have this inner conjugate gradient optimizer.
+
+00:55.401 --> 00:59.029
+Sorry, this is the outer optimizer.
+
+00:59.009 --> 00:59.670
+Okay.
+
+01:00.291 --> 01:11.211
+So this is the error plot of how well are these methods are able to approximate the true gradient.
+
+01:11.231 --> 01:18.604
+So if you could compute this true outer gradient, you know, that we did with mammal, but we optimize to the end.
+
+01:18.584 --> 01:22.174
+How close are you getting?
+
+01:22.595 --> 01:33.606
+Of course, the problem with this method right here is that you do these approximations.
+
+01:33.586 --> 01:35.348
+and those could hurt you.
+
+01:35.748 --> 01:45.419
+But the problem with mammal is that you're back propagating through the optimization procedure, and that means the non-linear errors could sort of accumulate.
+
+01:46.380 --> 01:57.332
+And as you can see here, even though both might eventually get to the zero error, if you give them enough inner gradient steps,
+
+01:57.312 --> 02:04.442
+Especially at the low inner gradient step regime, the implicit mammal is much better than mammal.
+
+02:04.983 --> 02:20.805
+Now, I've just said the errors accumulate, but the effect probably here is that the fact that with mammal, you don't actually do enough inner steps to reach a good enough optimum of the inner tasks.
+
+02:21.145 --> 02:23.168
+So these inner gradient of the tasks,
+
+02:23.148 --> 02:27.215
+their gradients when they're still very not optimized.
+
+02:27.315 --> 02:33.807
+And therefore they are a very bad estimate for your outer gradient than when you do more gradient steps.
+
+02:33.827 --> 02:39.397
+So that actually hurts you more, which is also a bit surprising to me.
+
+02:39.698 --> 02:42.743
+And then at the end you see
+
+02:42.723 --> 02:44.346
+these conjugate gradient steps.
+
+02:44.487 --> 02:47.533
+This is when you approximate this matrix inverse.
+
+02:47.553 --> 02:51.201
+If you just do two steps, then at some point that error dominates.
+
+02:51.601 --> 02:55.590
+But if you do more steps, you can reach a much lower error.
+
+02:55.971 --> 02:59.177
+And 10 steps isn't that much for an algorithm like this.
+
+02:59.738 --> 03:03.887
+As you can see here, the 10 steps
+
+03:03.867 --> 03:14.367
+Your computation time will still in the regime of many gradient steps will still be lower than the original mammal.
+
+03:16.574 --> 03:18.337
+And then they actually test this thing.
+
+03:18.417 --> 03:22.023
+And of course, they're the best at pretty much everything.
+
+03:22.043 --> 03:25.468
+I don't want to go into the exact details here.
+
+03:25.949 --> 03:33.581
+I invite you to check out the paper for that, check out if you're interested in the proofs and the approximation guarantees.
+
+03:34.483 --> 03:37.047
+And with that, bye-bye.
+

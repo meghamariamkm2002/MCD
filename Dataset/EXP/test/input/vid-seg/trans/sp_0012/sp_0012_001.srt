@@ -1,0 +1,20 @@
+1
+00:00:00,824 --> 00:00:01,184
+Hi there.
+
+2
+00:00:01,425 --> 00:00:12,094
+Today we're looking at faster neural network training with data echoing by Dummy Choi, Alexander Passo, Christopher J. Shalu and George E. Dahl.
+
+3
+00:00:12,555 --> 00:00:22,404
+So on a high level, this paper basically says you should repeat data that's already in memory in order to speed up the entire process of neural network training.
+
+4
+00:00:22,964 --> 00:00:29,430
+And it also says that this can speed up your wall time without hurting your performance too much.
+
+5
+00:00:29,410 --> 00:00:32,991
+and I have mixed feelings about it.
+

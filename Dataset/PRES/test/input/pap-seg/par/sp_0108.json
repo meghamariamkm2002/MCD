@@ -1,0 +1,800 @@
+[
+  {
+    "para_id": "p1",
+    "section_heading": "Abstract",
+    "text": "Collaborative machine learning (ML) is widely used to enable institutions to learn better models from distributed data. While collaborative approaches to learning intuitively protect user data, they remain vulnerable to either the server, the clients, or both, deviating from the protocol. Indeed, because the protocol is asymmetric, a malicious server can abuse its power to reconstruct client data points. Conversely, malicious clients can corrupt learning with malicious updates. Thus, both clients and servers require a guarantee when the other cannot be trusted to fully cooperate. In this work, we propose a peer-to-peer (P2P) learning scheme that is secure against malicious servers and robust to malicious clients. Our core contribution is a generic framework that transforms any (compatible) algorithm for robust aggregation of model updates to the setting where servers and clients can act maliciously. Finally, we demonstrate the computational efficiency of our approach even with 1-million parameter models trained by 100s of peers on standard datasets.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p2",
+    "section_heading": "1 Introduction",
+    "text": "To leverage data that is located across different clients, service providers increasingly resort to collaborative forms of distributed machine learning. Rather than centralize the data on a single server, data remains on the owner\u2019s (client\u2019s) device(s), which could be a consumer\u2019s phone or bank/hospital\u2019s local data center. Take the canonical example of federated learning (FL) [34]. Rather than share data, clients instead send model updates to the server. Our work caters to settings where neither clients nor servers can be entirely trusted to faithfully participate in the Collaborative Learning (CL) protocol.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p3",
+    "section_heading": "1 Introduction",
+    "text": "For example, consider if a group of banks wished to learn a better fraud detection model. Banks may not be able to directly share data [15] and further because banking is a competitive industry, it must be assumed that banks will deviate from the protocol if it serves their interest. On one hand, malicious server banks may breach the intuitive confidentiality of CL. A long line of work [9, 10, 24, 37, 43, 49, 50, 52] has shown that when the server acts maliciously, it can, for instance, construct model parameter values that exactly extract client data from (even aggregated) model updates. To protect client data from servers acting maliciously, it is thus paramount to design approaches to CL where no single server can have full control over the orchestration of the protocol. On the other hand, malicious client banks may entirely prevent learning by submitting poor updates. This may be intentional as in model poisoning attacks [2, 6, 45, 46] or unintentional if their dataset contained malformed data. Though a separate line of work [25, 26, 29, 30, 32, 38, 48] has studied how to robustly learn in the face of malicious updates (or data), there are none that have studied how to integrate such robust learning algorithms within a protocol that is secure to malicious servers. In this work, we design the first scheme that is robust to the harms of both malicious server(s) and clients, which are shown in Figure 1.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p4",
+    "section_heading": "1 Introduction",
+    "text": "1 We observe that asymmetric power is the fundamental requirement for malicious servers to breach user data privacy. Thus, we design a fully-decentralized peer-to-peer (P2P) learning protocol where each participant (e.g., bank), or peer herein, can equally contribute to the role of the server aggregating updates (and of a client computing updates). Further, we ensure that no single peer has the power to orchestrate the protocol\u2014instead, we elect a committee of peers to perform the aggregation at any given training round in a way that requires no central or trusted third party (see Section 3 for the full threat model). On the other hand, there is now a greater need for protection against malicious clients as the distributed nature may increase the chances of intentional poisoning or bad data quality interfering with learning (e.g., due to fewer resources among some banks and/or competitive advantages). Thus, we ensure that our protocol can efficiently integrate with classical approaches for robustness against malicious clients, such as RSA [32], FL Trust (FLT) [14], or Centered Clipping (CC) [29]. Importantly, our work generalizes the setups of these works and introduces the general framework that adapts any (compatible) algorithm for robust aggregation of model updates to settings where servers and clients may behave maliciously.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p5",
+    "section_heading": "1 Introduction",
+    "text": "To achieve this, our approach builds on cryptographic multi-party computation (MPC) protocols. This allows peers to collectively emulate the server\u2019s role while being robust against the collusion of a subset of these peers that may act maliciously. However, naively combining these with (insecure) robust aggregation techniques incurs prohibitive overhead because the server computation for robust aggregation, which must be securely computed in MPC, is almost always of a complexity that leads to a high multiplicative slowdown. We design a framework that modularizes the processing steps of robust aggregation so as to select the most suitable cryptographic building blocks for each one, leading to significant computational improvements. One such improvement is our proposed computational surjectivity. We show that aggregation algorithms with component functions satisfying this property can efficiently obtain security while still guaranteeing robustness against malicious peers; we also show that existing robustness algorithms satisfy this property, or can be tailored to do so.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p6",
+    "section_heading": "1 Introduction",
+    "text": "To summarize, our contributions are the following:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p7",
+    "section_heading": "1 Introduction",
+    "text": "1. We design the first collaborative learning protocol that operates under the malicious threat model and is robust to both malicious clients and servers. We provide a simulation-based proof of its cryptographic security.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p8",
+    "section_heading": "1 Introduction",
+    "text": "2. We design our protocol as a generic compiler that can convert broad categories of robust aggregation algorithms to our improved security model efficiently. This modular approach enables practitioners obtain rigorous security guarantees while selecting the most appropriate model poisoning defense for their use case. To demonstrate our framework\u2019s flexibility, we generate malicious-secure protocols for three existing robust aggregation algorithms. We show empirically that the generated protocols retain their robustness guarantees.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p9",
+    "section_heading": "1 Introduction",
+    "text": "3. We demonstrate the computational efficiency of our protocols. We benchmark our protocols up to 1 million parameter models, and thousands of peers. For example, we show that the aggregation step of our malicious-secure implementation of robust aggregation with RSA [32] obtains a per-round CPU time of roughly 46 seconds with 105 parameters when trained by 1000 peers.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p10",
+    "section_heading": "2 Related Work",
+    "text": "Federated learning is perhaps the most studied collaborative learning framework [28, 35]. Most related to ours are variants based on Secure Aggregation (SecAgg) [11] that provide confidentiality of gradient transmission. However, existing work does not provide robust aggregation within SecAgg and is focused on the single-server setting, or additionally on their use for tighter differential privacy guarantees [16, 27, 41, 47]. In contrast, we focus solely on confidentiality in the distributed server setting with robust aggregation. Other works include CaPC [17] but this requires a trusted third party to reduce the computational overhead. We make no such assumptions. In Swarm Peer-2-Peer learning [44], participants can dynamically join or leave the collaboration and are enrolled via a Blockchain smart contract. There is no central party and each per-round server is dynamically elected",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p11",
+    "section_heading": "2 Related Work",
+    "text": "via Blockchain smart contracts. Crucially, Swarm Learning supports neither secure (confidentialitypreserving) nor robust aggregation\u2014it uses standard parameter averaging.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p12",
+    "section_heading": "2 Related Work",
+    "text": "Biscotti [39] incorporates robustness to poisoning by combining Multi-Krum [7] and secure aggregation through Shamir secret-sharing. Its core parts are a verification committee that runs robust update selection, and aggregation committee that computes the final model update. However, Biscotti only guarantees security in the semi-honest setting and is solely compatible with Multi-Krum, which is not always the preferable robustness algorithm [29]. Blockchain is also used as an alternative to the centralized aggregator in FL to deal with malicious participants or servers in [51]. The initial model is uploaded on the blockchain following which the participants train local models, then sign on hashes with their private keys, and upload the locally trained models to the blockchain. The validity of the uploaded models is verified with digital signatures and Multi-Krum. Algorand is used as the consensus algorithm in the blockchain system to update the global model. However, it uses a single leader for each training round and is compatible only with Multi-Krum.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p13",
+    "section_heading": "2 Related Work",
+    "text": "Konstantinov and Lampert [31] present a distributed robust learning procedure that allows for robust learning from untrusted sources. Distributed Robust Learning (DRL) [22] is another approach to robust learning which uses a divide and conquer strategy. However, none of the papers achieves the two notions of robustness at the same time. Closest to our work are those that look to combine data integrity and confidentiality (security) [4, 20]. However, these works are crucially different from ours in that they perform checks on the underlying data of each client, not the update\u2014then, these protocols drop clients with poor data. Because these approaches operate over a different input, they may be used simultaneously with ours.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p14",
+    "section_heading": "3 Threat Model",
+    "text": "Collaborative learning is conducted among a set of parties (herein, peers) performing one of two roles: a client (or worker) who performs learning on a local dataset, or a server that aggregates the many client updates. Our protocol differs in two main ways: first, it is conducted among a set of peers (parties) which can perform either role, and second, the role of the server is performed by a subset of peers termed the aggregation committee. To align with prior literature, we sometimes refer to peers as clients or servers when they are performing those respective roles. We consider a malicious threat model where clients and servers may perform arbitrary adversarial actions to interfere with the protocol. Malicious behavior in the two roles may include, but is not limited to the following.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p15",
+    "section_heading": "3 Threat Model",
+    "text": "1. Malicious Clients may attempt to (1) lower the quality of the trained model by sending distorted model updates. This may take the form of both (a) intentional model poisoning attacks, and (b) unintentional problems such as errors in computation, and skewed or incorrect local data sets. They may also attempt to (2) steal information about the other peers\u2019 data, i.e. break confidentiality, e.g. by colluding with other malicious peers and sharing transcripts of the protocol execution.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p16",
+    "section_heading": "3 Threat Model",
+    "text": "2. Malicious Servers / Committee Members may attempt to (1) reconstruct individual data points from the clients\u2019 updates, thus breaking data confidentiality, which can be achieved by arbitrarily modifying model parameters or colluding with other parties (Committee Members or Clients), (2) inappropriately change the shared model by e.g. omitting updates from selected clients, adding in bogus updates, or otherwise altering the global model updates.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p17",
+    "section_heading": "3 Threat Model",
+    "text": "We compose multiple cryptographic primitives, including secure committee election, verified secret sharing, distributed zero knowledge proofs, and secure multiparty computation. The assumptions and guarantees of the individual primitives are in Appendix B.2. Importantly, their composition is secure under universal composability [13]. Our overall protocol operates under the standard assumptions of authenticated point-to-point secure channels between peers and a bounded proportion of adversarial peers (see Appendix B.1 for details). The following are the formal guarantees of our protocol.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p18",
+    "section_heading": "3 Threat Model",
+    "text": "\u2022 Correctness of aggregation. Given a publicly known update aggregation function FR and that clients submit local updates x1, x2, . . . , xn, the returned global update will be equal to FR(x1, x2, . . . , xn). See the following Section 4 for details.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p19",
+    "section_heading": "3 Threat Model",
+    "text": "\u2022 Confidentiality of client updates. During protocol execution, no peers gain information about any other\u2019s update xi beyond what is implicitly revealed by the aggregate result FR(x1, x2, . . . , xn).",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p20",
+    "section_heading": "3 Threat Model",
+    "text": "\u2022 Robustness to poisoning. An accurate model will be trained even if some subset of clients submit arbitrary poisonous updates. Our framework compiles existing robust aggregation algorithms into a stronger security model. Thus, the details of this guarantee depend on the underlying algorithm.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p21",
+    "section_heading": "3 Threat Model",
+    "text": "\u2022 Malicious (active) security. The above conditions hold even when a subset of parties actively perform arbitrary malicious behavior, including but not limited to: collusion between malicious peers, attempts to deviate from any part of the protocol, and submission of poisonous local updates.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p22",
+    "section_heading": "3 Threat Model",
+    "text": "Problem Setup. To construct a collaborative learning protocol that is robust against both malicious clients and servers, we must decentralize the task of update aggregation. Accordingly, P2P learning is conducted among a set of peers, who may be assigned the role of client or server.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p23",
+    "section_heading": "4 Robust and Actively Secure Framework",
+    "text": "Our framework efficiently lifts the robust aggregation algorithms (e.g., the aforementioned RSA, FLT, or CC) to the P2P learning setting with guaranteed malicious-secure (or, actively-secure) protocol fidelity. This security model guarantees both confidentiality and protocol fidelity against peers that may take arbitrary actions to disrupt the P2P learning protocol execution\u2014fidelity is maintained by retaining the model fidelity guarantees of an underlying robust aggregation algorithm. Indeed, we previously mentioned that many algorithms provide model fidelity against poisonous adversaries in the single-server setting [7, 25, 29, 30, 32, 38]. Each algorithm makes different assumptions about the threat model, e.g., how many times a given malicious client can participate, what sort of malicious update they send, what the underlying data distribution is, etc. Thus, rather than pinning our framework on a single robustness algorithm, we propose a modular design that encompasses a broad class of such robust aggregation algorithms designed for the single-server setting.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p24",
+    "section_heading": "4.1 Framework Design",
+    "text": "In order to strengthen the security models of a broad class of robust aggregation algorithms, we design a modular template (Figure 2), which organizes aggregation algorithms in terms of three functions:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p25",
+    "section_heading": "4.1 Framework Design",
+    "text": "The first function, FC , represents the computation of client updates based on local data, state, and global model parameters; accordingly,D is the space of possible client datasets, S is the space of local states, \u2126 is the space of global model parameters, and U is the space of client updates. In the trusted single-server setting, each client computes FC and sends their update ui \u2208 U to the server. Next comes the server\u2019s computation. We break the server\u2019s work into two parts: a preprocessing function FP and an aggregation function FR. The former transforms each client update to a preprocessed domain V , and the latter combines the preprocessed local updates into a global model update w \u2208 \u2126. Our primary contribution is the design of a protocol that lifts any robust aggregation algorithm described in terms of these functions to a stronger security model. The security model in question",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p26",
+    "section_heading": "4.1 Framework Design",
+    "text": "is secure against malicious/active clients without relying on a trusted server, all while retaining the protection against poisoning attacks offered by the original algorithm.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p27",
+    "section_heading": "4.1 Framework Design",
+    "text": "Protocol Description. Peers carrying out a P2P Learning protocol (Figure 3) begin by randomly selecting an aggregation committee, the size of which is parameterized to guarantee an honest majority with all but negligible probability (see Appendix B for details). Since the committee is honest-majority, it can use secure MPC (secure Multi-Party Computation) and VSS (Verifiable Secret Sharing) schemes later in the protocol. All clients then compute local updates via FC and preprocess those updates via FP . Peers secret share their updates with VSS and pass shares to the aggregation committee. Each member of the committee receives a share of a local update from every peer. The committee uses distributed zero knowledge proofs to ensure that all updates are well-formed outputs of FP \u2014Section 4.2 discusses in detail how to do so with practical efficiency. Finally, FR is computed by the aggregation committee by using the shares as input to a malicious-secure MPC protocol, and committee members send the resulting global model update to all peers. This protocol relies on users remaining online throughout, an assumption that may not always be practical. In Section 4.3, we discuss how to relax this.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p28",
+    "section_heading": "4.1 Framework Design",
+    "text": "Strengthened Security Model. In the single-server setting, the computation of FR is handled by a single party. This makes it vulnerable to tampering \u2013 a malicious server may breach client confidentiality, omit updates from certain clients, modify updates, or simply make arbitrary changes to the global model. Our framework lifts aggregation algorithms to a security model where none of that is possible. Distributing the computation of FR to an honest-majority committee equipped with malicious-secure MPC means that FR is computed with guaranteed correctness and that no information about the local updates is leaked in the process. Further, using VSS guarantees that no committee member can breach the confidentiality of client updates before the computation of FR, and that it is (with high probability) impossible to modify client updates before the computation of FR without being caught. Further, since the committee is majority-honest, all peers can guarantee the received global update is correct by taking the majority result received from the committee members.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p29",
+    "section_heading": "4.1 Framework Design",
+    "text": "Obtaining Practical Efficiency. It is possible to strengthen the security model of almost any distributed computation by simply running it inside of a generalized MPC protocol, but doing so usually results in unbearable computational overhead since MPC substantially amplifies the cost of most operations. A key challenge that we surmount is strengthening security whilst maintaining the efficiency necessary to scale to real-world collaborative learning scenarios. The design choices we employ while formulating our protocol make this possible. For example, in applications of robust aggregation with a trusted single-server, the role of the server is typically executed by a data center with high compute capabilities. In such a setting it is beneficial to minimize client-side computation and shift the compute responsibility to the server wherever possible.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p30",
+    "section_heading": "4.1 Framework Design",
+    "text": "In contrast, collaborative learning with no trusted parties requires a committee to aggregate client updates, and operations performed in MPC by the committee are especially costly. Thus it becomes",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p31",
+    "section_heading": "4.1 Framework Design",
+    "text": "beneficial to offload as much of the computation as possible to the client-side. Our template (Figure 2) and protocol (Figure 3) do this by separating the trusted server\u2019s work into two parts, FP and FR, and shifting the work of computing FP to the clients. This dramatically reduces the computational burden of the aggregation committee, but introduces potential concerns about the correctness of the underlying aggregation algorithm. Namely, in the trusted server setting FP is guaranteed to be computed correctly since it is executed by a trusted party, but a malicious client may introduce arbitrary faults into the computation of FP . To prevent this while maintaining confidentiality, one could use a zero-knowledge proof to guarantee that FP was computed correctly, however this would introduce substantial computational overhead. We achieve a much more efficient result by instead verifying that each peer\u2019s local update is well-formed\u2014that it properly falls within the preprocessed domain V . We observe that if FP has a certain property, which we call computational surjectivity, verifying that the update is within V is just as good as verifying correct computation of FP , even though the former comes at substantially lower cost.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p32",
+    "section_heading": "4.2 Computational Surjectivity",
+    "text": "Our key insight is that by leveraging the properties of robust aggregation, we can relax certain requirements on the correctness of FP . These relaxed requirements allow us to offload computation of FP to the client-side, while also avoiding the computational overhead of a full zero-knowledge proof that FP was computed correctly.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p33",
+    "section_heading": "4.2 Computational Surjectivity",
+    "text": "A robust aggregation algorithm guarantees that even when adversaries provide arbitrary values as the output of FC , a satisfactory output of FR will be computed. Accordingly, we observe that as long as some valid output of FC maps to each client\u2019s output of FP , the final global update will be computed properly. Thus if FP is a surjective function (i.e. if \u2200v \u2208 V,\u2203u \u2208 U : v = FP (u)), it is only necessary to verify that vi \u2208 V for all client updates vi in order to correctly compute FR. Below we specify a computational analogue of surjectivity\u2014we require the preimage can be found in polynomial time so the whole protocol can achieve simulation security (Appendix B.3 has details).",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p34",
+    "section_heading": "4.2 Computational Surjectivity",
+    "text": "Definition 1 A function f : U \u2192 V is computationally surjective if there is a probabilistic polynomial-time algorithm A : V \u2192 U such that for any v \u2208 V , we have f(A(v)) = v.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p35",
+    "section_heading": "4.2 Computational Surjectivity",
+    "text": "In general, we have no guarantees on the structure of FP and so peers must prove in zero knowledge that vi is the result of a valid computation of FP (Figure 3, step 5). But if FP is computationally surjective, then all possible vi \u2208 V are implicitly the output of some computation of FP . Thus, it only becomes necessary to prove that the shares of each peers\u2019 input reconstructs a point within V .",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p36",
+    "section_heading": "4.2 Computational Surjectivity",
+    "text": "Theorem 1 (proof in Appendix B.3) states the security of this protocol in the malicious setting.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p37",
+    "section_heading": "4.2 Computational Surjectivity",
+    "text": "Theorem 1 For any single-server robust aggregation algorithm described in (FC , FP , FR) as in Figure 2, the protocol described in Figure 3 is a secure P2P learning protocol against malicious clients and servers when the underlying MPC scheme is secure.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p38",
+    "section_heading": "4.3 Tolerating Peers Disconnecting",
+    "text": "Peers cannot always be assumed to remain connected throughout an entire protocol execution, e.g., when peers are mobile devices [11]. Further, it is also common to subsample a small portion of peers as clients to avoid high computation/communication costs [47]. We show how to account for both of these practical settings with minimal modifications to our protocol.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p39",
+    "section_heading": "4.3 Tolerating Peers Disconnecting",
+    "text": "Tolerance to Users Dropping. Our protocol includes two areas where peers must collaborate on the cryptographic protocol: the (client) work of computing updates and the (server / committee) work of aggregating updates. Our protocol already gracefully tolerates any number of clients dropping so long as the the pool of remaining clients meets the assumptions of the underlying robust aggregation algorithm. In this case our protocol\u2019s output would be just as if those peers did not participate. Our protocol can also tolerate committee member dropout with no impact on the output of the protocol by proportionally increasing the committee size (due to the reconstruction guarantees of VSS). We find that this increase is often small even for substantial drop out rates. For example, to tolerate a 10% drop rate of honest committee members we need only increase the committee size from 46 to 60 (though this number depends on the algorithm, see Appendix B.1.1 for detailed analysis).",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p40",
+    "section_heading": "4.3 Tolerating Peers Disconnecting",
+    "text": "Subsampling Clients. This setting inherits the security of our original protocol as long as all honest peers agree on the selected subsample of clients in each round. This can be accomplished efficiently via secure coin flipping [8], e.g., before the protocol commences. Then, our protocol\u2019s computation is reduced proportionally to that of execution on the subsample.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p41",
+    "section_heading": "5 Lifting Robust-Aggregation Algorithms to a Malicious-Security Model",
+    "text": "Having discussed how a single-server robust aggregation with a computationally surjective FP can be lifted to the malicious P2P setting with high efficiency, we apply this principle to the design of malicious-secure versions of three popular robust aggregation algorithms: robust stochastic aggregation (RSA) [32], centered clipping (CC) [29], and FLTrust (FLT) [14] in the P2P setting.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p42",
+    "section_heading": "5.1 Instantiating Robust Stochastic Aggregation (RSA) in our malicious-secure framework.",
+    "text": "RSA is a lightweight algorithm for Byzantine-robust convex optimization [32] (see Appendix B.4.1 for a summary). We observe that it can be lifted to the malicious security model with high efficiency with very few modifications to the algorithm because it is computationally surjective (which we show formally in Appendix B) and the underlying MPC can be efficiently instantiated.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p43",
+    "section_heading": "5.1 Instantiating Robust Stochastic Aggregation (RSA) in our malicious-secure framework.",
+    "text": "In RSA peer updates are the sign of the difference between each parameter of the local and global models. In other words, the FP of RSA gives V = {\u22121, 1}d, where d is the number of parameters in the model. Thus, it is sufficient for peers to prove in zero-knowledge that their updates are in the set V = {\u22121, 1}d. This can be accomplished efficiently by having each peer represent their update as d shares of binary values. The committee can perform a distributed zero knowledge (DZK) proof that a shared x is binary-valued by constructing shares of x \u00b7 (1\u2212 x) and revealing it to be zero. These proofs can be batched together for a substantial improvement in efficiency. In particular, for every shared value xi, parties uniformly sample a random value ri, and locally construct shares of the sum\u2211",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p44",
+    "section_heading": "5.1 Instantiating Robust Stochastic Aggregation (RSA) in our malicious-secure framework.",
+    "text": "ri \u00b7 (xi \u00b7 (1\u2212 xi)). The parties then reconstruct the sum\u2014if it is 0, then each of the (xi \u00b7 (1\u2212 xi)) components must have been 0 with all but negligible probability. For a more detailed treatment of this technique, see [12].",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p45",
+    "section_heading": "5.1 Instantiating Robust Stochastic Aggregation (RSA) in our malicious-secure framework.",
+    "text": "During the computation of FR, the committee needs only to sum the shares and send out the reconstructed sum. The actual value of the summed updates in {\u22121, 1} is implicitly given by the sum of the binary values (if the sum of the binary values is x, simply take 2x\u2212m).",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p46",
+    "section_heading": "5.2 Instantiating Centered Clipping (CC) in our malicious-secure framework.",
+    "text": "CC with momentum is a robust aggregation algorithm that ensures protection against time-coupled poisoning attacks [29] (see Appendix B for a summary). To lift it to our improved security model with",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p47",
+    "section_heading": "5.2 Instantiating Centered Clipping (CC) in our malicious-secure framework.",
+    "text": "practical efficiency, we construct a computationally surjective variant of the CC algorithm. Namely, while canonical CC clips local updates using the \u21132 norm, we use the \u2113\u221e norm.4 In other words, we clip the gradients to a \u03c4 -box rather than a \u03c4 -ball. This modification admits a computationally surjective FP with an efficient DZK proof that a client update is within the valid domain. In particular, we take V = [0, 2\u03b8\u22121]d. Then in FP we scale, round, and map clipped gradient updates to be within this domain. Here \u03b8 is a public constant large enough to limit discretization error of local updates during scaling\u2014in experiments with CC we set \u03b8 to 32 in order to align with 32-bit fixed-point numbers. Smaller values of \u03b8 will increase protocol efficiency, at the expense of higher discretization error during rounding and mapping in FP step 3. The computational surjectivity of this FP follows from a similar argument to Lemma 2 (see Appendix B).",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p48",
+    "section_heading": "5.2 Instantiating Centered Clipping (CC) in our malicious-secure framework.",
+    "text": "DZK Proof of Valid Update. We specify that local updates vi are submitted as vectors of the individual component bits of the processed gradient update. This means that each bit will be individually secret shared, which allows the committee to verify whether each one is binary-valued (using the same DZK technique described above for the RSA protocol). Since we scaled each update to fit within a 2\u03b8-sized d-dimensional box, the d sets of \u03b8 binary values in the update trivially encode a point within the box. Thus, a proof that each component of the bitwise update is binary-valued equates to a proof that the update is in V .",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p49",
+    "section_heading": "5.2 Instantiating Centered Clipping (CC) in our malicious-secure framework.",
+    "text": "The global update is aggregated by summing the bits at each position of the client update vectors. The sums are reconstructed and sent directly to all clients. They implicitly encode the updated global parameters w\u2032, which are recovered via client-side computation in order to keep the computation of FR light-weight. Details of our malicious-secure Centered Box Clipping protocol can be found in",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p50",
+    "section_heading": "5.2 Instantiating Centered Clipping (CC) in our malicious-secure framework.",
+    "text": "Figure 8 (in Appendix).",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p51",
+    "section_heading": "5.3 Instantiating FLTrust in Malicious-Secure Framework",
+    "text": "FLTrust (FLT) is a robust aggregation algorithm that uses a trusted dataset to filter out poisoned updates [14] (see Appendix B for a summary). As with CC, we construct a tailored variant of FLT that admits a computationally surjective FP to improve efficiency. In particular we rotate and scale the \u201croot\u201d update g0 to be a unit vector aligned with the x-axis. This allows us to take V to be the set of unit vectors in the half-space defined by a non-negative x-coordinate. As such, FP involves scaling and rotating client updates so that the angle between them and g0 is preserved. Similarly to CC, we encode client updates as \u03b8-bit fixed point numbers. In our benchmarks for FLT, we set \u03b8 to 16 to compensate for the increased memory demands of this protocol. We use a committee size of 121 in order to enable multiplication of secret shared values (see Appendix B for details).",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p52",
+    "section_heading": "5.3 Instantiating FLTrust in Malicious-Secure Framework",
+    "text": "DZK Proof of Valid Update. As in CC, the magnitudes of local updates vi are submitted as shares of each bit in the binary representation of each fixed-point number. Clients additionally submit shares encoding sign for each parameter, with the exception of the x-coordinate, which is assumed to be always non-negative. We use the previously described technique to verify that the shares encoding magnitude are binary-valued. We use a similar technique to verify that shares encoding sign are in the set {\u22121, 1} (i.e. we reveal (b + 1)(b \u2212 1) to be zero using a batch check). Further, we verify that submitted updates are unit length by constructing shares of \u27e8g\u0304i, g\u0304i\u27e9 \u2212 C, where C is the squared length of a unit vector represented as a \u03b8-bit fixed-point number. Revealing this quantity to be zero verifies in zero-knowledge that g\u0304i was indeed unit length.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p53",
+    "section_heading": "6 Verifying Empirical Efficacy and Efficiency",
+    "text": "Our empirical evaluation focuses on exploring three major axes: (1) the Byzantine robustness of our implementations due to modifications we introduced, (2) the computational efficiency of our protocol, and (3) the tradeoff between computational efficiency and Byzantine robustness. To this end, we center our comparisons on robust stochastic aggregation (RSA), Centered Clipping (CC), and FLTrust (FLT) but remark that our framework is compatible with other (potentially future) Byzantine robust algorithms as well. We demonstrate the practical efficiency of our case studies in the P2P Learning framework while maintaining the same robustness of the algorithms as in their clear versions.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p54",
+    "section_heading": "6.1 Security Does not Impact Robustness",
+    "text": "We verify if the properties of the robust aggregation algorithms hold after the required modifications to lift them to the malicious setting, e.g., switching to fixed point numerical precision. In",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p55",
+    "section_heading": "6.1 Security Does not Impact Robustness",
+    "text": "Figure 4, we use the IID MNIST dataset and 20 peers, of which there are 10 malicious workers5. We compare the robustness of CC against the ALIE (A Little Is Enough) attack [2] before and after lowering CC\u2019s numerical precision. We observe that the algorithm preserves its robustness despite the required changes. We also present corresponding additional studies (e.g. comparison between \u21132 and \u2113\u221e norm for CC) in Appendix B. We observe that all the modified algorithms, namely CC, FLT, and RSA exhibit comparable performance to the original algorithms.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p56",
+    "section_heading": "6.2 Scaling of Computational Efficiency",
+    "text": "Because P2P learning algorithms typically require upwards of 1000 rounds of the protocol to converge, it is a necessity to have an efficient protocol. In Figure 5, we analyze the two major factors influencing this: the size of the vector (ML model) being aggregated (denoted as the number of parameters), and the number of peers participating in the collaborative learning. We observe much better performance for RSA than other algorithms per training round. This results from a more concise form of the information exchanged between peers in the case of RSA, where local updates from each peer are represented as an array of bits. In contrast, model updates sent between peers in FLT or CC are always encoded as fixed points, 16 for FLT vs 32 for CC. The more efficient encoding in RSA provides a speedup of around \u223c30X in comparison to CC and \u223c6X over FLT. Our framework scales efficiently to even 5000 participants; we observe a linear growth in terms of the elapsed time per training round. Similarly, the computation time scales linearly for RSA, FLT, and CC, with the number of parameters. We further compare the communication cost between frameworks in Appendix B.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p57",
+    "section_heading": "6.3 End-to-end Protocol Evaluation in Presence of Attacks",
+    "text": "We estimate the accuracy and runtime of the modified algorithms in the presence of different types of attacks in Figure 6. We compute the number of rounds to convergence, and use the per-round CPU",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p58",
+    "section_heading": "6.3 End-to-end Protocol Evaluation in Presence of Attacks",
+    "text": "time for computation of FR in each algorithm, to estimate overall training runtime and accuracy for EMNIST (and similar results for MNIST in Appendix B). We plot the test accuracy (%) on the y-axis and the x-axis represents the estimated CPU time (measured in seconds, note that this is in the logarithmic scale) of the P2P training. We observe that in all cases, CC and FLT algorithms outperform RSA in terms of convergence speed and achieve higher final accuracy. Note that the overall convergence speed is decided by both the number of iterations of training and the cost of each iteration. Although RSA is faster to compute for one iteration due to reduced information exchanged in each iteration, it requires much more iterations than CC and FLT, and hence slower to converge. When considering only utility, CC also outperforms FLT consistently; however, under computation constraints, it is often the case that FLT is more efficient than CC. This is primarily because we use a fixed-point length (\u03b8) of 16 bits in the experiments for FLT, but 32 bits for CC.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p59",
+    "section_heading": "7 Limitations",
+    "text": "We provided a reference implementation of our protocol for three popular robust aggregation algorithms, namely RSA, FTL, and CC. We hope that our framework will be easy to extend to future robust aggregation methods. We acknowledge that operating in the malicious threat model also increases the cost of computation, communication, and storage, in comparison to the fully trusted environment or an honest-but-curious threat model.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p60",
+    "section_heading": "7 Limitations",
+    "text": "Our protocol is focused on confidentiality and security of the training protocol when combined with robustness. This is one component of privacy-preserving machine learning that is critical to preventing many attacks (as outlined in Table 1 and Section 2). However, this does not prevent the privacy leakage obtained via interactions with the final trained model. For this, differential privacy (DP) [21], in particular DP machine learning techniques [1, 3, 18, 19] are required. Incorporating these techniques within our framework is of interesting future work.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p61",
+    "section_heading": "8 Conclusions",
+    "text": "The benefits of collaborative learning make it an attractive new paradigm that is increasingly adopted in many domains, such as the financial sector to enable collaboration between banks. However, there are many risks associated with collaboration due to clients or server(s) being actively malicious. Malicious clients can submit corrupted updates which leads to the failure of creating a useful shared model. Conversely, the leakage of the client\u2019s local data when contributing model updates has been demonstrated to be particularly strong when a central party cannot be trusted to orchestrate the collaborative learning protocol. To mitigate these issues, we propose a Peer-to-Peer Learning protocol that is robust against malicious clients and server(s) to train a shared model without a central party. We prove the cryptographic security of our protocol, providing the necessary security guarantees. Our novel framework is designed as a generic compiler that can efficiently convert robust aggregation algorithms to the P2P learning setting with the guaranteed malicious-secure protocol. We show empirically that the generated protocols retain their robustness guarantees. This generic approach can be applied to many (possibly future) aggregation algorithms.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p62",
+    "section_heading": "Acknowledgement",
+    "text": "We would like to acknowledge our sponsors, who support our research with financial and in-kind contributions: Amazon, Apple, CIFAR through the Canada CIFAR AI Chair, DARPA through the GARD project, Intel, Meta, NSERC through the Discovery Grant, the Ontario Early Researcher Award, and the Sloan Foundation. Resources used in preparing this research were provided, in part, by the Province of Ontario, the Government of Canada through CIFAR, and companies sponsoring the Vector Institute. Xiao Wang is supported by NSF #2016240, #2236819, #2318974, and research awards from Google and Meta. Jha is supported by Air Force Grant FA9550-18-1-0166, the National Science Foundation (NSF) Grants CCF-FMitF-1836978, IIS-2008559, SaTC-Frontiers-1804648, CCF-2046710, CCF-1652140, and 2039445, and ARO grant number W911NF-17-1-0405, and DARPA-GARD problem under agreement number 885000. Franzese is supported by the National Science Foundation Graduate Research Fellowship Grant No. DGE-1842165. We would also like to thank CleverHans lab group members for their feedback.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p63",
+    "section_heading": "A Broader Impacts",
+    "text": "The goal of our work is to provide a protocol that enables collaborative learning with guaranteed confidentiality of client data and fidelity of the trained model, even when both clients and server(s) can act maliciously. A potential positive impact of this work is increased privacy and accountability in machine learning systems. One potentially negative impact could be the degradation of performance (in terms of compute time, communication overhead, or additional storage) for legitimate users. However, as shown in our experimental results, we are still able to cater to 100s of users with a model size of 1 mln parameters.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p64",
+    "section_heading": "B Additional Information",
+    "text": "We further present additional information, experimental results, as well as a comparison between RSA, Centered Clipping with Momentum, and FL Trust.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p65",
+    "section_heading": "B.1 Committee Size",
+    "text": "The main protocol proceeds by first selecting a subset from the pool of peers which will be responsible for aggregating the updates of all the peers. This subset is termed the aggregation committee. To guarantee security, the size of the committee m has to be adjusted based on the number of corrupted parties. Let us denote the set of corrupted parties as B with |B| = b. If the committee members are selected randomly, then with probability p = b/n, a given committee member is an adversary. To ensure security in the malicious case, we need the aggregation committee to have an honest majority except with negligible probability (i.e. occurring with probability less than 2\u221240 as in [33, 42]). We can assess the probability of this event by modeling the number of corrupted peers in a uniform sample as a binomial random variable X with bias p = bn and m trials. In particular, we are interested in values of p and m for which Pr[X \u2265 n/2] < 2\u221240. These values can be computed from the cumulative density function of the binomial distribution. Assuming a 10% adversarial corruption threshold (i.e. setting p = 1/10), we obtain a committee size of 46. We use this committee size for experiments with RSA and CC. With FLTrust, in order to accommodate secret share multiplications with Shamir secret sharing, we guarantee Pr[X \u2265 n/3] < 2\u221240, which gives a committee size of 121.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p66",
+    "section_heading": "B.1.1 Tolerance of Committee Members Dropping",
+    "text": "In general, our protocol requires that the number of adversaries in the aggregation committee be kept below a certain proportion in order to guarantee security. The committee size is chosen as the smallest number of parties such that (except with negligible probability) a random sample from the pool of clients has less than 1/2 adversarial proportion (in the case of RSA, CC), or less than 1/3 (in the case of FLT). To tolerate drop out of honest committee members, we simply need to select an increased committee size such that the proportion of adversaries in the committee stays beneath these thresholds even if some number of the honest parties drop out. In particular, if we choose a committee size which guarantees (except with negligible probability) that a random sample from the pool of clients has less than 12 \u2212 q 2 ) adversarial proportion, where q is the proportion of tolerated dropouts from honest parties, we will guarantee that the adversarial proportion with reference to the number of committee members that stay online is at most 1/2. We can find the necessary committee sizes by reasoning with the binomial distribution similarly to our original analysis of committee size. For example, to tolerate 5%, 10%, and 15% dropout of honest committee members, RSA and CC would require committee sizes of 53, 60, and 69 respectively (compared to 46 with no dropout tolerance), and FLT would require 157, 218, and 326 respectively (compared to 121 with no dropout tolerance).",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p67",
+    "section_heading": "B.2 Building Blocks",
+    "text": "Byzantine Robust Aggregation. In collaborative learning (e.g., federated learning), many clients submit model updates based on their local data. These local updates are aggregated to update the global model. In settings where clients are untrusted, some Byzantine or malicious clients may submit poisonous updates (which may take arbitrary values) with the aim of degrading the quality of the global model. Broadly speaking, Byzantine robust aggregation algorithms (often abbreviated to \u201crobust aggregation\u201d), guarantee that an accurate global model is trained as long as the proportion of",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p68",
+    "section_heading": "B.2 Building Blocks",
+    "text": "malicious clients is bounded by a certain threshold (e.g., the theoretical analysis in CC assumes a maximum of 15% malicious clients). Further formalization of this idea occurs in a variety of ways across different works of literature \u2013 our framework is intentionally modular, inheriting the guarantees of a given underlying algorithm. Our main contribution is augmenting robustness to malicious clients with the additional guarantee that aggregation is computed correctly and confidentially even in the presence of malicious servers / aggregation committee members. We use the cryptographic primitives reviewed below to achieve this guarantee.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p69",
+    "section_heading": "B.2 Building Blocks",
+    "text": "Committee Election. Uniform election of committee members can be efficiently instantiated using coin-flipping [8]. A classical way to accomplish this is to have all peers generate a string of random bits locally. The peers then make a cryptographic commitment to their random bits and distribute it to all other peers. After all peers have made their commitments, the random bits are all revealed. The concatenation of all the random bits can then be used as input to a random oracle, whose outputs can be used to select the committee members uniformly at random. This method for uniform random committee election is secure as long as at least one peer behaves honestly during the commitment process. We leverage this to guarantee that the aggregation committee has an honest majority (or is 2/3 honest in the case of FLT) (see Appendix B.1 for details).",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p70",
+    "section_heading": "B.2 Building Blocks",
+    "text": "Verifiable Secret Sharing. To make our protocols secure in the presence of malicious adversaries, we require Verifiable Secret Sharing (VSS). A VSS scheme allows the secret owner with a secret s, to distribute shares of s among n parties with a threshold t such that (a) any group of t parties can reveal no information about s and (b) any t + 1 parties can recover the correct value of s. In this work, we use Shamir secret sharing to instantiate VSS. Secrets are shared among members of the aggregation committee C. We make guarantees on the adversarial composition of C, and set t such that honest parties may perform computations necessary during DZKP and MPC protocols (see below), yet adversarial parties never gain access to enough shares to reveal or modify s.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p71",
+    "section_heading": "B.2 Building Blocks",
+    "text": "Distributed Zero Knowledge Proofs. A malicious-secure zero knowledge proof protocol enables a prover in possession of a witness w to prove to a verifier that for some publicly known function f , f(w) takes a particular value. It is guaranteed that the verifier learns no additional information about w other than what is implicitly revealed by f(w), and that no malicious prover can convince the verifier that f(w) takes an incorrect value. A distributed zero-knowledge proof (DZKP) is a variation on this primitive, wherein the prover distributes secret shares of w among a set of verifiers. Leveraging the linear operations on secret shares enabled by this setting can admit particularly efficient zero-knowledge proofs (see e.g. [12]). In our implementations, we use DZKP protocols which assume that the set of verifiers has an honest majority.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p72",
+    "section_heading": "B.2 Building Blocks",
+    "text": "Secure Multiparty Computation. A malicious-secure multiparty computation (MPC) protocol enables a group of parties P1, P2, . . . , Pn, with respective private inputs x1, x2, . . . , xn to securely compute a function f and obtain output f(x1, x2, . . . , xn). In particular, it is guaranteed that no party learns any additional information about the inputs beyond what is implicit in the output, and it is guaranteed that f is computed correctly, even in the presence of parties that behave in arbitrarily malicious ways. In our implementations, we use MPC protocols which assume that the set of parties has an honest majority (2/3 honest in the case of FLT).",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p73",
+    "section_heading": "B.2 Building Blocks",
+    "text": "Composition. All of the building blocks listed above are secure under universal composability [13] and thus their compositions (i.e., using them together, either in sequence or in parallel) are secure. They can all be implemented under information theoretic security, although we used a pseudorandom generator to minimize the communication. That is, using these primitives together in concert in our protocol preserves the security guarantees afforded by the individual building blocks.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p74",
+    "section_heading": "B.2 Building Blocks",
+    "text": "To provide a concrete sense of how the security guarantees and trust assumptions of the building blocks work together in the full protocol, we provide a step-by-step elaboration on the protocol below.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p75",
+    "section_heading": "B.2 Building Blocks",
+    "text": "1. Committee Election All clients use the method described above to randomly select the aggregation committee C with malicious security. The analysis in Appendix B.1 guarantees that C has honest majority.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p76",
+    "section_heading": "B.2 Building Blocks",
+    "text": "2. Client Local Computation. Each client computes FC and FP to obtain a preprocessed local model update given their data, and the global model parameters.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p77",
+    "section_heading": "B.2 Building Blocks",
+    "text": "3. Verifiable Secret Sharing of Updates. Each client secret shares their update with threshold |C|/2 (|C|/3 for FLT), and sends a share to each committee member. Since C has honest majority, this guarantees that adversaries cannot alter or reveal the client updates.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p78",
+    "section_heading": "B.2 Building Blocks",
+    "text": "4. DZKP of valid update. Clients prove to the committee that their updates are valid using a DZKP protocol that takes the secret shares as input. E.g. in P2P RSA, client updates must be binary-valued, so committee members create shares of a check value which is guaranteed to be 0 if the update was binary-valued, while leaking no further information (see Appendix B.4.1 for details). Here security follows from the security of the DZKP and the VSS schemes.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p79",
+    "section_heading": "B.2 Building Blocks",
+    "text": "5. MPC for computing global updates. Committee members compute FR in MPC, using client shares as input, to obtain a global model update. E.g. in P2P RSA, committee members sum the shares of all client updates using the standard secure addition protocol on Shamir secret shares. The committee members then reconstruct the shared sum to obtain the global update (correct reconstruction is guaranteed by VSS). Security follows from the security of the MPC and VSS schemes.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p80",
+    "section_heading": "B.2 Building Blocks",
+    "text": "6. Global updates sent to clients. All committee members send the recovered value to all clients. Since C has an honest majority, the clients are guaranteed to recover the correct global update by accepting the majority result.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p81",
+    "section_heading": "B.3 Security Proof",
+    "text": "We provide a proof of Theorem 1 (malicious security of Figure 3) below.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p82",
+    "section_heading": "B.3 Security Proof",
+    "text": "Proof: We prove the security of the protocol by constructing a simulator interacting with the adversaries controlling a subset of the parties.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p83",
+    "section_heading": "B.3 Security Proof",
+    "text": "1 The simulator plays the role of coin flipping and return a uniform aggregation committee. If the committee contains more adversary than the allowed threshold, the simulator aborts. The probability of simulator aborts in this step is negligible given the committee size and threshold.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p84",
+    "section_heading": "B.3 Security Proof",
+    "text": "2-4 The simulator obtains shares of vi from the adversary and sends them random shares on behalf of the honest parties.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p85",
+    "section_heading": "B.3 Security Proof",
+    "text": "5 If FP is not computationally surjective, The simulator plays the role of DZK to obtain the adversary\u2019s input ui. If FP is computationally surjective, the simulator use vi to compute some ui. The simulator\u2019s running time is always polynomial in this step either because efficient extraction from DZK or because of the definition of computational surjectivity.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p86",
+    "section_heading": "B.3 Security Proof",
+    "text": "6 The simulator plays the role of DZK and check if vi is in the image of FP and aborts if it is not the case.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p87",
+    "section_heading": "B.3 Security Proof",
+    "text": "7 The simulator sends ui to FP2PL and gets back the new updates; it then plays the role of FMPC and sends back the new updates to the adversary.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p88",
+    "section_heading": "B.3 Security Proof",
+    "text": "B.4 Instantiating Our Malicious Framework",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p89",
+    "section_heading": "B.4.1 Malicious-Secure P2P RSA.",
+    "text": "Overview of Single-Server RSA. Single-server Byzantine-robust stochastic aggregation (RSA) [32] is a set of subgradient based algorithms for robust aggregation. The key component of the method is a regularization term incorporated into the objective function to make learning robust. To enable graceful handling of heterogeneous worker datasets, each client i maintains a local set of model parameters xki whilst working together to optimize the global model parameters w",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p90",
+    "section_heading": "B.4.1 Malicious-Secure P2P RSA.",
+    "text": "k at a step k. At each step, clients compute a parameter update which takes into account their local data, their prior local model, as well as the global model parameters. The server receives the local client updates and uses the regularized objective to obtain a robust aggregate update. Client and server updates, respectively, are given by the equations:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p91",
+    "section_heading": "B.4.1 Malicious-Secure P2P RSA.",
+    "text": "where \u03b7 is a decaying learning rate hyper parameter, \u03be is a sampling of the local client dataset, F (\u00b7, \u00b7) is the loss function, f(\u00b7, \u00b7) is the robust (\u21132) regularization term, \u03bb is a hyper parameter controlling the weighting of the robustness term, the sign is performed element-wise, and [n] is the set of clients. Lifting RSA to the P2P setting. To cast RSA into our framework, we first observe that\u2211 i\u2208[n] sign(w",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p92",
+    "section_heading": "B.4.1 Malicious-Secure P2P RSA.",
+    "text": "k \u2212 xki ) is the only term of the server\u2019s update that requires input from the clients. Thus we limit the work of the committee solely to computing this term, and the rest of the work is done locally. We instantiate RSA for our framework in Figure 7.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p93",
+    "section_heading": "B.4.1 Malicious-Secure P2P RSA.",
+    "text": "In the FC (client update computation) part of the RSA protocol, each peer receives the global model parameters wk. It computes local parameter update xk+1i based on the global model, the local model xki , and the local gradient \u2207F . In the FP (update preprocessing) part of the protocol, peers compute the sign of the difference between their local parameters and the global model parameters sign(wk \u2212 ui), resulting in a bit vector vi (one bit per model parameter). In the FR (aggregation) part of the protocol, the committee members receive secret shares of sign(wk \u2212 xki ) from each participant. We observe that RSA can be lifted to the malicious security model with high efficiency: it is provably computational surjective and the underlying MPC can be efficiently instantiated.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p94",
+    "section_heading": "B.4.1 Malicious-Secure P2P RSA.",
+    "text": "Computational Surjectivity. Recall that in RSA peer updates are the sign of the difference between each parameter of the local and global models (Figure 7). In other words, the FP of RSA gives V = {\u22121, 1}d, where d is the number of parameters in the model. In the single-server model of RSA [32] and in Figure 7, poisonous peers can choose arbitrary ui before FP is computed, which gives vi = sign(wk \u2212 ui). Now we are ready to show the computational surjectivity of this FP .",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p95",
+    "section_heading": "B.4.1 Malicious-Secure P2P RSA.",
+    "text": "Lemma 1 FP described in Figure 7 is a computationally surjective function.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p96",
+    "section_heading": "B.4.1 Malicious-Secure P2P RSA.",
+    "text": "Proof: Fix an arbitrary point v = (v1, \u00b7 \u00b7 \u00b7 , vd) \u2208 V = {\u22121, 1}d. We can construct u \u2208 U that FP maps to v by first fixing some arbitrary wk = (w1, \u00b7 \u00b7 \u00b7 , wd), and letting u = (u1, \u00b7 \u00b7 \u00b7 , ud) such that",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p97",
+    "section_heading": "B.4.1 Malicious-Secure P2P RSA.",
+    "text": "Clearly the FP of RSA vi = sign(wk \u2212 ui) maps u to the arbitrary v. So FP is computationally surjective. \u25a1",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p98",
+    "section_heading": "B.4.1 Malicious-Secure P2P RSA.",
+    "text": "Details of the cryptographic protocol. Thus, following Figure 3, it is sufficient for peers to prove in zero knowledge that their updates are in the set V = {\u22121, 1}d. This can be accomplished efficiently by having each peer represent their update as d shares of binary values.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p99",
+    "section_heading": "B.4.1 Malicious-Secure P2P RSA.",
+    "text": "The committee can verify that a shared x is binary-valued by constructing shares of x \u00b7 (1\u2212 x) and revealing it to be zero. We implement this step efficiently by batching the binary-value DZK proofs together. That is, for every shared value xi, parties uniformly sample a random value ri, and locally construct shares of the sum \u2211 ri \u00b7 (xi \u00b7 (1\u2212 xi)). The parties then reconstruct the sum \u2013 if it is 0, then each of the (xi \u00b7 (1\u2212 xi)) components must have been 0 with all but negligible probability. For a more detailed treatment of this technique, see [12].",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p100",
+    "section_heading": "B.4.1 Malicious-Secure P2P RSA.",
+    "text": "During the computation of FR, the committee needs only to sum the shares and send out the reconstructed sum. The actual value of the summed updates in {\u22121, 1} is implicitly given by the sum of the binary values (if the sum of the binary values is x, simply take 2x\u2212m). The updated global model parameters can then be obtained via local computation of Equation 2.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p101",
+    "section_heading": "B.4.1 Malicious-Secure P2P RSA.",
+    "text": "Computational Surjectivity. In RSA, peer updates are the sign of the difference between each parameter of the local and global models (Figure 7). The FP of RSA gives V = {\u22121, 1}d, where d is the number of parameters in the model. In the single-server model of RSA [32] and in Figure 7, poisonous peers can choose arbitrary ui before FP is computed, which gives vi = sign(wk \u2212 ui). Now we are ready to show the computational surjectivity of this FP .",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p102",
+    "section_heading": "B.4.1 Malicious-Secure P2P RSA.",
+    "text": "Lemma 2 FP described in Figure 7 is a computationally surjective function.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p103",
+    "section_heading": "B.4.1 Malicious-Secure P2P RSA.",
+    "text": "Proof: Fix an arbitrary point v = (v1, \u00b7 \u00b7 \u00b7 , vd) \u2208 V = {\u22121, 1}d. We can construct u \u2208 U that FP maps to v by first fixing some arbitrary wk = (w1, \u00b7 \u00b7 \u00b7 , wd), and letting u = (u1, \u00b7 \u00b7 \u00b7 , ud) such that",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p104",
+    "section_heading": "B.4.1 Malicious-Secure P2P RSA.",
+    "text": "Clearly the FP of RSA vi = sign(wk \u2212 ui) maps u to the arbitrary v. So FP is computationally surjective. \u25a1",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p105",
+    "section_heading": "B.4.1 Malicious-Secure P2P RSA.",
+    "text": "i\u2208[n] vi",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p106",
+    "section_heading": "B.4.1 Malicious-Secure P2P RSA.",
+    "text": "on the committee side. The rest of the terms are public, so the remainder of the update can be computed locally.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p107",
+    "section_heading": "B.4.2 Malicious Secure P2P CC",
+    "text": "Overview of Single-Server Centered Clipping. Centered Clipping [29] is a recent robust aggregation that ensures a high level robustness even when the noise distribution is not uni-modal (which is assumed in many prior works.) It also provides better robustness when corrupted updates at different rounds are correlated. Below we first discuss details of the algorithm and then how to express it in our framework.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p108",
+    "section_heading": "B.4.2 Malicious Secure P2P CC",
+    "text": "Centered Clipping (no momentum): Given the training iteration k, globally shared model parameters wk, local model parameters xk+1i in client i, and a radius \u03c4 , CC using the \u21132-norm computes an updated weight vector as follows:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p109",
+    "section_heading": "B.4.2 Malicious Secure P2P CC",
+    "text": "In Equation (3), we clip the parameters for each client i, and then aggregate them in Equation (4).",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p110",
+    "section_heading": "B.4.2 Malicious Secure P2P CC",
+    "text": "Centered Clipping with Momentum: In addition to the above, each non-Byzantine client i first computes a gradient update \u2207F based on their mini-batch \u03beki and the current global weights wk. Then, using the momentum parameter \u03b2, each client computes a momentum vector as shown in Equation 5 (executed before Equation (3) and Equation (4)):",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p111",
+    "section_heading": "B.4.2 Malicious Secure P2P CC",
+    "text": "Lifting CC to the P2P setting. We bring CC into the P2P setting by placing the momentum computation inside FC , the clipping operation inside FP , and the aggregation of clipped updates in FR. The clipping operation is performed on individual client updates, and thus can be performed on the client side. Further, as in RSA we note that FR is a linear function, and thus can be computed efficiently using the homomorphic addition and scalar multiplication properties of Shamir secret sharing.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p112",
+    "section_heading": "B.4.2 Malicious Secure P2P CC",
+    "text": "Centered Clipping does not naturally give us a surjective FP . Of note, if a corrupted peer supplies a value of vi that is outside of the \u03c4 -ball surrounding w, the global update will be computed incorrectly and the model fidelity guarantees will be broken. To avoid this possibility, we make a slight modification to the CC algorithm. Namely, we clip local updates using the \u2113\u221e norm rather than the \u21132 norm. In other words, we clip the gradients to a \u03c4 -box rather than a \u03c4 -ball. The computation of the global update thus becomes",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p113",
+    "section_heading": "B.4.2 Malicious Secure P2P CC",
+    "text": "This modification admits a computationally surjective FP with an efficient DZK proof that a client update is within the valid domain. In particular, we take V = [0, 2\u03b8 \u2212 1]d. Then in FP we scale, round, and map clipped gradient updates to be within this domain. Here \u03b8 is a public constant large enough to limit discretization error of local updates during scaling \u2013 in the present study we set \u03b8 to 32 in order to align with 32-bit fixed-point numbers. Smaller values of \u03b8 will increase protocol efficiency, at the expense of higher discretization error during rounding and mapping in FP step 3. Computational surjectivity of this FP follows from a similar argument to Lemma 2.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p114",
+    "section_heading": "B.4.2 Malicious Secure P2P CC",
+    "text": "DZK Proof of Valid Update. We specify that local updates vi are submitted as vectors of the individual component bits of the processed gradient update. This means that each bit will be individually secret shared, which allows the committee to verify whether each one is binary-valued (using the same DZK technique described above for the RSA protocol). Since we scaled each update to fit within a 2\u03b8-sized d-dimensional box, the d sets of \u03b8 binary values in the update trivially encode a point within the box. Thus, a proof that each component of the bitwise update is binary-valued equates to a proof that the update is in V .",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p115",
+    "section_heading": "B.4.2 Malicious Secure P2P CC",
+    "text": "The global update is aggregated by summing the bits at each position of the client update vectors. The sums are reconstructed and sent directly to all clients. They implicitly encode the updated global parameters w\u2032, which are recovered via client-side computation in order to keep the computation of FR light-weight. Details of our malicious-secure Centered Box Clipping protocol can be found in Figure 8.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p116",
+    "section_heading": "B.4.3 Malicious Secure P2P FLTrust",
+    "text": "Overview of Single-Server FLTrust. Single-server FLTrust (abbreviated FLT) [14] is a robust aggregation algorithm that bootstraps trust using a clean \u201croot\u201d dataset maintained by the server. During each iteration, the server compares client gradients against the gradient computed from the root dataset. Specifically, the server computes a \u2018trust score\u2019 (TS) for each client gradient i \u2208 [m], which it uses to compute a weighted sum of normalized gradients which makes up the final aggregate. The trust score and update aggregation are given by the following equations:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p117",
+    "section_heading": "B.4.3 Malicious Secure P2P FLTrust",
+    "text": "Where TSi is the trust score for client i, gi is the local gradient for client i, g0 is the gradient computed from the root dataset, and g\u0304i is the gradient of client i normalized to have the same length as g0. As a brief explanation of the framework, the trust score acts as a clipped version of the cosine similarity \u2013 the greater the angle between gi and g0, the smaller the scaling factor that weights g\u0304i in the weighted sum. The ReLU ensures that any gi with a negative cosine similarity is clipped to 0, and thus contributes no weight to the sum.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p118",
+    "section_heading": "B.4.3 Malicious Secure P2P FLTrust",
+    "text": "Lifting FLT to the P2P setting. We begin by assuming that the root dataset D0 is publicly accessible, so that all clients may compute the root update g0 locally, in addition to their local update gi inside of FC . In FP we perform normalization and rotation to simplify the computation of Equations 7 and 8 in FR (explained in more detail below). In FR, we securely compute the trust score of each client and the corresponding weighted sum of gradients. This weighted sum is submitted as the global update \u2013 computation of the updated model parameters is left to the clients as a post-processing step.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p119",
+    "section_heading": "B.4.3 Malicious Secure P2P FLTrust",
+    "text": "The representation of vi is chosen to enable efficient computation of FR and of DZK proofs of update validity. In detail, we perform a rotation of gi and g0 such that g0 is aligned with the xaxis (and the angle between g0 and gi is preserved). We also normalize such that g0 and gi are unit-length. Further, when submitting client updates we use a representation that can only encode a non-negative x-coordinate (by decomposing each entry of g\u0304\u2032i into a sign and magnitude, and only",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p120",
+    "section_heading": "B.4.3 Malicious Secure P2P FLTrust",
+    "text": "accepting a magnitude \u2013 and not a sign bit \u2013 for the x-coordinate). This canonical representation simplifies computation of the trust score. In particular, since g0 and gi are normalized to unit vectors, computation of the cosine similarity \u27e8gi,g0\u27e9||gi||||g0|| simplifies to \u27e8gi, g0\u27e9, and since g0 is aligned with the x-axis, this further simplifies to selecting the x-coordinate of gi. Further, we avoid taking the ReLU within FR by choosing a representation of vi that cannot represent a gi with negative x-coordinate, and specifying that any honest party whose local gradient has negative x-coordinate supplies an update that will have 0 weight during the computation of Equation 8 (we use the symbol \u22a5 as a placeholder for such an update \u2013 in practice, this can be any arbitrary unit vector with 0 in the x-coordinate). Thus computation of the trust score during FR is simplified to taking the x-coordinate of g\u0304\u2032i.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p121",
+    "section_heading": "B.4.3 Malicious Secure P2P FLTrust",
+    "text": "The chosen representation of vi constrains the image of FP to the set of unit vectors with nonnegative x-coordinates. If we restrict the codomain of FP to this set, we achieve computational surjectivity. This follows from a simple argument:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p122",
+    "section_heading": "B.4.3 Malicious Secure P2P FLTrust",
+    "text": "Proof: Fix an arbitrary point v in the set of unit vectors with non-negative x-coordinates. Fix an arbitrary g0. Let M be a rotation matrix that rotates g0 to the x-axis. Consider a client update u such that Mu is on the line extending from the origin to v. By definition, FP maps u to v. \u25a1",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p123",
+    "section_heading": "B.4.3 Malicious Secure P2P FLTrust",
+    "text": "Finally, we construct DZK proofs to verify that vi falls inside the set of unit vectors with non-negative x-coordinates.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p124",
+    "section_heading": "B.4.3 Malicious Secure P2P FLTrust",
+    "text": "DZK Proof of Valid Update. As in RSA and CC, we perform a batch check that all submitted shares are binary-valued (see previous sections for details). We additionally perform a DZK proof that all updates are unit length, by constructing shares of \u27e8g\u0304\u2032i, g\u0304\u2032i\u27e9 \u2212C and revealing them to be 0, where C is a constant which encodes the square of a \u03b8-bit fixed point number with unit magnitude. We batch check these proofs by obtaining shared random field elements ri and constructing shares of the sum\u2211",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p125",
+    "section_heading": "B.4.3 Malicious Secure P2P FLTrust",
+    "text": "ri \u00b7 (\u27e8g\u0304\u2032i, g\u0304\u2032i\u27e9 \u2212C), and finally revealing them to be 0 (i.e. using the same technique as described in the binary-value batch check for RSA). We also perform a DZK proof to ensure that the sign bits are in {\u22121, 1} by computing shares of (b\u2212 1)(b+ 1) and revealing them to be 0 \u2013 this check is batched in the same way as the previous checks.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p126",
+    "section_heading": "B.5 Experimental Design",
+    "text": "While lifting robust aggregation algorithms to the malicious-secure P2P Learning security model, we make small changes to the algorithms to tailor them for efficiency in the setting. Thus, in order to evaluate P2P Learning, we design experiments to test (1) the effectiveness (in terms of accuracy and robustness) of these tailored algorithms, as well as (2) the efficiency of their implementation as cryptographic protocols. These goals are performed using distinct code bases: we used PyTorch to benchmark accuracy and robustness, and we used the NTL package [40] in C++ to implement the local computation for the aggregation steps of our malicious-secure framework.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p127",
+    "section_heading": "B.5.1 Accuracy and Robustness Experiments",
+    "text": "To benchmark the robustness of the different aggregation protocols evaluated in the paper, we ran experiments under each to train a central model in a collaborative machine learning setting with a",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p128",
+    "section_heading": "B.5.1 Accuracy and Robustness Experiments",
+    "text": "cohort size of 50 participants and varying numbers of malicious workers (0, 10, 23). 4 attacks, namely bit flip (bf) [45], label flip (lf) [6], inner product manipulation (ipm) [46], and \"a little is enough\" (alie) [2], were evaluated. In all cases, we computed the testing accuracy as a function of the number of rounds of training.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p129",
+    "section_heading": "B.5.1 Accuracy and Robustness Experiments",
+    "text": "MNIST (Digits) and EMNIST (Letters) datasets were used as the datasets with the data being evenly divided among the peers. The model architecture from [30] (with 1.2M parameters) was used for MNIST and this architecture was modified to have 26 neurons in the last layer for EMNIST. During training, each client uses a local mini-batch of size 32 at each round and a learning-rate of 0.01.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p130",
+    "section_heading": "B.5.1 Accuracy and Robustness Experiments",
+    "text": "The training experiments were repeated over two random seeds. The PyTorch [36] framework was used for all experiments.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p131",
+    "section_heading": "B.5.2 Computational Efficiency Experiments",
+    "text": "To benchmark the efficiency of our framework, we wrote code to perform all local computation steps necessary to run the aggregation step for a single committee member (FR) of malicioussecure P2P RSA, CC, and FLT. We used an m5.metal instance on Amazon EC2 to obtain the benchmarks reported in Figure 5. Each benchmark reports the mean runtime of 3 trials \u2013 trials were run concurrently in separate threads.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p132",
+    "section_heading": "B.6 Accuracy of CC vs Attacks",
+    "text": "Our approaches directly leverage robust aggregation algorithms, which perform as well in our case as in the FL setting. We include an additional experiments with CC on iid EMNIST, non-iid EMNIST, and iid CIFAR100 finding that it performs as well as in the FL setting. We present the results in",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p133",
+    "section_heading": "B.6 Accuracy of CC vs Attacks",
+    "text": "Table 2 and Figure 13.",
+    "seg_type": "par"
+  }
+]

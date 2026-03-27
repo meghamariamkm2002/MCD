@@ -1,0 +1,141 @@
+So this is all sort of the build up.
+So we've built up that we can't deal with world states like in classic games, we need to deal with info states.
+Okay.
+And now
+with info states, we have a problem, namely, we can't use the alpha zero algorithm again, because it will result in the thing on the right.
+Okay, because if we simply ask our value estimator, our value estimator, even if it's perfect, it won't lead us to the correct strategy, because the value estimator here
+is the wrong tool, if we don't know all of the information, because of this fact that the value of a node doesn't only depend on the downstream actions, but also depends on the upstream strategies.
+Okay, so in an info state, we can't distinguish where we are.
+And that means our value estimations are going to be rather
+useless if we just apply this algorithm straightforward.
+So we need a way to transform a game where we don't know everything to a game where we do know everything.
+It sounds a bit weird, but that's exactly what we're going to do right here.
+So we're going to go from world states to public belief states.
+And the world states are sort of what we would like to have, but don't know.
+The public belief states, those are going to be things that
+everyone knows.
+So if we go from world states to public belief states we're going to be in a situation again where everyone knows everything and therefore it is a perfect information game.
+It's going to be a different game but if we find the solution to this different game we're going to end up with the solution to this to the original game.
+For that they ask you to imagine the following game.
+Consider a game
+in which one of 52 cards is privately dealt to each player.
+Okay, so you get a card, your opponent gets a card.
+One card.
+By the way, 52 for those of you maybe in different parts of the world, that's the number of cards in a standard card deck for like poker and blackjack and so on.
+I know different countries have different things like in Switzerland, you'll very often find 36 cards to a deck, but just that's why because 52 appears like a bit of a weird number in any case so
+On each turn, a player chooses between three actions.
+Fold, call, or raise.
+So these are the sort of standard poker actions.
+You can either throw away your card if you don't like it, you can match the bet of your opponent, or you can put in some money or some more money yourself.
+And at the end, I'm going to guess, yeah, here, eventually the game ends and players receive a reward.
+So let's say whoever has the higher card wins all the money in the middle.
+Now consider a modification of this game in which the players cannot see their private cards.
+Instead, their cards are seen by a referee.
+On the player's turn, they announce the probability they would take each action with each possible private card.
+The referee then samples an action and the player on the player's behalf from the announced probability distribution for the player's true private card.
+This is this is weird.
+So usually you'd look at your card like I have an ace.
+Okay.
+And then you come up with a with a sort of strategy.
+You come up with a policy.
+You want to say I'm going to raise with probability.
+Ace is pretty good.
+So I'm going to raise with probability 0.7.
+I'm going to call with a probability of 0.2 and I'm going to fold with a probability of 0.1.
+So this here, this would be an appropriate policy, let's say for getting an ace at the beginning, right?
+Maybe this goes back and forth a bit and you might change because you might change your belief, you don't know what your opponent has.
+Now the game changes.
+Namely, the game is going to be your opponent gets a card and you get a card and you don't get to look at even your card.
+So now you don't know your opponent's card and you don't know your card.
+But what you can do is you can announce to the referee, you can say okay referee,
+I am going to do this.
+If I have an ace, I'm going to raise with 0.7, call with 0.2, and fold with 0.1.
+If I have a king, I'm going to... Okay, I need a bit more space.
+If I have a king, I'm going to raise with 0.6, I'm going to call with 0.3, and I'm going to fold with 0.1.
+And so on until if I have a two,
+I'm going to raise with probability zero, I'm going to call with probability point one, I'm going to fold almost all of it.
+Okay, so you get to announce your entire strategy to the referee.
+the referee who is a super user or God or choose your favorite deity, sees everything, sees all the cards, the referee will take this entire table that you give it as input, it will go look at your card
+it will see, ah, it's a king or it's an ace and it will then choose the appropriate subtable here for you and then it will sample an action from that.
+So instead of you looking and just producing this table, you produce all the tables for all the things that you could have and then the referee does the same thing for you, okay?
+And so does your opponent.
+And you simply do this.
+So now you see it's a bit of a different game.
+The, the, namely the actions are different.
+So the action is no longer that you produce or sort of policy is no longer, you simply look at what you have and you determine the probabilities.
+Now the policy is you spout out this table for all the things you could have.
+And in each case for all the things you could do, the important thing is,
+So they say, okay, at when the game starts, each player's belief distribution about their private card is uniform random, and also about the opponent's private card, right?
+However, after each action by their referee, players can update their belief distribution about which card they are holding via base rule.
+Likewise, players can update their belief distribution about the opponent's private card through the same operation.
+So it's important to note that this already happened before.
+So even in the original game, you would update your belief about the opponent's private card according to Bayes' rule or whatever rule you want.
+You simply try to infer what they have.
+Now the difference is you also have to infer what you have depending on what actions the referee does.
+So you sort of treat yourself like a player, like a different player, like an opponent player that you don't know the private cards of.
+Thus, the probability that each player is holding each private card is common knowledge among all players at all times in this game.
+So that makes it such that you don't know your opponent's card.
+You don't know your card.
+You have to use sort of the same algorithm to determine what everyone has.
+So that means that all the knowledge is shared.
+Like...
+No one knows the true private cards, but everyone knows the same things.
+So if no one knows, then everyone knows the same.
+It's a bit like probability socialism.
+No one has anything, everyone's equal.
+Sorry, that was a slight right there.
+So the important thing, they say, the critical insight is that these two games are strategically identical.
+And that's very surprising, but if you think a bit about it, it becomes clear that
+Your strategy up here is the same as down here.
+You simply don't fully announce it every time explicitly, but we said anyway that policies are public.
+Therefore, this game here is equivalent to this game.
+These are the same games.
+But the latter contains no private information.
+and is instead a continuous state and action space perfect information game.
+While players do not announce their action probabilities for each possible card in the first game, we assume that all players policies are common knowledge and therefore the probability that a player would choose each action for each possible card is indeed known by all players.
+And this, you can even lift the restriction that you know or don't know the opponent's strategy.
+So you don't actually need to know it, but we'll simply assume that everyone knows everyone's strategy.
+They just don't know their private cards.
+So this is a new game that we've constructed where
+It's a bit different, right?
+There are different states and different actions.
+So the states that we deal with in this game, let's quickly analyze this.
+So we have state and action.
+in the in game one, the state is an info state.
+So this is an info state.
+And the action is going to be a probability distribution over actions.
+So P of each of the actions.
+In this game down here, we have different states and different actions.
+Now the states we're going to get to in a minute.
+But what's the action?
+The action is to send a table of
+all these probability distributions in each case, like in case I have this, in case I have this, in case I have this.
+So that's going to be the action.
+The action is going to be to send this entire table to the referee.
+Now, what are the states?
+This is this next section.
+We refer to the first game as the discrete representation, that's the top game, and the second game as the belief representation.
+In the example above, a history in the belief representation, which we refer to as a public belief state, is described by a sequence of public observations and 104 probabilities, the probability that each player holds each of the 52 possible private cards.
+Okay.
+So this is going to be the state.
+It's going to be called a public belief state.
+And it's described by the sequence of public observations and 104 probabilities.
+So the probabilities that probability that you have an ace, you have a king, you have a queen, and so on, like the distribution over your cards and this distribution of your opponent's cards.
+So it's simply the info.
+It's like an info state.
+of someone that just observes the game.
+That is going to be the public belief state.
+Likewise, an action is described by 156 probabilities, one per discrete action per private card.
+In general terms, the PBS is described by a joint probability distribution over the agent's possible info states.
+You see, it's a distribution over info states.
+So the state is a distribution for each info state, or they also call this a public belief state.
+So now we've gone from a game
+that is imperfect information to a game that is perfect information.
+Okay.
+This is, this is, this has unknowns, like many, like, oh, this is different for each player.
+But here, all the information is known.
+And these two games are equivalent.
+It's just that you can see already the problem.
+Like the states are way bigger because it's a distribution over each state that could be.
+And the actions are also way bigger.
+Namely, it's one policy for each state that you could be in.

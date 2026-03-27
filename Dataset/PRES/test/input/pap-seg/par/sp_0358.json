@@ -1,0 +1,2318 @@
+[
+  {
+    "para_id": "p1",
+    "section_heading": "Abstract",
+    "text": "Recent studies in reinforcement learning (RL) have made significant progress by leveraging function approximation to alleviate the sample complexity hurdle for better performance. Despite the success, existing provably efficient algorithms typically rely on the accessibility of immediate feedback upon taking actions. The failure to account for the impact of delay in observations can significantly degrade the performance of real-world systems due to the regret blow-up. In this work, we tackle the challenge of delayed feedback in RL with linear function approximation by employing posterior sampling, which has been shown to empirically outperform the popular UCB algorithms in a wide range of regimes. We first introduce Delayed-PSVI, an optimistic value-based algorithm that effectively explores the value function space via noise perturbation with posterior sampling. We provide the first analysis for posterior sampling algorithms with delayed feedback in RL and show our algorithm achieves \u00d5( \u221a d3H3T + dHE[\u03c4 ]) worst-case regret in the presence of unknown stochastic delays. Here E[\u03c4 ] is the expected delay. To further improve its computational efficiency and to expand its applicability in high-dimensional RL problems, we incorporate a gradient-based approximate sampling scheme via Langevin dynamics for Delayed-LPSVI, which maintains the same order-optimal regret guarantee with \u00d5(dHK) computational cost. Empirical evaluations are performed to demonstrate the statistical and computational efficacy of our algorithms.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p2",
+    "section_heading": "Unknown",
+    "text": "\u221a d3H3T + d2H2E[\u03c4 ]) worst-case regret",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p3",
+    "section_heading": "Unknown",
+    "text": "in the presence of unknown stochastic delays. Here E[\u03c4 ] is the expected delay. To further improve its computational efficiency and to expand its applicability in high-dimensional RL problems, we incorporate a gradient-based approximate sampling scheme via Langevin dynamics for Delayed-LPSVI, which maintains the same order-optimal regret guarantee with O\u0303(dHK) computational cost. Empirical evaluations are performed to demonstrate the statistical and computational efficacy of our algorithms.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p4",
+    "section_heading": "1 Introduction",
+    "text": "Reinforcement Learning (RL) is the main workhorse for sequential decision-making problems where an agent needs to balance the trade-off between exploitation and exploration in the unknown environment. The flexible and powerful function approximation endowed by deep neural networks greatly contributes to the empirical success of RL in domains such as Large Language Models (LLMs) [50, 59], robotics [51], and AI for Science [37]. In general, collecting real-world training data from such practical systems can be expensive, which requires algorithms to be both sample efficient and computationally efficient. Recently, there have been growing efforts towards studying provably efficient RL algorithms in settings ranging from tabular Markov Decision Processes (MDPs) [29, 45, 69] to large-scale RL with function approximation [13, 35]. However, these algorithms typically rely",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p5",
+    "section_heading": "1 Introduction",
+    "text": "on the availability of immediate observations of states, actions and rewards in learning no-regret policies. Unfortunately, such an assumption is rarely satisfied in real-world domains, where delayed feedback is ubiquitous and fundamental. In recommender systems and online advertisement, for instance, responses from users (e.g. click, purchase) may not be immediately observable, which can take hours or days. In healthcare and clinical trials, medical feedback from patients on the effectiveness of treatments can only be determined at a deferred time frame. More examples exist in platforms that involve human interaction and evaluation, including human-robot collaboration in teleoperating systems and multi-agent systems [15, 39], aligning LLMs with human values [50, 63], and fine-tuning generative AI models using RL with human feedback (RLHF) [11, 41].",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p6",
+    "section_heading": "1 Introduction",
+    "text": "Despite the practical importance of addressing delays in decision-making problems, theoretical understanding of delayed feedback in RL remains limited. Recent parallel works study exploration under delayed feedback via upper confidence bound (UCB) algorithms [8] in tabular RL [29, 45], adversarial MDPs [36, 40], and RL with low policy-switching scheme [68] (see Table 1). Nevertheless, posterior sampling (PS) analysis that handles delayed feedback remains untackled in both bandit and RL literature. We aim to bridge the gap in this work.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p7",
+    "section_heading": "1 Introduction",
+    "text": "PS is a randomized Bayesian algorithm that extends Thompson sampling (TS) [57] to RL, which selects an action according to its posterior probability of being the best. This philosophy inspires a number of promising exploration strategies that explicitly or implicitly adopt PS to explore [52], including bootstrapped DQN [42, 47] and RLSVI [49]. Compared to the popular UCB algorithms, it bears greater robustness in the presence of delays [14], and provides exceptional computational efficiency with competitive empirical performance [14, 65]. The fact that posteriors are often intractable in practice necessitates the use of approximate Bayesian inference such as ensemble sampling, variational inference (VI) and Markov Chain Monte Carlo (MCMC) [20, 38, 47].",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p8",
+    "section_heading": "1 Introduction",
+    "text": "In this paper, we provide the first analysis for the class of PS algorithms that handles delayed feedback in RL frameworks, in which the trajectory information is randomly delayed according to some unknown distribution. We highlight that delayed feedback model imposes new challenges that do not arise in standard RL settings. Algorithmically, it requires the computation of new posterior variance due to the weaker concentration arising from delays. Theoretically, it complicates the frequentist analysis of PS algorithms in several ways: (a) the lack of timely update in posterior learning can cause distribution shift, especially in the case of approximate sampling; (b) delays need to be carefully disentangled to quantify the penalty in regret decomposition and it prohibits the direct application of previous analysis; (c) balance between concentration and anti-concentration needs to be handled deliberately to achieve sub-linear regret.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p9",
+    "section_heading": "1 Introduction",
+    "text": "To tackle these challenges, we introduce two novel value-based algorithms for linear MDPs under unknown stochastic delayed feedback. Developed upon Bayesian linear modeling with a multiround ensembling mechanism (M \u2248 Polylog(H,K, d, \u03b4) round), our algorithms achieve a sublinear worst-case regret without requiring the knowledge of delay, thereby addressing the question raised in [60] that \u201cNo frequentist analysis exists for posterior sampling with delayed feedback\u201d. Empirical studies show that our algorithms outperform UCB-based methods in terms of both statistical accuracy and computational efficiency when delays are well-behaved or even long-tailed. We summarize our main contributions as follows.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p10",
+    "section_heading": "1 Introduction",
+    "text": "\u2022 We propose the Delayed Posterior Sampling Value Iteration (Delayed-PSVI, Algorithm 1) for linear MDPs. It achieves a high-probability worst-case regret of O\u0303( \u221a d3H3T +",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p11",
+    "section_heading": "1 Introduction",
+    "text": "d2H2E[\u03c4 ])2, where E[\u03c4 ] is the expected delay.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p12",
+    "section_heading": "1 Introduction",
+    "text": "\u2022 We leverage Langevin Monte Carlo (LMC) for approximate inference and introduce Delayed Langevin Posterior Sampling Value Iteration (Delayed-LPSVI, Algorithm 2), which maintains the same order-optimal worst-case regret of O\u0303( \u221a d3H3T + d2H2E[\u03c4 ]). To the",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p13",
+    "section_heading": "1 Introduction",
+    "text": "best of our knowledge, this is the first analysis that provably incorporates LMC in linear MDPs and jointly considers the impact of delays.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p14",
+    "section_heading": "1 Introduction",
+    "text": "\u2022 Both algorithms achieve the optimal dependence on the parameters d and T in leading terms under the class of PS algorithms, and recover the best-available frequentist regret of O\u0303( \u221a d3H3T ) [31, 72] as in non-delayed linear MDPs when E[\u03c4 ] = 0. In particular,",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p15",
+    "section_heading": "1 Introduction",
+    "text": "Delayed-LPSVI reduces the computational complexity of Delayed-PSVI from O\u0303(d3HK)",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p16",
+    "section_heading": "1 Introduction",
+    "text": "2It provides a stronger guarantee t and Bayesian regret.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p17",
+    "section_heading": "1 Introduction",
+    "text": "to O\u0303(dHK), expanding the applicability in complex high-dimensional RL tasks while potentially providing a more flexible form of approximation.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p18",
+    "section_heading": "1.1 Related Work.",
+    "text": "Delayed feedback. In bandit literature, delay is extensively studied in both stochastic [22, 56, 60, 77] and adversarial settings [32, 58, 78] for UCB-based methods. In comparison, while delay draws much attention in empirical RL studies [12, 17, 18], there is a lack of theoretical understanding until very recently. Parallel works focus on UCB-based methods in various RL settings [16, 28, 36, 40, 45, 68]. To provide the first analysis for PS algorithms in this context, we consider stochastic delays under linear function approximation without requiring any policy-switch scheme as in [68].",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p19",
+    "section_heading": "1.1 Related Work.",
+    "text": "Posterior sampling. To encourage efficient exploration, PS is adopted in value-based methods to inject randomness in empirical Bellman update via Gaussian noise. From the Bayesian perspective, it is equivalent to maintaining an approximate Gaussian posterior for parameterized value function. Its sample complexity is studied in tabular settings [48, 49, 53], with the sharp worst-case regret of O\u0303(H2S \u221a AT ) [5]. Under linear function approximation, frequentist regret of O\u0303( \u221a d3H3T ) [31, 72] and Bayesian regret of O\u0303(d \u221a H3T ) [19] are established. However, in complex problem domains that require higher computational efficiency and more refined surrogates, approximate inference is the remedy. Toward this end, we resort to a gradient-based MCMC method.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p20",
+    "section_heading": "1.1 Related Work.",
+    "text": "Langevin Monte Carlo. LMC is a class of MCMC methods tailored for large-scale online learning with strong convergence guarantee by utilizing the first-order gradient information [64]. It has been successfully applied to stochastic bandits [43], linear bandits [65] and tabular RL [38], In this work, we extend its usage in linear MDPs and demonstrate its convergent property under delay.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p21",
+    "section_heading": "1.1 Related Work.",
+    "text": "RL with Function Approximation. Function approximation is widely adopted to empower RL for large-scale applications. Fruitful results have been established for regret minimization in two types of MDPs under linear function approximation: linear mixture MDPs [9, 67], and linear MDPs [35, 66]. In linear mixture MDPs where transition kernel is parameterized as a linear combination of base models, provably efficient algorithms are discussed [13, 75, 76] and [75] provides the corresponding lower bound of \u2126(dH \u221a T ). In contrast, linear MDPs enjoy a linear structure in value functions by assuming a low-rank representation for both transitions and reward function, where algorithms are shown to enjoy polynomial sample complexity [27, 35, 62, 73]. When it comes to general function approximation, theoretical guarantees are developed based on measures of eluder dimension [54, 61] and Bellman rank [33]. In this work, we focus on delayed feedback in linear MDPs.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p22",
+    "section_heading": "2 Preliminaries",
+    "text": "We study the finite-horizon episodic MDP (S,A, H,P, r), which is time-inhomogeneous, and denote by S, A the state and action spaces respectively, H the episode length, P = {Ph}Hh=1 the",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p23",
+    "section_heading": "2 Preliminaries",
+    "text": "transition dynamics, and r = {rh}Hh=1 reward function. At each step h \u2208 [H], Ph : S \u00d7 A \u2192 \u2206S specifies the probabilities of transitioning from the current state-action pair into the next state, and rh : S\u00d7A \u2192 [0, 1] emits a bounded reward. We adopt the prior protocol of linear MDPs as follows. Definition 1 (Linear MDPs [35, 66]). Suppose there exists a known feature map \u03d5 : S \u00d7 A \u2192 Rd that encodes each state-action pair into a d-dimensional feature vector. An MDP is a linear MDP3 if for any time step h \u2208 [H], \u2200(s, a) \u2208 S \u00d7A, both the transition dynamics P and reward function r are linear in \u03d5:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p24",
+    "section_heading": "2 Preliminaries",
+    "text": "where \u00b5h : S \u2192 Rd contains d unknown probability measures over S, and \u03b8h \u2208 Rd. Furthermore, we assume that \u2200(s, a) \u2208 S \u00d7 A, \u2225\u03d5(s, a)\u2225 \u2264 1, and \u2200h \u2208 [H], \u2225\u03b8h\u2225 \u2264 \u221a d, \u2225\u2225\u222b S d\u00b5h(s \u2032) \u2225\u2225 \u2264 \u221ad, where \u2225\u00b7\u2225 denotes the Euclidean norm.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p25",
+    "section_heading": "2 Preliminaries",
+    "text": "A non-stationary policy \u03c0 = {\u03c0h}Hh=1 assigns the action to take at step h in state sh \u2208 S. Accordingly, we define the value functions of a policy \u03c0 as the expected rewards received under \u03c0:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p26",
+    "section_heading": "2 Preliminaries",
+    "text": "We further denote by \u03c0\u2217 the optimal policy whose value functions are defined as V \u2217h (s) := V \u03c0 \u2217",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p27",
+    "section_heading": "2 Preliminaries",
+    "text": "h (s) = sup\u03c0 V \u03c0 h (s) and Q \u2217 h(s, a) := Q",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p28",
+    "section_heading": "2 Preliminaries",
+    "text": "\u03c0\u2217 h (s, a) = sup\u03c0 Q \u03c0 h(s, a). Under Definition 1, the",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p29",
+    "section_heading": "2 Preliminaries",
+    "text": "action-value functions are always linear in the feature map, and there exists some w\u2217h such that Q \u2217 h = \u03d5Tw\u2217h (Lemma A.1). For ease of notation, ,\u2200(s, a), denote [PhV \u03c0h+1](s, a) = Es\u2032\u223cPh(\u00b7|s,a)[V (s\u2032)]. By Bellman equation and Bellman optimality equation,",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p30",
+    "section_heading": "2 Preliminaries",
+    "text": "The goal of the agent is to maximize the cumulative episodic rewards or equivalently, minimize the regret that quantifies the difference between the value of the optimal policy \u03c0\u2217 and that of the executed policies. Formally, the worse-case regret over K episodes is given as:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p31",
+    "section_heading": "2 Preliminaries",
+    "text": "Remark 1. Different types of regret are used in literature to measure the performance of PS algorithms. Bayesian regret Ew\u2217\u223cp0(\u00b7)E[R(T )|w\u2217] is often considered when assuming a prior p0(w) over the true parameter w\u2217. Frequentist regret E[R(T )] is considered when w\u2217 is fixed, where the expectation is taken over all the randomness over data and algorithm. As explained in Appendix A.2, the worst-case regret that we study is stronger than the frequentist regret.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p32",
+    "section_heading": "2.1 Delayed Feedback Model",
+    "text": "In this work, we consider stochastic delays across episodes. More specifically, the trajectory (i.e., sequence of states, actions and rewards) generated in each episode is not immediately observable in the presence of delay. The formal definition is given as follows.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p33",
+    "section_heading": "2.1 Delayed Feedback Model",
+    "text": "Definition 2 (Episodic Delayed Feedback). In each episode k \u2208 [K], the execution of a fixed policy \u03c0k generates a trajectory {skh, akh, rkh, skh+1}h\u2208[H]. Such trajectory information is called the feedback of episode k. Let \u03c4k represent the random delay between the rollout completion of episode k and the time point at which its feedback becomes observable.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p34",
+    "section_heading": "2.1 Delayed Feedback Model",
+    "text": "Remark 2. Various types of delays have been independently studied in the literature, including delays in states [4, 12, 16], delays in rewards [25, 45, 60], delays in actions[56], and delays in trajectories [29, 68]. We focus on the last scheme which facilitates the delayed analysis of valuebased methods in episodic linear MDPs.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p35",
+    "section_heading": "2.1 Delayed Feedback Model",
+    "text": "Episodic delays do not disrupt the policy rollout within an episode, but alter the utilization of information in subsequent episodes. More precisely, the feedback of episode k remains inaccessible for the following \u03c4k \u2212 1 episodes, becoming observable only at the onset of the (k+ \u03c4k)-th episode. To track whether the feedback generated at episode k is revealed at episode k\u2032, we utilize the indicator 1k,k\u2032 := 1{k + \u03c4k \u2264 k\u2032} (where 1 denotes \u201cyes\u201d and 0 denotes \u201cno\u201d). We follow the standard assumption in literature in [28, 68] to assume delays are sub-exponential. It is crucial to note that this assumption primarily serves the purpose of theoretical analysis and is not a prerequisite for the effective functioning of our algorithms in practical settings. Without loss of generality, we discuss the performance bound under general random delays in Section 4 and empirically study the performance against different types of delays in Section 5. Assumption 1 (Sub-exponential Episodic Delay). The episodic delays {\u03c4k}Kk=1 are non-negative, integer-valued, independent and identically distributed (v, b)-subexponential random variables:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p36",
+    "section_heading": "2.1 Delayed Feedback Model",
+    "text": "\u03c4k i.i.d.\u223c f\u03c4 (\u00b7) with f\u03c4 (\u00b7) being the probability mass function, and E[\u03c4 ] being the expected value. For all k \u2208 [K], the moment generating function of \u03c4k satisfies:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p37",
+    "section_heading": "2.1 Delayed Feedback Model",
+    "text": "where v and b are non-negative, and |\u03b3| \u2264 1/b.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p38",
+    "section_heading": "3 Delayed Posterior Sampling Value Iteration",
+    "text": "In this section, we introduce a novel optimistic value-based algorithm, namely, Delayed Posterior Sampling Value Iteration (Delayed-PSVI), which efficiently explores the value function space in linear MDPs by embracing several critical components: posterior sampling that injects random noise when performing the least-square value iteration, optimism via multi-round sampling to achieve the optimal worst-case regret and delayed feedback model that encodes episodic trajectory delays.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p39",
+    "section_heading": "3 Delayed Posterior Sampling Value Iteration",
+    "text": "Noisy value iteration via posterior sampling. At the beginning of each episode, we apply PS to sample an estimated value function from the posterior, which is maintained using the observed feedback D over the previous episodes. Specifically, at each time step, the Q-function is parameterized by some w \u2208 \u0393 such that Q\u0303(s, a) = \u03d5(s, a)Tw is an approximation of the corresponding true optimal Q-function Q\u2217(s, a). Let p0(w) be the prior of w, and p(y|w,D) be the likelihood of the observation y, then the posterior of w satisfies:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p40",
+    "section_heading": "3 Delayed Posterior Sampling Value Iteration",
+    "text": "where L(\u00b7) is the log-likelihood. Unlike the case of model-based RL (MBRL), where PS is utilized to maintain an exact posterior over the environment model, we aim to adopt PS to perform noisy valueiteration by injecting randomness for efficient exploration of the value function space. Specifically, at each step h \u2208 [H], we consider Gaussian-noise perturbation in Delayed-PSVI by setting prior as p0(wh) = N (0, \u03bbId), and log-likelihood (with Dh = {s\u03c4h, a\u03c4h, r\u03c4h, s\u03c4h+1} \u03c4\u2208[k\u22121] h\u2208[H] ) as",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p41",
+    "section_heading": "3 Delayed Posterior Sampling Value Iteration",
+    "text": "where yh = [y 1 h, . . . , y k\u22121 h ] with y \u03c4 h = r \u03c4 h(s \u03c4 h, a \u03c4 h) + V\u0303h+1(s \u03c4 h+1). Then for all step h \u2208 [H] of episode k, the posterior of wkh follows a Gaussian distribution,",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p42",
+    "section_heading": "3 Delayed Posterior Sampling Value Iteration",
+    "text": "where \u2126kh := \u03a6h\u03a6 T h + \u03bbId and \u03a6h = [\u03d5(s 1 h, a 1 h), \u03d5(s 2 h, a 2 h), . . . , \u03d5(s k\u22121 h , a k\u22121 h )]. Adding the scaling factors \u03c32 and \u03bd2 yields the Line 10 of Algorithm 1. It is important to note that while the induced likelihood exp(\u2212L(wkh,ykh,Dkh)) from (3) is Gaussian, we do not assume y\u03c4h = r\u03c4h(s\u03c4h, a\u03c4h) +V\u0303h+1(s \u03c4 h+1) follows a Gaussian distribution. Instead, the above likelihood model can be used for non-Gaussian problems as we need not sample from the exact Bayesian posterior model [2, 74].",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p43",
+    "section_heading": "3 Delayed Posterior Sampling Value Iteration",
+    "text": "On the other hand, the w\u0302kh computed in Line 9 of Algorithm 1 together with the greedy choice V\u0303 (\u00b7) \u2248 maxa Q\u0303(\u00b7, a) (Line 15) approximates the solution of Bellman optimality equation via the least-square ridge regression: w\u0302kh = argminw \u2211k\u22121 \u03c4=1(\u03d5(s \u03c4 h, a \u03c4 h)",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p44",
+    "section_heading": "3 Delayed Posterior Sampling Value Iteration",
+    "text": "Tw\u2212 (r+max Q\u0304kh))2+\u03bbId.4 Consequently, Line 5-10 essentially performs the Posterior Sampling Value Iteration.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p45",
+    "section_heading": "3 Delayed Posterior Sampling Value Iteration",
+    "text": "Optimism via multi-round sampling scheme. Unlike the Bayesian regret or the worst-case expected regret, the high-probability worst-case regret in (2) needs to control the sub-optimal gap with arbitrarily high probability of at least 1 \u2212 \u03b4. However, sampling once at each time step only provides a constant-probability optimistic estimation, which breaks the high probability requirement. In addition, the estimation error incurred by sampling (i.e. constant-probability pessimistic estimation) at each timestep will propagate to the previous time steps during the backward posterior sampling value iteration. This phenomenon does not appear in the 1-horizon bandit problem due to a saturated-arm analysis [2, 6]. To remedy this issue, we design a multi-round sampling scheme that generates M estimates {Q\u0303m}m\u2208[M ] for Q-fuction through M i.i.d. sampling procedures, and constructs an optimistic estimate by setting Q\u0303 = maxm Q\u0303m. Notably, our choice of M has order Polylog(H,K, d, \u03b4), and thus makes our algorithm sample-efficient without increasing the overall complexity dependence. As shown in Line 11-14 of Algorithm 1, this scheme guarantees the optimistic estimates Q\u0303 \u2265 Q\u2217 can be achieved as desired. Lastly, ensemble sampling methods enjoy empirical success and popularity in RL [21, 23, 31], including double q-learning [26] and bootstrapped DQN [42, 47]. We are among the first few works to explain its theoretical effectiveness.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p46",
+    "section_heading": "3 Delayed Posterior Sampling Value Iteration",
+    "text": "Episodic delayed feedback model. Recall that by Definition 2, when delay \u03c4k takes place, the feedback {sth, ath, rth, sth+1}h\u2208[H] of episode k cannot be observed until the beginning of the k+ \u03c4kth episode. Accordingly, the delayed version of the fully observed y\u03c4 ,\u2126kh now becomes,",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p47",
+    "section_heading": "3 Delayed Posterior Sampling Value Iteration",
+    "text": "As a result, episodic delays are considered during the posterior updates in subsequent episodes. This completes the design of Delayed-PSVI as presented in Algorithm 1. In the remainder of this section, we present the main theoretical guarantees of Delayed-PSVI and the proof sketch of Theorem 1. Theorem 1. Suppose delays satisfy Assumption 1. In any episodic linear MDP with time horizon T = KH , where K is the total number of episodes, for any 0 < \u03b4 < 1, let \u03bb = 1, \u03c32 = 1, M = log(4HK/\u03b4)/ log(64/63) and \u03bd = C\u03b4/4 \u2248 O\u0303( \u221a dMH2) (C\u03b4/4 in Lemma B.10). Then with probability at least 1 \u2212 \u03b4, there exists some absolute constants c, c\u2032, c\u2032\u2032 > 0 such that the regret of Delayed-PSVI (Algorithm 1) satisfies:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p48",
+    "section_heading": "3 Delayed Posterior Sampling Value Iteration",
+    "text": "Here \u03b9 is a Polylog term of H, d,K, \u03b4.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p49",
+    "section_heading": "3 Delayed Posterior Sampling Value Iteration",
+    "text": "On the complexity bound. Theorem 1 provides the first analysis for PS algorithms under delay and answers the conjecture from [60]. Our result recovers the best-available frequentist regret of O\u0303( \u221a d3H3T ) for PS algorithms when there is no delay (E[\u03c4 ] = 0). According to [24], the worstcase regret of linear Thompson sampling is lower bounded by \u2126( \u221a d3T ), and this implies our regret dependencies on parameter d and T are optimal under the class of PS algorithms.5 The order \u221a H3 in our regret is \u221a H-suboptimal to the optimal dependence in [27]. As an initial study for posterior sampling with delayed feedback, improving the horizon dependence is beyond our pursuit and we leave it for future work. Moreover, the presence of delay incurs an additive regret term O\u0303(d2H2E[\u03c4 ]). As T grows, the impact of delay will not dominate the overall regret. Furthermore, our high-probability regret bound directly implies the following worst-case expected regret.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p50",
+    "section_heading": "3 Delayed Posterior Sampling Value Iteration",
+    "text": "Corollary 1. Under the setting of Theorem 1, the expected regret of Delayed-PSVI is bounded by",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p51",
+    "section_heading": "3 Delayed Posterior Sampling Value Iteration",
+    "text": "Here \u03b9 is a Polylog of H, d,K. The expectation is taken over the randomness in data and algorithm.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p52",
+    "section_heading": "3 Delayed Posterior Sampling Value Iteration",
+    "text": "Proof of Corollary 1 is included in Appendix A.2. Additionally, we present the following corollary in linear bandits, whose main regret O\u0303 \u221a d3T is optimal for PS algorithms.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p53",
+    "section_heading": "3 Delayed Posterior Sampling Value Iteration",
+    "text": "Corollary 2 (Delayed Posterior Sampling for Linear Bandits). For the linear bandit with yt = xTt \u03b8\u2217 + \u03b7t, where xt \u2208 Dt \u2286 Rd and \u03b7t be a mean-zero noise with B-subgaussian. Let T be the total number of steps. Under Assumption 1, for any 0 < \u03b4 < 1, with probability at least 1 \u2212 \u03b4, the regret of Delayed-PSLB satisfies:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p54",
+    "section_heading": "3 Delayed Posterior Sampling Value Iteration",
+    "text": "Here \u03b9 is a Polylog term of d,K, \u03b4.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p55",
+    "section_heading": "3.1 Sketch of the analysis",
+    "text": "Due to the space limit, we outline the key steps in our analysis and defer the complete proof of Theorem 1 in Appendix B. To bound the worst-case regret in (2), first note that",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p56",
+    "section_heading": "3.1 Sketch of the analysis",
+    "text": "Our goal is to attain an optimistic estimation so that \u2206kopt \u2264 0 while controlling the estimation error \u2206kest. For optimistic PS algorithms, Gaussian anti-concentration is the main tool [6, 7, 65] to achieve optimism with constant probability. However, the probability of optimism will diminish as the algorithm back-propagates with respect to time. In contrast, we maintain m \u2208 [M ] independent ensembles Qm so that roughly speaking, P(Qm \u2265 Q\u2217) \u2265 164 for all valid m. For any 0 < \u03b4 < 1, with the choice M = log(1/m)/ log(64/63), the optimistic estimator Q = maxm Qm satisfies P(Q \u2265 Q\u2217) \u2265 1\u2212 \u03b4 (Lemma B.6). We can then proceed to prove \u2206kopt \u2264 0.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p57",
+    "section_heading": "3.1 Sketch of the analysis",
+    "text": "To control \u2206kest, one key challenge is to bound the error term \u2211K k=1 \u2225\u2225\u03d5 (sk, ak)\u2225\u2225 (\u2126k)\u22121",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p58",
+    "section_heading": "3.1 Sketch of the analysis",
+    "text": ". Due to the presence of delays, we cannot directly apply the Elliptical Potential Lemma as in the non-delayed settings. Therefore, we decompose (\u2126k)\u22121 into (\u03a3k)\u22121 + Mk, where \u03a3k :=\u2211k\u22121",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p59",
+    "section_heading": "3.1 Sketch of the analysis",
+    "text": "\u03c4=1 \u03d5 (s \u03c4 h, a \u03c4 h)\u03d5 (s \u03c4 h, a \u03c4 h) T + \u03bbI is the full information matrix, and show",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p60",
+    "section_heading": "3.1 Sketch of the analysis",
+    "text": "By doing so, \u2211K",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p61",
+    "section_heading": "3.1 Sketch of the analysis",
+    "text": "k=1 \u2225\u2225\u03d5(sk, ak)\u2225\u22252 (\u03a3k)\u22121 can be upper bounded by O\u0303(d log(K)) via the Elliptical",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p62",
+    "section_heading": "3.1 Sketch of the analysis",
+    "text": "Potential Lemma and maxk\u2208[K] \u03c4k can be upper bounded by O\u0303(E[\u03c4 ]) via the sub-exponential tail bound. Combing all these steps completes the proof.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p63",
+    "section_heading": "4 Delayed Posterior Sampling via Langevin Dynamics",
+    "text": "Delayed-PSVI performs noisy value iteration for linear MDPs by injecting randomness for exploration via Gaussian noise. From the Bayesian perspective, it constructs a Laplace approximation to obtain a Gaussian posterior given the observed data. However, sampling from a Gaussian distribution with a general covariance matrix \u2126kh can be computationally expensive in high-dimensional RL tasks. Specifically, Line 10 of Algorithm 1 is conducted via w\u0303 := w\u0302 + \u03bd \u00b7 \u2126\u22121/2\u03b6, where \u03b6 \u223c N (0, Id). The complexity of computing the matrix inverse involved (e.g. via Cholesky decomposition) is at least O(d3), which is prohibitively high for large d. More importantly, in complex problem domains, a flexible form of non-Gaussian noise perturbation may be desirable.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p64",
+    "section_heading": "4 Delayed Posterior Sampling via Langevin Dynamics",
+    "text": "To tackle these challenges, we incorporate a gradient-based approximate sampling scheme via Langevin dynamics for PS algorithms, namely, LMC, and introduce the Delayed-Langevin Posterior Sampling Value Iteration (Delayed-LPSVI) in Algorithm 2. The update rule of LMC essentially performs the following noisy gradient update:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p65",
+    "section_heading": "4 Delayed Posterior Sampling via Langevin Dynamics",
+    "text": "where \u03f5t i.i.d.\u223c N (0, Id). It is based on the Euler-Murayama discretization of the Langevin stochastic differential equation (SDE):",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p66",
+    "section_heading": "4 Delayed Posterior Sampling via Langevin Dynamics",
+    "text": "where B(t) \u2208 Rd is a Brownian motion, \u03b2 > 0 and t > 0. Under certain regularity conditions on the drift term \u2207L(w(t)) in (4), it can be shown that the Langevin dynamics converges to a unique stationary distribution \u03c0(dw) \u221d exp (\u2212\u03b2L(w))dw. As a result, LMC is capable of generating samples from arbitrarily complex distributions which can be intractble without closed form. With sufficient number of iterations, the posterior of wt is in proportional to exp(\u2212 \u221a 1/\u03b3L(w)).",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p67",
+    "section_heading": "4 Delayed Posterior Sampling via Langevin Dynamics",
+    "text": "In our problem, we specify L to be the following delayed loss function",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p68",
+    "section_heading": "4 Delayed Posterior Sampling via Langevin Dynamics",
+    "text": "where y\u0304\u03c4h := r \u03c4 h+V\u0303 k h+1(s \u03c4 h+1). Compared to Delayed-PSVI, Algorithm 2 does not require the matrix inversion computation. Below we present the worst-case regret of Delayed-LPSVI and discuss the key insights in our analysis. The full proof is deferred to Appendix C. Theorem 2. Suppose delays satisfy Assumption 1. In any episodic linear MDP with time horizon T = KH , where K is the total number of episodes and H is the fixed episode length, for any 0 < \u03b4 < 1, let \u03bb = 1, Nk = max{log( 32H 2(K+\u03bb)dk \u03b3\u03bb + 1)/[2 log(1/(1 \u2212 1 2\u03bah",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p69",
+    "section_heading": "4 Delayed Posterior Sampling via Langevin Dynamics",
+    "text": "))], log 2",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p70",
+    "section_heading": "4 Delayed Posterior Sampling via Langevin Dynamics",
+    "text": "2 log(1/(1\u2212 12\u03bah )) , log( 4HK 3\u221a \u03bb/dK )/ log(1/(1 \u2212 12\u03bah ))}, \u03b7k = 1 4\u03bbmax(\u2126kh) , \u03b3 = 16C2\u03b4/4 \u2248 O\u0303(dMH 2),",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p71",
+    "section_heading": "4 Delayed Posterior Sampling via Langevin Dynamics",
+    "text": "w0 = 0 and M = log(4HK/\u03b4)/ log(64/63). Then with probability at least 1\u2212 \u03b4, there exists some absolute constants c, c\u2032, c\u2032\u2032 > 0 such that the regret of Algorithm 2 satisfies:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p72",
+    "section_heading": "4 Delayed Posterior Sampling via Langevin Dynamics",
+    "text": "Here \u03b9 is a Polylog term of H, d,K, \u03b4 and C\u03b4 is defined in Lemma C.9.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p73",
+    "section_heading": "4 Delayed Posterior Sampling via Langevin Dynamics",
+    "text": "Neglecting the constants and Polylog factors, Delayed-LPSVI maintains the same order regret of O\u0303( \u221a d3H3T + d2H2E[\u03c4 ]) as Delayed-PSVI while significantly improving the computational efficiency. Precisely, LMC requires O(N) complexity to perform gradient steps in Line 6 of Algorithm 2 and an extra O(d) operations to compute Q\u0303k,mh in Line 7. Thus, the total computation complexity of LMC is O((N + d)MHK). On the other hand, sampling without LMC (Line5-8 in Algorithm 1) requires O(d3) operations, and the multi-round sampling (Line9-11) incurs O(dM) additional operations, which implies for a total computation complexity of O((d3 + dM)HK). As the choice of N in Algorithm 2 has logarithmic order, and M = log(4HK/\u03b4)/ log(64/63), the overall complexity of Delayed-LPSVI is O\u0303(dHK), whereas the overall computational complexity of Delayed-PSVI is O\u0303(d3HK). Notably, Delayed-LPSVI reduces the computational overhead of Delayed-PSVI by O\u0303(d2).",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p74",
+    "section_heading": "4 Delayed Posterior Sampling via Langevin Dynamics",
+    "text": "On the analysis. The key step in the proof of Theorem 2 is to show the convergence guarantee of LMC. Indeed, by recursion, one can show",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p75",
+    "section_heading": "4 Delayed Posterior Sampling via Langevin Dynamics",
+    "text": "where Ah,k := I \u2212 2\u03b7k\u2126kh. For any w0, it implies wN follows the Gaussian distribution N ( A",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p76",
+    "section_heading": "4 Delayed Posterior Sampling via Langevin Dynamics",
+    "text": "Nk h,kw0 + ( I \u2212ANkh,k ) w\u0302kh,\u0398 k h ) . With the choice of \u03b7k = 14\u03bbmax(\u2126kh)",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p77",
+    "section_heading": "4 Delayed Posterior Sampling via Langevin Dynamics",
+    "text": ", Ah,k \u227a Id and \u03b32 (1 \u2212 (1 \u2212 1",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p78",
+    "section_heading": "4 Delayed Posterior Sampling via Langevin Dynamics",
+    "text": "2\u03bah )2Nk )",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p79",
+    "section_heading": "4 Delayed Posterior Sampling via Langevin Dynamics",
+    "text": "( \u2126kh )\u22121 \u227a \u0398kh \u227a \u03b3 (\u2126kh)\u22121, which is the key to connect \u0398kh with (\u2126kh)\u22121 (Lemma C.2), the main analysis for Delayed-PSVI goes through by utilizing this connection.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p80",
+    "section_heading": "4 Delayed Posterior Sampling via Langevin Dynamics",
+    "text": "On arbitrary delayed feedback. The current study considers the stochastic delays that are subexponential Assumption 1. What if delay has an arbitrary distribution (e.g. Cauchy distribution has unbounded mean)? Indeed, the regret can be (roughly) bounded by O\u0303( 1q \u221a d3H3T + dH2d\u03c4 (q)) for d\u03c4 (q) to be the q-th quantile of delay \u03c4 . We do not focus on this setting since there is a 1/q blow-up in the main regret that many distributions (e.g. sub-exponential) do not need to sacrifice. We include the discussion in Appendix A.3.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p81",
+    "section_heading": "5 Experiments",
+    "text": "To validate whether our posterior sampling algorithms are competitive or outperform the nonsampling-based algorithms in the delayed setting, in this section, we examine their empirical performance in two simulated RL environments with different delayed feedback distributions. In particular, we consider a linear MDP environment following [44, 46], and a variant of the popular RiverSwim [55]. In both environments, we benchmark Delayed-PSVI (Algorithm 1), Delayed-LPSVI (Algorithm 2) against LSVI-UCB [35] with delayed feedback, namely, Delayed-UCBVI. In this section, we discuss results in the first setting and defer the discussion of RiverSwim in Appendix E.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p82",
+    "section_heading": "5.1 Synthetic Linear MDP",
+    "text": "We construct a synthetic linear MDP instance with |S| = 2, |A| = 50, d = 10, and H = 20. The linear feature mapping embeds each state-action pair with its binary representation and induces the following reward function: r(s, a) = 0.99 if s = 0, a = 0; r(s, a) = 0.01 otherwise. The design of the environment results in the same optimal value V \u22171 (s1) when d and H are fixed. Algorithms are examined under three types of delays that are commonly encountered in real-world phenomena, including sub-exponential delays and long-tail delays:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p83",
+    "section_heading": "5.1 Synthetic Linear MDP",
+    "text": "\u2022 Multinomial delay. Delays follow a Multinomial distribution with three categories {10, 20, 30}, with the corresponding probabilities as {0.5, 0.3, 0.2}.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p84",
+    "section_heading": "5.1 Synthetic Linear MDP",
+    "text": "\u2022 Poisson delay. Delays follow a Poisson distribution with the expected delay as E[\u03c4 ] = 50. \u2022 Long-tail delay. Delays are discretized from a Pareto distribution 6 with the shape param-",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p85",
+    "section_heading": "5.1 Synthetic Linear MDP",
+    "text": "eter as 1.0 and the scale parameter as 500.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p86",
+    "section_heading": "5.1 Synthetic Linear MDP",
+    "text": "To run Delayed-LPSVI, we warm start LMC by initializing w0 at each time step with the previous sample, and let M = 2, N = 40, \u03b7 = c\u03b7/\u03bbmax(\u2126kh). For Delayed-PSVI, we set parameters M = 2, \u03bd = \u221a dH . In the case of Delayed-UCBVI, we set the bonus coefficient as \u03b2 = c\u03b2/2 \u00b7",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p87",
+    "section_heading": "5.1 Synthetic Linear MDP",
+    "text": "dH \u221a log(dH). To make a fair comparison, we perform a grid search to determine the optimal hyperparameter values and fix c\u03b2 = 0.1, c\u03b7 = 0.5, \u03b3 = 0.02. Experiments are repeated with 10 different random seeds, and the returns are averaged over episodes in Figure 1. Further elaboration on additional metrics is available in Appendix E.2.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p88",
+    "section_heading": "5.1 Synthetic Linear MDP",
+    "text": "Results and Discussions. Both Delayed-PSVI and Delayed-LPSVI exhibit consistent and robust performance with resilience, not only under the well-behaved delays that decay exponentially fast, as assumed in Assumption 1, but also under the heavy-tailed delays, such as those following Pareto distributions. Notably, when confronted with the challenge of long-tail delays, our algorithms excel Delayed-UCBVI in terms of statistical accuracy (yielding higher return) and convergence rate. Specifically, the performance of Delayed-UCBVI degrades under long-tail delays, resulting from its computational inefficiency in iteratively constructing confidence intervals. In contrast, PS methods offer a higher degree of flexibility to adjust the range of exploration, owing to the inherent randomized algorithmic nature. To assess the computational advantages facilitated by LMC, we consider additional synthetic environments with varied dimensions for a more comprehensive analysis. For detailed statistics and further discussions, please refer to Appendix E.2. It is noteworthy that in practical high-dimensional RL tasks, the computational savings achieved by Delayed-LPSVI, in comparison to Delayed-PSVI, are considerably more significant.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p89",
+    "section_heading": "6 Conclusion",
+    "text": "In this paper, we study posterior sampling with episodic delayed feedback in linear MDPs. We introduce two novel value-based algorithms: Delayed-PSVI and Delayed-LPSVI. Both algorithms are proved to achieve O\u0303( \u221a d3H3T + d2H2E[\u03c4 ]) worst-case regret. Notably, by incorporating LMC",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p90",
+    "section_heading": "6 Conclusion",
+    "text": "for approximate sampling, Delayed-LPSVI reduces the computational cost by O\u0303(d2) while maintaining the same order of regret. Our empirical experiments further validate the effectiveness of our algorithms by demonstrating their superiority over the UCB-based methods.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p91",
+    "section_heading": "6 Conclusion",
+    "text": "This work provides the first delayed-feedback analysis for posterior sampling algorithms in RL, paving the way to several promising avenues for future research. Firstly, it is interesting to extend the current results to settings with general function approximation [34, 71]. Additionally, leveraging the sharp analysis outlined in [27] to improve the suboptimal dependence on H for posterior sampling algorithms presents an intriguing avenue for exploration. Furthermore, addressing other types of delay (e.g. adversarial delay) that differ from stochastic one will contribute to the ongoing field of delayed feedback studies in online learning, and we leave the investigation in future works.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p92",
+    "section_heading": "6 Conclusion",
+    "text": "6Pareto distribution with shape parameter less than 5.0 are known to have hevy right tails.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p93",
+    "section_heading": "Acknowledgements",
+    "text": "Ming Yin and Yu-xiang Wang are gratefully supported by National Science Foundation (NSF) Awards #2007117 and #2003257. Nikki Kuang and Yi-An Ma are supported by the NSF SCALE MoDL-2134209 and the CCF-2112665 (TILOS) awards, as well as the U.S. Department of Energy, Office of Science, and the Facebook Research award. Mengdi Wang gratefully acknowledges funding from Office of Naval Research (ONR) N00014-21-1-2288, Air Force Office of Scientific Research (AFOSR) FA9550-19-1-0203, and NSF 19-589, CMMI-1653435.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p94",
+    "section_heading": "A.1 Properties of Linear MDPs",
+    "text": "Lemma A.1. In linear MDPs, the action-value function is also linear in feature map. \u2200(s, a) \u2208 S \u00d7A, h \u2208 [H] and \u03d5 \u2208 Rd, under any fixed policy \u03c0,",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p95",
+    "section_heading": "A.1 Properties of Linear MDPs",
+    "text": "where w\u03c0h := \u03b8h + E\u00b5[V \u03c0h+1(s\u2032)] and wh \u2208 Rd. As a corollary, there exists w\u2217h such that Q\u2217h = \u03d5Tw\u2217h.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p96",
+    "section_heading": "A.1 Properties of Linear MDPs",
+    "text": "Proof of Lemma A.1. By Bellman equation,",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p97",
+    "section_heading": "A.1 Properties of Linear MDPs",
+    "text": "where w\u03c0h := \u03b8h + E\u00b5h [V \u03c0h+1(s\u2032)].",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p98",
+    "section_heading": "A.1 Properties of Linear MDPs",
+    "text": "A.2 Worst-case regret as a stronger criterion",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p99",
+    "section_heading": "A.1 Properties of Linear MDPs",
+    "text": "We use Theorem 1 as an example. Using the worst-case result, i.e. with probability 1\u2212 \u03b4,",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p100",
+    "section_heading": "A.1 Properties of Linear MDPs",
+    "text": "Here \u03b9 has the functional form \u03b9 = Polylog(d,K,H, \u03b4). Then choosing \u03b4 = 1/(HK) to obtain with probability 1\u2212 1/(HK),",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p101",
+    "section_heading": "A.1 Properties of Linear MDPs",
+    "text": "for \u03b9 = Polylog(d,K,H). Therefore,",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p102",
+    "section_heading": "A.1 Properties of Linear MDPs",
+    "text": "This completes Corollary 1.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p103",
+    "section_heading": "A.3 Discussion on the arbitrary delay",
+    "text": "For completeness of our study, we also briefly discuss the case when delay is arbitrary. In genreal, the regret can be (roughly) bounded by O\u0303( 1q \u221a d3H3T +dH2d\u03c4 (q)) for d\u03c4 (q) to be the q-th quantile of delay \u03c4 . This could be achieved by creating a low-switching variant of our Theorem 1/Theorem 2 and applying the reduction of the concurrent work [68]. We do not focus on this setting since there is a 1/q blow-up in the main regret that many distributions (e.g. sub-exponential) do not need to sacrifice.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p104",
+    "section_heading": "B Regret Analysis for Delayed-PSVI",
+    "text": "To proceed with the regret analysis, we introduce some helpful notations. Besides Q\u0303kh(s, a) = maxm \u03d5(s, a) T, w\u0303k,mh , V\u0303 k h (s) = maxa Q\u0303 k h(s, a) in Algorithm 1, we define",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p105",
+    "section_heading": "B Regret Analysis for Delayed-PSVI",
+    "text": "Regret decomposition: We start by rewriting regret in terms of value-function error decomposition following the standard analysis of optimistic algorithms [10]:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p106",
+    "section_heading": "B Regret Analysis for Delayed-PSVI",
+    "text": "where at each episode k, \u2206kopt corresponds to the regret resulting from optimism, and \u2206 k est tracks down the regret incurred from estimation error. Efficient RL algorithms thus need to strike a balance between both terms. More specifically, it is desirable to generate optimistic estimations over the true value function, while keeping estimation error relatively small. By cautious design of noise perturbation, we show in Theorem 1 that Algorithm 1 effectively achieves \u221a T order regret in episodic MDPs with linear function approximation.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p107",
+    "section_heading": "B Regret Analysis for Delayed-PSVI",
+    "text": "Proof of Theorem 1. The proof proceeds by bounding \u2206kopt and \u2206 k est respectively.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p108",
+    "section_heading": "B Regret Analysis for Delayed-PSVI",
+    "text": "Step 1: bound regret from optimism.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p109",
+    "section_heading": "B Regret Analysis for Delayed-PSVI",
+    "text": "By Lemma B.7, the optimism provided by our algorithm guarantees with probability at least 1\u2212\u03b4/2, for all k \u2208 [K], \u2206kopt := V \u22171 (sk1)\u2212 V\u0303 k1 (sk1) \u2264 0. Step 2: bound regret from estimation error. To bound the estimation error, we first condition on the following event",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p110",
+    "section_heading": "B Regret Analysis for Delayed-PSVI",
+    "text": "Recall that \u2206kest := V\u0303 k 1 (s k 1)\u2212 V \u03c0k 1 (s k 1) and define \u03b6 k h = E[V\u0303 kh+1 ( skh+1 ) \u2212 V \u03c0kh+1 ( skh+1 ) |skh, akh]\u2212",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p111",
+    "section_heading": "B Regret Analysis for Delayed-PSVI",
+    "text": "V\u0303 kh+1 ( skh+1 ) + V \u03c0kh+1 ( skh+1 ) . Then by applying Lemma B.1 recursively, the total estimation error\u2211K",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p112",
+    "section_heading": "B Regret Analysis for Delayed-PSVI",
+    "text": "k=1 \u2206 k est can be decomposed as:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p113",
+    "section_heading": "B Regret Analysis for Delayed-PSVI",
+    "text": "On one hand, by definition, |\u03b6kh | \u2264 2H for all h \u2208 [H], k \u2208 [K]. Therefore, {\u03b6kh} is a martingale difference sequence (since the computation of V\u0303 kh is independent of the new observation at episode k). By Azuma-Hoeffding\u2019s inequality (for t > 0),",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p114",
+    "section_heading": "B Regret Analysis for Delayed-PSVI",
+    "text": "which implies with probability 1\u2212 \u03b4/8,",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p115",
+    "section_heading": "B Regret Analysis for Delayed-PSVI",
+    "text": "7Note here the \u03b4 equals \u03b4/4 as of Lemma B.8. Therefore, by Lemma B.8, P(E) \u2265 1\u2212 \u03b4/4.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p116",
+    "section_heading": "B Regret Analysis for Delayed-PSVI",
+    "text": "Step 3: bounding the delayed error. By Lemma B.4, with probability 1\u2212 \u03b4/8,",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p117",
+    "section_heading": "B Regret Analysis for Delayed-PSVI",
+    "text": "Here D\u03c4,\u03b4,H,K := 1 + 2E[\u03c4 ] + 2 \u221a 2E[\u03c4 ] log( 24KH\u03b4 ) + 4 3 log( 24KH \u03b4 ) + D\u03c4,K, \u03b416H",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p118",
+    "section_heading": "B Regret Analysis for Delayed-PSVI",
+    "text": "and D\u03c4,K,\u03b4 is defined in Lemma D.6. Consequently,",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p119",
+    "section_heading": "B Regret Analysis for Delayed-PSVI",
+    "text": "Note that by Lemma B.8, event E holds with probability 1\u2212 \u03b4/4, and by a union bound with (7) and (8), we have with probability 1\u2212 \u03b4/2,",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p120",
+    "section_heading": "B Regret Analysis for Delayed-PSVI",
+    "text": "Finally, by a union bound over Step1, Step2 and Step3, we obtain with probability 1\u2212 \u03b4,",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p121",
+    "section_heading": "B Regret Analysis for Delayed-PSVI",
+    "text": "where c > 0 is some universal constant and \u03b9 is a Polylog term of H, d,K, \u03b4. The last step is due to: by the choice of \u03bb = 1, \u03c32 = 1, \u03bd = C\u03b4/4 and M = log(4HK/\u03b4)/ log(64/63), we can bound C\u03b4 (in Lemma B.10) by C\u03b4 \u2264 c0H \u221a dM\u03b9\u03b4 with c0 a universal constant and \u03b9\u03b4 contains only the Polylog terms. This implies \u03bd2 \u2264 c1H2dM\u03b9\u03b4 . Note Cd \u2264 d\u03b9\u03b4 , therefore \u03b2 is dominated by the first term \u03b2 \u2264 C2 \u221a 2\u03bd2 log(16CdHMK/\u03b4) \u2264 C3dH\u03b9\u03b4 for some universal constants C2, C3. Since R(T ) is dominated by the second term in the second to last inequality, plug back the upper bound for \u03b2 gets the result. Finally, it is readily to verify D\u03c4,\u03b4,H,K is bounded by c\u2032E[\u03c4 ]\u03b9+O(\u03b9).",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p122",
+    "section_heading": "B Regret Analysis for Delayed-PSVI",
+    "text": "Lemma B.1. Define \u03b6kh = E[V\u0303 kh+1 ( skh+1 ) \u2212 V \u03c0kh+1 ( skh+1 ) |skh, akh] \u2212 V\u0303 kh+1 ( skh+1 ) + V \u03c0kh+1 ( skh+1 ) and condition on the event (10) in Lemma B.8. Then for all k \u2208 [K], h \u2208 [H], the following holds,",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p123",
+    "section_heading": "B Regret Analysis for Delayed-PSVI",
+    "text": ".",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p124",
+    "section_heading": "B Regret Analysis for Delayed-PSVI",
+    "text": "Proof of Lemma B.1. Since akh = \u03c0k(s k h), it implies V k h ( xkh ) = Q\u0304kh(s k h, a k h) (recall Q\u0304 k h := min{Q\u0303kh, H \u2212 h+ 1}) and V \u03c0k h ( xkh ) = Q\u03c0kh (s k h, a k h). Hence,",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p125",
+    "section_heading": "B Regret Analysis for Delayed-PSVI",
+    "text": "where the last step is by the event defined in (10). B.1 Bounding the delayed error term \u2211K",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p126",
+    "section_heading": "B Regret Analysis for Delayed-PSVI",
+    "text": "k=1 \u2225\u2225\u03d5(skh, akh)\u2225\u2225(\u2126kh)\u22121 . Recall the delayed covariance matrix \u2126kh = \u2211k\u22121 \u03c4=1 1\u03c4,k\u22121\u03d5(s \u03c4 h, a \u03c4 h)\u03d5(s \u03c4 h, a \u03c4 h)",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p127",
+    "section_heading": "B Regret Analysis for Delayed-PSVI",
+    "text": "T + \u03bbI with 1s,t := 1[s+ \u03c4s \u2264 t], then we can define the full design matrix \u03a3kh and the complement matrix \u039bkh as",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p128",
+    "section_heading": "B Regret Analysis for Delayed-PSVI",
+    "text": "then \u03a3kh = \u2126 k h + \u039b k h. Also, denote the number of missing episodes as: Uk = \u2211k s=1 1[s+ \u03c4s > k]. Then we have the following Lemmas. Lemma B.2. For \u03bb > 0, (\u2126kh)\u22121 = (\u03a3kh)\u22121 + (\u03a3kh)\u22121\u039bkh(\u2126kh)\u22121.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p129",
+    "section_heading": "B Regret Analysis for Delayed-PSVI",
+    "text": "Proof of Lemma B.2. Since \u03bb > 0, both \u2126kh and \u03a3 k h are invertible with:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p130",
+    "section_heading": "B Regret Analysis for Delayed-PSVI",
+    "text": "Lemma B.3. Denote \u03d5kh := \u03d5(skh, akh). Let \u03bb > 0, then",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p131",
+    "section_heading": "B Regret Analysis for Delayed-PSVI",
+    "text": "Proof of Lemma B.3. By definition and Trace of matrix, we have",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p132",
+    "section_heading": "Denote A = (\u03a3kh)",
+    "text": "\u22121\u039bkh and B = (\u2126 k h) \u22121\u03d5kh(\u03d5 k h) T, then A,B both have non-negative eigenvalues (by Lemma D.14) and this implies",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p133",
+    "section_heading": "Denote A = (\u03a3kh)",
+    "text": "and this implies",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p134",
+    "section_heading": "Denote A = (\u03a3kh)",
+    "text": "where the last inequality uses Lemma D.15. Next, by changing the order summation, we have",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p135",
+    "section_heading": "Denote A = (\u03a3kh)",
+    "text": "which implies",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p136",
+    "section_heading": "Denote A = (\u03a3kh)",
+    "text": "where the second step uses (\u03a3kh) \u22121 \u2ab0 (\u03a3th)\u22121 for k \u2265 t.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p137",
+    "section_heading": "Denote A = (\u03a3kh)",
+    "text": "Lemma B.4 (Bounding the delayed error). With probability 1\u2212 \u03b4/8,",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p138",
+    "section_heading": "Denote A = (\u03a3kh)",
+    "text": "Here D\u03c4,\u03b4,H,K := 1 + 2E[\u03c4 ] + 2 \u221a 2E[\u03c4 ] log( 24KH\u03b4 ) + 4 3 log( 24KH \u03b4 ) + D\u03c4,K, \u03b416H",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p139",
+    "section_heading": "Denote A = (\u03a3kh)",
+    "text": "and D\u03c4,K,\u03b4 is defined in Lemma D.6.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p140",
+    "section_heading": "Denote A = (\u03a3kh)",
+    "text": "Proof of Lemma B.4. Now Combine Lemma B.2 and Lemma B.3, we obtain",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p141",
+    "section_heading": "Denote A = (\u03a3kh)",
+    "text": "For term (\u2217), since \u03bb = 1, by Cauchy-Schwartz inequality and Elliptical Potential Lemma D.8,",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p142",
+    "section_heading": "Denote A = (\u03a3kh)",
+    "text": "For term (\u2217\u2217), by Lemma D.15 and Lemma D.6 and a union bound, with probability 1\u2212 \u03b4/8,",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p143",
+    "section_heading": "Denote A = (\u03a3kh)",
+    "text": "Denote D\u03c4,\u03b4,K := 1 + E[\u03c4 ] + 2 \u221a 2E[\u03c4 ] log(24K\u03b4 ) + 4 3 log( 24K \u03b4 ) + E[\u03c4 ] +D\u03c4,K, \u03b416 , then we have with probability 1\u2212 \u03b4/8,",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p144",
+    "section_heading": "Denote A = (\u03a3kh)",
+    "text": "then apply a union bound over h \u2208 [H] to obtained the stated result.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p145",
+    "section_heading": "B.2 Proofs of Anti-concentration for Delayed-PSVI",
+    "text": "In this section, we prove the optimism via anti-concentration for Delayed-PSVI. We first present two assisting lemmas. Lemma B.5 (Anti-concentration for Optimism). Suppose the event",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p146",
+    "section_heading": "B.2 Proofs of Anti-concentration for Delayed-PSVI",
+    "text": "holds. Choose \u03bd = C\u03b4\u2032 and M\u03b4 = log(HK/\u03b4)/ log(64/63). Then we have with probability 1\u2212 \u03b4,",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p147",
+    "section_heading": "B.2 Proofs of Anti-concentration for Delayed-PSVI",
+    "text": "Proof of Lemma B.5. For the rest of the proof, we condition on the event",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p148",
+    "section_heading": "B.2 Proofs of Anti-concentration for Delayed-PSVI",
+    "text": "where \u03b4\u2032 will be specified later and C\u03b4 is defined in the Lemma B.10. Also note",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p149",
+    "section_heading": "B.2 Proofs of Anti-concentration for Delayed-PSVI",
+    "text": "Therefore,",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p150",
+    "section_heading": "B.2 Proofs of Anti-concentration for Delayed-PSVI",
+    "text": "where the first event uses the condition on E and the second inequality chooses \u03bd = C\u03b4\u2032 and uses Lemma D.5. Apply Lemma B.6 with f = rh + PhV\u0303 kh+1, for M\u03b4 = log(1/\u03b4)/ log(64/63),",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p151",
+    "section_heading": "B.2 Proofs of Anti-concentration for Delayed-PSVI",
+    "text": "By law of total expectation E[E[1A|X]] = E[1A] = P[A], it implies",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p152",
+    "section_heading": "B.2 Proofs of Anti-concentration for Delayed-PSVI",
+    "text": "Apply a union bound for h, k, we have for M\u03b4 = log(HK/\u03b4)/ log(64/63), with probability 1\u2212 \u03b4,",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p153",
+    "section_heading": "B.2 Proofs of Anti-concentration for Delayed-PSVI",
+    "text": "The following lemma is used to prove Lemma B.5. Lemma B.6. For any function f : S \u00d7 A 7\u2192 R. For any 0 < \u03b4 < 1. Suppose for any (k, h,m) \u2208 [K] \u00d7 [H] \u00d7 [M ], P ( Q\u0303k,mh (s, a) \u2265 f(s, a),\u2200s, a | Q\u0302kh ) \u2265 c for some constant c > 0. Let M = log(1/\u03b4)/ log(1/(1\u2212 c)). Then",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p154",
+    "section_heading": "B.2 Proofs of Anti-concentration for Delayed-PSVI",
+    "text": "Proof of Lemma B.6. For any fixed (k, h) \u2208 [K]\u00d7 [H], we have",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p155",
+    "section_heading": "B.2 Proofs of Anti-concentration for Delayed-PSVI",
+    "text": "then this implies",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p156",
+    "section_heading": "B.2 Proofs of Anti-concentration for Delayed-PSVI",
+    "text": "With the above two lemmas, we are ready to prove the optimism achieved by Delayed-PSVI with respect to Q\u0303kh. Lemma B.7 (Optimism). For any 0 \u2264 \u03b4 < 1, we set the input in Algorithm 1 as \u03bd = C\u03b4/4 and M\u03b4 = log(4HK/\u03b4)/ log(64/63), then with probability 1\u2212 \u03b4/2, we have",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p157",
+    "section_heading": "B.2 Proofs of Anti-concentration for Delayed-PSVI",
+    "text": "Here C\u03b4 is defined in Lemma B.10.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p158",
+    "section_heading": "B.2 Proofs of Anti-concentration for Delayed-PSVI",
+    "text": "Proof of Lemma B.7. Step1: Suppose the event",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p159",
+    "section_heading": "B.2 Proofs of Anti-concentration for Delayed-PSVI",
+    "text": "holds. Choose \u03bd = C\u03b4\u2032 and M\u03b4 = log(4HK/\u03b4)/ log(64/63). Then we show, for any h \u2208 [H], with probability 1 \u2212 \u03b4/4, Q\u0303kh(s, a) \u2265 Q\u2217h(s, a), V\u0303 kh (s) \u2265 V \u2217h (s) for all (s, a) \u2208 S \u00d7 A, h \u2208 [H], k \u2208 [K]. First, due to our choice of M\u03b4 = log(4HK/\u03b4)/ log(64/63), by Lemma B.5, with probability 1 \u2212 \u03b4/4,",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p160",
+    "section_heading": "B.2 Proofs of Anti-concentration for Delayed-PSVI",
+    "text": "which we condition on.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p161",
+    "section_heading": "B.2 Proofs of Anti-concentration for Delayed-PSVI",
+    "text": "Next, we finish the proof by backward induction. Base case: for h = H + 1, the value functions are zero, and thus Q\u0303kH+1 \u2265 Q\u2217H+1 holds trivially, which also implies V\u0303 kH+1 \u2265 V \u2217H+1. Suppose the conclusion holds true for h+ 1. Then for time step h and any k \u2208 [K],",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p162",
+    "section_heading": "B.2 Proofs of Anti-concentration for Delayed-PSVI",
+    "text": "where the first inequality uses the induction hypothesis and the second inequality uses the condition. Lastly, V\u0303 kh (\u00b7) = maxa min{Q\u0303kh(\u00b7, a), H \u2212 h + 1} \u2264 maxa min{Q\u2217h(\u00b7, a), H \u2212 h + 1} = maxa Q \u2217 h(\u00b7, a) = V \u2217h (\u00b7). By induction, this finishes the Step1.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p163",
+    "section_heading": "B.2 Proofs of Anti-concentration for Delayed-PSVI",
+    "text": "Step2: By Lemma B.10, with probability 1\u2212 \u03b4/4, for all k \u2208 [K], h \u2208 [H], s \u2208 S, a \u2208 A, it holds",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p164",
+    "section_heading": "B.2 Proofs of Anti-concentration for Delayed-PSVI",
+    "text": "Therefore, in Step1, choose \u03b4\u2032 = \u03b4/4, and a union bound we obtain: for the choice \u03bd = C\u03b4/4 and M\u03b4 = log(4HK/\u03b4)/ log(64/63), then with probability 1\u2212 \u03b4/2, we have",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p165",
+    "section_heading": "B.3 Proofs of Concentration for Delayed-PSVI",
+    "text": "Lemma B.8 (Pointwise Concentration). Algorithm 1 guarantees that with probability 1 \u2212 \u03b4, \u2200k \u2208 [K], h \u2208 [H], s \u2208 S, a \u2208 A, , it holds:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p166",
+    "section_heading": "B.3 Proofs of Concentration for Delayed-PSVI",
+    "text": "where \u03b2 := \u221a 2\u03bd2 log(4CdHMK/\u03b4) + \u221a 8H2 [ d 2 log ( k+\u03bb \u03bb ) + dM log(1 + 2 \u221a 8k3CH,d,k,M,\u03b4/2 H \u221a \u03bb ) + log 4\u03b4 ] + 2 \u221a \u03bb \u221a dH . In particular, here logCd = d log(1 + (8 \u221a 2\u03bd2 log(4/\u03b4)/\u03bb+ 8H \u221a d)K3) and",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p167",
+    "section_heading": "B.3 Proofs of Concentration for Delayed-PSVI",
+    "text": "CH,d,k,M,\u03b4 = 2H \u221a dk \u03bb + \u03bd \u221a 2d+\u03bd \u221a 2 log(M/\u03b4)\u221a \u03bb .",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p168",
+    "section_heading": "B.3 Proofs of Concentration for Delayed-PSVI",
+    "text": "Proof of Lemma B.8. Recall that |rkh + PhV\u0303 kh+1| \u2264 H \u2212 h + 1, therefore rkh + PhV\u0303 kh+1 = min{rkh+PhV\u0303 kh+1, H\u2212h+1}. This implies |min{Q\u0303kh(s, a), H\u2212h+1}\u2212rkh\u2212 [PhV\u0303 kh+1](s, a)| = |min{Q\u0303kh(s, a), H \u2212 h + 1} \u2212 min{rkh + [PhV\u0303 kh+1](s, a), H \u2212 h + 1}| \u2264 |Q\u0303kh(s, a) \u2212 rkh \u2212 [PhV\u0303 kh+1](s, a)|. Hence",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p169",
+    "section_heading": "B.3 Proofs of Concentration for Delayed-PSVI",
+    "text": "The proof then directly follows Lemma B.9 and Lemma B.10 to bound R1 and R2 respectively (together with a union bound).",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p170",
+    "section_heading": "B.3 Proofs of Concentration for Delayed-PSVI",
+    "text": "Lemma B.9 (Concentration of R1). For any 0 < \u03b4 < 1, define the event E\u0303 as",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p171",
+    "section_heading": "B.3 Proofs of Concentration for Delayed-PSVI",
+    "text": "then E\u0303 happens with probability 1\u2212\u03b4. Here logCd = d log(1+(8 \u221a 2\u03bd2 log(2/\u03b4)/\u03bb+ 8H \u221a d)K3).",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p172",
+    "section_heading": "B.3 Proofs of Concentration for Delayed-PSVI",
+    "text": "Proof of Lemma B.9. In the Step1 and Step2, we abuse w\u0303kh to denote w\u0303 k,m h for arbitrary m to avoid notation redundancy.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p173",
+    "section_heading": "B.3 Proofs of Concentration for Delayed-PSVI",
+    "text": "In Step1: We first show for any k \u2208 [K], h \u2208 [H], (s, a) \u2208 S \u00d7A, with probability 1\u2212 \u03b4,",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p174",
+    "section_heading": "B.3 Proofs of Concentration for Delayed-PSVI",
+    "text": "Indeed, by design of Algorithm 1, w\u0303kh \u223c N (w\u0302kh, \u03bd2(\u2126kh)\u22121), which gives,",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p175",
+    "section_heading": "B.3 Proofs of Concentration for Delayed-PSVI",
+    "text": "Therefore, \u03d5(s, a)T(w\u0303kh\u2212 w\u0302kh) is \u03bd2\u03d5(s, a)T(\u2126kh)\u22121\u03d5(s, a)-sub-Gaussian. By concentration of subGaussian random variables, we have",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p176",
+    "section_heading": "B.3 Proofs of Concentration for Delayed-PSVI",
+    "text": "Solving for \u03b4 gives with probability 1\u2212 \u03b4,",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p177",
+    "section_heading": "B.3 Proofs of Concentration for Delayed-PSVI",
+    "text": "Step2: For any 0 < \u03b4 < 1, define the event E\u0303 as",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p178",
+    "section_heading": "B.3 Proofs of Concentration for Delayed-PSVI",
+    "text": "then E\u0303 happens with probability 1\u2212\u03b4. Here logCd = d log(1+(8 \u221a 2\u03bd2 log(2/\u03b4)/\u03bb+ 8H \u221a d)K3).",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p179",
+    "section_heading": "B.3 Proofs of Concentration for Delayed-PSVI",
+    "text": "In Lemma D.12, set \u03b8 = w\u0303kh\u2212 w\u0302kh and A = (\u2126kh)\u22121 and B = 1/\u03bb, and let V be the 12K3 -epsilon net for the class of values {|\u27e8\u03d5, w\u0303kh\u2212w\u0302kh\u27e9|\u2212C \u221a \u03d5\u22a4(\u2126kh) \u22121\u03d5 : \u2225\u03d5\u2225 \u2264 1} (where C = \u221a 2\u03bd2 log(2/\u03b4)), then it must also be the 12K3 -epsilon net for the class of values F = {|\u27e8\u03d5(s, a), w\u0303 k h \u2212 w\u0302kh\u27e9| \u2212",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p180",
+    "section_heading": "B.3 Proofs of Concentration for Delayed-PSVI",
+    "text": "C \u221a \u03d5(s, a)\u22a4(\u2126kh) \u22121\u03d5(s, a) : (s, a) \u2208 S \u00d7 A}, let V\u0304 is the smallest subset of V such that it is",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p181",
+    "section_heading": "B.3 Proofs of Concentration for Delayed-PSVI",
+    "text": "1 2K3 -epsilon net for the class of values F . Then we can select VS\u00d7A to be the set of state-action pairs such that for any f\u03d5 := |\u27e8\u03d5, w\u0303kh \u2212 w\u0302kh\u27e9| \u2212 C \u221a \u03d5\u22a4(\u2126kh) \u22121\u03d5 \u2208 V\u0304 , there exists (s, a) \u2208 VS\u00d7A",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p182",
+    "section_heading": "B.3 Proofs of Concentration for Delayed-PSVI",
+    "text": "satisfies |\u27e8\u03d5(s, a), w\u0303kh \u2212 w\u0302kh\u27e9|C \u221a \u03d5(s, a)\u22a4(\u2126kh) \u22121\u03d5(s, a)| \u2212 f\u03d5 \u2264 1/2K3, then we have VS\u00d7A is a 1/K3-epsilon net of F and |VS\u00d7A| \u2264 |V\u0304| \u2264 |V|. Therefore,",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p183",
+    "section_heading": "B.3 Proofs of Concentration for Delayed-PSVI",
+    "text": "Then by a union bound over (1+(8 \u221a 2\u03bd2 log(2/\u03b4)/\u03bb+ 8H \u221a d)K3)d, H and K, we have the stated the result.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p184",
+    "section_heading": "B.3 Proofs of Concentration for Delayed-PSVI",
+    "text": "Step3: Note Q\u0303kh = maxm \u03d5Tw\u0303 k,m h , hence by a union bound over M , we have",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p185",
+    "section_heading": "B.3 Proofs of Concentration for Delayed-PSVI",
+    "text": "for all k, h, s, a with probability 1\u2212 \u03b4. Here the last inequality follows Step2, which completes the proof.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p186",
+    "section_heading": "B.3 Proofs of Concentration for Delayed-PSVI",
+    "text": "Lemma B.10 (Concentration of R2). For any 0 < \u03b4 < 1, with probability 1\u2212\u03b4, for all k \u2208 [K], h \u2208 [H], s \u2208 S, a \u2208 A, it holds",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p187",
+    "section_heading": "B.3 Proofs of Concentration for Delayed-PSVI",
+    "text": "where C\u03b4 = \u221a 8H2 [ d 2 log ( k+\u03bb \u03bb ) + dM log(1 + 2 \u221a 8k3CH,d,k,M,\u03b4 H \u221a \u03bb ) + log 2\u03b4 ] + 2 \u221a \u03bb \u221a dH and the",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p188",
+    "section_heading": "B.3 Proofs of Concentration for Delayed-PSVI",
+    "text": "quantity CH,d,k,M,\u03b4 = 2H \u221a dk \u03bb + \u03bd \u221a 2d+\u03bd \u221a 2 log(M/\u03b4)\u221a \u03bb .",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p189",
+    "section_heading": "B.3 Proofs of Concentration for Delayed-PSVI",
+    "text": "Proof of Lemma B.10. For any (k, h) \u2208 [K]\u00d7 [H] and (s, a) \u2208 S \u00d7A, denote",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p190",
+    "section_heading": "B.3 Proofs of Concentration for Delayed-PSVI",
+    "text": "Recall y\u03c4h = 1\u03c4,k\u22121 \u00b7 [r\u03c4h(s\u03c4h, a\u03c4h) + V\u0303 kh+1(s\u03c4h+1)] from Algorithm 1 and denote y\u0304\u03c4h := r\u03c4h(s\u03c4h, a\u03c4h) + V\u0303 kh+1(s \u03c4 h+1). Then by definition,",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p191",
+    "section_heading": "B.3 Proofs of Concentration for Delayed-PSVI",
+    "text": "From \u2126kh defined in line 7 of Algorithm 1, we have \u03a6h\u03a6 T h = \u2126 k h \u2212 \u03bbI . Plug it into the definition of w\u0302kh, we have",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p192",
+    "section_heading": "B.3 Proofs of Concentration for Delayed-PSVI",
+    "text": "We then proceed to bound w\u0302kh \u2212 wkh, which gives",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p193",
+    "section_heading": "B.3 Proofs of Concentration for Delayed-PSVI",
+    "text": "Term (i). Since \u2126kh is positive definite, multiplying the first term (i) with \u03d5(s, a) and by CauchySchwartz inequality, we obtain,",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p194",
+    "section_heading": "B.3 Proofs of Concentration for Delayed-PSVI",
+    "text": "Apply Lemma B.11, we have with probability at least 1 \u2212 \u03b4, for any (k, h) \u2208 [K] \u00d7 [H], and (s, a) \u2208 S \u00d7A, where C1 = \u221a 8H2 [ d 2 log ( k+\u03bb \u03bb ) + dM log(1 + 2 \u221a 8k3CH,d,k,M,\u03b4 H \u221a \u03bb ) + log 2\u03b4 ] .",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p195",
+    "section_heading": "B.3 Proofs of Concentration for Delayed-PSVI",
+    "text": "Term (ii). By Lemma B.12, \u2200(s, a) \u2208 S\u00d7A, and (k, h) \u2208 [K]\u00d7 [H], \u2223\u2223\u03d5(s, a)T(ii)\u2223\u2223 can be bounded as",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p196",
+    "section_heading": "B.3 Proofs of Concentration for Delayed-PSVI",
+    "text": "Combining (13), (14), we have with probability 1\u2212\u03b4, for any (k, h) \u2208 [K]\u00d7[H] and (s, a) \u2208 S\u00d7A,",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p197",
+    "section_heading": "B.3 Proofs of Concentration for Delayed-PSVI",
+    "text": "This concludes the proof.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p198",
+    "section_heading": "B.3 Proofs of Concentration for Delayed-PSVI",
+    "text": "Lemma B.11. For any 0 < \u03b4 < 1, with probability 1\u2212 \u03b4, we have \u2200(k, h) \u2208 [K]\u00d7 [H],",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p199",
+    "section_heading": "B.3 Proofs of Concentration for Delayed-PSVI",
+    "text": "here CH,d,k,M,\u03b4 = 2H \u221a dk \u03bb + \u03bd \u221a 2d+\u03bd \u221a 2 log(M/\u03b4)\u221a \u03bb .8",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p200",
+    "section_heading": "B.3 Proofs of Concentration for Delayed-PSVI",
+    "text": "Proof of Lemma B.11. First note that",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p201",
+    "section_heading": "B.3 Proofs of Concentration for Delayed-PSVI",
+    "text": "Recall that (\u2126kh) 1/2(w\u0303k,mh \u2212 w\u0302kh)/\u03bd \u223c N (0, Id), then by Lemma D.7, with probability 1\u2212 \u03b4/2, we have",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p202",
+    "section_heading": "B.3 Proofs of Concentration for Delayed-PSVI",
+    "text": "8Note here \u03bd is in the line 10 of Algorithm 1. At the end we will choose \u03bd to be Poly(H, d,K) and this will not affect the overall dependence of the guarantee since CH,d,k,M,\u03b4 is inside the log term.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p203",
+    "section_heading": "B.3 Proofs of Concentration for Delayed-PSVI",
+    "text": "Apply the union bound over all m, then above implies with probability 1\u2212 \u03b4/2, \u2200m \u2208 [M ]",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p204",
+    "section_heading": "B.3 Proofs of Concentration for Delayed-PSVI",
+    "text": "Now consider the function class V\u0304 := {maxa maxm \u03d5(\u00b7, a)Twm : \u2225wm\u2225 \u2264 CH,d,k,M,\u03b4}, so by Lemma D.13 the \u03f5-log covering number for V\u0304 is dM log(1 + 2CH,d,k,M,\u03b4\u03f5 ). Since min{\u00b7, \u00b7} is a non-expansive operator, the \u03f5-log covering number for the function class V := {maxa min{maxm \u03d5(\u00b7, a)Twm, (H \u2212 h + 1)} : \u2225wm\u2225 \u2264 CH,d,k,M,\u03b4}, is at most dM log(1 + 2CH,d,k,M,\u03b4",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p205",
+    "section_heading": "B.3 Proofs of Concentration for Delayed-PSVI",
+    "text": "\u03f5 ). Hence, for any V \u2208 V , there exists V \u2032 in the \u03f5-covering such that V = V \u2032 +\u2206V with",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p206",
+    "section_heading": "B.3 Proofs of Concentration for Delayed-PSVI",
+    "text": "\u2225\u2206V \u2225\u221e \u2264 \u03f5. Then with probability 1\u2212 \u03b4/2,",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p207",
+    "section_heading": "B.3 Proofs of Concentration for Delayed-PSVI",
+    "text": "where the second inequality can be conducted using a direct calculation and the third inequality uses Lemma D.9 and a union bound over the covering number. Now by (15) and (16) and a union bound, we have for any \u03f5 > 0, with probability 1\u2212 \u03b4,",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p208",
+    "section_heading": "B.3 Proofs of Concentration for Delayed-PSVI",
+    "text": "where the last step choose \u03f52 = H2\u03bb/8k2 so 8k 2\u03f52",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p209",
+    "section_heading": "B.3 Proofs of Concentration for Delayed-PSVI",
+    "text": "\u03bb \u2264 4H 2. Lastly, apply the union bound over",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p210",
+    "section_heading": "B.3 Proofs of Concentration for Delayed-PSVI",
+    "text": "H,K to obtain the stated result.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p211",
+    "section_heading": "B.3 Proofs of Concentration for Delayed-PSVI",
+    "text": "Lemma B.12. \u2200(s, a) \u2208 S \u00d7A, h \u2208 [H], k \u2208 [K], it holds that",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p212",
+    "section_heading": "B.3 Proofs of Concentration for Delayed-PSVI",
+    "text": "Proof of Lemma B.12. Note that the precision matrix \u2126kh for any step h and episode k is always positive definite. By Cauchy-Schwartz inequality and Lemma D.1,",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p213",
+    "section_heading": "B.3 Proofs of Concentration for Delayed-PSVI",
+    "text": "Note that \u03bbmin(\u2126kh) \u2265 \u03bb. Applying Lemma D.3 for \u2225\u2225wkh\u2225\u2225 completes the proof.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p214",
+    "section_heading": "C Regret Analysis for Delayed-LPSVI",
+    "text": "Proof of Theorem 2. The proof structure is similar to that of Theorem 1. We proceed by bounding \u2206kopt and \u2206 k est respectively.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p215",
+    "section_heading": "C Regret Analysis for Delayed-LPSVI",
+    "text": "Step 1: bound regret from optimism. By Lemma C.5, with probability 1\u2212 \u03b4/2,",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p216",
+    "section_heading": "C Regret Analysis for Delayed-LPSVI",
+    "text": "Step 2: bound regret from estimation error. We first condition on the event that",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p217",
+    "section_heading": "C Regret Analysis for Delayed-LPSVI",
+    "text": "Similarly, define",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p218",
+    "section_heading": "C Regret Analysis for Delayed-LPSVI",
+    "text": "Then by Lemma C.1,",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p219",
+    "section_heading": "C Regret Analysis for Delayed-LPSVI",
+    "text": "By definition, |\u03b6kh | \u2264 2H for all h \u2208 [H], k \u2208 [K], therefore {\u03b6kh} is a martingale difference sequence. By Azuma-Hoeffding\u2019s inequality,",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p220",
+    "section_heading": "C Regret Analysis for Delayed-LPSVI",
+    "text": "Thus, with probability 1\u2212 \u03b4/8,",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p221",
+    "section_heading": "C Regret Analysis for Delayed-LPSVI",
+    "text": "Step 3: bounding the delayed error. By Lemma B.4, with probability 1\u2212 \u03b4/8,",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p222",
+    "section_heading": "C Regret Analysis for Delayed-LPSVI",
+    "text": "Here D\u03c4,\u03b4,H,K := 1 + 2E[\u03c4 ] + 2 \u221a 2E[\u03c4 ] log( 24KH\u03b4 ) + 4 3 log( 24KH \u03b4 ) + D\u03c4,K, \u03b416H",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p223",
+    "section_heading": "C Regret Analysis for Delayed-LPSVI",
+    "text": "and D\u03c4,K,\u03b4 is defined in Lemma D.6. By Lemma C.6, event E holds with probability 1 \u2212 \u03b4/4, by a union bound with (18) and (19), we have with probability 1\u2212 \u03b4/2,",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p224",
+    "section_heading": "C Regret Analysis for Delayed-LPSVI",
+    "text": "Finally, by a union bound over Step1, Step2 and Step3, we obtain with probability 1\u2212 \u03b4,",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p225",
+    "section_heading": "C Regret Analysis for Delayed-LPSVI",
+    "text": "where c > 0 is some universal constant and \u03b9 is a Polylog term of H, d,K, \u03b4. Similarly, we can bound \u03b2 \u2264 CdH\u03b9\u03b4 for some universal constant C, and it is readily to verify D\u03c4,\u03b4,H,K is bounded by c\u2032E[\u03c4 ]\u03b9+O(\u03b9).",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p226",
+    "section_heading": "C Regret Analysis for Delayed-LPSVI",
+    "text": "Lemma C.1. Define \u03b6kh = E[V\u0303 kh+1 ( skh+1 ) \u2212 V \u03c0kh+1 ( skh+1 ) |skh, akh] \u2212 V\u0303 kh+1 ( skh+1 ) + V \u03c0kh+1 ( skh+1 ) and condition on the event (21) in Lemma C.6. Then for all k \u2208 [K], h \u2208 [H], the following holds,",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p227",
+    "section_heading": "C Regret Analysis for Delayed-LPSVI",
+    "text": "Proof of Lemma C.1. By the event defined in (21), the proof follows exactly as in that of Lemma B.1.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p228",
+    "section_heading": "C.1 Convergence of Langevin Monte Carlo",
+    "text": "The following lemma is crucial to prove the optimism and bound the error in Langevin analysis. For ease of notation, within the episode k, we simply use \u03b7 to denote \u03b7k for conciseness.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p229",
+    "section_heading": "C.1 Convergence of Langevin Monte Carlo",
+    "text": "Lemma C.2 (Convergence of LMC). Denote {w\u0303k,mh }m\u2208[M ] to be the weights returned by Line 6 of Algorithm 2. Set \u03b7 = 1",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p230",
+    "section_heading": "C.1 Convergence of Langevin Monte Carlo",
+    "text": "4\u03bbmax(\u2126kh) , we have",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p231",
+    "section_heading": "C.1 Convergence of Langevin Monte Carlo",
+    "text": "where",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p232",
+    "section_heading": "C.1 Convergence of Langevin Monte Carlo",
+    "text": "Furthermore, we have",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p233",
+    "section_heading": "C.1 Convergence of Langevin Monte Carlo",
+    "text": "where \u03bah := \u03bbmax(\u2126",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p234",
+    "section_heading": "C.1 Convergence of Langevin Monte Carlo",
+    "text": "k h)",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p235",
+    "section_heading": "C.1 Convergence of Langevin Monte Carlo",
+    "text": "\u03bbmin(\u2126kh) is the condition number.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p236",
+    "section_heading": "C.1 Convergence of Langevin Monte Carlo",
+    "text": "Proof of Lemma C.2. Let bkh := \u2211k\u22121 \u03c4=1 \u03d5(s \u03c4 h, a \u03c4 h)y \u03c4 h, then",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p237",
+    "section_heading": "C.1 Convergence of Langevin Monte Carlo",
+    "text": "Therefore, fix h, k,m, and within the Algorithm 3 we have",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p238",
+    "section_heading": "C.1 Convergence of Langevin Monte Carlo",
+    "text": "where the last equality uses (\u2126kh) \u22121bkh = w\u0302 k h and I \u227b I\u22122\u03b7\u2126kh \u227b 0, so \u2211N\u22121 l=0 A",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p239",
+    "section_heading": "C.1 Convergence of Langevin Monte Carlo",
+    "text": "l = (I\u2212AN )(I\u2212 A)\u22121. Since \u03f5i are i.i.d gaussian noise, from the above we directly have",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p240",
+    "section_heading": "C.1 Convergence of Langevin Monte Carlo",
+    "text": "where",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p241",
+    "section_heading": "C.1 Convergence of Langevin Monte Carlo",
+    "text": "Next, due to the choice of \u03b7 = 1 4\u03bbmax(\u2126kh) , we have",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p242",
+    "section_heading": "C.1 Convergence of Langevin Monte Carlo",
+    "text": "In addition,",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p243",
+    "section_heading": "C.1 Convergence of Langevin Monte Carlo",
+    "text": "The above two implies",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p244",
+    "section_heading": "C.1 Convergence of Langevin Monte Carlo",
+    "text": "Replacing N with Nk and wN with w\u0303 k,m h for all m \u2208 [M ] completes the proof.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p245",
+    "section_heading": "C.2 Proofs of optimism for Delayed-LPSVI",
+    "text": "Lemma C.3 (Anti-concentration for Optimism). Suppose the event",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p246",
+    "section_heading": "C.2 Proofs of optimism for Delayed-LPSVI",
+    "text": "holds. Choose Nk \u2265 max{log( 32H 2(K+\u03bb)dk \u03b3\u03bb + 1)/[2 log(1/(1 \u2212 1 2\u03bah ))], log 2 2 log(1/(1\u2212 12\u03bah )) }, \u03b3 = 16C2\u03b4\u2032 and M\u03b4 = log(HK/\u03b4)/ log(64/63). Then we have with probability 1\u2212 \u03b4,",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p247",
+    "section_heading": "C.2 Proofs of optimism for Delayed-LPSVI",
+    "text": "Proof of Lemma C.3. For the rest of the proof, we condition on the event",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p248",
+    "section_heading": "C.2 Proofs of optimism for Delayed-LPSVI",
+    "text": "where \u03b4\u2032 will be specified later and C\u03b4 is defined in the Lemma C.9.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p249",
+    "section_heading": "C.2 Proofs of optimism for Delayed-LPSVI",
+    "text": "Also note",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p250",
+    "section_heading": "C.2 Proofs of optimism for Delayed-LPSVI",
+    "text": "Therefore,",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p251",
+    "section_heading": "C.2 Proofs of optimism for Delayed-LPSVI",
+    "text": "where the first two inequalities follow Lemma C.2 and Lemma C.4 respectively and the thrid inequality results from Lemma D.5. Applying Lemma B.6 with f = rh + PhV\u0303 kh+1 and without conditioning, for M\u03b4 = log(1/\u03b4)/ log(64/63),",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p252",
+    "section_heading": "C.2 Proofs of optimism for Delayed-LPSVI",
+    "text": "Apply a union bound for h, k, we have for M\u03b4 = log(HK/\u03b4)/ log(64/63), with probability 1\u2212 \u03b4,",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p253",
+    "section_heading": "C.2 Proofs of optimism for Delayed-LPSVI",
+    "text": "Lemma C.4. Suppose the event",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p254",
+    "section_heading": "C.2 Proofs of optimism for Delayed-LPSVI",
+    "text": "holds. Choose Nk \u2265 max{log( 32H 2(K+\u03bb)dk \u03b3\u03bb + 1)/[2 log(1/(1 \u2212 1 2\u03bah ))], log 2 2 log(1/(1\u2212 12\u03bah )) } and \u03b3 = 16C2\u03b4\u2032 . Then",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p255",
+    "section_heading": "C.2 Proofs of optimism for Delayed-LPSVI",
+    "text": "Proof of Lemma C.4. By direct calculation,",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p256",
+    "section_heading": "C.2 Proofs of optimism for Delayed-LPSVI",
+    "text": "For the first term above, by CS inequality we have",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p257",
+    "section_heading": "C.2 Proofs of optimism for Delayed-LPSVI",
+    "text": "and this indicates",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p258",
+    "section_heading": "C.2 Proofs of optimism for Delayed-LPSVI",
+    "text": "where the last inequality is by Nk \u2265 log( 32H 2(K+\u03bb)dk \u03b3\u03bb + 1)/[2 log(1/(1\u2212 1 2\u03bah ))].",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p259",
+    "section_heading": "C.2 Proofs of optimism for Delayed-LPSVI",
+    "text": "For the second term above,",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p260",
+    "section_heading": "C.2 Proofs of optimism for Delayed-LPSVI",
+    "text": "Here the second inequality uses Nk \u2265 log 22 log(1/(1\u2212 12\u03bah )) and the last equal sign comes from \u03b3 = 16C2\u03b4\u2032 .",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p261",
+    "section_heading": "C.2 Proofs of optimism for Delayed-LPSVI",
+    "text": "Lemma C.5 (Optimism for Langevin Posterior Sampling). For any 0 \u2264 \u03b4 < 1, we set the input in Algorithm 2 as Nk \u2265 max{log( 32H 2(K+\u03bb)dk \u03b3\u03bb + 1)/[2 log(1/(1\u2212 1 2\u03bah",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p262",
+    "section_heading": "C.2 Proofs of optimism for Delayed-LPSVI",
+    "text": "))], log 2 2 log(1/(1\u2212 12\u03bah )) }, \u03b3 =",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p263",
+    "section_heading": "C.2 Proofs of optimism for Delayed-LPSVI",
+    "text": "16C2\u03b4/4 and M\u03b4 = log(4HK/\u03b4)/ log(64/63), then with probability 1\u2212 \u03b4/2, we have",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p264",
+    "section_heading": "C.2 Proofs of optimism for Delayed-LPSVI",
+    "text": "Here C\u03b4 is defined in Lemma C.9.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p265",
+    "section_heading": "C.2 Proofs of optimism for Delayed-LPSVI",
+    "text": "Proof of Lemma C.5. Step1: Suppose the event",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p266",
+    "section_heading": "C.2 Proofs of optimism for Delayed-LPSVI",
+    "text": "holds. Choose Nk \u2265 max{log( 32H 2(K+\u03bb)dk \u03b3\u03bb + 1)/[2 log(1/(1 \u2212 1 2\u03bah ))], log 2 2 log(1/(1\u2212 12\u03bah )) }, \u03b3 = 16C2\u03b4\u2032 and M\u03b4 = log(4HK/\u03b4)/ log(64/63). Then we show, for any h \u2208 [H], with probability 1\u2212 \u03b4/4, Q\u0303kh(s, a) \u2265 Q\u2217h(s, a), V\u0303 kh (s) \u2265 V \u2217h (s) for all (s, a) \u2208 S \u00d7A, h \u2208 [H], k \u2208 [K]. First, due to our choice of M\u03b4 = log(4HK/\u03b4)/ log(64/63), by Lemma C.3, with probability 1 \u2212 \u03b4/4,",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p267",
+    "section_heading": "C.2 Proofs of optimism for Delayed-LPSVI",
+    "text": "which we condition on.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p268",
+    "section_heading": "C.2 Proofs of optimism for Delayed-LPSVI",
+    "text": "Next, we finish the proof by backward induction. Base case: for h = H + 1, the value functions are zero, and thus Q\u0303kH+1 \u2265 Q\u2217H+1 holds trivially, which also implies V\u0303 kH+1 \u2265 V \u2217H+1. Suppose the conclusion holds true for h+ 1. Then for time step h and any k \u2208 [K],",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p269",
+    "section_heading": "C.2 Proofs of optimism for Delayed-LPSVI",
+    "text": "where the first inequality uses the induction hypothesis and the second inequality uses the condition. Lastly, V\u0303 kh (\u00b7) = maxa min{Q\u0303kh(\u00b7, a), H \u2212 h + 1} \u2264 maxa min{Q\u2217h(\u00b7, a), H \u2212 h + 1} = maxa Q \u2217 h(\u00b7, a) = V \u2217h (\u00b7). By induction, this finishes the Step1.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p270",
+    "section_heading": "C.2 Proofs of optimism for Delayed-LPSVI",
+    "text": "Step2: By Lemma C.9, with probability 1\u2212 \u03b4/4, for all k \u2208 [K], h \u2208 [H], s \u2208 S, a \u2208 A, it holds",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p271",
+    "section_heading": "C.2 Proofs of optimism for Delayed-LPSVI",
+    "text": "Therefore, in Step1, choose \u03b4\u2032 = \u03b4/4, and a union bound we obtain: for the choice Nk \u2265 max{log( 32H",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p272",
+    "section_heading": "C.2 Proofs of optimism for Delayed-LPSVI",
+    "text": "2(K+\u03bb)dk \u03b3\u03bb + 1)/[2 log(1/(1 \u2212 1 2\u03bah ))], log 2 2 log(1/(1\u2212 12\u03bah )) }, \u03b3 = 16C2\u03b4/4 and M\u03b4 = log(4HK/\u03b4)/ log(64/63), then with probability 1\u2212 \u03b4/2, we have",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p273",
+    "section_heading": "C.3 Proofs of Concentration for Delayed-LPSVI",
+    "text": "Lemma C.6 (Pointwise Concentration for Langevin Posterior Sampling). Choose Nk \u2265 log( 4HK",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p274",
+    "section_heading": "C.3 Proofs of Concentration for Delayed-LPSVI",
+    "text": "3\u221a \u03bb/dK )/ log(1/(1 \u2212 12\u03bah )). Algorithm 2 guarantees that \u2200k \u2208 [K], h \u2208 [H], s \u2208 S, a \u2208 A, the following holds with probability 1\u2212 \u03b4,",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p275",
+    "section_heading": "C.3 Proofs of Concentration for Delayed-LPSVI",
+    "text": "where \u03b2 := \u221a",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p276",
+    "section_heading": "C.3 Proofs of Concentration for Delayed-LPSVI",
+    "text": "2\u03b3 log(4CdHMK/\u03b4) +",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p277",
+    "section_heading": "C.3 Proofs of Concentration for Delayed-LPSVI",
+    "text": "\u221a 8H2 [ d 2 log ( k+\u03bb \u03bb ) + dM log(1 + 2 \u221a 8k3CH,d,k,M,\u03b4/2 H \u221a \u03bb ) + log 4\u03b4 ] +2 \u221a \u03bb \u221a dH . In particular, here logCd = d log(1 + (16 \u221a 2\u03b3 log(2/\u03b4)/\u03bb+ 16H \u221a d)K3) and",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p278",
+    "section_heading": "C.3 Proofs of Concentration for Delayed-LPSVI",
+    "text": "CH,d,k,M,\u03b4 = 2H \u221a dk \u03bb + \u221a 2d\u03b3+ \u221a 2\u03b3 log(M/\u03b4)\u221a \u03bb .",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p279",
+    "section_heading": "C.3 Proofs of Concentration for Delayed-LPSVI",
+    "text": "Proof of Lemma C.6. Recall that |rkh + PhV\u0303 kh+1| \u2264 H \u2212 h + 1, therefore rkh + PhV\u0303 kh+1 = min{rkh+PhV\u0303 kh+1, H\u2212h+1}. This implies |min{Q\u0303kh(s, a), H\u2212h+1}\u2212rkh\u2212 [PhV\u0303 kh+1](s, a)| = |min{Q\u0303kh(s, a), H \u2212 h + 1} \u2212 min{rkh + [PhV\u0303 kh+1](s, a), H \u2212 h + 1}| \u2264 |Q\u0303kh(s, a) \u2212 rkh \u2212 [PhV\u0303 kh+1](s, a)|. Hence",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p280",
+    "section_heading": "C.3 Proofs of Concentration for Delayed-LPSVI",
+    "text": "The proof then directly follows Lemma C.7 and Lemma C.9 to bound R1 and R2 respectively (together with a union bound).",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p281",
+    "section_heading": "C.3 Proofs of Concentration for Delayed-LPSVI",
+    "text": "Lemma C.7 (Concentration of R1 with Langevin Posterior Sampling). Suppose Nk \u2265 log( 4HK",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p282",
+    "section_heading": "C.3 Proofs of Concentration for Delayed-LPSVI",
+    "text": "3\u221a \u03bb/dK )/ log(1/(1\u2212 12\u03bah )). For any 0 < \u03b4 < 1, define the event E\u0303 as",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p283",
+    "section_heading": "C.3 Proofs of Concentration for Delayed-LPSVI",
+    "text": "then E\u0303 happens w.p. 1\u2212 \u03b4. Here logCd = d log(1 + (16 \u221a 2\u03b3 log(2/\u03b4)/\u03bb+ 16H \u221a d)K3).",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p284",
+    "section_heading": "C.3 Proofs of Concentration for Delayed-LPSVI",
+    "text": "Proof of Lemma C.7. In the Step1 and Step2, we abuse w\u0303kh to denote w\u0303 k,m h for arbitrary m to avoid notation redundancy.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p285",
+    "section_heading": "C.3 Proofs of Concentration for Delayed-LPSVI",
+    "text": "In Step1: We first show for any k \u2208 [K], h \u2208 [H], (s, a) \u2208 S \u00d7A, with probability 1\u2212 \u03b4,",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p286",
+    "section_heading": "C.3 Proofs of Concentration for Delayed-LPSVI",
+    "text": "Indeed, by Lemma C.2 we have (w\u0303kh \u2212 (I \u2212A Nk h,k)w\u0302 k h) \u223c N (0,\u0398kh), which gives,",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p287",
+    "section_heading": "C.3 Proofs of Concentration for Delayed-LPSVI",
+    "text": "Therefore, \u03d5(s, a)T(w\u0303kh \u2212 (I \u2212A Nk h,k)w\u0302 k h) is \u03d5(s, a) T\u0398kh\u03d5(s, a)-sub-Gaussian. By concentration of sub-Gaussian random variables, we have",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p288",
+    "section_heading": "C.3 Proofs of Concentration for Delayed-LPSVI",
+    "text": "Solving for \u03b4 gives with probability 1\u2212 \u03b4,",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p289",
+    "section_heading": "C.3 Proofs of Concentration for Delayed-LPSVI",
+    "text": "where the last inequality is by Lemma C.2, and by Lemma C.8, the above further implies",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p290",
+    "section_heading": "C.3 Proofs of Concentration for Delayed-LPSVI",
+    "text": "Step2: we prove that for any 0 < \u03b4 < 1, define the event E\u0303 as",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p291",
+    "section_heading": "C.3 Proofs of Concentration for Delayed-LPSVI",
+    "text": "then E\u0303 happens w.p. 1\u2212 \u03b4. Here logCd = d log(1 + (16 \u221a 2\u03b3 log(2/\u03b4)/\u03bb+ 16H \u221a d)K3).",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p292",
+    "section_heading": "C.3 Proofs of Concentration for Delayed-LPSVI",
+    "text": "In Lemma D.12, set \u03b8 = w\u0303kh \u2212 w\u0302kh and A = (\u2126kh)\u22121 and B = 1/\u03bb, and let V be the 14K3 -epsilon net for the class of values {|\u27e8\u03d5, w\u0303kh \u2212 w\u0302kh\u27e9| \u2212 C \u221a \u03d5\u22a4(\u2126kh)",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p293",
+    "section_heading": "C.3 Proofs of Concentration for Delayed-LPSVI",
+    "text": "\u22121\u03d5 \u2212 12K3 : \u2225\u03d5\u2225 \u2264 1} (where C =\u221a 2\u03b3 log(2/\u03b4)), then it must also be the 14K3 -epsilon net for the class of valuesF = {|\u27e8\u03d5(s, a), w\u0303 k h\u2212",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p294",
+    "section_heading": "C.3 Proofs of Concentration for Delayed-LPSVI",
+    "text": "w\u0302kh\u27e9| \u2212C \u221a \u03d5(s, a)\u22a4(\u2126kh)",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p295",
+    "section_heading": "C.3 Proofs of Concentration for Delayed-LPSVI",
+    "text": "\u22121\u03d5(s, a)\u2212 12K3 : (s, a) \u2208 S \u00d7A}, let V\u0304 is the smallest subset of V such that it is 12K3 -epsilon net for the class of values F . Then we can select VS\u00d7A to be the set of state-action pairs such that for any f\u03d5 := |\u27e8\u03d5, w\u0303kh \u2212 w\u0302kh\u27e9| \u2212 C \u221a \u03d5\u22a4(\u2126kh) \u22121\u03d5 \u2208 V\u0304 \u2212 12K3 , there ex-",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p296",
+    "section_heading": "C.3 Proofs of Concentration for Delayed-LPSVI",
+    "text": "ists (s, a) \u2208 VS\u00d7A satisfies \u2223\u2223\u2223\u2223|\u27e8\u03d5(s, a), w\u0303kh \u2212 w\u0302kh\u27e9| \u2212 C\u221a\u03d5(s, a)\u22a4(\u2126kh)\u22121\u03d5(s, a)| \u2212 12K3 \u2212 f\u03d5\u2223\u2223\u2223\u2223 \u2264",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p297",
+    "section_heading": "C.3 Proofs of Concentration for Delayed-LPSVI",
+    "text": "1/4K3, then we have VS\u00d7A is a 1/(2K3)-epsilon net of F and |VS\u00d7A| \u2264 |V\u0304| \u2264 |V|. Therefore,",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p298",
+    "section_heading": "C.3 Proofs of Concentration for Delayed-LPSVI",
+    "text": "where the last inequality is from Step1. Then by a union bound over H , K and (1 + (16 \u221a 2\u03b3 log(2/\u03b4)/\u03bb+ 16H \u221a d)K3)d, we have with probability 1\u2212 \u03b4,",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p299",
+    "section_heading": "C.3 Proofs of Concentration for Delayed-LPSVI",
+    "text": "where logCd = d log(1 + (16 \u221a 2\u03b3 log(2/\u03b4)/\u03bb+ 16H \u221a d)K3).",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p300",
+    "section_heading": "C.3 Proofs of Concentration for Delayed-LPSVI",
+    "text": "Step3: We finish the proof. Note Q\u0303kh = maxm \u03d5Tw\u0303 k,m h , hence by a union bound over M , we have",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p301",
+    "section_heading": "C.3 Proofs of Concentration for Delayed-LPSVI",
+    "text": "for all k, h, s, a with probability 1 \u2212 \u03b4. Here the last inequality uses Step2. This finishes the proof.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p302",
+    "section_heading": "C.3 Proofs of Concentration for Delayed-LPSVI",
+    "text": "Lemma C.8. Let Nk \u2265 log( 4HK 3\u221a \u03bb/dK )/ log(1/(1\u2212 12\u03bah )) and \u03b7 = 1 4\u03bbmax(\u2126kh) , then",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p303",
+    "section_heading": "C.3 Proofs of Concentration for Delayed-LPSVI",
+    "text": "Proof of Lemma C.8. By direct calculation,",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p304",
+    "section_heading": "C.3 Proofs of Concentration for Delayed-LPSVI",
+    "text": "where the third inequality is by Lemma D.4 and the fourth inequality is by (20). The last inequality is by the choice of Nk.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p305",
+    "section_heading": "C.3 Proofs of Concentration for Delayed-LPSVI",
+    "text": "Lemma C.9 (Concentration of R2 with Langevin Posterior Sampling). For any 0 < \u03b4 < 1, with probability 1\u2212 \u03b4, for all k \u2208 [K], h \u2208 [H], s \u2208 S, a \u2208 A, it holds",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p306",
+    "section_heading": "C.3 Proofs of Concentration for Delayed-LPSVI",
+    "text": "where C\u03b4 = \u221a 8H2 [ d 2 log ( k+\u03bb \u03bb ) + dM log(1 + 2 \u221a 8k3CH,d,k,M,\u03b4 H \u221a \u03bb ) + log 2\u03b4 ] + 2 \u221a \u03bb \u221a dH and the",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p307",
+    "section_heading": "C.3 Proofs of Concentration for Delayed-LPSVI",
+    "text": "quantity CH,d,k,M,\u03b4 = 2H \u221a dk \u03bb + \u221a 2d\u03b3+ \u221a 2\u03b3 log(M/\u03b4)\u221a \u03bb .",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p308",
+    "section_heading": "C.3 Proofs of Concentration for Delayed-LPSVI",
+    "text": "Proof of Lemma C.9. For any (k, h) \u2208 [K]\u00d7 [H] and (s, a) \u2208 S \u00d7A, denote",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p309",
+    "section_heading": "C.3 Proofs of Concentration for Delayed-LPSVI",
+    "text": "Recall y\u03c4h = 1\u03c4,k\u22121 \u00b7 [r\u03c4h(s\u03c4h, a\u03c4h) + V\u0303 kh+1(s\u03c4h+1)] from Algorithm 1 and denote y\u0304\u03c4h := r\u03c4h(s\u03c4h, a\u03c4h) + V\u0303 kh+1(s \u03c4 h+1). Then by definition,",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p310",
+    "section_heading": "C.3 Proofs of Concentration for Delayed-LPSVI",
+    "text": "By definition of \u2126kh, we have \u03a6h\u03a6 T h = \u2126 k h \u2212 \u03bbI . Plug it into the definition of w\u0302kh, we have",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p311",
+    "section_heading": "C.3 Proofs of Concentration for Delayed-LPSVI",
+    "text": "We then proceed to bound w\u0302kh \u2212 wkh, which gives",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p312",
+    "section_heading": "C.3 Proofs of Concentration for Delayed-LPSVI",
+    "text": "Term (i). Since \u2126kh is positive definite, multiplying the first term (i) with \u03d5(s, a) and by CauchySchwartz inequality, we obtain,",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p313",
+    "section_heading": "C.3 Proofs of Concentration for Delayed-LPSVI",
+    "text": "Apply Lemma C.10, we have with probability at least 1 \u2212 \u03b4, for any (k, h) \u2208 [K] \u00d7 [H], and (s, a) \u2208 S \u00d7A, where C1 = \u221a 8H2 [ d 2 log ( k+\u03bb \u03bb ) + dM log(1 + 2 \u221a 8k3CH,d,k,M,\u03b4 H \u221a \u03bb ) + log 2\u03b4 ] .",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p314",
+    "section_heading": "C.3 Proofs of Concentration for Delayed-LPSVI",
+    "text": "Term (ii). By Lemma B.12, \u2200(s, a) \u2208 S\u00d7A, and (k, h) \u2208 [K]\u00d7 [H], \u2223\u2223\u03d5(s, a)T(ii)\u2223\u2223 can be bounded as",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p315",
+    "section_heading": "C.3 Proofs of Concentration for Delayed-LPSVI",
+    "text": "Combining (24), (25), we have with probability 1\u2212\u03b4, for any (k, h) \u2208 [K]\u00d7[H] and (s, a) \u2208 S\u00d7A,",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p316",
+    "section_heading": "C.3 Proofs of Concentration for Delayed-LPSVI",
+    "text": "This concludes the proof.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p317",
+    "section_heading": "C.3 Proofs of Concentration for Delayed-LPSVI",
+    "text": "Lemma C.10. For any 0 < \u03b4 < 1, with probability 1\u2212 \u03b4, we have \u2200(k, h) \u2208 [K]\u00d7 [H],",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p318",
+    "section_heading": "C.3 Proofs of Concentration for Delayed-LPSVI",
+    "text": "here CH,d,k,M,\u03b4 = 2H \u221a dk \u03bb + \u221a 2d\u03b3+ 2\u03b3 log(M/\u03b4)\u221a \u03bb .9",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p319",
+    "section_heading": "C.3 Proofs of Concentration for Delayed-LPSVI",
+    "text": "Proof of Lemma C.10. First note that",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p320",
+    "section_heading": "C.3 Proofs of Concentration for Delayed-LPSVI",
+    "text": "Choosing w0 = 0, then by Lemma C.2 and (\u0398kh) \u22121/2(w\u0303k,mh \u2212 (I \u2212 A Nk h,k)w\u0302 k h) \u223c N (0, Id), and by Lemma D.7, with probability 1\u2212 \u03b4/2, we have",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p321",
+    "section_heading": "C.3 Proofs of Concentration for Delayed-LPSVI",
+    "text": "9We will choose \u03b3 to be Poly(H, d,K) and this will not affect the overall dependence of the guarantee since CH,d,k,M,\u03b4 is inside the log term.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p322",
+    "section_heading": "C.3 Proofs of Concentration for Delayed-LPSVI",
+    "text": "where the first inequality uses Lemma C.2 again. Apply the union bound over all m, then above implies with probability 1\u2212 \u03b4/2, \u2200m \u2208 [M ]",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p323",
+    "section_heading": "C.3 Proofs of Concentration for Delayed-LPSVI",
+    "text": "(where we used \u2225\u2225\u2225(I \u2212ANkh,k)w\u0302kh\u2225\u2225\u2225 \u2264 \u2225\u2225\u2225(I \u2212ANkh,k)\u2225\u2225\u2225\u2225\u2225w\u0302kh\u2225\u2225 \u2264 \u2225\u2225w\u0302kh\u2225\u2225). Now consider the function",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p324",
+    "section_heading": "C.3 Proofs of Concentration for Delayed-LPSVI",
+    "text": "class V\u0304 := {maxa maxm \u03d5(\u00b7, a)Twm : \u2225wm\u2225 \u2264 CH,d,k,M,\u03b4}, so by Lemma D.13 the \u03f5-log covering number for V\u0304 is dM log(1 + 2CH,d,k,M,\u03b4\u03f5 ). Since min{\u00b7, \u00b7} is a non-expansive operator, the \u03f5-log covering number for the function class V := {maxa min{maxm \u03d5(\u00b7, a)Twm, (H \u2212 h+ 1)} : \u2225wm\u2225 \u2264 CH,d,k,M,\u03b4}, is at most dM log(1 + 2CH,d,k,M,\u03b4\u03f5 ). Hence, for any V \u2208 V , there exists V \u2032 in the \u03f5-covering such that V = V \u2032 +\u2206V with \u2225\u2206V \u2225\u221e \u2264 \u03f5. Then with probability 1\u2212 \u03b4/2,",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p325",
+    "section_heading": "C.3 Proofs of Concentration for Delayed-LPSVI",
+    "text": "where the second inequality can be conducted using a direct calculation and the third inequality uses Lemma D.9 and a union bound over the covering number. Now by (26) and (27) and a union bound, we have for any \u03f5 > 0, with probability 1\u2212 \u03b4,",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p326",
+    "section_heading": "C.3 Proofs of Concentration for Delayed-LPSVI",
+    "text": "where the last step choose \u03f52 = H2\u03bb/8k2 so 8k 2\u03f52",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p327",
+    "section_heading": "C.3 Proofs of Concentration for Delayed-LPSVI",
+    "text": "\u03bb \u2264 4H 2. Lastly, apply the union bound over",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p328",
+    "section_heading": "C.3 Proofs of Concentration for Delayed-LPSVI",
+    "text": "H,K to obtain the stated result.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p329",
+    "section_heading": "D.1 Useful Norm Inequalities",
+    "text": "Lemma D.1. Suppose v \u2208 Rd, and A is some positive definite matrix whose eigenvalues satisfy \u03bbmax(A) \u2265 \u00b7 \u00b7 \u00b7 \u2265 \u03bbmin(A) > 0. It can be shown that",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p330",
+    "section_heading": "D.1 Useful Norm Inequalities",
+    "text": "Proof of Lemma D.1. Consider the eigenvalue decomposition of A, which gives A = U\u039bUT, where \u039b = diag(\u03bbmax(A), . . . , \u03bbmin(A)). Then",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p331",
+    "section_heading": "D.1 Useful Norm Inequalities",
+    "text": "Similar argument shows \u2225v\u2225A \u2265 \u221a \u03bbmin(A).",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p332",
+    "section_heading": "D.1 Useful Norm Inequalities",
+    "text": "Lemma D.2 (Lemma D.1 of [35]). Let \u2126kh be the precision matrix of the posterior distribution of wkh at step h of episode k, where \u2126 k h := \u03c3 \u22122\u03a6h\u03a6 T h +\u03a3 \u22121 with \u03a3\u22121 = \u03bbId and \u03c32 = 1. Then",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p333",
+    "section_heading": "D.1 Useful Norm Inequalities",
+    "text": "Lemma D.3 (Bound on Weights of Q-function). Suppose the linear MDP assumption and at each step h \u2208 [H], rewards rh are bounded between [0, 1], then the norm of the true parameter w\u03c0h under fixed policy \u03c0 satisfies",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p334",
+    "section_heading": "D.1 Useful Norm Inequalities",
+    "text": "In addition, for any (s, a) \u2208 S \u00d7A, let \u03d5(s, a)Twkh := (rh + PhV\u0303 kh+1)(s, a), we also have",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p335",
+    "section_heading": "D.1 Useful Norm Inequalities",
+    "text": "Proof of Lemma D.3. By definition in Lemma A.1, the true parameter wh at time step h is",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p336",
+    "section_heading": "D.1 Useful Norm Inequalities",
+    "text": "With bounded rewards rh \u2208 [0, 1], we have V \u03c0h+1(s) \u2264 H, \u2200s \u2208 S . Since \u2225\u03b8h\u2225 \u2264 \u221a d, and\u2225\u2225E\u00b5h [V \u03c0h+1(s\u2032)]\u2225\u2225 \u2264 \u2225\u2225\u222bS Hd\u00b5h(s\u2032)\u2225\u2225 \u2264 H\u221ad.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p337",
+    "section_heading": "D.1 Useful Norm Inequalities",
+    "text": "Similarly, by definition of the constructed weights wkh,",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p338",
+    "section_heading": "D.1 Useful Norm Inequalities",
+    "text": "From Line 15 of Algorithm 1, for any h \u2208 [H] and s \u2208 S , V\u0303 kh (s) = maxa min{Q\u0303kh(\u00b7, a), H \u2212 h+ 1} \u2264 H . Applying triangle inequality, we have",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p339",
+    "section_heading": "D.1 Useful Norm Inequalities",
+    "text": "Lemma D.4 (Bound on Estimated Weights of Algorithm 1). For any step h \u2208 [H] and episode k \u2208 [K], the weight w\u0302kh output by Algorithm 1 satisfies,",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p340",
+    "section_heading": "D.1 Useful Norm Inequalities",
+    "text": "Proof of Lemma D.4. For any vector v \u2208 Rd, it holds",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p341",
+    "section_heading": "D.1 Useful Norm Inequalities",
+    "text": "where the last step is by Lemma D.2. The above directly imply the stated result by the definition of l2 norm.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p342",
+    "section_heading": "D.2 Concentration Inequalities",
+    "text": "Lemma D.5 ([3]). Suppose Z is a random variable following a Gaussian distribution N (\u00b5, \u03c32), where \u03c3 > 0. The following concentration and anti-concentration inequalities hold for any z \u2265 1:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p343",
+    "section_heading": "D.2 Concentration Inequalities",
+    "text": "And for 0 \u2264 z \u2264 1, we have,",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p344",
+    "section_heading": "D.2 Concentration Inequalities",
+    "text": "Lemma D.6 (Sub-exponential tail bound). Suppose {\u03c4k}\u221ek=1 are (v, b)-sub-exponential random variables. denote D\u03c4,K,\u03b4 := min {\u221a 2v2 log ( 3K 2\u03b4 ) , 2b log ( 3K 2\u03b4 )} . Then with probability 1\u2212 \u03b4,",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p345",
+    "section_heading": "D.2 Concentration Inequalities",
+    "text": "Lemma D.7 (Multivariate Gaussian Concentration). Suppose X \u223c N (0, Id). Then with probability 1\u2212 \u03b4,",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p346",
+    "section_heading": "D.2 Concentration Inequalities",
+    "text": "Proof. Apply Proposition 1 of [30], choose A = Id, then \u03a3 = Id and Tr(\u03a3) = d, \u2225\u03a3\u2225 = 1. Then",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p347",
+    "section_heading": "D.2 Concentration Inequalities",
+    "text": "which implies with probability 1\u2212 \u03b4, \u2225X\u2225 \u2264 \u221a 2d+ \u221a 2 log(1/\u03b4).",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p348",
+    "section_heading": "D.2 Concentration Inequalities",
+    "text": "Lemma D.8 (Elliptical Potential Lemma [1]). Suppose {\u03d5t}\u221et=1 is an Rd-valued sequence, \u21260 \u2208 Rd\u00d7d is positive definite, and \u2126t = \u21260 + \u2211t\u22121 \u03c4=1 \u03d5\u03c4\u03d5 T \u03c4 . If \u03bbmin(\u21260) \u2265 1, and \u2225\u03d5\u03c4\u22252 \u2264 1 for all \u03c4 \u2208 Z+, then for any t \u2208 Z+,",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p349",
+    "section_heading": "D.2 Concentration Inequalities",
+    "text": "Lemma D.9 (Self-normalized process [1]). Let {Ft}\u221et=0 be a filtration, and {\u03b7t}\u221et=1 be a real-valued stochastic process such that \u03b7t is Ft-measurable and \u03b7t|Ft\u22121 is zero-mean (i.e. E[\u03b7t|Ft\u22121] = 0). Assume that conditioning on Ft, \u03b7t is C-sub-Gaussian. Let {\u03d5t}\u221et=1 be an Rd real-valued stochastic process such that \u03d5t is Ft-measurable. Let \u21260 \u2208 Rd\u00d7d be a positive definite matrix and \u2126t = \u21260 + \u03c3\u22122 \u2211t \u03c4=1 \u03d5\u03c4\u03d5 T \u03c4 . Then for \u03b4 > 0, with probability at least 1 \u2212 \u03b4, for all t \u2265 0,",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p350",
+    "section_heading": "D.2 Concentration Inequalities",
+    "text": "Lemma D.10. Suppose \u21260 := \u03bbId is a positive definite matrix in Rd\u00d7d and \u2126t = \u21260 + \u03c3\u22122 \u2211t\u22121 \u03c4=1 \u03d5\u03c4\u03d5 T \u03c4 .",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p351",
+    "section_heading": "D.2 Concentration Inequalities",
+    "text": "Proof of Lemma D.10. By definition, det(\u21261) = det(\u03bbI) = \u03bbd. For any \u03c4 \u2208 Z+ and \u03d5\u03c4 \u2208 Rd, notice that \u03d5\u03c4\u03d5T\u03c4 is a rank-1 matrix with eigenvalues \u2225\u03d5\u03c4\u2225 and 0. By Definition 1 and triangle inequality,",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p352",
+    "section_heading": "D.2 Concentration Inequalities",
+    "text": "Consider the eigenvalue decomposition for \u2211t\u22121",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p353",
+    "section_heading": "D.2 Concentration Inequalities",
+    "text": "\u03c4=1 \u03d5\u03c4\u03d5 T \u03c4 :",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p354",
+    "section_heading": "D.2 Concentration Inequalities",
+    "text": "which suggests",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p355",
+    "section_heading": "D.3 Covering Argument",
+    "text": "Lemma D.11 (Covering number of Euclidean Ball). Consider an Euclidean ball BR equipped with the Euclidean metric, whose radius is R > 0. The \u03f5-covering number of BR satisfies,",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p356",
+    "section_heading": "D.3 Covering Argument",
+    "text": "Lemma D.12. Define V to be a class of values with the parametric form",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p357",
+    "section_heading": "D.3 Covering Argument",
+    "text": "where the feature space is {\u03d5 : \u2225\u03d5\u22252 \u2264 1} and \u2225A\u22252 \u2264 B, \u2225\u03b8\u2225 \u2264 2H \u221a d. Let NV\u03f5 be the covering number of \u03f5-net with respect to the absolute value distance, then we have",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p358",
+    "section_heading": "D.3 Covering Argument",
+    "text": "Proof of Lemma D.12.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p359",
+    "section_heading": "D.3 Covering Argument",
+    "text": "Let C\u03d5 be the \u03f52C\u221aB+2H\u221ad -net of space {\u03d5 : \u2225\u03d5\u22252 \u2264 1}, then by Lemma D.11,",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p360",
+    "section_heading": "D.3 Covering Argument",
+    "text": "Therefore, the covering number of space V satisfies",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p361",
+    "section_heading": "D.3 Covering Argument",
+    "text": "Lemma D.13. Let V denote the function class from S to R",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p362",
+    "section_heading": "D.3 Covering Argument",
+    "text": "letN\u03f5 be the \u03f5-covering number of V with respect to the distance dist(V, V \u2032) = sups |V (s)\u2212V \u2032(s)|. Then",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p363",
+    "section_heading": "D.3 Covering Argument",
+    "text": "Here CH,d,k,M,\u03b4 = 2H \u221a dk \u03bb + \u221a 2d+ 2 log(M/\u03b4)\u221a \u03bb .",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p364",
+    "section_heading": "D.3 Covering Argument",
+    "text": "Proof. Let V1 = maxa maxm \u03d5(\u00b7, a)Twm1 and V2 = maxa maxm \u03d5(\u00b7, a)Twm2 . Then",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p365",
+    "section_heading": "D.3 Covering Argument",
+    "text": "For any m \u2208 [M ], let Cm be the \u03f5-net for {wm : \u2225wm\u2225 \u2264 CH,d,k,M,\u03b4}, then by Lemma D.11, |Nm\u03f5 | \u2264 (1 + 2CH,d,k,M,\u03b4 \u03f5 ) d, implies the total log covering number",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p366",
+    "section_heading": "D.4 Delayed Feedback",
+    "text": "Lemma D.14 (Lemma 9 of [28]). Let A,B \u2208 Rd\u00d7d be two symmetric positive semi-definite matrices. Then, A 1 2BA 1 2 and AB share the same set of eigenvalues. Further, these eigenvalues are all non-negative. Lemma D.15. Let \u03a3kh,\u2126kh,\u039bkh be the full design, delayed, and complement matrix respectively. Then (1 + Uk\u03bb )(\u03a3 k h) \u22121 \u2ab0 (\u2126kh)\u22121. In addition, with probability 1\u2212 \u03b4,",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p367",
+    "section_heading": "D.4 Delayed Feedback",
+    "text": "Proof. The proof follows from Lemma 11 of [28] with Uk\u03bb (\u03a3 k h) \u22121 \u2ab0 (\u03a3kh)\u22121\u039bkh(\u2126kh)\u22121, and then apply Lemma B.2 that (\u2126kh) \u22121 = (\u03a3kh) \u22121+(\u03a3kh) \u22121\u039bkh(\u2126 k h)",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p368",
+    "section_heading": "D.4 Delayed Feedback",
+    "text": "\u22121. The second part comes from Lemma 4 of [28].",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p369",
+    "section_heading": "E Experimental Details",
+    "text": "In this section, we provide the experimental details of both simulated environments (synthetic linear MDP and RiverSwim) and discuss their results respectively.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p370",
+    "section_heading": "E.1 Delayed-UCBVI",
+    "text": "As shown in Table 1 and Section 2, there is no prior UCB method that concerns exactly the same delayed linear MDP setting without resorting to specific policy-switching schemes. To benchmark our posterior sampling algorithms, we modify the existing LSVI-UCB method to accommodate the delayed feedback, which is referred to as the Delayed-UCBVI. Below we include the algorithm of delayed-UCBVI for completeness.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p371",
+    "section_heading": "E.2 Synthetic Linear MDP Environment",
+    "text": "In this section, we describe the further details in Section 5.1.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p372",
+    "section_heading": "E.2 Synthetic Linear MDP Environment",
+    "text": "Environment Details. Following [44, 46, 70], we construct a set of synthetic linear MDP environments with |S| = 2, feature dimension d = 10, planning horizon H = 20, and varying action space |A| \u2208 {20, 50, 100}. Each action a \u2208 A \u2286 {0, 1}d is encoded with its 8-bit binary representation and represented by a vector ba \u2208 R8. The feature map \u03d5(\u00b7, \u00b7) can then be defined as",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p373",
+    "section_heading": "E.2 Synthetic Linear MDP Environment",
+    "text": "where",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p374",
+    "section_heading": "E.2 Synthetic Linear MDP Environment",
+    "text": "In addition, let \u03b8h that induces the reward functions r be",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p375",
+    "section_heading": "E.2 Synthetic Linear MDP Environment",
+    "text": "with the choice of r = 0.99, and further define the measures \u00b5h that govern the transition dynamics P as",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p376",
+    "section_heading": "E.2 Synthetic Linear MDP Environment",
+    "text": "where {\u03b1h}h\u2208[H] \u2208 {0, 1}H is a sequence of integers taking values 0 or 1, \u2295 is the XOR operator. By design, the set of environments with identical d and H has the same optimal value V \u22171 (s1).",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p377",
+    "section_heading": "E.2 Synthetic Linear MDP Environment",
+    "text": "Further Results and Discussions. Figure 2 depicts the empirical distributions of delays considered in section 5.1. Additionally, the average return achieved by each method upon convergence is reported in Table 2, corresponding to the results shown in Figure 1. Our empirical findings indicate that posterior sampling methods excel UCB-based methods in terms of both statistical accuracy and computational efficiency. More specifically, under different types of delays, both Delayed-PSVI and Delayed-LPSVI achieve higher return (lower regret) and exhibit faster convergence compared to Delayed-UCBVI.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p378",
+    "section_heading": "E.2 Synthetic Linear MDP Environment",
+    "text": "While delays following multinomial distribution and Poisson distributions decay exponentially fast, Pareto delays are heavy-tailed. When computational budget is limited or when episodes are finite, feedback is only partially observable under long-tailed delays and is not guaranteed to be revealed to the agent. This setup captures the practical scenarios when small time windows are considered for decision-making or in online recommender systems, where only positive feedback (e.g. click, make a purchase) are often observed. As shown in Table 2, performance of Delayed-UCBVI can dramatically deteriorate in the presence of long-tailed delays.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p379",
+    "section_heading": "E.2 Synthetic Linear MDP Environment",
+    "text": "Furthermore, our results presented in Table 4 and Table 3 illustrate the consistent behavior of posterior sampling in environments with delayed feedback, considering both statistical and computational aspects. When employing feature mapping, performance of the algorithms is much less dependent on the sizes of state and action space in contrast to tabular settings. It is worth noting that in large state and action space, the neighborhoods of a substantial number of state-action pairs may remain unvisited, leading to increased uncertainty in estimation. In such cases, adjusting the scale of exploration by decreasing the noise scaling factor \u03c3 for Delayed-PSVI can yield faster convergence. Finally, as shown in Table 3, Delayed-LPSVI achieves appealing performance as Delayed-PSVI while reducing computation through the use of approximate sampling with Langevin dynamics.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p380",
+    "section_heading": "E.3 RiverSwim",
+    "text": "RiverSwim environment is known to be a difficult exploration problem for least-squares value iteration with \u03f5-greedy exploration due to the sparse reward setting. It models an agent swimming in the river who can either swim towards the right (against the current) or towards the left (with the current). While trying to move rightwards may fail with some probability, moving leftwards always yield successful transition. We consider the environment with linear feature maps where |S| = 5, d = 10, H = 20, and Poisson delays. Accordingly, the tabular environment can be recovered with canonical basis in Rd as its feature mapping:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p381",
+    "section_heading": "E.3 RiverSwim",
+    "text": "Define \u03b8h as",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p382",
+    "section_heading": "E.3 RiverSwim",
+    "text": "then reward functions induced by \u03b8h are given by:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p383",
+    "section_heading": "E.3 RiverSwim",
+    "text": "In this environment, We warm start LMC for Delayed-LPSVI by reusing the previous sample for initialization, and set M = 2, N = 40, \u03b7 = c\u03b7/\u03bbmax(\u2126kh), \u03b3 = c 2 \u03b3dMH",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p384",
+    "section_heading": "E.3 RiverSwim",
+    "text": "2. We set parameters M = 2, \u03bd = 1.0 for Delayed-PSVI, and the bonus coefficient in Delayed-UCBVI as \u03b2kh = c\u03b2/2 \u00b7",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p385",
+    "section_heading": "E.3 RiverSwim",
+    "text": "d \u221a k(H \u2212 h). Optimal hyperparameters are determined by gridsearch and we fix c\u03b2 = 0.04, c\u03b7 = 0.5, c\u03b3 = 0.005, \u03c3 = 1.13. Experiments are repeated with 5 different random seeds. Cumulative regrets are then depicted in Figure 3.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p386",
+    "section_heading": "E.3 RiverSwim",
+    "text": "Results and Discussions. Compared to the previous synthetic environment where dense rewards are available, posterior sampling methods are shown to be robust with spare rewards even in the presence of delays. Figure 3 shows that both Delayed-PSVI and Delayed-LPSVI outperform Delayed-UCBVI in delayed-feedback settings with linear function approximation. In particular, LMC (Algorithm 3) provides strong concentration such that Delayed-LPSVI is able to maintain the order-optimal regret as Delayed-PSVI when exploring the value-function space.",
+    "seg_type": "par"
+  }
+]

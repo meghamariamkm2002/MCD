@@ -1,0 +1,2 @@
+In addition, active learning faces the cold start problem.
+While recent work suggests seeding active learning, our solution employs a warm-up model, trained on an auxiliary dataset, allowing smart target data selection for initial annotation, introducing ASFDA and ADA settings enhances flexibility.

@@ -1,0 +1,506 @@
+[
+  {
+    "para_id": "p1",
+    "section_heading": "Abstract",
+    "text": "Neural Architecture Search (NAS) explores a large space of architectural motifs – a computeintensive process that often involves ground-truth evaluation of each motif by instantiating it within a large network, and training and evaluating the network with thousands or more data samples. Inspired by how biological motifs such as cells are sometimes extracted from their natural environment and studied in an artificial Petri dish setting, this paper proposes the Synthetic Petri Dish model for evaluating architectural motifs. In the Synthetic Petri Dish, architectural motifs are instantiated in very small networks and evaluated using very few learned synthetic data samples (to effectively approximate performance in the full problem). The relative performance of motifs in the Synthetic Petri Dish can substitute for their ground-truth performance, thus accelerating the most expensive step of NAS. Unlike other neural network-based prediction models that parse the structure of the motif to estimate its performance, the Synthetic Petri Dish predicts motif performance by training the actual motif in an artificial setting, thus deriving predictions from its true intrinsic properties. Experiments in this paper demonstrate that the Synthetic Petri Dish can therefore predict the performance of new motifs with significantly higher accuracy, especially when insufficient ground truth data is available. Our hope is that this work can inspire a new research direction in studying the performance of extracted components of models in a synthetic diagnostic setting optimized to provide informative evaluations.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p3",
+    "section_heading": "1. Introduction",
+    "text": "The architecture of deep neural networks (NNs) is critical to their performance. This fact motivates neural architecture search (NAS), wherein the choice of architecture is often framed as an automated search for effective motifs, i.e. the design of a repeating recurrent cell or activation function that is repeated often in a larger NN blueprint. However, evaluating a candidate architecture’s ground-truth performance in a task of interest depends upon training the architecture to convergence. Complicating efficient search, the performance of an architectural motif nearly always benefits from increased computation (i.e. larger NNs trained with more data). The implication is that the best architectures often require training near the bounds of what computational resources are available, rendering naive NAS (i.e. where each candidate architecture is trained to convergence) exorbitantly expensive.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p4",
+    "section_heading": "1. Introduction",
+    "text": "To reduce the cost of NAS, methods often exploit heuristic surrogates of true performance. For example, motif performance can be evaluated after a few epochs of training or with scaled-down architectural blueprints, which is often still expensive (because maintaining reasonable fidelity between ground-truth and surrogate performance precludes aggressive scaling-down of training). Another approach learns models of the search space (e.g. Gaussian processes models used within Bayesian optimization), which improve as more ground-truth models are trained, but cannot generalize well beyond the examples seen. This paper explores whether the computational efficiency of NAS can be improved by creating a new kind of surrogate, one that can benefit from miniaturized training and still generalize beyond the observed distribution of ground-truth evaluations. To do so, we take inspiration from an idea in biology, bringing to machine learning the application of a Synthetic Petri Dish microcosm that aims to identify high-performing architectural motifs.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p5",
+    "section_heading": "1. Introduction",
+    "text": "The overall motivation behind “in vitro” (test-tube) experiments in biology is to investigate in a simpler and controlled environment the key factors that explain a phenomenon of interest in a messier and more complex system. For example, to understand causes of atypical mental development, scientists extract individual neuronal cells taken from brains of those demonstrating typical and atypical behavior and",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p6",
+    "section_heading": "1. Introduction",
+    "text": "study them in a Petri dish (Adhya et al., 2018). The approach proposed in this paper attempts to algorithmically recreate this kind of scientific process for the purpose of finding better neural network motifs. The main insight is that biological Petri dish experiments often leverage both (1) key aspects of a system’s dynamics (e.g. the behavior of a single cell taken from a larger organism) and (2) a humandesigned intervention (e.g. a measure of a test imposed on the test-tube). In an analogy to NAS, (1) the dynamics of learning through backpropagation are likely important to understanding the potential of a new architectural motif, and (2) compact synthetic datasets can illuminate an architecture’s response to learning. That is, we can use machine learning to learn data such that training an architectural motif on the learned data results in performance indicative of the motif’s ground-truth performance.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p7",
+    "section_heading": "1. Introduction",
+    "text": "In the proposed approach, motifs are extracted from their ground-truth evaluation setting (i.e. from large-scale NNs trained on the full dataset of the underlying domain of interest, e.g. MNIST), instantiated into very small networks (called motif-networks), and evaluated on learned synthetic data samples. These synthetic data samples are trained such that the performance ordering of motifs in this Petri dish setting (i.e. a miniaturized network trained on a few synthetic data samples) matches their ground-truth performance ordering. Because the relative performance of motifs is sufficient to distinguish good motifs from bad ones, the Petri dish evaluations of motifs can be a surrogate for ground-truth evaluations in NAS. Training the Synthetic Petri Dish is also computationally inexpensive, requiring only a few groundtruth evaluations, and once trained it enables extremely rapid evaluations of new motifs.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p8",
+    "section_heading": "1. Introduction",
+    "text": "A key motivating hypothesis is that because the Synthetic Petri Dish evaluates the motif by actually using it in a simple experiment (e.g. training it with SGD and then evaluating it), its predictions can generalize better than other neural network (NN) based models that predict motif performance based on only observing the motif’s structure and resulting performance (Liu et al., 2018a; Luo et al., 2018). For example, consider the demonstration problem of predicting the ground-truth performance of a two-layer feedforward MNIST network with sigmoidal non-linearity. The blue points in Figure 1 shows how the ground-truth performance of the MNIST network varies when the slope of its sigmoid activations (the term c in the sigmoid formula 1/(1+e−cx)) is varied in the range of 0.01− 2.01. The MNIST network performance peaks near a slope-value of 0.23. Similarly to the NN-based model previously developed in Liu et al. (2018a); Luo et al. (2018), one can try to train a neural network that predicts the performance of the corresponding MNIST network given the sigmoid slope value as input (Section 4.1 provides full details). When training points (tuples of sigmoid slope value and its corresponding MNIST",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p9",
+    "section_heading": "1. Introduction",
+    "text": "network performance) are restricted to an area to the right of the peak (Figure 1, blue-shaded region), the NN-based prediction model (Figure 1, red diamonds) generalizes poorly to the test points on the left side of the peak (c < 0.23). However, unlike such a conventional prediction model, the prediction of the Synthetic Petri Dish generalizes to test points left of the peak (despite their behavior being drastically different than what would be expected solely based on the points in the blue shaded region). That occurs because the Synthetic Petri Dish trains and evaluates the actual candidate motifs, rather than just making predictions about their performance based on data from past trials.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p10",
+    "section_heading": "1. Introduction",
+    "text": "Beyond this explanatory experiment, the promise of the Synthetic Petri Dish is further demonstrated on a challenging and compute-intensive language modelling task that serves as a popular NAS benchmark. The main result is that Petri dish obtains highly competitive results even in a limited-compute setting.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p11",
+    "section_heading": "1. Introduction",
+    "text": "Interestingly, these results suggest that it is indeed possible to extract a motif from a larger setting and create a con-",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p12",
+    "section_heading": "1. Introduction",
+    "text": "trolled setting (through learning synthetic data) where the instrumental factor in the performance of the motif can be isolated and tested quickly, just as scientists use Petri dishes to test specific hypothesis to isolate and understand causal factors in biological systems. Many more variants of this idea remain to be explored beyond its initial conception in this paper.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p13",
+    "section_heading": "1. Introduction",
+    "text": "The next section describes the related work in the area of NAS speed-up techniques.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p14",
+    "section_heading": "2. Related Work",
+    "text": "NAS methods have discovered novel architectures that significantly outperform hand-designed solutions (Zoph & Le, 2017; Elsken et al., 2018; Real et al., 2017). These methods commonly explore the architecture search space with either evolutionary algorithms (Suganuma et al., 2017; Miikkulainen et al., 2018; Real et al., 2019; Elsken et al., 2019) or reinforcement learning (Baker et al., 2016; Zoph & Le, 2017). Because running NAS with full ground-truth evaluations can be extremely expensive (i.e. requiring many thousands of GPU hours), more efficient methods have been proposed. For example, instead of evaluating new architectures with full-scale training, heuristic evaluation can leverage training with reduced data (e.g. sub-sampled from the domain of interest) or for fewer epochs (Baker et al., 2017; Klein et al., 2017).",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p15",
+    "section_heading": "2. Related Work",
+    "text": "More recent NAS methods such as DARTS (Liu et al., 2018b) and ENAS (Pham et al., 2018) exploit sharing weights across architectures during training to circumvent full ground-truth evaluations. However, a significant drawback of such weight sharing approaches is that they constrain the architecture search space and therefore limit the discovery of novel architectures.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p16",
+    "section_heading": "2. Related Work",
+    "text": "Another approach to accelerate NAS is to train a NN-based performance prediction model that estimates architecture performance based on its structure (Liu et al., 2018a). Building on this idea, Neural Architecture Optimization (NAO) trains a LSTM model to simultaneously predict architecture performance as well as to learn an embedding of architectures. Search is then performed by taking gradient ascent steps in the embedding space to generate better architectures. NAO is used as a baseline for comparison in Experiment 4.2.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p17",
+    "section_heading": "2. Related Work",
+    "text": "Bayesian optimization (BO) based NAS methods have also shown promising results (Kandasamy et al., 2018; Cao et al., 2019). BO models the architecture space using a Gaussian process (GP), although its behavior is sensitive to the choice of a kernel function that models the similarity between any two architectures. The kernel function can be handdesigned (Kandasamy et al., 2018) or it can be learned (Cao et al., 2019) by mapping the structure of the architecture into an embedding space (similar to the mapping in NAO).",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p18",
+    "section_heading": "2. Related Work",
+    "text": "Such kernel functions can potentially be learned using the Synthetic Petri Dish as well.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p19",
+    "section_heading": "2. Related Work",
+    "text": "One NAS method that deserves special mention is the similarly-named Petridish method of Hu et al. (2019). We only became aware of this method as our own Synthetic Petri Dish work was completing, leaving us with a difficult decision on naming. The methods are different – the Petridish of Hu et al. (2019) is a method for incremental growth as opposed to a learned surrogate in the spirit of the present work. However, we realize that giving our method a similar name could lead to unintended confusion or the incorrect perception that one builds on another. At the same time, the fundamental level at which the use of a Petri dish in biology motivated our approach all the way from its conception to its realization means the loss of this guiding metaphor would seriously complicate and undermine the understanding of the method for our readers. Therefore we made the decision to keep the name Synthetic Petri Dish while hopefully offering a clear enough acknowledgment here that there is also a different NAS method with a similar name that deserves its own entirely separate consideration.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p20",
+    "section_heading": "2. Related Work",
+    "text": "Generative teaching networks (GTNs) also learn synthetic data to accelerate NAS (Such et al., 2020). However, learned data in GTNs helps to more quickly train full-scale networks to evaluate their potential on real validation data. In the Petri dish, synthetic training and validation instead enables a surrogate microcosm training environment for much smaller extracted motif-networks. Additionally, GTNs are not explicitly trained to differentiate between different networks (or network motifs). In contrast, the Synthetic Petri Dish is optimized to find synthetic input data on which the performance of various architectural motifs is different.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p21",
+    "section_heading": "2. Related Work",
+    "text": "The details of the proposed Synthetic Petri Dish are provided in the next section.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p22",
+    "section_heading": "3. Methods",
+    "text": "Recall that the aim of the Synthetic Petri Dish is to create a microcosm training environment such that the performance of a small-scale motif trained within it well-predicts performance of the fully-expanded motif in the ground-truth evaluation. Figure 2 provides a high-level overview of the method, which this section explains in detail.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p23",
+    "section_heading": "3. Methods",
+    "text": "First, a few initial ground-truth evaluations of motifs are needed to create training data for the Petri dish. In particular, consider N motifs for which ground-truth validation loss values (Litrue, where i ∈ 1, 2, ...N ) have already been precomputed by training each motif in the ground-truth setting. The next section details how these initial evaluations are leveraged to train the Synthetic Petri Dish.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p24",
+    "section_heading": "3.1. Training the Synthetic Petri Dish",
+    "text": "To train the Synthetic Petri Dish first requires extracting the N motifs from their ground-truth setting and instantiating each of them in miniature as separate motif-networks. For the experiments performed in this paper, the groundtruth network and the motif-network have the same overall blueprint and differ only in the width of their layers. For example, Figure 2a shows a ground-truth network’s size reduced from a 2-layer, 100-neuron wide MLP to a motifnetwork that is a 2-layer MLP with a single neuron per layer.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p25",
+    "section_heading": "3.1. Training the Synthetic Petri Dish",
+    "text": "Given such a collection of extracted motif-networks, a small number of synthetic training and validation data samples are then learned that can respectively be used to train and evaluate the motif-networks. The learning objective is that the validation loss of motifs trained in the Petri dish resemble the validation loss of the motif’s ground-truth evaluation (Litrue). Note that this training process requires two nested optimization loops: an inner-loop that trains and evaluates the motif-networks on the synthetic data and an outer-loop",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p26",
+    "section_heading": "3.1. Training the Synthetic Petri Dish",
+    "text": "that trains the synthetic data itself.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p27",
+    "section_heading": "3.1. Training the Synthetic Petri Dish",
+    "text": "Initializing the Synthetic Petri Dish: Before training the Petri dish, the motif-networks and synthetic data must be initialized. Once the motifs have been extracted into separate motif-networks, each motif-network is assigned the same initial random weights (θinit). This constraint reduces confounding factors by ensuring that the motif-networks differ from each other only in their instantiated motifs. At the start of Synthetic Petri Dish training, synthetic training data (Strain = (xtrain, ytrain)) and validation data samples (Svalid = (xvalid, yvalid)) are randomly initialized. Note that these learned training and validation data can play distinct and complementary roles, e.g. the validation data can learn to test out-of-distribution generalization from a learned training set. Empirically, setting the training and validation data to be the same initially (i.e. Strain = Svalid) benefited optimization at the beginning of outer-loop training; over iterations of outer-loop training, the synthetic training and validation data then diverge. The size of the motif-network and the number of synthetic data samples are chosen through the hyperparameter selection procedure",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p28",
+    "section_heading": "3.1. Training the Synthetic Petri Dish",
+    "text": "described in Appendix A.1.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p29",
+    "section_heading": "3.1. Training the Synthetic Petri Dish",
+    "text": "Inner-loop training: The inner optimization loop is where the performance of motif-networks is evaluated by training each such network independently with synthetic data. This training reveals a sense of the quality of the motifs themselves.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p30",
+    "section_heading": "3.1. Training the Synthetic Petri Dish",
+    "text": "In each inner-loop, the motif-networks are independently trained with SGD using the synthetic training data (Strain). The motif-networks take synthetic training inputs (xtrain) and produce their respective output predictions (ŷtrain). For each motif-network, a binary cross-entropy (BCE) loss is computed between the output predictions (ŷtrain) and the synthetic training labels (ytrain). Because the Petri dish is an artificial setting, the choice of BCE as the inner-loop loss (Linner) is independent of the actual domain loss (used for ground-truth training), and other losses like regression loss could instead be used. The gradients of the BCE loss w.r.t. the motif-network weights inform weight updates (as in regular SGD).",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p31",
+    "section_heading": "3.1. Training the Synthetic Petri Dish",
+    "text": "where α is the inner-loop learning rate and θi0 = θinit. Inner-loop training proceeds until individual BCE losses converge. Once trained, each motif-network is independently evaluated using the synthetic validation data (Svalid) to obtain individual validation loss values (Liinner valid). These inner-loop validation losses then enable calculating an outer-loop loss to optimize the synthetic data, which is described next.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p32",
+    "section_heading": "3.1. Training the Synthetic Petri Dish",
+    "text": "Outer-loop training: Recall that an initial sampling of candidate motifs evaluated in the ground-truth setting serve as a training signal for crafting the Petri dish’s synthetic data. That is, in the outer loop, synthetic training data is optimized to encourage motif-networks trained upon it to become accurate surrogates for the performance of full networks built with that motif evaluated in the ground-truth setting. The idea is that training motif-networks on the right (small) set of synthetic training data can potentially isolate the key properties of candidate motifs that makes them effective. Consider for example what kind of training and validation examples would help to discover convolution. If an identical pattern appears in different training examples in three different quadrants, but not the fourth, the validation data could include an example in the fourth quadrant. Then, any convolutional (or translation invariant) architecture would pass this simple test, whereas others would perform poorly. In this way, generating synthetic training data could potentially have uncovered convolution, the key original architectural motif behind deep learning.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p33",
+    "section_heading": "3.1. Training the Synthetic Petri Dish",
+    "text": "To frame the outer-loop loss function, what is desired is",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p34",
+    "section_heading": "3.1. Training the Synthetic Petri Dish",
+    "text": "for the validation loss of the motif-network to induce the same relative ordering as the validation loss of the groundtruth networks; such relative ordering is all that is needed to decide which new motif is likely to be best. One way to design such an outer-loop loss with this property is to penalize differences between normalized loss values in the Petri dish and ground-truth setting1. To this end, the motifnetwork (inner-loop) loss values and their respective groundtruth loss values are first independently normalized to have zero-mean and unit-variance. Then, for each motif, a mean squared error (MSE) loss is computed between the normalized inner-loop validation loss (L̂iinner valid) and the normalized ground-truth validation loss (L̂itrue). The MSE loss is averaged over all the motifs and used to compute a gradient step to improve the synthetic training and validation data.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p35",
+    "section_heading": "3.1. Training the Synthetic Petri Dish",
+    "text": "where β is the outer-loop learning rate. For simplicity, only the synthetic training (xtrain) and validation (xvalid) inputs are learned and the corresponding labels (ytrain, yvalid) are kept fixed to their initial random values throughout training. Minimizing the outer-loop MSE loss (Louter) modifies the synthetic training and validation inputs to maximize the similarity between the motif-networks’ performance ordering and motifs’ ground-truth ordering.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p36",
+    "section_heading": "3.1. Training the Synthetic Petri Dish",
+    "text": "After each outer-loop training step, the motif-networks are reset to their original initial weights (θinit) and the innerloop training and evaluation procedure (equation 1) is carried out again. The outer-loop of Synthetic Petri Dish training proceeds until the MSE loss converges, resulting in optimized synthetic data.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p37",
+    "section_heading": "3.2. Predicting Performance with the Trained Petri Dish",
+    "text": "The Synthetic Petri Dish training procedure described so far results in synthetic training and validation data optimized to sort motif-networks similarly to the ground-truth setting. This section describes how the trained Petri dish can predict the relative performance of unseen motifs, which we call the Synthetic Petri Dish inference procedure. In this procedure, new motifs are instantiated in their individual",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p38",
+    "section_heading": "3.2. Predicting Performance with the Trained Petri Dish",
+    "text": "motif-networks, and the motif-networks are trained and evaluated using the optimized synthetic data (with the same hyperparameter settings as in the inner-loop training and evaluation). The relative inner-loop validation loss for the motif-networks then serves as a surrogate for the motifs’ relative ground-truth validation loss; as stated earlier, such relative loss values are sufficient to compare the potential of new candidate motifs. Such Petri dish inference is computationally inexpensive because it involves the training and evaluation of very small motif-networks with very few synthetic examples. Accurately predicting the performance ordering of unseen motifs is contingent on the generalization capabilities of the Synthetic Petri Dish. The ability to generalize in this way is investigated in section 4.1.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p39",
+    "section_heading": "3.3. Combining Architecture Search with the Synthetic Petri Dish",
+    "text": "Interestingly, the cheap-to-evaluate surrogate performance prediction given by the trained Petri dish is complementary to most NAS methods that search for motifs, meaning that they can easily be combined. Algorithm 1 shows one possible hybridization of Petri dish and NAS, which is the one we experimentally investigate in this work.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p40",
+    "section_heading": "3.3. Combining Architecture Search with the Synthetic Petri Dish",
+    "text": "First, the Petri dish model is warm-started by training (innerloop and outer-loop) using the ground-truth evaluation data (Peval) of a small set of randomly-generated motifs (Xeval). Then in each iteration of NAS, the NAS method generates M new motifs and the Petri dish inference procedure inexpensively predicts their relative performance. The top K motifs (where K << M ) with highest predicted performance are then selected for ground-truth evaluation. The ground-truth performance of motifs both guides the NAS method as well as provides further data to re-train the Petri dish model. The steps outlined above are repeated for as many iterations as possible or until convergence and then the motif with the best ground-truth performance is selected for the final test evaluation.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p41",
+    "section_heading": "3.3. Combining Architecture Search with the Synthetic Petri Dish",
+    "text": "Synthetic Petri Dish training and inference is orders of magnitude faster than ground-truth evaluations, thus making NAS computationally more efficient and faster to run, which can enable finding higher-performing architectures given a limited compute budget. Further analysis of the compute overhead of the Petri dish model is in section 4.2.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p42",
+    "section_heading": "4. Experiments",
+    "text": "The first experiment is the easily interpretable proof-ofconcept of searching for the optimal slope for the sigmoid, and the second is the challenging NAS problem of finding a high-performing recurrent cell for a language modeling task. The compute used to run these experiments included 20 Nvidia 1080Ti GPUs (for ground-truth training and evalua-",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p43",
+    "section_heading": "4. Experiments",
+    "text": "Algorithm 1 Combining Architecture Search with the Synthetic Petri Dish",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p44",
+    "section_heading": "4. Experiments",
+    "text": "Input: Set of motifs already evaluated X = ∅. Initial set of motifs for ground-truth evaluation Xeval. Performance of motifs P = ∅. Number of motifs to generate M . Number of motifs to select K s.t. K << M . Number of NAS search iterations L. Additional Petri dish hyperparameters (Appendix A.2 and A.3). for l = 1 to L do",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p45",
+    "section_heading": "4. Experiments",
+    "text": "Ground-truth Evaluation: Train each motif in Xeval in the full-scale setting and obtain full-scale validation set performance Peval. Enlarge P : P = P ∪ Peval. Enlarge X : X = X ∪Xeval. Petri dish Training: Train the Petri dish model using X and P (see sub-section 3.1). Architecture Search: Generate a set ofM new motifs (Xnew) using X and P as inputs to the NAS method. Performance Prediction: Run Synthetic Petri Dish inference for Xnew (sub-section 3.2) to obtain motif performance predictions. Selection: Pick topK motifs (denoted by setXtop) out of the set Xnew based on their predicted performance. Set Xeval = Xtop. end for Output: The motif within X with the best ground-truth performance.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p46",
+    "section_heading": "4. Experiments",
+    "text": "tion) and a MacBook CPU (for Synthetic Petri Dish training and inference).",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p47",
+    "section_heading": "4.1. Searching for the Optimal Slope for Sigmoidal Activation Functions",
+    "text": "Preliminary experiments demonstrated that when a 2-layer, 100-wide feed-forward network with sigmoidal activation functions is trained on MNIST data, its validation accuracy (holding all else constant) depends on the slope of the sigmoid The points on the blue curve in Figure 1 demonstrate this fact, where the empirical peak performance is a slope of 0.23. This empirical dependence of performance on sigmoid slope provides an easy-to-understand context (where the optimal answer is known apriori) to clearly illustrate the advantage of the Synthetic Petri Dish. In more detail, we now explain an experiment in which sigmoid slope is the architectural motif to be explored in the Petri dish.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p48",
+    "section_heading": "4.1. Searching for the Optimal Slope for Sigmoidal Activation Functions",
+    "text": "A subset of 30 ground-truth points (blue points in Figure 1, such that each ground-truth point is a tuple of sigmoid slope and the validation accuracy of the corresponding groundtruth MNIST network) are randomly selected from a restricted interval of sigmoid slope values (the blue-shaded region in Figure 1). These 30 ground-truth points are split into two equal parts to create training (15) and validation (15) datasets for both the Synthetic Petri Dish and the NN-",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p49",
+    "section_heading": "4.1. Searching for the Optimal Slope for Sigmoidal Activation Functions",
+    "text": "based prediction model. The remaining ground-truth points (outside the blue-shaded region) are used only for testing.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p50",
+    "section_heading": "4.1. Searching for the Optimal Slope for Sigmoidal Activation Functions",
+    "text": "We compare Synthetic Petri Dish to the control of training a neural network surrogate model to predict performance as a function of sigmoid slope. This NN-based surrogate control is a 2-layer, 10-neuron-wide feedforward network that takes the sigmoid value as input and predicts the corresponding MNIST network validation accuracy as its output. A mean-squared error loss is computed between the predicted accuracy and the ground-truth validation accuracy, and the network is trained with the Adam optimizer. Hyperparameters for the NN-based model such as the network’s size, training batch-size (15), epochs of training (50), learning rate (0.001) and scale of initial random weights (0.1) were selected using the validation points. The predictions from the NN-model are normalized and plotted as the red-curve in Figure 1. Results demonstrate that the NN-based model overfits the training points, and poorly generalizes to the test points, completely failing to model the falloff to the left of the peak past the left of the blue-shaded region. As such, it predicts that performance is highest with a sigmoid slop near zero, whereas in fact performance at that point is extremely poor.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p51",
+    "section_heading": "4.1. Searching for the Optimal Slope for Sigmoidal Activation Functions",
+    "text": "For training the Synthetic Petri Dish model, each training motif (i.e. sigmoid with a unique slope value) is extracted from the MNIST network and instantiated in a 2-layer, single-neuron-wide motif-network (θinit). Thus, there are 15 motif-networks, one for each training point (the setup is similar to the one shown in Figure 2a). The input and output layers of the motif-network have a width of 10 each. A batch of synthetic training data (size 20× 10) and a batch of synthetic validation data (size 20× 10) are initialized to the same initial random value (i.e. Strain = Svalid). The motif-networks are trained in the inner-loop for 200 SGD steps and subsequently their performance on the synthetic validation data (Liinner valid) is used to compute outer-loop MSE loss w.r.t the ground-truth performance (as described in section 3.1). A total of 20 outer-loop training steps are performed. The model hyperparameters such as number of inner and outer-loop steps, size of the motif-network, size of synthetic data, inner and outer-loop learning rates (0.01 and 0.5 respectively), initial scale of motif-network random weights (1.0) are selected so that the MSE loss for 15 validation points is minimized (hyperparameter selection and other details for the two models are further described in Appendix A.2).",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p52",
+    "section_heading": "4.1. Searching for the Optimal Slope for Sigmoidal Activation Functions",
+    "text": "During validation (and also during testing) of Petri dish, new motifs are instantiated in their own motif-networks and trained for 200 inner-loop steps. Thus, unlike the NN-based model that predicts the performance of new motifs based on their scalar value, the Synthetic Petri Dish trains and evaluates each new motif independently with synthetic data (i.e.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p53",
+    "section_heading": "4.1. Searching for the Optimal Slope for Sigmoidal Activation Functions",
+    "text": "it actually uses a NN with this particular sigmoidal slope in a small experiment and thus should have better information regarding how well this slope performs). The normalized predictions from the Synthetic Petri Dish are plotted as the green curve in Figure 1. The results show that Synthetic Petri Dish predictions accurately infer that there is a peak (including the falloff to its left) and also its approximate location. The NN surrogate model that is not exposed to the region with the peak could not be expected to infer the peak’s existence because its training data provides no basis for such a prediction, but the Synthetic Petri Dish is able to predict it because the motif itself is part of the Synthetic Petri Dish model, giving it a fundamental advantage, which is starkly illustrated in Figure 1.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p54",
+    "section_heading": "4.2. Architecture Search for Recurrent Cells",
+    "text": "The previous experiment demonstrated that a Synthetic Petri Dish model trained with limited ground-truth data can successfully generalize to unseen out-of-distribution motifs. This next experiment tests whether the Synthetic Petri Dish can be applied to a more realistic and challenging setting, that of NAS for a NN language model that is applied to",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p55",
+    "section_heading": "4.2. Architecture Search for Recurrent Cells",
+    "text": "the Penn Tree Bank (PTB) dataset – a popular language modeling and NAS benchmark (Marcus et al., 1993). In this experiment, the architectural motif is the design of a recurrent cell. The recurrent cell search space and its ground-truth evaluation setup is the same as in NAO (Luo et al., 2018). This NAS problem is challenging because the search space is expansive and few solutions perform well (Pham et al., 2018). Each cell in the search space is composed of 12 layers (each with the same layer width) that are connected in a unique pattern. An input embedding layer and an output soft-max layer is added to the cell (each of layer width 850) to obtain a full network (27 Million parameters) for ground-truth evaluation. Each ground-truth evaluation requires training on the PTB data-set for 600 epochs and takes 10 GPU hours on an Nvidia 1080Ti.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p56",
+    "section_heading": "4.2. Architecture Search for Recurrent Cells",
+    "text": "NAO is one of the state-of-the-art NAS methods for this problem and is therefore used as a baseline in this experiment (called here original NAO). Given the cell structure as input, NAO trains an LSTM model to encode and decode the cell structure, and also to predict its performance. Once trained, gradient ascent steps can be taken in the cell embedding space to optimize for RNN cells with higher performance. Thus, NAO consists of a performance-prediction model along with an implicit architecture optimization mechanism. In the published results (Luo et al., 2018), NAO is warm-started by training it on ground-truth evaluation data from 600 random RNN cells. In successive NAS iterations, NAO generates 200 new architectures, all of which are then evaluated for their ground-truth performance. At the end of three NAS iterations in which 1,000 groundtruth evaluations are performed (requiring 300 GPU days), NAO discovers a cell with test perplexity of 56.0. These are good results, but the compute cost even to reproduce them is prohibitively large for many researchers. Because the Synthetic Petri Dish offers a potential low-compute option, in this experiment, different NAS methods are compared instead in a setting where only limited ground-truth evaluation data is available (≤ 100 samples), giving a sense of how far different methods can get with more reasonable compute resources. Note that NAO can also be combined with weight-sharing (Pham et al., 2018) to improve its efficiency; however, to isolate the effect of the methods themselves from added factors such as weight-sharing (which can also be added in future work to the Synthetic Petri Dish), only methods without weight-sharing are compared.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p57",
+    "section_heading": "4.2. Architecture Search for Recurrent Cells",
+    "text": "Each NAS iteration can be accelerated if the number of costly ground-truth evaluations is reduced by instead cheaply evaluating the majority of candidate motifs (i.e. new cells) in the Petri dish. For the purpose of training the Synthetic Petri Dish, each cell is extracted from its ground-truth setting (850 neurons per layer) and is instantiated in a motif-network with three neurons per layer (its internal cell connectivity, including its depth, remains un-",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p58",
+    "section_heading": "4.2. Architecture Search for Recurrent Cells",
+    "text": "changed). Thus, the ground-truth network that has 27 million parameters is reduced to a motif-network with only 140 parameters. To train motif-networks, synthetic training and validation data each of size 20× 10× 10 (batch size×time steps×motif-network input size) is learned (thus replacing the 923k training and 73k validation words of PTB). The Petri dish training and inference procedure is very similar to the one described in Experiment 4.1, and it adds negligible compute cost (2 additional hours for training, and a few minutes for inference on a MacBook CPU).",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p59",
+    "section_heading": "4.2. Architecture Search for Recurrent Cells",
+    "text": "Following the steps outlined in algorithm 1 and Figure 2b, the Petri dish surrogate can be combined with two existing NAS methods: (1) genetic algorithms (GAs) or (2) NAO itself, resulting in two new methods called Synthetic Petri Dish-GA and Synthetic Petri Dish-NAO.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p60",
+    "section_heading": "4.2. Architecture Search for Recurrent Cells",
+    "text": "GA-based NAS methods have recently been found successful in several problem domains (Real et al., 2019; Elsken et al., 2019). In Synthetic Petri Dish-GA, RNN cell connectivity is represented as a string of numbers and therefore can be easily modified with GA operators such as point-wise mutation (rate= 0.05) and crossover (rate= 0.3) to generate new cells/motifs. Unlike GAs, the NAO method performs gradient-based search for new motifs. The gradients are potentially noisy and can result in low-performing motifs. Therefore, in principle adding the Synthetic Petri Dish to NAO can help filter of such low-performing motifs (thereby avoiding wasteful ground-truth evaluations). The details of hyperparameter selection for Synthetic Petri Dish-GA and Synthetic Petri Dish-NAO are provided in Appendix A.3.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p61",
+    "section_heading": "4.2. Architecture Search for Recurrent Cells",
+    "text": "For the Synthetic Petri Dish variants, at the beginning of search, both the Petri dish surrogate and the NAS method (GA/NAO) used within the Petri dish variant are warmstarted with the ground-truth data of an initial motif set (size 40). In each NAS iteration, 100 newly generated motifs (variable M in algorithm 1) are evaluated using the Petri dish inference procedure and only the top 20 predicted motifs (variable K in algorithm 1) are evaluated for their ground-truth performance. The test perplexity of the best found motif at the end of each NAS iteration is plotted in",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p62",
+    "section_heading": "4.2. Architecture Search for Recurrent Cells",
+    "text": "Figure 3 – the blue curve depicts the result for Synthetic Petri Dish-GA and green depicts the result for Synthetic Petri Dish-NAO. For a fair comparison, original NAO is re-run in this limited ground-truth setting and the resulting performance is depicted by the red-curve in Figure 3. The results show that Synthetic Petri Dish-NAO outperforms both Synthetic Petri Dish-GA and NAO when keeping the amount of ground-truth data points the same, suggesting that the Synthetic Petri Dish and NAO complement each other well. The hybridization of Synthetic Petri Dish and NAO finds a cell that is competitive in its performance (test perplexity 57.1) with original NAO (56.0), using only 1/10th of original NAO’s compute (and exceeds the performance of",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p63",
+    "section_heading": "4.2. Architecture Search for Recurrent Cells",
+    "text": "original NAO when both are given equivalent compute). The structure of this discovered cell is shown in Appendix A.3.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p64",
+    "section_heading": "5. Discussion and Conclusions",
+    "text": "In the general practice of science, often the question arises of what factor accounts for an observed phenomenon. In the real world, with all its intricacy and complexity, it can be difficult to test or even formulate a clear hypothesis on the relevant factor involved. For that reason, often a hypothesis is formulated and tested in a simplified environment where the relevant factor can be isolated from the confounding complexity of the world around it. Then, in that simplified setting it becomes possible to run rapid and exhaustive tests, as long as there is an expectation that their outcome might correlate to the real world. In this way, the Synthetic Petri Dish is a kind of microcosm of a facet of the scientific method, and its synthetic data is the treatment whose optimization tethers the dynamics within the simplified setting to their relevant counterparts in the real world.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p65",
+    "section_heading": "5. Discussion and Conclusions",
+    "text": "By approaching architecture search in this way as a kind of question-answering problem on how certain motifs or factors impact final results, we gain the intriguing advantage that the prediction model is no longer a black box. Instead, it actually contains within it a critical piece of the larger world that it seeks to predict. This piece, a motif cut from the ground-truth network (and its corresponding learning dynamics), carries with it from the start a set of priors that no naive black box learned model could carry on its own. These priors pop out dramatically in the simple sigmoid slope experiment – the notion that there is an optimal slope for training and roughly where it lies emerges automatically from the fact that the sigmoid slope itself is part of the Synthetic Petri Dish prediction model. In the later NAS for recurrent cells, the benefit in a more complex domain also becomes apparent, where the advantage of the intrinsic prior enables the Synthetic Petri Dish to have better performance than a leading NAS method when holding the number of ground-truth evaluations constant, and achieves roughly the same performance with 1/10th the compute when allowing differing numbers of ground-truth evaluations.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p66",
+    "section_heading": "5. Discussion and Conclusions",
+    "text": "These benefits ultimately concern both computation and accuracy. Because the Synthetic Petri Dish contains a tiny version of the full problem, candidate architectures can be tested rapidly. Yet we do not give up the value of the surrogate in exchange for such efficiency; on the contrary, because the tiny model contains a piece of the real network (and hence enables testing various hypothesis as to its capabilities), the predictions are built on highly relevant priors that lend more accuracy to their results than blank-slate black box models.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p67",
+    "section_heading": "5. Discussion and Conclusions",
+    "text": "It is also possible that other methods can be built in the",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p68",
+    "section_heading": "5. Discussion and Conclusions",
+    "text": "future on the idea of extracting a component of a candidate architecture and testing it in another setting. The opportunity to tease out the underlying causal factors of performance is a novel research direction that may ultimately teach us new lessons on architecture by exposing the most important dimensions of variation through a principled empirical process that could capture the spirit and power of the scientific process itself.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p69",
+    "section_heading": "A.1. Petri dish Hyperparameter Selection Procedure",
+    "text": "Recall that an initial sampling of candidate motifs evaluated in the ground-truth setting serve as training data for Petri dish (Step 0 in Figure 2b). In order to determine the ideal hyperparameters for Petri dish training, this initial motif ground-truth set (referred to as Litrue in Section 3) is split into equal parts as training (Litrue train) and validation (Litrue valid) sets. Hyperparameter setting that results in the smallest outer-loop MSE loss (Liouter in equation 2) on the validation set (Litrue valid) after training the Petri dish on the training set (Litrue train), are selected for the full experiment. Specific hyperparameter values for each experiment are provided in the following sections.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p70",
+    "section_heading": "A.2. Experimental Setup for Optimal Sigmoid Slope Search",
+    "text": "This section provides further details on experiment 4.1. The sigmoid slope value is the motif in this experiment.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p71",
+    "section_heading": "A.2.1. SETUP FOR GROUND-TRUTH TRAINING",
+    "text": "Previous work has shown that the slope of the sigmoid activation is a critical factor in determining network performance (Ramachandran et al., 2018). Similarly, in this paper, it was empirically found that the validation performance of a 2-layer 100-wide feedforward network on MNIST dataset is dependent on the sigmoid slope. This dependence is shown by the blue-points in Figure 1. To generate each of the blue points, the feedforward network was trained on 50K MNIST training samples and evaluated on 10K validation samples, with the sigmoid slope value ranging between 0.01− 2.01. All other hyperparameters were held constant during each run and their specific values are provided in Table 1. For each slope value, a mean performance from 20 such runs (along with standard error bars) is plotted in Figure 1.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p72",
+    "section_heading": "A.2.2. SETUP FOR PETRI DISH TRAINING AND VALIDATION",
+    "text": "The hyperparameter selection procedure follows the same template as described in Section A.1. A subset of 30 groundtruth points are randomly selected from a restricted interval of sigmoid slope values ranging between 0.37− 1.50 (bluepoints in the blue-shaded region of Figure 1). These 30 ground-truth points are split into two equal parts to create training (15) and validation data-set (15) for Petri dish hyperparameter selection. Hyperparameter search range and the final selected values are listed in Table 2.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p73",
+    "section_heading": "A.2.2. SETUP FOR PETRI DISH TRAINING AND VALIDATION",
+    "text": "At the beginning of Petri dish training, both the motifnetworks weights and the synthetic training/validation data are initialized to random values (drawn from normal distribution). The relative performance of motif-networks after inner-loop training on such random synthetic data is shown in Figure 4. This plot highlights that motif-network training extracts useful prior information about the corresponding motifs.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p74",
+    "section_heading": "A.2.2. SETUP FOR PETRI DISH TRAINING AND VALIDATION",
+    "text": "Implementation Details: As described in Section 3, during Petri dish training, the motif-networks are independently trained and evaluated. Such independent training and evaluation is usually achieved by distributing network training on GPUs. However, because the motif-networks are very small (with only 22 parameters in each) and they share the same synthetic data, their training can be parallelized by a simple trick. The individual motif-networks can be combined to create a single super-network. With appropriate masking connections that prevent any forward and backward propagation across motif-networks within a super-network, we can",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p75",
+    "section_heading": "A.2.2. SETUP FOR PETRI DISH TRAINING AND VALIDATION",
+    "text": "ensure that all the motif-networks are independently trained at the same time during the super-network training. This parallelization trick allows us to carry out Petri dish training and inference on a basic MacBook CPU very quickly.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p76",
+    "section_heading": "A.2.3. SETUP FOR NN-BASED MODEL TRAINING",
+    "text": "The training and validation data for the NN-based model is exactly the same as the one used for Petri dish i.e. a set of 30 ground-truth points, where each point is a tuple of sigmoid slope and the validation accuracy of the corresponding ground-truth MNIST network. Similarly to the Petri dish, the NN-based model is trained to predict the normalized ground-truth performance (see Outer-loop training in Section 3). However, unlike Petri dish that trains and evaluates the motif (i.e. sigmoid slope) in a synthetic setting, the NNbased model takes the real-valued slope directly as its input. A mean squared error is computed between the NN predicted output and the normalized ground-truth performance. Hyperparameter search range and their final selected values are listed in Table 3.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p77",
+    "section_heading": "A.3. Experiment Setup for Recurrent Cell Architecture Search",
+    "text": "This section provides further details on experiment 4.2. The recurrent cell design is the motif in this experiment.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p78",
+    "section_heading": "A.3.1. SETUP FOR GROUND-TRUTH EVALUATION",
+    "text": "Since NAO (Luo et al., 2018) is used as a baseline method for our experiments, the ground-truth training and evaluation procedure outlined in that paper is also followed here. The final test evaluation of the best found cell (output of Algorithm 1) is also carried out using the setting described",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p79",
+    "section_heading": "A.3.1. SETUP FOR GROUND-TRUTH EVALUATION",
+    "text": "in the NAO paper.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p80",
+    "section_heading": "A.3.2. SETUP FOR PETRI DISH TRAINING AND VALIDATION",
+    "text": "The hyperparameter selection procedure follows the same template as described in Section A.1. A set of 40 randomly selected cells are evaluated for their ground-truth performance. These 40 ground-truth points are split into two equal parts to create training (20) and validation data-set (20) for Petri dish hyperparameter selection. Hyperparameter search range and their final selected values are listed in",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p81",
+    "section_heading": "A.3.2. SETUP FOR PETRI DISH TRAINING AND VALIDATION",
+    "text": "Implementation Details: The parallelization trick of combining multiple motif-networks into a single super-network as described in Appendix A.2.2, is also utilized here as well. Experiment 4.1 required only a single NAS iteration i.e. training Petri dish with a fixed number of training",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p82",
+    "section_heading": "A.3.2. SETUP FOR PETRI DISH TRAINING AND VALIDATION",
+    "text": "motifs (and their corresponding ground-truth values) and then predicting the performance of test motifs. Unlike Experiment 4.1, in Experiment 4.2, the number of training motifs increase with additional ground-truth evaluations in each NAS iteration. For example, at the end of three such NAS iterations, there are 100 training motifs that can be utilized for Petri dish training. A growing number of motifnetworks during Petri dish training could require further hyperparameter tuning. To avoid such fine-tuning, the total number of motif-network instances during Petri dish training is kept fixed at 40 (thereby also limiting the size of the super-network). During each outer-loop training step, a new batch of 40 motif-networks are randomly sampled from the full-set of available motif-networks.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p83",
+    "section_heading": "A.3.3. SETUP FOR NAO AND GA",
+    "text": "In Experiment 4.2, two variants of NAO are evaluated in limited resource setting – NAO with Reduced data (redcurve in Figure 3) and Synthetic Petri Dish-NAO (green curve in Figure 3). For both the variants, the NAO model is trained with the same code and hyperparameter setting as in the published work (Luo et al., 2018).",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p84",
+    "section_heading": "A.3.3. SETUP FOR NAO AND GA",
+    "text": "An elitist genetic algorithm (GA) is used to generate new motifs for the Synthetic Petri Dish-GA method (blue curve in Figure 3). In each NAS iteration, the top 20 motifs (with the best ground-truth values) are mutated and recombined to generate 100 new motifs. Each motif is represented as a fixed-size string of numbers that encode the cell connectivity and the types of non-linearity within the cell. During the mutation of a motif, every location within its string is modified with a probability of 0.05. During recombination, two randomly selected motifs are crossed-over at a random location in their strings with a probability of 0.3.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p85",
+    "section_heading": "A.3.3. SETUP FOR NAO AND GA",
+    "text": "The best found cell using the Synthetic Petri Dish-NAO method has a test perplexity of 57.1 and is shown in Figure 5.",
+    "seg_type": "par"
+  }
+]

@@ -1,0 +1,4 @@
+From the information theoretic perspectives, these existing fairness interventions fall into the category of achievability.
+They introduce new algorithms to design both fair and accurate machinery models.
+In this paper, we consider the Fouconverse problem.
+For fixed data distribution, what is the information theoretic limit of accuracy and group fairness, beyond which no model can

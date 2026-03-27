@@ -1,0 +1,130 @@
+{
+  "sp_0043_page_0002": {
+    "bboxes": [
+      {
+        "box": [
+          535.1690063476562,
+          1034.3887939453125,
+          689.4344482421875,
+          1061.80419921875
+        ],
+        "text": [
+          "s _ { t + 1 } = f _ { \\theta } ( s _ { t } , a _ { t } ) \\, ."
+        ],
+        "id": "sp_0043_page_0002-1",
+        "page": "sp_0043_page_0002",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          489.9248046875,
+          1126.69921875,
+          735.771484375,
+          1153.8160400390625
+        ],
+        "text": [
+          "o _ { t + 1 } = f _ { \\theta } ( o _ { 0 } , a _ { 0 } , \\ldots , o _ { t } , a _ { t } ) \\, ."
+        ],
+        "id": "sp_0043_page_0002-2",
+        "page": "sp_0043_page_0002",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          419.8957824707031,
+          1272.222900390625,
+          806.275390625,
+          1374.2435302734375
+        ],
+        "text": [
+          "G ( a _ { t } , \\ldots , a _ { t + H } ) = \\mathbb { E } \\left[ \\sum _ { \\tau = t } ^ { t + H } r ( o _ { \\tau } , a _ { \\tau } ) \\right]"
+        ],
+        "id": "sp_0043_page_0002-3",
+        "page": "sp_0043_page_0002",
+        "seg_type": "eq"
+      }
+    ]
+  },
+  "sp_0043_page_0003": {
+    "bboxes": [
+      {
+        "box": [
+          431.2576599121094,
+          1420.8109130859375,
+          791.8261108398438,
+          1448.4727783203125
+        ],
+        "text": [
+          "G _ { \\mathrm { r e g } } = G + \\alpha \\log p ( o _ { t } , a _ { t } \\ldots , o _ { t + H } , a _ { t + H } ) \\, ,"
+        ],
+        "id": "sp_0043_page_0003-1",
+        "page": "sp_0043_page_0003",
+        "seg_type": "eq"
+      }
+    ]
+  },
+  "sp_0043_page_0004": {
+    "bboxes": [
+      {
+        "box": [
+          436.010986328125,
+          1177.30810546875,
+          787.073486328125,
+          1244.238525390625
+        ],
+        "text": [
+          "\\frac { \\partial G _ { \\mathrm { r e g } } } { \\partial a _ { i } } = \\frac { \\partial G } { \\partial a _ { i } } + \\alpha \\sum _ { \\tau = i } ^ { i + w } \\frac { \\partial x _ { \\tau } } { \\partial a _ { i } } \\frac { \\partial } { \\partial x _ { \\tau } } \\log p ( x _ { \\tau } ) \\, ,"
+        ],
+        "id": "sp_0043_page_0004-1",
+        "page": "sp_0043_page_0004",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          482.6571350097656,
+          960.13330078125,
+          741.8516845703125,
+          1030.474365234375
+        ],
+        "text": [
+          "G _ { \\mathrm { r e g } } = G + \\alpha \\sum _ { \\tau = t } ^ { t + H - w } \\log p ( x _ { \\tau } )"
+        ],
+        "id": "sp_0043_page_0004-2",
+        "page": "sp_0043_page_0004",
+        "seg_type": "eq"
+      }
+    ]
+  },
+  "sp_0043_page_0005": {
+    "bboxes": [
+      {
+        "box": [
+          441.0305480957031,
+          335.8064270019531,
+          784.7010498046875,
+          403.3226013183594
+        ],
+        "text": [
+          "{ \\frac { \\partial G _ { \\mathrm { r e g } } } { \\partial a _ { i } } } = { \\frac { \\partial G } { \\partial a _ { i } } } + \\alpha \\sum _ { \\tau = i } ^ { i + w } { \\frac { \\partial x _ { \\tau } } { \\partial a _ { i } } } ( g ( x _ { \\tau } ) - x _ { \\tau } ) \\, ."
+        ],
+        "id": "sp_0043_page_0005-1",
+        "page": "sp_0043_page_0005",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          496.82666015625,
+          179.6521759033203,
+          725.4793090820312,
+          225.60682678222656
+        ],
+        "text": [
+          "g ( \\tilde { x } ) = \\tilde { x } + \\sigma _ { n } ^ { 2 } \\frac { \\partial } { \\partial \\tilde { x } } \\log p ( \\tilde { x } ) \\, ,"
+        ],
+        "id": "sp_0043_page_0005-2",
+        "page": "sp_0043_page_0005",
+        "seg_type": "eq"
+      }
+    ]
+  }
+}

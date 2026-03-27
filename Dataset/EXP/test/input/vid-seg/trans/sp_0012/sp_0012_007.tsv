@@ -1,0 +1,65 @@
+start	end	text
+1853	5498	Okay, final set of experiments.
+5618	18396	As you can tell, this is mostly an experimental paper and it is always easy to criticize experimental papers and rightfully so because I would not trust this very much.
+20519	30814	But given that it comes from a big institution and it is a very well-written paper, I would trust it more than I would a regular paper.
+30794	34885	And I would say if you're in practice, this is certainly worth trying.
+35065	35646	Absolutely.
+36208	47537	I just think that some of the things aren't researched, like some of my questions aren't answered of this.
+47517	49722	So they investigate sizes.
+49822	51906	So they now build shuffle buffers.
+52307	58379	So we have batch echoing, but they say, ah, but we can do batch echoing with shuffle buffers.
+58560	64933	So after the batch echoing, right, we have this state where we have the batching, and then we have the echoing.
+65474	66977	So this is our echo buffer.
+66957	70666	where we output the each data point multiple times.
+71167	74776	And then we have another buffer, which is a shuffle buffer.
+75237	80188	Now the shuffle buffer just collects data points and then shuffles them around before outputting them.
+80670	82975	And that means even though we, you know,
+84305	91653	output this five times, it might not come out five times after each other, it might be that it comes out once.
+92133	95677	And then another data point that was already in the shuffle buffer comes out.
+95817	103145	And then it'll just say that in total, it comes out five times, but it is first shuffle together with a bunch of other data points.
+103465	110633	Of course, this uses more memory, but it returns to that more IID setting.
+110613	120745	And you can see here as the buffer size increases, then the performance gets more and more to the performance that you would have with completely fresh data.
+121546	134781	So again, trading off freshness and doing multiple steps by basically repeating data points
+135993	139178	straight out versus repeating data points shuffled.
+140740	144426	And also here you have the same with example echoing.
+144906	156904	So if you apply the shuffle buffer to example echoing and you increase its size, you can get very, very, very close to the performance that you would get with fresh data.
+156884	164416	Which, of course, if you increase the shuffle buffer to the size of the dataset, you are at the situation.
+164436	165097	That's the limit.
+165117	167041	You are at the situation of fresh data.
+167461	169104	If you do example echoing.
+169144	175855	Here is where it gets into the funky part, where they say we actually measure
+176240	183748	the validation cross entropy and the validation accuracy versus the number of fresh examples read.
+183808	187793	And here I want to concentrate on the ResNet 50 on ImageNet.
+188153	195601	And as you can see, most of these models, um, they pretty much end up in the same place here.
+196102	200267	It's just that the echoing models end up there faster, right?
+200947	203310	And this, this is, I mean,
+204893	213184	This is where it gets a bit confusing, honestly, because why do you have this super sharp thing here?
+213284	222397	Because usually, and here it sort of speeds up in the middle, you see that, and then it kind of sharply declines.
+223018	227003	Is this maybe because they drop the learning rate or something?
+226983	244907	Now, my main thing is that the performance here, even though this target thing is lower than the, even though this target thing is the same for everyone, it is lower than the best reachable accuracy.
+246473	249340	I'm, I'm just this, this is just confusing.
+249421	250463	If this is really true.
+251406	251646	Whoa.
+252328	262153	If this is really true, I think we have a lot to learn about, um, SGD yet and how we're not actually doing SGD correctly.
+262133	272383	And because it seems like almost the echo versions are better or reach a better accuracy than the baseline.
+272824	276327	I don't know, do they just cap it at the performance?
+276347	277048	I don't think so.
+277068	278890	I think they say they let it reach.
+279731	289120	They also have these things right here, these curves where they say this is the best we reach and this is the ResNet32 on C410.
+289100	293685	And again, 91% on C410 is just very, very low.
+295186	315748	And I'm almost thinking that, okay, this might help if you just throw something that we know is kind of overpowered because we can reach 99% or at least you can reach something like 94% on C410 easily, easily with a network smaller than ResNet32.
+315863	325014	Maybe this effect manifests if you have actually something that could reach higher, but for some reason you only reach this low.
+325835	329559	I'm not sure, but this is confusing.
+329940	341854	And if this is really true, yeah, I would just, if it's true, which I believe, I believe this paper, it might be just an effect of not reaching the actual ceiling.
+343285	344408	And again, look at this.
+345069	347756	This is just the curves are just strange, right?
+347856	358864	You have the echoing before augmentation, like it seems like it's outperforming the fresh data points.
+360683	363508	I don't know, there's a little bell in my head that doesn't like this.
+364169	367496	If it's actually true, then you know, that's cool.
+368577	384126	But yeah, so my main criticisms are a bit with the experimental methodology, for example, where they increase the batch size, but still reach the same target accuracy, even though we know that there is a higher ceiling if you increase the batch size for language models.
+384106	395268	My other criticism is the non-investigation of this connection, this connection right here, maybe, but all in all, it's a pretty cool paper.
+395428	401100	If I had a big company with these pipeline issues, I would absolutely implement this.
+401160	407091	This seems like a no-brainer to do this and can help you tremendously.
+408214	408815	All right, that was it.
+409015	409877	Thank you for listening.
+410398	414045	If you're still here, subscribe, like, tell a friend, bye-bye.

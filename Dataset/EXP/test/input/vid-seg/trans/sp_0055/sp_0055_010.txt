@@ -1,0 +1,58 @@
+And so on.
+So the question, of course, is how do you train this model?
+How do you train a model that gives you good candidates for subdivision?
+And the answer here comes from the idea of hindsight experience replay.
+So let's say, again, you are here and you want to go here.
+And you're not very good at it initially.
+So they train this model, as I understand, along with letting their agent act in this environment.
+So the agent uses the model to plan, but initially it's not very good.
+So maybe the agent will fail a lot of times.
+So instead of going to the blue square, it will reach this white square right here.
+It will go here here and here who reached the white square instead of saying I failed what you can do and this is the idea of hindsight experience replay is.
+To say well I did fail but I did reach something right I have reached a thing.
+And it's actually possible that that thing could have been the goal, but this particular episode, this was the goal.
+Remember, the goal changes every time.
+It's a goal directed policy.
+So it says, well, this could have been the goal, possibly.
+So if I just pretend this was the goal, then I have a training example for a successful run.
+So the hindsight experience replay basically pretends that what you
+have achieved, even if you failed, was your actual goal.
+And that gives you a positive training example for an episode with that as a goal.
+And it could have been the goal because the goal is chosen at random.
+So this gives you a good training example.
+Now this paper just generalizes the hindsight experience replay or applies it to their particular framework.
+And they say, well, if I reach this thing, that means
+Any point on this path is a good candidate for subdividing the path, because I did actually reach the point.
+Remember, the goal is to propose a point where your foreshore are going to pass through.
+Now, since I've taken this path to this goal, I have passed through any of the squares in between, and so these are my possible sub-candidates.
+And all other black squares, I don't want that.
+So now I have a classifier I can train, I can say any of these squares on my path are good squares to subdivide and any not on my path are bad ones.
+They go a step further, I believe, and they actually say we're, so if this was m steps, we're actually going to take the particular square that is reached after m half steps.
+So the exact middle point of that path is going to be our,
+training example for subdivisions.
+So you have a classifier that has exactly one target to train.
+So this you train along with acting in the environment.
+And of course, your model for proposing subdivisions is going to be better and better and better and better.
+And that makes your planning algorithm better and better, and that makes you collect better episodes.
+And so you can sort of bootstrap yourself up this thing.
+Now, this is the basic experiment of the paper.
+They also do this in a 3D manner, where they move this little spider here around.
+So the spider was trained to just move from one block to the next block, and the planner basically has to tell it where to go.
+And they show that they outperformed the traditional Monte Carlo tree search.
+Now, I have to say this is cool, but you have to remember this is only advantageous in very, very specific types of problems.
+So first of all, it has to be this goal-directed nature.
+Otherwise, you probably couldn't train this predictor here super well.
+Then, given that you have such a good predictor, the problem needs to be such that
+If you have a start state, there could be many ways to go about reaching the end.
+And if you have an end state, there could be many ways from where you could come from.
+But there is some bottleneck state in the middle where you're pretty sure that you're going to have to pass through it.
+If your problem is of that nature, if it has these bottleneck states where you can predict with reasonable accuracy that you're going to have to pass through, then this is a good algorithm to consider.
+is intuitively outperforming the original Monte Carlo tree search because you have much less deep search tree and you can effectively limit its width by using that model.
+They also have made this website where they show videos of their spider and
+I haven't seen it in a while, but it is, it is like next to the mouse.
+If you can see it.
+So, so you, you see, this is kind of a continuous control problem that also requires planning.
+And they also have these kind of gifts of how they're, they're, what order their plans are constructed in.
+So I invite you to check this out, read the paper.
+Uh, if you like this, uh, subscribe, leave a like, leave a comment, and thank you for listening.
+Bye-bye.

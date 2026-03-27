@@ -1,0 +1,5 @@
+One popular method to learn the energy-based model is by minimizing the feature divergence.
+This is defined as a difference between the score integrated by the data distribution, whereas the score is a gradient of the log density.
+However, the score function of the true data distribution is unknown.
+Fortunately, we can formulate feature divergence in such a way that it only requires the score function of the model and the trace of the Jacobian of the score functions.
+However, training with Hessian stress is challenging for high-dimensional data distribution.

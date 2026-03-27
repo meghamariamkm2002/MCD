@@ -1,0 +1,64 @@
+Okay, final set of experiments.
+As you can tell, this is mostly an experimental paper and it is always easy to criticize experimental papers and rightfully so because I would not trust this very much.
+But given that it comes from a big institution and it is a very well-written paper, I would trust it more than I would a regular paper.
+And I would say if you're in practice, this is certainly worth trying.
+Absolutely.
+I just think that some of the things aren't researched, like some of my questions aren't answered of this.
+So they investigate sizes.
+So they now build shuffle buffers.
+So we have batch echoing, but they say, ah, but we can do batch echoing with shuffle buffers.
+So after the batch echoing, right, we have this state where we have the batching, and then we have the echoing.
+So this is our echo buffer.
+where we output the each data point multiple times.
+And then we have another buffer, which is a shuffle buffer.
+Now the shuffle buffer just collects data points and then shuffles them around before outputting them.
+And that means even though we, you know,
+output this five times, it might not come out five times after each other, it might be that it comes out once.
+And then another data point that was already in the shuffle buffer comes out.
+And then it'll just say that in total, it comes out five times, but it is first shuffle together with a bunch of other data points.
+Of course, this uses more memory, but it returns to that more IID setting.
+And you can see here as the buffer size increases, then the performance gets more and more to the performance that you would have with completely fresh data.
+So again, trading off freshness and doing multiple steps by basically repeating data points
+straight out versus repeating data points shuffled.
+And also here you have the same with example echoing.
+So if you apply the shuffle buffer to example echoing and you increase its size, you can get very, very, very close to the performance that you would get with fresh data.
+Which, of course, if you increase the shuffle buffer to the size of the dataset, you are at the situation.
+That's the limit.
+You are at the situation of fresh data.
+If you do example echoing.
+Here is where it gets into the funky part, where they say we actually measure
+the validation cross entropy and the validation accuracy versus the number of fresh examples read.
+And here I want to concentrate on the ResNet 50 on ImageNet.
+And as you can see, most of these models, um, they pretty much end up in the same place here.
+It's just that the echoing models end up there faster, right?
+And this, this is, I mean,
+This is where it gets a bit confusing, honestly, because why do you have this super sharp thing here?
+Because usually, and here it sort of speeds up in the middle, you see that, and then it kind of sharply declines.
+Is this maybe because they drop the learning rate or something?
+Now, my main thing is that the performance here, even though this target thing is lower than the, even though this target thing is the same for everyone, it is lower than the best reachable accuracy.
+I'm, I'm just this, this is just confusing.
+If this is really true.
+Whoa.
+If this is really true, I think we have a lot to learn about, um, SGD yet and how we're not actually doing SGD correctly.
+And because it seems like almost the echo versions are better or reach a better accuracy than the baseline.
+I don't know, do they just cap it at the performance?
+I don't think so.
+I think they say they let it reach.
+They also have these things right here, these curves where they say this is the best we reach and this is the ResNet32 on C410.
+And again, 91% on C410 is just very, very low.
+And I'm almost thinking that, okay, this might help if you just throw something that we know is kind of overpowered because we can reach 99% or at least you can reach something like 94% on C410 easily, easily with a network smaller than ResNet32.
+Maybe this effect manifests if you have actually something that could reach higher, but for some reason you only reach this low.
+I'm not sure, but this is confusing.
+And if this is really true, yeah, I would just, if it's true, which I believe, I believe this paper, it might be just an effect of not reaching the actual ceiling.
+And again, look at this.
+This is just the curves are just strange, right?
+You have the echoing before augmentation, like it seems like it's outperforming the fresh data points.
+I don't know, there's a little bell in my head that doesn't like this.
+If it's actually true, then you know, that's cool.
+But yeah, so my main criticisms are a bit with the experimental methodology, for example, where they increase the batch size, but still reach the same target accuracy, even though we know that there is a higher ceiling if you increase the batch size for language models.
+My other criticism is the non-investigation of this connection, this connection right here, maybe, but all in all, it's a pretty cool paper.
+If I had a big company with these pipeline issues, I would absolutely implement this.
+This seems like a no-brainer to do this and can help you tremendously.
+All right, that was it.
+Thank you for listening.
+If you're still here, subscribe, like, tell a friend, bye-bye.

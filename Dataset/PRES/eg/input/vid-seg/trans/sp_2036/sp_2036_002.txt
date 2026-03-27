@@ -1,0 +1,2 @@
+consider a class of optimization problems called finance sum coupled compositional optimization, FCCO.
+This is a closely related problem to the standard compositional problem, where the inner function g is independent from the instance i of the outer function f. However, solving FCCO naively as a standard compositional problem is not efficient and could be prohibited.

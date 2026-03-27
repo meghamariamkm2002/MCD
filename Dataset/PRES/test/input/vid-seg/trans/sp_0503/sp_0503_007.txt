@@ -1,0 +1,3 @@
+To make advantage of proposed model, we developed an algorithm for solving it.
+We considered the empirical distribution of mu and nu, and we introduced the following four-way tensor and tensor matrix multiplication.
+Then, RGW can be reformulated accordingly in Formulation 1.

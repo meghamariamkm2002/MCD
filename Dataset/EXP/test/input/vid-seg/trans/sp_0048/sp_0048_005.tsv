@@ -1,0 +1,55 @@
+start	end	text
+31	913	up this.
+1975	9150	So the crucial part of the paper I think is right here and it's sort of like, you know, section 2.2.
+10773	21094	But I would want to point out that I think this is the crucial part, this is why the method works ultimately, why it's able to build this implicit gradient.
+21074	25480	So the section is called proximal regularization in the inner level.
+26161	28284	And we'll go through this with a bit of detail.
+29125	40922	To have sufficient learning in the inner level while also avoiding overfitting, ALG, that's the inner optimization procedure, needs to incorporate some form of regularization.
+40902	60278	So their goal here, or their point here is that, especially if these individual tasks have small training data sets, you need to have some kind of protection against overfitting.
+60258	73017	And they say since MAML uses a small number of gradient steps, this corresponds to early stopping and can be interpreted as a form of regularization and Bayesian prior.
+73618	81911	So MAML is this previous method, this basic method that back propagates through the optimization procedure.
+82552	88020	And since it does this, since it back propagates through the optimization procedure,
+88000	99706	It's computationally limited to only run very few forward optimization steps because it then has to back propagate through each one, right, needs to store each one.
+100789	102172	So it's computationally limited.
+102212	104136	So by necessity.
+104116	107120	it uses only a small number of gradient steps.
+108462	110465	And therefore, this is kind of early stopping.
+110525	118455	And we know to prevent overfitting, one thing you can do is to stop before your training accuracy reaches full zero.
+119116	126326	And you can stop earlier than that, ideally at a point when your validation accuracy reaches the low point.
+126927	133195	But they say basically this this limited number of steps is a form of regularization.
+133175	139044	Now, of course, in this new method, we don't have this constraint anymore.
+139104	150542	We can run our inner optimization to super convergence, and therefore, we don't have this implicit regularizer anymore, and we'll have to make up for that.
+150522	161904	They say, in cases like ill conditioned optimization landscapes and medium shot learning, we may want to take many gradient steps, which poses two challenges for mammal.
+162505	171061	First, we need to store and differentiate through the long optimization path of ALG, which imposes a considerable computation and memory burden, right?
+171081	172243	That's what we said.
+172223	186518	Second, the dependence of the model parameters phi i on the meta parameters shrinks and vanishes as the number of gradient steps in algroes, making meta learning difficult.
+186538	200053	So what they're saying is if you optimize your inner optimization algorithm to the very end, then it is not very, it's dependence and especially for gradient descent, it's linear dependence
+200033	221080	on the initial parameters, so on the meta parameters, shrinks the more optimization steps you do, because the more and more you're going to basically forget about your initialization, move away from that and move to a local optimum, which you could reach from many, many different initializations.
+221060	223763	Though that's still a question of whether that's happening.
+224264	226126	But that's the idea here, right?
+226447	230071	If you're at the local optimum, you could have reached that from any sort of point.
+230792	236920	And there's going to be very little information about the end of the procedure from the beginning.
+237020	241566	And therefore, if you want to calculate the gradient, that's going to be like super inaccurate.
+241546	254684	And they say to overcome these limitations, so they solve these two things in one right here, we consider a more explicitly regularized algorithm.
+255785	262294	So what they'll say is they'll say, we don't just want to optimize this inner objective.
+262714	263976	So this would be here.
+263956	268830	So we don't just want to find the minimum of this inner loss function.
+268890	270173	That's one goal we have.
+270755	275950	But the other goal we have is to stay close to the initial parameters.
+276090	278978	And that's where this regularizer comes in here.
+278958	292536	So this basically says we want with our parameters here that we are optimizing, we want to find them such that they minimize this loss function, really minimize it, find the best point.
+292797	302790	But also with a trade-off of lambda, we want to stay close to the initial parameters that we started from.
+303091	308458	This is the initial parameters and the closeness is measured in the L2 norm.
+308438	321884	So it's a quadratic regularizer on how close you might know from initial supervised learning or something that sometimes you do something like plus lambda times the L2 norm of the weight.
+321984	328557	So this would be called weight regularization, weight decay, L2 normalization, something like this.
+328537	334625	where you regularize your weights such that you stay close to the zero point, right?
+334825	339931	Implicitly in this, there is a minus zero given.
+341133	344537	But here, you want to stay close to your initial parameters.
+344998	350725	So the inner optimization is no longer just minimizing the loss on the training data set.
+350765	352587	The inner optimization is that.
+352567	368263	And with ALG star, we denote, so if ALG has a star, we say that this is referring not to the procedure of the algorithm, but to the minimum that the algorithm has found.
+368243	381231	So Alex star means the algorithm has optimized this inner procedure to its minimum, which is a balance of the training loss of that task and staying close to the original parameters.
+381872	386843	And this, I think this, um, they say that here, the,
+386823	399830	Proximal regularization term in equation three encourages Phi i to remain close to Theta, thereby retaining a strong dependence throughout.
+399890	402235	This is why their method works.
+403678	415041	And we're going to see in the math right soon how exactly they're able through this to establish

@@ -1,0 +1,36 @@
+1
+00:00:00,031 --> 00:00:01,735
+Yeah, so that's the paper.
+
+2
+00:00:01,895 --> 00:00:19,272
+They have kind of a discussion, the depiction of attention matrices down here, where they show that their model, you know, does something kind of different from other models in terms of where it attends and it has less of these global attention patterns like Roberta has right here.
+
+3
+00:00:19,252 --> 00:00:27,388
+except for the very first one, which is the CLS vector, which makes sense and otherwise has a rather diagonal attention matrix.
+
+4
+00:00:27,408 --> 00:00:38,070
+So that's, you know, it's pretty sensible, though you can also make the case that sometimes there are just really important words in a sentence that everything should attend to.
+
+5
+00:00:38,050 --> 00:00:45,771
+I don't know, but it is state-of-the-art and it is a cool algorithm and is worth considering if you build your next model.
+
+6
+00:00:46,332 --> 00:00:48,859
+Alright, with that, I thank you for listening.
+
+7
+00:00:49,461 --> 00:00:50,463
+Subscribe if you haven't.
+
+8
+00:00:50,684 --> 00:00:51,326
+I'll see you next time.
+
+9
+00:00:51,386 --> 00:00:51,807
+Bye-bye.
+

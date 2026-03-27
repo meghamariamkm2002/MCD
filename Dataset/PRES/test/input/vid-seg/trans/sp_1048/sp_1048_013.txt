@@ -1,0 +1,4 @@
+with the traditional gradient clipping, which is widely used in both centralized training and also failure to learning.
+The difference of our partner is that we just change the order of these two operations.
+We first do a decay and then do the gradient clipping.
+So no additional hyperparameters are introduced.

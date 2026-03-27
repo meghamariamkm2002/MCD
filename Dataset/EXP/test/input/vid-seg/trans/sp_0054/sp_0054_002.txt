@@ -1,0 +1,83 @@
+techniques.
+The first is the disentangled attention mechanism, where each word is represented using two vectors that encode its content and position respectively.
+And the attention weights among the words are computed using disentangled matrices on their contents and relative positions respectively.
+Okay, we'll look at that first.
+So what they mean is when you have a, when you have a multi head attention layer, what we want to do is we want to transform one sequence of tokens of token representations into the next sequence of token representations.
+Now, usually every token, let's say these are our tokens, and this could be a sentence in a language like I am hungry.
+And here is like this classification token that we always add when we train BERT.
+Every one of these tokens is represented by a vector.
+Like this is a vector.
+This is a vector.
+It has many entries.
+This is a vector.
+Some of the vectors are thicker than others.
+I mean, that's just a
+This one just hasn't eaten enough.
+So every one of these tokens is represented by a vector.
+And what a multi head attention layer does is it simply transforms this via means of the attention mechanism into a series of vectors again.
+So we put in a series of vectors and we end up with another series of vectors.
+If you want to know what a multi head attention does in detail, please go look at my video attention is all you need where that's explained specifically it is a attention it is sort of an information routing algorithm.
+that sees how information needs to be routed from tokens to tokens, using queries, keys, values, and so on.
+If you haven't seen the video, it's a beautiful mechanism, but I'm not going to explain it again right here.
+I'm sorry.
+All right.
+So in this,
+What you usually do is you transform vectors into vectors.
+And because of how the multi-head attention mechanism works, the mechanism has no way to discern where in a sentence, for example, a given token is.
+So it cannot differentiate between this sentence here and the sentence, am I hungry?
+If it's just multi head attention is just not possible for it because it treats the incoming Sentence as like a bag of words, which is not the case in for example a recurrent neural network.
+So recurrent neural network would go one by one over these word representations and
+it has kind of a mechanism to see what a sequence is.
+However, multi-edit tension doesn't.
+So what people usually do is they augment these representations with position encodings.
+So that's at the beginning, you know, where you might ask, where do these vectors come from?
+Of course, they come from the last layer, but the very first vectors you put in come from a table.
+And these are your classic word vectors.
+So at some point, you have a big table, and the big table has your entire vocabulary in it.
+So every word in the language that you consider.
+So there's I, and there's M, and there is you, and there is Apple, and there is Hungry.
+And there is even this CLS token, all of them have a table entry and all of them have a vector associated with them.
+Now these vectors are trainable, so the neural network can decide itself what goes into these vectors, but every word has a fixed vector in there.
+And in the very first layer, because you don't have a last layer to draw from, you simply look at what token it is, you go to the table,
+right here you retrieve this vector and you put it here and that's your start and then you transform up the layers of course every time from the last layer but at the beginning you have embeddings now the same thing you do for positions okay so you also have a second table usually and the original transformer paper by the way these were fixed vectors but nowadays I think most of them are also trained
+So you label the positions.
+So that's position, that's position one, that's position two, three and four.
+So for every position two, three, four, and maybe you have also five and six, there is a maximum length.
+But right now we consider sentences of length three with the CLS token appended.
+So these are length four.
+So every position also has a vector.
+And I'm going to actually draw these vectors in this color.
+So every position has a vector.
+irrespective of what word there is, okay?
+Right now, we just have vectors for words irrespective of where they are.
+And we have vectors of positions irrespective of what words there are.
+And what you do is same, you look at what position is here, you go to the table, you retrieve that embedding, and you somehow also put it here.
+Now, I've made a bit of a mess here with this thing, sorry.
+So how do you, now you have two vectors all of a sudden per word.
+So you have one that is a position and you have one that is the kind of the word itself that represents the word itself.
+And the neural network, it needs both in order to understand the sentence, right?
+If every word has these two vectors at the beginning, now it can understand, aha, this is the word I that is at the beginning of the sentence.
+So it's probably the subject.
+of a sentence.
+However, if the word am was at the beginning, it could be, oh, it's probably a question because it starts with a verb like am I hungry?
+Okay.
+And it can also evaluate the relative distances of things to each other and so on.
+So given this information, the neural network has all the tools it sort of needs to understand that sentence as a sequence.
+Now, you have basically two ways of combining the two things.
+First of all, you can concatenate them, which means that I'm going to do it in this.
+You just put, no, that's terrible.
+You just put the, I'm not too skilled yet with this new thing.
+You put this on top here, imagine this is the same length and you just concatenate the vector.
+So now the vector is longer.
+Of course, that also increases your dimensionality, computational issues and so on.
+So what a lot of people do is they simply, you know, line them up if they're the same size and they add them together element wise.
+And, you know, in the worst case, the neural network now can decide because both of these are trained, right?
+So the neural network can absolutely decide that, you know, in the top part here, it simply learns a bunch of zeros.
+And then the bottom part here, it simply learns a bunch of zeros here.
+So essentially it's a concatenation.
+That's the worst case.
+In the best case, the neural network can actually do some kind of information combining already in this addition step down here.
+Okay.
+So the,
+You you give both encodings to the neural network as a single vector, right?
+So what goes into

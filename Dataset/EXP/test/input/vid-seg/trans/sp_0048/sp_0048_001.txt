@@ -1,0 +1,3 @@
+Hi there.
+Today we're looking at meta-learning with implicit gradients by Arwind Rajeshwaran, Chelsea Finn, Shyamkakad and Sergey Levine.
+So this paper deals with the task of meta-learning.

@@ -1,0 +1,15 @@
+start	end	text
+31	5441	finding a RNN cell for the Penn Tree Bank.
+7225	20149	This is a language modeling task and this is a benchmark for neural architecture search where you're trying to find a good RNN cell to get the perplexity really low.
+20129	35843	And here you can see if they give the same amount of data to all the methods, then the benchmark neural architecture search is worse than the synthetic Petri dish informed architecture search.
+35823	40510	Now, one has to say on the full data, I believe the NAO gets to about here.
+41071	49104	But of course, if you give all of them the same data, the Petri dish beats this method.
+49224	57898	And I think still this method here uses way more compute because it always has to evaluate all the candidates.
+57878	65168	And that's exactly one of these where I learn an architecture to predict the other architecture by just looking at it.
+65369	71718	So it works, but it doesn't work as well as actually running the architecture in an abstract fashion.
+72018	78688	This also shows you the importance of selecting your experimental evaluation in a smart way.
+78988	84696	They argue for very long why it makes sense to evaluate everything on reduced data.
+84676	91528	such that their method here can be better and they don't have to compare to the full thing.
+92069	101887	It's easier for them to work on reduced data and they argue, you know, it's what people usually do in practice and that's the task they focus on.
+101907	107798	So, you know, good paper writing right here.
+108900	110042	Yeah.

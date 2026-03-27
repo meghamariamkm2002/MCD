@@ -1,0 +1,56 @@
+WEBVTT
+
+00:00.031 --> 00:04.818
+these samples in the video description for sure.
+
+00:05.660 --> 00:07.162
+So I think we've gone over everything.
+
+00:07.442 --> 00:15.114
+The generator starts off with text, puts that into normalized text, calculates hidden features right here.
+
+00:15.475 --> 00:27.253
+These hidden features on one hand are used to predict the lengths of each of the tokens in the sound and are also used as an input to the generator here.
+
+00:27.233 --> 00:42.833
+Now they can only be used as an input to the generator if the generator knows how to align them in time and how to align them in time is predicted from these predicted lengths right here via this aligner algorithm.
+
+00:43.314 --> 00:45.757
+The lengths are the only thing that is predicted.
+
+00:46.238 --> 00:48.260
+Everything then is deterministic.
+
+00:48.661 --> 00:55.890
+The aligner is simply a Gaussian kernel over the predicted locations on the
+
+00:55.870 --> 01:04.205
+on the time axis, so the Gaussian kernel is to make this alignment a bit fuzzy, to make this prediction fuzzy.
+
+01:04.786 --> 01:11.859
+You perform a weighted sum with these features and then the generator knows where to put the tokens.
+
+01:12.360 --> 01:18.030
+Finally, the generator can upsample the now aligned tokens into sound.
+
+01:18.010 --> 01:20.213
+This goes into the discriminator.
+
+01:20.514 --> 01:31.970
+The discriminator is actually five different discriminators, which each try to discriminate the generated from the real at different time scales.
+
+01:32.892 --> 01:44.929
+In addition to that, you have a discriminator on the spectrograms, and you also have an L1 loss on the spectrograms, which helps especially at the beginning of training.
+
+01:44.909 --> 02:09.297
+For the L1 loss of the spectrograms, you have to again compute an alignment, but you do this in a deterministic way by this thing down here, this dynamic time warping where you simply assume that they are aligned and forgive them for not being aligned with a soft penalty and not a hard zero score.
+
+02:10.306 --> 02:11.731
+All right, this was the paper.
+
+02:11.992 --> 02:17.871
+Again, if you like this, leave a like, a comment, share it out, subscribe and have a good day.
+
+02:18.092 --> 02:18.493
+Bye-bye.
+

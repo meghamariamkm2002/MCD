@@ -1,0 +1,22 @@
+[
+  {
+    "input_path": "layout_results/sp_0043/sp_0043_page_3.png",
+    "page_index": null,
+    "boxes": [
+      {
+        "cls_id": 14,
+        "label": "algorithm",
+        "score": 0.889184296131134,
+        "coordinate": [
+          445.3645935058594,
+          298.3349304199219,
+          2097.68603515625,
+          785.2958374023438
+        ],
+        "text": "Collect data D by random policy.\nor each episode do\nTrain dynamics model fo using D.\nfor time t until the episode is over do\nOptimize trajectory {at, 0t+1, . . . , at+H , Ot+H+1}.\nImplement the first action at and get new observation Ot.\nend for\nAdd data {(s1, a1, . . . , aT , 0T )} from the last episode to D.\nend for",
+        "id": "sp_0043_page_3_1",
+        "seg_type": "algo"
+      }
+    ]
+  }
+]

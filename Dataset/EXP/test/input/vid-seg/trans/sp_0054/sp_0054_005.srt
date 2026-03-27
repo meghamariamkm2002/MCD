@@ -1,0 +1,148 @@
+1
+00:00:00,031 --> 00:00:04,517
+So as I said, they do relative position encoding.
+
+2
+00:00:04,537 --> 00:00:05,198
+What does that mean?
+
+3
+00:00:05,658 --> 00:00:13,648
+So that means that the position encoding depends on where you look from.
+
+4
+00:00:13,989 --> 00:00:18,435
+So what I've drawn at the beginning, like this here, this isn't entirely correct.
+
+5
+00:00:19,376 --> 00:00:21,439
+You have to look at each token individually.
+
+6
+00:00:21,499 --> 00:00:24,182
+So for this middle token here, for example,
+
+7
+00:00:24,162 --> 00:00:26,225
+The positions look like this.
+
+8
+00:00:26,285 --> 00:00:29,430
+They look like negative 2, negative 1, 0, 1, 2.
+
+9
+00:00:29,791 --> 00:00:40,247
+And you would have kind of a table, not with absolute positions, but you'd actually have a table with negative 2, negative 1, 0, plus 1, plus 2, and so on.
+
+10
+00:00:40,787 --> 00:00:42,210
+And you would retrieve those vectors.
+
+11
+00:00:42,270 --> 00:00:47,398
+And then when you consider the next vector, this one right here, it would look different.
+
+12
+00:00:47,698 --> 00:00:51,604
+It would write this would be 0, this minus 1, minus 2, and so on.
+
+13
+00:00:51,584 --> 00:00:53,506
+So they do two things.
+
+14
+00:00:53,686 --> 00:00:55,528
+First of all, they truncate at some point.
+
+15
+00:00:56,188 --> 00:00:58,250
+They simply say, well, our context window is two.
+
+16
+00:00:58,711 --> 00:01:03,415
+So instead of going negative three here, we simply keep it at negative two.
+
+17
+00:01:03,515 --> 00:01:07,279
+So everything beyond negative two gets also the vector for negative two.
+
+18
+00:01:07,359 --> 00:01:13,805
+So that vector here is going to be just plugged into here and into here for this token.
+
+19
+00:01:14,606 --> 00:01:21,372
+And for this token, for the previous token, it is only going to be plugged here.
+
+20
+00:01:21,352 --> 00:01:21,993
+nowhere else.
+
+21
+00:01:22,974 --> 00:01:27,559
+There are ways to efficiently implement this, and that's this algorithm right here.
+
+22
+00:01:27,939 --> 00:01:36,909
+Don't want to go too much into it, but just so you're aware, you don't have to consider each token really individually during it attention.
+
+23
+00:01:36,990 --> 00:01:39,112
+That would be prohibitively expensive.
+
+24
+00:01:39,212 --> 00:01:49,063
+So you can do one big matrix multiply and then sort of pick and choose together from your, from the matrix that results, especially with this truncation.
+
+25
+00:01:49,644 --> 00:01:50,785
+This is this algorithm.
+
+26
+00:01:52,182 --> 00:01:54,044
+So they call it efficient implementation.
+
+27
+00:01:55,004 --> 00:02:02,491
+All right, so that is this position enhanced or disentangled information.
+
+28
+00:02:02,551 --> 00:02:03,912
+Why is it disentangled again?
+
+29
+00:02:04,332 --> 00:02:07,975
+Because in every layer, they have a side input.
+
+30
+00:02:08,255 --> 00:02:16,442
+This piece right here is the side input that they sort of feed on top of this information.
+
+31
+00:02:16,963 --> 00:02:21,987
+And they specifically construct the attention matrix out of the three things.
+
+32
+00:02:21,967 --> 00:02:23,851
+It's almost like two contributions.
+
+33
+00:02:23,891 --> 00:02:27,700
+The one contribution is, hey, let's feed in position information in each layer.
+
+34
+00:02:28,001 --> 00:02:30,165
+And I think that has been tried before.
+
+35
+00:02:30,226 --> 00:02:31,027
+That's pretty simple.
+
+36
+00:02:31,067 --> 00:02:48,507
+But then the second thing is that we don't simply add the two vectors when we input it into the attention, but we're going to construct basically three attention matrices and then add those together once we determine the inner products between each of those.
+
+37
+00:02:48,787 --> 00:02:50,050
+Okay.
+

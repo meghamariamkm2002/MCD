@@ -1,0 +1,3 @@
+In the literature of weekly convex optimization, a common solution to such an issue is to use the gradient of the moral envelope as the measure of stability.
+The merual envelope of the objective function is defined by an implicit smoothing function.
+The small gradient of the merual envelope at w implies that w is near some point w hat that is nearly stationary of f. If the gradient of merual envelope at point w is upper bounded by epsilon, we call nearly epsilon stationary point of f.

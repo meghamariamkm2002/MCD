@@ -1,0 +1,44 @@
+[
+  {
+    "input_path": "/tmp/megha/PDF-Extract-Kit/Presentation/layout_pap/sp_1048/sp_1048_page_3.png",
+    "page_index": null,
+    "boxes": [
+      {
+        "cls_id": 14,
+        "label": "algorithm",
+        "score": 0.7799022793769836,
+        "coordinate": [
+          440.6535339355469,
+          802.9268188476562,
+          2102.55810546875,
+          1142.6439208984375
+        ],
+        "text": "Tgorinm T kouna t Or FeuAvg\nequire: Global model xt\u22121, learning rate \u03bbl, \u03bbg, number of local updates 7.\n: for Client i = 1, . . . , M do\nLet xt,\nt,i\n= xt\u22121. Update xt\nt,i\nt,i\n\u2212 \u03bbl Fi(xt,i\u22121) for k = 1, \u00b7 \u00b7 \u00b7 , \u03c4 .\n= xt\nk\nk\u22121\nSend local update \u0394t,i\n= x\n,i\n\u2212 xt,\n.t,i\nback to the server.\n: end for\n: Aggregate local updates: \u2206t =",
+        "input_path": "/tmp/megha/PDF-Extract-Kit/Presentation/layout_pap/sp_1048/sp_1048_page_3.png",
+        "id": "sp_1048_page_3_1",
+        "seg_type": "algo"
+      }
+    ]
+  },
+  {
+    "input_path": "/tmp/megha/PDF-Extract-Kit/Presentation/layout_pap/sp_1048/sp_1048_page_5.png",
+    "page_index": null,
+    "boxes": [
+      {
+        "input_path": "/tmp/megha/PDF-Extract-Kit/Presentation/layout_pap/sp_1048/sp_1048_page_5.png",
+        "cls_id": 14,
+        "label": "algorithm",
+        "score": 0.9144349098205566,
+        "coordinate": [
+          440.0478515625,
+          296.8925476074219,
+          2099.283447265625,
+          1119.8330078125
+        ],
+        "text": "equire: Functions \u03bbt, \u00b5t, Fi, constant \u03bbg, T, \u03c4 > 0, sets Ct.\n: for Communication rounds t = 1, . . . , T do\nGlobal server sends model xt-1 to participated clients in round t.\nfor Client i  Ct do\nLet xt,\nt,i\n= x\n.\u22121\nfor Iteration k = 1, \u00b7 . . , \u03c4 do\nCompute (stochastic) gradient: gk,1\nt,i\nCompute adaptive learning rate and weight decay:\nt,i\n= \u03bbt(gk\u22121\n,t,i\n,t,i\n,t,i\n= \u00b5t(gk\u22121,xt\n,t,i\n,t,i\nx\nk\u22121),\n\u00b5k\u22121\nk\u22121\nCk\u22121).\nUpdatex\n,t,i\n,t,i\n,t,i\n\nk\nCk\u22121\nend for\nSend local update \u0394t,i\n= x0\n,,i\n\u2212 xt,\n.t,i\nback to the server.\nend for\nAggregate local updates: \u2206t =\n| \u2206t,i, and update global model: xt = xt\u22121 \u2212 \u03bbg\u2206t.\n1\n\u2211|\n|Ct|\n|Ct|\ni=1",
+        "id": "sp_1048_page_5_1",
+        "seg_type": "algo"
+      }
+    ]
+  }
+]

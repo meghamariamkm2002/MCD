@@ -1,0 +1,2 @@
+So, beyond the main resource, we implement some additional analysis.
+For example, how to compare this EQ strategy with random query strategy and also check the effects of a primary trivial variable batch size and the batch orders on the

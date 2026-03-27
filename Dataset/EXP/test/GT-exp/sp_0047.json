@@ -1,0 +1,632 @@
+[
+  {
+    "start_time": 0.0,
+    "end_time": 110.0,
+    "id": "001",
+    "title": "Intro & Outline",
+    "filename": "Videos/sp_0047.mp4",
+    "paper_filename": "Papers/sp_0047.pdf",
+    "type": "exp-vid",
+    "relevant_segments": [
+      {
+        "para_id": "p2",
+        "section_heading": "Unknown",
+        "text": "The recently introduced continuous Skip-gram model is an effici nt method for learning high-quality distributed vector representations that capture a large number of precise syntactic and semantic word relationships. In this paper we present several extensions that improve both the quality of the vectors and the training speed. By subsampling of the frequent words we obtain significa t speedup and also learn more regular word representations. We also describ a simple alternative to the hierarchical softmax called negative sampling. An inherent limitation of word representations is their indifference to word order and their inability to represent idiomatic phrases. For example, the meanings of “Canada” and “Air” cannot be easily combined to obtain “Air Canada”. Motivated by this example, we present a simple method for finding phrases in t xt, and show that learning good vector representations for millions of phrases is possible.",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p3",
+        "section_heading": "1 Introduction",
+        "text": "Distributed representations of words in a vector space helplearning algorithms to achieve better performance in natural language processing tasks by grouping similar words. One of the earliest use of word representations dates back to 1986 due to Rumelhart,Hinton, and Williams [13]. This idea has since been applied to statistical language modeling with considerable success [1]. The follow up work includes applications to automatic speech recognition and machine translation [14, 7], and a wide range of NLP tasks [2, 20, 15, 3, 18, 19, 9].",
+        "seg_type": "par"
+      }
+    ]
+  },
+  {
+    "start_time": 110.0,
+    "end_time": 340.0,
+    "id": "002",
+    "title": "Distributed Word Representations",
+    "filename": "Videos/sp_0047.mp4",
+    "paper_filename": "Papers/sp_0047.pdf",
+    "type": "exp-vid",
+    "relevant_segments": [
+      {
+        "caption": "Figure 1: The Skip-gram model architecture. The training objective is to learn word vector representations that are good at predicting the nearby words.",
+        "captionBoundary": {
+          "x1": 108.0,
+          "x2": 503.87445068359375,
+          "y1": 239.12083435058594,
+          "y2": 254.6397705078125
+        },
+        "figType": "Figure",
+        "imageText": [],
+        "name": "1",
+        "page": 1,
+        "regionBoundary": {
+          "x1": 260.64,
+          "x2": 333.12,
+          "y1": 87.84,
+          "y2": 232.32
+        },
+        "renderDpi": 150,
+        "renderURL": "//Users/meghamariam/PROJECTS/PROJ1_Dataset/PROJ1_Crossmodal-Traversal/DATASET/pap-seg/fig/sp_0047/sp_0047-Figure1-1.png",
+        "id": "sp_0047-Figure1-1",
+        "seg_type": "fig"
+      },
+      {
+        "caption": "Figure 2: Two-dimensional PCA projection of the 1000-dimensional Skip-gram vectors of countries and their capital cities. The figure illustrates ability of the model to automatically organize concepts and learn implicitly the relationships between them, as during the training we did not provide any supervised information about what a capital city means.",
+        "captionBoundary": {
+          "x1": 107.99981689453125,
+          "x2": 504.00128173828125,
+          "y1": 345.68084716796875,
+          "y2": 381.1201171875
+        },
+        "figType": "Figure",
+        "imageText": [
+          "Lisbon",
+          "Warsaw",
+          "Ankara",
+          "Madrid",
+          "Rome",
+          "Athens",
+          "Berlin",
+          "Portugal",
+          "Moscow",
+          "Poland",
+          "Tokyo",
+          "Paris",
+          "Beijing",
+          "Turkey",
+          "Spain",
+          "Greece",
+          "Italy",
+          "Germany",
+          "Russia",
+          "France",
+          "Japan",
+          "China",
+          "Country",
+          "and",
+          "Capital",
+          "Vectors",
+          "Projected",
+          "by",
+          "PCA",
+          "-2",
+          "-1.5",
+          "-1",
+          "-0.5",
+          "0",
+          "0.5",
+          "1",
+          "1.5",
+          "2",
+          "2",
+          "1.5",
+          "1",
+          "0.5",
+          "0",
+          "-0.5",
+          "-1",
+          "-1.5",
+          "-2"
+        ],
+        "name": "2",
+        "page": 3,
+        "regionBoundary": {
+          "x1": 138.72,
+          "x2": 474.71999999999997,
+          "y1": 88.32,
+          "y2": 326.88
+        },
+        "renderDpi": 150,
+        "renderURL": "//Users/meghamariam/PROJECTS/PROJ1_Dataset/PROJ1_Crossmodal-Traversal/DATASET/pap-seg/fig/sp_0047/sp_0047-Figure2-1.png",
+        "id": "sp_0047-Figure2-1",
+        "seg_type": "fig"
+      },
+      {
+        "para_id": "p2",
+        "section_heading": "Unknown",
+        "text": "The recently introduced continuous Skip-gram model is an effici nt method for learning high-quality distributed vector representations that capture a large number of precise syntactic and semantic word relationships. In this paper we present several extensions that improve both the quality of the vectors and the training speed. By subsampling of the frequent words we obtain significa t speedup and also learn more regular word representations. We also describ a simple alternative to the hierarchical softmax called negative sampling. An inherent limitation of word representations is their indifference to word order and their inability to represent idiomatic phrases. For example, the meanings of “Canada” and “Air” cannot be easily combined to obtain “Air Canada”. Motivated by this example, we present a simple method for finding phrases in t xt, and show that learning good vector representations for millions of phrases is possible.",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p10",
+        "section_heading": "1 Introduction",
+        "text": "Finally, we describe another interesting property of the Skip-gram model. We found that simple vector addition can often produce meaningful results. For example, vec(“Russia”) + vec(“river”) is close to vec(“Volga River”), and vec(“Germany”) + vec(“capital”) is close to vec(“Berlin”). This compositionality suggests that a non-obvious degree of langu ge understanding can be obtained by using basic mathematical operations on the word vector repres ntations.",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p9",
+        "section_heading": "1 Introduction",
+        "text": "The extension from word based to phrase based models is relatively simple. First we identify a large number of phrases using a data-driven approach, and then we treat the phrases as individual tokens during the training. To evaluate the quality of the phrase vectors, we developed a test set of analogical reasoning tasks that contains both words and phrases. A typical analogy pair from our test set is “Montreal”:“Montreal Canadiens”::“Toronto”:“Toronto Maple Leafs”. It is considered to have been answered correctly if the nearest representation to vec(“Montreal Canadiens”) - vec(“Montreal”) + vec(“Toronto”) is vec(“Toronto Maple Leafs”).",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p5",
+        "section_heading": "1 Introduction",
+        "text": "The word representations computed using neural networks are very interesting because the learned vectors explicitly encode many linguistic regularities and patterns. Somewhat surprisingly, many of these patterns can be represented as linear translations. Fr example, the result of a vector calculation vec(“Madrid”) - vec(“Spain”) + vec(“France”) is closer to vec(“Paris”) than to any other word vector [9, 8].",
+        "seg_type": "par"
+      }
+    ]
+  },
+  {
+    "start_time": 340.0,
+    "end_time": 720.0,
+    "id": "003",
+    "title": "Skip-Gram Model",
+    "filename": "Videos/sp_0047.mp4",
+    "paper_filename": "Papers/sp_0047.pdf",
+    "type": "exp-vid",
+    "relevant_segments": [
+      {
+        "para_id": "p11",
+        "section_heading": "2 The Skip-gram Model",
+        "text": "The training objective of the Skip-gram model is to find word representations that are useful for predicting the surrounding words in a sentence or a document. More formally, given a sequence of training wordsw1, w2, w3, . . . , wT , the objective of the Skip-gram model is to maximize the averg log probability",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p12",
+        "section_heading": "2 The Skip-gram Model",
+        "text": "wherec is the size of the training context (which can be a function ofthe center wordwt). Larger c results in more training examples and thus can lead to a higher accuracy, at the expense of the",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p13",
+        "section_heading": "2 The Skip-gram Model",
+        "text": "training time. The basic Skip-gram formulation definesp(wt+j |wt) using the softmax function:",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p14",
+        "section_heading": "2 The Skip-gram Model",
+        "text": "wherevw andv′w are the “input” and “output” vector representations ofw, andW is the number of words in the vocabulary. This formulation is impractical because the cost of computing ∇ log p(wO|wI) is proportional toW , which is often large (105–107 terms).",
+        "seg_type": "par"
+      },
+      {
+        "caption": "Figure 1: The Skip-gram model architecture. The training objective is to learn word vector representations that are good at predicting the nearby words.",
+        "captionBoundary": {
+          "x1": 108.0,
+          "x2": 503.87445068359375,
+          "y1": 239.12083435058594,
+          "y2": 254.6397705078125
+        },
+        "figType": "Figure",
+        "imageText": [],
+        "name": "1",
+        "page": 1,
+        "regionBoundary": {
+          "x1": 260.64,
+          "x2": 333.12,
+          "y1": 87.84,
+          "y2": 232.32
+        },
+        "renderDpi": 150,
+        "renderURL": "//Users/meghamariam/PROJECTS/PROJ1_Dataset/PROJ1_Crossmodal-Traversal/DATASET/pap-seg/fig/sp_0047/sp_0047-Figure1-1.png",
+        "id": "sp_0047-Figure1-1",
+        "seg_type": "fig"
+      },
+      {
+        "para_id": "p2",
+        "section_heading": "Unknown",
+        "text": "The recently introduced continuous Skip-gram model is an effici nt method for learning high-quality distributed vector representations that capture a large number of precise syntactic and semantic word relationships. In this paper we present several extensions that improve both the quality of the vectors and the training speed. By subsampling of the frequent words we obtain significa t speedup and also learn more regular word representations. We also describ a simple alternative to the hierarchical softmax called negative sampling. An inherent limitation of word representations is their indifference to word order and their inability to represent idiomatic phrases. For example, the meanings of “Canada” and “Air” cannot be easily combined to obtain “Air Canada”. Motivated by this example, we present a simple method for finding phrases in t xt, and show that learning good vector representations for millions of phrases is possible.",
+        "seg_type": "par"
+      },
+      {
+        "box": [
+          473.59259033203125,
+          1329.2750244140625,
+          750.4600830078125,
+          1401.4217529296875
+        ],
+        "text": [
+          "\\frac { 1 } { T } \\sum _ { t = 1 } ^ { T } \\sum _ { - c \\leq j \\leq c , j \\neq 0 } \\log p ( w _ { t + j } | w _ { t } )"
+        ],
+        "id": "sp_0047_page_0002-1",
+        "page": "sp_0047_page_0002",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          462.4889221191406,
+          202.3824920654297,
+          763.0228881835938,
+          288.1852722167969
+        ],
+        "text": [
+          "p ( w _ { O } | w _ { I } ) = \\frac { \\exp \\left( { v _ { w _ { O } } ^ { \\prime } } ^ { \\top } v _ { w _ { I } } \\right) } { \\sum _ { w = 1 } ^ { W } \\exp \\left( { v _ { w } ^ { \\prime } } ^ { \\top } v _ { w _ { I } } \\right) }"
+        ],
+        "id": "sp_0047_page_0003-1",
+        "page": "sp_0047_page_0003",
+        "seg_type": "eq"
+      }
+    ]
+  },
+  {
+    "start_time": 720.0,
+    "end_time": 895.0,
+    "id": "004",
+    "title": "Hierarchical Softmax",
+    "filename": "Videos/sp_0047.mp4",
+    "paper_filename": "Papers/sp_0047.pdf",
+    "type": "exp-vid",
+    "relevant_segments": [
+      {
+        "para_id": "p16",
+        "section_heading": "2.1 Hierarchical Softmax",
+        "text": "The hierarchical softmax uses a binary tree representationof the output layer with theW words as its leaves and, for each node, explicitly represents the relativ probabilities of its child nodes. These define a random walk that assigns probabilities to words.",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p20",
+        "section_heading": "2.1 Hierarchical Softmax",
+        "text": "The structure of the tree used by the hierarchical softmax has a considerable effect on the performance. Mnih and Hinton explored a number of methods for constructing the tree structure and the effect on both the training time and the resulting model accura y [10]. In our work we use a binary Huffman tree, as it assigns short codes to the frequent wordswhich results in fast training. It has been observed before that grouping words together by their frequency works well as a very simple speedup technique for the neural network based language modls [5, 8].",
+        "seg_type": "par"
+      },
+      {
+        "box": [
+          337.6272277832031,
+          739.9404296875,
+          884.4083862304688,
+          815.4151000976562
+        ],
+        "text": [
+          "p ( w | w _ { I } ) = \\prod _ { j = 1 } ^ { L ( w ) - 1 } \\sigma \\left( \\mathbb { I } n ( w , j + 1 ) = \\mathrm { c h } ( n ( w , j ) ) \\mathbb { I } \\cdot v _ { n ( w , j ) } ^ { \\prime } \\right. ^ { \\top } v _ { w _ { I } } \\right)"
+        ],
+        "id": "sp_0047_page_0003-3",
+        "page": "sp_0047_page_0003",
+        "seg_type": "eq"
+      }
+    ]
+  },
+  {
+    "start_time": 895.0,
+    "end_time": 1350.0,
+    "id": "005",
+    "title": "Negative Sampling",
+    "filename": "Videos/sp_0047.mp4",
+    "paper_filename": "Papers/sp_0047.pdf",
+    "type": "exp-vid",
+    "relevant_segments": [
+      {
+        "para_id": "p21",
+        "section_heading": "2.2 Negative Sampling",
+        "text": "An alternative to the hierarchical softmax is Noise Contrastive Estimation (NCE), which was introduced by Gutmann and Hyvarinen [4] and applied to language modeling by Mnih and Teh [11]. NCE posits that a good model should be able to differentiate da from noise by means of logistic regression. This is similar to hinge loss used by Collobert and Weston [2] who trained the models by ranking the data above noise.",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p22",
+        "section_heading": "2.2 Negative Sampling",
+        "text": "While NCE can be shown to approximately maximize the log probability of the softmax, the Skipgram model is only concerned with learning high-quality vector representations, so we are free to simplify NCE as long as the vector representations retain their quality. We define Negative sampling (NEG) by the objective",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p32",
+        "section_heading": "4 Learning Phrases",
+        "text": "This way, we can form many reasonable phrases without greatly increasing the size of the vocabulary; in theory, we can train the Skip-gram model using all n-grams, but that would be too memory intensive. Many techniques have been previously developedto identify phrases in the text; however, it is out of scope of our work to compare them. We decided to usea imple data-driven approach, where phrases are formed based on the unigram and bigram counts, usi g",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p23",
+        "section_heading": "2.2 Negative Sampling",
+        "text": "which is used to replace everylogP (wO|wI) term in the Skip-gram objective. Thus the task is to distinguish the target wordwO from draws from the noise distributionPn(w) using logistic regression, where there arek negative samples for each data sample. Our experiments indicate that values of k in the range 5–20 are useful for small training datasets, while for large datasets thek can be as small as 2–5. The main difference between the Negative sampling and NCE is that NCE needs both samples and the numerical probabilities of the noise distribution, while Negative sampling uses only samples. And while NCE approximately maximizes the log probability of the softmax, this property is not important for our application.",
+        "seg_type": "par"
+      },
+      {
+        "box": [
+          387.8111877441406,
+          1403.1248779296875,
+          839.23095703125,
+          1472.7008056640625
+        ],
+        "text": [
+          "\\log \\sigma { ( v _ { w _ { O } } ^ { \\prime } } ^ { \\top } v _ { w _ { I } } ) + \\sum _ { i = 1 } ^ { k } \\mathbb { E } _ { w _ { i } \\sim P _ { n } ( w ) } \\left[ \\log \\sigma { ( - { v _ { w _ { i } } ^ { \\prime } } ^ { \\top } v _ { w _ { I } } ) } \\right]"
+        ],
+        "id": "sp_0047_page_0003-2",
+        "page": "sp_0047_page_0003",
+        "seg_type": "eq"
+      }
+    ]
+  },
+  {
+    "start_time": 1350.0,
+    "end_time": 1550.0,
+    "id": "006",
+    "title": "Mysterious 3/4 Power",
+    "filename": "Videos/sp_0047.mp4",
+    "paper_filename": "Papers/sp_0047.pdf",
+    "type": "exp-vid",
+    "relevant_segments": [
+      {
+        "para_id": "p24",
+        "section_heading": "2.2 Negative Sampling",
+        "text": "Both NCE and NEG have the noise distributionP (w) as a free parameter. We investigated a number of choices forPn(w) and found that the unigram distributionU(w) raised to the3/4rd power (i.e., U(w)3/4/Z) outperformed significantly the unigram and the uniform distributions, for both NCE and NEG on every task we tried including language modeling (not reported here).",
+        "seg_type": "par"
+      },
+      {
+        "box": [
+          387.8111877441406,
+          1403.1248779296875,
+          839.23095703125,
+          1472.7008056640625
+        ],
+        "text": [
+          "\\log \\sigma { ( v _ { w _ { O } } ^ { \\prime } } ^ { \\top } v _ { w _ { I } } ) + \\sum _ { i = 1 } ^ { k } \\mathbb { E } _ { w _ { i } \\sim P _ { n } ( w ) } \\left[ \\log \\sigma { ( - { v _ { w _ { i } } ^ { \\prime } } ^ { \\top } v _ { w _ { I } } ) } \\right]"
+        ],
+        "id": "sp_0047_page_0003-2",
+        "page": "sp_0047_page_0003",
+        "seg_type": "eq"
+      }
+    ]
+  },
+  {
+    "start_time": 1550.0,
+    "end_time": 1695.0,
+    "id": "007",
+    "title": "Frequent Words Subsampling",
+    "filename": "Videos/sp_0047.mp4",
+    "paper_filename": "Papers/sp_0047.pdf",
+    "type": "exp-vid",
+    "relevant_segments": [
+      {
+        "para_id": "p25",
+        "section_heading": "2.3 Subsampling of Frequent Words",
+        "text": "In very large corpora, the most frequent words can easily occur hundreds of millions of times (e.g., “in”, “the”, and “a”). Such words usually provide less information value than the rare words. For example, while the Skip-gram model benefits from observing the co-occurrences of “France” and “Paris”, it benefits much less from observing the frequent co-o currences of “France” and “the”, as nearly every word co-occurs frequently within a sentence with “the”. This idea can also be applied in the opposite direction; the vector representations of frequent words do not change significantly after training on several million examples.",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p26",
+        "section_heading": "2.3 Subsampling of Frequent Words",
+        "text": "To counter the imbalance between the rare and frequent words, we used a simple subsampling approach: each wordwi in the training set is discarded with probability computed by the formula",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p27",
+        "section_heading": "2.3 Subsampling of Frequent Words",
+        "text": "wheref(wi) is the frequency of wordwi and t is a chosen threshold, typically around10−5. We chose this subsampling formula because it aggressively subsamples words whose frequency is greater thant while preserving the ranking of the frequencies. Although this subsampling formula was chosen heuristically, we found it to work well in practice. It accelerates learning and even significantly improves the accuracy of the learned vectors of the rare words, as will be shown in the following sections.",
+        "seg_type": "par"
+      },
+      {
+        "box": [
+          516.8196411132812,
+          1403.689453125,
+          709.6141967773438,
+          1472.8275146484375
+        ],
+        "text": [
+          "P ( w _ { i } ) = 1 - \\sqrt { \\frac { t } { f ( w _ { i } ) } }"
+        ],
+        "id": "sp_0047_page_0004-1",
+        "page": "sp_0047_page_0004",
+        "seg_type": "eq"
+      }
+    ]
+  },
+  {
+    "start_time": 1695.0,
+    "end_time": 1785.0,
+    "id": "008",
+    "title": "Empirical Results",
+    "filename": "Videos/sp_0047.mp4",
+    "paper_filename": "Papers/sp_0047.pdf",
+    "type": "exp-vid",
+    "relevant_segments": [
+      {
+        "caption": "Table 1: Accuracy of various Skip-gram 300-dimensional models on the analogical reasoning task as defined in [8]. NEG-k stands for Negative Sampling with k negative samples for each positive sample; NCE stands for Noise Contrastive Estimation and HS-Huffman stands for the Hierarchical Softmax with the frequency-based Huffman codes.",
+        "captionBoundary": {
+          "x1": 108.0,
+          "x2": 504.2344970703125,
+          "y1": 191.36082458496094,
+          "y2": 229.800048828125
+        },
+        "figType": "Table",
+        "imageText": [
+          "NEG-5",
+          "14",
+          "61",
+          "58",
+          "60",
+          "NEG-15",
+          "36",
+          "61",
+          "61",
+          "61",
+          "HS-Huffman",
+          "21",
+          "52",
+          "59",
+          "55",
+          "The",
+          "following",
+          "results",
+          "use",
+          "10",
+          "−5",
+          "subsampling",
+          "HS-Huffman",
+          "41",
+          "53",
+          "40",
+          "47",
+          "NCE-5",
+          "38",
+          "60",
+          "45",
+          "53",
+          "Method",
+          "Time",
+          "[min]",
+          "Syntactic",
+          "[%]",
+          "Semantic",
+          "[%]",
+          "Total",
+          "accuracy",
+          "[%]",
+          "NEG-5",
+          "38",
+          "63",
+          "54",
+          "59",
+          "NEG-15",
+          "97",
+          "63",
+          "58",
+          "61"
+        ],
+        "name": "1",
+        "page": 4,
+        "regionBoundary": {
+          "x1": 148.79999999999998,
+          "x2": 463.2,
+          "y1": 80.64,
+          "y2": 175.2
+        },
+        "renderDpi": 150,
+        "renderURL": "//Users/meghamariam/PROJECTS/PROJ1_Dataset/PROJ1_Crossmodal-Traversal/DATASET/pap-seg/fig/sp_0047/sp_0047-Table1-1.png",
+        "id": "sp_0047-Table1-1",
+        "seg_type": "tab"
+      },
+      {
+        "caption": "Table 2: Examples of the analogical reasoning task for phrases (the full test set has 3218 examples). The goal is to compute the fourth phrase using the first three. Our best model achieved an accuracy of 72% on this dataset.",
+        "captionBoundary": {
+          "x1": 107.99998474121094,
+          "x2": 504.1940612792969,
+          "y1": 252.8008270263672,
+          "y2": 280.3200988769531
+        },
+        "figType": "Table",
+        "imageText": [
+          "Company",
+          "executives",
+          "Steve",
+          "Ballmer",
+          "Microsoft",
+          "Larry",
+          "Page",
+          "Google",
+          "Samuel",
+          "J.",
+          "Palmisano",
+          "IBM",
+          "Werner",
+          "Vogels",
+          "Amazon",
+          "Oakland",
+          "Golden",
+          "State",
+          "Warriors",
+          "Memphis",
+          "Memphis",
+          "Grizzlies",
+          "Airlines",
+          "Austria",
+          "Austrian",
+          "Airlines",
+          "Spain",
+          "Spainair",
+          "Belgium",
+          "Brussels",
+          "Airlines",
+          "Greece",
+          "Aegean",
+          "Airlines",
+          "NBA",
+          "Teams",
+          "Detroit",
+          "Detroit",
+          "Pistons",
+          "Toronto",
+          "Toronto",
+          "Raptors",
+          "NHL",
+          "Teams",
+          "Boston",
+          "Boston",
+          "Bruins",
+          "Montreal",
+          "Montreal",
+          "Canadiens",
+          "Phoenix",
+          "Phoenix",
+          "Coyotes",
+          "Nashville",
+          "Nashville",
+          "Predators",
+          "Newspapers",
+          "New",
+          "York",
+          "New",
+          "York",
+          "Times",
+          "Baltimore",
+          "Baltimore",
+          "Sun",
+          "San",
+          "Jose",
+          "San",
+          "Jose",
+          "Mercury",
+          "News",
+          "Cincinnati",
+          "Cincinnati",
+          "Enquirer"
+        ],
+        "name": "2",
+        "page": 5,
+        "regionBoundary": {
+          "x1": 136.79999999999998,
+          "x2": 475.2,
+          "y1": 80.64,
+          "y2": 236.16
+        },
+        "renderDpi": 150,
+        "renderURL": "//Users/meghamariam/PROJECTS/PROJ1_Dataset/PROJ1_Crossmodal-Traversal/DATASET/pap-seg/fig/sp_0047/sp_0047-Table2-1.png",
+        "id": "sp_0047-Table2-1",
+        "seg_type": "tab"
+      },
+      {
+        "para_id": "p28",
+        "section_heading": "3 Empirical Results",
+        "text": "In this section we evaluate the Hierarchical Softmax (HS), Noise Contrastive Estimation, Negative Sampling, and subsampling of the training words. We used theanalogical reasoning task1 introduced by Mikolov et al. [8]. The task consists of analogies such as “Germany” : “Berlin” :: “France” : ?, which are solved by finding a vectorx such that vec(x) is closest to vec(“Berlin”) - vec(“Germany”) + vec(“France”) according to the cosine distance (we discard the input words from the search). This specific example is considered to have been answered correctly if x is “Paris”. The task has two broad categories: the syntactic analogies (such as “quick”: “quickly” :: “slow” : “slowly”) and the semantic analogies, such as the country to capital city relationship.",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p29",
+        "section_heading": "3 Empirical Results",
+        "text": "For training the Skip-gram models, we have used a large dataset consisting of various news articles (an internal Google dataset with one billion words). We discarded from the vocabulary all words that occurred less than 5 times in the training data, which result d in a vocabulary of size 692K. The performance of various Skip-gram models on the word analogy test set is reported in Table 1. The table shows that Negative Sampling outperforms the Hierarchical Softmax on the analogical reasoning task, and has even slightly better performance than the Noise Contrastive Estimation. The subsampling of the frequent words improves the training speed several times and makes the word representations significantly more accurate.",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p35",
+        "section_heading": "4.1 Phrase Skip-Gram Results",
+        "text": "The results show that while Negative Sampling achieves a respectable accuracy even withk = 5, usingk = 15 achieves considerably better performance. Surprisingly,while we found the Hierarchical Softmax to achieve lower performance when trained without subsampling, it became the best performing method when we downsampled the frequent words. This shows that the subsampling can result in faster training and can also improve accuracy,at least in some cases.",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p43",
+        "section_heading": "7 Conclusion",
+        "text": "We successfully trained models on several orders of magnitude more data than the previously published models, thanks to the computationally efficient model architecture. This results in a great improvement in the quality of the learned word and phrase representations, especially for the rare entities. We also found that the subsampling of the frequentwords results in both faster training and significantly better representations of uncommon words. Another contribution of our paper is the Negative sampling algorithm, which is an extremely simple training method that learns accurate representations especially for frequent words.",
+        "seg_type": "par"
+      }
+    ]
+  },
+  {
+    "start_time": 1785.0,
+    "end_time": 1882,
+    "id": "009",
+    "title": "Conclusion & Comments",
+    "filename": "Videos/sp_0047.mp4",
+    "paper_filename": "Papers/sp_0047.pdf",
+    "type": "exp-vid",
+    "relevant_segments": [
+      {
+        "para_id": "p46",
+        "section_heading": "7 Conclusion",
+        "text": "We made the code for training the word and phrase vectors based on the techniques described in this paper available as an open-source project4.",
+        "seg_type": "par"
+      }
+    ]
+  }
+]

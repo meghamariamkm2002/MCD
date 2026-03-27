@@ -1,0 +1,166 @@
+this implicit gradient correspondence.
+So they formulate their entire algorithm as follows.
+We want to find the best meta learning parameters by minimizing the function F, where F is the average losses and L here, now that's the test set loss, the average validation loss for each task,
+of the parameters that the inner optimization procedure finds when it runs to its optimum.
+You can see here this is already different from the original mammal.
+The original mammal was simply running it for a number of steps and now we're really running it to the optimum, at least in the ideal case.
+What does the inner optimization algorithm do?
+The Alex star here minimizes this function g. Now, g has two arguments.
+G has these parameters, which are the local parameters, and these are the meta parameters.
+And we only optimize the local parameters.
+We take these as initial, and then fine tune them.
+where the function g is defined as the training loss of the local parameters plus this closeness regularizer.
+Okay.
+Cool.
+Now the question of course is how does that lead to gradient descent?
+So ultimately we want to minimize this function f right here.
+So we're going to have to do something like df.
+by d theta.
+In order to run gradient descent, we need to calculate this gradient because we need to do gradient descent.
+So what's that going to be?
+That's going to be, of course, since f is this one over m up here, the gradient simply distributes over that sum.
+Now, it's the derivative of each of these inner loss functions.
+Let's go with this alg star i theta.
+That's basically what you have right here.
+So in order to take the gradient of f, we need to be able to derive these loss functions.
+And you can see right here, theta is not the argument to the loss function.
+Theta is the argument to this inner procedure.
+So by the chain rule,
+Right now, this gives us this.
+So the chain rule says we derive the outer thing with respect to its input.
+That's this part right here, the gradient of the loss with respect to the neural network.
+And that thing here, that's the ALG star.
+So we need the gradient of the loss function with respect to the end parameters of the optimization procedure.
+Now that's easy.
+That's, we know how to do that.
+That is the, or that is the, so if you remember the drawing at the beginning, this gradient is the end arrow right here.
+This is easy.
+This is one backward propagation.
+This is regular supervised learning back prop.
+Right.
+You have parameters of a neural network, a gradient for the loss function.
+Cool.
+The hard part is to have the derivative of the algorithm itself with respect to the, to the meta parameters.
+So this is going to be, this here is going to be a vector.
+It's the gradient with respect to these parameters, and this is going to be a matrix, and the matrix will relate basically one dimension, each dimension of this vector, sorry, this is going to be a product between this thing and this thing, and it will result in this thing.
+So the left thing is the gradient we want.
+This is the derivative of the entire thing.
+That's this.
+Now, the right thing is the gradient at the end of the optimization procedure.
+And this matrix here relates the individual dimension of this end gradient to the gradient that we want, right?
+This is a matrix that relates the two in a linear fashion.
+This is what we're looking.
+How do we need to change the initial parameters in order to change the end parameters in a certain way?
+Because we only know this, but we want to know this.
+So how do we calculate this thing here, this Jacobian?
+That's the question, right?
+How do we derive the algorithmic procedure, this thing here?
+And the paper goes on to say, well, okay, yeah, so we need to do this, this is the entire gradient descent optimization procedure.
+So we must compute this thing right here.
+and they just throw it in your face.
+It's this.
+Boom.
+Shagadabam.
+This thing here.
+Done.
+Let's go on.
+No.
+So you can see it's basically putting this just right here, but we kind of want to explore where that comes from.
+So the fact you can see here, you can derive this gradient
+as a close form expression of the inverse of a matrix that contains, this is the identity matrix, contains somehow this lambda factor that we saw before, and it contains this Hessian matrix of the training loss, right?
+So this is this end gradient that we can calculate easily.
+And the second derivative of that is the Hessian.
+which is basically the curvature in the landscape of that loss.
+But nowhere in this thing is the, is the SGD procedure showing up, even though this thing here is the SGD procedure.
+And that's pretty impressive.
+And we're going to look at how that comes about.
+So, so where,
+Where do we start?
+First, let's take this, let's take this G right here.
+this G function, right?
+And let's calculate the derivative with respect to these parameters right here.
+So let's go for this end gradient.
+What's this end gradient going to be?
+So we'll derive the G with respect to these parameters.
+All right.
+So this is a sum.
+This first thing is pretty easy.
+It's going to be the gradient of this loss function, loss function is a scalar, right?
+So we can
+This we can calculate, this is the one backward prop through the network.
+The second thing we can also do pretty easily, this is an L2 norm.
+We know how to derive a square.
+So the two comes down and this will simply result in this vector right here.
+So it's going to be lambda times phi minus theta.
+Okay, now this was relatively easy.
+Now, imagine what happens when in this particular thing, we have one additional information, namely that f, the inside of f, f
+we will always optimize to the end.
+We will always optimize this to its minimum, right?
+This star denotes that the inner optimization procedure will always go to the minimum of that function.
+So what do we know about the minimum of a function?
+We know that it's gradient at that particular point.
+is zero.
+This is an important part.
+So now we can restructure.
+So if we take one to the right, I might actually use black here because it's kind of burning my eyes.
+We can isolate this part right here.
+So we say the phi is equal to, first of all, let's
+Let's take this to the right side.
+So we'll have this gradient right here, and I'm just going to write L phi.
+Let's keep the hat alive.
+We'd have to divide this by lambda, right?
+And then bring over the theta.
+So we have an expression that says at the optimum, the parameters phi, the inner parameters, are going to be given by this expression.
+Now that's pretty, pretty cool.
+But we know also that these parameters aren't just, you know, parameters per se, they depend on these parameters, right?
+The end parameters depend on the initial parameters because we use the initial parameters to initialize these end parameters.
+So these are actually a function of the initial parameters.
+So what we can do is we can derive this using red again.
+Let's use blue.
+We can derive this thing.
+by the initial parameters, right?
+How do the end parameters relate to the initial parameters?
+Now, this is our basic question all along, but we now have an exact expression for the end parameters, which we didn't have before, before we just knew they came about by SGD.
+So, important to say this only works at the optimum, right?
+This is at the optimum that this relation counts, not anywhere.
+And the paper is abusing this quite a bit right here.
+So what does this do if we derive this thing here with respect to theta?
+It's simply giving us the identity matrix, right?
+This is now our Jacobian that appears here.
+It's simply giving us this, then this one divided by lambda is going to stay.
+And now it gets a bit tricky because these things right here, of course, are also a function of theta.
+So essentially this thing right here is a gradient of another function of theta.
+So we can apply the chain rule again.
+Since this is already the first derivative, it will give us the second derivative with respect to the loss function right here of with whatever goes into the loss function.
+So that times the inner derivative.
+Now the inner derivative is simply how
+to derive again the phi by the theta.
+Just, okay.
+Yes.
+So you can see, first of all, interesting that the expression here, or the expression that we're looking to find appears in the expression itself, right?
+Since these parameters appear over here as a function argument as well, we'll get basically this expression here twice, but we can reformulate that
+and find that this term, this Jacobian, is basically this here, inverted.
+So the matrix we're looking for is, sorry, the inverse Jacobian.
+The matrix we're looking for is given by this quantity right here, the identity matrix minus this Hessian term right here.
+Okay.
+And this is exactly what you see appearing here.
+This is exactly that.
+So the derivative we're looking for, sorry, this is actually the Jacobian, not the inverse.
+That's my bad.
+What you're looking for is given by this expression.
+Now my eraser got stuck.
+Hello.
+Cool.
+So that's how that appears.
+You see, it's the same thing if I had done everything correctly.
+And so this you do by simply shipping this to the other side, which will make it the inverse, right?
+So you basically divide both sides by this, and then you get this as an inverse.
+Now, why does this work?
+Again, I want to stress, why did we get this identity here?
+Why were we able to express, get a close form solution for the inner thing?
+Or sorry, for the end parameters in terms of the beginning parameters.
+That doesn't have SGD.
+First reason, because we optimized to the end, to the optimum.
+That's why we got the equal zero right here.
+Second reason, because we have this regularizer, you see this directly comes from this expression right here.
+If we wouldn't have this regularizer, then we could not make this expression, we could not get phi as a standalone quantity here.

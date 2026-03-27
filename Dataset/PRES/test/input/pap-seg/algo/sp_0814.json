@@ -1,0 +1,38 @@
+[
+  {
+    "input_path": "/tmp/megha/PDF-Extract-Kit/Presentation/layout_pap/sp_0814/sp_0814_page_9.png",
+    "page_index": null,
+    "boxes": [
+      {
+        "cls_id": 14,
+        "label": "algorithm",
+        "score": 0.9341177344322205,
+        "coordinate": [
+          1283.0369873046875,
+          348.4590759277344,
+          2097.544921875,
+          949.76904296875
+        ],
+        "text": "Algorithm 2 Sampling with the proposed\nGibbs Sampling\n: {\u03c3t}T=0, K\nRequire:\nInittilize xT\nfor t \u2190 T to 1 do\nfor k \u2190 1 to K do\nDraw xk+1 \u223c p(xt+1|xt = xk)\nDraw xk \u223c q\u03b8(xt|xt+1 = xk+1)\nend for\n\u2190 x\nK\nend for\nreturn x0",
+        "input_path": "/tmp/megha/PDF-Extract-Kit/Presentation/layout_pap/sp_0814/sp_0814_page_9.png",
+        "id": "sp_0814_page_9_1",
+        "seg_type": "algo"
+      },
+      {
+        "cls_id": 14,
+        "label": "algorithm",
+        "score": 0.9225366115570068,
+        "coordinate": [
+          445.5477600097656,
+          349.3739318847656,
+          1258.829833984375,
+          949.1834106445312
+        ],
+        "text": "Algorithm 1 Sampling with Langevin D.\nRequire: {\u03c3t}t=0, \u03b4, K\nInitialize x0\nfor t \u2190 T to 1 do\n.2\nfor k \u2190 1 to K do\nDraw zk ~ N (0, I)\n\u2190xt\nk\u22121\n+\u03b1ts\u03b8(xk\u22121, \u03c3t) + \u221a2\u03b1\nend for\n0\nK\nend for\nreturn x0 + \u03c32s\u03b8(x0,",
+        "input_path": "/tmp/megha/PDF-Extract-Kit/Presentation/layout_pap/sp_0814/sp_0814_page_9.png",
+        "id": "sp_0814_page_9_2",
+        "seg_type": "algo"
+      }
+    ]
+  }
+]

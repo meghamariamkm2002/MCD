@@ -1,0 +1,80 @@
+WEBVTT
+
+00:00.031 --> 00:12.488
+Now, people have come up with methods to counter that and they say, well, if we can sort of encode the cell structure, let's go with the RNN cell.
+
+00:12.508 --> 00:17.595
+If we could encode the cell structure in a sort of continuous way.
+
+00:17.996 --> 00:21.280
+So, you know, we can encode text in a continuous way.
+
+00:21.260 --> 00:27.747
+We could also encode a cell structure because the cell structure, I can write it down as an equation.
+
+00:27.948 --> 00:47.790
+I can say like, okay, it's the forget gate of the carry times the sigmoid output of X plus the, so this is the plus here, and plus the sigmoid output of X multiplied by the input, let's call that I.
+
+00:47.770 --> 00:49.012
+Something like this, right?
+
+00:49.312 --> 01:14.470
+This is text I can like write it down and then I can encode that into a vector much I can for example build another RNN ironically or something to To encode that or I can represent it as a computation graph like it is here and use a graph neural network to encode that into a single vector and then I have sort of an embedding space where each
+
+01:14.450 --> 01:17.894
+cell that I could build is a point in that embedding space.
+
+01:18.816 --> 01:21.239
+And then I can evaluate a couple of them.
+
+01:21.339 --> 01:32.073
+I can, for example, say, okay, this one here, this one here, this one here, this one here, I'm going to train them, these cells, I'm going to do the full training, eval and so on, get their scores.
+
+01:32.614 --> 01:37.660
+And then I can learn basically in this latent space, I can learn a predictor.
+
+01:37.840 --> 01:43.748
+I can say, okay, here, I got an eight, I got a nine, I got a two, and I got a
+
+01:43.728 --> 01:44.169
+four.
+
+01:44.950 --> 01:55.685
+So it appears to be that in this direction, the good cells are in this direction, and then I can do it again, I can sample, or I can do gradient descent in this space.
+
+01:55.725 --> 02:02.775
+Since this is now a continuous space, I'm going to gradient descent on the model that gives me the space.
+
+02:03.597 --> 02:09.465
+So this method basically tries to take in the building plan of a cell
+
+02:09.445 --> 02:13.329
+and learn to predict the performance just by looking at it.
+
+02:13.830 --> 02:25.943
+If you're thinking of a Turing machine right now, then I immediately thought of this halting problem because it appears to be exactly what it is.
+
+02:25.983 --> 02:32.550
+So you're trying to build a machine that takes the building plan of another machine and tries to predict its performance
+
+02:32.530 --> 02:47.197
+Now, in a general sense, we can already state that this problem is sort of, the difficulty of this problem is equivalent to the difficulty of the original problem.
+
+02:47.658 --> 02:53.088
+So I'm not sure, but it appears to work if you throw lots of compute at it.
+
+02:53.148 --> 02:54.130
+But of course, that's a problem.
+
+02:54.150 --> 02:55.973
+You need lots of compute.
+
+02:55.953 --> 03:14.527
+So either your option one is to run all of these things and kind of iterate them in a neural, sorry, in an evolutionary way, or your second option is to take the building plan and predict the performance from that.
+
+03:14.988 --> 03:17.673
+Both are not satisfactory and both use lots of compute.
+
+03:18.274 --> 03:20.037
+Now, neural Petri dish is a
+

@@ -1,0 +1,329 @@
+WEBVTT
+
+00:00.031 --> 00:02.174
+the multi-edit tension mechanism is a single vector.
+
+00:02.575 --> 00:28.873
+This paper says that is not ideal because the positions are too much mixed with the signal of the content of the words and we'd rather have this in a disentangled representation such that the network can sort of reason about the words in one line and it can reason about the position of the words in another line.
+
+00:28.853 --> 00:41.434
+So their goal is to disentangle these two vectors and basically design a new attention mechanism that always treats the content and the position as separate things.
+
+00:42.075 --> 00:45.221
+So the new attention mechanism they propose is right here.
+
+00:45.301 --> 00:48.006
+Of course, they can't stay separate, right?
+
+00:48.426 --> 00:53.595
+But they can be disentangled through the layers.
+
+00:53.575 --> 00:57.000
+So their new algorithm sort of is here.
+
+00:57.220 --> 01:03.029
+The way they obtain the attention matrix is due to the following thing.
+
+01:03.049 --> 01:06.955
+So how do you usually obtain the attention matrix?
+
+01:06.975 --> 01:17.690
+You have your input X here, this is your sequence, and you produce two values from it, Q and K. So these are matrices.
+
+01:18.091 --> 01:19.633
+So if X is a sequence,
+
+01:21.014 --> 01:26.001
+then every single sequence element emits one key, which is a vector, right?
+
+01:26.341 --> 01:26.742
+One key.
+
+01:27.823 --> 01:30.908
+And then every single one also emits one query.
+
+01:31.809 --> 01:33.271
+So like this, like this.
+
+01:33.551 --> 01:41.642
+And the key sort of, the key is supposed to say what is in, what information is this token about?
+
+01:42.043 --> 01:47.190
+And the query is kind of supposed to say, what information does it request from other tokens?
+
+01:47.170 --> 01:51.239
+So now you route the information wherever the inner products line up.
+
+01:51.319 --> 01:56.109
+For example, probably this thing would go to be routed here and so on.
+
+01:56.129 --> 01:57.953
+It's not a hard routing, it's a soft routing.
+
+01:58.474 --> 02:05.348
+So by transforming x by linear transformations into keys and queries,
+
+02:05.328 --> 02:33.782
+you obtain your attention matrix by multiplying together queries and keys such that you have sort of the inner product between each of these vectors and this is quadratic and this is the big bottleneck in transformers but you have the inner product between each of the two you get a giant matrix and the giant matrix basically says how much does token two attend to token three that's the position two three of that matrix
+
+02:33.762 --> 02:43.397
+and that's that seek that element is going to be the inner product of the query of token two with the key of token three.
+
+02:44.118 --> 02:46.862
+So that's how you do the attention matrix.
+
+02:46.882 --> 02:53.572
+And these vectors right here, they if you do regular bird, they always have they're always everything at the same time.
+
+02:53.612 --> 02:56.817
+So you feed, you feed content and position
+
+02:56.797 --> 03:05.249
+Somewhere down the layers, you feed that in, you add it together, and the network is supposed to figure out itself how to use these two pieces of information.
+
+03:06.090 --> 03:08.594
+This paper says, no, wait, we can do better.
+
+03:09.094 --> 03:23.935
+What we can do is, for us, each sequence element, it does not only produce one key and one query, it actually, we think it should be contained, it should be made up of two vectors.
+
+03:23.915 --> 03:30.533
+So each of these things has two different two different components.
+
+03:30.694 --> 03:34.785
+One is this kind of H component, which is
+
+03:36.976 --> 03:42.144
+the, which is the content, content information.
+
+03:42.544 --> 03:46.571
+And one is the P component, which is the positional information.
+
+03:47.051 --> 03:54.002
+So here, how should, how should token I attend to token J?
+
+03:54.342 --> 03:58.048
+They say, well, that is going to be, it's going to be the same thing.
+
+03:58.108 --> 04:01.313
+It's going to be the inner product between the
+
+04:02.440 --> 04:18.855
+between the, this is the query of token I, and this is the key of token J. However, now the queries and keys are made up of two different parts.
+
+04:19.095 --> 04:25.481
+One is the content part, one is the position part, and the position, as you can see, maybe, is J-conditioned.
+
+04:25.501 --> 04:29.325
+And now the position is going to be a relative positioning.
+
+04:29.305 --> 04:36.565
+So if you have your sequence right here, what each token would do is it would emit one vector.
+
+04:36.786 --> 04:37.809
+Oh, sorry.
+
+04:37.829 --> 04:43.264
+It would emit one vector that is the content of the token.
+
+04:45.522 --> 04:50.428
+like before, and then another vector would come in from the position.
+
+04:51.389 --> 05:00.519
+So the same we did at the beginning, but now in each layer, this positional information comes in irrespective of what word there is, right?
+
+05:01.100 --> 05:07.547
+Irrespective of what word is in the position, the position gets an encoding right here.
+
+05:07.527 --> 05:12.614
+And then the interesting thing is we don't add the two together, we treat them actually separately.
+
+05:12.715 --> 05:17.902
+So here the keys are two vectors and the queries are also two vectors.
+
+05:17.942 --> 05:19.845
+So I'm just going to draw one up here.
+
+05:20.326 --> 05:26.795
+So the query is going to be a vector and the query for the position is also going to be a vector.
+
+05:26.815 --> 05:30.721
+And that also, it depends only on the position and not on the incoming signal.
+
+05:31.763 --> 05:32.083
+Okay.
+
+05:33.346 --> 05:36.671
+So now, how do we route information?
+
+05:36.851 --> 05:40.336
+Now, we have four different routings.
+
+05:40.777 --> 05:43.481
+First, we only consider dark blue, dark blue.
+
+05:43.822 --> 05:46.285
+So this is kind of the classic attention, right?
+
+05:46.566 --> 05:49.390
+This and this, they match really well.
+
+05:49.430 --> 05:50.231
+So that goes here.
+
+05:50.251 --> 05:53.636
+That one probably doesn't go there.
+
+05:54.117 --> 05:54.898
+And so on.
+
+05:54.878 --> 06:00.631
+But then we also, so this is what they call content to content routing.
+
+06:00.992 --> 06:07.568
+But then we also have content to position, position to content and position to position routing.
+
+06:08.269 --> 06:12.820
+And in all of these, so for example in content to position,
+
+06:12.800 --> 06:27.902
+There's a 50-50 chance I'm going to mix this up and I'm sure I'm going to, but in content to position, what we're going to do is we're going to look at this vector right here, which is the content vector of the query that is produced from the token.
+
+06:28.222 --> 06:36.334
+The content is produced from the token and we're going to attend to the position vector of the key.
+
+06:36.474 --> 06:40.039
+So we're going to attend to the light blue things.
+
+06:40.019 --> 06:45.851
+So, essentially, this part is like the classic attention part.
+
+06:45.871 --> 06:48.076
+It is, I am the word am.
+
+06:48.116 --> 06:57.876
+I'm requesting all informations from all the nouns in the sentence because I'm a verb and I would like to know who are the nouns in the sentence.
+
+06:57.856 --> 07:05.027
+Then the content to position encodings is, I am the verb am.
+
+07:05.829 --> 07:08.633
+I would like to know what is around me.
+
+07:08.773 --> 07:11.037
+The positions are relative positions.
+
+07:11.177 --> 07:17.207
+So I can request the vector for, you know, the plus one position of me or the plus two.
+
+07:17.327 --> 07:21.113
+So the word can attend to its surroundings.
+
+07:21.093 --> 07:25.662
+So given that it's the word M, it might be particularly interesting.
+
+07:25.682 --> 07:32.394
+Maybe it has already figured out it's not a question, right, from the previous layers.
+
+07:32.535 --> 07:34.739
+So it's particularly interested in what's before it.
+
+07:35.280 --> 07:42.814
+So because, you know, M, actually, it probably isn't particularly interesting because it's always going to be I. So
+
+07:42.794 --> 08:04.971
+Actually, maybe it's exactly a counter example where it wouldn't want information from there, but it can sort of attend, it can say, I want to attend to things after myself because I already have figured out that before me must be an I, I want to attend to things after me, like one position after me, what's right after me, what's two words after me and so on.
+
+08:04.951 --> 08:08.075
+position to content is exactly the opposite.
+
+08:08.456 --> 08:25.778
+It is saying, so the token can say, well, I am in position plus four to, you know, what kind of information do I want to send to things that are four away from me, right?
+
+08:25.758 --> 08:27.901
+irrespective of what the content is.
+
+08:28.121 --> 08:35.071
+So here we simply consider what position is the token with respect to its neighbors.
+
+08:35.832 --> 08:40.279
+And what kind of information does it want to aggregate from each of the words?
+
+08:41.500 --> 08:43.543
+It is a bit, it's a bit weird, right?
+
+08:43.864 --> 08:48.390
+So it says, it says, like, I, I am in in position
+
+08:49.990 --> 08:52.373
+a word that is two words after me.
+
+08:53.394 --> 08:55.737
+What kind of information do I want to get from it?
+
+08:57.079 --> 09:06.752
+And since it's attending to content, that can be dependent on, that can be dependent on what word there is, but not its position.
+
+09:06.792 --> 09:15.643
+And then position to position is simply, well, what kind of information do I in position three want to send to something in position seven?
+
+09:15.623 --> 09:27.942
+which would be useful, but this is relative position encoding, which simply means I am always kind of in the middle, and so this isn't really helpful, so they decide to leave this away.
+
+09:28.542 --> 09:34.932
+So we end up with the three different attention mechanisms, so to say.
+
+09:34.912 --> 09:48.702
+We end up, so there's this one, there's this one, and there's this one, okay, corresponding to the three out of four different ways we can combine the dark blue and the light blue keys and queries.
+
+09:50.420 --> 09:58.230
+Now, you can see right here, that's what they do, and their final attention matrix is simply the addition of all of those together.
+
+09:58.770 --> 10:15.111
+So we construct one attention from like the classic attention, we construct one attention that is content to position, we construct one attention that is position to content, and we construct one that is position to position, but then we leave it away because it's
+
+10:15.091 --> 10:16.893
+we deal with relative position.
+
+10:16.913 --> 10:19.476
+So it would sort of be the same for every token.
+
+10:20.257 --> 10:24.041
+And that's not particularly helpful.
+
+10:24.061 --> 10:29.888
+Reason I'm going to repeat it again, the H information contains actual signal from the last layer.
+
+10:30.308 --> 10:37.216
+While the P has no idea about the signal, it simply contains information about the position of the tokens.
+
+10:37.877 --> 10:37.977
+Okay.
+
+10:37.957 --> 10:52.117
+So you can decide to send information to a word that's two positions ahead of you, or to request information from word that's three positions behind you, depending on what word you yourself are.
+
+10:52.858 --> 10:57.484
+So that's the content to position and position to content attention.
+
+10:57.464 --> 10:59.409
+These things are all added together.
+
+10:59.729 --> 11:02.516
+And that makes up the final attention matrix.
+
+11:02.536 --> 11:08.109
+So a final entry in the attention matrix could be influenced by multiple ones of them.
+
+11:08.149 --> 11:13.482
+It could say, you know, I am the word, I'm the word M. I'm in position two.
+
+11:13.462 --> 11:17.612
+I request a lot of information from other nouns.
+
+11:17.752 --> 11:25.029
+If any noun is here, I want information, but I also want information from things that are one or two positions ahead of me.
+
+11:25.710 --> 11:40.043
+So that, that is, and, and, you know, uh, since I'm the word am, and also since I'm in position number two, I am very interested to know what the subject of the sentences now we have.
+

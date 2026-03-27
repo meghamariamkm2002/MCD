@@ -1,0 +1,13 @@
+But now it breaks down because the teacher is constructed from the student.
+So we have a teacher, we train the student to predict the same thing as the teacher does, like learning from the teacher.
+But then at the same time, after we have done after we've updated the student, we then
+have we then build the teacher from the new student.
+And the way we do this you can see right here is by exponentially moving average.
+So we keep the teacher model and then as we update the student model we simply update the teacher a little bit into the direction of the student model.
+And there is also a schedule associated with this exponentially moving average like how much the exponential decay is and so on.
+This seems all to be loaded with hyperparameters, but again, the results are really cool.
+And I guess it's yet going to turn out how sensitive to hyperparameters this whole setup is.
+They do make ablations, but we'll see how other people with other datasets fare.
+Alright, so we have the teacher that is built from the student exponentially moving average.
+And we want to make the two predict the same represents or the same output for different augmentations of the same image.
+Okay, in fact,

@@ -1,0 +1,43 @@
+So here they go for some theoretical analysis.
+And the first they want to convince you that if the generator, if this all works well, if both parties, this generator and the discriminator optimize their objective to the optimum, then the generator will have captured the data distribution.
+So the global optimality of this.
+And they go about convincing you of that.
+So the first thing that they convince you of is that if you fix the generator, the optimal discriminator is this.
+And we've already seen this in this drawing right here.
+So the optimal discriminator is simply the ratio of the data, of the likelihood of data versus the likelihood of the generated data.
+Okay, so you train, you always train this discriminator in the inner loop.
+And that's simply the consequence of this, of a point-wise.
+This is true point-wise, therefore it's true over the entire data distribution.
+In the next thing,
+they convinced you that the global minimum of the virtual training criterion, and this is the value function, this min max game, is achieved if and only if this holds.
+At that point, the training criterion achieves the value of negative log four.
+And again, this was already here, the fact that this has a global minimum,
+and it is achieved when the generator matches the data distribution, which is pretty cool.
+So in the proof, it's pretty simple, actually.
+They first say, look, if this is the case, we just simply plug that in, the discriminator will be confused.
+So if the generator exactly captures the data, the discriminator will have no clue what's going on, because it can't, because they're equal.
+So it must basically output the probability of one half everywhere.
+And then your objective becomes a constant negative log four.
+Now, if you then plug that into the other equation, you'll see that the training criterion ends up being negative log four plus twice the Jensen Shannon divergence between the data and the
+Um, generated distribution.
+And since this term here is always positive, that means that this thing here can never be less than negative log four.
+And therefore the negative log four is the optimum.
+Okay.
+That's, uh, it's that the proof is, is pretty cool.
+I have to say to show that this has the optimum at that place.
+And the last thing they convince you of is that this algorithm actually converges and the converges is simply predicated on the fact that if you look at each of these problems individually, they are convex.
+So, um, like here is convex in X for every alpha.
+So each of these are sort of convex problems.
+And then.
+it will naturally converge to their minimum.
+However, in practice adversarial nets represent a limited family of distributions via the function, and we optimize the parameters rather than the distribution itself.
+Using a multi-layer perceptron to define g introduces multiple critical points in parameter space.
+However, the excellent performance of the multi-layer perceptrons in practice suggests that they are a reasonable model to use despite their lack of theoretical guarantees.
+So they say if we could optimize this probability distribution directly, it is a convex problem and we'll always converge.
+But in practice, of course, we only optimize the parameters of an MLP or a CNN.
+And that doesn't always converge, but we have reasonable hopes that it will converge.
+Okay, so again, it's very much focused on convincing me that this is doing something sensible, which I hope now you are convinced.
+So there is a global optimum point.
+It's when the generator captures the data distribution perfectly.
+This can be achieved and will be achieved if you can optimize these probability distributions with a reasonable degree of freedom and the neural networks provide that reasonable degree of freedom and give us good hope that in practice it will work.
+So they apply this.

@@ -1,0 +1,10 @@
+The literature's environmental nestness is captured by some problem-dependent quantities.
+In this paper, we focused on the gradient variation, which is accumulative changes between consecutive gradients.
+Why do we study gradient variation?
+On the one hand, it can exploit the nestness of environments and safeguard the worst case.
+On the other hand, it draws profound connections with games and specificly extended serial models.
+In games, the gradient of one player encodes other player's decisions.
+Consider a simple two-layer zero sum game, such as a rock scissors paper game.
+The X player receives a gradient of EYT, and the Y player receives a gradient of AXT.
+The summation of the gradient variation bounds and makes cancellations if using algorithms with a negative stability term in analysis.
+To conclude, gradient variation is essential in obtaining faster racing

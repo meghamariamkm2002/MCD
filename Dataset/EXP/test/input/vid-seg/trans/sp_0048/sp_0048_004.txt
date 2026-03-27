@@ -1,0 +1,28 @@
+problem formulation as they see it.
+The entire problem formulation is you want to find these best meta learning parameters.
+And they call this the outer level.
+So on an outer level, you want to run gradient descent to find the best meta learning parameters to minimize this function f right here.
+Now what is f?
+F is the average of the validation loss function.
+So here this is the loss function on the test sets of the individual tasks.
+And the neural network that we evaluate on the test set is the neural network that is trained, the algorithm is trained on the training set of that particular task while starting from these parameters theta.
+Now you see there is no dependence on the task here.
+There is no I down here for these meta parameters because these are always the same, right?
+That's the crucial point.
+All the tasks start from the same initial parameters, then they optimize on their own training data set.
+And then they evaluate on their own test data set.
+And that will give you the loss for that particular task.
+And your goal is to find the meta parameters such that this function here, the average loss that results from this procedure is minimal.
+Okay.
+So where they say, um,
+right here, the inner level is this algorithm component.
+So the algorithm starts from these meta parameters and runs gradient steps on the training dataset loss.
+Now, this is just the first step right here of this procedure.
+Of course, in the next step, these are going to be replaced by the phi that
+by the phi i that results from the previous step.
+So the first step is run on the met parameters and then subsequently the task specific parameters are updated.
+The important thing here is that this doesn't need to be gradient descent actually with their method because their method doesn't need to back propagate through the optimization.
+You can think of any inner optimization procedure that you want.
+It can be like a black box solver, whatever you want.
+I'm going to be just interesting to see how this is going to affect something like reinforcement learning and so on.
+This might have already happened and I have not looked.

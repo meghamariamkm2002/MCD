@@ -1,0 +1,63 @@
+start	end	text
+31	15973	But of course, you'd run into the same problem as I said, and the fact that if you have two spectrograms, they don't necessarily align again.
+16013	20399	And here, they use this dynamic time warping loss.
+20739	27709	Now, this looks very, very similar to the aligner, but it is something different.
+27689	34982	Because now you have two, the difference here is you have two things that you know should match, right?
+35022	37006	You have this thing and you have this thing.
+37326	39791	And they both have the same amount of entries.
+40151	47725	So they both have A, B, C, D, E. This has an A, a B, a C, a D and an E slot.
+48146	52093	And this also has an A, a B, a C, a D and an E slot.
+52073	59561	And you know that you assume, so here's something you assume, you assume that the beginning and the ends match.
+60122	66849	This is not true, of course, because we could have completely unaligned, but they say, in practice, this works.
+66869	71514	So you assume that sort of at least a little bit, these are aligned.
+73977	74858	All right, so
+76542	93319	They have, by the way, there's so much to this paper, by the way, they have an auxiliary loss where the produced lengths, all the lengths that this length prediction module produces, they, I don't remember where that is,
+93299	97544	But they have an auxiliary loss where all the lengths must add up, right here.
+98165	105774	All the lengths that these length predictors produce must add up to the total length of the sound, which in our case, I guess, is the two seconds.
+106455	107056	Okay.
+107076	121213	So that's how they, if so really quickly, these length predictions will sort of, at least the least thing they can do is they can all predict like L over N.
+121193	132425	And that will give you a sort of a rough alignment such that it kind of makes sense to do this dynamic time-warping to assume that the beginnings and the endings align.
+133206	134487	All right, so we have two things.
+134847	137510	They have the same amount of slots.
+137971	141214	We know the beginnings and ends align, or we assume that.
+141555	142876	How do we make it?
+143156	144838	How do we
+144818	156063	find out which slots align to which and this is a dynamic programming they formulate this as a dynamic programming problem that you might you know from.
+157466	164582	You might know from from like these are often taught in algorithms and data structure courses and so on.
+164562	168968	where you can figure out which of these align.
+169008	175676	So if you go a step here, that means that you go one step in each of the sequences.
+175776	184787	And then if you go a step here, that means only this one advances and this one still corresponds to this one right here.
+185688	188071	And okay, I formulated wrong at the beginning.
+188131	190975	You don't have ABCDE.
+190955	196261	I guess you would actually have all of these slots and you would figure out which ones correspond to which.
+197402	202888	But I hope you recognize these sort of problems where and here you align them again.
+202908	207333	So these are classic dynamic programming alignment problems.
+208314	209696	And they align it like this.
+210237	218606	And they simply say the more that this path deviates from the straight path, the larger penalty we give.
+219227	220388	So they give a penalty.
+221870	225057	with respect to how much this path deviates.
+225217	234336	So here you can see how much the spectrogram of the generated sound aligns with the spectrogram of the ground truth.
+234977	242292	And here is a penalty for each time that the two spectrograms don't align correctly.
+242272	257293	they do this in a soft way so they do every single possible path right here and you can again do this using dynamic programming and the entire catch here is that the alignment must be monotonic because
+257273	266382	no matter how long or short the sequences are, they always follow one after another in both of the spectrograms and both of the sounds.
+266763	268785	So that's why you can optimize it in a way.
+268825	285542	So over all the possible paths that you can align them, you weigh these paths by their score that you give them here, and then you calculate the loss across all these different paths.
+285522	289766	And that will give you, that is sort of a fuzzy loss.
+289906	296952	So you don't compare the spectrograms directly, but you compare them and you sort of forgive them for not aligning too well.
+297813	303618	But the more they don't align, you give a penalty and that's how you sort of force the generator.
+303718	308182	Again, you force the generator to produce things that are aligned.
+308202	314348	You produce these length predictions that make the spectrograms closer to each other.
+314328	317677	So that's how you calculate the spectrogram loss.
+317978	320184	This is entirely deterministic.
+320204	322751	There's no learned weights right here.
+323352	323633	Okay.
+325278	325418	Cool.
+326258	328881	Last thing they say is that they use this phony miser.
+330844	334048	That's the very beginning, but they also ablate that.
+334529	342118	So in the results, they do a lot, lot of ablation studies, which I don't want to go into right now.
+342178	343700	I've already shown you some.
+344441	347585	They do even, I think they do a human evaluation.
+348787	350208	Do they do a human evaluation?
+351050	352992	I know this might have been in another paper.
+352972	357667	but as you have heard from the examples, this sounds extremely realistic.
+358151	360045	I'll link the website to

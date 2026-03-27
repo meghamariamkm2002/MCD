@@ -1,0 +1,3 @@
+To this end, we first propose a computationally-efficient algorithm named heavy-oval or heavy-tailed linear bandits.
+It achieves an instance-dependent regret for the first time.
+This regret bound has a main term that only depends on the summation of central moments nu t and therefore does not have a square t term.

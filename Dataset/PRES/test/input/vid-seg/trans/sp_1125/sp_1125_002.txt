@@ -1,0 +1,4 @@
+Especially, we address the situation while aggregating data from all clients result in an overall long-tailed distribution, while local datasets are open heterogeneous.
+The scenario is quite prevalent.
+For example, patients diagnosis vary significantly across medical centers, but they expect long-tailed distribution for the certain diseases.
+We have identified two key issues in this build and proposed corresponding solutions.

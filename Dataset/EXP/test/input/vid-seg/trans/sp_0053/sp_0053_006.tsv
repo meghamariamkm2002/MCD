@@ -1,0 +1,63 @@
+start	end	text
+31	5240	Here you see it's even a bit more complicated.
+5320	6503	So this is the pseudo code.
+7084	8807	So we want to augment the image.
+8867	11632	We get two different versions of the image.
+11652	17382	We push both of these versions through the student and through the teacher.
+17362	30382	And then we want, I don't know if you can track that, but T1 is the X1 that went through the teacher.
+31063	36231	That needs to be the same as X2 that went through the student.
+36772	42981	And then the X2 went through the teacher should be the same as X1 going through the student.
+42961	47405	So we want to augment the image differently two times.
+48646	52389	Then that gives us two different views of the same image.
+52710	56293	Then we want to run them through both through the teacher and student.
+56573	60616	And then we want sort of everything to be consistent with everything else.
+62398	68784	So we want the one augmentation in the one model to be consistent with another augmentation through another model.
+71186	71466	Now,
+73100	75384	There are two more things here.
+75485	79252	The first one is these centering, what's called centering.
+79632	81536	And that's what something the teacher does.
+81576	90433	And also something they say in the text is that in the teacher, they only use the global cropping.
+90413	96264	whereas in the student, they use both the global and the local cropping.
+97546	103237	So the student uses both and the teacher only uses the global crops.
+103939	108928	So essentially, if the student gets a local crop and the teacher gets a global crop,
+109246	114372	The goal here is that both things predict the same representation.
+114433	128370	And that means the student has somehow learned that, you know, whatever I see here is a little piece of whatever the teacher has, even though it doesn't, I should reformulate this because it doesn't see what the teacher has, right?
+128630	133937	So the student somehow has to, from a very small sub patch,
+133917	149760	it has to know it has to output something that it would that itself or the teacher which is itself averaged would also output if it sees more context in the image.
+150501	158052	So you train the network to for all of these crops and for all the different augmentations output the same thing
+158032	160636	without knowing what the other thing is.
+160776	173576	And I think that is the advantage to contrastive representations, honestly, because in contrastive representation, in contrastive learning, you sort of contrast with the negative, with the negative samples.
+174057	186216	And here it's really like you don't know anything and you need to output something and that needs to match whatever, whatever
+186196	189722	you yourself would output if you saw a different part of the image.
+190062	201240	So you have no choice, but to output, you know, either the same thing all the time, which is prevented here, or to output something that's on the image.
+201941	205106	And you can't just output something that's only in your patch, right?
+205247	207631	Otherwise, another patch wouldn't show the same thing.
+207731	211056	Like if there's like a little tiny structure here,
+211036	213939	you would not output that because the other patches don't have it.
+214439	241043	However, if there is something big in the image, right, like, you know, our traditional cat right here, and you recognize that because you see a little cat ear, if you output a representation for cat, and, you know, since you would also do this for the other ear and for the paws and so on, you this whiskers, you then would you then win like your loss is small.
+241023	251456	So you're intrinsically pushed towards outputting something that describes the image as a whole, right?
+251957	255781	And that differentiates it from other images.
+256783	261168	So what what encourages you to be different, that's this centering.
+261809	266895	And also in the softmax there is a
+266875	268157	There is a sharpening.
+268918	272503	So first of all, the centering is simply what you do in the teacher.
+273144	275087	You keep a running average here.
+275368	280595	Again, you can see that you keep a running average of all the representations that the teacher sees.
+281877	295077	You just you keep you keep that as a list or a running list, all the representations that the teacher sees running average, and you simply subtract that from the logits down here.
+295057	296260	Yeah, that's that's centering.
+296520	314618	It's something like a normalization, but not really what it does is it, it keeps the keeps the logits sort of close in a in a range that's manageable and and has some variants and so on.
+316285	323983	And, you know, within as a proxy, it also does that to the student because the student is trained to be like the teacher.
+324604	327531	So centering is a bit like a normalization here.
+328052	333805	And then the second thing is that there is a different.
+333785	338392	parameter in the softmax as a temperature parameter.
+338673	342198	So the softmax function is at the end.
+342899	344301	And that has a temperature.
+344462	344982	Where is it?
+345684	347026	Where are you?
+347627	349009	This is the softmax function.
+349409	352835	You can see it has a temperature parameter, right?
+353636	359726	And that temperature is much lower for the teacher than for the student.
+359806	361328	And they call this sharpening.
+363029	366116	Now, why is there even a softmax?
+366196	367519	That's what I asked myself.
+367619	385037	Like, if you think of a of what you do with a representation, usually when you do something like a contrastive loss, you may just do a contrastive loss or a self supervised loss on the representation itself, like you do cross product or

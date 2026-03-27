@@ -1,0 +1,100 @@
+start	end	text
+31	457	right here.
+518	2852	So they say usually
+3490	8798	What something like alpha zero does is you are game starts here, right?
+9338	11502	And then you have two actions to take.
+11862	13104	You maybe take this action.
+13244	13444	Okay.
+13505	14987	Now your opponent has two action.
+15568	16729	Maybe they take this action.
+16929	17250	All right.
+17631	20134	And now you have two actions again.
+20795	21676	Which one do you take?
+22277	30409	What, what's something like deep Q learning or actor critic learning would do is they would simply put a neural network here.
+30389	35059	they would look at this state and they would simply tell you which action to pick.
+35079	38426	Like this action right here sounds good to the neural network.
+39508	48567	In contrast to that, alpha zero, if I draw the same situation right here, alpha zero, what it will do is
+48682	52285	it will say, well, I could do this or I could do this.
+52966	57811	If I do the left thing, then I'm going to have, my opponent's going to have two options.
+57951	59853	They could do this or they could do that.
+60754	64017	If they do the left thing again, and so on, you get the idea.
+64337	67840	It sort of goes down the tree and it does this over here, right?
+68361	69582	Sorry, this should be.
+71083	72945	So it goes down the tree.
+73005	74807	I'm stupid.
+76627	81293	And it evaluates, it kind of calculates ahead.
+81313	84036	It uses its internal simulator to look ahead.
+84817	88621	And it could technically do this until it reaches the end.
+89002	99394	And then it would know if it reaches the end state every time here, it would know it could simply backwards calculate which one is the best option for me to do right now.
+99374	108766	However, this game is often very, very deep, so the tree, the depth here, is often so deep that you can't solve the whole game.
+109167	117598	So what AlphaZero does instead is it says, I'm not going to play until the end, I'm going to play a certain amount ahead, right?
+117618	122985	I'm going to think some limited depth ahead, and I know AlphaZero does this adaptively, but
+122965	127330	Bear with me, I'm going to think some limited depth D ahead.
+127370	130974	So here in this case, D is equal to two because we think two layers ahead.
+131355	140345	And then at the end, I'm going to replace everything that comes after with a single value that indicates how good this is for me.
+140625	140926	Okay.
+141526	144990	So, and this thing right here is very hard to get.
+145170	152719	Of course, if you knew how good anything is for you, then you have solved the game.
+152699	153817	But...
+153965	157390	Alpha zero, at this point, the neural network comes in, right?
+158191	160113	This is a neural network, it's a black box.
+160614	165681	So it simply asks for each one of these states, how valuable do you think that is?
+165961	167884	Okay, how valuable do you think that is?
+168044	169146	Okay, and so on.
+169166	173532	So it asks for each state, the neural network, how valuable that particular node is.
+174232	177116	And then it does the same backwards calculation.
+177517	183465	So we've sort of substituted going to the end of the game by the neural network.
+184053	189645	But it is still more powerful than asking the neural network at the very beginning like we do here.
+190167	193414	The power comes from combining the learning.
+193634	197703	This is the learning and the search.
+198084	199868	This here is the search.
+202362	202783	right?
+202803	204827	So this is what alpha zero does.
+204887	209276	And this is what this paper does for imperfect information games.
+209296	215388	So imperfect information games is when you don't know a particular thing about the game at any point.
+215849	218334	So there is hidden information like in poker.
+218795	220759	And the problem is right here,
+220739	228811	If you do the same thing for this game right here and you look from player one's perspective and you say, okay, this game is very deep.
+228992	230754	Actually, it's just too deep, right?
+230915	233218	But let's assume that's too deep for you.
+233819	242572	And you want to replace, you want to say, okay, I'm just going to look ahead, d equals one, that's all I can afford.
+242993	248181	I go ahead and at the end, I'm going to ask my neural network what the value here is.
+249325	256595	and the neural network will tell you accurately that the value at each of these nodes is zero.
+256615	267189	So the average value, if you can see right here, the average value of each of these nodes is zero, depending of course on how player two acts, but in this case it's zero.
+267830	270473	So as player one,
+270638	277330	this information will not lead you to the correct optimal conclusion, the correct optimal conclusion being this 0.4, 0.4, 0.2.
+277350	284484	Okay, player one, like it's indifferent, any strategy could work here, right?
+284764	290715	If there is some regularization, it'll probably come to the point, the one third, one third, one third, right?
+290955	293440	Since all the values are equal,
+293420	298284	It might conclude it's probably best if I distribute my actions or something.
+298324	300266	So you can see the problem right here.
+300667	308874	And the problem is that this value right here, it depends on the strategy of player one.
+310656	314099	And this is something that alpha zero has no concept on.
+314479	321165	For alpha zero, the value of a node only ever depends on what comes downstream.
+321297	329389	In imperfect information game, the value of a node also depends on what has happened upstream.
+329709	332974	So on the strategy of the upstream events.
+333935	337540	And that is, as I said, that is quite important.
+338121	347254	Also for AlphaZero, once I have evaluated a game tree and determined the value of a node like this,
+347403	350949	I can evaluate the same game tree again, and the value is going to be the same.
+351090	370103	But for the same reason, because the value depends upstream, the value of this node right here, depending on upstream, if I change my strategy, so if here I determine either action one or action two with a certain probability, if this search process results
+370083	373768	in a result that tells me this is how often you should pick action one.
+374309	377833	And that's different from what I searched with, right?
+378033	380337	Then all of these values down here are going to change.
+380957	382900	And I can basically search again.
+382940	388047	So these are the problems of imperfect information games that we're going to tackle.
+388067	390991	So you see this poker thing is sort of a microcosm.
+391671	399702	And this was already half of the paper if you understood why exactly searching
+399682	407397	using kind of a value estimator combined with this tree search is a problem in imperfect information games.
+408018	415549	So let's quickly go through the abstract, then we're going to have to define a few terms, and then we can go into this algorithm.
+415729	417191	The algorithm is called rebel.
+417772	426484	It's a general framework for self play reinforcement learning and search that provably converges to a Nash equilibrium in any two player zero sum game.
+427045	427866	Okay.
+427886	436438	Um, it says that in the simpler setting of perfect information games, rebel reduces to an algorithm similar to alpha zero.
+438342	459253	and they say we also show rebel achieves superhuman performance in heads up no limit texas hold them poker while using far less domain knowledge than any prior poker ai so last video i've had a comment which is correct that is not the best hold them ai out there as far as i can tell
+459233	466263	However, it is a very performant one that uses very little domain knowledge of poker.
+466343	471870	So it, like AlphaZero, removed basically all domain knowledge out of the games it played.
+472391	482785	This bot right here, I think the domain knowledge is to the extent of it is given a limited set of bet sizes, even though it's kind of no limit.
+482825	484988	Hold them where you can bet whatever you want.
+484968	495553	It's given sort of a limited bet, limited size of bet sizes, like half the pot, full pot, two times the pot, and so on.
+496555	501587	In order to make the actions discrete, I think that's just easier for this algorithm.
+502068	510047	But in any case, the algorithm is applicable pretty much anywhere where you have a two player zero sum imperfecting from

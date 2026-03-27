@@ -1,0 +1,119 @@
+WEBVTT
+
+00:00.031 --> 00:02.414
+Okay.
+
+00:03.595 --> 00:04.536
+So how do they do it?
+
+00:05.317 --> 00:11.324
+Via what they call trajectory, via regularization of trajectory optimization.
+
+00:11.924 --> 00:14.527
+So in essence, what do we want to regularize here?
+
+00:14.768 --> 00:25.920
+There are many things we could do to solve this, but the way this paper goes is they say we not only do we want the most return, we also
+
+00:25.900 --> 00:32.914
+want a high log probability of our taken path.
+
+00:33.375 --> 00:39.446
+So this here, as you can see, this is observation action and so on, observation action.
+
+00:39.767 --> 00:41.310
+So this is the future.
+
+00:41.691 --> 00:44.837
+This right here is the future.
+
+00:46.994 --> 00:55.210
+So this, this sequence here is going, is what is going to give me the reward right here.
+
+00:55.550 --> 00:56.131
+Right.
+
+00:56.152 --> 01:00.881
+So G is also dependent on these things, but it's not said explicitly here.
+
+01:00.961 --> 01:04.788
+So G is dependent on your plan or maybe let's not call this the future.
+
+01:04.828 --> 01:05.830
+This is the plan.
+
+01:07.058 --> 01:07.439
+Okay.
+
+01:07.719 --> 01:09.101
+This is the plan you came up with.
+
+01:10.122 --> 01:14.508
+So this is directly going to influence G and G is the reward you're going to get under your model.
+
+01:14.828 --> 01:19.314
+But also you want the log probability of the plan itself to be high.
+
+01:20.216 --> 01:28.246
+Now there, I think there is a bit, there is something missing here and that is conditioned on your training distribution right here.
+
+01:28.847 --> 01:31.451
+And I think that's a actually a rather crucial part.
+
+01:32.092 --> 01:34.635
+No, that's, that's the KL thing.
+
+01:34.615 --> 01:36.478
+So this is conditioned on your training.
+
+01:36.738 --> 01:44.972
+So what you want is you want the plan to be basically in your training distribution.
+
+01:45.533 --> 01:56.050
+So you want your plan that you're going to execute if that is actually part of your training data set.
+
+01:56.030 --> 02:10.071
+then you know I have already executed this once before and it's reasonable to assume that therefore my world model has learned from this experience and is going to give me an accurate reward.
+
+02:10.611 --> 02:14.477
+If we go back to our rooms example then
+
+02:14.457 --> 02:16.762
+up here somewhere.
+
+02:17.183 --> 02:26.161
+If we go back to our room's example, you see that anywhere in the green area where I have already explored, the world model is fairly good.
+
+02:26.462 --> 02:33.597
+It's going to give me accurate reflection of the world, but as soon as I go outside the green area, it is not.
+
+02:33.577 --> 02:38.805
+And inside the green area is basically where my training data is.
+
+02:39.286 --> 02:45.735
+Now, if I in the future actually take a path here, crash into a wall right here, right?
+
+02:45.915 --> 02:52.666
+You saw in the algorithm, at the end of an episode, I'm going to add my trajectory to the training data for the world model.
+
+02:52.686 --> 02:56.351
+So this green part here expands to include that.
+
+02:56.852 --> 03:00.377
+And now, if I go here again,
+
+03:00.357 --> 03:07.585
+If my plan goes there again, now I can trust the world model, but also now it has, it is actually correct because it has a wall here.
+
+03:08.105 --> 03:24.062
+So you see that the regularization basically, not only do I want the biggest reward possible under my world model, I also want that the plan that I'm about to execute is, has a high probability under my training distribution.
+
+03:24.582 --> 03:24.862
+Okay.
+
+03:25.463 --> 03:29.267
+And the way we do this is by denoising auto-encoders.
+
+03:31.424 --> 03:40.050
+So I want the log probability here to be high and you do this via a denoising autoencoder.
+

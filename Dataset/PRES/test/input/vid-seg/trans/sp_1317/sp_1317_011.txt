@@ -1,0 +1,1 @@
+In our paper, we establish strong duality and introduce an efficient algorithm for solving this optimization in the dual space.

@@ -1,0 +1,602 @@
+[
+  {
+    "para_id": "p1",
+    "section_heading": "Abstract",
+    "text": "We study the multi-objective minimum weight base problem, an abstraction of classical NP-hard combinatorial problems such as the multi-objective minimum spanning tree problem. We prove some important properties of the convex hull of the non-dominated front, such as its approximation quality and an upper bound on the number of extreme points. Using these properties, we give the first run-time analysis of the MOEA/D algorithm for this problem, an evolutionary algorithm that effectively optimizes by decomposing the objectives into single-objective components. We show that the MOEA/D, given an appropriate decomposition setting, finds all extreme points within expected fixed-parameter polynomial time, in the oracle model. Experiments are conducted on random bi-objective minimum spanning tree instances, and the results agree with our theoretical findings. Furthermore, compared with a previously studied evolutionary algorithm for the problem GSEMO, MOEA/D finds all extreme points much faster across all instances.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p2",
+    "section_heading": "1 Introduction",
+    "text": "Evolutionary algorithms have been widely used to tackle multi-objective optimization problems in many areas such as robotics, pattern recognition, data mining, bioinformatics, scheduling and planning, and neural network training [35]. Their population-based search operators make them a natural choice for simultaneously handling several possibly conflicting objectives. Many generic evolutionary multi-objective frameworks have been developed to supply basic implementations for any problem, and to provide templates that can be fine-tuned for specific applications (we refer to [30] for an overview of common approaches). Such features, along with their strong empirical performances in challenging applications, have led them to becoming one of the most attractive topics to researchers and practitioners alike.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p3",
+    "section_heading": "1 Introduction",
+    "text": "Among evolutionary multi-objective algorithms (EMOs), arguably the most exemplary are dominancebased approaches such as GSEMO and NSGA variants, with the former often being considered a baseline. Another popular technique for multi-objective optimization is to decompose the multiple objectives into a single-objective subproblem. The MOEA/D algorithm is a state-of-the-art application of this technique in evolutionary computation [29, 31].",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p4",
+    "section_heading": "1 Introduction",
+    "text": "Despite the prevalence of EMOs on practical applications, rigorous analyses of their runtime behavior on meaningful problems are scarce. Nevertheless, these kinds of analyses are critical for (1) providing performance guarantees and guidelines to practitioners who use and develop these techniques in the field, and (2) promoting the explainability of heuristic search and optimization techniques by",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p5",
+    "section_heading": "1 Introduction",
+    "text": "clarifying their working principles through a careful mathematical analysis. Run-time analyses on the performance of evolutionary algorithms have been provided for simple algorithms such as GSEMO in both artificial benchmark problems [2, 7] and others such as bi-objective minimum spanning tree [18, 28] and constrained submodular optimization [21, 22, 5, 23]. In recent years, theoretical analyses of state of the art approaches such as NSGA-II and MOEA/D have been conducted [12, 14, 13, 34, 6]. However, these run-time results have only been given for artificial benchmark problems.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p6",
+    "section_heading": "1 Introduction",
+    "text": "In this paper, we present for the first time rigorous results on MOEA/D for a classical multi-objective optimization problem, namely the multi-objective minimum weight base problem. This problem, falling under the matroid optimization category, significantly generalizes the previously studied bi-objective minimum spanning tree problem. In this work, we focus on approximating the nondominated front, as its size can be exponential in the problem size. In particular, we show that MOEA/D obtains a factor 2-approximation for two objectives in expected polynomial time. Previous analyses for the special case of graphic matroid (i.e. spanning forests) were only able to show a pseudo-polynomial run-time for GSEMO and NSGA-II to obtain this approximation [18, 4]. We further extend the analyses by deriving a fixed-parameter polynomial expected run-time in instances with \ud835\udc58 \u2265 2 objectives to reach a \ud835\udc58-approximation. That is, unlike the previous runtime bounds, ours is both polynomial and weight-free under fixed \ud835\udc58 in light of the findings by Rechel et. al. [27].",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p7",
+    "section_heading": "1 Introduction",
+    "text": "Instrumental to our analyses is a deeper understanding of the problem, and as such, we formally examine certain properties of the multi-objective minimum weight base problem. We first prove a tight approximation guarantee from computing the convex hull of the non-dominated front, extending the known guarantee for two objectives [18]. With this in mind, we explore insight regarding this convex hull, including its vertex complexity and the structural relation among solutions whose weights constitute said convex hull. In addition, we briefly formulate an efficient deterministic approach to enumerate extreme points, which achieves a smaller approximation factor in lower (and weight-free) runtime than a recently proposed framework for general multi-objective minimization instances [1]. These findings may be of interest in areas beyond runtime analysis.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p8",
+    "section_heading": "2 Preliminaries & Problem",
+    "text": "First, we give an overview of relevant matroid theory concepts, with terminologies adopted from the well-known text book [20] on the subject.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p9",
+    "section_heading": "2 Preliminaries & Problem",
+    "text": "Definition 1. A tuple \ud835\udc40 = (\ud835\udc38,I \u2286 2\ud835\udc38) is a matroid if a) \u2205 \u2208 I, b) \u2200\ud835\udc65 \u2286 \ud835\udc66 \u2286 \ud835\udc38,\ud835\udc66 \u2208 I =\u21d2 \ud835\udc65 \u2208 I, c) \u2200\ud835\udc65,\ud835\udc66 \u2208 I, |\ud835\udc65 | < |\ud835\udc66 | =\u21d2 \u2203\ud835\udc52 \u2208 \ud835\udc66 \\ \ud835\udc65, \ud835\udc65 \u222a {\ud835\udc52} \u2208 I. The set \ud835\udc38 is the ground set, and I is the independence collection. A base of \ud835\udc40 is a maximal set in I.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p10",
+    "section_heading": "2 Preliminaries & Problem",
+    "text": "Definition 2. Given a matroid \ud835\udc40 = (\ud835\udc38,I), its rank function, \ud835\udc5f : 2\ud835\udc38 \u2192 \u2115, is defined as \ud835\udc5f (\ud835\udc65) = max{|\ud835\udc66 | : \ud835\udc66 \u2208 2\ud835\udc65 \u2229 I}, and the rank of \ud835\udc40 is \ud835\udc5f (\ud835\udc38). A matroid is completely characterized by its rank function.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p11",
+    "section_heading": "2 Preliminaries & Problem",
+    "text": "To give examples, a \ud835\udc3e-rank uniform matroid over \ud835\udc38 admits the independence collection I = {\ud835\udc65 \u2286 \ud835\udc38 : |\ud835\udc65 | \u2264 \ud835\udc3e}, characterizing a cardinality constraint. In linear algebra, a representable matroid describes linear independence among a vector set. In graph theory, given an undirected graph \ud835\udc3a = (\ud835\udc49 , \ud835\udc38), a graphic matroid \ud835\udc40 = (\ud835\udc38,I) defined by \ud835\udc3a is such that I contains all edge sets \ud835\udc65 forming a forest subgraph in \ud835\udc3a . A base of a graphic matroid is a spanning forest, which itself is an object of much interest. Dual to the graphic matroid, the bond matroid \ud835\udc40\u2217 = (\ud835\udc38,I\u2217) is such that I\u2217 contains all edge sets \ud835\udc65 whose removal from \ud835\udc38 preserves every pairwise connectivity in \ud835\udc3a . The matroid properties emerge in many combinatorial structures of various optimization problems [20].",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p12",
+    "section_heading": "2 Preliminaries & Problem",
+    "text": "A classical application of matroids in optimization is in the minimum weight base (MWB) problem. Given a weighted matroid (\ud835\udc38, \ud835\udc5f,\ud835\udc64), this problem asks to find a base in this matroid minimizing \ud835\udc64 . The most arguably well-known special case of MWB problem is the minimum spanning tree (MST) problem. It is known that the classical Greedy algorithm minimizes (and maximizes) arbitrary weight over a base collection of any matroid [24, 9, 8]. From the exchange property between independent sets (specifically the symmetric-exchange property proven in [3]), we see that Greedy can also enumerate all minimum weight bases, thus characterizes the optimality of any MWB instance. A proof of this quality is also included in [8].",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p13",
+    "section_heading": "2 Preliminaries & Problem",
+    "text": "The multi-objective minimum weight base (MOMWB) is a natural multi-objective extension to MWB. Given a \ud835\udc58-weighted1 matroid (\ud835\udc38, \ud835\udc5f,\ud835\udc64 \u2208 (\u2115\u2217)\ud835\udc58\u00d7|\ud835\udc38 | ) where \ud835\udc38 is the ground set, \ud835\udc5f is the rank function of the matroid, and the weight vector of a solution \ud835\udc65 \u2208 {0, 1} |\ud835\udc38 | is\ud835\udc64\ud835\udc65 (also called the image of \ud835\udc65 under \ud835\udc64), the multi-objective problem asks to find a non-dominated set of bases in (\ud835\udc38, \ud835\udc5f ) minimizing \ud835\udc64 . Here, \ud835\udc58 is the number of objectives.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p14",
+    "section_heading": "2 Preliminaries & Problem",
+    "text": "We denote \ud835\udc5a := |\ud835\udc38 |, \ud835\udc5b := \ud835\udc5f (\ud835\udc38), and observe that \ud835\udc65 is a base in (\ud835\udc38, \ud835\udc5f ) implies |\ud835\udc65 | = \ud835\udc5b. Given an objective vector function \ud835\udc53 and solutions \ud835\udc65 and \ud835\udc66, \ud835\udc65 dominates \ud835\udc66, denoted with \ud835\udc65 \u2aaf\ud835\udc53 \ud835\udc66, iff \ud835\udc53 (\ud835\udc66) \u2212 \ud835\udc53 (\ud835\udc65) \u2208 \u211d\ud835\udc58\u22650. We see that \ud835\udc65 \u2aaf\ud835\udc53 \ud835\udc66 iff min\ud835\udf06\u2208[0,1]\ud835\udc58 \ud835\udf06",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p15",
+    "section_heading": "2 Preliminaries & Problem",
+    "text": "\u22ba (\ud835\udc53 (\ud835\udc66) \u2212 \ud835\udc53 (\ud835\udc65)) \u2265 0, i.e. \ud835\udc66 has greater scalarized objective value than \ud835\udc65 across all linear trade-offs. We denote the set of images of nondominated solutions with \ud835\udc39 , and vertices of its convex hull Conv(\ud835\udc39 ) are called extreme points. For convenience, let Conv(\ud835\udc39 ) contain only points in \ud835\udc39 and that its faces be conventionally defined, i.e. as continuous Euclidean subspaces.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p16",
+    "section_heading": "2 Preliminaries & Problem",
+    "text": "Since \ud835\udc39 can be exponentially large, we consider instead approximating it by finding solutions mapped to Conv(\ud835\udc39 ). Such a set is known to guarantee a 2-approximation of the non-dominated set for \ud835\udc58 = 2 [18] under the following definition. Definition 3 (Minimization). Given \ud835\udc58 non-negative objective functions \ud835\udc53 := (\ud835\udc53\ud835\udc56 )\ud835\udc58\ud835\udc56=1, a solution \ud835\udc65 \ud835\udc50-approximates a solution \ud835\udc66 for some \ud835\udc50 \u2265 0 if \ud835\udc50 \ud835\udc53 (\ud835\udc66) \u2212 \ud835\udc53 (\ud835\udc65) \u2208 \u211d\ud835\udc58\u22650. A solution set \ud835\udc4b \ud835\udc50-approximates (or is a \ud835\udc50-approximation of) a solution set \ud835\udc4c if every \ud835\udc66 \u2208 \ud835\udc4c is \ud835\udc50-approximated by at least a \ud835\udc65 \u2208 \ud835\udc4b .",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p17",
+    "section_heading": "2 Preliminaries & Problem",
+    "text": "We formally describe categories of solutions of interest. Here, we only consider feasible solutions, e.g. bases in a MWB or MOMWB instance. Furthermore, a subset of \ud835\udc38 is characterized by a bit-string in {0, 1} |\ud835\udc38 | , so both set and bit operations on solutions are well-defined, and we use both representations throughout the paper. Definition 4. A solution \ud835\udc65 is a supported solution to an instance with objective functions \ud835\udc53 = (\ud835\udc53\ud835\udc56 )\ud835\udc58\ud835\udc56=1 and a solution set \ud835\udc46 if there is a linear trade-off \ud835\udf06 \u2208 [0, 1]\ud835\udc58 \\ {0} where \ud835\udc65 \u2208 argmin\ud835\udc66\u2208\ud835\udc46 \ud835\udf06\u22ba \ud835\udc53 (\ud835\udc66). A trade-off set \u039b is complete if \u22c3 \ud835\udf06\u2208\u039b argmin\ud835\udc66\u2208\ud835\udc46 \ud835\udf06\u22ba \ud835\udc53 (\ud835\udc66) contains all supported solutions. A supported solution \ud835\udc67 is extreme if there is \ud835\udf06\u2032 \u2208 [0, 1]\ud835\udc58 where for all \ud835\udc65 \u2208 argmin\ud835\udc66\u2208\ud835\udc46 \ud835\udf06\u2032\u22ba \ud835\udc53 (\ud835\udc66), \ud835\udc53 (\ud835\udc67) = \ud835\udc53 (\ud835\udc65). A set containing a trade-off for each extreme solution is called sufficient.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p18",
+    "section_heading": "2 Preliminaries & Problem",
+    "text": "Note we assume that every instance admits a solution minimizing \ud835\udf06\u22ba \ud835\udc53 for every \ud835\udf06 \u2208 [0, 1]\ud835\udc58 . Of course, this holds for MOMWB due to the solution set being finite. We see that supported solutions are precisely the solutions whose images lie on Conv(\ud835\udc39 ). Intuitively, a complete trade-off set decomposes the multi-objective instance in such a way to allow enumerating all supported solutions via exactly solving scalarized instances. Since supported solutions that are not extreme are mapped to points on the faces of Conv(\ud835\udc39 ), we have the following observation. Observation 1. For each supported solution minimizing \ud835\udf06\u22ba \ud835\udc53 , there is an extreme solution minimizing \ud835\udf06\u22ba \ud835\udc53 . For every \ud835\udf06 \u2208 [0, 1]\ud835\udc58 , there is an extreme solution minimizing \ud835\udf06\u22ba \ud835\udc53 .",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p19",
+    "section_heading": "2 Preliminaries & Problem",
+    "text": "However, for linear functions, the number of supported solutions can be very large, so we also consider finding a representative subset which, as we will see, is sufficient to give an approximation guarantee. Definition 5. A solution set \ud835\udc4b is sufficient to an instance with objective functions \ud835\udc53 if for every extreme solution \ud835\udc66, there is \ud835\udc65 \u2208 \ud835\udc4b where \ud835\udc53 (\ud835\udc65) = \ud835\udc53 (\ud835\udc66). The analogy for supported solutions is called a complete solution set.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p20",
+    "section_heading": "2 Preliminaries & Problem",
+    "text": "With this definition, the set of solutions that are mapped to the extreme points is sufficient. In fact, the size of a minimal sufficient set is exactly the number of extreme points. Note that while the set of all supported solutions is unique, there can be multiple distinct minimal sufficient sets due to duplicate images. We briefly prove an approximation factor by any sufficient set, which is not restricted to MOMWB. Theorem 1 (Minimization). Given \ud835\udc58 \u2265 1 and a non-negative \ud835\udc58-objective instance where for each objective \ud835\udc56 there is \ud835\udeff\ud835\udc56 > 0 so that \ud835\udc53\ud835\udc56 (\ud835\udc65) \u2209 (0, \ud835\udeff\ud835\udc56 ] for all solutions \ud835\udc65 , every sufficient solution set \ud835\udc43 \ud835\udc58-approximates all solutions. This factor is tight for all \ud835\udc58 , even if \ud835\udc43 is a complete solution set.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p21",
+    "section_heading": "2 Preliminaries & Problem",
+    "text": "We denote the weight scalarization with trade-off \ud835\udf06 with\ud835\udc64 (\ud835\udf06) := \ud835\udf06\u22ba\ud835\udc64 , so (\ud835\udc38, \ud835\udc5f,\ud835\udc64 (\ud835\udf06) ) is a scalarized instance at \ud835\udf06. All proofs, including the one for the above result, are included in the Appendix.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p22",
+    "section_heading": "3 Properties of Conv(\ud835\udc39 ) in Multi-Objective Minimum Weight Base Problem",
+    "text": "Here, we derive various properties of Conv(\ud835\udc39 ) with implications on the complexity of approximating \ud835\udc39 . Since these solutions are optima of linearly scalarized instances, we use the properties of the Greedy algorithm, known to guarantee and characterize optimality in linear optimization over a matroid.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p23",
+    "section_heading": "3 Properties of Conv(\ud835\udc39 ) in Multi-Objective Minimum Weight Base Problem",
+    "text": "The Greedy algorithm starts from an empty set and adds elements to it in increasing weight order while maintaining its independence, until a base is reached. In essence, Greedy operates on a permutation over \ud835\udc38 and produces a unique solution so we can characterize its outputs via permutations. We say a permutation \ud835\udf0f over \ud835\udc38, \ud835\udf0f : \ud835\udc38 \u2192 {1, . . . ,\ud835\udc5a}, sorts the weight \ud835\udc64 if, for all \ud835\udc56 = 1, . . . ,\ud835\udc5a \u2212 1, \ud835\udc64\ud835\udf0f\u22121 (\ud835\udc56 ) \u2264 \ud835\udc64\ud835\udf0f\u22121 (\ud835\udc56+1) . As mentioned, Greedy run on a permutation that sorts the weight to be minimized returns a minimum weight base. More importantly, all minimum weight bases can be obtained by running Greedy on all sorting permutations. This allows us to derive properties of any solution mapped onto Conv(\ud835\udc39 ) using Greedy\u2019s behaviors. In particular, we can circumvent the difficulty of examining weights by examining permutations instead, essentially looking at the weight-induced rankings rather than the weights themselves. As such, all results in this section are weight-free and hold for arbitrary real weights. We refer to [1] for a weight-dependent algorithmic treatment of Conv(\ud835\udc39 ) under general settings. Observation 2. A MOMWB instance defined over a ground set \ud835\udc38 satisfies the following: (1) its objective functions are linear, and (2) there is a surjective mapping from the set of permutations over \ud835\udc38 to the set of supported solutions. To simplify analysis, we restrict the trade-off space to non-negative 1-norm unit vectors \ud835\udc48 ={ \ud835\udc4e \u2208 [0, 1]\ud835\udc58 : \u2211\ud835\udc58\ud835\udc56=1 \ud835\udc4e\ud835\udc56 = 1}, let \ud835\udf0b\ud835\udf06 be a permutation sorting \ud835\udc64 (\ud835\udf06) for \ud835\udf06 \u2208 \ud835\udc48 . For each \ud835\udc56 \u2208 \ud835\udc38, let \ud835\udd68\ud835\udc56 = (\ud835\udc64 \ud835\udc57,\ud835\udc56 )\ud835\udc58\ud835\udc57=1, and for each pair \ud835\udc56, \ud835\udc57 \u2208 \ud835\udc38, let \ud835\udeff\ud835\udc56, \ud835\udc57 = \ud835\udd68\ud835\udc56 \u2212 \ud835\udd68\ud835\udc57 and \u0394\ud835\udc56, \ud835\udc57 = { \ud835\udc4e \u2208 \ud835\udc48 : \ud835\udeff\u22ba \ud835\udc56, \ud835\udc57 \ud835\udc4e = 0 } be the (\ud835\udc58 \u2212 2)-dimensional set characterized by the fact that for all \ud835\udf06 \u2208 \ud835\udc48 ,\ud835\udc64 (\ud835\udf06) \ud835\udc56 = \ud835\udc64 (\ud835\udf06) \ud835\udc57",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p24",
+    "section_heading": "3 Properties of Conv(\ud835\udc39 ) in Multi-Objective Minimum Weight Base Problem",
+    "text": "iff \ud835\udf06 \u2208 \u0394\ud835\udc56, \ud835\udc57 . Finally, let \ud835\udc34 be the multiset of non-empty \u0394\ud835\udc56, \ud835\udc57 where \ud835\udeff\ud835\udc56, \ud835\udc57 \u2260 0, \ud835\udc3b\ud835\udc34 be the multiset of convex (\ud835\udc58 \u2212 1)-polytopes in \ud835\udc48 defined by intersections of half-spaces bounded by hyperplanes in \ud835\udc34 and the boundary of \ud835\udc48 , and \ud835\udc34\u2032 be the set of points in \ud835\udc48 where each point lies in the interior of a polytope in \ud835\udc3b\ud835\udc34, we show that \ud835\udc34 and \ud835\udc34\u2032 encompass complete solution set and sufficient solution set, respectively. Note that if \ud835\udeff\ud835\udc56, \ud835\udc57 = \ud835\udd68\ud835\udc56 \u2212 \ud835\udd68\ud835\udc57 = 0, the inclusion of either \ud835\udc56 or \ud835\udc57 in a solution does not change its image under\ud835\udc64 .2",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p25",
+    "section_heading": "3 Properties of Conv(\ud835\udc39 ) in Multi-Objective Minimum Weight Base Problem",
+    "text": "Lemma 1. For any\ud835\udc44 \u2208 \ud835\udc3b\ud835\udc34, the set of all bases minimizing\ud835\udc64 (\ud835\udf06) remains constant for all \ud835\udf06 \u2208 Int(\ud835\udc44)3, and these bases share an image under\ud835\udc64 . Furthermore, they also minimize\ud835\udc64 (\ud835\udf06) for all \ud835\udf06 \u2208 \ud835\udc44 .",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p26",
+    "section_heading": "3 Properties of Conv(\ud835\udc39 ) in Multi-Objective Minimum Weight Base Problem",
+    "text": "This immediately gives the upper bound on the number of extreme points, which is the maximum number of space partitions by hyperplanes; the formula for this is given in [32]. Note that Lemma 1 only requires properties in Observation 2, which hold for the broader class of set systems that is matroid embeddings since all minimum weight bases in such a system are exactly Greedy bases [11].",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p27",
+    "section_heading": "3 Properties of Conv(\ud835\udc39 ) in Multi-Objective Minimum Weight Base Problem",
+    "text": "Corollary 1. The size of a minimal sufficient solution set to a \ud835\udc58-objective instance satisfying properties in Observation 2 is at most \u2211\ud835\udc58 \ud835\udc56=1 (\ud835\udc5a (\ud835\udc5a\u22121)/2 \ud835\udc56\u22121 ) , and \ud835\udc34\u2032 is a sufficient trade-off set.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p28",
+    "section_heading": "3 Properties of Conv(\ud835\udc39 ) in Multi-Objective Minimum Weight Base Problem",
+    "text": "We remark that we deliberately choose each trade-off in \ud835\udc34\u2032 from the interior of each polytope. This is because if a zero trade-off coefficient is assigned to an objective, then bases minimizing the weight scalarized by such a trade-off may not be non-dominated. Furthermore, such scalarized weights admit optima whose images under\ud835\udc64 are identical, which is necessary to ensure that the first optimum an optimization algorithm finds using these trade-offs is an extreme solution. Moreover, this trade-off",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p29",
+    "section_heading": "3 Properties of Conv(\ud835\udc39 ) in Multi-Objective Minimum Weight Base Problem",
+    "text": "selection scheme also guarantees that said algorithm does not discard vertices of Conv(\ud835\udc39 ) over time, unless it stores all found optima.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p30",
+    "section_heading": "3 Properties of Conv(\ud835\udc39 ) in Multi-Objective Minimum Weight Base Problem",
+    "text": "Given a solution set \ud835\udc46 , the \ud835\udc59-Hamming neighborhood graph of \ud835\udc46 is an undirected graph \ud835\udc3a\ud835\udc59 = (\ud835\udc46, {{\ud835\udc4e, \ud835\udc4f} : |\ud835\udc4e \u2297 \ud835\udc4f | \u2264 \ud835\udc59}), and \ud835\udc46 is \ud835\udc59-Hamming connected if \ud835\udc3a\ud835\udc59 is connected. Neumann [18] proved for spanning trees that given the non-dominated front being strongly convex, the set of supported solutions is 2-Hamming connected. We show that this even holds for matroid bases without the convexity assumption. For simplicity, we assume, for the rest of the analysis, fixed orderings among each class of elements \ud835\udc56 \u2208 \ud835\udc38 sharing \ud835\udd68\ud835\udc56 . We will see that the existence of such elements does not affect the 2-Hamming connectivity among supported solutions. We first show that as the trade-off moves continuously within\ud835\udc48 , the permutation sorting the scalarized weight is transformed incrementally by exchanging two adjacent positions, which we call an adjacent swap. Lemma 2. For any \ud835\udc4e, \ud835\udc4e\u2032 \u2208 \ud835\udc48 , let \ud835\udc34\u2217 = {\ud835\udc4e\ud835\udc56 }\u210e\ud835\udc56=1 be the multiset of intersections between the line segment connecting \ud835\udc4e and \ud835\udc4e\u2032 and hyperplanes in \ud835\udc34, indexed in the order from \ud835\udc4e to \ud835\udc4e\u2032, there is a shortest sequence of adjacent swaps from \ud835\udf0b\ud835\udc4e to \ud835\udf0b\ud835\udc4e\u2032 , (\ud835\udf0b\ud835\udc4e, \ud835\udf0f1, . . . , \ud835\udf0f\u210e, \ud835\udf0b\ud835\udc4e\u2032 ), where for all \ud835\udc56 = 1, . . . , \u210e, \ud835\udf0f\ud835\udc56 sorts\ud835\udc64 (\ud835\udc4e\ud835\udc56 ) . If\ud835\udc64 (\ud835\udc4e) or\ud835\udc64 (\ud835\udc4e",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p31",
+    "section_heading": "3 Properties of Conv(\ud835\udc39 ) in Multi-Objective Minimum Weight Base Problem",
+    "text": "\u2032 ) can be sorted by multiple permutations, the claim holds assuming that \ud835\udf0b\ud835\udc4e and \ud835\udf0b\ud835\udc4e\u2032 have maximum Kendall distance4.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p32",
+    "section_heading": "3 Properties of Conv(\ud835\udc39 ) in Multi-Objective Minimum Weight Base Problem",
+    "text": "Next, we show that an adjacent swap on the sorting permutation incurs an at most 2-bit change in the minimum weight base. Lemma 3. Let \ud835\udf0f and \ud835\udf0f \u2032 be permutations over \ud835\udc38 that are one adjacent swap apart, and \ud835\udc65 and \ud835\udc65 \u2032 are Greedy solutions on them, respectively, then |\ud835\udc65 \u2297 \ud835\udc65 \u2032 | \u2264 2. Furthermore, let \ud835\udc62, \ud835\udc63 \u2208 \ud835\udc38 where \ud835\udf0f (\ud835\udc63) = \ud835\udf0f (\ud835\udc62) + 1 and \ud835\udf0f \u2032 (\ud835\udc63) = \ud835\udf0f \u2032 (\ud835\udc62) \u2212 1, |\ud835\udc65 \u2297 \ud835\udc65 \u2032 | = 2 iff \ud835\udc65 \u2032 = \ud835\udc65 \\ {\ud835\udc62} \u222a {\ud835\udc63}.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p33",
+    "section_heading": "3 Properties of Conv(\ud835\udc39 ) in Multi-Objective Minimum Weight Base Problem",
+    "text": "Lemma 2 and 3 indicate that there is a sequence of 2-bit flips between any pair of supported solutions such that every step also gives a supported solution. Therefore, starting from a supported solution, we can compute the rest of Conv(\ud835\udc39 ) with 2-bit variations. Regarding weight-sharing elements, for a supported solution \ud835\udc65 minimizing\ud835\udc64 (\ud835\udf06) , if there is a class of equal-weight elements \ud835\udc4d partially intersecting \ud835\udc65 , then all supported solutions minimizing \ud835\udc64 (\ud835\udf06) containing different elements in \ud835\udc4d can be reached from \ud835\udc65 by a sequence of 2-bit flips, each step in which produces a supported solution also minimizing\ud835\udc64 (\ud835\udf06) . This is because \ud835\udc4d is located consecutively in \ud835\udf0b\ud835\udf06 and can be arranged arbitrarily (leading to the Greedy solution minimizing \ud835\udc64 (\ud835\udf06) ), and there is a sequence of adjacent swaps between any two such permutations touching only elements in \ud835\udc4d . Furthermore, if there are multiple such classes whose elements share a scalarized weight at some trade-off \ud835\udf06, the relative inter-class orderings in any valid \ud835\udf0b\ud835\udf06 can be shuffled arbitrarily with an adjacent swap sequence that neither, at any step, changes any pairwise intra-class ordering, nor breaks the sorting property. For these two reasons, the set of permutations sorting all scalarized weights is 1-Kendall connected (Kendall-distance equivalence to Hamming connectivity), thus the relative intra-class orderings, and consequentially the presence of multiple elements within each such class, does not affect 2-Hamming connectivity. Corollary 2. Given solutions \ud835\udc65 and \ud835\udc66 where {\ud835\udc64\ud835\udc65,\ud835\udc64\ud835\udc66} \u2286 Conv(\ud835\udc39 ), there is a non-empty set of solutions {\ud835\udc67\ud835\udc56 }\u210e\ud835\udc56=1 where \ud835\udc65 = \ud835\udc671, \ud835\udc66 = \ud835\udc67\u210e , |\ud835\udc67\ud835\udc56 \u2297 \ud835\udc67\ud835\udc56+1 | = 2 for all \ud835\udc56 = 1, . . . , \u210e\u22121 and {\ud835\udc64\ud835\udc67\ud835\udc56 } \u210e \ud835\udc56=1 \u2286 Conv(\ud835\udc39 ).",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p34",
+    "section_heading": "3 Properties of Conv(\ud835\udc39 ) in Multi-Objective Minimum Weight Base Problem",
+    "text": "Lemma 3 also lets us derive a stronger bound on the number of distinct Greedy solutions as the trade-off moves in a straight line, giving an upper bound on the number of extreme points in case \ud835\udc58 = 2. Theorem 2. Given \ud835\udc5b \u2208 (0,\ud835\udc5a), \ud835\udc4e, \ud835\udc4f \u2208 \ud835\udc48 and \ud835\udc4b is a minimal set of extreme solutions such that for each \ud835\udf03 \u2208 [0, 1], \ud835\udc4b contains a solution minimizing \ud835\udc64 ( (1\u2212\ud835\udf03 )\ud835\udc4e+\ud835\udf03\ud835\udc4f ) , |\ud835\udc4b | \u2264 \u210e\ud835\udc5a \u2212 \u210e(\u210e + 1)/2 + 1 where \u210e := \u2308\u221a\ufe01 2 min{\ud835\udc5b,\ud835\udc5a \u2212 \ud835\udc5b} \u2212 1 \u2309 .",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p35",
+    "section_heading": "3 Properties of Conv(\ud835\udc39 ) in Multi-Objective Minimum Weight Base Problem",
+    "text": "Corollary 3. A bi-objective MWB instance (i.e. \ud835\udc58 = 2) admits at most\ud835\udc42 (\ud835\udc5a \u221a\ufe01",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p36",
+    "section_heading": "3 Properties of Conv(\ud835\udc39 ) in Multi-Objective Minimum Weight Base Problem",
+    "text": "min{\ud835\udc5b,\ud835\udc5a \u2212 \ud835\udc5b}) extreme points.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p37",
+    "section_heading": "3 Properties of Conv(\ud835\udc39 ) in Multi-Objective Minimum Weight Base Problem",
+    "text": "We remark that aside from the trivial cases \ud835\udc5b \u2208 {1,\ud835\udc5a \u2212 1}, we did not find an instance where this bound is tight. As far as we are aware, it is an open question whether this bound is optimal.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p38",
+    "section_heading": "4 Exact Computation of Extreme Points",
+    "text": "In this section, we describe a deterministic framework that finds a solution for each extreme point, as well as a complete trade-off set. This framework, modified from the algorithm proposed in [10] for bi-objective MST, is outlined in Algorithm 1. It calls another algorithm (e.g. Greedy) to find MWB to scalarized weights, and iteratively computes new extreme points based on information from previous ones. Intuitively, each subset of extreme points \ud835\udc4d is such that its convex hull is \u201cinside\u201d Conv(\ud835\udc39 ) and contains, for each extreme point \ud835\udc66 \u2209 \ud835\udc4d , a facet separating \ud835\udc4d from \ud835\udc66. This means \ud835\udc66 can be discovered by minimizing the weight scalarized along the normal direction of this facet, essentially expanding Conv(\ud835\udc4d ) to \u201ctouch\u201d \ud835\udc66. This iterative process begins with an optimum in each objective, and ends when all new normal vectors are duplicates of ones found previously, indicating that the current convex hull cannot be expanded further and equals Conv(\ud835\udc39 ). The special case of this algorithm for \ud835\udc58 = 2 is given in Algorithm 2 which treats trade-offs as scalars. Algorithm 1, naively implemented, requires\ud835\udc42 (#(poly(\ud835\udc58) +\ud835\udc58!\ud835\udc5a log\ud835\udc5a)) operations and\ud835\udc42 (\ud835\udc58!#\ud835\udc5a) calls to the matroid rank oracle where # is the number of extreme points. Each iteration in the main loop adds at least one extreme point, and redundant points are excluded from future iterations via \u039b\u2032. Here, we assume updating trade-off for each new vertex takes poly(\ud835\udc58) operations. We remark that exhaustive tie-breaking over all objectives is done at line 6 to ensure that the computed points are the vertices of Conv(\ud835\udc39 ) instead of interior points of its faces, and that all extreme points are accounted for when the termination criterion is met. Furthermore, if the trade-off assigns zero value to some objectives, this also guarantees that the resulted solutions are non-dominated. This subroutine can be improved by grouping together objectives whose sorting permutations agree (in relative orderings) among elements tied by\ud835\udc64 (\ud835\udf06) .",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p39",
+    "section_heading": "5 MOEA/D With Weight Scalarization",
+    "text": "Multi-Objective Evolutionary Algorithm based on Decomposition (MOEA/D), introduced in [33], is a co-evolutionary framework characterized by simultaneous optimization of single-objective subproblems in a multi-objective problem. While there are many approaches to decompose the multi-objective into single-objectives, we consider the classical approach that is weight scalarization [15], as hinted in preceding sections. This simple scheme is sufficient in approximating \ud835\udc39 and even enumerating Conv(\ud835\udc39 ).",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p40",
+    "section_heading": "5.1 Description",
+    "text": "MOEA/D uses two fitness functions, a scalar function formulated by the decomposition scheme and a vector function for dominance checking [33]. To account for the matroid base constraint, we use the penalty term formulated in [26], which was adapted from prior work on MST [19]. Letting \ud835\udc64\ud835\udc5a\ud835\udc4e\ud835\udc65 := max(\ud835\udc56,\ud835\udc52 ) \u2208{1,...,\ud835\udc58 }\u00d7\ud835\udc38 \ud835\udc64\ud835\udc56,\ud835\udc52 , we have the fitness \ud835\udc53\ud835\udf06 of \ud835\udc65 \u2208 {0, 1}\ud835\udc5a at trade-off \ud835\udf06, and the fitness vector \ud835\udc54 for dominance checking where \ud835\udfd9 is the one vector.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p41",
+    "section_heading": "5.1 Description",
+    "text": "The MOEA/D for the MOMWB problem is outlined in Algorithm 3. The fitness functions defined in Eq. (1) and the input trade-off set realize the decomposition, and the algorithm evolves a population for each scalarized subproblem with potential neighborhood-based collaboration. During the search, it maintains a non-dominated solution set \ud835\udc46 , which does not influence the search and is returned as output. An optimum to each scalarized subproblem is a supported solution. Note in this formulation, MOEA/D keeps ties in each subproblem, allowing all found optima to participate in mutation operations. This is to avoid having to flip more than two bits to jump from a supported solution to an uncollected point in Conv(\ud835\udc39 ). We will see that while this may increase the population size, it does not affect the run-time to reach optimality in each subproblem.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p42",
+    "section_heading": "5.2 Expected Time To Minimize Scalarized Weights",
+    "text": "In the following, we do not assume a particular value of \ud835\udc41 , and the results hold for any \ud835\udc41 \u2265 1. Furthermore, we exclude the trivial instances with \ud835\udc5b =\ud835\udc5a and \ud835\udc5b = 0, which admit exactly one base each. Lemma 4. MOEA/D working on trade-off set \u039b finds a base\u2019s superset for each \ud835\udf06 \u2208 \u039b within \ud835\udc42 ( |\u039b|\ud835\udc5a log\ud835\udc5b) expected search points.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p43",
+    "section_heading": "5.2 Expected Time To Minimize Scalarized Weights",
+    "text": "Let\ud835\udc42\ud835\udc43\ud835\udc47\ud835\udf06 be the optimal value to (\ud835\udc38, \ud835\udc5f,\ud835\udc64 (\ud835\udf06) ), we have the following drift argument proven in [26] for the standard bit mutation in the MWB problem. Lemma 5 ([26], Proposition 9). Given a trade-off \ud835\udf06 \u2208 [0, 1] and \ud835\udc65 \u2208 {0, 1}\ud835\udc5a , if \ud835\udc65 supersets a base, then there are \ud835\udc5b 2-bit flips and\ud835\udc5a \u2212\ud835\udc5b 1-bit flips on \ud835\udc65 reducing \ud835\udc53\ud835\udf06 (\ud835\udc65) on average by (\ud835\udc53\ud835\udf06 (\ud835\udc65) \u2212\ud835\udc42\ud835\udc43\ud835\udc47\ud835\udf06)/\ud835\udc5a.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p44",
+    "section_heading": "5.2 Expected Time To Minimize Scalarized Weights",
+    "text": "We use the same ideas as the proof of Theorem 2 in [26], while sharpening an argument to derive a slightly tighter bound.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p45",
+    "section_heading": "5.2 Expected Time To Minimize Scalarized Weights",
+    "text": "Theorem 3. MOEA/D working on trade-off set \u039b finds MWBs to instances scalarized by tradeoffs in \u039b in\ud835\udc42 ( |\u039b|\ud835\udc5a log\ud835\udc5b +\u2211\ud835\udf06\u2208\u039b\ud835\udc5a2 (log(\ud835\udc5a \u2212 \ud835\udc5b) + log\ud835\udc64\ud835\udc5a\ud835\udc4e\ud835\udc65 + log\ud835\udc51\ud835\udf06)) expected search points where \ud835\udc51\ud835\udf06 := min{\ud835\udc4e > 0 : \ud835\udc4e\ud835\udf06, \ud835\udc4e(1 \u2212 \ud835\udf06) \u2208 \u2115}.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p46",
+    "section_heading": "5.2 Expected Time To Minimize Scalarized Weights",
+    "text": "In order for MOEA/D to reach a \ud835\udc58-approximation and not lose it afterwards, it suffices that \u039b is sufficient and each scalarized subproblem admits optima with a unique image. As mentioned and from Lemma 1, this can be obtained by sampling from the interiors of convex polytopes in \ud835\udc3b\ud835\udc34. For \ud835\udc58 = 2, this can be done by taking a complete scalar trade-off set \ud835\udc34 (e.g. as returned by Algorithm 2) and include (\ud835\udc4e + \ud835\udc4f)/2 (which is an interior point) for each non-empty interval (\ud835\udc4e, \ud835\udc4f) bounded by consecutive elements in \ud835\udc34 \u222a {0, 1}. Under the integer weights assumption, this method gives rational trade-offs whose integral denominators are\ud835\udc42 (\ud835\udc642\ud835\udc5a\ud835\udc4e\ud835\udc65 ), so we have the following bound from Corollary 3.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p47",
+    "section_heading": "5.2 Expected Time To Minimize Scalarized Weights",
+    "text": "Corollary 4. For a bi-objective instance, MOEA/D working on a minimal sufficient trade-off set finds a sufficient solution set within \ud835\udc42 (\ud835\udc5a2 \u221a\ufe01 min{\ud835\udc5b,\ud835\udc5a \u2212 \ud835\udc5b}(\ud835\udc5a(log(\ud835\udc5a \u2212 \ud835\udc5b) + 3 log\ud835\udc64\ud835\udc5a\ud835\udc4e\ud835\udc65 ) + log\ud835\udc5b)) expected number of search points.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p48",
+    "section_heading": "5.2 Expected Time To Minimize Scalarized Weights",
+    "text": "This method can be generalized to higher dimensions. Instead of taking an average of two consecutive elements, we can take the average of the vectors normal to \ud835\udc58 facets of Conv(\ud835\udc39 ) that meet at an extreme point, as this ensures the resulted trade-off \ud835\udf06 is not normal5 to any \u210e-faces of Conv(\ud835\udc39 ) for all \u210e \u2208 [1, \ud835\udc58], and that said extreme point minimizes\ud835\udc64 (\ud835\udf06) . Since each facet is determinable by \ud835\udc58 points with integral coordinates, each such (1-norm unit) vector admits rational coordinates with denominator at most \ud835\udc58\ud835\udc64\ud835\udc5a\ud835\udc4e\ud835\udc65 . Therefore, the trade-offs derived by this method admit rational representations whose denominators are \ud835\udc42 (\ud835\udc58\ud835\udc58+1\ud835\udc64\ud835\udc58\ud835\udc5a\ud835\udc4e\ud835\udc65 ), giving the run-time upper bound from Corollary 1 under the assumption that \ud835\udc58 is sufficiently small.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p49",
+    "section_heading": "5.2 Expected Time To Minimize Scalarized Weights",
+    "text": "Corollary 5. Given a \ud835\udc58-obbjective instance where \ud835\udc58 \u2208 \ud835\udc5c (\ud835\udc5a) and \ud835\udc58 \u2208 \ud835\udc5c (\ud835\udc64\ud835\udc5a\ud835\udc4e\ud835\udc65 ), MOEA/D working on a minimal sufficient trade-off set guarantees \ud835\udc58-approximation within \ud835\udc42 (\ud835\udc5a2\ud835\udc58\u22121 (\ud835\udc5a(log(\ud835\udc5a \u2212 \ud835\udc5b) + (\ud835\udc58 + 1) log\ud835\udc64\ud835\udc5a\ud835\udc4e\ud835\udc65 ) + log\ud835\udc5b)) expected number of search points.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p50",
+    "section_heading": "5.2 Expected Time To Minimize Scalarized Weights",
+    "text": "As a side note, since MOEA/D uses standard bit mutation, we can replace\ud835\udc64\ud835\udc5a\ud835\udc4e\ud835\udc65 with\ud835\udc5a\ud835\udc5a and remove log\ud835\udc51\ud835\udf06 from the bound in Theorem 3 to arrive at weight-free asymptotic bounds [27].",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p51",
+    "section_heading": "5.3 Expected Time To Enumerate Conv(\ud835\udc39 )",
+    "text": "We see from Corollary 2 that MOEA/D with a complete trade-off set can collect all points in Conv(\ud835\udc39 ) with 2-bit flips starting from an optimum to each subproblem. As mentioned, this is afforded by allowing all found optima to undergo mutation.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p52",
+    "section_heading": "5.3 Expected Time To Enumerate Conv(\ud835\udc39 )",
+    "text": "Theorem 4. Assuming distinct supported solutions have distinct images under\ud835\udc64 , MOEA/D working on a minimal complete trade-off set \u039b, and starting from an optimum for each \ud835\udf06 \u2208 \u039b enumerates \ud835\udc36 := Conv(\ud835\udc39 ) in \ud835\udc42 ( |\u039b| |\ud835\udc36 |2\ud835\udc5a2) expected number of search points.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p53",
+    "section_heading": "5.3 Expected Time To Enumerate Conv(\ud835\udc39 )",
+    "text": "With this, Theorem 3 and Corollary 3 and 1, we have the following expected run-time bounds under the distinct image assumption. Note this assumption can be removed by having MOEA/D keep duplicate images at line 11.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p54",
+    "section_heading": "5.3 Expected Time To Enumerate Conv(\ud835\udc39 )",
+    "text": "Corollary 6. For a bi-objective instance, MOEA/D working on a minimal complete trade-off set enumerates\ud835\udc36 := Conv(\ud835\udc39 ) in expected time\ud835\udc42 (\ud835\udc5a2 \u221a\ufe01 min{\ud835\udc5b,\ud835\udc5a \u2212 \ud835\udc5b}(\ud835\udc5a(log(\ud835\udc5a\u2212\ud835\udc5b)+3 log\ud835\udc64\ud835\udc5a\ud835\udc4e\ud835\udc65 +|\ud835\udc36 |2)+ log\ud835\udc5b)). Corollary 7. Given a \ud835\udc58-objective instance where \ud835\udc58 \u2208 \ud835\udc5c (\ud835\udc5a) and \ud835\udc58 \u2208 \ud835\udc5c (\ud835\udc64\ud835\udc5a\ud835\udc4e\ud835\udc65 ), MOEA/D working on a minimal complete trade-off set enumerates \ud835\udc36 := Conv(\ud835\udc39 ) in expected time \ud835\udc42 (\ud835\udc5a2\ud835\udc58\u22121 (\ud835\udc5a(log(\ud835\udc5a \u2212 \ud835\udc5b) + (\ud835\udc58 + 1) log\ud835\udc64\ud835\udc5a\ud835\udc4e\ud835\udc65 + |\ud835\udc36 |2) + log\ud835\udc5b)).",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p55",
+    "section_heading": "6 Experimental Investigation",
+    "text": "In this section, we perform computational runs of MOEA/D on various bi-objective minimum spanning tree instances. Spanning trees in a connected graph \ud835\udc3a = (\ud835\udc49 , \ud835\udc38) are bases of the graphic matroid defined by \ud835\udc3a admitting the ground set \ud835\udc38. The rank of such a matroid (i.e. the size of the spanning tree) equals |\ud835\udc49 | \u2212 1 and its rank function is defined with \ud835\udc5f (\ud835\udc65) = |\ud835\udc49 | \u2212 \ud835\udc50\ud835\udc50 (\ud835\udc65) where \ud835\udc50\ud835\udc50 (\ud835\udc65) is the number of connected components in (\ud835\udc49 , \ud835\udc65). In notations, we have \ud835\udc5b = |\ud835\udc49 | \u2212 1 and\ud835\udc5a = |\ud835\udc38 |. We use simple undirected graphs in our experiments, and the edge-set representation of solutions in the implementations of the algorithms [25].",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p56",
+    "section_heading": "6.1 Setting and Performance Metrics",
+    "text": "We uniformly sample graphs with |\ud835\udc49 | \u2208 {26, 51, 101} and |\ud835\udc38 | \u2208 {150, 300}. In this procedure, edges are added randomly into an empty graph up to the desired edge count, and this is repeated until a connected graph is obtained. Each edge weight is an integer sampled independently fromU(1, 100). We generate two weighted graphs with each setting, making 12 instances in total.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p57",
+    "section_heading": "6.1 Setting and Performance Metrics",
+    "text": "With this experiment, we aim to measure the algorithms\u2019 performances in finding solutions mapped to all extreme points, we denote this set of target points with \ud835\udc45. We compare MOEA/D against GSEMO, previously studied for its performance in bi-objective MST [18]. For GSEMO, we use the fitness function \ud835\udc54 defined in Eq. (1). Since GSEMO checks for dominance in each iteration across its entire population, we set \ud835\udc41 := |\u039b| for MOEA/D to match. Here, the input \u039b to MOEA/D is derived from a complete trade-off set output by Algorithm 2 in the manner described in Section 5.2. The points given by Algorithm 1 are the target points \ud835\udc45, and each run is terminated if all target points are hit. Additionally, each run is terminated after at most \u23083|\ud835\udc45 |\ud835\udc5a2 log(\ud835\udc5a \u2212 \ud835\udc5b)\u2309 evaluations (each evaluation is a call to function \ud835\udc54). Each algorithm is run on each instance 10 times. Their performances are measured with the followings (\ud835\udc46 is the final population returned by the algorithm):",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p58",
+    "section_heading": "6.1 Setting and Performance Metrics",
+    "text": "\u2022 Success rate: The number of runs where all target points are hit within the evaluation budget.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p59",
+    "section_heading": "6.1 Setting and Performance Metrics",
+    "text": "\u2022 Cover rate: The proportion of hit target points after termination, |\ud835\udc45 \u2229 {\ud835\udc64\ud835\udc65 : \ud835\udc65 \u2208 \ud835\udc46}|/|\ud835\udc45 |. A run is successful if this reaches 100%.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p60",
+    "section_heading": "6.1 Setting and Performance Metrics",
+    "text": "\u2022 Modified inverted generational distance (IGD+): The distance between the output and the target points [16], \u2211 \ud835\udc66\u2208\ud835\udc45 min\ud835\udc65\u2208\ud835\udc46 \u221a\ufe03\u2211\ud835\udc58 \ud835\udc56=1 (max{(\ud835\udc64\ud835\udc65)\ud835\udc56 \u2212 \ud835\udc66\ud835\udc56 , 0})2/|\ud835\udc45 |. A run is successful if this reaches 0.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p61",
+    "section_heading": "6.1 Setting and Performance Metrics",
+    "text": "\u2022 T: The number of evaluations until all target points are hit.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p62",
+    "section_heading": "6.1 Setting and Performance Metrics",
+    "text": "We remark that the fitnesses \ud835\udc53\ud835\udf06 can be quickly computed alongside \ud835\udc54, incurring minimal overheads. In fact, the run-time bottleneck is in checking the number of connected components.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p63",
+    "section_heading": "6.2 Experimental Results",
+    "text": "The results are shown in Table 1, with IGD+ and cover rate from MOEA/D omitted due to them being 0 and 100% across all instances, respectively. These are contextualized by the listed instance-specific parameters. Of note is the number of target points |\ud835\udc45 | which is smaller than the upper bound in Theorem 2 in all instances.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p64",
+    "section_heading": "6.2 Experimental Results",
+    "text": "Immediately, we see the GSEMO failed to hit all target points within the evaluation budget in most runs, while MOEA/D succeeded in every run. In most cases, GSEMO hit at most one target point. Inspecting the output points and IGD+ reveals that its population converged well to the non-dominated front, yet somehow misses most extreme points. In contrast, MOEA/D hit all target points within up to 92% of the evaluation budget, though there are significant relative variances in the run-times.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p65",
+    "section_heading": "6.2 Experimental Results",
+    "text": "Inspecting the run-times of MOEA/D in relation to the evaluation budgets, we see that the means of ratios remain fairly stable across instances. This suggests the asymptotic bound in Theorem 3 is not overly pessimistic. Instances 5 and 6 are particularly interesting as they are ostensibly the easiest due to the small number of extreme points, yet MOEA/D seems to require the most fractions of the budget. Given that these instances exhibit the smallest\ud835\udc5a\u2212\ud835\udc5b, this can be explained by the interference of lower-order terms in the asymptotic bound, which are not counted in the budgets.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p66",
+    "section_heading": "7 Conclusion",
+    "text": "In this study, we contribute to the theoretical analyses of evolutionary multi-objective optimization in the context of non-trivial combinatorial problems. We give the first run-time analysis of the MOEA/D algorithm for a broad problem class that is multi-objective minimum weight base problem. In particular, we show a fixed-parameter polynomial expected run-time for approximating the nondominated front, simultaneously extending existing pseudo-polynomial bounds for GSEMO to arbitrary number of objectives and broader combinatorial structures. Our experiments in random bi-objective minimum spanning tree instances indicate that MOEA/D significantly outperforms GSEMO in the computing extreme points under an appropriate decomposition. Along the way, we prove properties that give further insight into the problem of interest.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p67",
+    "section_heading": "Acknowledgements",
+    "text": "This work was supported by Australian Research Council grants DP190103894 and FT200100536, and by National Science Foundation grant 2144080.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p68",
+    "section_heading": "A Omitted proofs",
+    "text": "Proof of Theorem 1. Let \ud835\udc53 := (\ud835\udc53\ud835\udc56 )\ud835\udc58\ud835\udc56=1 be the objective function vector, \ud835\udc67 be any solution, \ud835\udc4d = {\ud835\udc56 : \ud835\udc53\ud835\udc56 (\ud835\udc67) = 0}, if |\ud835\udc4d | = \ud835\udc58 then \ud835\udc67 is an extreme solution, so \ud835\udc43 1-approximates \ud835\udc67. Assume otherwise, we define \ud835\udf06 \u2208 (0, 1]\ud835\udc58 where \ud835\udf06\ud835\udc56 := \ud835\udf16/\ud835\udeff\ud835\udc56 if \ud835\udc56 \u2208 \ud835\udc4d and \ud835\udf06\ud835\udc56 := \ud835\udf16/[(\ud835\udc58 \u2212 |\ud835\udc4d |) \ud835\udc53\ud835\udc56 (\ud835\udc67)] otherwise for some sufficiently small \ud835\udf16 > 0. By definition of sufficient solution set and Observation 1, there is \ud835\udc65 \u2208 \ud835\udc43 minimizing \ud835\udf06\u22ba \ud835\udc53 , i.e. \ud835\udf06\u22ba \ud835\udc53 (\ud835\udc65) \u2264 \ud835\udf06\u22ba \ud835\udc53 (\ud835\udc67) = \ud835\udf16. If \ud835\udc53\ud835\udc56 (\ud835\udc65) > 0 for some \ud835\udc56 \u2208 \ud835\udc4d or \ud835\udc53\ud835\udc56 (\ud835\udc65) > (\ud835\udc58 \u2212 |\ud835\udc4d |) \ud835\udc53\ud835\udc56 (\ud835\udc67) for some \ud835\udc56 \u2209 \ud835\udc4d , then since \ud835\udc53 (\ud835\udc65) \u2208 \u211d\ud835\udc58\u22650, we have \ud835\udf06",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p69",
+    "section_heading": "A Omitted proofs",
+    "text": "\u22ba \ud835\udc53 (\ud835\udc65) > \ud835\udf16, a contradiction. Therefore, \ud835\udc65 , and by extension \ud835\udc43 , (\ud835\udc58 \u2212 |\ud835\udc4d |)-approximates \ud835\udc67. Since \ud835\udc67 can assume positive values in all objectives6, this factor simplifies to \ud835\udc58 .",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p70",
+    "section_heading": "A Omitted proofs",
+    "text": "We show tightness by construction. Let \ud835\udf16 \u2208 (0, \ud835\udc58), \ud835\udc5a := \ud835\udc582, \ud835\udf03\ud835\udc56 := \u2211\ud835\udc58\u22121",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p71",
+    "section_heading": "A Omitted proofs",
+    "text": "\ud835\udc57=0 \ud835\udc52\ud835\udc56\ud835\udc58\u2212 \ud835\udc57 for \ud835\udc56 = 1, . . . , \ud835\udc58 where \ud835\udc52 \ud835\udc57 is the \ud835\udc57 th unit vector in \u211d\ud835\udc5a , we define a non-negative \ud835\udc58-objective instance over {0, 1}\ud835\udc5a: min\ud835\udc65 {\ud835\udc53 (\ud835\udc65) := (\ud835\udf03\u22ba\ud835\udc56 \ud835\udc65 \u2212 \ud835\udf16 \u220f\ud835\udc58\u22121 \ud835\udc57=0 \ud835\udc65\ud835\udc56\ud835\udc58\u2212 \ud835\udc57 )\ud835\udc58\ud835\udc56=1 : |\ud835\udc65 | \u2265 \ud835\udc58}. We see that the set of all supported solutions",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p72",
+    "section_heading": "A Omitted proofs",
+    "text": "is precisely \ud835\udc46 := {\ud835\udf03\ud835\udc56 }\ud835\udc58\ud835\udc56=1. Let \ud835\udc67 := \u2211\ud835\udc58\u22121",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p73",
+    "section_heading": "A Omitted proofs",
+    "text": "\ud835\udc56=0 \ud835\udc52\ud835\udc56\ud835\udc58+1 be a solution, for all \ud835\udc56 = 1, . . . , \ud835\udc58, \ud835\udc53\ud835\udc56 (\ud835\udf03\ud835\udc56 ) = \ud835\udc58 \u2212 \ud835\udf16 \u2265 (\ud835\udc58 \u2212 \ud835\udf16) \ud835\udc53\ud835\udc56 (\ud835\udc67) (equality holds if \ud835\udc58 > 1). This means \ud835\udc46 fails to (\ud835\udc58 \u2212 \ud835\udf16 \u2212 \ud835\udf00)-approximate \ud835\udc67 for any \ud835\udf00 > 0, and \ud835\udf16 can be arbitrarily small. Since \ud835\udc46 is a complete solution set, the claim follows. \u25a1",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p74",
+    "section_heading": "A Omitted proofs",
+    "text": "Proof of Lemma 1. Let \ud835\udc50 be any point in Int(\ud835\udc44), by definition of \ud835\udc34,\ud835\udc64 (\ud835\udc50 ) \ud835\udc56 = \ud835\udc64 (\ud835\udc50 ) \ud835\udc57 iff \ud835\udeff\ud835\udc56, \ud835\udc57 = 0, and\ud835\udc64 (\ud835\udc50 ) admits multiple minima iff they contain different elements among those sharing weights in \ud835\udc64 (\ud835\udc50 ) , while sharing all other elements. Indeed, let \ud835\udc65 and \ud835\udc66 be a pair of minima violating this condition, they must contain different sets of weights so for all bijection \ud835\udefe between \ud835\udc65 \\ \ud835\udc66 and \ud835\udc66 \\ \ud835\udc65 , there is \ud835\udc62 \u2208 \ud835\udc65 \\ \ud835\udc66 where\ud835\udc64 (\ud835\udc50 )\ud835\udc62 \u2260 \ud835\udc64 (\ud835\udc50 ) \ud835\udefe (\ud835\udc62 ) ; this leads to a contradiction when combined with the base exchange property. This means these optima share image under\ud835\udc64 , and bases not having the same image do not minimize \ud835\udc64 (\ud835\udc50 ) .",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p75",
+    "section_heading": "A Omitted proofs",
+    "text": "Let \ud835\udc4f be any point on the boundary of \ud835\udc44 and \ud835\udc3f be the set of points between \ud835\udc4f and \ud835\udc50 excluding endpoints, we show that \ud835\udf0b\ud835\udc50 also sorts\ud835\udc64 (\ud835\udc4f ) . Let \ud835\udc56 . \ud835\udc57 \u2208 \ud835\udc38 where\ud835\udc64 (\ud835\udc50 )\ud835\udc56 < \ud835\udc64 (\ud835\udc50 ) \ud835\udc57 , then\ud835\udc64 (\ud835\udc4f ) \ud835\udc56 > \ud835\udc64 (\ud835\udc4f ) \ud835\udc57 implies \ud835\udc64 (\ud835\udc51 ) \ud835\udc56 = \ud835\udc64 (\ud835\udc51 ) \ud835\udc57",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p76",
+    "section_heading": "A Omitted proofs",
+    "text": "for some \ud835\udc51 \u2208 \ud835\udc3f, meaning \ud835\udc3f meets a hyperplane in \ud835\udc34, a contradiction as \ud835\udc3f \u2286 Int(\ud835\udc44). For all pairs \ud835\udc56, \ud835\udc57 \u2208 \ud835\udc38 where \ud835\udc64 (\ud835\udc50 )",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p77",
+    "section_heading": "A Omitted proofs",
+    "text": "\ud835\udc56 = \ud835\udc64 (\ud835\udc50 ) \ud835\udc57 , \ud835\udeff\ud835\udc56, \ud835\udc57 = 0 so \ud835\udc64 (\ud835\udc4f )\ud835\udc56 = \ud835\udc64 (\ud835\udc4f ) \ud835\udc57",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p78",
+    "section_heading": "A Omitted proofs",
+    "text": ". With this, every pair is accounted for, so \ud835\udf0b\ud835\udc50 sorts\ud835\udc64 (\ud835\udc4f ) . Therefore, since Greedy guarantees optimality, any base minimizing\ud835\udc64 (\ud835\udc50 ) also minimizes\ud835\udc64 (\ud835\udc4f ) , yielding the claim. \u25a1",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p79",
+    "section_heading": "A Omitted proofs",
+    "text": "Proof of Corollary 1. We see that |\ud835\udc34\u2032 | = |\ud835\udc3b\ud835\udc34 |, which is upper bounded by the number of half-space intersections from hyperplanes in \ud835\udc34. Since these are (\ud835\udc58 \u2212 2)-dimensional hyperplanes, applying the formula in [32] gives |\ud835\udc3b\ud835\udc34 | \u2264 \u2211\ud835\udc58 \ud835\udc56=1 ( |\ud835\udc34 | \ud835\udc56\u22121 ) which is increasing in |\ud835\udc34|, so the claim follows from |\ud835\udc34| \u2264",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p80",
+    "section_heading": "A Omitted proofs",
+    "text": "\ud835\udc5a(\ud835\udc5a \u2212 1)/2. We have \ud835\udc34\u2032 is a sufficient trade-off set following from Lemma 1 and \u22c3\ud835\udc44\u2208\ud835\udc3b\ud835\udc34 \ud835\udc44 = \ud835\udc48 . \u25a1 Proof of Lemma 2. Let 0 < \ud835\udf06\ud835\udc50 , < \ud835\udf06\ud835\udc51 < 1 such that \ud835\udc4f := (1 \u2212 \ud835\udc4f)\ud835\udc4e + \ud835\udc4f\ud835\udc4e\u2032 \u2208 \ud835\udc34\u2217 and for all \ud835\udf06 \u2208 [\ud835\udf06\ud835\udc50 , \ud835\udf06\ud835\udc4f), (1 \u2212 \ud835\udf06)\ud835\udc4e + \ud835\udf06\ud835\udc4e\u2032 \u2209 \ud835\udc34\u2217, and let \ud835\udc50 := (1 \u2212 \ud835\udf06\ud835\udc50 )\ud835\udc4e + \ud835\udf06\ud835\udc50\ud835\udc4e\u2032, then elements sharing weight in \ud835\udc64 (\ud835\udc4f ) must be mapped to consecutive positions in \ud835\udf0b\ud835\udc50 . Indeed, let \ud835\udc5d, \ud835\udc5e \u2208 \ud835\udc38 (\ud835\udf0b\ud835\udc50 (\ud835\udc5d) < \ud835\udf0b\ud835\udc50 (\ud835\udc5e)) where \ud835\udc64 (\ud835\udc4f )\ud835\udc5d = \ud835\udc64 (\ud835\udc4f ) \ud835\udc5e , if there is \ud835\udc5c \u2208 \ud835\udc38 where \ud835\udf0b\ud835\udc50 (\ud835\udc5c) \u2208 (\ud835\udf0b\ud835\udc50 (\ud835\udc5d), \ud835\udf0b\ud835\udc50 (\ud835\udc5e)) and \ud835\udc64 (\ud835\udc4f )\ud835\udc5c \u2260 \ud835\udc64 (\ud835\udc4f )\ud835\udc5d , then since the former implies \ud835\udc64 (\ud835\udc50 ) \ud835\udc5c \u2208 (\ud835\udc64 (\ud835\udc50 )\ud835\udc5d ,\ud835\udc64 (\ud835\udc50 ) \ud835\udc5e ), we have \ud835\udc64 (\ud835\udc51 )\ud835\udc5c = \ud835\udc64 (\ud835\udc51 )\ud835\udc5d or \ud835\udc64 (\ud835\udc51 ) \ud835\udc5c = \ud835\udc64 (\ud835\udc51 ) \ud835\udc5e for some \ud835\udc51 in the open line segment connecting \ud835\udc4f and \ud835\udc50 which implies \ud835\udc51 \u2208 \ud835\udc34\u2217, a contradiction. Each such consecutive sequence of \ud835\udc59 positions contains \ud835\udc59 (\ud835\udc59 \u2212 1)/2 pairs. From here, we consider two cases:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p81",
+    "section_heading": "A Omitted proofs",
+    "text": "\u2022 If such a sequence contains no pair (\ud835\udc56, \ud835\udc57) where \ud835\udeff\ud835\udc56, \ud835\udc57 = 0, then the aforementioned pairs correspond to \ud835\udc59 (\ud835\udc59 \u2212 1)/2 duplicates of \ud835\udc4f in \ud835\udc34\u2217. Furthermore, since the weights are transformed linearly w.r.t. trade-off, for all sufficiently small \ud835\udf16 > 0, these sequences are reversed between \ud835\udf0b\ud835\udc50 and \ud835\udf0b\ud835\udc4f+\ud835\udf16 (\ud835\udc4f\u2212\ud835\udc50 ) , whereas positions not in these sequences are stationary. Reversing \ud835\udc59 consecutive positions requires \ud835\udc59 (\ud835\udc59 \u2212 1)/2 adjacent swaps, so the Kendall distance between \ud835\udf0b\ud835\udc50 and \ud835\udf0b\ud835\udc4f+\ud835\udf16 (\ud835\udc4f\u2212\ud835\udc50 ) equals the multiplicity of \ud835\udc4f in \ud835\udc34\u2217.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p82",
+    "section_heading": "A Omitted proofs",
+    "text": "\u2022 If such a sequence contains \u210e > 1 elements with the same weight at all trade-off, then these must occupy consecutive positions in \ud835\udf0b\ud835\udc50 . As we assumed, the relative ordering among these elements is fixed, so exactly \u210e(\u210e \u2212 1)/2 swaps are saved. Furthermore, any pair (\ud835\udc56, \ud835\udc57) among these elements is such that \u0394\ud835\udc56, \ud835\udc57 \u2209 \ud835\udc34, meaning these \u210e(\u210e \u2212 1)/2 pairs are already subtracted from \ud835\udc34\u2217.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p83",
+    "section_heading": "A Omitted proofs",
+    "text": "In any case, we can assign to each duplicate of \ud835\udc4f in \ud835\udc34\u2217 a permutation sorting\ud835\udc64 (\ud835\udc4f ) so that these form a sequence of adjacent swap from \ud835\udf0b\ud835\udc50 to \ud835\udf0b\ud835\udc4f+\ud835\udf16 (\ud835\udc4f\u2212\ud835\udc50 ) including \ud835\udf0b\ud835\udc4f+\ud835\udf16 (\ud835\udc4f\u2212\ud835\udc50 ) and not \ud835\udf0b\ud835\udc50 . This directly yields the claim if \ud835\udc4e and \ud835\udc4e\u2217 are not in \ud835\udc34\u2217.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p84",
+    "section_heading": "A Omitted proofs",
+    "text": "Assume otherwise, then for all hyperplanes \u0394\ud835\udc56, \ud835\udc57 containing \ud835\udc4e, \ud835\udc64 (\ud835\udc4e) \ud835\udc56 = \ud835\udc64 (\ud835\udc4e) \ud835\udc57",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p85",
+    "section_heading": "A Omitted proofs",
+    "text": ", so for every such pair (\ud835\udc56, \ud835\udc57), we arrange \ud835\udf0b\ud835\udc4e so that their pairwise ordering in \ud835\udf0b\ud835\udc4e is the reverse of that in \ud835\udf0b\ud835\udc4e\u2032 . We likewise give \ud835\udc4e\u2032 the same treatment7. With this, the Kendall distance between \ud835\udf0b\ud835\udc4e and \ud835\udf0b\ud835\udc4e\u2032 is maximized and equal to |\ud835\udc34\u2217 |. \u25a1",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p86",
+    "section_heading": "A Omitted proofs",
+    "text": "Proof of Lemma 3. Let \ud835\udc38\ud835\udc5c := {\ud835\udc4e \u2208 \ud835\udc38 : \ud835\udf0f (\ud835\udc4e) < \ud835\udf0f (\ud835\udc5c)} be the set of elements Greedy considers adding to \ud835\udc65 before \ud835\udc5c \u2208 \ud835\udc38 when run on \ud835\udf0f , we have \ud835\udc65 \u2229 \ud835\udc38\ud835\udc62 = \ud835\udc65 \u2032 \u2229 \ud835\udc38\ud835\udc62 . If \ud835\udc63 \u2208 \ud835\udc65 or \ud835\udc63 \u2209 \ud835\udc65 \u2032 or \ud835\udc62 \u2209 \ud835\udc65 or \ud835\udc62 \u2208 \ud835\udc65 \u2032 then \ud835\udc65 = \ud835\udc65 \u2032, as can be seen from how Greedy selects elements:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p87",
+    "section_heading": "A Omitted proofs",
+    "text": "\u2022 If \ud835\udc63 \u2208 \ud835\udc65 , then \ud835\udc63 \u2208 \ud835\udc65 \u2032 since Greedy observes \ud835\udc63 before \ud835\udc62 when run on \ud835\udf0f \u2032. Whether Greedy adds \ud835\udc62 to \ud835\udc65 only depends on whether there is a circuit in (\ud835\udc65 \u2229 \ud835\udc38\ud835\udc62) \u222a {\ud835\udc62} = (\ud835\udc65 \u2032 \u2229 \ud835\udc38\ud835\udc62) \u222a {\ud835\udc62}, so it makes the same decision when run on \ud835\udf0f \u2032. Afterwards, it proceeds identically on both permutations, leading to the same outcome, so \ud835\udc65 = \ud835\udc65 \u2032. By symmetry, the same follows from \ud835\udc62 \u2208 \ud835\udc65 \u2032.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p88",
+    "section_heading": "A Omitted proofs",
+    "text": "\u2022 If \ud835\udc62 \u2209 \ud835\udc65 , then there is a circuit in (\ud835\udc65 \u2229 \ud835\udc38\ud835\udc62) \u222a {\ud835\udc62} = (\ud835\udc65 \u2032 \u2229 \ud835\udc38\ud835\udc62) \u222a {\ud835\udc62}, so \ud835\udc62 \u2209 \ud835\udc65 \u2032. By the same argument, Greedy makes the same decision regarding \ud835\udc63 on both permutations, leading to \ud835\udc65 = \ud835\udc65 \u2032. By symmetry, the same follows from \ud835\udc63 \u2209 \ud835\udc65 \u2032.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p89",
+    "section_heading": "A Omitted proofs",
+    "text": "Assume otherwise, it is a known property of bases [20] that \ud835\udc65 \u222a {\ud835\udc63} contains a unique circuit \ud835\udc36 and that \ud835\udc63 \u2208 \ud835\udc36. Greedy not adding \ud835\udc63 to \ud835\udc65 implies that \ud835\udc36 \u2286 (\ud835\udc65 \u2229 \ud835\udc38\ud835\udc63) \u222a {\ud835\udc63} = (\ud835\udc65 \u2032 \u2229 \ud835\udc38\ud835\udc63) \u222a {\ud835\udc62, \ud835\udc63}. Let \ud835\udc63 \u2032 be the first element after \ud835\udc63 that \ud835\udc65 and \ud835\udc65 \u2032 differ at and assume w.l.o.g. \ud835\udc63 \u2032 \u2208 \ud835\udc65 \\ \ud835\udc65 \u2032, we have (\ud835\udc65 \u2032 \u2229 \ud835\udc38\ud835\udc63\u2032 ) \u222a {\ud835\udc62} = (\ud835\udc65 \u2229 \ud835\udc38\ud835\udc63\u2032 ) \u222a {\ud835\udc63} and since \ud835\udc63 \u2032 is not added into \ud835\udc65 \u2032 before Greedy terminates, there must be another circuit in (\ud835\udc65 \u2032 \u2229 \ud835\udc38\ud835\udc63\u2032 ) \u222a {\ud835\udc63 \u2032} \u2282 \ud835\udc65 \u222a {\ud835\udc63} containing \ud835\udc63 \u2032, which is distinct from the unique circuit \ud835\udc36. The contradiction implies that \ud835\udc65 and \ud835\udc65 \u2032 do not differ after \ud835\udc63 , so \ud835\udc65 \u2297 \ud835\udc65 \u2032 = {\ud835\udc62, \ud835\udc63}. \u25a1",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p90",
+    "section_heading": "A Omitted proofs",
+    "text": "Proof of Theorem 2. We define \ud835\udc59\ud835\udc50 := (1 \u2212 \ud835\udc50)\ud835\udc4e + \ud835\udc50\ud835\udc4f for \ud835\udc50 \u2208 [0, 1], let 0 \u2264 \ud835\udf03 \u2264 \ud835\udf03 \u2032 \u2264 1 where \ud835\udf0b\ud835\udc59\ud835\udf03 and \ud835\udf0b\ud835\udc59\ud835\udf03 \u2032 are an adjacent swap apart",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p91",
+    "section_heading": "A Omitted proofs",
+    "text": "8 and the Greedy solutions on them, \ud835\udc65 and \ud835\udc65 \u2032, are such that |\ud835\udc65 \u2297 \ud835\udc65 \u2032 | = 2. Let \ud835\udc62, \ud835\udc63 \u2208 \ud835\udc38 where \ud835\udc65 \u2229 {\ud835\udc62, \ud835\udc63} = {\ud835\udc62} and \ud835\udc65 \u2032 \u2229 {\ud835\udc62, \ud835\udc63} = {\ud835\udc63}, Lemma 3 implies \ud835\udf0b\ud835\udc59\ud835\udf03 (\ud835\udc62) < \ud835\udf0b\ud835\udc59\ud835\udf03 (\ud835\udc63) and \ud835\udf0b\ud835\udc59\ud835\udf03 \u2032 (\ud835\udc62) > \ud835\udf0b\ud835\udc59\ud835\udf03 \u2032 (\ud835\udc63), so \ud835\udf0b\ud835\udc4e (\ud835\udc62) < \ud835\udf0b\ud835\udc4e (\ud835\udc63). This means as the trade-off moves from \ud835\udc4e to \ud835\udc4f, the Greedy solution minimizing the scalarized weight changes incrementally by having exactly one element shifted to the right on \ud835\udf0b\ud835\udc4e (to a position not occupied by the current solution). Since at most \u210e\ud835\udc5a \u2212\u210e(\u210e + 1)/2 such changes can be done sequentially, Greedy produces at most \u210e\ud835\udc5a \u2212\u210e(\u210e + 1)/2+ 1 distinct solutions in total across all trade-offs between \ud835\udc4e and \ud835\udc4f.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p92",
+    "section_heading": "A Omitted proofs",
+    "text": "To show this upper bound, we keep track of the following variables as the trade-off moves from \ud835\udc4e to \ud835\udc4f. Since each solution contains \ud835\udc5b elements, let \ud835\udc5d\ud835\udc56 be the \ud835\udc56th leftmost position on \ud835\udf0b\ud835\udc4e among those occupied by the current Greedy solution for \ud835\udc56 = 1, . . . , \ud835\udc5b, we see that upon each change, there is at least a \ud835\udc57 \u2208 {1, . . . , \ud835\udc5b} where \ud835\udc5d \ud835\udc57 increases. Furthermore, for all \ud835\udc56, \ud835\udc5d\ud835\udc56 can increase by at most \ud835\udc5a \u2212 \ud835\udc5b since it cannot be outside of [\ud835\udc56,\ud835\udc5a \u2212 \ud835\udc5b + \ud835\udc56], so the quantity \ud835\udc5d := \u2211\ud835\udc5b\ud835\udc56=1 \ud835\udc5d\ud835\udc56 can increase by at most \ud835\udc5b(\ud835\udc5a \u2212 \ud835\udc5b). We see that \ud835\udc5d increases by \ud835\udc59 when the change is incurred by a swap in the Greedy solution such that the added element is positioned \ud835\udc59 to the right of the removed element on \ud835\udf0b\ud835\udc4e, we call this a \ud835\udc59-move. Furthermore, each element pair participates in at most one swap, so \ud835\udc5d can be increased by at most\ud835\udc5a \u2212 \ud835\udc59 \ud835\udc59-moves for every \ud835\udc59 = 1 . . . ,\ud835\udc5a \u2212 1. Therefore, to upper bound the number of moves, we can assume smallest possible distance in each move, and the increase in \ud835\udc5d from using all possible \ud835\udc59-moves for all \ud835\udc59 = 1, . . . , \u210e is",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p93",
+    "section_heading": "A Omitted proofs",
+    "text": "\u2211\u210e \ud835\udc57=1 \ud835\udc57 (\ud835\udc5a \u2212 \ud835\udc57) \u2265 \ud835\udc5b(\ud835\udc5a \u2212 \ud835\udc5b). This means no more than\u2211\u210e",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p94",
+    "section_heading": "A Omitted proofs",
+    "text": "\ud835\udc57=1 (\ud835\udc5a \u2212 \ud835\udc57) = \u210e\ud835\udc5a \u2212 \u210e(\u210e + 1)/2 moves can be used to increase \ud835\udc5d by at most \ud835\udc5b(\ud835\udc5a \u2212 \ud835\udc5b). \u25a1",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p95",
+    "section_heading": "A Omitted proofs",
+    "text": "Proof of Lemma 4. First, we observe that a set supersets a base iff its rank is \ud835\udc5b. We see that for all \ud835\udf06 \u2208 [0, 1] and \ud835\udc65,\ud835\udc66 \u2208 {0, 1}\ud835\udc5a , \ud835\udc5f (\ud835\udc65) > \ud835\udc5f (\ud835\udc66) implies \ud835\udc53\ud835\udf06 (\ud835\udc65) < \ud835\udc53\ud835\udf06 (\ud835\udc66). Thus, for each \ud835\udf06 \u2208 \u039b, MOEA/D performs (1+1)-EA search toward a base\u2019s superset with fitness \ud835\udc53\ud835\udf06, which concludes in \ud835\udc42 (\ud835\udc5a log\ud835\udc5b) expected steps [26]. The claim follows from the fact that MOEA/D produces |\u039b| search points in each step. \u25a1",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p96",
+    "section_heading": "A Omitted proofs",
+    "text": "Proof of Theorem 3. We assume each solution in \ud835\udc43\ud835\udf06 supersets a base for all \ud835\udf06 \u2208 \u039b; this occurs within expected time \ud835\udc42 ( |\u039b|\ud835\udc5a log\ud835\udc5b), according to Lemma 4. Since for each \ud835\udf06 \u2208 \u039b, the best improvement in \ud835\udc53\ud835\udf06 is retained in each step, the expected number of steps MOEA/D needs to minimizes \ud835\udc53\ud835\udf06 is at most the expected time (1+1)-EA needs to minimizes \ud835\udc53\ud835\udf06. We thus fix a trade-off \ud835\udf06 and assume the behaviors of (1+1)-EA. Note that we use \ud835\udc51\ud835\udf06 \u00b7\ud835\udc64 (\ud835\udf06) in the analysis instead for integral weights; we scale \ud835\udc53\ud835\udf06 and \ud835\udc42\ud835\udc43\ud835\udc47\ud835\udf06 accordingly.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p97",
+    "section_heading": "A Omitted proofs",
+    "text": "We call the bit flips described in Lemma 5 good flips. Let \ud835\udc60 be the current search point, if good 1-bit flips incur larger total weight reduction than good 2-bit flips on \ud835\udc60, we call \ud835\udc60 1-step, and 2- step otherwise. If at least half the steps from \ud835\udc60 to the MWB \ud835\udc67 are 1-steps, Lemma 5 implies the optimality gap of \ud835\udc60 is multiplied by at most 1 \u2212 1/2(\ud835\udc5a \u2212 \ud835\udc5b) on average after each good 1-bit flip. Therefore, from \ud835\udc53\ud835\udf06 (\ud835\udc60) \u2264 \ud835\udc51\ud835\udf06 (\ud835\udc5a \u2212 \ud835\udc5b)\ud835\udc64\ud835\udc5a\ud835\udc4e\ud835\udc65 +\ud835\udc42\ud835\udc43\ud835\udc47\ud835\udf06 , the expected difference \ud835\udc37\ud835\udc3f after \ud835\udc3f good 1-bit flips is \ud835\udc38 [\ud835\udc37\ud835\udc3f] \u2264 \ud835\udc51\ud835\udf06 (\ud835\udc5a \u2212 \ud835\udc5b)\ud835\udc64\ud835\udc5a\ud835\udc4e\ud835\udc65 (1 \u2212 1/2(\ud835\udc5a \u2212 \ud835\udc5b))\ud835\udc3f. At \ud835\udc3f = \u2308(2 ln 2) (\ud835\udc5a \u2212 \ud835\udc5b) log(2\ud835\udc51\ud835\udf06 (\ud835\udc5a \u2212 \ud835\udc5b)\ud835\udc64\ud835\udc5a\ud835\udc4e\ud835\udc65 + 1)\u2309, \ud835\udc38 [\ud835\udc37\ud835\udc3f] \u2264 1/2 and by Markov\u2019s inequality and the fact that \ud835\udc37\ud835\udc3f \u2265 0, Pr[\ud835\udc37\ud835\udc3f < 1] \u2265 1/2. Since weights are integral, \ud835\udc37\ud835\udc3f < 1 implies that \ud835\udc67 is reached. The probability of making a good 1-bit flip is \u0398((\ud835\udc5a \u2212 \ud835\udc5b)/\ud835\udc5a), so the expected number of steps before \ud835\udc3f good 1-bit flips occur is \ud835\udc42 (\ud835\udc3f\ud835\udc5a/(\ud835\udc5a \u2212 \ud835\udc5b)) = \ud835\udc42 (\ud835\udc5a(log(\ud835\udc5a \u2212 \ud835\udc5b) + log\ud835\udc64\ud835\udc5a\ud835\udc4e\ud835\udc65 + log\ud835\udc51\ud835\udf06)). Since 1-steps take up most steps between \ud835\udc60 and \ud835\udc67, the bound holds.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p98",
+    "section_heading": "A Omitted proofs",
+    "text": "If at least half the steps from \ud835\udc60 to \ud835\udc67 are 2-steps, Lemma 5 implies the optimality gap of \ud835\udc60 is multiplied by at most 1 \u2212 1/2\ud835\udc5b on average after each good 2-bit flip. Repeating the argument with \ud835\udc3f = \u2308(2 ln 2)\ud835\udc5b log(2\ud835\udc51\ud835\udf06 (\ud835\udc5a \u2212 \ud835\udc5b)\ud835\udc64\ud835\udc5a\ud835\udc4e\ud835\udc65 + 1)\u2309 and the probability of making a good 2-bit flip being \u0398(\ud835\udc5b/\ud835\udc5a2), we get the bound \ud835\udc42 (\ud835\udc5a2 (log(\ud835\udc5a \u2212 \ud835\udc5b) + log\ud835\udc64\ud835\udc5a\ud835\udc4e\ud835\udc65 + log\ud835\udc51\ud835\udf06)). Summing this over all \ud835\udf06 \u2208 \u039b gives the total bound. \u25a1",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p99",
+    "section_heading": "A Omitted proofs",
+    "text": "Proof of Theorem 4. From Corollary 2, to collect a new point in \ud835\udc36, it is sufficient to perform a 2-bit flip on some supported solution. In worst-case, there can be only one trade-off \ud835\udf06 \u2208 \u039b such that all non-extreme supported solutions minimize\ud835\udc64 (\ud835\udf06) , so the correct solution is mutated with probability at least 1/\ud835\udc59 in each iteration, where \ud835\udc59 is the number of already collected points. Since |\u039b| search points are generated in each iteration, the expected number of search points required to enumerate \ud835\udc36 is \ud835\udc42 ( |\u039b|\ud835\udc5a2 \u2211 |\ud835\udc36 |",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p100",
+    "section_heading": "A Omitted proofs",
+    "text": "\ud835\udc59=1 \ud835\udc59) = \ud835\udc42 ( |\u039b| |\ud835\udc36 | 2\ud835\udc5a2). \u25a1",
+    "seg_type": "par"
+  }
+]

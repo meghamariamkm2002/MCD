@@ -1,0 +1,148 @@
+1
+00:00:00,031 --> 00:00:07,583
+is a model that simply detects these bounding boxes in single images.
+
+2
+00:00:08,103 --> 00:00:14,994
+But now we consider the situation where we have a camera that records images for a long, long time.
+
+3
+00:00:15,795 --> 00:00:20,923
+So in these wild trap cameras, they often sit there for months.
+
+4
+00:00:21,624 --> 00:00:25,971
+And it's not that easy to make use of them because
+
+5
+00:00:25,951 --> 00:00:30,497
+In addition to there being a lot of data, they have motion triggers.
+
+6
+00:00:30,897 --> 00:00:33,961
+So that could be there is no nothing for a long time.
+
+7
+00:00:34,041 --> 00:00:36,925
+And then there's the animal walks in the trap.
+
+8
+00:00:37,346 --> 00:00:42,873
+And then you have a bunch of images, like one per second for 10 seconds.
+
+9
+00:00:43,313 --> 00:00:46,117
+And then you have nothing again for like a day or two days.
+
+10
+00:00:46,237 --> 00:00:52,465
+And then you have 10 images again, because another animal walks in or maybe doesn't and so on and another.
+
+11
+00:00:52,445 --> 00:00:55,311
+So you have irregular sampling frequencies.
+
+12
+00:00:55,691 --> 00:00:59,118
+You have very, very different distance between the frames.
+
+13
+00:00:59,759 --> 00:01:10,099
+All of this makes it very, very not suited for models like temporal convolutions or things like LSTMs because
+
+14
+00:01:10,079 --> 00:01:12,807
+they don't work super well with data like this.
+
+15
+00:01:12,967 --> 00:01:25,101
+Now, I know there are formulations where LSTMs can do this, but they don't work very well with these super long contexts and irregular sampling frequencies and so on.
+
+16
+00:01:25,081 --> 00:01:44,220
+So the idea is if we have a frame right here, like this one, and we want to detect what's on it, we should be able to pull information from other frames that the same camera has seen, like from this one, or from this one, or from this one right here.
+
+17
+00:01:44,200 --> 00:01:46,644
+And we should be able to do so in a dynamic way.
+
+18
+00:01:46,905 --> 00:01:47,987
+Now, why could that help?
+
+19
+00:01:48,548 --> 00:02:00,168
+If you look at, for example, down here, these images have been taken, they say images were taken on separate days, but you can see this thing right here is in both images.
+
+20
+00:02:00,509 --> 00:02:03,053
+So, or a very similar thing.
+
+21
+00:02:03,033 --> 00:02:06,537
+is probably that bus's regular route.
+
+22
+00:02:06,557 --> 00:02:22,317
+So in order to classify whether or not this here is a bus, it might be very helpful to also look at this picture right here and see, ah, you know, it's about at the same location, it looks the same and also it looks like a bus.
+
+23
+00:02:22,477 --> 00:02:29,125
+So, you know, that kind of gives evidence that this could be, this other thing could also be a bus.
+
+24
+00:02:29,105 --> 00:02:31,808
+Then also there are background objects.
+
+25
+00:02:32,009 --> 00:02:36,394
+So sometimes the single frame detectors get confused.
+
+26
+00:02:36,855 --> 00:02:46,446
+It might be labeling this here as a car, because just the lighting, the exact lighting in this picture is just off by the correct amount that it is confused.
+
+27
+00:02:47,007 --> 00:02:50,531
+But considering this picture over here, maybe it recognizes here.
+
+28
+00:02:50,551 --> 00:02:53,475
+No, that's not a car.
+
+29
+00:02:53,455 --> 00:03:03,955
+It can bring over this evidence to that frame and and consider ah, maybe maybe you know, this is the same thing So it's it's not a car.
+
+30
+00:03:04,596 --> 00:03:16,459
+So this is this is not the same than simply adding training data We really consider the fact here that these images they come from the same camera that is in the same location or maybe you know
+
+31
+00:03:16,439 --> 00:03:34,380
+that is filming the same thing so this all of this is going to be within the same camera not just adding adding iid training data and with animals as well like often the same animal has like its regular route
+
+32
+00:03:34,360 --> 00:03:48,325
+or within these 10, these burst of 10s, the same as animal will kind of walk around a bit and maybe, you know, here it's half occluded, but maybe in a different image you see, ah, here I see the nose.
+
+33
+00:03:48,766 --> 00:03:53,635
+So it helps you make a better prediction.
+
+34
+00:03:53,615 --> 00:04:01,741
+Also animals are often in kind of crowds and that helps if you see that there are other deer around.
+
+35
+00:04:02,223 --> 00:04:05,734
+The probability that this is a deer increases rapidly.
+
+36
+00:04:07,351 --> 00:04:10,015
+So how are we going to do this?
+
+37
+00:04:10,275 --> 00:04:33,730
+What we're going to do is we're going to build an attention mechanism that can do these kinds of look into the past and also a little bit of the future as we will see, but mainly we'll look into other images from the same camera in a dynamic way and we'll learn how to address those other images from a memory bank.
+

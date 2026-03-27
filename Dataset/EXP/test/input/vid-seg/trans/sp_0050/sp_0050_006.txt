@@ -1,0 +1,65 @@
+And first they look simply, can we find attention heads that correlate with a given amino acid?
+So here you see the attention to the amino acid.
+This is proline, I believe.
+And this is phenylalanine.
+Is that the same in English?
+Yes, phenylalanine.
+phenylalanine and proline right here.
+So you can see that the plots here are, there's almost no attention pretty much throughout the network that pays special attention to the amino acid proline.
+except this head right here seems to have, if you look at the scale, over like a 70% of attention always goes to proline in this particular head.
+So this is layer one, head number 11, focuses
+78% of its attention on pro-lean.
+Now this is not that special if you think about it because in language models as well, in natural language models, you might want to think that you have some mechanism in your neural network that's especially specialized on like a very particular word in the language because
+that might just be an often occurring very particular word.
+For example, in English, maybe the is very important or the word what.
+These are like very indicative, very often occurring words.
+So it is reasonable to expect to find an attention head that pays a lot of attention to these things, especially here where our vocabulary size is 20 instead of like 30,000 in natural language.
+And the same goes for this phenylalanine, where you can see that in the layer in the last layer, and in the first layer, you have attention.
+And also in the proline you have in the last layer.
+So why does this make sense?
+Because what we would expect from like single tokens, these are not interactions yet, these are not biological functions yet.
+So, we know that in the lower layers of a neural network, we have these kind of basic features, basic feature extractors.
+And here, these basic feature extractors appear to be simply paying attention to one specific token in the vocabulary a lot.
+So, these heads sort of specialize for single amino acids.
+And the same in the last layer.
+So in the very last layer, the task of the very last layer is to prepare for the classification task.
+So if you remember the BERT model, you have layer, layer, layer, layer.
+And at the end, you'll have to predict which ones are masked down here.
+So at the end, you'll have to predict single amino acids again.
+So if there's a proline masked here, you'll have to predict the proline.
+So it also makes sense that the last layers would very much specialize to single tokens.
+So this does make sense.
+Now, our question is going to be, do we find the biological function?
+Where would you expect them?
+We would expect, let's say, the secondary structures, which are sort of one level higher than the primary structures, we would expect to find them maybe here.
+And then we would expect to find the tertiary structures maybe somewhere here, okay?
+Because these are most highest level.
+And then it goes back again.
+Or maybe it's like we find the tertiary structures rather here and here again.
+And then in the middle, we'll find the most high-level tertiary structures.
+Sorry, yeah, blue secondary.
+This drawing is getting too weird.
+But there could be multiple scenarios that could fit here.
+But until now, it sort of makes sense.
+So they do an additional investigation where, as I told you, sometimes you can substitute an amino acid and nothing really happens.
+And in fact, this probably happens in you right now.
+You probably might have some mutation that changed some amino acid and you don't even realize because it's fine.
+No notice.
+The biologists can build these matrices of how much you can substitute proteins with each other.
+So here you see this Blossom 62 substitution scores, which are very, I guess, very high.
+If you can substitute two protein, two amino acids with each other and the effect is negligible.
+and it's very low if it's the other way around.
+Now this is interesting so far, but you compare this to this matrix right here.
+This is the attention similarity.
+So what we'll do is for each two amino acids, we take those two attention things, those two attention matrices, and we'll calculate the correlation between the attention matrices.
+And our hypothesis is that the more correlated the attention patterns are between the two amino acids, the more likely we are to substitute them.
+Because as a direct result of our language model, our language model is reconstructing these things.
+Our language model is going to treat, if in natural language it's like a synonym, right?
+Our language model is going to treat synonyms very similar to each other because they're synonyms, they can be exchanged.
+So a good language model should learn that they are almost the same and therefore the attention pattern is going to be almost the same.
+So a high correlation we hypothesize means that the function of the amino acid is similar and therefore we can substitute it easily.
+So this here is the matrix of the correlations between each two attention patterns of these amino acid.
+And if you compare the two right here, they look extremely similar.
+Just have a look for a little while, and you'll see that the patterns, they do not match perfectly, but they are very, very similar.
+The dark spots are in the same places, the light spots are in the same places.
+So this already makes a good case that the language model here has learned something about

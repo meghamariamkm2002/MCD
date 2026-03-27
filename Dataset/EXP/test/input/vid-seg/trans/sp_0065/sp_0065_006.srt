@@ -1,0 +1,76 @@
+1
+00:00:00,031 --> 00:00:02,493
+How do we even produce sound?
+
+2
+00:00:03,735 --> 00:00:05,296
+And that's this diagram right here.
+
+3
+00:00:06,958 --> 00:00:09,560
+So you have this GAN TTS generator.
+
+4
+00:00:09,901 --> 00:00:15,906
+This is a generator that takes in a hidden representation.
+
+5
+00:00:15,946 --> 00:00:18,028
+So it takes in tokens.
+
+6
+00:00:18,429 --> 00:00:20,010
+Let's say token one, token two.
+
+7
+00:00:21,031 --> 00:00:23,434
+Let's go from the one before.
+
+8
+00:00:23,494 --> 00:00:27,878
+Think of a sentence, hello there.
+
+9
+00:00:29,326 --> 00:00:29,707
+Okay.
+
+10
+00:00:30,848 --> 00:00:48,075
+So it takes these tokens and of course it takes like hidden representations of the tokens and it will output, it will output for each one or for this joint sequence, one, hidden two, it would output the sound wave.
+
+11
+00:00:48,095 --> 00:00:48,415
+Okay.
+
+12
+00:00:50,690 --> 00:01:00,885
+And this has been a paper before the scan TTS and you also you condition it on the speaker and on latent variables like how you want the pitch to be and so on.
+
+13
+00:01:01,747 --> 00:01:04,190
+That's not really important for us right here.
+
+14
+00:01:04,611 --> 00:01:08,597
+The generator can simply take these token embeddings and produce sound.
+
+15
+00:01:08,577 --> 00:01:13,003
+The problem is in the original paper, you had an alignment.
+
+16
+00:01:13,544 --> 00:01:25,201
+You knew which token corresponded to which piece of sound, and therefore you sort of knew... So after that, you need to compare this to the generator thing.
+
+17
+00:01:25,842 --> 00:01:30,749
+And you knew which token corresponded to which piece of sound right here.
+
+18
+00:01:31,590 --> 00:01:37,318
+So the generator knew what it had to produce from each token, how long it should be, and so on.
+
+19
+00:01:37,298 --> 00:01:40,035
+So this is the generally the alignment
+

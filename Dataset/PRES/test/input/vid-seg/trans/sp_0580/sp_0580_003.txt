@@ -1,0 +1,5 @@
+In this work, we look at the multi-objective minimum weight base problems, which falls within the realm of major automations.
+Majority abstracts many combinatorial structures such as forests, mounds, machings, et cetera.
+As the first step, we focus on the convex hull of the comparator front and divide a trade-off between approaches and guarantees and their upper size.
+In particular, we use the structural properties of majorities to give results that are independent of objective values, which differs from previously known runtime upper bounds for general methods.
+These are then used to analyze MOAD, a multiplicative evolutionary algorithms, in approximating the proto-fronts.

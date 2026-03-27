@@ -1,0 +1,70 @@
+{
+  "sp_0920_page_0003": {
+    "bboxes": [
+      {
+        "box": [
+          325.6192321777344,
+          1337.405029296875,
+          911.5780029296875,
+          1365.07275390625
+        ],
+        "text": [
+          "\\begin{array} { r } { \\lambda ( \\pi ) : = \\mathbb { E } _ { x \\in \\mathcal { X } } [ \\delta ( \\pi ( x ) , x ) ] \\; \\; \\mathrm { w h e r e } \\; \\; \\delta ( \\pi ( x ) , x ) : = \\left( t _ { 0 } ( x ) - t _ { \\pi } ( x ) \\right) / t _ { 0 } ( x ) } \\end{array}"
+        ],
+        "page": "sp_0920_page_0003",
+        "id": "sp_0920_page_0003-1",
+        "seg_type": "eq"
+      }
+    ]
+  },
+  "sp_0920_page_0004": {
+    "bboxes": [
+      {
+        "box": [
+          481.9871826171875,
+          1265.8248291015625,
+          742.3530883789062,
+          1326.0093994140625
+        ],
+        "text": [
+          "( 1 - \\alpha ) \\hat { \\Delta } ( \\tilde { f } _ { A } ) + \\alpha \\frac { 1 } { | A | } \\sum _ { s \\in A } \\hat { \\bar { \\delta } } ( s )"
+        ],
+        "page": "sp_0920_page_0004",
+        "id": "sp_0920_page_0004-1",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          446.34356689453125,
+          806.3091430664062,
+          779.7440185546875,
+          870.095703125
+        ],
+        "text": [
+          "\\Delta ( \\tilde { f } _ { A } ) = \\underbrace { \\hat { \\Delta } ( \\tilde { f } _ { A } ) } _ { \\mathrm { t r a i n i n g \\, p e r f . } } - \\underbrace { \\left( \\hat { \\Delta } ( \\tilde { f } _ { A } ) - \\Delta ( \\tilde { f } _ { A } ) \\right) } _ { \\mathrm { g e n e r a l i z a t i o n } }"
+        ],
+        "page": "sp_0920_page_0004",
+        "id": "sp_0920_page_0004-2",
+        "seg_type": "eq"
+      }
+    ]
+  },
+  "sp_0920_page_0007": {
+    "bboxes": [
+      {
+        "box": [
+          468.4569091796875,
+          641.186279296875,
+          755.1771850585938,
+          671.8561401367188
+        ],
+        "text": [
+          "L ( \\tilde { f } _ { \\theta } ( x , s ) , r ) = ( \\tilde { f } _ { \\theta } ( x , s ) - r ^ { \\mathrm { c l i p } } ) ^ { 2 }"
+        ],
+        "page": "sp_0920_page_0007",
+        "id": "sp_0920_page_0007-1",
+        "seg_type": "eq"
+      }
+    ]
+  }
+}

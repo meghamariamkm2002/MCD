@@ -1,0 +1,254 @@
+WEBVTT
+
+00:00.031 --> 00:02.698
+again is illustrated here.
+
+00:03.159 --> 00:05.024
+As we said, it's pretty simple.
+
+00:05.465 --> 00:12.083
+First, so step one, step one, train the teacher model with labeled data, as you would.
+
+00:13.345 --> 00:17.994
+Step two, you infer the pseudo labels on unlabeled data.
+
+00:18.515 --> 00:32.822
+Step three, you make a student, sorry, we'll step three over here, train an equal or larger student model with combined data and noise injected.
+
+00:32.802 --> 00:40.600
+So they use the original labeled data here and the pseudo labeled data right here in order to train the student.
+
+00:40.881 --> 00:46.294
+But still, the student doesn't have more information, more label information than the teacher had.
+
+00:46.434 --> 00:49.782
+It simply has this teacher labeled
+
+00:49.762 --> 01:12.343
+teacher labeled unlabeled data also to train on now the crucial part here is well first of all that the student can be larger and second of all that there can be noise and the noise comes in three different forms so first of all you use data augmentation which we've already seen this is sort of like random cropping or
+
+01:12.323 --> 01:14.627
+mild rotations, color, jitter, whatever.
+
+01:14.687 --> 01:19.735
+They use a random augment here, which is a specific technique to apply these augmentations.
+
+01:20.496 --> 01:32.475
+They use drop out, which is a fairly old technique where you, in the student model that you train, you randomly drop out connections, which makes it more robust and more generalizing.
+
+01:32.455 --> 01:34.338
+And then you also use stochastic depth.
+
+01:34.398 --> 01:48.580
+Now stochastic depth is a technique when you train a model, what you'll do during training, instead of always passing your data forward through the layers like this, you use some sort of a dropout but with entire layers.
+
+01:49.001 --> 01:57.214
+So what you'll do is you'll pass your data forward and then randomly you'll skip a layer and then pass it forward again.
+
+01:57.194 --> 02:15.473
+Now, these might seem weird first because, yeah, it might seem weird, but if you know that most models, especially computer vision models nowadays, are residual networks, which means that their layers look like, so you have the input
+
+02:15.453 --> 02:27.252
+You have some computation and then you have the output and then there is already a residual connection that basically adds the original signal together to the result of the computation.
+
+02:27.813 --> 02:42.456
+So all you do in this stochastic layer dropout or this stochastic depth right here is you basically disable this connection right here and all the signal has to flow through here.
+
+02:42.436 --> 02:49.629
+If you read the original ResNet paper, they make it pretty clear why the residual connection is a good idea.
+
+02:50.190 --> 03:01.812
+Basically, they say these computations here, if you have a very deep network, each layer only has to basically do a little bit of computation that
+
+03:01.792 --> 03:07.261
+that can be bypassed fairly efficiently for a lot of data points.
+
+03:07.602 --> 03:09.866
+So it's not that hurtful to bypass a layer.
+
+03:10.407 --> 03:19.783
+And in this case, they actually use it to just bypass some of these small computations and inject some more robustness into the student model.
+
+03:19.763 --> 03:28.352
+So with these three strategies to bring noise into the training process, one is on the data and two is on the student model itself.
+
+03:29.032 --> 03:41.145
+They train the student model and then fourth, and this is what we didn't have before, fourth, or maybe we put four here, make the student a new teacher.
+
+03:41.185 --> 03:42.386
+So now you can iterate.
+
+03:42.726 --> 03:48.572
+You can use the student model that you just trained to again label the unlabeled data.
+
+03:48.552 --> 03:56.392
+And then you can use another student model again under the influence of noise to train from that student model and so on.
+
+03:56.412 --> 04:04.553
+And you can go on and they do up to like three iterations of this where they always take the new the student as the new teacher.
+
+04:04.533 --> 04:10.141
+and then use a new student model to train from that teacher.
+
+04:10.963 --> 04:13.787
+And they get better and better as they do this.
+
+04:13.807 --> 04:19.816
+Of course, there's like a diminishing returns, but it's pretty impressive that this even works, right?
+
+04:20.316 --> 04:24.923
+The new students in fact aren't even larger than the old students.
+
+04:24.963 --> 04:29.931
+It's just that the students are larger than the original teacher model in most of these cases.
+
+04:30.692 --> 04:32.835
+So here's the algorithm written down.
+
+04:32.815 --> 04:39.226
+You'll require labeled images right here and unlabeled images, which are the ones with the tilde.
+
+04:40.488 --> 04:45.136
+So first you learn the teacher model, which minimizes the cross entropy on labeled images.
+
+04:45.337 --> 04:48.883
+This we already know this, right?
+
+04:48.863 --> 04:56.076
+This is the label, this is the image according to the label, and you train the teacher model, which is this thing here.
+
+04:56.317 --> 04:57.819
+And you can see here, noise.
+
+04:58.160 --> 05:04.071
+So already in the teacher training process, you want to introduce this noise, you want to introduce these data augmentations.
+
+05:04.111 --> 05:10.703
+These are, as I said, these are standard techniques to make models more robust and therefore more generalizable.
+
+05:10.683 --> 05:33.552
+Yeah, we know from these, from these self-supervised papers that these augmentations are very powerful and the way you design them, basically, if you, one of these augmentations is a random crop, which means if you have an image, you randomly crop out like part of that image and then that's your training sample and not the entire thing.
+
+05:33.532 --> 05:43.083
+So by doing this, you basically teaching the model to ignore the exact location and scale of things on an image.
+
+05:43.443 --> 05:50.932
+And you can do this because you as a human know that, you know, I can zoom in, I can zoom out into something and it won't change what's on the picture.
+
+05:51.673 --> 05:58.881
+And so that's, you use these augmentations to kind of heuristically tell the model what it should be invariant to.
+
+05:58.861 --> 06:07.615
+And that is a very powerful technique to regularize, basically, to robustify these deep methods.
+
+06:08.697 --> 06:09.879
+And this is used the same here.
+
+06:09.999 --> 06:14.727
+So already in the teacher model, we train with this noise and then
+
+06:16.208 --> 06:25.001
+Step two, use a normal IE not noise teacher model to generate soft or hard pseudo labels for the clean IE not distorted unlabeled images.
+
+06:25.481 --> 06:26.383
+And this is important.
+
+06:26.403 --> 06:40.343
+They stress this here that when you label the unlabeled images, you want to use the model that is without the noise and you do it on the not distorted unlabeled images.
+
+06:40.323 --> 06:48.458
+So when you infer the labels, it's very important that you have clean accurate labels without any sort of noise in them.
+
+06:48.518 --> 06:52.726
+So label noise is not something that they have found to help in this case.
+
+06:53.227 --> 06:56.172
+So not label noise on the teacher, that is.
+
+06:57.130 --> 07:04.778
+So you can see right here on the unlabeled images, we'll use that teacher model without the noise to infer the labels.
+
+07:04.798 --> 07:09.582
+Now, they say these can be hard model, hard labels or soft labels.
+
+07:10.063 --> 07:10.824
+So what does that mean?
+
+07:11.644 --> 07:20.513
+If we generate hard pseudo labels, that means that the Y here is simply going to be either zero or one or two or three and so on.
+
+07:20.613 --> 07:25.298
+So just the index of the class, whichever class is most likely, that's going to be our label.
+
+07:25.278 --> 07:29.102
+This is exactly how the supervised data sets come, right?
+
+07:29.523 --> 07:32.566
+So this is what you'll think first when you see that.
+
+07:32.766 --> 07:37.792
+However, soft pseudo labels means that the y will be a distribution.
+
+07:37.852 --> 07:52.669
+So instead of being of class zero, it will be sort of, let's say, 90% of class zero, but also 5% class one and 5% class two, right?
+
+07:52.649 --> 07:57.902
+So you'll output the distribution instead of the just the label.
+
+07:58.484 --> 08:04.779
+And they have found that the soft pseudo labels work slightly, slightly better than the hard pseudo labels.
+
+08:06.844 --> 08:07.907
+Okay, thanks.
+
+08:11.482 --> 08:18.215
+So they use the soft pseudo labels here because they work slightly better, but you can do it with hard or soft labels.
+
+08:18.275 --> 08:26.892
+The important thing is that you use the teacher to generate as accurate as possible labels for your unlabeled data.
+
+08:26.872 --> 08:39.396
+Then third, we've already seen this, learn an equal or larger student model, which minimizes the cross entropy loss on labeled images and unlabeled images with noise added to the student model.
+
+08:40.017 --> 08:45.488
+So as you can see, labeled images and unlabeled images, so we're in this semi
+
+08:45.468 --> 08:56.229
+semi-supervised learning setting right now you take in both together with noise and noise here is in bold which means they stress it again this is important.
+
+08:56.891 --> 09:00.217
+So you can see that the loss is composed of two different things.
+
+09:00.778 --> 09:05.147
+These are the true images of your original model.
+
+09:05.127 --> 09:10.834
+And you use that, and this means you noise the student model.
+
+09:11.295 --> 09:14.419
+And that noise can be on the data or in the model itself.
+
+09:15.180 --> 09:21.928
+And here, also the unlabeled images that you have labeled with the teacher, you do the exact same thing.
+
+09:22.449 --> 09:24.632
+So you train on both of these data sets.
+
+09:25.573 --> 09:31.320
+And step four is if you want to do iterative training, use the student as a teacher and go back to step two.
+
+09:33.629 --> 09:37.039
+Now they have some more tricks when they do this iterative training.
+
+09:37.460 --> 09:41.912
+They also up the batch size during the iterative training and so on.
+
+09:41.932 --> 09:48.972
+So they do a lot of things to make the student learn something more, something better than the teacher.
+
+09:48.952 --> 10:09.762
+And I think the whole paper, it doesn't state it explicitly, but I think the whole paper, everything they do here is to kind of force or allow the student to become better than the teacher by giving more noise, by making the student larger, by making the batch size for the student larger, and so on.
+
+10:09.742 --> 10:19.498
+So you want to sort of inject as much invariance as you can, and that will make the student learn more.
+

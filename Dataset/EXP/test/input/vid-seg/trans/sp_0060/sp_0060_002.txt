@@ -1,0 +1,50 @@
+win-win.
+So this paper is about semi-supervised learning in effect.
+So it's at the intersection actually of semi-supervised learning, knowledge distillation and transfer learning.
+So what do we mean by semi-supervised learning?
+Usually in supervised learning you'll have some sort of data set
+And the dataset will contain, let's say it's an image net, it's image dataset.
+So the dataset will contain images.
+This is an image with like some sort of cat on it.
+And it will contain the labels according to that.
+So cat.
+Now, in semi-supervised learning, you assume that, so this is supervised learning.
+In semi-supervised learning, you assume that only part of your dataset has the labels.
+So like only this part down here has the labels, and the upper part does not have the labels.
+So that's semi-supervised learning.
+It's often the case when it's very expensive to get labels, so you can only get labels for a couple of images in your dataset.
+But very often in semi-supervised learning, you still assume it's the same data set.
+There is a slightly different setup here that's called transfer learning.
+So in transfer learning, what you'll have is you'll have your data set that has the labels, but it's very small.
+So you'll notice I've drawn it smaller.
+That means you have very little.
+That is also the case when it's very expensive to get labels, but also it's expensive to get the data itself.
+This is often the case, like say in medical data, where not only is it expensive to get labels for like a CT scan, it's actually expensive to get the CT scan.
+So, what the goal in transfer learning is, is to say, well, I do, I do have only this small data set, but I do have this giant other data set over here.
+Now, can't I, it's not the same, it's maybe they're not CT, so these are CT scans, maybe these are x-rays, right?
+They're fairly similar, similar technology.
+If you slice the CT, it'll give you sort of an x-ray.
+Can I pre-train my model on x-ray data and then fine-tune it on the CT data?
+So that's called transfer learning, usually.
+Now, this can be done with or without labels.
+So it can be that for the xray dataset, you do have the labels or you don't have the labels.
+There are techniques for all of those.
+Now,
+What we're going to look at today is kind of the situation right here.
+It's the transfer learning situation where you do not have the labels for this x-ray data set.
+But other than in this x-ray example, what we're going to look at is the small data set is going to be our ImageNet database, so our original picture with label database.
+So you'll see immediately the difference here is that in the transfer learning setting, we usually assume that the data set we want to train on is fairly small.
+Here, you know, ImageNet is already sizable.
+But what we have is we have a much larger database of unlabeled images that we can just get from the internet.
+So we can scrape the internet for any kind of pictures, and that will be our unlabeled dataset.
+And what we'll try to do is somehow incorporate this unlabeled dataset here into the training process to get better on the ImageNet dataset.
+Okay, so this is the problem statement is you have the ImageNet dataset and you have a second much larger dataset of unlabeled images and you somehow want to make use of them.
+So I hope you see how this is sort of connected to the others.
+It's essentially sort of a transfer semi-supervised learning setting, but with the exception that usually in transfer learning you assume that the labeled dataset is like super small.
+which is not the case here.
+And that's going to result in us being able to apply a different technique.
+So this different technique is called the noisy student.
+Now, usually what you might do in a transfer learning setting is you might want to start with that big data set, right?
+Because that's the data set that's sizable enough to allow you to train a really big model on it.
+And then you fine tune and you sort of hope that the information transfers over.
+Here, on the other hand,

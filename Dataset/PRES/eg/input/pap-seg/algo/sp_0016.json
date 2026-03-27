@@ -1,0 +1,23 @@
+[
+  {
+    "input_path": "/tmp/megha/PDF-Extract-Kit/Presentation/layout_pap/sp_0016/sp_0016_page_6.png",
+    "page_index": null,
+    "boxes": [
+      {
+        "input_path": "/tmp/megha/PDF-Extract-Kit/Presentation/layout_pap/sp_0016/sp_0016_page_6.png",
+        "cls_id": 14,
+        "label": "algorithm",
+        "score": 0.9125698804855347,
+        "coordinate": [
+          1266.7308349609375,
+          1069.2127685546875,
+          2103.2529296875,
+          1921.6580810546875
+        ],
+        "text": "igorithm I Neural Acquisltion Process train\nRequire: Source tasks training data {D(k) }K\n}k=\ninitial parameters \u03b8, budgets T (k)\n\u2261 T, di\ncount factor \u03b3, learning rate \u03b7\nfor each epoch do\nselect task k and dataset D(k), set Ho = \nfor t = 1, . . . , T do\nxt \u223c \u03c0\u03b8(\u22c5|st)\n predict actic\nyt = f (k)(xt)\nexecute actic\nrt = y\u2264t\n*\ncollect rewa\nHt+1 \u2190 Ht U {(xt, yt)} > update hi\nend for\ncumul. rewa\nD \u2192 Dobs L Dpred\nsplit source da\nL = p\u03b8(y(pred) |\n|x (pred)\n, Dobs)\naux. lo\n\u03b8\u2190\u03b8+\u03b7(\u03b8R+\u03b8L)\nupdate",
+        "id": "sp_0016_page_6_1",
+        "seg_type": "algo"
+      }
+    ]
+  }
+]

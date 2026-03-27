@@ -1,0 +1,73 @@
+[
+  {
+    "input_path": "layout_results/sp_0055/sp_0055_page_13.png",
+    "page_index": null,
+    "boxes": [
+      {
+        "cls_id": 14,
+        "label": "algorithm",
+        "score": 0.8781912326812744,
+        "coordinate": [
+          223.46722412109375,
+          277.64862060546875,
+          2256.117431640625,
+          1088.086181640625
+        ],
+        "text": "Global low-level value oracle v\u03c0\nGlobal high-level value function v\nGlobal policy prior p\nGlobal search tree T\nprocedure ExTRACTPLAN(OR node (s, s\"))\nchoose be\nif s =  then\n> no m\nreturn , v\u03c0 (s, s)\nelse\n\u03c3l, Gl \u2190 ExtRActPLAN(s, s\u2032)\nextrac\n\u03c3r, Gr \u2190 ExtRActPLAN(s\u2032, s\"\u2032)\nextrac\nreturn \u03c3l  \u03c3r, Gl \u00b7 Gr\nend if",
+        "id": "sp_0055_page_13_1"
+      }
+    ]
+  },
+  {
+    "input_path": "layout_results/sp_0055/sp_0055_page_15.png",
+    "page_index": null,
+    "boxes": [
+      {
+        "cls_id": 14,
+        "label": "algorithm",
+        "score": 0.8110564947128296,
+        "coordinate": [
+          179.3251495361328,
+          1624.95263671875,
+          2251.9697265625,
+          2671.787109375
+        ],
+        "text": "def train_DCMCTS():\nreplay_buffer = []\nfor episode in n_episodes:\nstart, goal = env.reset()\nsub_goals = dc_mcts_plan(start, goal) # list of sub-goals\nreplay_buffer.add(sub_goals)\nstate = start\nwhile episode.not_over() & len(sub_goals) > O:\naction = low_level_policy(state)\nstate = env.step(action)\nvisited_states.append(state)\nif state == sub_goals[0]:\nsub_goals.pop(0)\n# Rebalance list of visited states to a binary search tree\nbst_states = bst_from_states(visited_states)\nreplay_buffer.add(bst_states)\n# Hindsight Experience Replay\nif replay_buffer.can_sample():\nneural nets.train(replav buffo",
+        "id": "sp_0055_page_13_2"
+      },
+      {
+        "cls_id": 14,
+        "label": "algorithm",
+        "score": 0.5585460662841797,
+        "coordinate": [
+          1733.0311279296875,
+          592.6929931640625,
+          2117.09228515625,
+          1238.6632080078125
+        ],
+        "text": "Policy head\n3 \u00d7 3, 64, stride = 1\nswish, LN\n3 \u00d7 3, 64, stride = 1\nswish, LN\n3 \u00d7 3, 64, stride = 1\nswish, LN\nFlatten\nFC: Nh = #classes\nsoftmax",
+        "id": "sp_0055_page_13_3"
+      }
+    ]
+  },
+  {
+    "input_path": "layout_results/sp_0055/sp_0055_page_4.png",
+    "page_index": null,
+    "boxes": [
+      {
+        "input_path": "layout_results/sp_0055/sp_0055_page_4.png",
+        "cls_id": 14,
+        "label": "algorithm",
+        "score": 0.9211390614509583,
+        "coordinate": [
+          223.64280700683594,
+          278.7278137207031,
+          1208.9935302734375,
+          1590.9205322265625
+        ],
+        "text": "Global low-level value oracle v\nGlobal high-level value function V\nGlobal policy prior p\nGlobal search tree T\nprocedure TRAVERSE(OR node (s, s'))\nif (s, s\") \u03be T then\nT \u2190 Expand(T, (s, s\"))\nreturn max(v\u03c0 (s, s\"), v(s, s\u2032\u2032))\nbootstra\nend if\ns\u2032 \u2190 SELECT(s, s\")\nOR no\nif s' =  or max-depth reached then\nG \u2190 v\u03c0(s, s\")\nelse\nAND no\nGleft \u2190 TRAVERSE(s, s\u2032)\nGright \u2190 TRAVERSE(s'\u2032, s\")\n// BACKUP\nG \u2190 Gleft \u00b7 Gright\nend if\nG \u2190 max(G, v\u03c0(s, s\"))\n threshold the retur\n// UPDATE\nV (s, s\") \u2190 (V (s, s\")N(s, s\")+G)/(N(s, s\")\nN(s, s\u2032) \u2190 N(s, s\u2032) + 1\nreturn G",
+        "id": "sp_0055_page_13_4"
+      }
+    ]
+  }
+]

@@ -1,0 +1,16 @@
+start	end	text
+31	4698	aggregate the information within the same camera across the frames.
+6140	15054	To be said, of course, their trained test split is such that there's not the same camera in the training data as in the testing data.
+15074	24688	They have different, entirely different cameras in the testing data than in the training data, just so there is no information leakage.
+25951	30940	Yeah, so that's the model right here, how it works.
+31101	32042	It's pretty cool.
+32503	38775	It kind of wedges itself in between any single frame object detector that has these two stages.
+39296	45748	And it's a pretty neat idea to bring in context from the...
+45728	49373	past or even the future of the same camera.
+49393	51417	Just a quick glance at the appendix.
+51437	53500	They have lots of different examples right here.
+53820	58347	In one example, their camera kind of fell over and they say, well, it still worked.
+58367	68462	The system was still able to kind of do attention across this failure, this kind of tipping over of the camera.
+68442	80743	They have more examples right here, which I find pretty impressive, like these super low light things where it correctly detects like the opossum.
+81966	91222	And yeah, I invite you to check out the paper, the code they say should be out soon, and I'll see you next time.
+91302	92003	Bye-bye.

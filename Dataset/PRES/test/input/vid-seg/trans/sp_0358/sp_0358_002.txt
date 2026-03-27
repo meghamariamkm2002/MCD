@@ -1,0 +1,5 @@
+The empirical success of the reinforcement learning relies on the functional approximation to handle the high-dimensional state in natural space.
+Ed has noted that collecting the real-world data is expensive.
+As a result, we are interested in defining the sample-efficient algorithms for the agent to learn by using only the limited number of data.
+Instead, the product of the system algorithms
+It is commonly assumed that the interaction between the agent and environment can take place in real time.

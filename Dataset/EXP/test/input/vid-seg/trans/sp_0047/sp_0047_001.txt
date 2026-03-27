@@ -1,0 +1,21 @@
+Hi there.
+Today we'll look at distributed representations of words and phrases and their compositionality by Thomas Mikolov, Ilya Sotskyver, Kai Chen, Greg Corrado and Jeffrey Dean.
+This is another historical paper.
+It's one of three papers.
+It's the middle one that introduces the original word-to-vec algorithm.
+And if you, as you might know, word-to-vec
+was extremely influential in NLP since this paper, basically until recently, where it's sort of gone out of fashion a bit in research with the rise of things like Elmo and Bert, but it's still very, very relevant.
+So we'll look at this historical paper today with kind of the hindsight of being a couple years into the future, in fact,
+as you see right here.
+This was released in 2013.
+So it's seven years later now.
+And we'll look back and we'll see what they said back then about the system.
+This is not going to be like a very, you know, well-enhanced PowerPointy presentation of how we're to vex
+works.
+We're going to look at the paper and read it together.
+If you like content like this, if you like historical paper readings, let me know in the comments.
+Share it out if you do like it.
+And of course, subscribe, because these kind of historical papers, I enjoy them, but many people might already know what these things are.
+So yeah.
+Okay, let's, you know, go through the paper and pick up their ideas and kind of put them in context.
+They say the recently introduced continuous skip gram model is an efficient method for learning high quality distributed vector representations that capture a large number of precise syntactic and semantic

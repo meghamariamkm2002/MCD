@@ -1,0 +1,5 @@
+The recent success of vain language pre-trained models on multimodal tasks has denied widespread attention in both academics and industry.
+However, a potential security risk is also exposed.
+where malicious third party may use the public pre-trained vain language model to craft adversarial samples and use them to attack the different downstream task models, even they don't know the parameters and structure of this model.
+So in this work, we ask the following question.
+Can we generate the adversarial perturbations on a pre-trained VM model to attack the various black box downstream task model, fine-tuned on the pre-trained one?

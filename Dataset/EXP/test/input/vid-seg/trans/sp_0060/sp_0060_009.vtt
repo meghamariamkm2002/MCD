@@ -1,0 +1,119 @@
+WEBVTT
+
+00:00.031 --> 00:09.487
+As I said, they do quite a bit of drop, sorry, not dropout, ablation studies to figure out where exactly the performance comes from.
+
+00:09.968 --> 00:14.335
+And the answer is it pretty much comes from all the things that they've described.
+
+00:14.696 --> 00:20.426
+So here you can see the effect of that extra data set.
+
+00:20.486 --> 00:26.055
+And you can see pretty much with that extra data set, all the situations improve.
+
+00:26.035 --> 00:37.211
+Here you can see what is happening when you do not augment the student, when you do not date to augment, you can immediately see that the accuracy drops.
+
+00:37.231 --> 00:43.740
+And then when you do not augment and also don't use these model noises, then the performance drops again.
+
+00:44.721 --> 00:54.675
+And lastly, when you use the teacher, but you noise the teacher, you can see also here the performance is dropping from the original quite a bit.
+
+00:54.655 --> 01:01.347
+So all of these things kind of contribute and they do much more ablations and they have listed their findings here.
+
+01:02.088 --> 01:07.398
+So using a large teacher model with better performance leads to better result.
+
+01:07.558 --> 01:15.432
+So, you know, as the original teacher you should use as good as possible a teacher model you can find.
+
+01:15.412 --> 01:22.965
+Second, a large amount of unlabeled data is necessary for better performance.
+
+01:23.866 --> 01:33.683
+Okay, so if you want to do this, you better get a large amount of extra data, because that's one thing that makes the student perform better.
+
+01:34.765 --> 01:40.795
+Soft pseudo labels work better than hard pseudo labels for out of the main data in certain cases.
+
+01:40.775 --> 01:47.751
+Fourth, a large student model is important to enable the student to learn a more powerful model.
+
+01:48.172 --> 01:55.790
+Okay, so because usually this knowledge distillation is what it, this is usually called knowledge distillation.
+
+01:56.171 --> 01:59.138
+If you use a teacher model to train a student model,
+
+01:59.118 --> 02:05.830
+And it is often used when the student model is smaller than the teacher because you want to kind of become more efficient to you.
+
+02:06.151 --> 02:12.642
+So the teacher is large, you make the student small, and you usually sacrifice some accuracy.
+
+02:12.682 --> 02:17.030
+And here they say, if you want to gain some accuracy, you need a large student model.
+
+02:17.210 --> 02:18.713
+It can't be like a small one.
+
+02:21.612 --> 02:24.955
+Number five, data balancing is useful for small models.
+
+02:25.916 --> 02:35.865
+Number six, joint training on labeled data and unlabeled data outperforms the pipeline that first pre-trains with unlabeled data and then fine-tunes unlabeled data.
+
+02:36.486 --> 02:49.037
+So this is in contrast to like what people have done before in the self-supervised learning and so on, where it's always kind of pre-training then fine-tuning or in the transfer learning setting.
+
+02:49.017 --> 03:00.027
+Seven, using a large ratio between unlabeled batch size and labeled batch size enables models to train longer on unlabeled data to achieve a higher accuracy.
+
+03:01.048 --> 03:03.410
+Okay, we've already seen that they have used that.
+
+03:04.191 --> 03:10.517
+And number eight, training the student from scratch is sometimes better than initializing the student with the teacher.
+
+03:10.957 --> 03:17.083
+And the student initialized with the teacher still requires a large number of training epochs to perform well.
+
+03:17.063 --> 03:32.727
+This is fairly interesting because it kind of alludes to the fact that the minima in weight space, so this is of course the case if the student model is the same as the teacher model, so in iteration two or three or whatnot.
+
+03:32.707 --> 03:43.779
+It means that, you know, in weight space, if we look at, you know, you might want to start the student here and the minimum is right here.
+
+03:44.479 --> 03:52.067
+And you might want to think that if I learn the same thing, then the minima are fairly close together, right?
+
+03:52.087 --> 03:57.313
+So the teacher's minima might be here and the student minima might be fairly close.
+
+03:57.293 --> 04:03.584
+might be beneficial if I start not over here, but actually start at the teacher's minimum.
+
+04:03.884 --> 04:06.248
+But this doesn't always seem to be the case.
+
+04:06.609 --> 04:12.399
+And that is a fairly interesting observation, because it kind of means that we're talking about different minima here.
+
+04:12.639 --> 04:16.466
+We're talking about the student model learning different things.
+
+04:16.606 --> 04:21.715
+And that's what we've discussed already, the student model kind of learns to be robust.
+
+04:21.695 --> 04:37.754
+And that's probably a minimum that's fairly far away in weight space, at least in a sort of energy landscape weight space, might be the case that it needs to actually overcome kind of a hill here, even though the minimum might be close.
+
+04:38.014 --> 04:42.640
+There's lots of research in like how minima are distributed in these weight spaces.
+
+04:42.620 --> 04:55.043
+Which I don't want to go into right here, but it is a fairly interesting observation that it's not always helpful to initialize the teacher sorry the student at the teacher's optimum
+

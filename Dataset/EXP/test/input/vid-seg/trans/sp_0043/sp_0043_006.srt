@@ -1,0 +1,92 @@
+1
+00:00:00,031 --> 00:00:01,219
+denoising autoencoder.
+
+2
+00:00:01,240 --> 00:00:05,147
+A denoising autoencoder is basically
+
+3
+00:00:06,848 --> 00:00:22,404
+So if you have, for example, an image and the image is of a, our trusty cat whiskers, and adeno is an autoencoder is an unsupervised method where you have, it's basically an autoencoder.
+
+4
+00:00:22,705 --> 00:00:29,552
+So there is a bunch of layers compressing to a hidden representation, then uncompressing it again.
+
+5
+00:00:29,612 --> 00:00:30,713
+Okay.
+
+6
+00:00:32,212 --> 00:00:38,503
+And at the end, you want to output the same as at the beginning.
+
+7
+00:00:38,583 --> 00:00:40,126
+So it's basically an autoencoder.
+
+8
+00:00:40,887 --> 00:00:49,602
+But the special part about the denoising autoencoder is that first you take your input and you put some noise on it.
+
+9
+00:00:50,023 --> 00:00:53,950
+So that could mean anything here, but
+
+10
+00:00:53,930 --> 00:01:07,090
+Here what they do is they do they make some Gaussian noise on it now I can't really draw Gaussian noise here, but it would be kind of convolved with Gaussian Gaussian noise So I'm just going to add some noise like this.
+
+11
+00:01:07,450 --> 00:01:17,946
+So noise noise noise So there's some noise You see and then you feed that that's now what you feed in here
+
+12
+00:01:17,926 --> 00:01:23,792
+And the algorithm is supposed to reconstruct this, this original image.
+
+13
+00:01:23,832 --> 00:01:27,616
+So the algorithm is basically supposed to take away the noise.
+
+14
+00:01:27,676 --> 00:01:30,820
+It doesn't see the original image, but it's supposed to produce it.
+
+15
+00:01:31,340 --> 00:01:33,122
+And you do this with your training data.
+
+16
+00:01:33,142 --> 00:01:37,066
+So what does that mean ultimately for our trajectory optimization?
+
+17
+00:01:37,947 --> 00:01:45,115
+It means that if I have a trajectory that I did before and it maybe goes here,
+
+18
+00:01:45,095 --> 00:01:54,708
+What I can do is I can make a noisy version of it, which would be the black one right here.
+
+19
+00:01:54,828 --> 00:01:57,772
+So I put some noise on it, some noise.
+
+20
+00:01:59,234 --> 00:02:01,697
+It's kind of the same, but okay.
+
+21
+00:02:01,717 --> 00:02:05,702
+And the denoising auto encoder is supposed to give me back the red one.
+
+22
+00:02:05,682 --> 00:02:12,030
+This will simply give me some sort of a probabilistic model of my training distribution.
+
+23
+00:02:12,352 --> 00:02:20,046
+So they go through the math here and show that these denoising autoencoders actually naturally output this log probability.
+

@@ -1,0 +1,44 @@
+[
+  {
+    "input_path": "/tmp/megha/PDF-Extract-Kit/Presentation/layout_pap/sp_1402/sp_1402_page_3.png",
+    "page_index": null,
+    "boxes": [
+      {
+        "input_path": "/tmp/megha/PDF-Extract-Kit/Presentation/layout_pap/sp_1402/sp_1402_page_3.png",
+        "cls_id": 14,
+        "label": "algorithm",
+        "score": 0.8309944272041321,
+        "coordinate": [
+          443.7936096191406,
+          302.62725830078125,
+          2091.640625,
+          740.6749267578125
+        ],
+        "text": "NPUT: Batch size B, number of episodes N, action space A = {Aj}j[M], context space S  Rd\nl: Initialize policy p0 \u2190 1/M , sample data buffer D1 = {(s0,b, AI0,6 , R0,b)}b[B] using initial polic\n: for n = 1 to N do\nUpdate the policy pn on Dn\nfor b = 1 to B do\nObserve context sn,b and choose AIn, b  A following the updated policy pn (sn,b)\nend for\nDn+1 \u2190 {(sn,b, AIn,b , Rn,b)}b[B], where Rn,b denotes the reward of action AIn, b on context",
+        "id": "sp_1402_page_3_1",
+        "seg_type": "algo"
+      }
+    ]
+  },
+  {
+    "input_path": "/tmp/megha/PDF-Extract-Kit/Presentation/layout_pap/sp_1402/sp_1402_page_6.png",
+    "page_index": null,
+    "boxes": [
+      {
+        "cls_id": 14,
+        "label": "algorithm",
+        "score": 0.8874624371528625,
+        "coordinate": [
+          439.9588623046875,
+          1095.215576171875,
+          2098.9931640625,
+          1999.635986328125
+        ],
+        "text": "pketerlealorre)\nannt\n(C\nGOA\n= Od, p0j\n= p0Aj\n0\n= 0, \u03b80j = 0, j  [M], batch size B, sketch size c, number of block\nAj\nUTPUT: Updated policy pn+1\n7\nI: For all j  [M], store context vectors and rewards corresponding to the steps at which the action Aj\n RN n\n\u00d7 d\nand A\n RN n\n: For all j  [M], store context vectors corresponding to the steps at which the action Aj is not executed in\n\u0393nj  RN n \u00d7d,\n, where N n \u2190 B \u2212 N n\n1: Compute imputed reward vector Rnj \u2190 {\u00afrn,1(Aj), . . , rn, Nn (Aj)}  RN n , \u2200j  [M]\n: for all action Aj  A do\nG\nmn+1\nnT\nn+1\nn\nnT\nn\n{(7)}\n1\np\n- I\nAj\np\nAj\nG\nn+1\nT\nnT\nn\n+\n-1\nnp\nn\ninT\nV\nn\n{(8)}\nAj\np\nAj\nAj\nA\nJ\n(pn\nW\nn+1\nG\nn+1\nn\n-1\n(W\n-1\nn+1\n{(6)}\n\u03bbId\nAj\nG\nAj\nAj\nAj\n2\n:\nend for\npn+1(s) selects action A \u2190 arg max\nn-\n(Wn+1)",
+        "input_path": "/tmp/megha/PDF-Extract-Kit/Presentation/layout_pap/sp_1402/sp_1402_page_6.png",
+        "id": "sp_1402_page_6_1",
+        "seg_type": "algo"
+      }
+    ]
+  }
+]

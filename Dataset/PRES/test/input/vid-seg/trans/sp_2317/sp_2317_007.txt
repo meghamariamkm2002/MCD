@@ -1,0 +1,3 @@
+We performed extensive experiments to validate the efficacy of our model.
+In next modeling, our model performs better than previous RN-based models such as RWKV with a clear margin.
+We also scaled our model to 1 billion parameters and finally achieved lower PPL on the Pi corpus.

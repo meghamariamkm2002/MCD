@@ -1,0 +1,602 @@
+[
+  {
+    "para_id": "p1",
+    "section_heading": "Abstract",
+    "text": "Cutting planes are crucial in solving mixed integer linear programs (MILP) as they facilitate bound improvements on the optimal solution. Modern MILP solvers rely on a variety of separators to generate a diverse set of cutting planes by invoking the separators frequently during the solving process. This work identifies that MILP solvers can be drastically accelerated by appropriately selecting separators to activate. As the combinatorial separator selection space imposes challenges for machine learning, we learn to separate by proposing a novel data-driven strategy to restrict the selection space and a learning-guided algorithm on the restricted space. Our method predicts instance-aware separator configurations which can dynamically adapt during the solve, effectively accelerating the open source MILP solver SCIP by improving the relative solve time up to 72% and 37% on synthetic and real-world MILP benchmarks. Our work complements recent work on learning to select cutting planes and highlights the importance of separator management.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p2",
+    "section_heading": "1 Introduction",
+    "text": "Mixed Integer Linear Programs (MILP) have been widely used in logistics [15], management [12], and production planning [17]. Modern MILP solvers typically employ a Branch-and-Cut (B&C) framework that utilizes a Branch-and-Bound (B&B) tree search procedure to partition the search space. As illustrated in Fig. 1, cutting plane algorithms are applied within each node of the B&B tree, tightening the Linear Programming (LP) relaxation of the node and improving the lower bound.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p3",
+    "section_heading": "1 Introduction",
+    "text": "This paper presents a machine learning approach to accelerate MILP solvers. Modern MILP solvers implement various cutting plane algorithms, also referred to as separators, to generate cutting planes that tighten the LP solutions. Different separators have varying performance and execution times depending on the specific MILP instance. Typical solvers use simple heuristics to select separators, which can limit the ability to exploit commonalities across problem instances. While there is a growing body of work considering the \u2018branch\u2019 and \u2018cut\u2019 aspects of B&C [18, 35, 51, 42], profiling the open-source academic MILP solver SCIP [8], we find generating cutting planes through separators is a major contributor to the total solve time, and deactivating unused separators leads to faster solves and fewer B&B tree nodes. That is, a well-configured separator setup allows the selected cutting planes to more effectively tighten the LP solution, leading to fewer nodes in the B&B tree.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p4",
+    "section_heading": "1 Introduction",
+    "text": "To our knowledge, the problem of how to leverage machine learning for this critical task of separator configuration, namely the selection of separators to activate and deactivate during the MILP solving process has not been considered. Therefore, the goal of this paper is to explore the extent to which",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p5",
+    "section_heading": "1 Introduction",
+    "text": "tailoring the separator configuration to the MILP instance in a data-driven manner can accelerate MILP solvers. The central challenge comes from the high dimensionality of the configuration search space (induced by the large number of separators and configuration steps), which we address by introducing a data-driven search space restriction strategy that balances model fitting and generalization. We further propose a learning-guided algorithm, which is cast into the framework of neural contextual bandit, as an effective means of optimizing configurations within the reduced search space.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p6",
+    "section_heading": "1 Introduction",
+    "text": "Our contributions can be summarized as",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p7",
+    "section_heading": "1 Introduction",
+    "text": "\u2022 We identify separator management as a crucial component in B&C, and introduce the Separator Configuration task for selecting separators to accelerate solving MILPs.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p8",
+    "section_heading": "1 Introduction",
+    "text": "\u2022 To overcome the high dimensionality of the configuration task, we propose a data-driven strategy, directly informed by theoretical analysis, to restrict the search space. We further design a learning method to tailor instance-aware configurations within the restricted space.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p9",
+    "section_heading": "1 Introduction",
+    "text": "\u2022 Extensive computational experiments demonstrate that our method achieves significant speedup over the competitive MILP solver SCIP on a variety of benchmark MILP datasets and objectives. Our method further accelerates the state-of-the-art MILP solver Gurobi and uncovers known facts from literature regarding separator efficacy for different MILP classes.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p10",
+    "section_heading": "2 Related Work",
+    "text": "The utilization of machine learning in MILP solvers has recently gained considerable attention. Various components in the B&B algorithm have been explored, including node selection [25, 49, 35], variable selection [18, 23, 58], branching rule [30, 23, 58, 46], scheduling primal heuristics [31, 26, 13], and deciding whether to apply Dantzig-Wolfe decomposition [34].",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p11",
+    "section_heading": "2 Related Work",
+    "text": "Our work is closely related to cutting plane selection, which can be achieved through heuristics [55, 2] or machine learning [51, 42]. The key difference, as shown in Figure 1 in Sec. 4, is that these works focus on selecting cutting planes from a pre-given cutpool generated by the available separators. That is, they consider the \u2018how to cut\u2019 question, whereas we focus on the equally crucial, but much less explored \u2018when (and what separators should we use) to cut\u2019 question [14, 16, 7]. For example, Wesselmann and Stuhl [55] state that they do not use any additional scheme to deactivate specific separators. In contrast, our work configures separators to generate a high-quality cutpool.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p12",
+    "section_heading": "2 Related Work",
+    "text": "Another closely related line of work is on algorithm selection and parameter configurations [56, 57, 4, 5, 27, 28]. The most relevant works [57, 5] consider portfolio-based algorithm selection by first choosing a subset of algorithm parameter settings, and then selecting a parameter setting for each problem instance from the portfolio. We specialize and extend the general framework to separator configuration, by proposing a novel data-driven subspace restriction strategy, followed by a learning method, to configure separators for multiple separation rounds. We further present a theoretical analysis that directly informs our subspace restriction strategy, whereas the generalization guarantees from the prior work [5] is not informative for designing the portfolio-construction procedure.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p13",
+    "section_heading": "2 Related Work",
+    "text": "It is common to restrict combinatorial space to improve the quality of solutions in discrete optimization. Previous research focuses primarily on decomposing large-scale problems, including heuristic works on Bender decomposition [44] and column generation [6], and recent learning-based works [50, 36] that train networks to select among a set of random or heuristic decomposition strategies. Our data-driven action space restriction strategy is general and could be of interest for a broader set of combinatorial optimization tasks, as well as other applications such as recommendation systems.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p14",
+    "section_heading": "3 MILP Background",
+    "text": "Mixed Integer Linear Programming (MILP). A MILP can be written as x\u21e4 = argmin{c|x : Ax  b, xj 2 Z 8j 2 I}, where x 2 Rn is the set of n decision variables, A 2 Rm\u21e5n and b 2 Rm formulate the set of m constraints, and c 2 Rn formulates the linear objective function. I \u2713 {1, ..., n} defines the integer variables. x\u21e4 2 Rn denotes the optimal solution to the MILP with an optimal objective value z\u21e4.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p15",
+    "section_heading": "3 MILP Background",
+    "text": "Branch-and-Cut. State-of-the-art MILP solvers perform branch-and-cut (B&C) to solve MILPs, where a branch-and-bound (B&B) procedure is used to recursively partition the search space into a tree. Within each node of the B&B tree, linear programming (LP) relaxations of the MILP are solved to obtain lower bounds. B&C further invoke Cutting plane algorithms to tighten the LP relaxation.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p16",
+    "section_heading": "3 MILP Background",
+    "text": "Cutting Plane Separation. When the optimal solution x\u21e4LP to the LP relaxation is not a feasible solution to the original MILP, the cutting plane methods aim to find valid linear inequalities \u232b|x  ! (cuts) that separate x\u21e4LP from the convex hull of all feasible solutions of the MILP. Cutting plane separation happens in rounds, where each round k consists of the following steps (1) solving the current LP relaxation, (2) calling different separators to generate a set of cuts and add them to the cutpool Ck, (3) select a subset of cuts Pk \u2713 Ck and update the LP with the selected cuts. Detailed background information on separators in the B&C framework can be found in Appendix A.1.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p17",
+    "section_heading": "4 Problem Formulation",
+    "text": "Different separators are designed to exploit different structures of the solution polytope defined by the MILP instance. The solution polytope also varies at different separation rounds, as changes to the constraints (e.g. after a branch) lead to different structures and thus different effective separators. Moreover, multiple separators can combine to exploit more sophisticated structures. The inherently combinatorial nature of the problem hence presents a challenge in assigning the appropriate separators to each MILP instances. This work aims to enhance the MILP solving process via intelligent separator configuration. We formally introduce the separator configuration task as follows.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p18",
+    "section_heading": "4 Problem Formulation",
+    "text": "Definition 1 (Separator Configuration). Suppose the MILP solver implements M different separator algorithms. Given a set X of N MILP instances (where |X | = N ), and a maximum number of separation rounds R in a MILP solving process, we want to select a configuration sx,n 2 {0, 1}M for each instance x 2 X and separation round 1  n  R, where the wth entry of sx,n equaling one means we activate the wth separator in separation round n, and equaling zero means we deactivate the wth separator in the corresponding round.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p19",
+    "section_heading": "4 Problem Formulation",
+    "text": "Figure 1 illustrates the separator configuration task and highlights the difference between our task and the downstream cutting plane selection task in previous works [51, 42].",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p20",
+    "section_heading": "4 Problem Formulation",
+    "text": "We measure the success of an algorithm for the separator configuration task by the relative time improvement from SCIP\u2019s default configuration. Denote a proposed configuration policy as \u21e1 : X ! QR n=1{0, 1}M , where for each MILP instance x 2 X , we have \u21e1(x) = {sx,1, ..., sx,R} as the proposed configurations. Let t\u21e1(x) be the solve time of instance x using the configuration sequence \u21e1(x) and t0(x) be the solve time using the default SCIP configuration (both to optimality or a fixed gap). We evaluate the effectiveness of \u21e1 by the relative time improvement",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p21",
+    "section_heading": "4 Problem Formulation",
+    "text": "The search space for the separator configuration task is enormous, with a size of N\u21e52M\u21e5R. SCIP contains M = 17 separators, and a typical solve run yields R 30, making the task highly challenging. In the next section, we discuss our data-driven approach to finding high quality configurations.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p22",
+    "section_heading": "5 Learning to Separate",
+    "text": "Two sources of high dimensionality in the search space come from (1) combinatorial number |O| = 2M of configurations, where each element of O := {0, 1}M is a combination of separators (e.g., Gomory, Clique) to activate, and (2) a large number of configuration updates that results in the |O|R factor. We address the first challenge in Sec. 5.1 by restricting the number of configuration options, and the second challenge in Sec. 5.2 by reducing the frequency of configuration updates. The resulting restricted search space allows efficient learning in Sec. 5.3 to find high quality customized configurations for each MILP instance, which we term as instance-aware configurations.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p23",
+    "section_heading": "5.1 Configuration space restriction",
+    "text": "For simplicity, we first consider a single configuration update such that we apply the same configuration for all separation rounds, and our goal is to learn an instance-aware configuration predictor f\u0303 : X ! O. That is, we set sx,1 = ... = sx,R = f\u0303(x) for each x 2 X ; Sec. 5.2 discusses extensions to multiple configuration updates. To address the challenge of learning the predictor in the high dimensional space O, we constrain the predictor f\u0303A to select from a subset A \u2713 O of configurations with |A| reasonably small, i.e. f\u0303A(x) 2 A 8x 2 X . We design a data-driven strategy, supported by theoretical rationale, to identify a subspace A for f\u0303A to achieve high performance.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p24",
+    "section_heading": "5.1 Configuration space restriction",
+    "text": "Preliminary definitions. Let X be a class of MILP instances, and K = {x1, ..., xK} \u2713 X be a given training set where we can acquire the time improvement { (s, xi)}i=1..K;s2O. The true performance of f\u0303A on X is (f\u0303A) = Ex2X [ (f\u0303A(x), x)], and the empirical counterpart on K is \u0302(f\u0303A) = 1 K PK i=1 (f\u0303A(xi), xi). We further denote the true instance-agnostic performance of applying a single configuration s 2 {0, 1}M to all MILP instances as \u0304(s) = Ex2X [ (s, x)], and the empirical counterpart as \u02c6\u0304 (s) = 1K PK i=1 (s, xi). Appendix A.2.1 details all relevant definitions.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p25",
+    "section_heading": "5.1 Configuration space restriction",
+    "text": "Restriction algorithm. To find a subspace A that optimizes the true performance (f\u0303A) for the predictor f\u0303A, we employ the following training performance v.s. generalization decomposition:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p26",
+    "section_heading": "5.1 Configuration space restriction",
+    "text": "The first term measures how well f\u0303A performs on the training set K, while the second term reflects the generalization gap of f\u0303A to the entire distribution X . Notably, a similar trade-off exists in standard supervised learning [47], where regularizations are used to balance fitting and generalization by implicitly restricting the hypothesis class. Relatedly, in this problem, we can balance the two terms by explicitly restricting the output space of the predictor. Intuitively, a larger subspace A can improve training performance (more configuration options to leverage), but hurt generalization (more options that could perform poorly on unseen instances). This intuition is formalized next.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p27",
+    "section_heading": "5.1 Configuration space restriction",
+    "text": "First, since the second term in Eq. (2) is unobserved, the following proposition imposes assumptions that allow us to restrict the configuration space. A detailed proof can be found in Appendix A.2.2.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p28",
+    "section_heading": "5.1 Configuration space restriction",
+    "text": "Proposition 1. Assume the predictor f\u0303A, when evaluated on the entire distribution X , achieves perfect generalization (i.e., zero generalization gap) with probability 1 \u21b5; with probability \u21b5, the predictor makes mistake and outputs a configuration s 2 A uniformly at random. Then, the trainset performance v.s. generalization decomposition can be written as (f\u0303A) = (1 \u21b5)\u0302(f\u0303A) + \u21b5 1|A| P s2A \u0304(s).",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p29",
+    "section_heading": "5.1 Configuration space restriction",
+    "text": "As \u0304(s) is also unobservable, we further rely on its empirical counterpart \u02c6\u0304 t(s) (see Appendix A.2.2 for a discussion of the reduction) and select the subspace A based on the following objective:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p30",
+    "section_heading": "5.1 Configuration space restriction",
+    "text": "The impact of the subspace A on these two terms further depends on the nature of f\u0303A; we assume that the predictor f\u0303A uses empirical risk minimization (ERM) and performs optimally on the training set K, i.e. f\u0303ERMA (x) = argmaxs2A (s, x) 8x 2 K, hence bypassing the need to train any predictor for constructing A. The discussion of the ERM assumption\u2019s validity and the extension to predictors with training error are provided in Appendix A.2.4 (See Lemma 3 for the extension).",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p31",
+    "section_heading": "5.1 Configuration space restriction",
+    "text": "Eq. (3) then sheds light on how to construct a good A under the ERM assumption: an ideal subset A allows f\u0303ERMA to have (1) high training performance \u0302(f\u0303 ERM A ), obtained when some configuration in A achieves good performance for any MILP instance in a training set, and (2) low generalization gap, achieved when each configuration in A has good performance across MILP instances in a test set, which we approximate with the average instance-agnostic performance on the training set 1 |A| P s2A \u02c6\u0304 (s). In fact, a larger or more diverse subspace A results in better \u0302(f\u0303ERMA ), as the ERM predictor can leverage more configuration options to improve the training set performance. Meanwhile, it may also lower 1|A| P s2A \u02c6\u0304 (s) which harms generalization, as we may include some configurations that perform poorly on most MILP instances but well on a small subset. The following proposition (proven in Appendix A.2.3) formalizes the diminishing marginal returns of f\u0303ERMA \u2019s training performance with respect to A, which enables an efficient algorithm to construct A:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p32",
+    "section_heading": "5.1 Configuration space restriction",
+    "text": "Proposition 2. The empirical performance of the ERM predictor \u0302(f\u0303ERMA ) is monotone submodular, and a greedy strategy where we include the configuration that achieves the greatest marginal improvement argmaxs2{0,1}M\\A \u0302(f\u0303ERMA[{s}) \u0302(f\u0303ERMA ) at each iteration is a (1 1/e)-approximation algorithm for constructing the subspace A that optimizes \u0302(f\u0303ERMA ).",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p33",
+    "section_heading": "5.1 Configuration space restriction",
+    "text": "To balance the two terms in Eq. (3), we couple the greedy selection strategy with a filtering criterion that eliminates configurations with poor instance-agnostic performance to construct the subspace A. Due to the high computational cost of calculating the marginal improvement for all 2M configurations, we first sample a large set S of configurations, which we use to construct the subspace A. Then, at each iteration, we expand the current set A with the configuration that produces the best marginal improvement in training performance, but only considering configurations s 2 S whose empirical instance-agnostic performance is greater than a threshold, i.e. \u02c6\u0304 (s) > b. The extra filtering procedure enables us to improve the second term with small concessions in the first term. We continue the process while monitoring the two opposing terms, and terminate with a reasonably small A that balances the trade-off. The detailed algorithm and discussions of the filtering and termination procedure are provided in Appendix A.3.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p34",
+    "section_heading": "5.2 Configuration update restriction",
+    "text": "Learning to update configurations at each separation round is challenging due to cascading errors from a large number of updates. Instead, we periodically update the configuration at a few intermediate rounds and hold it fixed between updates: we perform k \u2327 R updates at rounds {nj}kj=1 with 1  nj  R, and set sx,nj = ... = sx,nj+1 1 for each 1  j  k and x 2 X . Fig. 7 (Left) in Appendix A.4 shows an example of the configuration update restriction with k = 2 and R = 6, where we also discuss the trade-off of k in approximation v.s. estimation. We empirically find a small number of updates can already yield a decent time improvement (we set k = 2 in Experiment Sec. 6). We use a forward training algorithm [45] to learn the configuration policy \u21e1\u0303(k) : X ! Qk",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p35",
+    "section_heading": "5.2 Configuration update restriction",
+    "text": "i=1{0, 1}M . The algorithm decomposes the sequential task into k single configuration update tasks \u21e1\u0303(k) = {f\u0303m\u2713T } k m=1, where each f\u0303 j \u2713T : X ! {0, 1}",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p36",
+    "section_heading": "5.2 Configuration update restriction",
+    "text": "M is a separate network for the j-th configuration update. As illustrated in Fig.7 (Right) of Appendix A.4, at each iteration, we fix the weights of the trained networks for earlier updates {f\u0303m\u2713T } j 1 m=1, and train the network f\u0303 j \u2713 for the j",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p37",
+    "section_heading": "5.2 Configuration update restriction",
+    "text": "th update. The detailed algorithm is provided in Alg. 2 of Appendix A.4. We incorporate the configuration space restriction in Sec. 5.1 by constraining each network f\u0303 j\u2713 to select configurations from a subset A \u2713 O, such that f\u0303 j\u2713 (x) 2 A for all x 2 X . This reduces the search space from N \u21e5 2M\u21e5R to N \u21e5 |A| \u21e5 k, significantly easing the learning process. Notably, we construct the subspace A once at the initial update for computational efficiency benefits, as it yields comparable performances to constructing a new subspace for each update. Further details and discussions can be found in Appendix A.7.2.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p38",
+    "section_heading": "5.3 Neural UCB algorithm",
+    "text": "Given the restricted configuration space A, we frame each configuration update as a contextual bandit problem with A arms (configurations). Conditional on the context (a MILP instance x 2 X ), each arm s 2 A has a reward (time improvement (s, x)). We employ the neural UCB algorithm [59] to efficiently train a network f\u0303 j\u27130(x, s) : X \u21e5A ! R to estimate the reward, where the confidence",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p39",
+    "section_heading": "5.3 Neural UCB algorithm",
+    "text": "bound estimation is enabled by the small size of A. We provide the complete training procedure in Alg. 3 of Appendix A.5. At each training epoch t, we randomly sample P instances from X . For each instance, we sample D configurations based on the upper confidence bound ucb(x, s), which combines a reward point estimate f\u0303 j\u2713t 1(x, s) and a confidence bound estimate. The confidence bound estimate incorporates the gradient r\u2713f\u0303 j\u2713t 1(x, s) and a normalizing matrix Zt 1 only feasible to obtain when the number of arms is small. We run the MILP solver on each of the P \u21e5D pairs of instance-configuration and observe the reward labels. Lastly, we add all instance-configurationreward tuples {x, s, r}P\u21e5D to the data buffer and retrain the network f\u0303 j\u2713 . At test time, we select the configuration with the highest predicted reward s\u21e4x,j = argmaxs2A f\u0303 j \u2713T (x, s) or the highest UCB score s\u21e4x,j = argmaxs2A ucb(x, s), based on validation performance, at each update step nj . We provide further details on the inference strategy in Appendix A.6.1.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p40",
+    "section_heading": "5.3 Neural UCB algorithm",
+    "text": "Context encoding. We encode the context for each MILP instance x and separator configuration s as a triplet graph with three types of nodes in the graph: variable nodes V, constraint nodes C, and separator nodes S. The variable and constraint nodes (V, C) appear in the previous works [18, 42]. We follow Paulus et al. [42] to use the same input features for V and C, and construct edges between them such that a variable node Vi is connected to a constraint node Cj if the variable appears in the constraint with the weight corresponds to the coefficient Aij 6= 0. The separator nodes S are unique to our problem. We represent each configuration s by M separator nodes; each node Sk has M + 1 dimensional input features, representing whether the separator is activated (the first dimension), and which separator it is (one-hot M -dimensional vector). We connect each separator node with all variable and constraint nodes, all with a weight of 1 for complete pairwise message passing. We provide detailed descriptions of the input features in Appendix A.5.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p41",
+    "section_heading": "5.3 Neural UCB algorithm",
+    "text": "Neural architecture f\u0303\u2713. We extend the architecture in Paulus et al. [42] for our network f\u0303\u2713(x, s) : X \u21e5 S ! R. The architecture, as illustrated in Fig. 2, involves a Graph Convolutional Network (GCN) [33], an attention block on the hidden embeddings of the separator nodes [48], and a global pooling to output a single score for reward prediction. It first embeds C, V, and S input features into hidden representations, and performs message passing following the directions of V!C!V, S!V!S, and S!C!S. Then, the S nodes pass through an attention module to emphasize the task of the separator configuration. Lastly, since we require the model to output a single score (in contrary to Paulus et al. [42] which outputs a score for each cut node), we perform a global mean pooling on each of the C, V, and S hidden embeddings to obtain three embedding vectors, concatenate them into a single vector, and finally use a multilayer perceptron (MLP) to map the vector into a scalar.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p42",
+    "section_heading": "5.3 Neural UCB algorithm",
+    "text": "Clipped Reward Label. To account for variations in MILP solve time, we perform l MILP solver runs for each configuration-instance pair (s, x) and take the average time improvement as the unclipped reward label. Additionally, if a certain configuration s takes significantly longer solve time than SCIP default on a MILP instance x, we terminate the MILP solver run when the relative time improvement is less than a predefined threshold rmin \u2327 0 to expedite data collection, and assign a clipped reward label of rclip(s, x) = ( P i=1..l max{ (i)(s, x), rmin})/l. Reward clipping also simplifies learning by obviating the need to accurately fit the exact value of extreme negative improvements, which may skew the network\u2019s prediction. As long as the prediction\u2019s sign is right, we will not select such a configuration with a negative predicted value during testing.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p43",
+    "section_heading": "5.3 Neural UCB algorithm",
+    "text": "Loss function L. We use a L2 loss between the prediction f\u0303\u2713(x, s) and the clipped reward label rclip:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p44",
+    "section_heading": "6 Experiments and Analysis",
+    "text": "We divide the experiment section into two main parts. First, we evaluate our method on standard MILP benchmarks from Tang et al. [51] and Ecole [43], where the number of variables and constraints range from 60 to 10, 000. We conduct detailed ablation studies to validate the design choices made for our method. Second, we examine the efficacy of our method by applying it to large-scale real-world MILP benchmarks, including the MIPLIB [20], NN Verification [40], and Load Balancing in the ML4CO challenges [19], where the number of variables and constraints reaches up to 65, 000. We omit certain MILP classes from the benchmarks with excessively short solve times, few generated cutting planes, or small dataset sizes. Appendix A.6.5 provides a detailed description of the datasets.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p45",
+    "section_heading": "6.1 Setup",
+    "text": "Evaluation Metric. As we aim to accelerate SCIP solving through separator configuration, we evaluate our learned configuration by the relative time improvement from SCIP default, defined in Eq. (1), when both are solved to optimality (for standard instances) or a fixed gap (for large-scale instances) as described in Appendix A.6.4. We report the median and standard deviation across all test instances, and defer mean and interquartile mean to Appendix A.8 as they yield similar results.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p46",
+    "section_heading": "6.1 Setup",
+    "text": "ML Setup. We train the networks with ADAM [32] under a learning rate of 10 3. The reward label collection is performed via multi-processing with 48 CPU processes. As in previous works [51, 42, 54], we train separate models for each MILP class. By default, we generate a training set Ksmall of 100 instances for configuration space restriction, another training set Klarge of 800 for predictor network training, a validation set of 100 instances, and a test set of 100 instances for each class Appendix A.6 provides full details of the setup.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p47",
+    "section_heading": "6.1 Setup",
+    "text": "Baselines. To our knowledge, our separator configuration task has not been explored in previous research. We design the following baselines to assess the effectiveness of our proposed methods: (1) Default, where we run SCIP with the default parameters; (2) Random, where for each MILP instance x, we randomly sample a configuration s 2 {0, 1}M ; (3) Prune, where we first run SCIP default on the Ksmall, and then at test time, we deactivate separators whose generated cutting planes are never applied to any instances in Ksmall. Proposed Methods. We evaluate the performances of our complete method and its sub-components: (1) Ours (L2Sep), where we perform k = 2 instance-aware configuration updates per MILP instance",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p48",
+    "section_heading": "6.1 Setup",
+    "text": "(Sec. 5.2). We use forward training to learn predictors via the neural UCB algorithm (Sec. 5.3) within the restricted configuration subspace A (Sec. 5.1). (2) Instance Agnostic Configuration, where we select a single configuration s\u0303 with the best instance-agnostic performance \u02c6\u0304 (s\u0303) on Ksmall from the initial large subset S for our space restriction algorithm (|S| \u21e1 2000); s\u0303 is included in A. (3) Random within Restricted Subspace, where for each MILP instance, we select a random configuration within A. The latter two sub-components assess the quality of the restricted subspace and the benefit of learning instance-aware configurations. Further details can be found in Appendix A.6.1.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p49",
+    "section_heading": "6.2 Standard MILP Benchmarks with Detailed Ablations",
+    "text": "Performance. Table 1 presents the relative time improvement of different methods over SCIP default, on the datasets of Tang et al. and Ecole. Our method demonstrates a substantial speed up from SCIP default across all MILP classes, with a relative time improvement ranging from 25% to 70%. In contrast, the random baseline performs poorly, demonstrating that separator configuration is a nontrivial task. Meanwhile, although the pruning baseline generally outperforms SCIP default, its time improvement is significantly less than ours, confirming the efficacy of our proposed algorithm. Notably, both of our two heuristic sub-components achieve impressive speed-up from SCIP default, indicating the high quality of our restricted subspace (and a configuration within) to accelerate SCIP; additionally, our complete learning method outperforms the sub-components on all MILP classes, further underscoring the advantages of learning for instance-aware configurations.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p50",
+    "section_heading": "6.2 Standard MILP Benchmarks with Detailed Ablations",
+    "text": "We note that the high standard deviation, exhibited in all methods including SCIP default and also observed in the recent studies [54], is reasonable due to instance heterogeneity, as the standard deviation is calculated based on the time improvements across instances within each MILP dataset.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p51",
+    "section_heading": "6.2 Standard MILP Benchmarks with Detailed Ablations",
+    "text": "Ablations. In Table 2, we further conduct comprehensive ablation studies to assess the effectiveness of our learning method. The ablations are performed on four representative MILP classes in Ecole and Tang, covering a wide range of problem sizes and solve times. Appendix A.7 provides detailed descriptions as well as additional ablation results. We aim to answer the following questions: (i) Does the restricted config. space improve learning performance? (ii) How does the performance vary with fewer or more updates? (iii) Does the use of neural UCB lead to efficient predictor learning?",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p52",
+    "section_heading": "6.2 Standard MILP Benchmarks with Detailed Ablations",
+    "text": "(i) Configuration space restriction (Sec. 5.1). We train our configuration predictors to select within a restricted subspace A constructed by a greedy strategy coupled with a filtering criterion. To evaluate the importance of the space restriction in learning high quality predictors, we perform an ablation study where we train the predictors to select within (1) the unrestricted space O = {0, 1}M (No Restr.), and (2) a same-sized subspace A0 constructed solely by the greedy strategy without filtering (Greedy Restr.). The restricted search space substantially enhances the learned predictors when compared to No Restr., improving the median performance and lowering the standard deviation. We also observe the benefit of the filtering criterion when compared to Greedy Restr.. The filtering criterion excludes configurations with subpar instance-agnostic performance from entering the restricted configuration space, improving model generalization as demonstrated in our theoretical analysis.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p53",
+    "section_heading": "6.2 Standard MILP Benchmarks with Detailed Ablations",
+    "text": "(ii) Configuration update restriction (Sec. 5.2). We apply the forward training algorithm (Sec. 5.2) to perform two configuration updates (k = 2) for each MILP instance. To examine the impact of fewer or more updates, we conduct an ablation study where we (1) performed a single update at round n1 = 0 (k = 1), and (2) added an additional third update at a later round n3 (k = 3). The results show that while a single update yields decent time improvement, adding the second update leads to further time savings. Meanwhile, we observe little improvement from the third update (k = 3). We speculate that this is because the performance improvement primarily occurs during the early stages of a solve, and holding a fixed configuration for longer may be advantageous by making the solve process more stable. We leave further investigation of more configuration updates as a future work.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p54",
+    "section_heading": "6.2 Standard MILP Benchmarks with Detailed Ablations",
+    "text": "(iii) Neural UCB algorithm (Sec. 5.3). Our method employs the online neural UCB algorithm to improve training efficiency for configuration predictors. We present the ablation (1) where we train the predictor using an offline regression dataset whose size is four times as ours while training the model until convergence (Supervise (\u21e54)); we conduct an additional ablation (2) where we train the predictor using neural contextual bandit with \u270f-greedy exploration strategy (\u270f-greedy). Our model performs comparably to Supervise (\u21e54) while using significantly fewer data, highlighting the importance of the contextual bandit for improving training efficiency by collecting increasingly higher quality datasets online. The ablation results with \u270f-greedy further confirm the benefit of the confidence bound estimation in neural UCB for more efficient contextual bandit exploration.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p55",
+    "section_heading": "6.3 Large-scale Real-world MILP Benchmarks",
+    "text": "The real-world datasets of MIPLIB, NN Verification, and Load Balancing present significant challenges due to the vast number of variables and constraints (on the order of 104), including nonstandard constraint types that MILP separators are not designed to handle. MIPLIB imposes a further challenge of dataset heterogeneity, as it contains a diverse set of instances from various application domains. Prior research [52] struggles to learn effectively on MIPLIB due to this heterogeneity, and a recent study [54] attempts to learn cutting plane selection over two homogeneous subsets (with 20 and 40 instances each). In contrast, we attempt to learn separator configuration across a larger MIPLIB subset that includes 443 of the 1065 instances in the original set, while carefully preserving the heterogeneity of the dataset. We provide our subset curation procedure in Appendix A.6.5.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p56",
+    "section_heading": "6.3 Large-scale Real-world MILP Benchmarks",
+    "text": "Main Results. Table 3 presents the relative time improvement of various methods over SCIP default, on the large-scale real-world datasets. Again, our complete method displays a substantial speed up from SCIP default with a relative time improvement ranging from 12% to 37%. Our method also improves from our heuristic sub-components, further indicating the efficacy of our learning component on the challenging datasets. In contrast, the random baseline fails to improve from SCIP default, while the pruning baseline, despite having a reasonable median performance, suffers from a high standard deviation due to poor performance on many instances (See Appendix A.8.1 for IQM and mean results). Our results show the effectiveness of our learning method in improving the efficiency of practical applications that involve large-scale MILP optimization.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p57",
+    "section_heading": "6.3 Large-scale Real-world MILP Benchmarks",
+    "text": "Although not a perfect comparison, for reference, we attempt to contextualize our result by examining the time improvement in the most comparable setting we found, which we provide comparison details in Appendix A.8.2: the learning method for cutting plane selection in Paulus et al. [42] achieves a median relative time improvement of 11.67% on the NN Verification dataset, and that in Wang et al. [54] obtains a 3% and 1% improvement in the solve time on two small homogeneous MIPLIB",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p58",
+    "section_heading": "6.3 Large-scale Real-world MILP Benchmarks",
+    "text": "subsets. While the comparison is far from perfect, our learning method for separator configuration achieves much higher time improvements of 37.5% on NN Verification and 12.9% on MIPLIB.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p59",
+    "section_heading": "6.4 Interpretation Analysis: L2Sep Recovers Effective Separators from Literature",
+    "text": "Bin Packing: It is known that instances with few bins approximate the Knapsack problem (Clique cuts are known to be effective [9]), and that instances with many bins approximate Bipartite Matching (Flowcover cuts can be useful [53]). We analyze the separators activated by L2Sep when we gradually decrease the number of bins, and observe that the prevalence of selected Clique and Flowcover cuts increased and decreased, respectively. This is illustrated in Fig 8 in Appendix A.8.3.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p60",
+    "section_heading": "6.4 Interpretation Analysis: L2Sep Recovers Effective Separators from Literature",
+    "text": "Other MILP Classes: We provide visualizations and interpretations for other MILP classes in Appendix A.8.3. Notably, Clique is known to be effective for Indep. Set [16]; L2Sep recovers this fact by frequently selecting configurations that activate Clique. Meanwhile, L2Sep discovers the instance heterogeneity of MIPLIB, resulting in a more dispersed distribution of selected configurations.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p61",
+    "section_heading": "6.5 State-of-the-art MILP Solver Gurobi",
+    "text": "We apply our method L2Sep with Gurobi, which contains a larger set of 21 separators. As Gurobi is closed-source, we cannot change configurations after the solving process starts, so we only consider one stage of separator configuration (k = 1). As seen from Table 4, L2Sep achieves significant relative time improvements over the Gurobi default, with gains ranging from 12% to 56%. This result confirms the efficacy of L2Sep as an automatic instance-aware separator configuration method.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p62",
+    "section_heading": "6.6 Additional Results",
+    "text": "In Appendix A.8.5 and A.8.4, we further demonstrate (1) Separator Configuration has immediate and multi-step effects in the B&C Process. For instance, even though L2Sep does not modify branching, the branching solve time is reduced. (2) L2Sep is effective under an alternative objective, achieving 15%-68% relative gap improvements under fixed time limits.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p63",
+    "section_heading": "7 Conclusion",
+    "text": "This work identifies the opportunity of managing separators to improve MILP solvers, and further formulates and designs a learning-based method for doing so. We design a data-driven strategy, supported by theoretical analysis, to restrict the combinatorial space of separator configurations, and overall find that our learning method is able to improve the relative solve time (over the default solver) from 12% to 72% across a range of MILP benchmarks. In future work, we plan to apply our algorithm to more challenging MILP problems, particularly those that cannot be solved to optimality. We also aim to learn more fine-grained controls by increasing the frequency of separation configuration updates. Our algorithm is highly versatile, and we plan to investigate its potential to manage aspects of the MILP solvers, and further integrate with previous works on cutting plane selection. Our code is publicly available at https://github.com/mit-wu-lab/learning-to-configure-separators. We believe that our learning framework can be a powerful technique to enhance MILP solvers.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p64",
+    "section_heading": "7 Conclusion",
+    "text": "Acknowledgments and Disclosure of Funding",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p65",
+    "section_heading": "7 Conclusion",
+    "text": "The authors would like to thank Mark Velednitsky and Alexandre Jacquillat for insightful discussions regarding an interpretative analysis of the learned model. This work was supported by a gift from Mathworks, the National Science Foundation (NSF) CAREER award (#2239566), the MIT Amazon Science Hub, and MIT\u2019s Research Support Committee. The authors acknowledge the MIT SuperCloud and Lincoln Laboratory Supercomputing Center for providing HPC resources that have contributed to the research results reported within this paper.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p66",
+    "section_heading": "2018: Selected Papers of the Annual International Conference of the German Operations",
+    "text": "Research Society (GOR), Brussels, Belgium, September 12-14, 2018, pages 513\u2013519. Springer, 2019.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p67",
+    "section_heading": "2018: Selected Papers of the Annual International Conference of the German Operations",
+    "text": "[27] Frank Hutter, Holger H Hoos, Kevin Leyton-Brown, and Thomas St\u00fctzle. Paramils: an automatic algorithm configuration framework. Journal of Artificial Intelligence Research, 36:267\u2013306, 2009.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p68",
+    "section_heading": "2018: Selected Papers of the Annual International Conference of the German Operations",
+    "text": "[28] Frank Hutter, Holger H Hoos, and Kevin Leyton-Brown. Sequential model-based optimization for general algorithm configuration. In Learning and Intelligent Optimization: 5th International Conference, LION 5, Rome, Italy, January 17-21, 2011. Selected Papers 5, pages 507\u2013523. Springer, 2011.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p69",
+    "section_heading": "2018: Selected Papers of the Annual International Conference of the German Operations",
+    "text": "[29] Michael J\u00fcnger and Sven Mallach. Exact facetial odd-cycle separation for maximum cut and binary quadratic optimization. INFORMS Journal on Computing, 33(4):1419\u20131430, 2021.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p70",
+    "section_heading": "2018: Selected Papers of the Annual International Conference of the German Operations",
+    "text": "[30] Elias Khalil, Pierre Le Bodic, Le Song, George Nemhauser, and Bistra Dilkina. Learning to branch in mixed integer programming. In Proceedings of the AAAI Conference on Artificial Intelligence, volume 30, 2016.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p71",
+    "section_heading": "2018: Selected Papers of the Annual International Conference of the German Operations",
+    "text": "[31] Elias B Khalil, Bistra Dilkina, George L Nemhauser, Shabbir Ahmed, and Yufen Shao. Learning to run heuristics in tree search. In Ijcai, pages 659\u2013666, 2017.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p72",
+    "section_heading": "2018: Selected Papers of the Annual International Conference of the German Operations",
+    "text": "[32] Diederik P Kingma and Jimmy Ba. Adam: A method for stochastic optimization. arXiv preprint arXiv:1412.6980, 2014.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p73",
+    "section_heading": "2018: Selected Papers of the Annual International Conference of the German Operations",
+    "text": "[33] Thomas N. Kipf and Max Welling. Semi-supervised classification with graph convolutional networks. In International Conference on Learning Representations, 2017.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p74",
+    "section_heading": "2018: Selected Papers of the Annual International Conference of the German Operations",
+    "text": "[34] Markus Kruber, Marco E L\u00fcbbecke, and Axel Parmentier. Learning when to use a decomposition. In Integration of AI and OR Techniques in Constraint Programming: 14th International Conference, CPAIOR 2017, Padua, Italy, June 5-8, 2017, Proceedings 14, pages 202\u2013210. Springer, 2017.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p75",
+    "section_heading": "2018: Selected Papers of the Annual International Conference of the German Operations",
+    "text": "[35] Abdel Ghani Labassi, Didier Ch\u00e9telat, and Andrea Lodi. Learning to compare nodes in branch and bound with graph neural networks. arXiv preprint arXiv:2210.16934, 2022.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p76",
+    "section_heading": "2018: Selected Papers of the Annual International Conference of the German Operations",
+    "text": "[36] Sirui Li, Zhongxia Yan, and Cathy Wu. Learning to delegate for large-scale vehicle routing. Advances in Neural Information Processing Systems, 34:26198\u201326211, 2021.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p77",
+    "section_heading": "2018: Selected Papers of the Annual International Conference of the German Operations",
+    "text": "[37] Stephen Maher, Matthias Miltenberger, Jo\u00e3o Pedro Pedroso, Daniel Rehfeldt, Robert Schwarz, and Felipe Serrano. PySCIPOpt: Mathematical programming in python with the SCIP optimization suite. In Mathematical Software \u2013 ICMS 2016, pages 301\u2013307. Springer International Publishing, 2016. doi: 10.1007/978-3-319-42432-3_37.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p78",
+    "section_heading": "2018: Selected Papers of the Annual International Conference of the German Operations",
+    "text": "[38] Alberto Maria Metelli, Flavio Mazzolini, Lorenzo Bisi, Luca Sabbioni, and Marcello Restelli. Control frequency adaptation via action persistence in batch reinforcement learning. In International Conference on Machine Learning, pages 6862\u20136873. PMLR, 2020.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p79",
+    "section_heading": "2018: Selected Papers of the Annual International Conference of the German Operations",
+    "text": "[39] Volodymyr Mnih, Koray Kavukcuoglu, David Silver, Andrei A Rusu, Joel Veness, Marc G Bellemare, Alex Graves, Martin Riedmiller, Andreas K Fidjeland, Georg Ostrovski, et al. Human-level control through deep reinforcement learning. nature, 518(7540):529\u2013533, 2015.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p80",
+    "section_heading": "2018: Selected Papers of the Annual International Conference of the German Operations",
+    "text": "[40] Vinod Nair, Sergey Bartunov, Felix Gimeno, Ingrid Von Glehn, Pawel Lichocki, Ivan Lobov, Brendan O\u2019Donoghue, Nicolas Sonnerat, Christian Tjandraatmadja, Pengming Wang, et al. Solving mixed integer programs using neural networks. arXiv preprint arXiv:2012.13349, 2020.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p81",
+    "section_heading": "2018: Selected Papers of the Annual International Conference of the German Operations",
+    "text": "[41] George L Nemhauser, Laurence A Wolsey, and Marshall L Fisher. An analysis of approximations for maximizing submodular set functions\u2014i. Mathematical programming, 14:265\u2013294, 1978.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p82",
+    "section_heading": "2018: Selected Papers of the Annual International Conference of the German Operations",
+    "text": "[42] Max B Paulus, Giulia Zarpellon, Andreas Krause, Laurent Charlin, and Chris Maddison. Learning to cut by looking ahead: Cutting plane selection via imitation learning. In International conference on machine learning, pages 17584\u201317600. PMLR, 2022.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p83",
+    "section_heading": "2018: Selected Papers of the Annual International Conference of the German Operations",
+    "text": "[43] Antoine Prouvost, Justin Dumouchelle, Lara Scavuzzo, Maxime Gasse, Didier Ch\u00e9telat, and Andrea Lodi. Ecole: A gym-like library for machine learning in combinatorial optimization solvers. In Learning Meets Combinatorial Algorithms at NeurIPS2020, 2020. URL https: //openreview.net/forum?id=IVc9hqgibyB.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p84",
+    "section_heading": "2018: Selected Papers of the Annual International Conference of the German Operations",
+    "text": "[44] Ragheb Rahmaniani, Teodor Gabriel Crainic, Michel Gendreau, and Walter Rei. The benders decomposition algorithm: A literature review. European Journal of Operational Research, 259 (3):801\u2013817, 2017.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p85",
+    "section_heading": "2018: Selected Papers of the Annual International Conference of the German Operations",
+    "text": "[45] St\u00e9phane Ross and Drew Bagnell. Efficient reductions for imitation learning. In Proceedings of the thirteenth international conference on artificial intelligence and statistics, pages 661\u2013668. JMLR Workshop and Conference Proceedings, 2010.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p86",
+    "section_heading": "2018: Selected Papers of the Annual International Conference of the German Operations",
+    "text": "[46] Lara Scavuzzo, Feng Chen, Didier Ch\u00e9telat, Maxime Gasse, Andrea Lodi, Neil Yorke-Smith, and Karen Aardal. Learning to branch with tree mdps. Advances in Neural Information Processing Systems, 35:18514\u201318526, 2022.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p87",
+    "section_heading": "2018: Selected Papers of the Annual International Conference of the German Operations",
+    "text": "[47] Shai Shalev-Shwartz and Shai Ben-David. Understanding machine learning: From theory to algorithms. Cambridge university press, 2014.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p88",
+    "section_heading": "2018: Selected Papers of the Annual International Conference of the German Operations",
+    "text": "[48] Yunsheng Shi, Zhengjie Huang, Shikun Feng, Hui Zhong, Wenjing Wang, and Yu Sun. Masked label prediction: Unified message passing model for semi-supervised classification. In Proceedings of the Thirtieth International Joint Conference on Artificial Intelligence, IJCAI-21, pages 1548\u20131554, 8 2021.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p89",
+    "section_heading": "2018: Selected Papers of the Annual International Conference of the German Operations",
+    "text": "[49] Jialin Song, Ravi Lanka, Albert Zhao, Aadyot Bhatnagar, Yisong Yue, and Masahiro Ono. Learning to search via retrospective imitation. arXiv preprint arXiv:1804.00846, 2018.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p90",
+    "section_heading": "2018: Selected Papers of the Annual International Conference of the German Operations",
+    "text": "[50] Jialin Song, Yisong Yue, Bistra Dilkina, et al. A general large neighborhood search framework for solving integer linear programs. Advances in Neural Information Processing Systems, 33: 20012\u201320023, 2020.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p91",
+    "section_heading": "2018: Selected Papers of the Annual International Conference of the German Operations",
+    "text": "[51] Yunhao Tang, Shipra Agrawal, and Yuri Faenza. Reinforcement learning for integer programming: Learning to cut. In International conference on machine learning, pages 9367\u20139376. PMLR, 2020.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p92",
+    "section_heading": "2018: Selected Papers of the Annual International Conference of the German Operations",
+    "text": "[52] Mark Turner, Thorsten Koch, Felipe Serrano, and Michael Winkler. Adaptive cut selection in mixed-integer linear programming. arXiv preprint arXiv:2202.10962, 2022.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p93",
+    "section_heading": "2018: Selected Papers of the Annual International Conference of the German Operations",
+    "text": "[53] Mathieu Van Vyve. Fixed-charge transportation on a path: Linear programming formulations. In International Conference on Integer Programming and Combinatorial Optimization, pages 417\u2013429. Springer, 2011.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p94",
+    "section_heading": "2018: Selected Papers of the Annual International Conference of the German Operations",
+    "text": "[54] Zhihai Wang, Xijun Li, Jie Wang, Yufei Kuang, Mingxuan Yuan, Jia Zeng, Yongdong Zhang, and Feng Wu. Learning cut selection for mixed-integer linear programming via hierarchical sequence model. In The Eleventh International Conference on Learning Representations, 2023.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p95",
+    "section_heading": "2018: Selected Papers of the Annual International Conference of the German Operations",
+    "text": "[55] Franz Wesselmann and Uwe Stuhl. Implementing cutting plane management and selection techniques. In Technical Report. University of Paderborn, 2012.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p96",
+    "section_heading": "2018: Selected Papers of the Annual International Conference of the German Operations",
+    "text": "[56] Lin Xu, Holger Hoos, and Kevin Leyton-Brown. Hydra: Automatically configuring algorithms for portfolio-based selection. In Proceedings of the AAAI Conference on Artificial Intelligence, volume 24, pages 210\u2013216, 2010.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p97",
+    "section_heading": "2018: Selected Papers of the Annual International Conference of the German Operations",
+    "text": "[57] Lin Xu, Frank Hutter, Holger H Hoos, and Kevin Leyton-Brown. Hydra-mip: Automated algorithm configuration and selection for mixed integer programming. In RCRA workshop on experimental evaluation of algorithms for solving problems with combinatorial explosion at the",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p98",
+    "section_heading": "2018: Selected Papers of the Annual International Conference of the German Operations",
+    "text": "international joint conference on artificial intelligence (IJCAI), pages 16\u201330, 2011.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p99",
+    "section_heading": "2018: Selected Papers of the Annual International Conference of the German Operations",
+    "text": "[58] Giulia Zarpellon, Jason Jo, Andrea Lodi, and Yoshua Bengio. Parameterizing branch-and-bound search trees to learn branching policies. In Proceedings of the AAAI Conference on Artificial Intelligence, volume 35, pages 3931\u20133939, 2021.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p100",
+    "section_heading": "2018: Selected Papers of the Annual International Conference of the German Operations",
+    "text": "[59] Dongruo Zhou, Lihong Li, and Quanquan Gu. Neural contextual bandits with ucb-based exploration. In International Conference on Machine Learning, pages 11492\u201311502. PMLR, 2020.",
+    "seg_type": "par"
+  }
+]

@@ -1,0 +1,3 @@
+In the SE model, depending on how the functions are generated, the online convex optimization problem can be divided into stochastic anniversary optimization.
+These two fields are studied separately in previous works.
+A recent study finds the essential role of gradient variation, which gives the interpolation between stochastic anniversary optimization

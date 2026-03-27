@@ -1,0 +1,3 @@
+We present Annotator, a Vauxhall-centered active learning baseline.
+It introduces a new selection strategy, requiring 1,000 times fewer annotations.
+Annotator is versatile, working well with various LiDAR representations, different settings, and seniors with consistent improvements.

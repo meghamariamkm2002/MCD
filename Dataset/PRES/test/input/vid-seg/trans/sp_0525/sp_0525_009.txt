@@ -1,0 +1,1 @@
+Under this setting, we show that the diff instructor achieves the state-of-the-art single-step distillation.

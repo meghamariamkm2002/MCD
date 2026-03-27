@@ -1,0 +1,41 @@
+WEBVTT
+
+00:00.031 --> 00:00.692
+functions.
+
+00:02.697 --> 00:13.760
+All of this is not perfect, of course, but it's still an open question, I guess, whether or not it's not perfect because we haven't built a strong enough language model yet.
+
+00:15.543 --> 00:20.233
+Do I want to say GPT-4 is now for biology and not for language?
+
+00:20.213 --> 00:31.375
+Or is it because you really can't very well predict these things just from a language model?
+
+00:31.455 --> 00:42.036
+I mean, you should, technically all the information is there, but maybe the language model objective as such isn't able to capture that information.
+
+00:42.016 --> 00:45.445
+So, yeah, this was the paper.
+
+00:45.465 --> 00:46.407
+It's pretty simple.
+
+00:46.748 --> 00:53.927
+In the appendix, they have a lot of these additional experiments or full experiments, I believe, for all the amino acids and so on.
+
+00:54.569 --> 00:57.055
+And I invite you to check that out.
+
+00:57.035 --> 01:16.005
+In general, I like this kind of work because it's very applied and it can tell us something about the nature of both these language models and the biological things that we care about in biology.
+
+01:16.125 --> 01:20.092
+Okay, I'm just talking crap right now.
+
+01:20.713 --> 01:21.534
+Thanks for being here.
+
+01:21.594 --> 01:24.038
+I hope you enjoyed it and bye-bye.
+

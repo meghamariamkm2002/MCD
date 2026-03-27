@@ -1,0 +1,23 @@
+[
+  {
+    "input_path": "/tmp/megha/PDF-Extract-Kit/Presentation/layout_pap/sp_2317/sp_2317_page_3.png",
+    "page_index": null,
+    "boxes": [
+      {
+        "cls_id": 14,
+        "label": "algorithm",
+        "score": 0.9343087673187256,
+        "coordinate": [
+          1435.8507080078125,
+          2317.47216796875,
+          2098.4970703125,
+          2855.743896484375
+        ],
+        "text": "Igorithm 1 Recurrent Computing\n1: Input: c  C1\u00d7d, \u00b5t, \u03b8, \u03b3k\nR1\u00d7d, t = 1, . . . , n, k = 1, . . . , H\n2: Init: h = 0  C1\u00d7d, H  Cn\u00d7d\n3: for t = 1 to n do\nbegin\n1:\n\u03bbt = \u03b3k + (1 \u2212 \u03b3k)  \u00b5t.\n::\n:\nh = \u03bbt exp(i\u03b8)h + (1 \u2212 \u03bbt,\n7:\n[H]t = h.\n8:\nend\nreturn H.\n9:",
+        "input_path": "/tmp/megha/PDF-Extract-Kit/Presentation/layout_pap/sp_2317/sp_2317_page_3.png",
+        "id": "sp_2317_page_3_1",
+        "seg_type": "algo"
+      }
+    ]
+  }
+]

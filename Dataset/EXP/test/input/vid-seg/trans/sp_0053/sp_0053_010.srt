@@ -1,0 +1,24 @@
+1
+00:00:00,031 --> 00:00:01,113
+So that's my opinion.
+
+2
+00:00:01,655 --> 00:00:07,347
+If you want more experiments, it's, you know, it's also faster and has less parameters and, and so on.
+
+3
+00:00:07,367 --> 00:00:18,733
+But again, dyno is a method of self supervised learning where and they, their argument is that it combines naturally well with the vision transformer.
+
+4
+00:00:19,534 --> 00:00:19,695
+Right.
+
+5
+00:00:19,755 --> 00:00:21,018
+That was it for me.
+
+6
+00:00:21,218 --> 00:00:27,051
+Check out paper, check out blogs, subscribe, share, and bye bye.
+

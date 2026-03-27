@@ -1,0 +1,191 @@
+WEBVTT
+
+00:00.031 --> 00:00.432
+here.
+
+00:00.612 --> 00:03.336
+The first way is this short term memory.
+
+00:03.737 --> 00:07.082
+And the second way is the long term memory.
+
+00:07.744 --> 00:09.567
+Now the two are slightly different.
+
+00:09.887 --> 00:17.079
+As you can guess, the short term memory is going to be only over a short time period around the current frame.
+
+00:17.439 --> 00:25.012
+And the long term memory is going to be basically across a very long time horizon into the past.
+
+00:25.032 --> 00:26.494
+You can see
+
+00:26.474 --> 00:31.301
+We're trying to classify this blue frame right here that what we call the key frame.
+
+00:31.421 --> 00:33.625
+So what we'll do is we'll run it through stage one.
+
+00:33.845 --> 00:34.105
+Cool.
+
+00:34.225 --> 00:37.590
+So we have features for each region of interest.
+
+00:37.951 --> 00:45.462
+And then you can see this goes here and through these residual connections, this goes into stage two over here.
+
+00:45.442 --> 00:49.794
+So basically, stage two still receives the same input.
+
+00:50.035 --> 00:53.204
+It receives whatever stage one outputs for the keyframe.
+
+00:53.725 --> 00:56.493
+But we're going to add to that twice.
+
+00:56.754 --> 00:59.923
+So we're going to add two things as I said.
+
+01:00.680 --> 01:04.346
+So the short term memory is added right here.
+
+01:04.947 --> 01:07.752
+Now, how do we build the short term memory?
+
+01:08.233 --> 01:13.061
+We built the short term memory simply by considering all the frames around the key frame.
+
+01:13.081 --> 01:25.101
+And this you can see right here, the current window around the key frame, which can be like one frame around it or two frames or three frames, just a few frames around the current frame.
+
+01:25.081 --> 01:35.155
+And this can be fairly helpful, as we said, for example, if the deer moves a bit, the car moves a bit, you know, it gets into a slightly different lighting and so on.
+
+01:35.795 --> 01:45.148
+This can help us very much to classify the current keyframe if we also have features from the surrounding frames.
+
+01:45.128 --> 01:55.383
+So for each of these surrounding frames, we also run them through the stage one detector to also extract regions of interest.
+
+01:56.425 --> 02:03.475
+And that all of these features go into this memory short term memory bank right here.
+
+02:03.455 --> 02:04.616
+There's different strategies.
+
+02:04.636 --> 02:07.740
+You don't always have to extract all of the regions of interest.
+
+02:08.101 --> 02:16.011
+You can also extract just the top one and so on, or you can extract the mean, since these are fairly consistent.
+
+02:16.031 --> 02:17.332
+The camera is at the same place.
+
+02:17.753 --> 02:23.640
+There are many ways you can do this, but what you'll ultimately end up with is a short-term memory bank that
+
+02:23.620 --> 02:37.882
+You'll have a bank and you have lots of these feature vectors in here for your regions of interest of the surrounding frames.
+
+02:37.902 --> 02:44.852
+Now, if this here is your half occluded deer, so this is the half occluded deer,
+
+02:44.832 --> 02:50.222
+And you want to consider information from the surrounding frames.
+
+02:50.643 --> 02:57.295
+Maybe in the next frame, so maybe this is three frames, like one, two, three, and two is the key frame.
+
+02:57.716 --> 03:00.801
+Maybe in the next frame, the deer moves a bit and you see its nose.
+
+03:01.342 --> 03:05.490
+And this particular region of interest here is relevant.
+
+03:05.470 --> 03:15.169
+So how do you know how do you now get from this entire memory this feature vector that would be helpful?
+
+03:15.990 --> 03:19.397
+And the answer is you get it through an attention mechanism.
+
+03:19.938 --> 03:21.000
+You can see that right here.
+
+03:21.340 --> 03:25.268
+The way the short term memory is added is through this attention block.
+
+03:25.248 --> 03:27.291
+They describe the attention block right here.
+
+03:27.732 --> 03:30.617
+It is a fairly standard attention mechanism.
+
+03:30.637 --> 03:33.161
+So I've done a video on attention is all you need.
+
+03:33.261 --> 03:36.567
+If you don't know what an attention mechanism is, go check it out.
+
+03:38.630 --> 03:41.455
+But you can see it's very, very standard.
+
+03:41.855 --> 03:46.463
+So you have these input features, which are the features that come from the keyframe.
+
+03:46.443 --> 03:51.408
+and you have the context features which are all the features in your memory bank.
+
+03:52.129 --> 03:59.436
+You encode the input features into a query using a fully connected layers and the context features into keys.
+
+04:00.076 --> 04:12.028
+And then you match the queries with the keys and the softmax in order to get a weighting over the context features and then you aggregate the values from the context features.
+
+04:12.008 --> 04:15.074
+So this is a standard attention mechanism.
+
+04:15.335 --> 04:15.976
+What does it mean?
+
+04:16.397 --> 04:28.482
+It basically means that each of these vectors right here, they will emit a key that kind of describes what kind of information is contained in that vector.
+
+04:28.462 --> 04:41.775
+The vector over here will emit a query that describes what sort of information it is looking for to in order to describe what's in the region of interest as well as possible.
+
+04:42.156 --> 04:45.424
+And then you simply match the query with the keys.
+
+04:45.404 --> 05:03.226
+to determine which key fits best to that query and whichever one fits best, let's say this one here, then you take that vector from the memory bank and incorporate it together with your current information that you already have.
+
+05:03.687 --> 05:10.095
+So that's how you address things that from other frames using an attention mechanism.
+
+05:11.122 --> 05:15.512
+Okay, now if this were all, you know, we could train this right now.
+
+05:16.053 --> 05:21.085
+We could train all of this because all of this is differentiable, right?
+
+05:21.646 --> 05:24.733
+This stage one detector right here is differentiable.
+
+05:25.294 --> 05:30.947
+It goes here and here, you know, the information, the attention mechanism is differentiable.
+
+05:32.030 --> 05:35.297
+The stage two detector is differentiable, all differentiable.
+
+05:35.618 --> 05:35.818
+Cool.
+
+05:36.119 --> 05:37.522
+We can train this end to end.
+
+05:38.605 --> 05:40.048
+Now what's the problem?
+

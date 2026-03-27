@@ -1,0 +1,1 @@
+define a novel integral KL divergence between the student distribution and the teacher distribution.

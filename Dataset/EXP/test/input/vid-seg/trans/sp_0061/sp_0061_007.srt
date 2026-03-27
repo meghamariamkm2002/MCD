@@ -1,0 +1,160 @@
+1
+00:00:00,031 --> 00:00:04,718
+How do you, how do you actually produce training and validation data to match these?
+
+2
+00:00:04,738 --> 00:00:09,865
+And there are a number of ways, but what comes to mind is, is meta learning, right?
+
+3
+00:00:10,206 --> 00:00:16,354
+So because what you're doing, they initialize the training and validation data at random points.
+
+4
+00:00:16,434 --> 00:00:18,578
+So these are just random at the beginning.
+
+5
+00:00:18,638 --> 00:00:24,486
+And then they optimize the data itself using gradient descent.
+
+6
+00:00:24,466 --> 00:00:24,806
+Okay.
+
+7
+00:00:25,027 --> 00:00:32,536
+Now see synthetic training data and they are randomly initialized.
+
+8
+00:00:33,197 --> 00:00:33,297
+Okay.
+
+9
+00:00:33,497 --> 00:00:35,019
+And they use gradient descent.
+
+10
+00:00:35,179 --> 00:00:36,741
+They have it somewhere.
+
+11
+00:00:37,182 --> 00:00:37,402
+Yes.
+
+12
+00:00:37,602 --> 00:00:42,308
+So they have this inner training loop, okay, which is many steps of inner training.
+
+13
+00:00:43,009 --> 00:00:47,655
+And then they have the outer loss, which is the, um,
+
+14
+00:00:47,635 --> 00:00:51,138
+It's the validation loss after the inner training loop.
+
+15
+00:00:51,158 --> 00:00:53,741
+And the difference from that to the true validation loss.
+
+16
+00:00:53,961 --> 00:00:56,744
+And then they do gradient descent on this outer loss.
+
+17
+00:00:57,044 --> 00:01:00,187
+Now this outer loss is a result of the inner loss.
+
+18
+00:01:00,207 --> 00:01:04,111
+And the inner loss is a result of the inner training procedure.
+
+19
+00:01:04,131 --> 00:01:09,096
+And the inner training procedure is n steps of feeding in the training data.
+
+20
+00:01:09,236 --> 00:01:10,938
+Every step you feed in the training data.
+
+21
+00:01:10,958 --> 00:01:13,641
+So your computational graph is going to look like.
+
+22
+00:01:14,141 --> 00:01:16,984
+So here is your training data as train.
+
+23
+00:01:16,964 --> 00:01:18,889
+And here are your initial parameters.
+
+24
+00:01:19,610 --> 00:01:21,876
+You initialize them randomly.
+
+25
+00:01:22,216 --> 00:01:25,785
+In the first step, you use the training data to produce theta 1.
+
+26
+00:01:26,988 --> 00:01:33,403
+Then in the second step, you use your training data again to produce theta 2.
+
+27
+00:01:33,383 --> 00:01:37,327
+And then you use it again to use data through and so on.
+
+28
+00:01:37,387 --> 00:01:42,211
+Each time you feed the training data in order to evolve your parameters to give you a better prediction.
+
+29
+00:01:43,032 --> 00:01:54,802
+So the gradient, since somewhere back here there's a loss, the gradient here will have to flow back through all of these paths and through all of these connections to the training data.
+
+30
+00:01:55,103 --> 00:01:58,726
+This is kind of you back propagate through an optimization procedure.
+
+31
+00:01:58,746 --> 00:02:01,028
+And we have this a bunch of times here.
+
+32
+00:02:01,008 --> 00:02:11,373
+And I've looked at the code and the code is like really crazy and it looks like proper research code, but it appears to be that that's actually what's happening.
+
+33
+00:02:11,393 --> 00:02:18,510
+They backprop through the optimization procedure to find this synthetic training and validation data.
+
+34
+00:02:20,110 --> 00:02:30,861
+Now, that's crazy, but it also kind of limits how far you can go with this, because usually you can't backprop for more than a couple of steps doing this.
+
+35
+00:02:30,941 --> 00:02:38,848
+Now, the fact that the inner model is small helps, but also this introduces very, very much, like these things are very brittle.
+
+36
+00:02:39,069 --> 00:02:45,595
+If you backprop through an optimization procedure like this, these things tend to be very brittle.
+
+37
+00:02:45,575 --> 00:02:51,594
+And so I think there's another thing there where you have to pay careful attention.
+
+38
+00:02:53,098 --> 00:02:53,379
+All right.
+
+39
+00:02:55,847 --> 00:02:57,111
+That's it's basically it.
+
+40
+00:02:57,332 --> 00:03:00,040
+The last thing they say is that they can combine this with orchid
+

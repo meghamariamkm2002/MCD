@@ -1,0 +1,302 @@
+[
+  {
+    "para_id": "p1",
+    "section_heading": "Abstract",
+    "text": "Vertical Federated Learning (VFL) is a collaborative machine learning paradigm that enables multiple participants to jointly train a model on their private data without sharing it. To make VFL practical, privacy security and communication efficiency should both be satisfied. Recent research has shown that Zero-Order Optimization (ZOO) in VFL can effectively conceal the internal information of the model without adding costly privacy protective add-ons, making it a promising approach for privacy and efficiency. However, there are still two key problems that have yet to be resolved. First, the convergence rate of ZOO-based VFL is significantly slower compared to gradient-based VFL, resulting in low efficiency in model training and more communication round, which hinders its application on large neural networks. Second, although ZOO-based VFL has demonstrated resistance to state-of-the-art (SOTA) attacks, its privacy guarantee lacks a theoretical explanation. To address these challenges, we propose a novel cascaded hybrid optimization approach that employs a zeroth-order (ZO) gradient on the most critical output layer of the clients, with other parts utilizing the first-order (FO) gradient. This approach preserves the privacy protection of ZOO while significantly enhancing convergence. Moreover, we theoretically prove that applying ZOO to the VFL is equivalent to adding Gaussian Mechanism to the gradient information, which offers an implicit differential privacy guarantee. Experimental results demonstrate that our proposed framework achieves similar utility as the Gaussian mechanism under the same privacy budget, while also having significantly lower communication costs compared with SOTA communication-efficient VFL frameworks.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p2",
+    "section_heading": "1 Introduction",
+    "text": "Federated Learning [30, 22, 23, 18, 31] is an emerging technique that has raised wide attention recently. It has become one of the most important distributed learning frameworks for enabling multiple data holders to train a model collaboratively without sharing their local privacy data explicitly.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p3",
+    "section_heading": "1 Introduction",
+    "text": "Our research focuses on VFL, where each client possesses all the data points, but only a nonintersecting subset of the features (vertically distributed). In VFL, all participants collaborate to train a single global model. The client trains a feature extraction model that maps its local data sample to embeddings, and the server collects the embeddings from all clients to make a prediction [21, 34, 6, 39, 16, 37, 14, 42, 43, 13].",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p4",
+    "section_heading": "1 Introduction",
+    "text": "Ensuring both privacy and computation-communication efficiency is crucial for practical VFL implementations. One common approach to achieve this is starting with a basic VFL [5, 6, 28] and subsequently applying privacy protection techniques, such as Secure Multiparty Computation (SMC) [8], Differential Privacy (DP) [32, 36], and Homomorphic Encryption (HE) [36, 32] to protect privacy. However, the addition of these protection techniques often increases computationcommunication costs. To avoid these costly protective add-ons, research attention has turned to Zero-Order Optimization (ZOO). Literature reports that ZOO-based VFL is able to conceal the internal information of the model (gradient/model parameter) making the SOTA privacy inference attack ineffective [41]. This finding highlights the potential of ZOO for efficient and secure VFL.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p5",
+    "section_heading": "1 Introduction",
+    "text": "However, two critical problems remained. First, the convergence rate of ZOO-based VFL is significantly slower [41] compared to VFL frameworks optimized with gradient, resulting in a high number of communication rounds and increased communication costs. Furthermore, the convergence rate is negatively correlated to the size of the parameters optimized using ZOO [41, 27, 12], which hinders the application of ZOO-based VFL on large neural networks. Second, although ZO-based VFL has demonstrated resistance to SOTA attacks, its privacy guarantee has not been theoretically explained.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p6",
+    "section_heading": "1 Introduction",
+    "text": "To solve the first problem, we reevaluate the advantages and disadvantages of applying first-order (FO) or zero-order (ZO) gradient methods for each component of the VFL, and find an optimal balance between efficiency and privacy protection. This analysis leads to a novel cascaded hybrid optimization framework that efficiently solves the convergence problems while fully preserving privacy protection. Specifically, our proposed framework (VFL-CZOFO) utilizes the ZO gradient for optimizing the most critical output layer of the clients, while other parts are optimized with the FO gradient2. To address the second problem, we theoretically prove that applying ZOO on VFL is equivalent to adding Gaussian Mechanism [7] to the gradient information and can provide a corresponding intrinsic (\u03f5, \u03b4)-DP guarantee.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p7",
+    "section_heading": "1 Introduction",
+    "text": "For a clear illustration, a schematic diagram of our proposed framework is presented in Figure 1-(c). The advantage of our framework is two-fold. First, it greatly alleviates the slow convergence problem of ZOO-based VFL (Figure 1-b), where our framework\u2019s convergence is solely limited by the output size of the clients, rather than the parameter size of the entire model. Second, compared with the FOO-based VFL (Figure 1-a), the connection layer of our framework used ZOO, allowing the backward messages to be solely losses, thus inheriting the privacy protection of the ZOO-based VFL.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p8",
+    "section_heading": "1 Introduction",
+    "text": "The primary innovations of our paper are as follows: 1) Our framework employs a novel cascaded hybrid optimization method, in which different optimization methods are applied to different layers of the global model in each iteration, which significantly improves the convergence rate of ZOO-based VFL while preserving privacy. To the best of our knowledge, no prior research in VFL has proposed a similar method that cascaded a hybrid optimization and exploits its advantages. 2) We provide",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p9",
+    "section_heading": "1 Introduction",
+    "text": "2Additionally, we apply co f our framework.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p10",
+    "section_heading": "1 Introduction",
+    "text": "a theoretical explanation of the intrinsic privacy guarantee of ZOO, based on (\u03f5, \u03b4)-DP, which is fundamentally different from the common DP mechanism, where noise is added to items afterward.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p11",
+    "section_heading": "1 Introduction",
+    "text": "In summary, the contributions of our paper are:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p12",
+    "section_heading": "2 A Detailed Comparison with SOTA VFL Frameworks",
+    "text": "Compared to the FOO-based VFL [34, 5, 6] our framework has two distinct advantages. First, our framework leverages the intrinsic privacy protection of ZOO, which is a result of its stochastic characteristics and the concealment of internal information. Second, we leverage the advantage of ZOO to reduce the communication cost from the server to the client where the backward message consists of merely q elements, which is typically significantly smaller than the FO-based VFL with dhB elements. The key difference between our framework and the FOO-based framework is that our approach reduces communication costs while simultaneously ensuring privacy protection. In contrast, FOO-based VFL typically shares internal information (parameters/gradient) [6, 5] and then applies for extra privacy protection mechanism [36, 32].",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p13",
+    "section_heading": "2 A Detailed Comparison with SOTA VFL Frameworks",
+    "text": "Compared with the ZOO-based VFL [41], this framework and ours both leverage the privacy protection of ZOO in VFL. However, ZOO-based VFL suffers from a slow convergence rate of O(d/ \u221a T ) which is constrained by the global model parameter size d. This hinders its effectiveness when dealing with \u201clarger\u201d networks containing millions of parameters, causing higher communication costs due to increased communication rounds. To address this issue, we applied ZOO to the crucial connection layer between the server and the client. By doing so, we maintained the privacy protection offered by ZOO while significantly mitigating the slow convergence problem, reducing the constraint from the entire global model size d to merely the output size of the clients dh.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p14",
+    "section_heading": "3 Method",
+    "text": "Problem Definition In the VFL framework, there is one server and M clients4. The server holds the label yi for each sample i \u2208 [n], ([n] \u225c {1, 2 \u00b7 \u00b7 \u00b7n}), while each client holds a non-intersecting feature set for all the samples. Specifically, the features for sample i on client m are denoted as xm,i. Client m\u2019s model, hm(wm;xm,i), is parameterized by wm and takes local feature xm,i as input, outputting the embedding. The server inputs the embeddings from all clients into its own model, which is parameterized by w0, and then calculates the losses for updating the parameters. The VFL framework can be viewed as solving a finite-sum problem in composite form:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p15",
+    "section_heading": "3 Method",
+    "text": "where w = [w1, \u00b7 \u00b7 \u00b7wM ] denotes the parameter for all clients, X denotes the entire feature set across all clients, and y denotes the labels for all samples. For notation brevity, we define the outputs from all clients as \u03a6i(w) = [h1(w1;x1,i), \u00b7 \u00b7 \u00b7 , hM (wM ;xM,i)] = [h1,i, . . . , hM,i]. Therefore, the loss for the i-th sample5 can be represented as fi(w0,\u03a6). L( \u00b7 ; ytrue) is the loss function.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p16",
+    "section_heading": "3 Method",
+    "text": "Cascaded and Minimal Application of ZOO on the Connection Layer Applying ZOO on VFL resolves the privacy leakage issue from the gradient [41], but simply applying ZOO to the entire VFL has a slow convergence problem, leading to a high number of communication rounds. Specifically, the major problem of ZOO is that with more dimensions on the gradient that need to be estimated, more variance will be introduced in the estimation of the gradient [27, 3]. This is especially problematic for machine learning scenarios where even relatively small models may have millions of parameters. To address the slow convergence problem of ZOO-based VFL, we precisely apply ZOO to the client\u2019s output layer, while the rest of the model utilizes the FO gradient. This approach significantly improves the convergence of the ZOO-based VFL, since only a small portion of the entire model uses ZOO.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p17",
+    "section_heading": "3 Method",
+    "text": "ZOO [12] estimates the gradient of a function by sampling a random perturbation within the function\u2019s domain of definition and evaluating its shift on the value domain. To estimate the partial derivative with respect to the output layer of the client\u2019s model, we apply the average random gradient estimation (Avg-RandGradEst) [27, 25] which utilizes q i.i.d. samples {ujm,i} q j=1 on the objective function:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p18",
+    "section_heading": "3 Method",
+    "text": "where fi (hm,i + \u00b5mum,i) is the abbreviation for fi (w0, h1,i, \u00b7 \u00b7 \u00b7hm,i + \u00b5mum,i \u00b7 \u00b7 \u00b7 , hM,i), dhm is the size of the output layer of client m. \u03d5(dhm) is a dimension-dependent factor [26] related to the choice of the distribution p of the random vector ujm,i. If p is the multivariate uniform distribution U(S(0, 1)) on a unit sphere centered at 0 with radius 1, then \u03d5(dhm) = dhm . If p is the multivariate normal distribution N (0, I), then \u03d5(dhm) = 1. q is the sampling times. The clients cannot calculate \u03b4jm,i by themselves because the loss function fi(\u00b7) is held by the server, therefore the server has to send the \u03b4jm,i back to the clients",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p19",
+    "section_heading": "3 Method",
+    "text": "6. To implement multiple-point estimation, the server must transmit multiple distinct values of \u03b4jm,i to the client, with the number of values sent equaling the number of sampling points q used in the Avg-RandGradEst.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p20",
+    "section_heading": "3 Method",
+    "text": "The theoretical difficulty in analyzing our framework is that different optimization methods are cascaded within a single model. Unlike most VFL research [34, 5, 28, 6, 41] which updates the global model with a unified optimization method, e.g. \u2207fi (wm) (VAFL [6]) or the \u2207\u0302fi (wm) (ZOOVFL [41]), we apply a cascaded hybrid gradient via chain rule, i.e. \u2207\u0302hmfi (hm,i) \u00b7 \u2207wmhm,i, where \u2207\u0302hmfi (hm,i) is the stochastic gradient estimator of the partial derivative w.r.t. the output layer of the client, and\u2207wmhm(wm) is the local gradient of the client.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p21",
+    "section_heading": "3 Method",
+    "text": "Compress the Communication Furthermore, we demonstrate that compression is compatible with our approach, and can be applied to all communications in the framework, including the forward message [5] and the backward message [35]. We define the compressor of the client as Cm(\u00b7), and the compressor of the server as C0(\u00b7). In each communication round, the client m sends compressed embeddings instead of the raw message to the server, and the server replies with the compressed messages. We apply the uniform scale compressor [2] in the experiment. However, other compression schemes such as Top-K [24], sign-SGD [4], and lattice quantization [40] can also be applied to the different parts of our framework to further reduce the message size.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p22",
+    "section_heading": "3 Method",
+    "text": "The theoretical challenge in proving the convergence with compression lies in that two errors (forward and backward) are introduced in the analysis. The first error affects the embeddings sent from the client to the server, where the error influences the server\u2019s model input, creating uncertainty in the loss value and gradients for updating the parameter. We bound this error by imposing assumptions on the curvature of the loss function, i.e. an upper bound for the norm of the Hessian matrix. The second error affects the message sent from the server to the clients, which then updates using the hybrid gradient with compression error. As a result, there are three different sources of uncertainty in the clients\u2019 parameter update: the two mentioned above, as well as the error caused by ZOO.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p23",
+    "section_heading": "3 Method",
+    "text": "Algorithm In this section, we propose our asynchronous VFL7 with ZOO on the connection layer and compression on the communication messages. Starting with the client, which randomly selects a sample i and sends its local model output to the server. Receiving the forward message from the client m, the server calculates the \u03b4jm,i with Avg-RandGradEst (Eq. 2) and group \u03b4 j m,i with j = 1, 2, \u00b7 \u00b7 \u00b7 , q into a vector \u2206m,i. The server compresses \u2206m,i and sends it back to the client. Then the server and client update their local model with the \u201cgradient\u201d.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p24",
+    "section_heading": "4 Security Analysis",
+    "text": "Threat Model We discuss privacy under two scenarios: \u201chonest-but-curious\u201d and \u201chonest-butcolluded\u201d. In both scenarios, all participants are assumed to follow the protocol and perform their assigned tasks. Under the \u201chonest-but-curious\u201d scenario, a curious client attempts to obtain private information from other participants using the information they have received. In the \"honest-butcolluded\" scenario, some participants collude to obtain private information from other participants. The attacker in this scenario can access all information and messages from the colluding participants. In the \"honest-but-colluded\" scenario, the attacker\u2019s capability is either equal to or stronger than in the \"honest-but-curious\" scenario. This is because the attacker can acquire more information from other participants when colluding, therefore increasing their ability to infer sensitive data.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p25",
+    "section_heading": "4 Security Analysis",
+    "text": "Theorem 4.1. Differential Privacy Guarantee of Sharing the ZO Gradient: Under the \u201chonestbut-colluded\" threat model where the attacker can access all information of all clients through the entire training process, including the client\u2019s dataset, model, and the ZO gradient received from the server. Under algorithm 1, with q being sufficiently large, \u03b6 being the maximum l2-norm of the partial gradient w.r.t. any client\u2019s output through the entire training. If the following condition holds:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p26",
+    "section_heading": "4 Security Analysis",
+    "text": "we can derive that sharing the stochastic gradient estimation from the server ensures (\u03f5\u0304, \u03b4\u0304)-DP for all \u03f5, \u03b4, \u03b4\u2032 > 0, where \u03f5\u0304 = \u221a 2T ln(1/\u03b4\u2032)\u03f5+ T\u03f5(e\u03f5 \u2212 1), \u03b4\u0304 = T\u03b4 + \u03b4\u2032.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p27",
+    "section_heading": "4 Security Analysis",
+    "text": "Proof sketch: The proof can be found in Appendix C.1. Firstly, we establish that each client\u2019s update can be modeled with an ideal sequence, where the unbiased parameter is updated with the gradient of the smoothed loss function fu,i (wt0,\u03a6i) = Eu[fi(w0,\u03a6(w)) + \u00b5u]. Since Avg-RandGradEst in Eq. 2 is an average of q independently and identically distributed samples from fi(\u00b7), applying the central limit theorem, the estimated gradient is normally distributed for sufficiently large q. We can then apply the differential privacy guarantee for the Gaussian Mechanism to the estimated gradient. Finally, the accumulated privacy guarantee is derived from the advanced composition theorem. Remark 4.2. This theorem tells that under the worse case where a strong attacker has obtained all of the ZO information \u2206m,i from all client m \u2208 [M ], of all sample i \u2208 [N ], during the entire training process t \u2208 [T ], the attacker cannot differ a single data point in the dataset, with (\u03f5\u0304, \u03b4\u0304)-DP guarantee. Remark 4.3. Since the ZO gradient is shared from the server to clients, this theorem mainly provides a privacy guarantee for the label on the server. Remark 4.4. For a weaker attacker, where the attacker can only access the information from fewer clients (\u201chonest-but-colluded\u201d), or only one client (\u201chonest-but-curious\u201d), the privacy guarantee either remains the same or is strengthened.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p28",
+    "section_heading": "4 Security Analysis",
+    "text": "Additionally, in Appendix C.2, we provided a detailed discussion of the privacy protection of our approach at the framework level, plus a discussion on the SOTA inference attacks under \u201chonest-butcurious\" [10, 33, 45, 45, 44, 17, 9] and \u201chonest-but-colluded\"[10, 45, 29, 38] threat model.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p29",
+    "section_heading": "5 Convergence Analysis",
+    "text": "Assumption 5.1. The formal definition and detailed discussion of the assumptions are in Appendix B. We assume that there is a feasible optimal solution for f(\u00b7),\u2207fi (\u00b7) is L-Lipschitz continuous, fi (\u00b7) has an unbiased gradient, bounded Hessian Hm and bounded block-coordinate gradient Gm. The activation of the clients is independent, and the client has a uniformly bounded delay \u03c4 . Theorem 5.2. Under assumption 5.1, to solve the problem 1 with algorithm 1, the following inequality holds.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p30",
+    "section_heading": "5 Convergence Analysis",
+    "text": "where L\u2217 = maxm {L,L0, Lm}, \u03b70 = \u03b7m = \u03b7, 1p\u2217 = minm pm, \u00b5\u2217 = maxm {\u00b5m}, d\u2217 = maxm {dhm}, G\u2217 = maxm {G0,Gm}, H\u2217 = maxm {H0, Hm}, E and \u0393 are the upper bound for the square of the norm of the forward and backward compression error respectively. T is the total number of iterations (communication rounds).",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p31",
+    "section_heading": "5 Convergence Analysis",
+    "text": "Remark 5.3. If we choose \u03b7 = 1\u221a T and \u00b5\u2217 = 1\u221aT . Design the compression to make E = O ( 1\u221a T ) and \u0393 = O ( 1\u221a T ) we can derive:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p32",
+    "section_heading": "5 Convergence Analysis",
+    "text": "where dh = max m {dhm} is the maximum output layer size of the clients. Remark 5.4. This theorem proves that we significantly relieve the slow convergence problem of ZOO-based VFL [41] from O( d\u221a",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p33",
+    "section_heading": "5 Convergence Analysis",
+    "text": "T ) to O( dh\u221a T ).",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p34",
+    "section_heading": "6 Experiment",
+    "text": "We conducted a systematic experiment on the SOTA and baseline VFL and our proposed framework. The primary objective of our study was to empirically validate the security measures of our approach and demonstrate its capability in reducing communication overhead. Furthermore, we conducted an ablation study to quantify the contributions of each component toward improving communication efficiency. Due to space limitations, extra experiment details, the CIFAR-10 experiments, extra experiments on less common datasets, and extra experiments on other aspects of our framework have been placed in appendix E. The source code for this project is available at the following URL: https://github.com/GanyuWang/VFL-CZOFO.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p35",
+    "section_heading": "6.1 Experiment Setups",
+    "text": "Datasets The datasets were vertically partitioned among all participants in our experiments. Each client held a portion of the features of each sample, while the server held the corresponding labels. Both the server and the client kept the sample IDs during training. We utilized two datasets in our main experiments: MNIST [20] and CIFAR-10 [19]. For both datasets, we employed two clients in our experiments, with each client being responsible for half of the images8 in the respective dataset. Therefore, we denoted these datasets as dist-MNIST and dist-CIFAR-10.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p36",
+    "section_heading": "6.1 Experiment Setups",
+    "text": "Models In our dist-MNIST experiment, we implemented a multilayer perception (MLP). Each client utilized a one-layer Fully Connected Layer (FCL), with an input size equal to the flattened local data input size, and an output size of 64. The server employed a two-layer FCL. The first layer concatenated all the outputs from all clients and produced embeddings with 128 neurons. The second layer outputs 10 neurons for prediction. ReLU [11] was used as the activation function for the server and clients. Practically, the server kept a table of the outputs from all clients for all of the samples, i.e. \u03a6\u0303ti = [h1(w t\u2212\u03c4t1,i 1 ;x1,i), . . . , w t\u2212\u03c4tM,i M ] was maintained by the server. The server updated the corresponding value in the table when it received hm(w t\u2212\u03c4tm,i m ;xm,i) from client m during each communication round. The clients\u2019 outputs from the table were then used for prediction. Regarding the dist-CIFAR-10 dataset, each client padded its half-image to full size and trained a ResNet-18 [15]. The server then summed the outputs from all the clients.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p37",
+    "section_heading": "6.1 Experiment Setups",
+    "text": "Frameworks for Comparison We compare our framework with other SOTA VFL frameworks including \u201csplit-learning\u201d [34], \u201ccompressed-VFL\u201d [5], \u201cSyn-VFL-ZO\u201d9, \u201cVAFL\u201d [6], \u201cZOOVFL\" [41]. All frameworks utilized identical base models and training procedures. While some frameworks also introduced alternative VFL settings, e.g. server and clients both processing the labels, we only focus on the VFL setting where the server stores the labels and multiple clients possess non-intersecting features.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p38",
+    "section_heading": "6.1 Experiment Setups",
+    "text": "Training Procedures For the experiment applying the split MLP model on dist-MNIST, a batch size of 64 was utilized, and the model was trained for 100 epochs. For the experiment applying the ResNet-18 on dist-CIFAR-10, a batch size of 128 was used, and the model was trained for 50 epochs. The learning rate \u03b7 was chosen from [0.1, 0.01, 0.001, \u00b7 \u00b7 \u00b7 ], and \u00b5 for ZOO was chosen from [1, 0.1, 0.001, 0.0001, \u00b7 \u00b7 \u00b7 ]. We use a uniform scale compressor [2] on the forward and backward messages with different compression bits [8, 4, 2, 1]. The number of sampling q used for Avg-RandGradEst in the dist-MNIST experiment was set to [10, 100], while in the dist-CIFAR-10 experiment, it was set to either [100, 500, 1000]. The sampling distribution is U(S(0, 1)). We used a vanilla SGD with a fixed learning rate for all VFL frameworks to ensure a fair comparison. The reported test accuracy values in the tables have been obtained from five independent runs.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p39",
+    "section_heading": "6.2 Evaluation on the Privacy Protection",
+    "text": "In this part, we evaluate the privacy protection of our method and Gaussian Mechanism. The major difference between the ZOO and Gaussian Mechanism in DP is that the variance of the stochastic gradient estimation (ZOO) is intrinsically controlled by the hyperparameter of the ZOO and the characteristic of the objective function, while in the Gaussian Mechanism, the variance is a parameter that directly controls the magnitude of the noise added.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p40",
+    "section_heading": "6.2 Evaluation on the Privacy Protection",
+    "text": "We obtain the DP guarantee w.r.t. the sampling times of ZOO in the dist-MNIST experiment and report the result in Table 2. We estimate \u03c32 by freezing the model and repeatedly applying Eq.2 100 times, then calculating the variance of the estimated gradients. We obtain the maximum gradient norm \u03b6 by recording the norm throughout the entire training process10. We set \u03b4 = 10\u22126 and calculate \u03f5 based on the given sampling times q. The iteration T was set to the total iteration of 50 epochs, which is 93800.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p41",
+    "section_heading": "6.2 Evaluation on the Privacy Protection",
+    "text": "In the second part, we compared the utility of our framework with the VAFL[6] using the Gaussian Mechanism and gradient clipping [1] on the partial derivative w.r.t. the client\u2019s output with the corresponding (\u03f5, \u03b4)-DP. We set the gradient norm clipping bound to 0.1 And we plotted the training accuracy for each epoch in Figure 2. As illustrated in the figure, our scheme exhibits comparable utility to VAFL with the same privacy guarantee.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p42",
+    "section_heading": "6.3 Evaluation of Training Efficiency and Communication Cost",
+    "text": "In this part, we compare our framework with SOTA VFL in the effectiveness of training and communication efficiency. We apply the best tuning for all other frameworks with respect to test accuracy and communication efficiency. (The experiment for dist-CIFAR-10 is in Appendix E.3)",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p43",
+    "section_heading": "6.3 Evaluation of Training Efficiency and Communication Cost",
+    "text": "Figure 3-(a) demonstrates that our VFL-CZOFO framework has the fastest convergence rate comparable to VAFL, demonstrating the superiority of our cascade hybrid optimization method. It is worth noting that the pure-ZOObased VFL suffers from a slower convergence compared to other frameworks, even with an MLP model. Figure 3- (b) plots the total communication cost against the training accuracy, where the crosses indicate the point where the curve reaches 95% training accuracy for MNIST. It shows that our VFL-CZOFO framework achieves the same level of convergence with much lower communication costs.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p44",
+    "section_heading": "6.4 Ablation Study",
+    "text": "Minimal Zeroth-Order Optimization In this section, we evaluate the impact of different ZOO parameters on convergence and communication costs. We did not apply compression in this section. We plot the training curve against epochs in Figure 4-(a), and against the logarithm base 10 of the total backward message size in Figure 4-(b). Table 4 reports the test accuracy and communication costs. (The experiment for dist-CIFAR-10 can be found in Appendix E.3.2 with a similar conclusion.)",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p45",
+    "section_heading": "6.4 Ablation Study",
+    "text": "Compression of the Communication In this section, we investigate the impact of compression on convergence and communication costs using Avg-RandGradEst with 100 samplings. We evaluate different compression schemes on either the forward (F) or backward (B) message. Figure 5 presents the training curve plotted against the epoch and the log10 of the communication cost of the message with compression. Table 5 displays the test accuracy and the total cost at the end of the 100-epoch training period. (corresponding dist-CIFAR-10 experiment can be found in Appendix E.3.2.)",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p46",
+    "section_heading": "6.4 Ablation Study",
+    "text": "The results show that increasing the compression rate reduces communication costs but leads to a decline in test accuracy. Notably, even when compressing the gradient information to 2 bits, there is no significant decrease in test accuracy, and the message size is significantly reduced to 5.4 MB. Hence, a trade-off can be identified in practical application to achieve a balance point.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p47",
+    "section_heading": "7 Limitation",
+    "text": "While the utilization of ZOO improves communication efficiency and security, it comes at the expense of increased computational costs for the server. Specifically, the server needs to perform q extra forward propagations on its local model compared to other FOO-based VFL methods. A more comprehensive analysis and supplementary experiments can be found in Appendix E.2. However, it is important to note that the server typically has higher computational capabilities, which makes the associated costs manageable and acceptable.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p48",
+    "section_heading": "8 Conclusion",
+    "text": "We propose a solution in VFL that improves communication efficiency and privacy simultaneously. Our method has been theoretically proven to outperform ZOO-based VFL in terms of convergence, while also providing proof of the intrinsic differential privacy guarantees. Through our experiments, we demonstrate that our method substantially reduces the communication cost of VFL in comparison to the state-of-the-art communication-efficient VFL. Furthermore, our method achieves comparable utility to VFL models that offer the same level of privacy guarantee.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p49",
+    "section_heading": "8 Conclusion",
+    "text": "Acknowledgments and Disclosure of Funding",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p50",
+    "section_heading": "8 Conclusion",
+    "text": "This work has been supported by the Natural Sciences and Engineering Research Council of Canada (NSERC), Discovery Grants program. Bin Gu was partially supported by the National Natural Science Foundation of China under Grant 62076138.",
+    "seg_type": "par"
+  }
+]

@@ -1,0 +1,168 @@
+{
+  "sp_2317_page_0003": {
+    "bboxes": [
+      {
+        "box": [
+          285.4019775390625,
+          1148.0648193359375,
+          597.6773681640625,
+          1311.581298828125
+        ],
+        "text": [
+          "\\begin{array} { r l } & { { \\mathbf t } _ { t } = \\mathrm { S i g m o i d } \\left( { \\mathbf x } _ { t } { \\mathbf W } _ { f } + { \\mathbf b } _ { f } \\right) \\in \\mathbb R ^ { 1 \\times d } , } \\\\ & { { \\mathbf i } _ { t } = \\mathrm { S i g m o i d } \\left( { \\mathbf x } _ { t } { \\mathbf W } _ { i } + { \\mathbf b } _ { i } \\right) \\in \\mathbb R ^ { 1 \\times d } , } \\\\ & { { \\mathbf c } _ { t } = \\mathrm { S i L U } \\left( { \\mathbf x } _ { t } { \\mathbf W } _ { t } + { \\mathbf b } _ { z } \\right) \\in \\mathbb R ^ { 1 \\times d } , } \\\\ & { { \\mathbf h } _ { t } = { \\mathbf f } _ { t } \\odot { \\mathbf h } _ { t - 1 } + { \\mathbf i } _ { t } \\odot { \\mathbf c } _ { t } \\in \\mathbb R ^ { 1 \\times d } , } \\\\ & { { \\mathbf b } _ { 0 } = { \\mathbf 0 } \\in \\mathbb R ^ { 1 \\times d } , } \\end{array}"
+        ],
+        "page": "sp_2317_page_0003",
+        "id": "sp_2317_page_0003-1",
+        "seg_type": "eq"
+      }
+    ]
+  },
+  "sp_2317_page_0004": {
+    "bboxes": [
+      {
+        "box": [
+          442.6457824707031,
+          769.5525512695312,
+          777.4248046875,
+          840.3453369140625
+        ],
+        "text": [
+          "\\begin{array} { r l } & { \\mathrm { R e } ( \\mathbf c _ { t } ) = \\mathrm { S i L U } \\left( \\mathbf x _ { t } \\mathbf W _ { c r } + \\mathbf b _ { c r } \\right) \\in \\mathbb { R } ^ { 1 \\times d } , } \\\\ & { \\mathrm { I m } ( \\mathbf c _ { t } ) = \\mathrm { S i L U } \\left( \\mathbf x _ { t } \\mathbf W _ { c i } + \\mathbf b _ { c i } \\right) \\in \\mathbb { R } ^ { 1 \\times d } . } \\end{array}"
+        ],
+        "page": "sp_2317_page_0004",
+        "id": "sp_2317_page_0004-1",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          444.4562683105469,
+          1212.449951171875,
+          777.857421875,
+          1282.5517578125
+        ],
+        "text": [
+          "\\begin{array} { r l } & { \\mathbf { P } = ( \\mathrm { S o f t m a x } ( \\mathbf { T } , \\mathrm { d i m } = 0 ) \\in \\mathbb { R } ^ { H \\times d } , } \\\\ & { \\gamma ^ { k } = [ \\mathrm { C u m s u m } ( \\mathbf { P } , \\mathrm { d i m } = 0 ) ] _ { k } \\in \\mathbb { R } ^ { 1 \\times d } . } \\end{array}"
+        ],
+        "page": "sp_2317_page_0004",
+        "id": "sp_2317_page_0004-2",
+        "seg_type": "eq"
+      }
+    ]
+  },
+  "sp_2317_page_0005": {
+    "bboxes": [
+      {
+        "box": [
+          222.8985137939453,
+          1163.5819091796875,
+          975.3736572265625,
+          1289.1761474609375
+        ],
+        "text": [
+          "\\mathbf { A } = \\left[ { \\begin{array} { c c c c } { 1 - \\lambda _ { 1 } } & { 0 } & { \\cdots } & { 0 } \\\\ { ( 1 - \\lambda _ { 1 } ) \\lambda _ { 2 } } & { 1 - \\lambda _ { 2 } } & { \\vdots } \\\\ { \\vdots } & { \\vdots } & { \\ddots } & { 0 } \\\\ { ( 1 - \\lambda _ { 1 } ) \\left[ \\prod _ { s = 2 } ^ { n } \\lambda _ { k } \\right] } & { \\cdots } & { \\cdots } & { 1 - \\lambda _ { n } } \\end{array} } \\right] , \\mathbf { \\Theta } \\mathbf { \\Theta } \\Theta = \\left[ { \\begin{array} { c c c c } { 1 } & { 0 } & { \\cdots } & { 0 } \\\\ { \\exp ( i \\theta ) } & { 1 } & { \\vdots } \\\\ { \\vdots } & { \\vdots } & { \\ddots } & { 0 } \\\\ { \\exp ( i ( n - 1 ) \\theta ) } & { \\cdots } & { \\cdots } & { 1 } \\end{array} } \\right]"
+        ],
+        "page": "sp_2317_page_0005",
+        "id": "sp_2317_page_0005-1",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          534.6216430664062,
+          299.4290466308594,
+          688.8921508789062,
+          354.3713073730469
+        ],
+        "text": [
+          "\\mu _ { t } = \\frac { \\bar { \\gamma } - \\gamma ^ { k } } { 1 - \\gamma ^ { k } } < \\bar { \\gamma } ,"
+        ],
+        "page": "sp_2317_page_0005",
+        "id": "sp_2317_page_0005-2",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          226.3020782470703,
+          934.5838012695312,
+          991.6461181640625,
+          1065.1312255859375
+        ],
+        "text": [
+          "\\mathbf { H } = \\left[ \\begin{array} { c } { \\mathbf { h } _ { 1 } } \\\\ { \\vdots } \\\\ { \\vdots } \\\\ { \\mathbf { h } _ { n } } \\end{array} \\right] , \\, \\mathbf { A } = \\left[ \\begin{array} { c c c c } { 1 - \\lambda _ { 1 } } & { 0 } & { \\cdots } & { 0 } \\\\ { ( 1 - \\lambda _ { 1 } ) \\lambda _ { 2 } \\exp ( i \\theta ) } & { 1 - \\lambda _ { 2 } } & { \\vdots } \\\\ { \\vdots } & { \\vdots } & { \\ddots } & { 0 } \\\\ { ( 1 - \\lambda _ { 1 } ) \\left[ \\prod _ { s = 2 } ^ { n } \\lambda _ { k } \\right] \\exp ( i ( n - 1 ) \\theta ) } & { \\cdots } & { \\cdots } & { 1 - \\lambda _ { n } } \\end{array} \\right] , \\mathbf { C } = \\left[ \\begin{array} { c } { \\mathbf { c } _ { 1 } } \\\\ { \\vdots } \\\\ { \\vdots } \\\\ { \\mathbf { c } _ { n } } \\end{array} \\right]"
+        ],
+        "page": "sp_2317_page_0005",
+        "id": "sp_2317_page_0005-3",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          397.4151611328125,
+          651.671875,
+          824.4224853515625,
+          754.5952758789062
+        ],
+        "text": [
+          "\\begin{array} { r l } & { \\mathbf { g } _ { t } = \\mathrm { S i g m o i d } ( W _ { g } \\mathbf { x } _ { t } + b _ { g } ) \\in \\mathbb { R } ^ { 1 \\times 2 d } , } \\\\ & { \\mathbf { o } _ { t } ^ { \\prime } = \\mathrm { L a y e r N o r m } \\big ( \\mathbf { g } _ { t } \\odot [ \\mathrm { R e } ( \\mathbf { h } _ { t } ) , \\mathrm { I m } ( \\mathbf { h } _ { t } ) ] \\big ) \\in \\mathbb { R } ^ { 1 \\times 2 d } , } \\\\ & { \\mathbf { o } _ { t } = \\mathbf { o } _ { t } ^ { \\prime } \\mathbf { W } _ { o } + \\mathbf { b } _ { o } \\in \\mathbb { R } ^ { 1 \\times d } . } \\end{array}"
+        ],
+        "page": "sp_2317_page_0005",
+        "id": "sp_2317_page_0005-4",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          453.9803466796875,
+          173.24151611328125,
+          766.9301147460938,
+          242.24935913085938
+        ],
+        "text": [
+          "\\begin{array} { r l } & { \\mu _ { t } = \\mathrm { S i g m o i d } \\left( \\mathbf { x } _ { t } \\mathbf { W } _ { \\mu } + \\mathbf { b } _ { \\mu } \\right) \\in \\mathbb { R } ^ { 1 \\times d } , } \\\\ & { \\lambda _ { t } = \\gamma ^ { k } + \\left( 1 - \\gamma ^ { k } \\right) \\odot \\mu _ { t } \\in \\mathbb { R } ^ { 1 \\times d } . } \\end{array}"
+        ],
+        "page": "sp_2317_page_0005",
+        "id": "sp_2317_page_0005-5",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          396.95391845703125,
+          517.2891845703125,
+          827.4519653320312,
+          547.2063598632812
+        ],
+        "text": [
+          "{ \\bf h } _ { t } = \\lambda _ { t } \\odot \\exp ( i \\theta ) \\odot { \\bf h } _ { t - 1 } + ( 1 - \\lambda _ { t } ) \\odot { \\bf c } _ { t } \\in \\mathbb { C } ^ { 1 \\times d } ."
+        ],
+        "page": "sp_2317_page_0005",
+        "id": "sp_2317_page_0005-6",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          258.16778564453125,
+          836.6937255859375,
+          963.5460815429688,
+          908.0662841796875
+        ],
+        "text": [
+          "\\mathbf { h } _ { t } = \\sum _ { s = 1 } ^ { t } ( 1 - \\lambda _ { s } ) \\left[ \\prod _ { k = s + 1 } ^ { t } \\lambda _ { k } \\exp ( i \\theta ) \\right] \\mathbf { c } _ { s } = \\sum _ { s = 1 } ^ { t } ( 1 - \\lambda _ { s } ) \\left[ \\prod _ { k = s + 1 } ^ { t } \\lambda _ { k } \\right] \\exp ( i ( t - s ) \\theta ) \\mathbf { c } _ { s }"
+        ],
+        "page": "sp_2317_page_0005",
+        "id": "sp_2317_page_0005-7",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          567.0501708984375,
+          1105.044677734375,
+          655.980712890625,
+          1129.9583740234375
+        ],
+        "text": [
+          "\\mathbf { H } = \\mathbf { A C } ."
+        ],
+        "page": "sp_2317_page_0005",
+        "id": "sp_2317_page_0005-8",
+        "seg_type": "eq"
+      }
+    ]
+  }
+}

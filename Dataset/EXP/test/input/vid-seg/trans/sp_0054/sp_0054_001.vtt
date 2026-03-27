@@ -1,0 +1,62 @@
+WEBVTT
+
+00:01.195 --> 00:13.656
+Hi there, today we'll look at deburta, decoding enhanced BERT with disentangled attention by Peng Chenghe, Xiaodong Liu, Zhang Fenggao, and Waiju Zhen of Microsoft.
+
+00:14.298 --> 00:20.128
+This paper is an improvement on BERT, the language model and the Roberto variant of it.
+
+00:20.548 --> 00:25.617
+Specifically, it suggests two improvements, namely,
+
+00:25.597 --> 00:35.897
+First is this disentangled attention where they disentangle positional information and content information of the individual tokens in the attention mechanism.
+
+00:36.378 --> 00:45.495
+And the second improvement is kind of results from the first improvement as this decoding enhanced decoder, I guess enhanced decoder.
+
+00:45.475 --> 01:00.088
+where because they only use relative positional information in the transformer part of the model, they have to re-feed the absolute positional information at the end, which gives them another bit of improvement.
+
+01:00.809 --> 01:14.301
+All together with this, they reach state-of-the-art in various NLP tasks, and this model, Deberta, is now available in Huggingface for you to download for all of your NLP needs.
+
+01:14.281 --> 01:19.970
+So we're going to go through the paper and look at the two improvements and what they give.
+
+01:21.092 --> 01:23.215
+Let's see if that's relevant.
+
+01:24.357 --> 01:31.208
+As always, if you like content like this, don't hesitate to share it out to all of your friends and leave a like and a comment.
+
+01:32.209 --> 01:35.935
+I still read all the comments, so give me your opinion.
+
+01:35.915 --> 01:40.025
+And please also give me your opinions on the new recording setup.
+
+01:40.065 --> 01:43.874
+There should be a title somewhere here, a picture somewhere here.
+
+01:43.894 --> 01:49.106
+I absolutely want to hear feedback because I have no idea what I'm doing.
+
+01:49.387 --> 01:51.291
+So, yeah.
+
+01:51.271 --> 01:55.536
+All right, let's dive in Deberta or Deberta or Deberta.
+
+01:55.897 --> 01:56.217
+I don't know.
+
+01:56.237 --> 01:59.862
+I think it's Deberta because it's from decoding enhanced.
+
+01:59.882 --> 02:03.626
+Deberta is a new model architecture they say here.
+
+02:04.447 --> 02:15.000
+We propose a new model architecture Deberta, decoding enhanced BERT with disentangled attention that improves the BERT and ROBERTA models using two novel
+

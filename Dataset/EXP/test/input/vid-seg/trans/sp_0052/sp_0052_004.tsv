@@ -1,0 +1,35 @@
+start	end	text
+31	4152	So the architecture is described right here.
+5515	10922	Now, as you can see, we are still in the business of doing object detection.
+11303	16390	So what we'll do is we'll sort of hijack a existing object detector.
+16750	24601	And the object detector we're going to hijack is going to be this FRCNN, this faster RCNN object detector.
+24621	30289	That's an object detector for a single frame problem.
+30389	34695	So that means you have one image and you're supposed to detect what's on it.
+34675	37037	It has two stages, as you can see.
+37117	44464	So stage one, if you have an image, and let's say there's some stuff on it, stuff, stuff, stuff, there's stuff.
+44484	45525	Okay.
+45705	50550	What stage one is supposed to do is it's supposed to extract regions of interest.
+51130	53993	This could be, okay, all of these are regions of interest.
+54994	61780	So it simply says what there is something, there might be something right here in these regions of interest.
+61760	67736	And then it describes each of these regions of interest using features.
+68458	74835	Okay, so it extracts these regions of interest and each region of interest gets features assigned to it.
+75156	77963	So what these are?
+77943	82428	I think these are like seven by seven by 2048 features.
+82468	91339	But let's just say for the sake of describing it that these are just a vector of features for each region of interest.
+91359	98568	So each region of interest is going to be associated with one vector of features that this model extracts.
+100350	107258	And the next region of interest also has a vector and the next region of interest also has a vector and so on.
+107238	117331	Stage two then takes each one of these vectors and assigns a class to it.
+117472	119414	So this would be deer right here.
+120155	129027	Okay, so stage one proposes regions of interest along with features, then stage two takes each of these regions of interest and classifies them basically.
+131369	134112	And I guess there's many in between stages.
+134133	135554	Like this is massively simplified.
+135574	137036	There's non-maximum suppression.
+137096	143605	There is kind of an alignment stage where you can refine the bounding box and so on.
+144065	146188	But in essence, these are two stages.
+146308	151174	And you can see that this system here, it goes in between the two stages.
+151354	155740	So all of this right here, we shove in between the two stages.
+157036	172301	So we'll still use the stage one and we'll still use the stage two, but in between, in this thing right here, we'll try to sort of pimp these features such that the stage two detector has an easier time classifying.
+173163	183600	So we're going to pimp these features by incorporating, because these features right now, if you just do it vanilla, these are just from the current frame.
+183580	189814	And we're going to add to them information from other frames of the same camera.
+189834	192709	And we're going to do it in two different ways.
+193373	195042	So the first way, as you can see,

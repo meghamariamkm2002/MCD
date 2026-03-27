@@ -1,0 +1,43 @@
+Now, what do these people say?
+They say, this procedure often suffers from exploiting inaccuracies of the learned model.
+What does that mean?
+That basically means that if I have a world model and it is not accurate,
+then it is basically the thing that tries to find the best green path here, the optimizer, is sort of trying to find the best path against this world model.
+Now, if that world model is inaccurate, that can lead to devastating consequences.
+So what do we mean by this?
+I'll give you an example.
+If you have a room, right,
+And the room is, let's take our classic room like this, and you are here and you would like to go here.
+And so you're a reinforcement learning agent.
+You do some exploration, right?
+You explore a bit here.
+The next episode, you might go here and you might go here and so on.
+And over time, in this framework, you're going to build a model of the world.
+At the beginning, we won't tell you how these rooms look.
+You have to discover it by yourself.
+So maybe at the beginning, we only tell you there's these four walls.
+The rest you have to figure out.
+So on and on, you're going to fill in your blanks.
+You do your first explorations and you thought, there's a bit of a wall here, right?
+And there might be some wall here.
+I crashed into that, right?
+You go into here, you crash into a wall, you say, ah, there's a wall here and here, ah, there's a wall here.
+You go maybe here.
+Oh, there's no wall.
+So you go further.
+There's no wall anywhere here.
+You crash here.
+Okay, we already knew there's a wall.
+Maybe you crash here.
+All right.
+So right now you have, okay, you go here.
+You have a model of the world in this situation where there's a wall here, a wall down.
+And if you now try to do trajectory optimization, remember you have to go from here to here.
+If you try to do trajectory optimization, what is it going to turn out?
+It's going to turn out like, look.
+There you go.
+That works just fine.
+And that's not because you're so good at planning.
+I mean, you are good at planning, but because your model is inaccurate here, because it has never seen this, your entire training distribution that you trained the world model on only explored the area over here.
+So you see how the more efficient this planning algorithm is, like the blue arrow, the thing that finds the blue arrow, the more efficient that is, the more consequential it is when your learned world model has mistakes because it will exactly exploit these mistakes in order to get the shortest path possible or the highest reward in that case.
+And they call this like almost an adversarial attack on the world model, which is a pretty good way of framing it.

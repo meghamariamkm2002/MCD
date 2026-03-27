@@ -1,0 +1,251 @@
+WEBVTT
+
+00:00.031 --> 00:00.652
+techniques.
+
+00:01.154 --> 00:09.293
+The first is the disentangled attention mechanism, where each word is represented using two vectors that encode its content and position respectively.
+
+00:10.075 --> 00:18.394
+And the attention weights among the words are computed using disentangled matrices on their contents and relative positions respectively.
+
+00:18.374 --> 00:20.497
+Okay, we'll look at that first.
+
+00:21.879 --> 00:39.522
+So what they mean is when you have a, when you have a multi head attention layer, what we want to do is we want to transform one sequence of tokens of token representations into the next sequence of token representations.
+
+00:39.582 --> 00:46.812
+Now, usually every token, let's say these are our tokens, and this could be a sentence in a language like I am hungry.
+
+00:48.125 --> 00:56.158
+And here is like this classification token that we always add when we train BERT.
+
+00:56.899 --> 01:00.785
+Every one of these tokens is represented by a vector.
+
+01:03.049 --> 01:03.970
+Like this is a vector.
+
+01:04.591 --> 01:05.353
+This is a vector.
+
+01:05.493 --> 01:06.515
+It has many entries.
+
+01:06.775 --> 01:07.556
+This is a vector.
+
+01:08.037 --> 01:10.100
+Some of the vectors are thicker than others.
+
+01:10.942 --> 01:11.803
+I mean, that's just a
+
+01:13.083 --> 01:14.686
+This one just hasn't eaten enough.
+
+01:16.248 --> 01:19.513
+So every one of these tokens is represented by a vector.
+
+01:20.014 --> 01:30.150
+And what a multi head attention layer does is it simply transforms this via means of the attention mechanism into a series of vectors again.
+
+01:30.210 --> 01:36.981
+So we put in a series of vectors and we end up with another series of vectors.
+
+01:36.961 --> 01:52.675
+If you want to know what a multi head attention does in detail, please go look at my video attention is all you need where that's explained specifically it is a attention it is sort of an information routing algorithm.
+
+01:52.655 --> 02:03.251
+that sees how information needs to be routed from tokens to tokens, using queries, keys, values, and so on.
+
+02:03.371 --> 02:10.302
+If you haven't seen the video, it's a beautiful mechanism, but I'm not going to explain it again right here.
+
+02:10.322 --> 02:10.963
+I'm sorry.
+
+02:12.105 --> 02:12.405
+All right.
+
+02:13.166 --> 02:16.131
+So in this,
+
+02:17.208 --> 02:19.994
+What you usually do is you transform vectors into vectors.
+
+02:20.635 --> 02:32.179
+And because of how the multi-head attention mechanism works, the mechanism has no way to discern where in a sentence, for example, a given token is.
+
+02:32.540 --> 02:37.731
+So it cannot differentiate between this sentence here and the sentence, am I hungry?
+
+02:37.711 --> 02:48.793
+If it's just multi head attention is just not possible for it because it treats the incoming Sentence as like a bag of words, which is not the case in for example a recurrent neural network.
+
+02:48.833 --> 02:56.108
+So recurrent neural network would go one by one over these word representations and
+
+02:56.088 --> 03:00.598
+it has kind of a mechanism to see what a sequence is.
+
+03:01.039 --> 03:02.563
+However, multi-edit tension doesn't.
+
+03:02.783 --> 03:08.717
+So what people usually do is they augment these representations with position encodings.
+
+03:09.679 --> 03:14.991
+So that's at the beginning, you know, where you might ask, where do these vectors come from?
+
+03:14.971 --> 03:20.578
+Of course, they come from the last layer, but the very first vectors you put in come from a table.
+
+03:21.039 --> 03:23.382
+And these are your classic word vectors.
+
+03:23.782 --> 03:31.292
+So at some point, you have a big table, and the big table has your entire vocabulary in it.
+
+03:31.332 --> 03:33.475
+So every word in the language that you consider.
+
+03:33.515 --> 03:39.763
+So there's I, and there's M, and there is you, and there is Apple, and there is Hungry.
+
+03:39.743 --> 03:47.655
+And there is even this CLS token, all of them have a table entry and all of them have a vector associated with them.
+
+03:47.675 --> 03:57.409
+Now these vectors are trainable, so the neural network can decide itself what goes into these vectors, but every word has a fixed vector in there.
+
+03:57.810 --> 04:05.802
+And in the very first layer, because you don't have a last layer to draw from, you simply look at what token it is, you go to the table,
+
+04:05.782 --> 04:32.329
+right here you retrieve this vector and you put it here and that's your start and then you transform up the layers of course every time from the last layer but at the beginning you have embeddings now the same thing you do for positions okay so you also have a second table usually and the original transformer paper by the way these were fixed vectors but nowadays I think most of them are also trained
+
+04:32.309 --> 04:33.731
+So you label the positions.
+
+04:33.951 --> 04:38.637
+So that's position, that's position one, that's position two, three and four.
+
+04:39.058 --> 04:44.625
+So for every position two, three, four, and maybe you have also five and six, there is a maximum length.
+
+04:45.106 --> 04:51.254
+But right now we consider sentences of length three with the CLS token appended.
+
+04:51.675 --> 04:53.237
+So these are length four.
+
+04:53.217 --> 04:56.084
+So every position also has a vector.
+
+04:56.646 --> 05:01.298
+And I'm going to actually draw these vectors in this color.
+
+05:01.318 --> 05:03.784
+So every position has a vector.
+
+05:04.372 --> 05:06.895
+irrespective of what word there is, okay?
+
+05:07.176 --> 05:10.540
+Right now, we just have vectors for words irrespective of where they are.
+
+05:10.841 --> 05:14.005
+And we have vectors of positions irrespective of what words there are.
+
+05:14.425 --> 05:26.982
+And what you do is same, you look at what position is here, you go to the table, you retrieve that embedding, and you somehow also put it here.
+
+05:27.503 --> 05:32.910
+Now, I've made a bit of a mess here with this thing, sorry.
+
+05:33.953 --> 05:39.399
+So how do you, now you have two vectors all of a sudden per word.
+
+05:39.879 --> 05:47.568
+So you have one that is a position and you have one that is the kind of the word itself that represents the word itself.
+
+05:48.469 --> 05:52.953
+And the neural network, it needs both in order to understand the sentence, right?
+
+05:53.414 --> 06:02.283
+If every word has these two vectors at the beginning, now it can understand, aha, this is the word I that is at the beginning of the sentence.
+
+06:02.303 --> 06:03.825
+So it's probably the subject.
+
+06:03.805 --> 06:04.847
+of a sentence.
+
+06:05.147 --> 06:14.623
+However, if the word am was at the beginning, it could be, oh, it's probably a question because it starts with a verb like am I hungry?
+
+06:15.625 --> 06:15.725
+Okay.
+
+06:15.745 --> 06:19.952
+And it can also evaluate the relative distances of things to each other and so on.
+
+06:20.293 --> 06:27.585
+So given this information, the neural network has all the tools it sort of needs to understand that sentence as a sequence.
+
+06:27.565 --> 06:33.895
+Now, you have basically two ways of combining the two things.
+
+06:34.335 --> 06:38.021
+First of all, you can concatenate them, which means that I'm going to do it in this.
+
+06:38.101 --> 06:41.005
+You just put, no, that's terrible.
+
+06:42.287 --> 06:47.295
+You just put the, I'm not too skilled yet with this new thing.
+
+06:47.275 --> 06:51.441
+You put this on top here, imagine this is the same length and you just concatenate the vector.
+
+06:51.481 --> 06:53.364
+So now the vector is longer.
+
+06:53.744 --> 06:58.010
+Of course, that also increases your dimensionality, computational issues and so on.
+
+06:58.030 --> 07:05.200
+So what a lot of people do is they simply, you know, line them up if they're the same size and they add them together element wise.
+
+07:05.180 --> 07:10.708
+And, you know, in the worst case, the neural network now can decide because both of these are trained, right?
+
+07:11.029 --> 07:17.518
+So the neural network can absolutely decide that, you know, in the top part here, it simply learns a bunch of zeros.
+
+07:17.538 --> 07:20.262
+And then the bottom part here, it simply learns a bunch of zeros here.
+
+07:20.302 --> 07:22.445
+So essentially it's a concatenation.
+
+07:22.786 --> 07:23.747
+That's the worst case.
+
+07:24.168 --> 07:31.198
+In the best case, the neural network can actually do some kind of information combining already in this addition step down here.
+
+07:32.219 --> 07:32.480
+Okay.
+
+07:32.860 --> 07:34.022
+So the,
+
+07:34.002 --> 07:39.299
+You you give both encodings to the neural network as a single vector, right?
+
+07:39.420 --> 07:40.047
+So what goes into
+

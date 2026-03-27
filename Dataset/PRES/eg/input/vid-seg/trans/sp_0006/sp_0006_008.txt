@@ -1,0 +1,3 @@
+In our model, we further add a trainable upper bound for each distance, which enable our score to capture interaction with different complexity.
+For the example of showing the red box, only main effect is used to model X1 output, while for S2, two-way interaction is included.
+For S3, constant effect, only constant effect is included.

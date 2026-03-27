@@ -1,0 +1,5 @@
+We study sequential decision-making problems of reinforcement learning.
+Consider an agent interacts with an environment to maximize its cumulative rewards.
+However, in real world, the state and action space can be infinite.
+Therefore, we study linear MDPs for approximation.
+Also study linear bandits since it is a special case of linear MDPs with horizon equals to 1.

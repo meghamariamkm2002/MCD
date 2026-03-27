@@ -1,0 +1,5 @@
+Hi there.
+Today we're looking at faster neural network training with data echoing by Dummy Choi, Alexander Passo, Christopher J. Shalu and George E. Dahl.
+So on a high level, this paper basically says you should repeat data that's already in memory in order to speed up the entire process of neural network training.
+And it also says that this can speed up your wall time without hurting your performance too much.
+and I have mixed feelings about it.

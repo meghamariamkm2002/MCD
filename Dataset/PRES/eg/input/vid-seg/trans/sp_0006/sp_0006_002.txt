@@ -1,0 +1,6 @@
+Before introducing our work, I will briefly introduce the importance of the interaction effects.
+Here is a simple example.
+If we are going to predict the heat with gender and age, in the left part of the slide, without the interaction effect between the age and gender, the effect of age for the male and female's body heat will be thin.
+However, with the two-way interaction effects between the age and gender, the age
+will have different effect on the female and male's body heat, which is consisted with practical observations.
+Therefore, by importing detection effects into the machine learning model, model's expression capability can be improved.

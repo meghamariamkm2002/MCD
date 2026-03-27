@@ -1,0 +1,1076 @@
+[
+  {
+    "caption": "Figure 16: Sample 1 of 2D Kolmogorov flow.",
+    "captionBoundary": {
+      "x1": 215.0760040283203,
+      "x2": 396.9233093261719,
+      "y1": 401.83251953125,
+      "y2": 407.8349914550781
+    },
+    "figType": "Figure",
+    "imageText": [
+      "Prediction",
+      "t0+0.6",
+      "t0+0.8",
+      "t0+1.0",
+      "Error",
+      "Reference",
+      "T=t0+0.2",
+      "t0+0.4"
+    ],
+    "name": "16",
+    "page": 25,
+    "regionBoundary": {
+      "x1": 133.92,
+      "x2": 473.28,
+      "y1": 196.79999999999998,
+      "y2": 391.2
+    },
+    "renderDpi": 150,
+    "renderURL": "/Users/meghamariam/PROJECTS/PROJ1_Dataset/PROJ1_Crossmodal-Traversal/DATASET/Presentation/pap-seg/fig/sp_0132/sp_0132-Figure16-1.png",
+    "id": "sp_0132-Figure16-1",
+    "seg_type": "fig"
+  },
+  {
+    "caption": "Figure 17: Sample 2 of 2D Kolmogorov flow.",
+    "captionBoundary": {
+      "x1": 215.0760040283203,
+      "x2": 396.9233093261719,
+      "y1": 710.7245483398438,
+      "y2": 716.7269897460938
+    },
+    "figType": "Figure",
+    "imageText": [
+      "Prediction",
+      "Reference",
+      "t0+0.6",
+      "t0+0.8",
+      "t0+1.0",
+      "Error",
+      "T=t0+0.2",
+      "t0+0.4"
+    ],
+    "name": "17",
+    "page": 25,
+    "regionBoundary": {
+      "x1": 133.92,
+      "x2": 473.28,
+      "y1": 510.71999999999997,
+      "y2": 706.0799999999999
+    },
+    "renderDpi": 150,
+    "renderURL": "/Users/meghamariam/PROJECTS/PROJ1_Dataset/PROJ1_Crossmodal-Traversal/DATASET/Presentation/pap-seg/fig/sp_0132/sp_0132-Figure17-1.png",
+    "id": "sp_0132-Figure17-1",
+    "seg_type": "fig"
+  },
+  {
+    "caption": "Figure 9: Error trend of marker field d on 3D smoke buoyancy.",
+    "captionBoundary": {
+      "x1": 130.69900512695312,
+      "x2": 283.300537109375,
+      "y1": 231.66452026367188,
+      "y2": 248.57598876953125
+    },
+    "figType": "Figure",
+    "imageText": [],
+    "name": "9",
+    "page": 20,
+    "regionBoundary": {
+      "x1": 108.0,
+      "x2": 140.64,
+      "y1": 70.56,
+      "y2": 218.4
+    },
+    "renderDpi": 150,
+    "renderURL": "/Users/meghamariam/PROJECTS/PROJ1_Dataset/PROJ1_Crossmodal-Traversal/DATASET/Presentation/pap-seg/fig/sp_0132/sp_0132-Figure9-1.png",
+    "id": "sp_0132-Figure9-1",
+    "seg_type": "fig"
+  },
+  {
+    "caption": "Figure 10: Error trend of velocity field u on 3D smoke buoyancy.",
+    "captionBoundary": {
+      "x1": 317.9859924316406,
+      "x2": 493.0375671386719,
+      "y1": 228.78750610351562,
+      "y2": 245.698974609375
+    },
+    "figType": "Figure",
+    "imageText": [],
+    "name": "10",
+    "page": 20,
+    "regionBoundary": {
+      "x1": 273.59999999999997,
+      "x2": 325.44,
+      "y1": 70.56,
+      "y2": 218.4
+    },
+    "renderDpi": 150,
+    "renderURL": "/Users/meghamariam/PROJECTS/PROJ1_Dataset/PROJ1_Crossmodal-Traversal/DATASET/Presentation/pap-seg/fig/sp_0132/sp_0132-Figure10-1.png",
+    "id": "sp_0132-Figure10-1",
+    "seg_type": "fig"
+  },
+  {
+    "caption": "Figure 27: An illustrative example of FactFormer and Axial Transformer applying to 2D input data, with some details such as positional encoding, multi-head mechanism and softmax in Axial Transformer omitted for simplicity. For Axial Transformer, column-wise attention block is shown as an example.",
+    "captionBoundary": {
+      "x1": 107.69100189208984,
+      "x2": 503.9988098144531,
+      "y1": 575.3435668945312,
+      "y2": 614.073974609375
+    },
+    "figType": "Figure",
+    "imageText": [],
+    "name": "27",
+    "page": 29,
+    "regionBoundary": {
+      "x1": 108.0,
+      "x2": 505.44,
+      "y1": 313.92,
+      "y2": 563.04
+    },
+    "renderDpi": 150,
+    "renderURL": "/Users/meghamariam/PROJECTS/PROJ1_Dataset/PROJ1_Crossmodal-Traversal/DATASET/Presentation/pap-seg/fig/sp_0132/sp_0132-Figure27-1.png",
+    "id": "sp_0132-Figure27-1",
+    "seg_type": "fig"
+  },
+  {
+    "caption": "Figure 1: Model\u2019s prediction (pred.) and reference ground truth (ref.). Left: 2D Kolmogorov flow on 256\u00d7 256 grid; Right: 3D smoke buoyancy on 64\u00d7 64\u00d7 64 grid (zOy cross-section is shown).",
+    "captionBoundary": {
+      "x1": 107.7509994506836,
+      "x2": 503.9985656738281,
+      "y1": 186.22354125976562,
+      "y2": 203.135009765625
+    },
+    "figType": "Figure",
+    "imageText": [
+      "Time",
+      "Ref.",
+      "Pred."
+    ],
+    "name": "1",
+    "page": 1,
+    "regionBoundary": {
+      "x1": 108.0,
+      "x2": 508.32,
+      "y1": 72.96,
+      "y2": 174.23999999999998
+    },
+    "renderDpi": 150,
+    "renderURL": "/Users/meghamariam/PROJECTS/PROJ1_Dataset/PROJ1_Crossmodal-Traversal/DATASET/Presentation/pap-seg/fig/sp_0132/sp_0132-Figure1-1.png",
+    "id": "sp_0132-Figure1-1",
+    "seg_type": "fig"
+  },
+  {
+    "caption": "Figure 24: y-component of velocity in 3D smoke buoyancy.",
+    "captionBoundary": {
+      "x1": 186.8419952392578,
+      "x2": 425.1583251953125,
+      "y1": 267.9875183105469,
+      "y2": 273.989990234375
+    },
+    "figType": "Figure",
+    "imageText": [
+      "Prediction",
+      "Reference",
+      "10.5",
+      "12.75",
+      "15",
+      "Error",
+      "T=6",
+      "8.25"
+    ],
+    "name": "24",
+    "page": 28,
+    "regionBoundary": {
+      "x1": 133.92,
+      "x2": 473.28,
+      "y1": 65.75999999999999,
+      "y2": 263.03999999999996
+    },
+    "renderDpi": 150,
+    "renderURL": "/Users/meghamariam/PROJECTS/PROJ1_Dataset/PROJ1_Crossmodal-Traversal/DATASET/Presentation/pap-seg/fig/sp_0132/sp_0132-Figure24-1.png",
+    "id": "sp_0132-Figure24-1",
+    "seg_type": "fig"
+  },
+  {
+    "caption": "Figure 25: z-component of velocity in 3D smoke buoyancy.",
+    "captionBoundary": {
+      "x1": 186.927001953125,
+      "x2": 425.0733337402344,
+      "y1": 509.4965515136719,
+      "y2": 515.4990234375
+    },
+    "figType": "Figure",
+    "imageText": [
+      "Prediction",
+      "Reference",
+      "10.5",
+      "12.75",
+      "15",
+      "Error",
+      "T=6",
+      "8.25"
+    ],
+    "name": "25",
+    "page": 28,
+    "regionBoundary": {
+      "x1": 133.92,
+      "x2": 473.28,
+      "y1": 306.71999999999997,
+      "y2": 505.44
+    },
+    "renderDpi": 150,
+    "renderURL": "/Users/meghamariam/PROJECTS/PROJ1_Dataset/PROJ1_Crossmodal-Traversal/DATASET/Presentation/pap-seg/fig/sp_0132/sp_0132-Figure25-1.png",
+    "id": "sp_0132-Figure25-1",
+    "seg_type": "fig"
+  },
+  {
+    "caption": "Figure 26: Flow field of 2D Darcy flow.",
+    "captionBoundary": {
+      "x1": 226.6529998779297,
+      "x2": 385.3472595214844,
+      "y1": 646.8955688476562,
+      "y2": 652.8980102539062
+    },
+    "figType": "Figure",
+    "imageText": [
+      "Error",
+      "Prediction",
+      "Reference"
+    ],
+    "name": "26",
+    "page": 28,
+    "regionBoundary": {
+      "x1": 115.67999999999999,
+      "x2": 493.44,
+      "y1": 536.64,
+      "y2": 639.36
+    },
+    "renderDpi": 150,
+    "renderURL": "/Users/meghamariam/PROJECTS/PROJ1_Dataset/PROJ1_Crossmodal-Traversal/DATASET/Presentation/pap-seg/fig/sp_0132/sp_0132-Figure26-1.png",
+    "id": "sp_0132-Figure26-1",
+    "seg_type": "fig"
+  },
+  {
+    "caption": "Figure 5: Spectrum of different attention matrices. (a): Attention matrices from softmax-free attention. (b), (c): Attention matrices for axis x and y from FactFormer. The vertical line indicates the fraction of singular values that capture 90% of the total energy. Since the full attention matrix A has a relatively large size (16384\u00d716384). Therefore its spectrum is computed via TruncatedSVD [39] with top 1024 components truncated.",
+    "captionBoundary": {
+      "x1": 107.677001953125,
+      "x2": 505.5688781738281,
+      "y1": 397.7705383300781,
+      "y2": 433.6600036621094
+    },
+    "figType": "Figure",
+    "imageText": [
+      "(a)",
+      "Full",
+      "attention",
+      "matrix",
+      "A",
+      "(b)",
+      "Attention",
+      "matrix",
+      "A(1)",
+      "(c)",
+      "Attention",
+      "matrix",
+      "A(2)"
+    ],
+    "name": "5",
+    "page": 9,
+    "regionBoundary": {
+      "x1": 117.6,
+      "x2": 492.0,
+      "y1": 282.71999999999997,
+      "y2": 393.12
+    },
+    "renderDpi": 150,
+    "renderURL": "/Users/meghamariam/PROJECTS/PROJ1_Dataset/PROJ1_Crossmodal-Traversal/DATASET/Presentation/pap-seg/fig/sp_0132/sp_0132-Figure5-1.png",
+    "id": "sp_0132-Figure5-1",
+    "seg_type": "fig"
+  },
+  {
+    "caption": "Figure 12: Benchmark of factorized attention and linear attention on 3D domain with varying grid size. Benchmark is done on an A6000 with PyTorch 1.8.2 and batch size of 1. Hyperparameter setting is the same as in Table 5-3D isotropic turbulence.",
+    "captionBoundary": {
+      "x1": 108.0,
+      "x2": 505.5672912597656,
+      "y1": 405.0725402832031,
+      "y2": 431.0
+    },
+    "figType": "Figure",
+    "imageText": [
+      "(a)",
+      "Forward",
+      "+",
+      "backward",
+      "peak",
+      "memory",
+      "usage.",
+      "(b)",
+      "Forward",
+      "+",
+      "backward",
+      "time",
+      "per",
+      "iteration."
+    ],
+    "name": "12",
+    "page": 22,
+    "regionBoundary": {
+      "x1": 121.92,
+      "x2": 488.15999999999997,
+      "y1": 244.79999999999998,
+      "y2": 397.91999999999996
+    },
+    "renderDpi": 150,
+    "renderURL": "/Users/meghamariam/PROJECTS/PROJ1_Dataset/PROJ1_Crossmodal-Traversal/DATASET/Presentation/pap-seg/fig/sp_0132/sp_0132-Figure12-1.png",
+    "id": "sp_0132-Figure12-1",
+    "seg_type": "fig"
+  },
+  {
+    "caption": "Figure 13: Ablation study on the key hyperparameters. Red color denotes the final choice of hyperparameter. Experiments are carried out on the validation fold.",
+    "captionBoundary": {
+      "x1": 108.0,
+      "x2": 505.56964111328125,
+      "y1": 701.0465698242188,
+      "y2": 717.010986328125
+    },
+    "figType": "Figure",
+    "imageText": [
+      "(a)",
+      "Ablation",
+      "on",
+      "the",
+      "kernel",
+      "dimension.",
+      "(b)",
+      "Ablation",
+      "on",
+      "the",
+      "number",
+      "of",
+      "heads."
+    ],
+    "name": "13",
+    "page": 22,
+    "regionBoundary": {
+      "x1": 121.92,
+      "x2": 488.15999999999997,
+      "y1": 560.64,
+      "y2": 688.3199999999999
+    },
+    "renderDpi": 150,
+    "renderURL": "/Users/meghamariam/PROJECTS/PROJ1_Dataset/PROJ1_Crossmodal-Traversal/DATASET/Presentation/pap-seg/fig/sp_0132/sp_0132-Figure13-1.png",
+    "id": "sp_0132-Figure13-1",
+    "seg_type": "fig"
+  },
+  {
+    "caption": "Figure 11: Benchmark of factorized attention and linear attention on 2D domain (with 128\u00d7 128 grid) with varying kernel dimension. Benchmark is done on an RTX 3090 with PyTorch 1.8.2 and a batch size of 4. Hyperparameter setting is the same as in Table 5-2D Kolmogorov flow. \"OOM\" denotes out of memory.",
+    "captionBoundary": {
+      "x1": 107.7760009765625,
+      "x2": 505.5696105957031,
+      "y1": 209.09854125976562,
+      "y2": 235.0269775390625
+    },
+    "figType": "Figure",
+    "imageText": [
+      "(a)",
+      "Forward",
+      "+",
+      "backward",
+      "peak",
+      "memory",
+      "usage.",
+      "(b)",
+      "Forward",
+      "+",
+      "backward",
+      "time",
+      "per",
+      "iteration."
+    ],
+    "name": "11",
+    "page": 22,
+    "regionBoundary": {
+      "x1": 116.64,
+      "x2": 493.44,
+      "y1": 65.75999999999999,
+      "y2": 202.07999999999998
+    },
+    "renderDpi": 150,
+    "renderURL": "/Users/meghamariam/PROJECTS/PROJ1_Dataset/PROJ1_Crossmodal-Traversal/DATASET/Presentation/pap-seg/fig/sp_0132/sp_0132-Figure11-1.png",
+    "id": "sp_0132-Figure11-1",
+    "seg_type": "fig"
+  },
+  {
+    "caption": "Figure 22: Smoke marker field in 3D smoke buoyancy.",
+    "captionBoundary": {
+      "x1": 196.68099975585938,
+      "x2": 415.3201599121094,
+      "y1": 495.0255432128906,
+      "y2": 501.02801513671875
+    },
+    "figType": "Figure",
+    "imageText": [
+      "Prediction",
+      "Reference",
+      "10.5",
+      "12.75",
+      "15",
+      "Error",
+      "T=6",
+      "8.25"
+    ],
+    "name": "22",
+    "page": 27,
+    "regionBoundary": {
+      "x1": 133.92,
+      "x2": 473.28,
+      "y1": 292.8,
+      "y2": 488.15999999999997
+    },
+    "renderDpi": 150,
+    "renderURL": "/Users/meghamariam/PROJECTS/PROJ1_Dataset/PROJ1_Crossmodal-Traversal/DATASET/Presentation/pap-seg/fig/sp_0132/sp_0132-Figure22-1.png",
+    "id": "sp_0132-Figure22-1",
+    "seg_type": "fig"
+  },
+  {
+    "caption": "Figure 23: x-component of velocity in 3D smoke buoyancy.",
+    "captionBoundary": {
+      "x1": 186.61599731445312,
+      "x2": 425.3843078613281,
+      "y1": 710.7245483398438,
+      "y2": 716.7269897460938
+    },
+    "figType": "Figure",
+    "imageText": [
+      "Prediction",
+      "Reference",
+      "10.5",
+      "12.75",
+      "15",
+      "Error",
+      "T=6",
+      "8.25"
+    ],
+    "name": "23",
+    "page": 27,
+    "regionBoundary": {
+      "x1": 133.92,
+      "x2": 473.28,
+      "y1": 507.84,
+      "y2": 704.16
+    },
+    "renderDpi": 150,
+    "renderURL": "/Users/meghamariam/PROJECTS/PROJ1_Dataset/PROJ1_Crossmodal-Traversal/DATASET/Presentation/pap-seg/fig/sp_0132/sp_0132-Figure23-1.png",
+    "id": "sp_0132-Figure23-1",
+    "seg_type": "fig"
+  },
+  {
+    "caption": "Figure 21: z-component of velocity in 3D isotropic turbulence.",
+    "captionBoundary": {
+      "x1": 180.3419952392578,
+      "x2": 431.6588439941406,
+      "y1": 267.9875183105469,
+      "y2": 273.989990234375
+    },
+    "figType": "Figure",
+    "imageText": [
+      "Prediction",
+      "Reference",
+      "0.8",
+      "0.9",
+      "1.0",
+      "Error",
+      "T=0.6",
+      "0.7"
+    ],
+    "name": "21",
+    "page": 27,
+    "regionBoundary": {
+      "x1": 133.92,
+      "x2": 473.28,
+      "y1": 65.75999999999999,
+      "y2": 261.12
+    },
+    "renderDpi": 150,
+    "renderURL": "/Users/meghamariam/PROJECTS/PROJ1_Dataset/PROJ1_Crossmodal-Traversal/DATASET/Presentation/pap-seg/fig/sp_0132/sp_0132-Figure21-1.png",
+    "id": "sp_0132-Figure21-1",
+    "seg_type": "fig"
+  },
+  {
+    "caption": "Table 1: Evaluation results of 2D Kolmogorov flow. A batch size of 10 is used for inference. LM models predict 4 steps with each call to the model. Total prediction length is 16 steps. AR\u2217: Since for 2D problem FNO variants can afford to rollout more steps during training, AR FNO rollout for 12 steps, AR F-FNO rollout for 6 steps, whereas other AR models rollout for 2 steps during training. For model that has complex parameters, each cfloat parameter count as two paramaters.",
+    "captionBoundary": {
+      "x1": 113.63099670410156,
+      "x2": 499.7993469238281,
+      "y1": 519.904541015625,
+      "y2": 569.5440063476562
+    },
+    "figType": "Table",
+    "imageText": [
+      "Inf.",
+      "time",
+      "(s)",
+      "0.73",
+      "0.81",
+      "0.86",
+      "1.01",
+      "4.69",
+      "1.78",
+      "3.14",
+      "1.38",
+      "#",
+      "params",
+      "(M)",
+      "85.1",
+      "3.7",
+      "2.4",
+      "3.5",
+      "\u03c9",
+      "avg.",
+      "error",
+      "0.3177",
+      "0.2978",
+      "0.1486",
+      "0.2453",
+      "0.8156",
+      "0.1655",
+      "0.8835",
+      "0.1734",
+      "\u03c9",
+      "final",
+      "error",
+      "0.4423",
+      "0.4567",
+      "0.2811",
+      "0.3861",
+      "1.1692",
+      "0.3051",
+      "1.0963",
+      "0.3017",
+      "AR\u2217",
+      "LM",
+      "AR\u2217",
+      "LM",
+      "AR",
+      "LM",
+      "AR",
+      "LM",
+      "Model",
+      "FNO2D",
+      "F-FNO2D",
+      "Dil-ResNet",
+      "FactFormer"
+    ],
+    "name": "1",
+    "page": 7,
+    "regionBoundary": {
+      "x1": 132.96,
+      "x2": 479.03999999999996,
+      "y1": 434.88,
+      "y2": 516.0
+    },
+    "renderDpi": 150,
+    "renderURL": "/Users/meghamariam/PROJECTS/PROJ1_Dataset/PROJ1_Crossmodal-Traversal/DATASET/Presentation/pap-seg/fig/sp_0132/sp_0132-Table1-1.png",
+    "id": "sp_0132-Table1-1",
+    "seg_type": "tab"
+  },
+  {
+    "caption": "Table 2: Evaluation results of 3D isotropic turbulence. A batch size of 4 is used for inference. LM models predict 2 steps with each call to the model. Total prediction length is 10 steps.",
+    "captionBoundary": {
+      "x1": 113.63099670410156,
+      "x2": 498.0643005371094,
+      "y1": 692.841552734375,
+      "y2": 709.7529907226562
+    },
+    "figType": "Table",
+    "imageText": [
+      "Inf.",
+      "time",
+      "(s)",
+      "1.01",
+      "0.91",
+      "2.77",
+      "1.37",
+      "12.67",
+      "6.89",
+      "2.68",
+      "1.31",
+      "#",
+      "params",
+      "(M)",
+      "509.8",
+      "3.0",
+      "6.9",
+      "5.1",
+      "u",
+      "avg.",
+      "error",
+      "0.3967",
+      "0.3382",
+      "0.2298",
+      "0.2303",
+      "0.1143",
+      "0.1250",
+      "0.1775",
+      "0.1670",
+      "u",
+      "final",
+      "error",
+      "0.6561",
+      "0.4735",
+      "0.2799",
+      "0.2850",
+      "0.1675",
+      "0.1671",
+      "0.2594",
+      "0.2218",
+      "p",
+      "avg.",
+      "error",
+      "0.8080",
+      "0.4634",
+      "0.3151",
+      "0.3264",
+      "0.1725",
+      "0.1778",
+      "0.2989",
+      "0.2545",
+      "p",
+      "final",
+      "error",
+      "1.1285",
+      "0.6522",
+      "0.4250",
+      "0.4159",
+      "0.2573",
+      "0.2448",
+      "0.4407",
+      "0.3431",
+      "AR",
+      "LM",
+      "AR",
+      "LM",
+      "AR",
+      "LM",
+      "AR",
+      "LM",
+      "Model",
+      "FNO3D",
+      "F-FNO3D",
+      "Dil-ResNet",
+      "FactFormer"
+    ],
+    "name": "2",
+    "page": 7,
+    "regionBoundary": {
+      "x1": 132.0,
+      "x2": 480.47999999999996,
+      "y1": 583.68,
+      "y2": 689.28
+    },
+    "renderDpi": 150,
+    "renderURL": "/Users/meghamariam/PROJECTS/PROJ1_Dataset/PROJ1_Crossmodal-Traversal/DATASET/Presentation/pap-seg/fig/sp_0132/sp_0132-Table2-1.png",
+    "id": "sp_0132-Table2-1",
+    "seg_type": "tab"
+  },
+  {
+    "caption": "Table 5: Major hyperparameters for FactFormer",
+    "captionBoundary": {
+      "x1": 210.2550048828125,
+      "x2": 401.437255859375,
+      "y1": 213.98751831054688,
+      "y2": 219.989990234375
+    },
+    "figType": "Table",
+    "imageText": [
+      "Output",
+      "decoder",
+      "MLP",
+      "MLP",
+      "MLP",
+      "MLP",
+      "Hidden",
+      "dimension",
+      "128",
+      "128",
+      "128",
+      "128",
+      "Depth",
+      "4",
+      "4",
+      "3",
+      "3",
+      "Heads",
+      "8",
+      "6",
+      "6",
+      "12",
+      "Kernel",
+      "dimension",
+      "128",
+      "192",
+      "192",
+      "128",
+      "Input",
+      "encoder",
+      "2D",
+      "Conv",
+      "2D",
+      "Conv",
+      "2D",
+      "Conv",
+      "MLP",
+      "Hyperparameter",
+      "2D",
+      "Kolmogorov",
+      "3D",
+      "turbulence",
+      "3D",
+      "smoke",
+      "2D",
+      "Darcy",
+      "flow"
+    ],
+    "name": "5",
+    "page": 18,
+    "regionBoundary": {
+      "x1": 126.72,
+      "x2": 482.4,
+      "y1": 118.56,
+      "y2": 207.35999999999999
+    },
+    "renderDpi": 150,
+    "renderURL": "/Users/meghamariam/PROJECTS/PROJ1_Dataset/PROJ1_Crossmodal-Traversal/DATASET/Presentation/pap-seg/fig/sp_0132/sp_0132-Table5-1.png",
+    "id": "sp_0132-Table5-1",
+    "seg_type": "tab"
+  },
+  {
+    "caption": "Figure 19: x-component of velocity in 3D isotropic turbulence.",
+    "captionBoundary": {
+      "x1": 180.031005859375,
+      "x2": 431.9698486328125,
+      "y1": 497.86053466796875,
+      "y2": 503.8630065917969
+    },
+    "figType": "Figure",
+    "imageText": [
+      "Prediction",
+      "Reference",
+      "0.8",
+      "0.9",
+      "1.0",
+      "Error",
+      "T=0.6",
+      "0.7"
+    ],
+    "name": "19",
+    "page": 26,
+    "regionBoundary": {
+      "x1": 133.92,
+      "x2": 473.28,
+      "y1": 295.68,
+      "y2": 494.4
+    },
+    "renderDpi": 150,
+    "renderURL": "/Users/meghamariam/PROJECTS/PROJ1_Dataset/PROJ1_Crossmodal-Traversal/DATASET/Presentation/pap-seg/fig/sp_0132/sp_0132-Figure19-1.png",
+    "id": "sp_0132-Figure19-1",
+    "seg_type": "fig"
+  },
+  {
+    "caption": "Figure 18: Pressure in 3D isotropic turbulence.",
+    "captionBoundary": {
+      "x1": 212.41200256347656,
+      "x2": 399.5892639160156,
+      "y1": 267.9875183105469,
+      "y2": 273.989990234375
+    },
+    "figType": "Figure",
+    "imageText": [
+      "Prediction",
+      "Reference",
+      "0.8",
+      "0.9",
+      "1.0",
+      "Error",
+      "T=0.6",
+      "0.7"
+    ],
+    "name": "18",
+    "page": 26,
+    "regionBoundary": {
+      "x1": 133.92,
+      "x2": 473.28,
+      "y1": 65.75999999999999,
+      "y2": 264.0
+    },
+    "renderDpi": 150,
+    "renderURL": "/Users/meghamariam/PROJECTS/PROJ1_Dataset/PROJ1_Crossmodal-Traversal/DATASET/Presentation/pap-seg/fig/sp_0132/sp_0132-Figure18-1.png",
+    "id": "sp_0132-Figure18-1",
+    "seg_type": "fig"
+  },
+  {
+    "caption": "Figure 20: y-component of velocity in 3D isotropic turbulence.",
+    "captionBoundary": {
+      "x1": 180.2570037841797,
+      "x2": 431.7438659667969,
+      "y1": 719.2285766601562,
+      "y2": 725.2310180664062
+    },
+    "figType": "Figure",
+    "imageText": [
+      "Prediction",
+      "Reference",
+      "0.8",
+      "0.9",
+      "1.0",
+      "Error",
+      "T=0.6",
+      "0.7"
+    ],
+    "name": "20",
+    "page": 26,
+    "regionBoundary": {
+      "x1": 133.92,
+      "x2": 473.28,
+      "y1": 516.96,
+      "y2": 712.3199999999999
+    },
+    "renderDpi": 150,
+    "renderURL": "/Users/meghamariam/PROJECTS/PROJ1_Dataset/PROJ1_Crossmodal-Traversal/DATASET/Presentation/pap-seg/fig/sp_0132/sp_0132-Figure20-1.png",
+    "id": "sp_0132-Figure20-1",
+    "seg_type": "fig"
+  },
+  {
+    "caption": "Figure 15: Averaged frame-wise loss trends. Each loss curve corresponds to a model initialized under a specific seed.",
+    "captionBoundary": {
+      "x1": 108.0,
+      "x2": 504.1675720214844,
+      "y1": 502.6985168457031,
+      "y2": 519.6099853515625
+    },
+    "figType": "Figure",
+    "imageText": [],
+    "name": "15",
+    "page": 23,
+    "regionBoundary": {
+      "x1": 175.68,
+      "x2": 434.4,
+      "y1": 324.96,
+      "y2": 500.15999999999997
+    },
+    "renderDpi": 150,
+    "renderURL": "/Users/meghamariam/PROJECTS/PROJ1_Dataset/PROJ1_Crossmodal-Traversal/DATASET/Presentation/pap-seg/fig/sp_0132/sp_0132-Figure15-1.png",
+    "id": "sp_0132-Figure15-1",
+    "seg_type": "fig"
+  },
+  {
+    "caption": "Figure 14: Visualization of normalized attention kernel .",
+    "captionBoundary": {
+      "x1": 193.70703125,
+      "x2": 418.2938232421875,
+      "y1": 248.24356079101562,
+      "y2": 254.24603271484375
+    },
+    "figType": "Figure",
+    "imageText": [
+      "(d)",
+      "Layer",
+      "4,",
+      "Head",
+      "1:",
+      "kernel",
+      "of",
+      "x",
+      "axis",
+      "(c)",
+      "Layer",
+      "4,",
+      "Head",
+      "1:",
+      "kernel",
+      "of",
+      "y",
+      "axis",
+      "(b)",
+      "Layer",
+      "1,",
+      "Head",
+      "1:",
+      "kernel",
+      "of",
+      "x",
+      "axis",
+      "(a)",
+      "Layer",
+      "1,",
+      "Head",
+      "1:",
+      "kernel",
+      "of",
+      "y",
+      "axis"
+    ],
+    "name": "14",
+    "page": 23,
+    "regionBoundary": {
+      "x1": 108.0,
+      "x2": 507.35999999999996,
+      "y1": 132.96,
+      "y2": 237.12
+    },
+    "renderDpi": 150,
+    "renderURL": "/Users/meghamariam/PROJECTS/PROJ1_Dataset/PROJ1_Crossmodal-Traversal/DATASET/Presentation/pap-seg/fig/sp_0132/sp_0132-Figure14-1.png",
+    "id": "sp_0132-Figure14-1",
+    "seg_type": "fig"
+  },
+  {
+    "caption": "Table 4: Comparison between factorized and linear attention on their forward/backward computational cost, Mem. denotes the peak memory usage. The benchmark is carried out using PyTorch 1.8.2 on an RTX 3090, with a batch size of 4. Enc. time: the time spent on obtaining the latent encoding, primarily includes attention layers and feedforward layers after each attention layer; Prop. time: the time used to propagate dynamics in the latent space with a 3-layer MLP.",
+    "captionBoundary": {
+      "x1": 107.677001953125,
+      "x2": 505.12432861328125,
+      "y1": 483.8045349121094,
+      "y2": 529.657958984375
+    },
+    "figType": "Table",
+    "imageText": [
+      "Factorized",
+      "attention",
+      "0.1529",
+      "0.0202",
+      "0.0112",
+      "0.0954",
+      "5217",
+      "Linear",
+      "attention",
+      "(matmul)",
+      "0.5853",
+      "0.1370",
+      "0.3013",
+      "12029",
+      "Linear",
+      "attention",
+      "(einsum)",
+      "0.1333",
+      "0.2938",
+      "12029",
+      "Enc.",
+      "time",
+      "(s)",
+      "Prop.",
+      "time",
+      "(s)",
+      "Time",
+      "(s)",
+      "Mem.",
+      "(MB)",
+      "Model",
+      "Avg.",
+      "rel.",
+      "L2",
+      "Norm",
+      "Fwd.",
+      "Fwd.",
+      "+",
+      "Bwd."
+    ],
+    "name": "4",
+    "page": 8,
+    "regionBoundary": {
+      "x1": 109.92,
+      "x2": 507.35999999999996,
+      "y1": 415.68,
+      "y2": 480.47999999999996
+    },
+    "renderDpi": 150,
+    "renderURL": "/Users/meghamariam/PROJECTS/PROJ1_Dataset/PROJ1_Crossmodal-Traversal/DATASET/Presentation/pap-seg/fig/sp_0132/sp_0132-Table4-1.png",
+    "id": "sp_0132-Table4-1",
+    "seg_type": "tab"
+  },
+  {
+    "caption": "Table 3: Evaluation results of 3D smoke buoyancy. A batch size of 4 is used for inference. LM models predict 4 steps with each call to the model. Total prediction length is 16 steps.",
+    "captionBoundary": {
+      "x1": 113.63099670410156,
+      "x2": 498.0643005371094,
+      "y1": 180.20651245117188,
+      "y2": 197.11798095703125
+    },
+    "figType": "Table",
+    "imageText": [],
+    "name": "3",
+    "page": 8,
+    "regionBoundary": {
+      "x1": 108.0,
+      "x2": 503.03999999999996,
+      "y1": 224.64,
+      "y2": 362.4
+    },
+    "renderDpi": 150,
+    "renderURL": "/Users/meghamariam/PROJECTS/PROJ1_Dataset/PROJ1_Crossmodal-Traversal/DATASET/Presentation/pap-seg/fig/sp_0132/sp_0132-Table3-1.png",
+    "id": "sp_0132-Table3-1",
+    "seg_type": "tab"
+  },
+  {
+    "caption": "Figure 6: Error trend of vorticity \u03c9 on 2D Kolmogorov flow. Dashed line: AR; Solid line: LM",
+    "captionBoundary": {
+      "x1": 186.34800720214844,
+      "x2": 427.3950500488281,
+      "y1": 505.3825378417969,
+      "y2": 522.2940063476562
+    },
+    "figType": "Figure",
+    "imageText": [],
+    "name": "6",
+    "page": 19,
+    "regionBoundary": {
+      "x1": 186.72,
+      "x2": 425.28,
+      "y1": 320.64,
+      "y2": 497.28
+    },
+    "renderDpi": 150,
+    "renderURL": "/Users/meghamariam/PROJECTS/PROJ1_Dataset/PROJ1_Crossmodal-Traversal/DATASET/Presentation/pap-seg/fig/sp_0132/sp_0132-Figure6-1.png",
+    "id": "sp_0132-Figure6-1",
+    "seg_type": "fig"
+  },
+  {
+    "caption": "Figure 2: Schematic of the factorized kernel attention. Upper path: the input is transformed into the Value via a linear transformation. Lower path: the input is first projected into multiple sub-functions with a one-dimensional domain. These sub-functions are then used to derive the Query and Key on each axis, and their dot products form the kernel function of the corresponding axis. The Value is iteratively updated by the kernel integral transform along each axis and finally sent to an MLP.",
+    "captionBoundary": {
+      "x1": 107.39199829101562,
+      "x2": 504.000244140625,
+      "y1": 171.81454467773438,
+      "y2": 221.4539794921875
+    },
+    "figType": "Figure",
+    "imageText": [
+      "Input",
+      "function",
+      "Output",
+      "function",
+      "MLP",
+      "Q/K",
+      "Linear",
+      "Attention",
+      "Attention",
+      "Q/K",
+      "Linear",
+      "Attention",
+      "Q/K",
+      "Linear",
+      "V",
+      "Linear",
+      "Learnable",
+      "projection"
+    ],
+    "name": "2",
+    "page": 4,
+    "regionBoundary": {
+      "x1": 116.64,
+      "x2": 493.44,
+      "y1": 75.36,
+      "y2": 164.64
+    },
+    "renderDpi": 150,
+    "renderURL": "/Users/meghamariam/PROJECTS/PROJ1_Dataset/PROJ1_Crossmodal-Traversal/DATASET/Presentation/pap-seg/fig/sp_0132/sp_0132-Figure2-1.png",
+    "id": "sp_0132-Figure2-1",
+    "seg_type": "fig"
+  }
+]

@@ -1,0 +1,5 @@
+research.
+In Monte Carlo research, ignore the yellow one for now.
+You're in the green position and you want to go to the blue position.
+In Monte Carlo research, what you're searching over is the next action to take.
+In this case, you have four possible actions to take.

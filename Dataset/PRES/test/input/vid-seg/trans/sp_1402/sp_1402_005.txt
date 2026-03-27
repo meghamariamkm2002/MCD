@@ -1,0 +1,5 @@
+So our idea is also simple, since we need to estimate the reward parameters for different actions.
+Well, why not use these parameters to estimate unknown rewards?
+However, these pose two problems.
+How to leverage reward models?
+How to efficiently apply reward estimation?

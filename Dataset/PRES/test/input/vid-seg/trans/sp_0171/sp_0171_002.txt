@@ -1,0 +1,2 @@
+Our paper tackles the challenge of uncovering hidden hierarchical structure in data.
+This problem is well established in genetics, however it surprisingly lacks extensive study within statistics, despite hierarchical structure being present in many datasets.

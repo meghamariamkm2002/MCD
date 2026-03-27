@@ -1,0 +1,22 @@
+start	end	text
+31	19002	They had a lot of conclusions and future work they already say you know conditional guns are very easy to do straightforward learn the proximity inference can be performed by training an auxiliary network to predict z given x and this of course as you know has come you know has come to fruit.
+18982	21666	very often early papers already introduced.
+23849	41496	So if you have the G network producing some producing an X and then the D network discriminating that you would also have like a encoder right here to produce back the Z noise to give you the latent encoding.
+41476	44200	Sort of like a variational autoencoder, but not really.
+44300	46323	It's more like a reverse generator.
+47525	57920	You know, these models nowadays are big by-gan and things like this that employ this exact thing that was sort of predicted right here.
+58441	61645	Of course, they're much earlier models also using this.
+61765	69036	As long as I can remember, people have attempted to bring encoders into GANs.
+69016	73522	They have a bunch of other things like semi-supervised learning.
+73582	79290	You can use this to do get more data for a classifier, which is also done.
+79390	84477	So a lot of things here already foresight in this papers is pretty cool.
+84557	86760	And the coolest thing, look at that.
+87181	93490	Savages, good fellow, not even using the full eight pages, just dropping this on the world.
+94131	95593	Absolutely cool.
+96554	98837	Mad respect.
+98817	106859	So, yeah, this was kind of my take on, yeah, it is generative adversarial nets.
+107722	112675	And yeah, please tell me if you like historic paper overviews.
+112695	120216	It's more kind of a rant than it really is a paper explanation, but I do enjoy going through this papers and kind of looking at them in hindsight.
+120717	121740	All right, that was it from me.
+122101	123124	I wish you a nice day.
+123184	123846	Bye-bye.

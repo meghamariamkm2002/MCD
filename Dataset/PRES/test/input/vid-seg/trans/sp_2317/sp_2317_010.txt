@@ -1,0 +1,1 @@
+Here, we show that our model have sequence net interpolation curve related, similar to IVP and TAN.

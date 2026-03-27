@@ -1,0 +1,112 @@
+1
+00:00:00,031 --> 00:00:06,401
+Hi there, today we'll look at Generative Adversarial Nets by ENJ Goodfellow et al.
+
+2
+00:00:06,962 --> 00:00:12,751
+So this one is another installment in our series of historical papers that had great impact.
+
+3
+00:00:13,553 --> 00:00:26,393
+GANs nowadays, or Generative Adversarial Nets back then, were sort of, this was the starting shot in a long line of research that is still continuing today.
+
+4
+00:00:26,373 --> 00:00:34,066
+So, I remember when I started my PhD in 2015, GANs were just about spiking.
+
+5
+00:00:34,226 --> 00:00:41,618
+I remember NURIPS or back then NIPS in 2016, and every other paper was about GANs.
+
+6
+00:00:42,600 --> 00:00:48,870
+There was also this famous Schmidhuber good fellow moment at the tutorial.
+
+7
+00:00:48,850 --> 00:00:57,845
+It was it was a while time and this is the paper that started it all and the paper is quite well written.
+
+8
+00:00:58,406 --> 00:01:09,205
+It's very kind of focused on convincing you that this is a sound method mathematically that it does do you know that it doesn't just do wild things.
+
+9
+00:01:09,185 --> 00:01:18,920
+And also, it is already quite has a lot of sort of the modern tricks for GANs already sort of built into it.
+
+10
+00:01:19,321 --> 00:01:25,270
+So, astounding how much foresight there was already in this paper, but of course,
+
+11
+00:01:25,250 --> 00:01:42,313
+Gans have come like a super long way since then and today we'll just go through the paper and look at how it looked back then and what this paper was like so yeah join me in this if you like it please share it out let me know in the comments what you think of
+
+12
+00:01:42,293 --> 00:01:43,936
+historic paper reviews.
+
+13
+00:01:44,577 --> 00:01:49,284
+This is not going to be like a beginner's tutorial in GANs.
+
+14
+00:01:49,365 --> 00:01:52,029
+This is really going to be, we'll go through the paper.
+
+15
+00:01:52,209 --> 00:01:54,533
+You'll see right here, the paper is from 2014.
+
+16
+00:01:54,914 --> 00:02:04,409
+So it would still be another like two years or so until GANs really take off from this point on.
+
+17
+00:02:04,610 --> 00:02:09,077
+But the introduction, of course, was really important.
+
+18
+00:02:09,057 --> 00:02:11,620
+Okay, so abstract.
+
+19
+00:02:11,680 --> 00:02:12,141
+Here we go.
+
+20
+00:02:12,822 --> 00:02:34,288
+We propose a new framework for estimating generative models via an adversarial process in which we simultaneously train two models, a generative model G that captures the data distribution and a discriminative model D that estimates the probability that a sample came from the training data rather than G.
+
+21
+00:02:34,268 --> 00:02:36,711
+Okay, this was sort of a new thing now.
+
+22
+00:02:37,092 --> 00:03:01,322
+I know I know people disagree with this being a new thing, but this was a new thing and Specifically this this was the first paper that made something like this really work for data So to have a discriminator the and the words generator and discriminator were also introduced in this paper So you train this D model, which is the discriminator and
+
+23
+00:03:01,302 --> 00:03:11,538
+And the D model basically decides whether or not a given data point comes from data or comes from the fake distribution.
+
+24
+00:03:12,119 --> 00:03:21,975
+And then you have a generative model G that is supposed to just create this data X rather than coming from the database.
+
+25
+00:03:22,135 --> 00:03:26,061
+So you want to sample a couple of times from the data
+
+26
+00:03:26,041 --> 00:03:45,605
+And sometimes you sample from this model G, and then the discriminator is supposed to decide whether or not it comes from the data set or from your counterfeiter, like from this generator G. And it's supposed to say whether it's data fixed.
+
+27
+00:03:45,625 --> 00:03:49,329
+So you train the D model as a simple image classifier.
+
+28
+00:03:49,389 --> 00:03:49,990
+So people all
+

@@ -1,0 +1,5 @@
+The only problem of BO is that it works from scratch every time we have a new function.
+So in the meta BO setting, we're trying to transfer knowledge from source tasks, past optimization functions we have done and we collected the data to new tasks to test tasks.
+And this through meta learning.
+A range of past work has done this, learning a meta model with supervised loss or reinforcement learning.
+or learning and acquisition function also with reinforcement learning, but none of them has learned both.

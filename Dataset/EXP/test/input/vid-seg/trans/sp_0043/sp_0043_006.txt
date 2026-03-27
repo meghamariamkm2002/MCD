@@ -1,0 +1,23 @@
+denoising autoencoder.
+A denoising autoencoder is basically
+So if you have, for example, an image and the image is of a, our trusty cat whiskers, and adeno is an autoencoder is an unsupervised method where you have, it's basically an autoencoder.
+So there is a bunch of layers compressing to a hidden representation, then uncompressing it again.
+Okay.
+And at the end, you want to output the same as at the beginning.
+So it's basically an autoencoder.
+But the special part about the denoising autoencoder is that first you take your input and you put some noise on it.
+So that could mean anything here, but
+Here what they do is they do they make some Gaussian noise on it now I can't really draw Gaussian noise here, but it would be kind of convolved with Gaussian Gaussian noise So I'm just going to add some noise like this.
+So noise noise noise So there's some noise You see and then you feed that that's now what you feed in here
+And the algorithm is supposed to reconstruct this, this original image.
+So the algorithm is basically supposed to take away the noise.
+It doesn't see the original image, but it's supposed to produce it.
+And you do this with your training data.
+So what does that mean ultimately for our trajectory optimization?
+It means that if I have a trajectory that I did before and it maybe goes here,
+What I can do is I can make a noisy version of it, which would be the black one right here.
+So I put some noise on it, some noise.
+It's kind of the same, but okay.
+And the denoising auto encoder is supposed to give me back the red one.
+This will simply give me some sort of a probabilistic model of my training distribution.
+So they go through the math here and show that these denoising autoencoders actually naturally output this log probability.

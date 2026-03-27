@@ -1,0 +1,73 @@
+start	end	text
+31	1032	So this is in this figure.
+2254	6779	So this meta learning using gradients was done in this technique called mammal.
+7520	17513	And essentially what you can see here is that if you have this set of initial parameters, this is your current best guess of these good initial parameters.
+17873	21518	And you want to come up with a gradient of how to get an even better set.
+21638	24722	Now this gradient here is indicated by this arrow.
+24702	30312	So let's imagine you don't know the gradient yet, you want to come up with a gradient.
+31154	40330	So what you'll need to do is you'll basically have to compute the loss function and you have to differentiate that loss function with respect to your parameters.
+40631	43977	That's down here, what the description of the orange arrow.
+43957	55093	So your loss function of your meta parameters is going to be the average or the sum of the loss functions across all of the different tasks individually.
+55714	64446	So the gradient is going to be the sum of the gradients of these loss functions with respect to your original parameter.
+64426	65848	Now, this is the difference, right?
+66729	74600	Usually, we differentiate with respect to the parameters that we input into the loss function, but not here.
+74961	81731	What we input into the loss function is what is at the end of the task adapting to its own parameters.
+82171	89422	So this thing we input here is a function of our initial parameters, but it's not our initial parameters.
+89842	92526	So what we have is initial parameters, we
+92506	110143	give them to a task, this task runs SGD for K steps, it runs it for a number of steps, comes up with the adapted version to its own problem, that goes into a loss function, right?
+112148	118674	So this thing here is the neural network that finally determines the loss function.
+119074	123438	So if we want to back propagate, we can back propagate this loss function, right?
+123679	128423	Through the neural network, the F, the neural network is right here, is parameterized by these things.
+129224	137051	We can back propagate through that, but then we'll have to back propagate through the optimization procedure that was used to derive these things.
+137571	139633	So that's the problem right here.
+140494	141615	You can see this here.
+141595	147305	You start out with the initial parameters and let's say you give them to task one.
+147365	152995	Task one is going to take these as initialization and then run SGD.
+153035	160949	So maybe it will perturb these parameters to come up with here phi one, these parameters.
+161029	165477	These parameters are the adapted version for task one.
+165457	172726	And then at the end of task one, you use these characterize neural network and you can calculate a gradient.
+173086	178673	So how would you need to update these parameters in order to make the loss go down?
+179294	182918	And the neural network or sorry, the computation will maybe result.
+183018	185441	Well, you need to go up a bit.
+186322	187684	Well, this is too strong.
+187664	194216	it will maybe say you need to go into this direction right here with respect to these parameters.
+194617	204475	But now the question is, how do you have to adjust your initial parameters such that your final parameters will go into that direction?
+204455	205758	And that's not really clear.
+205818	207201	You could make a guess, right?
+207241	217704	You could make a guess and say, well, if my initial parameters just go up a bit, maybe the optimization procedure will just, you know, sort of look the same, but shifted up here.
+217904	219628	So something like this.
+219608	222952	And then I will end up here, but that's not guaranteed.
+222972	228138	Like this is a super nonlinear procedure that you're running it through this SGD thing.
+228239	232464	And it will basically, it's an iterative recursive procedure.
+232624	236389	So it will sort of accumulate its own nonlinear errors.
+237069	242376	And that's why what you have to do is basically you forward propagate.
+242356	247183	through SGD, and then you have to back propagate this gradient right here.
+247283	251730	You have to back propagate this through the entire SGD optimization procedure.
+252311	267553	And that is computationally very expensive, because if you have to compute the loss once here for a neural network, you have to forward pass once, and the back propagation will cost as much as the forward propagation, or maybe twice as much, constant number.
+267533	276567	But if you run k steps of SGD, you basically have to trace back those k steps via backpropagating it through each step.
+277048	281195	So basically, this is k times a backpropagation step.
+281215	285702	And computationally, that's just not feasible for more than very few steps.
+286623	288967	And so you can only ever do very few steps.
+289027	294115	You basically accumulate your nonlinear error because gradient descent is a linear procedure.
+294095	297640	And then you get some estimation of the gradient at the end.
+298141	302467	Now, if you do that for all of your tasks, then finally you can decide.
+302487	311600	So maybe for a task one here, the result will be in order to make this go up a bit, you need to shift this a bit to up and the right, right?
+311640	316086	Because then the gradient descent will kind of sort of end up here.
+316066	331138	And you do this for all tasks, you average the gradient like here, then you can come up with a final gradient for your inner, sorry, for your outer model, for your initial parameters.
+331118	335143	So this is a big load of computation that mammal does here.
+336065	338428	Now there is a naive approximation.
+338468	340951	And this is exactly what we said at the beginning, right?
+341332	350424	This first order mammal is the guess that if we want to go up a bit at the end here, why don't we shift the beginning up a bit, right?
+350704	357193	And so the first order mammal would just result in basically looking at the gradients at the end.
+357173	361443	and sort of aggregating them right here and then coming up with a gradient.
+362165	374575	But this is very inaccurate and generally doesn't work well because you have to understand how your end gradient is connected to your initial gradient.
+374555	380782	because this is very nonlinear, you can't just basically transfer it over.
+381763	385607	Now implicit mammal, this paper right here circumvents that.
+385827	403026	It circumvents the step to have to explicitly back propagate this gradient along the forward pass, but it's still able to come up with an expression for how the final gradient relates to the initial gradient.
+403006	413209	In this video, I would basically like to explore how this comes about and why this comes about.
+413229	422770	We won't go through all the theory and the proofs, but I would like you to understand that this comes about by basically them imposing a quadratic regularizer.
+422750	433189	And therefore this quadratic regularizer makes a very, it kind of gives rise to a very strong connection between this final gradient and this initial gradient.
+433550	436195	So they can basically transform one into the other.
+436816	444730	And therefore they can compute the initial gradient in a closed form setting, or at least in theory.
+445933	448076	All right, this was this.
+448317	450040	Now let's go into the

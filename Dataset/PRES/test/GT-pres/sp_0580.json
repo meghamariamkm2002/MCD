@@ -1,0 +1,397 @@
+[
+  {
+    "id": "002",
+    "title": "sp_0580_002",
+    "filename": "Videos/sp_0580.mp4",
+    "paper_filename": "Papers/sp_0580.pdf",
+    "type": "slides",
+    "relevant_segments": [
+      {
+        "para_id": "p1",
+        "section_heading": "Abstract",
+        "text": "We study the multi-objective minimum weight base problem, an abstraction of classical NP-hard combinatorial problems such as the multi-objective minimum spanning tree problem. We prove some important properties of the convex hull of the non-dominated front, such as its approximation quality and an upper bound on the number of extreme points. Using these properties, we give the first run-time analysis of the MOEA/D algorithm for this problem, an evolutionary algorithm that effectively optimizes by decomposing the objectives into single-objective components. We show that the MOEA/D, given an appropriate decomposition setting, finds all extreme points within expected fixed-parameter polynomial time, in the oracle model. Experiments are conducted on random bi-objective minimum spanning tree instances, and the results agree with our theoretical findings. Furthermore, compared with a previously studied evolutionary algorithm for the problem GSEMO, MOEA/D finds all extreme points much faster across all instances.",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p2",
+        "section_heading": "1 Introduction",
+        "text": "Evolutionary algorithms have been widely used to tackle multi-objective optimization problems in many areas such as robotics, pattern recognition, data mining, bioinformatics, scheduling and planning, and neural network training [35]. Their population-based search operators make them a natural choice for simultaneously handling several possibly conflicting objectives. Many generic evolutionary multi-objective frameworks have been developed to supply basic implementations for any problem, and to provide templates that can be fine-tuned for specific applications (we refer to [30] for an overview of common approaches). Such features, along with their strong empirical performances in challenging applications, have led them to becoming one of the most attractive topics to researchers and practitioners alike.",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p3",
+        "section_heading": "1 Introduction",
+        "text": "Among evolutionary multi-objective algorithms (EMOs), arguably the most exemplary are dominancebased approaches such as GSEMO and NSGA variants, with the former often being considered a baseline. Another popular technique for multi-objective optimization is to decompose the multiple objectives into a single-objective subproblem. The MOEA/D algorithm is a state-of-the-art application of this technique in evolutionary computation [29, 31].",
+        "seg_type": "par"
+      }
+    ]
+  },
+  {
+    "id": "003",
+    "title": "sp_0580_003",
+    "filename": "Videos/sp_0580.mp4",
+    "paper_filename": "Papers/sp_0580.pdf",
+    "type": "slides",
+    "relevant_segments": [
+      {
+        "para_id": "p13",
+        "section_heading": "2 Preliminaries & Problem",
+        "text": "The multi-objective minimum weight base (MOMWB) is a natural multi-objective extension to MWB. Given a \ud835\udc58-weighted1 matroid (\ud835\udc38, \ud835\udc5f,\ud835\udc64 \u2208 (\u2115\u2217)\ud835\udc58\u00d7|\ud835\udc38 | ) where \ud835\udc38 is the ground set, \ud835\udc5f is the rank function of the matroid, and the weight vector of a solution \ud835\udc65 \u2208 {0, 1} |\ud835\udc38 | is\ud835\udc64\ud835\udc65 (also called the image of \ud835\udc65 under \ud835\udc64), the multi-objective problem asks to find a non-dominated set of bases in (\ud835\udc38, \ud835\udc5f ) minimizing \ud835\udc64 . Here, \ud835\udc58 is the number of objectives.",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p1",
+        "section_heading": "Abstract",
+        "text": "We study the multi-objective minimum weight base problem, an abstraction of classical NP-hard combinatorial problems such as the multi-objective minimum spanning tree problem. We prove some important properties of the convex hull of the non-dominated front, such as its approximation quality and an upper bound on the number of extreme points. Using these properties, we give the first run-time analysis of the MOEA/D algorithm for this problem, an evolutionary algorithm that effectively optimizes by decomposing the objectives into single-objective components. We show that the MOEA/D, given an appropriate decomposition setting, finds all extreme points within expected fixed-parameter polynomial time, in the oracle model. Experiments are conducted on random bi-objective minimum spanning tree instances, and the results agree with our theoretical findings. Furthermore, compared with a previously studied evolutionary algorithm for the problem GSEMO, MOEA/D finds all extreme points much faster across all instances.",
+        "seg_type": "par"
+      }
+    ]
+  },
+  {
+    "id": "004",
+    "title": "sp_0580_004",
+    "filename": "Videos/sp_0580.mp4",
+    "paper_filename": "Papers/sp_0580.pdf",
+    "type": "slides",
+    "relevant_segments": [
+      {
+        "para_id": "p13",
+        "section_heading": "2 Preliminaries & Problem",
+        "text": "The multi-objective minimum weight base (MOMWB) is a natural multi-objective extension to MWB. Given a \ud835\udc58-weighted1 matroid (\ud835\udc38, \ud835\udc5f,\ud835\udc64 \u2208 (\u2115\u2217)\ud835\udc58\u00d7|\ud835\udc38 | ) where \ud835\udc38 is the ground set, \ud835\udc5f is the rank function of the matroid, and the weight vector of a solution \ud835\udc65 \u2208 {0, 1} |\ud835\udc38 | is\ud835\udc64\ud835\udc65 (also called the image of \ud835\udc65 under \ud835\udc64), the multi-objective problem asks to find a non-dominated set of bases in (\ud835\udc38, \ud835\udc5f ) minimizing \ud835\udc64 . Here, \ud835\udc58 is the number of objectives.",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p20",
+        "section_heading": "2 Preliminaries & Problem",
+        "text": "With this definition, the set of solutions that are mapped to the extreme points is sufficient. In fact, the size of a minimal sufficient set is exactly the number of extreme points. Note that while the set of all supported solutions is unique, there can be multiple distinct minimal sufficient sets due to duplicate images. We briefly prove an approximation factor by any sufficient set, which is not restricted to MOMWB. Theorem 1 (Minimization). Given \ud835\udc58 \u2265 1 and a non-negative \ud835\udc58-objective instance where for each objective \ud835\udc56 there is \ud835\udeff\ud835\udc56 > 0 so that \ud835\udc53\ud835\udc56 (\ud835\udc65) \u2209 (0, \ud835\udeff\ud835\udc56 ] for all solutions \ud835\udc65 , every sufficient solution set \ud835\udc43 \ud835\udc58-approximates all solutions. This factor is tight for all \ud835\udc58 , even if \ud835\udc43 is a complete solution set.",
+        "seg_type": "par"
+      }
+    ]
+  },
+  {
+    "id": "005",
+    "title": "sp_0580_005",
+    "filename": "Videos/sp_0580.mp4",
+    "paper_filename": "Papers/sp_0580.pdf",
+    "type": "slides",
+    "relevant_segments": [
+      {
+        "para_id": "p27",
+        "section_heading": "3 Properties of Conv(\ud835\udc39 ) in Multi-Objective Minimum Weight Base Problem",
+        "text": "Corollary 1. The size of a minimal sufficient solution set to a \ud835\udc58-objective instance satisfying properties in Observation 2 is at most \u2211\ud835\udc58 \ud835\udc56=1 (\ud835\udc5a (\ud835\udc5a\u22121)/2 \ud835\udc56\u22121 ) , and \ud835\udc34\u2032 is a sufficient trade-off set.",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p35",
+        "section_heading": "3 Properties of Conv(\ud835\udc39 ) in Multi-Objective Minimum Weight Base Problem",
+        "text": "Corollary 3. A bi-objective MWB instance (i.e. \ud835\udc58 = 2) admits at most\ud835\udc42 (\ud835\udc5a \u221a\ufe01",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p36",
+        "section_heading": "3 Properties of Conv(\ud835\udc39 ) in Multi-Objective Minimum Weight Base Problem",
+        "text": "min{\ud835\udc5b,\ud835\udc5a \u2212 \ud835\udc5b}) extreme points.",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p30",
+        "section_heading": "3 Properties of Conv(\ud835\udc39 ) in Multi-Objective Minimum Weight Base Problem",
+        "text": "Given a solution set \ud835\udc46 , the \ud835\udc59-Hamming neighborhood graph of \ud835\udc46 is an undirected graph \ud835\udc3a\ud835\udc59 = (\ud835\udc46, {{\ud835\udc4e, \ud835\udc4f} : |\ud835\udc4e \u2297 \ud835\udc4f | \u2264 \ud835\udc59}), and \ud835\udc46 is \ud835\udc59-Hamming connected if \ud835\udc3a\ud835\udc59 is connected. Neumann [18] proved for spanning trees that given the non-dominated front being strongly convex, the set of supported solutions is 2-Hamming connected. We show that this even holds for matroid bases without the convexity assumption. For simplicity, we assume, for the rest of the analysis, fixed orderings among each class of elements \ud835\udc56 \u2208 \ud835\udc38 sharing \ud835\udd68\ud835\udc56 . We will see that the existence of such elements does not affect the 2-Hamming connectivity among supported solutions. We first show that as the trade-off moves continuously within\ud835\udc48 , the permutation sorting the scalarized weight is transformed incrementally by exchanging two adjacent positions, which we call an adjacent swap. Lemma 2. For any \ud835\udc4e, \ud835\udc4e\u2032 \u2208 \ud835\udc48 , let \ud835\udc34\u2217 = {\ud835\udc4e\ud835\udc56 }\u210e\ud835\udc56=1 be the multiset of intersections between the line segment connecting \ud835\udc4e and \ud835\udc4e\u2032 and hyperplanes in \ud835\udc34, indexed in the order from \ud835\udc4e to \ud835\udc4e\u2032, there is a shortest sequence of adjacent swaps from \ud835\udf0b\ud835\udc4e to \ud835\udf0b\ud835\udc4e\u2032 , (\ud835\udf0b\ud835\udc4e, \ud835\udf0f1, . . . , \ud835\udf0f\u210e, \ud835\udf0b\ud835\udc4e\u2032 ), where for all \ud835\udc56 = 1, . . . , \u210e, \ud835\udf0f\ud835\udc56 sorts\ud835\udc64 (\ud835\udc4e\ud835\udc56 ) . If\ud835\udc64 (\ud835\udc4e) or\ud835\udc64 (\ud835\udc4e",
+        "seg_type": "par"
+      }
+    ]
+  },
+  {
+    "id": "006",
+    "title": "sp_0580_006",
+    "filename": "Videos/sp_0580.mp4",
+    "paper_filename": "Papers/sp_0580.pdf",
+    "type": "slides",
+    "relevant_segments": [
+      {
+        "para_id": "p1",
+        "section_heading": "Abstract",
+        "text": "We study the multi-objective minimum weight base problem, an abstraction of classical NP-hard combinatorial problems such as the multi-objective minimum spanning tree problem. We prove some important properties of the convex hull of the non-dominated front, such as its approximation quality and an upper bound on the number of extreme points. Using these properties, we give the first run-time analysis of the MOEA/D algorithm for this problem, an evolutionary algorithm that effectively optimizes by decomposing the objectives into single-objective components. We show that the MOEA/D, given an appropriate decomposition setting, finds all extreme points within expected fixed-parameter polynomial time, in the oracle model. Experiments are conducted on random bi-objective minimum spanning tree instances, and the results agree with our theoretical findings. Furthermore, compared with a previously studied evolutionary algorithm for the problem GSEMO, MOEA/D finds all extreme points much faster across all instances.",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p39",
+        "section_heading": "5 MOEA/D With Weight Scalarization",
+        "text": "Multi-Objective Evolutionary Algorithm based on Decomposition (MOEA/D), introduced in [33], is a co-evolutionary framework characterized by simultaneous optimization of single-objective subproblems in a multi-objective problem. While there are many approaches to decompose the multi-objective into single-objectives, we consider the classical approach that is weight scalarization [15], as hinted in preceding sections. This simple scheme is sufficient in approximating \ud835\udc39 and even enumerating Conv(\ud835\udc39 ).",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p40",
+        "section_heading": "5.1 Description",
+        "text": "MOEA/D uses two fitness functions, a scalar function formulated by the decomposition scheme and a vector function for dominance checking [33]. To account for the matroid base constraint, we use the penalty term formulated in [26], which was adapted from prior work on MST [19]. Letting \ud835\udc64\ud835\udc5a\ud835\udc4e\ud835\udc65 := max(\ud835\udc56,\ud835\udc52 ) \u2208{1,...,\ud835\udc58 }\u00d7\ud835\udc38 \ud835\udc64\ud835\udc56,\ud835\udc52 , we have the fitness \ud835\udc53\ud835\udf06 of \ud835\udc65 \u2208 {0, 1}\ud835\udc5a at trade-off \ud835\udf06, and the fitness vector \ud835\udc54 for dominance checking where \ud835\udfd9 is the one vector.",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p66",
+        "section_heading": "7 Conclusion",
+        "text": "In this study, we contribute to the theoretical analyses of evolutionary multi-objective optimization in the context of non-trivial combinatorial problems. We give the first run-time analysis of the MOEA/D algorithm for a broad problem class that is multi-objective minimum weight base problem. In particular, we show a fixed-parameter polynomial expected run-time for approximating the nondominated front, simultaneously extending existing pseudo-polynomial bounds for GSEMO to arbitrary number of objectives and broader combinatorial structures. Our experiments in random bi-objective minimum spanning tree instances indicate that MOEA/D significantly outperforms GSEMO in the computing extreme points under an appropriate decomposition. Along the way, we prove properties that give further insight into the problem of interest.",
+        "seg_type": "par"
+      },
+      {
+        "input_path": "/tmp/megha/PDF-Extract-Kit/Presentation/layout_pap/sp_0580/sp_0580_page_7.png",
+        "cls_id": 14,
+        "label": "algorithm",
+        "score": 0.9241017699241638,
+        "coordinate": [
+          400.2541198730469,
+          309.9227294921875,
+          2097.57763671875,
+          1022.4598999023438
+        ],
+        "text": "Agol S: MOEA/D Tor MOMWB\nInput: A MOMWB instance, trade-off set \u039b, neighborhood size N \u2265 1\nOutput: S\n\u2200\u03bb  \u039b, B\u03bb \u2190 N nearest neighbors of \u03bb in \u039b (Euclidean distance);\n\u2200\u03bb  \u039b, P\u03bb\u2190 a random sample from {0, 1}m,\nS \u2190 ;\nwhile stopping conditions not met do\nfor \u03bb  \u039b do\nx \u2190 uniformly sampled from P\u03bb;\ny \u2190 independent bit flips on x with probability 1/m;\nD \u2190 {l  B\u03bb : \u2200z  Pl, fi(y) < fi(z)};\nT \u2190 {l  B : \u2200z  Pl, f(y) = fi(z)};\n\u2200l  D, Pl \u2190 {y};\n\u2200l  T, Pl \u2190 Pi U {y} removing solutions with duplicate images;\nS \u2190 non-dominated individuals in S U {y} under relation \u2264a;",
+        "id": "sp_0580_page_7_1",
+        "seg_type": "algo"
+      }
+    ]
+  },
+  {
+    "id": "007",
+    "title": "sp_0580_007",
+    "filename": "Videos/sp_0580.mp4",
+    "paper_filename": "Papers/sp_0580.pdf",
+    "type": "slides",
+    "relevant_segments": [
+      {
+        "para_id": "p54",
+        "section_heading": "5.3 Expected Time To Enumerate Conv(\ud835\udc39 )",
+        "text": "Corollary 6. For a bi-objective instance, MOEA/D working on a minimal complete trade-off set enumerates\ud835\udc36 := Conv(\ud835\udc39 ) in expected time\ud835\udc42 (\ud835\udc5a2 \u221a\ufe01 min{\ud835\udc5b,\ud835\udc5a \u2212 \ud835\udc5b}(\ud835\udc5a(log(\ud835\udc5a\u2212\ud835\udc5b)+3 log\ud835\udc64\ud835\udc5a\ud835\udc4e\ud835\udc65 +|\ud835\udc36 |2)+ log\ud835\udc5b)). Corollary 7. Given a \ud835\udc58-objective instance where \ud835\udc58 \u2208 \ud835\udc5c (\ud835\udc5a) and \ud835\udc58 \u2208 \ud835\udc5c (\ud835\udc64\ud835\udc5a\ud835\udc4e\ud835\udc65 ), MOEA/D working on a minimal complete trade-off set enumerates \ud835\udc36 := Conv(\ud835\udc39 ) in expected time \ud835\udc42 (\ud835\udc5a2\ud835\udc58\u22121 (\ud835\udc5a(log(\ud835\udc5a \u2212 \ud835\udc5b) + (\ud835\udc58 + 1) log\ud835\udc64\ud835\udc5a\ud835\udc4e\ud835\udc65 + |\ud835\udc36 |2) + log\ud835\udc5b)).",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p47",
+        "section_heading": "5.2 Expected Time To Minimize Scalarized Weights",
+        "text": "Corollary 4. For a bi-objective instance, MOEA/D working on a minimal sufficient trade-off set finds a sufficient solution set within \ud835\udc42 (\ud835\udc5a2 \u221a\ufe01 min{\ud835\udc5b,\ud835\udc5a \u2212 \ud835\udc5b}(\ud835\udc5a(log(\ud835\udc5a \u2212 \ud835\udc5b) + 3 log\ud835\udc64\ud835\udc5a\ud835\udc4e\ud835\udc65 ) + log\ud835\udc5b)) expected number of search points.",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p49",
+        "section_heading": "5.2 Expected Time To Minimize Scalarized Weights",
+        "text": "Corollary 5. Given a \ud835\udc58-obbjective instance where \ud835\udc58 \u2208 \ud835\udc5c (\ud835\udc5a) and \ud835\udc58 \u2208 \ud835\udc5c (\ud835\udc64\ud835\udc5a\ud835\udc4e\ud835\udc65 ), MOEA/D working on a minimal sufficient trade-off set guarantees \ud835\udc58-approximation within \ud835\udc42 (\ud835\udc5a2\ud835\udc58\u22121 (\ud835\udc5a(log(\ud835\udc5a \u2212 \ud835\udc5b) + (\ud835\udc58 + 1) log\ud835\udc64\ud835\udc5a\ud835\udc4e\ud835\udc65 ) + log\ud835\udc5b)) expected number of search points.",
+        "seg_type": "par"
+      }
+    ]
+  },
+  {
+    "id": "008",
+    "title": "sp_0580_008",
+    "filename": "Videos/sp_0580.mp4",
+    "paper_filename": "Papers/sp_0580.pdf",
+    "type": "slides",
+    "relevant_segments": [
+      {
+        "para_id": "p1",
+        "section_heading": "Abstract",
+        "text": "We study the multi-objective minimum weight base problem, an abstraction of classical NP-hard combinatorial problems such as the multi-objective minimum spanning tree problem. We prove some important properties of the convex hull of the non-dominated front, such as its approximation quality and an upper bound on the number of extreme points. Using these properties, we give the first run-time analysis of the MOEA/D algorithm for this problem, an evolutionary algorithm that effectively optimizes by decomposing the objectives into single-objective components. We show that the MOEA/D, given an appropriate decomposition setting, finds all extreme points within expected fixed-parameter polynomial time, in the oracle model. Experiments are conducted on random bi-objective minimum spanning tree instances, and the results agree with our theoretical findings. Furthermore, compared with a previously studied evolutionary algorithm for the problem GSEMO, MOEA/D finds all extreme points much faster across all instances.",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p66",
+        "section_heading": "7 Conclusion",
+        "text": "In this study, we contribute to the theoretical analyses of evolutionary multi-objective optimization in the context of non-trivial combinatorial problems. We give the first run-time analysis of the MOEA/D algorithm for a broad problem class that is multi-objective minimum weight base problem. In particular, we show a fixed-parameter polynomial expected run-time for approximating the nondominated front, simultaneously extending existing pseudo-polynomial bounds for GSEMO to arbitrary number of objectives and broader combinatorial structures. Our experiments in random bi-objective minimum spanning tree instances indicate that MOEA/D significantly outperforms GSEMO in the computing extreme points under an appropriate decomposition. Along the way, we prove properties that give further insight into the problem of interest.",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p65",
+        "section_heading": "6.2 Experimental Results",
+        "text": "Inspecting the run-times of MOEA/D in relation to the evaluation budgets, we see that the means of ratios remain fairly stable across instances. This suggests the asymptotic bound in Theorem 3 is not overly pessimistic. Instances 5 and 6 are particularly interesting as they are ostensibly the easiest due to the small number of extreme points, yet MOEA/D seems to require the most fractions of the budget. Given that these instances exhibit the smallest\ud835\udc5a\u2212\ud835\udc5b, this can be explained by the interference of lower-order terms in the asymptotic bound, which are not counted in the budgets.",
+        "seg_type": "par"
+      },
+      {
+        "caption": "Table 1: Means and standard deviations of performance statistics from GSEMO and MOEA/D on bi-objective MST instances. Means and standard deviations of \ud835\udc47 are computed over successful runs only. All differences are statistically significant.",
+        "captionBoundary": {
+          "x1": 107.69100189208984,
+          "x2": 504.00341796875,
+          "y1": 73.6335220336914,
+          "y2": 101.45501708984375
+        },
+        "figType": "Table",
+        "imageText": [
+          "1",
+          "150",
+          "25",
+          "39",
+          "12710536",
+          "2/10",
+          "2.5\u00b10.06%",
+          "0.13\u00b10.11",
+          "79\u00b111%",
+          "10/10",
+          "50\u00b115%",
+          "2",
+          "150",
+          "25",
+          "31",
+          "10103247",
+          "0/10",
+          "3.1\u00b10.14%",
+          "0.25\u00b10.32",
+          "N/A",
+          "10/10",
+          "43\u00b111%",
+          "3",
+          "150",
+          "50",
+          "45",
+          "13988205",
+          "0/10",
+          "1.9\u00b10.1%",
+          "1.7\u00b10.7",
+          "N/A",
+          "10/10",
+          "52\u00b111%",
+          "4",
+          "150",
+          "50",
+          "45",
+          "13988205",
+          "0/10",
+          "2\u00b10.083%",
+          "0.92\u00b10.23",
+          "N/A",
+          "10/10",
+          "47\u00b112%",
+          "5",
+          "150",
+          "100",
+          "35",
+          "9242155",
+          "0/10",
+          "2.5\u00b10.13%",
+          "2.6\u00b11.2",
+          "N/A",
+          "10/10",
+          "63\u00b115%",
+          "6",
+          "150",
+          "100",
+          "36",
+          "9506216",
+          "0/10",
+          "2.2\u00b10.21%",
+          "3.7\u00b12.3",
+          "N/A",
+          "10/10",
+          "58\u00b111%",
+          "7",
+          "300",
+          "25",
+          "45",
+          "68243769",
+          "3/10",
+          "2.2\u00b10.031%",
+          "0.06\u00b10.072",
+          "86\u00b113%",
+          "10/10",
+          "41\u00b111%",
+          "8",
+          "300",
+          "25",
+          "49",
+          "74309882",
+          "1/10",
+          "2\u00b10.031%",
+          "0.076\u00b10.083",
+          "94\u00b10%",
+          "10/10",
+          "40\u00b18.1%",
+          "9",
+          "300",
+          "50",
+          "66",
+          "98392434",
+          "0/10",
+          "1.4\u00b10.048%",
+          "0.49\u00b10.13",
+          "N/A",
+          "10/10",
+          "50\u00b111%",
+          "10",
+          "300",
+          "50",
+          "63",
+          "93920051",
+          "0/10",
+          "1.5\u00b10.045%",
+          "0.8\u00b10.24",
+          "N/A",
+          "10/10",
+          "60\u00b115%",
+          "11",
+          "300",
+          "100",
+          "79",
+          "113013110",
+          "0/10",
+          "1.1\u00b10.043%",
+          "2\u00b10.53",
+          "N/A",
+          "10/10",
+          "60\u00b18.3%",
+          "12",
+          "300",
+          "100",
+          "80",
+          "114443656",
+          "0/10",
+          "1.1\u00b10.072%",
+          "3.1\u00b11",
+          "N/A",
+          "10/10",
+          "58\u00b111%",
+          "Suc.",
+          "rate",
+          "Cover",
+          "rate",
+          "IGD+",
+          "T/max",
+          "eval.",
+          "Suc.",
+          "rate",
+          "T/max",
+          "eval.",
+          "Id",
+          "\ud835\udc5a",
+          "\ud835\udc5b",
+          "|\ud835\udc45",
+          "|",
+          "max",
+          "eval.",
+          "GSEMO",
+          "MOEA/D"
+        ],
+        "name": "1",
+        "page": 9,
+        "regionBoundary": {
+          "x1": 108.96,
+          "x2": 503.03999999999996,
+          "y1": 106.56,
+          "y2": 263.03999999999996
+        },
+        "renderDpi": 150,
+        "renderURL": "/Users/meghamariam/PROJECTS/PROJ1_Dataset/PROJ1_Crossmodal-Traversal/DATASET/Presentation/pap-seg/fig/sp_0580/sp_0580-Table1-1.png",
+        "id": "sp_0580-Table1-1",
+        "seg_type": "tab"
+      }
+    ]
+  },
+  {
+    "id": "009",
+    "title": "sp_0580_009",
+    "filename": "Videos/sp_0580.mp4",
+    "paper_filename": "Papers/sp_0580.pdf",
+    "type": "slides",
+    "relevant_segments": [
+      {
+        "para_id": "p66",
+        "section_heading": "7 Conclusion",
+        "text": "In this study, we contribute to the theoretical analyses of evolutionary multi-objective optimization in the context of non-trivial combinatorial problems. We give the first run-time analysis of the MOEA/D algorithm for a broad problem class that is multi-objective minimum weight base problem. In particular, we show a fixed-parameter polynomial expected run-time for approximating the nondominated front, simultaneously extending existing pseudo-polynomial bounds for GSEMO to arbitrary number of objectives and broader combinatorial structures. Our experiments in random bi-objective minimum spanning tree instances indicate that MOEA/D significantly outperforms GSEMO in the computing extreme points under an appropriate decomposition. Along the way, we prove properties that give further insight into the problem of interest.",
+        "seg_type": "par"
+      }
+    ]
+  }
+]

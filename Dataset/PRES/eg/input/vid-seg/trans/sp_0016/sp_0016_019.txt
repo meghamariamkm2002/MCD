@@ -1,0 +1,1 @@
+In conclusion, we have shown that NAP is the first method that can be meta-trained end-to-end to predict acquisition functions and that it's applicable to various domains and get very good results provided little meta-training data.

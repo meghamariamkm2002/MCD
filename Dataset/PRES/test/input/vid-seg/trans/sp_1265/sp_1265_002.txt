@@ -1,0 +1,6 @@
+So as we know, ARAM achieves very impressive performance in many tasks, but we also find some issues for the misuse of tasks like finance and healthcare because they are limited due to their immense scale at deployment and sometimes misinformation and hallucination stuff.
+So one promotion solution is to fine-tune small language models on target domain data, but it requires extensive human effort and the expert knowledge, which makes supervised fine-training very expensive.
+To solve this problem, we propose this new stuff.
+based on the three intuitions.
+One is how can we leverage high-fidelity human annotations and low-fidelity RM annotations together to build interactive fine-training process incorporated with knowledge distillation through problem retrieval.
+Given a limited budget, can we leverage less human effort with large RM annotations to achieve competitive performance?

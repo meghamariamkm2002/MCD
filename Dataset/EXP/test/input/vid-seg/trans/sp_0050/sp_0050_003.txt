@@ -1,0 +1,39 @@
+and takes a model that has been trained on protein data.
+So if you look at this protein, it is simply a sequence of amino acids.
+And these amino acids, they all have names.
+I think I have a table somewhere here.
+Yes.
+So these are the different amino acids that exist.
+And you can see a protein is simply a sequence of these names.
+So usually they're abbreviated by like a three-letter abbreviation or just a one-letter abbreviation.
+So a protein might be A, V, M, M, V, A, G and so on.
+And this is just a string of text, right?
+So what I can do is I can train a language model on this.
+A language model is simply a model that takes a piece of text and tells you what's the next piece of text.
+So what's the next letter?
+What's the next word?
+In this case, what's the next amino acid?
+And we can use tools from NLP for that.
+Specifically, we can train a BERT model.
+A BERT works a bit differently than a standard language model.
+BERT does what is called masked language modeling.
+So you would take this string, you would feed it into a BERT model right here.
+And I've made an entire video on BERT if you want to check that out.
+And what you'll do by inputting that, you'll mask out some of the tokens.
+So you'll maybe mask out this one, mask out this one, and then you ask the model to reconstruct those.
+We say that here is an M and here is an A without seeing them.
+So the model somehow has to learn from the surrounding amino acids what this amino acid could be.
+So it has to reconstruct this sequence.
+So, the hope here is in natural language is that Burt somehow learns something about language itself.
+By being able to reconstruct these things, it has learned something about language, about which words appear together and when.
+It might even learn very long distance relationships between words just because it has to predict those.
+the idea carries over to biology.
+So we might hope that a BERT trained on an amino acid sequence will learn something about the language of proteins about the amino acid sequence.
+And our goal here is to be to ask
+Can we somehow infer the 3D shape of a protein, which is the important part, from its sequence right here?
+So given its sequence, can we infer the 3D shape?
+Now, as I understand it, usually this has to be done in like a simulation.
+So you would build this in a simulator and then you do like some sort of a molecule simulation to see how this ends up in a 3D shape.
+you could train a model to just predict the 3D shape but in this case we're just interested what does the BERT model learn about the 3D shape while only ever having been trained on predicting the next or predicting the sequence of amino acids.
+So it's never been trained to to look at the 3D shape and that's our goal here.
+So specifically we'll look at two

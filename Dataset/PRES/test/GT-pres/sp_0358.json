@@ -1,0 +1,1113 @@
+[
+  {
+    "id": "002",
+    "title": "sp_0358_002",
+    "filename": "Videos/sp_0358.mp4",
+    "paper_filename": "Papers/sp_0358.pdf",
+    "type": "slides",
+    "relevant_segments": [
+      {
+        "para_id": "p1",
+        "section_heading": "Abstract",
+        "text": "Recent studies in reinforcement learning (RL) have made significant progress by leveraging function approximation to alleviate the sample complexity hurdle for better performance. Despite the success, existing provably efficient algorithms typically rely on the accessibility of immediate feedback upon taking actions. The failure to account for the impact of delay in observations can significantly degrade the performance of real-world systems due to the regret blow-up. In this work, we tackle the challenge of delayed feedback in RL with linear function approximation by employing posterior sampling, which has been shown to empirically outperform the popular UCB algorithms in a wide range of regimes. We first introduce Delayed-PSVI, an optimistic value-based algorithm that effectively explores the value function space via noise perturbation with posterior sampling. We provide the first analysis for posterior sampling algorithms with delayed feedback in RL and show our algorithm achieves \u00d5( \u221a d3H3T + dHE[\u03c4 ]) worst-case regret in the presence of unknown stochastic delays. Here E[\u03c4 ] is the expected delay. To further improve its computational efficiency and to expand its applicability in high-dimensional RL problems, we incorporate a gradient-based approximate sampling scheme via Langevin dynamics for Delayed-LPSVI, which maintains the same order-optimal regret guarantee with \u00d5(dHK) computational cost. Empirical evaluations are performed to demonstrate the statistical and computational efficacy of our algorithms.",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p5",
+        "section_heading": "1 Introduction",
+        "text": "on the availability of immediate observations of states, actions and rewards in learning no-regret policies. Unfortunately, such an assumption is rarely satisfied in real-world domains, where delayed feedback is ubiquitous and fundamental. In recommender systems and online advertisement, for instance, responses from users (e.g. click, purchase) may not be immediately observable, which can take hours or days. In healthcare and clinical trials, medical feedback from patients on the effectiveness of treatments can only be determined at a deferred time frame. More examples exist in platforms that involve human interaction and evaluation, including human-robot collaboration in teleoperating systems and multi-agent systems [15, 39], aligning LLMs with human values [50, 63], and fine-tuning generative AI models using RL with human feedback (RLHF) [11, 41].",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p5",
+        "section_heading": "1 Introduction",
+        "text": "on the availability of immediate observations of states, actions and rewards in learning no-regret policies. Unfortunately, such an assumption is rarely satisfied in real-world domains, where delayed feedback is ubiquitous and fundamental. In recommender systems and online advertisement, for instance, responses from users (e.g. click, purchase) may not be immediately observable, which can take hours or days. In healthcare and clinical trials, medical feedback from patients on the effectiveness of treatments can only be determined at a deferred time frame. More examples exist in platforms that involve human interaction and evaluation, including human-robot collaboration in teleoperating systems and multi-agent systems [15, 39], aligning LLMs with human values [50, 63], and fine-tuning generative AI models using RL with human feedback (RLHF) [11, 41].",
+        "seg_type": "par"
+      }
+    ]
+  },
+  {
+    "id": "003",
+    "title": "sp_0358_003",
+    "filename": "Videos/sp_0358.mp4",
+    "paper_filename": "Papers/sp_0358.pdf",
+    "type": "slides",
+    "relevant_segments": [
+      {
+        "para_id": "p5",
+        "section_heading": "1 Introduction",
+        "text": "on the availability of immediate observations of states, actions and rewards in learning no-regret policies. Unfortunately, such an assumption is rarely satisfied in real-world domains, where delayed feedback is ubiquitous and fundamental. In recommender systems and online advertisement, for instance, responses from users (e.g. click, purchase) may not be immediately observable, which can take hours or days. In healthcare and clinical trials, medical feedback from patients on the effectiveness of treatments can only be determined at a deferred time frame. More examples exist in platforms that involve human interaction and evaluation, including human-robot collaboration in teleoperating systems and multi-agent systems [15, 39], aligning LLMs with human values [50, 63], and fine-tuning generative AI models using RL with human feedback (RLHF) [11, 41].",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p1",
+        "section_heading": "Abstract",
+        "text": "Recent studies in reinforcement learning (RL) have made significant progress by leveraging function approximation to alleviate the sample complexity hurdle for better performance. Despite the success, existing provably efficient algorithms typically rely on the accessibility of immediate feedback upon taking actions. The failure to account for the impact of delay in observations can significantly degrade the performance of real-world systems due to the regret blow-up. In this work, we tackle the challenge of delayed feedback in RL with linear function approximation by employing posterior sampling, which has been shown to empirically outperform the popular UCB algorithms in a wide range of regimes. We first introduce Delayed-PSVI, an optimistic value-based algorithm that effectively explores the value function space via noise perturbation with posterior sampling. We provide the first analysis for posterior sampling algorithms with delayed feedback in RL and show our algorithm achieves \u00d5( \u221a d3H3T + dHE[\u03c4 ]) worst-case regret in the presence of unknown stochastic delays. Here E[\u03c4 ] is the expected delay. To further improve its computational efficiency and to expand its applicability in high-dimensional RL problems, we incorporate a gradient-based approximate sampling scheme via Langevin dynamics for Delayed-LPSVI, which maintains the same order-optimal regret guarantee with \u00d5(dHK) computational cost. Empirical evaluations are performed to demonstrate the statistical and computational efficacy of our algorithms.",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p5",
+        "section_heading": "1 Introduction",
+        "text": "on the availability of immediate observations of states, actions and rewards in learning no-regret policies. Unfortunately, such an assumption is rarely satisfied in real-world domains, where delayed feedback is ubiquitous and fundamental. In recommender systems and online advertisement, for instance, responses from users (e.g. click, purchase) may not be immediately observable, which can take hours or days. In healthcare and clinical trials, medical feedback from patients on the effectiveness of treatments can only be determined at a deferred time frame. More examples exist in platforms that involve human interaction and evaluation, including human-robot collaboration in teleoperating systems and multi-agent systems [15, 39], aligning LLMs with human values [50, 63], and fine-tuning generative AI models using RL with human feedback (RLHF) [11, 41].",
+        "seg_type": "par"
+      }
+    ]
+  },
+  {
+    "id": "004",
+    "title": "sp_0358_004",
+    "filename": "Videos/sp_0358.mp4",
+    "paper_filename": "Papers/sp_0358.pdf",
+    "type": "slides",
+    "relevant_segments": [
+      {
+        "para_id": "p7",
+        "section_heading": "1 Introduction",
+        "text": "PS is a randomized Bayesian algorithm that extends Thompson sampling (TS) [57] to RL, which selects an action according to its posterior probability of being the best. This philosophy inspires a number of promising exploration strategies that explicitly or implicitly adopt PS to explore [52], including bootstrapped DQN [42, 47] and RLSVI [49]. Compared to the popular UCB algorithms, it bears greater robustness in the presence of delays [14], and provides exceptional computational efficiency with competitive empirical performance [14, 65]. The fact that posteriors are often intractable in practice necessitates the use of approximate Bayesian inference such as ensemble sampling, variational inference (VI) and Markov Chain Monte Carlo (MCMC) [20, 38, 47].",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p19",
+        "section_heading": "1.1 Related Work.",
+        "text": "Posterior sampling. To encourage efficient exploration, PS is adopted in value-based methods to inject randomness in empirical Bellman update via Gaussian noise. From the Bayesian perspective, it is equivalent to maintaining an approximate Gaussian posterior for parameterized value function. Its sample complexity is studied in tabular settings [48, 49, 53], with the sharp worst-case regret of O\u0303(H2S \u221a AT ) [5]. Under linear function approximation, frequentist regret of O\u0303( \u221a d3H3T ) [31, 72] and Bayesian regret of O\u0303(d \u221a H3T ) [19] are established. However, in complex problem domains that require higher computational efficiency and more refined surrogates, approximate inference is the remedy. Toward this end, we resort to a gradient-based MCMC method.",
+        "seg_type": "par"
+      }
+    ]
+  },
+  {
+    "id": "005",
+    "title": "sp_0358_005",
+    "filename": "Videos/sp_0358.mp4",
+    "paper_filename": "Papers/sp_0358.pdf",
+    "type": "slides",
+    "relevant_segments": [
+      {
+        "para_id": "p22",
+        "section_heading": "2 Preliminaries",
+        "text": "We study the finite-horizon episodic MDP (S,A, H,P, r), which is time-inhomogeneous, and denote by S, A the state and action spaces respectively, H the episode length, P = {Ph}Hh=1 the",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p23",
+        "section_heading": "2 Preliminaries",
+        "text": "transition dynamics, and r = {rh}Hh=1 reward function. At each step h \u2208 [H], Ph : S \u00d7 A \u2192 \u2206S specifies the probabilities of transitioning from the current state-action pair into the next state, and rh : S\u00d7A \u2192 [0, 1] emits a bounded reward. We adopt the prior protocol of linear MDPs as follows. Definition 1 (Linear MDPs [35, 66]). Suppose there exists a known feature map \u03d5 : S \u00d7 A \u2192 Rd that encodes each state-action pair into a d-dimensional feature vector. An MDP is a linear MDP3 if for any time step h \u2208 [H], \u2200(s, a) \u2208 S \u00d7A, both the transition dynamics P and reward function r are linear in \u03d5:",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p24",
+        "section_heading": "2 Preliminaries",
+        "text": "where \u00b5h : S \u2192 Rd contains d unknown probability measures over S, and \u03b8h \u2208 Rd. Furthermore, we assume that \u2200(s, a) \u2208 S \u00d7 A, \u2225\u03d5(s, a)\u2225 \u2264 1, and \u2200h \u2208 [H], \u2225\u03b8h\u2225 \u2264 \u221a d, \u2225\u2225\u222b S d\u00b5h(s \u2032) \u2225\u2225 \u2264 \u221ad, where \u2225\u00b7\u2225 denotes the Euclidean norm.",
+        "seg_type": "par"
+      },
+      {
+        "box": [
+          385.6951904296875,
+          321.6114807128906,
+          837.4939575195312,
+          351.6646728515625
+        ],
+        "text": [
+          "\\mathbb { P } _ { h } ( \\cdot | s , a ) = \\phi ( s , a ) ^ { \\mathrm { T } } \\mu _ { h } ( \\cdot ) , \\qquad r _ { h } ( s , a ) = \\phi ( s , a ) ^ { \\mathrm { T } } \\theta _ { h } ,"
+        ],
+        "page": "sp_0358_page_0004",
+        "id": "sp_0358_page_0004-4",
+        "seg_type": "eq"
+      }
+    ]
+  },
+  {
+    "id": "006",
+    "title": "sp_0358_006",
+    "filename": "Videos/sp_0358.mp4",
+    "paper_filename": "Papers/sp_0358.pdf",
+    "type": "slides",
+    "relevant_segments": [
+      {
+        "para_id": "p30",
+        "section_heading": "2 Preliminaries",
+        "text": "The goal of the agent is to maximize the cumulative episodic rewards or equivalently, minimize the regret that quantifies the difference between the value of the optimal policy \u03c0\u2217 and that of the executed policies. Formally, the worse-case regret over K episodes is given as:",
+        "seg_type": "par"
+      },
+      {
+        "box": [
+          478.858154296875,
+          860.2199096679688,
+          746.8515625,
+          928.936767578125
+        ],
+        "text": [
+          "R ( T ) = \\sum _ { k = 1 } ^ { K } V _ { 1 } ^ { * } ( s _ { 1 } ^ { k } ) - V _ { 1 } ^ { \\pi _ { k } } ( s _ { 1 } ^ { k } ) ."
+        ],
+        "page": "sp_0358_page_0004",
+        "id": "sp_0358_page_0004-1",
+        "seg_type": "eq"
+      }
+    ]
+  },
+  {
+    "id": "007",
+    "title": "sp_0358_007",
+    "filename": "Videos/sp_0358.mp4",
+    "paper_filename": "Papers/sp_0358.pdf",
+    "type": "slides",
+    "relevant_segments": [
+      {
+        "para_id": "p32",
+        "section_heading": "2.1 Delayed Feedback Model",
+        "text": "In this work, we consider stochastic delays across episodes. More specifically, the trajectory (i.e., sequence of states, actions and rewards) generated in each episode is not immediately observable in the presence of delay. The formal definition is given as follows.",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p33",
+        "section_heading": "2.1 Delayed Feedback Model",
+        "text": "Definition 2 (Episodic Delayed Feedback). In each episode k \u2208 [K], the execution of a fixed policy \u03c0k generates a trajectory {skh, akh, rkh, skh+1}h\u2208[H]. Such trajectory information is called the feedback of episode k. Let \u03c4k represent the random delay between the rollout completion of episode k and the time point at which its feedback becomes observable.",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p35",
+        "section_heading": "2.1 Delayed Feedback Model",
+        "text": "Episodic delays do not disrupt the policy rollout within an episode, but alter the utilization of information in subsequent episodes. More precisely, the feedback of episode k remains inaccessible for the following \u03c4k \u2212 1 episodes, becoming observable only at the onset of the (k+ \u03c4k)-th episode. To track whether the feedback generated at episode k is revealed at episode k\u2032, we utilize the indicator 1k,k\u2032 := 1{k + \u03c4k \u2264 k\u2032} (where 1 denotes \u201cyes\u201d and 0 denotes \u201cno\u201d). We follow the standard assumption in literature in [28, 68] to assume delays are sub-exponential. It is crucial to note that this assumption primarily serves the purpose of theoretical analysis and is not a prerequisite for the effective functioning of our algorithms in practical settings. Without loss of generality, we discuss the performance bound under general random delays in Section 4 and empirically study the performance against different types of delays in Section 5. Assumption 1 (Sub-exponential Episodic Delay). The episodic delays {\u03c4k}Kk=1 are non-negative, integer-valued, independent and identically distributed (v, b)-subexponential random variables:",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p36",
+        "section_heading": "2.1 Delayed Feedback Model",
+        "text": "\u03c4k i.i.d.\u223c f\u03c4 (\u00b7) with f\u03c4 (\u00b7) being the probability mass function, and E[\u03c4 ] being the expected value. For all k \u2208 [K], the moment generating function of \u03c4k satisfies:",
+        "seg_type": "par"
+      }
+    ]
+  },
+  {
+    "id": "008",
+    "title": "sp_0358_008",
+    "filename": "Videos/sp_0358.mp4",
+    "paper_filename": "Papers/sp_0358.pdf",
+    "type": "slides",
+    "relevant_segments": [
+      {
+        "para_id": "p39",
+        "section_heading": "3 Delayed Posterior Sampling Value Iteration",
+        "text": "Noisy value iteration via posterior sampling. At the beginning of each episode, we apply PS to sample an estimated value function from the posterior, which is maintained using the observed feedback D over the previous episodes. Specifically, at each time step, the Q-function is parameterized by some w \u2208 \u0393 such that Q\u0303(s, a) = \u03d5(s, a)Tw is an approximation of the corresponding true optimal Q-function Q\u2217(s, a). Let p0(w) be the prior of w, and p(y|w,D) be the likelihood of the observation y, then the posterior of w satisfies:",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p7",
+        "section_heading": "1 Introduction",
+        "text": "PS is a randomized Bayesian algorithm that extends Thompson sampling (TS) [57] to RL, which selects an action according to its posterior probability of being the best. This philosophy inspires a number of promising exploration strategies that explicitly or implicitly adopt PS to explore [52], including bootstrapped DQN [42, 47] and RLSVI [49]. Compared to the popular UCB algorithms, it bears greater robustness in the presence of delays [14], and provides exceptional computational efficiency with competitive empirical performance [14, 65]. The fact that posteriors are often intractable in practice necessitates the use of approximate Bayesian inference such as ensemble sampling, variational inference (VI) and Markov Chain Monte Carlo (MCMC) [20, 38, 47].",
+        "seg_type": "par"
+      }
+    ]
+  },
+  {
+    "id": "009",
+    "title": "sp_0358_009",
+    "filename": "Videos/sp_0358.mp4",
+    "paper_filename": "Papers/sp_0358.pdf",
+    "type": "slides",
+    "relevant_segments": [
+      {
+        "para_id": "p38",
+        "section_heading": "3 Delayed Posterior Sampling Value Iteration",
+        "text": "In this section, we introduce a novel optimistic value-based algorithm, namely, Delayed Posterior Sampling Value Iteration (Delayed-PSVI), which efficiently explores the value function space in linear MDPs by embracing several critical components: posterior sampling that injects random noise when performing the least-square value iteration, optimism via multi-round sampling to achieve the optimal worst-case regret and delayed feedback model that encodes episodic trajectory delays.",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p43",
+        "section_heading": "3 Delayed Posterior Sampling Value Iteration",
+        "text": "On the other hand, the w\u0302kh computed in Line 9 of Algorithm 1 together with the greedy choice V\u0303 (\u00b7) \u2248 maxa Q\u0303(\u00b7, a) (Line 15) approximates the solution of Bellman optimality equation via the least-square ridge regression: w\u0302kh = argminw \u2211k\u22121 \u03c4=1(\u03d5(s \u03c4 h, a \u03c4 h)",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p42",
+        "section_heading": "3 Delayed Posterior Sampling Value Iteration",
+        "text": "where \u2126kh := \u03a6h\u03a6 T h + \u03bbId and \u03a6h = [\u03d5(s 1 h, a 1 h), \u03d5(s 2 h, a 2 h), . . . , \u03d5(s k\u22121 h , a k\u22121 h )]. Adding the scaling factors \u03c32 and \u03bd2 yields the Line 10 of Algorithm 1. It is important to note that while the induced likelihood exp(\u2212L(wkh,ykh,Dkh)) from (3) is Gaussian, we do not assume y\u03c4h = r\u03c4h(s\u03c4h, a\u03c4h) +V\u0303h+1(s \u03c4 h+1) follows a Gaussian distribution. Instead, the above likelihood model can be used for non-Gaussian problems as we need not sample from the exact Bayesian posterior model [2, 74].",
+        "seg_type": "par"
+      },
+      {
+        "box": [
+          452.3579406738281,
+          1423.0521240234375,
+          769.927490234375,
+          1448.0673828125
+        ],
+        "text": [
+          "p ( w | \\mathcal { D } , y ) \\propto \\exp ( - L ( w , y , \\mathcal { D } ) ) p _ { 0 } ( w ) ,"
+        ],
+        "page": "sp_0358_page_0005",
+        "id": "sp_0358_page_0005-2",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          423.7413635253906,
+          387.952880859375,
+          796.8388671875,
+          428.1495666503906
+        ],
+        "text": [
+          "\\begin{array} { r } { p ( { \\boldsymbol w } _ { h } ^ { k } | \\mathcal { D } _ { h } , { \\boldsymbol y } _ { h } ) \\propto \\mathcal { N } \\Big ( ( \\Omega _ { h } ^ { k } ) ^ { - 1 } \\Phi _ { h } { \\boldsymbol y } _ { h } ^ { \\mathrm { T } } , ( \\Omega _ { h } ^ { k } ) ^ { - 1 } \\Big ) , } \\end{array}"
+        ],
+        "page": "sp_0358_page_0006",
+        "id": "sp_0358_page_0006-2",
+        "seg_type": "eq"
+      }
+    ]
+  },
+  {
+    "id": "010",
+    "title": "sp_0358_010",
+    "filename": "Videos/sp_0358.mp4",
+    "paper_filename": "Papers/sp_0358.pdf",
+    "type": "slides",
+    "relevant_segments": [
+      {
+        "para_id": "p38",
+        "section_heading": "3 Delayed Posterior Sampling Value Iteration",
+        "text": "In this section, we introduce a novel optimistic value-based algorithm, namely, Delayed Posterior Sampling Value Iteration (Delayed-PSVI), which efficiently explores the value function space in linear MDPs by embracing several critical components: posterior sampling that injects random noise when performing the least-square value iteration, optimism via multi-round sampling to achieve the optimal worst-case regret and delayed feedback model that encodes episodic trajectory delays.",
+        "seg_type": "par"
+      },
+      {
+        "input_path": "/tmp/megha/PDF-Extract-Kit/Presentation/layout_pap/sp_0358/sp_0358_page_5.png",
+        "cls_id": 14,
+        "label": "algorithm",
+        "score": 0.9553103446960449,
+        "coordinate": [
+          452.6309509277344,
+          311.0320739746094,
+          2097.83056640625,
+          1296.575927734375
+        ],
+        "text": "Input: priors po(wk) \u2190 N (0, \u03bbI), scaling factor \u03bd, multi-round paramter M, hyper parameters \u03bb\nand \u03c32.\nInitialization: \u2200k, h, Qk+1 (, \u00b7), VH+1(., \u00b7), Vh(\u00b7, \u00b7) \u2190 0, Dh \u2190 .\nfor episode k = 1, . . . , K do\nSample initial state sk\nk\nfor time step h = H, . . . , 1 do\nyh \u2190 [y1, . . , yk\u22121], with y\u03c4 \u2190 1\u03c4,k\u22121 \u00b7 [r\u03c4 + Vh+1(sh+1)\n\u03a6h \u2190 [\u03c61, \u03c62, . . . , \u03c6k\u22121] with \u03c6\u03c4 = 1\u03c4,k\u22121 \u00b7 \u03c6(sh, a\u03c4)\n\u03a9k \u2190 \u03c3\u22122\u03a6h\u03a6T + \u03bbI, wk \u2190 \u03c3\u22122(\u03a9k)\u22121\u03a6hyh\nT\np(wk | Dh, Yh) \u2190 N (wk, \u03bd2 . (\u03a9k)\u22121)\nfor m = 1, . . . , M do\nSample wk,\nk,m\n \u223c p(\u03c9k | Dh, Yh)\nWn\nUpdate Qk(, \u00b7) \u2190 maxm Q\nk,m\nh\nVh(, \u00b7) \u2190 maxa min{Qk(\u00b7, a), H \u2212 h + 1}\n{I +  \u2212 H ( \u00b7.)}u \u03c9 \u2192 (\u00b7) d\u2229\nfor time step h = 1, . . . , H do\n-\nCollect trajectory observations Dh \u2190 Dh \u222a {(sk, ak, rk, sk+1)}\n/* Feedback generated in episode k cannot be immediately observed in the presence of delay",
+        "id": "sp_0358_page_5_1",
+        "seg_type": "algo"
+      }
+    ]
+  },
+  {
+    "id": "011",
+    "title": "sp_0358_011",
+    "filename": "Videos/sp_0358.mp4",
+    "paper_filename": "Papers/sp_0358.pdf",
+    "type": "slides",
+    "relevant_segments": [
+      {
+        "para_id": "p47",
+        "section_heading": "3 Delayed Posterior Sampling Value Iteration",
+        "text": "As a result, episodic delays are considered during the posterior updates in subsequent episodes. This completes the design of Delayed-PSVI as presented in Algorithm 1. In the remainder of this section, we present the main theoretical guarantees of Delayed-PSVI and the proof sketch of Theorem 1. Theorem 1. Suppose delays satisfy Assumption 1. In any episodic linear MDP with time horizon T = KH , where K is the total number of episodes, for any 0 < \u03b4 < 1, let \u03bb = 1, \u03c32 = 1, M = log(4HK/\u03b4)/ log(64/63) and \u03bd = C\u03b4/4 \u2248 O\u0303( \u221a dMH2) (C\u03b4/4 in Lemma B.10). Then with probability at least 1 \u2212 \u03b4, there exists some absolute constants c, c\u2032, c\u2032\u2032 > 0 such that the regret of Delayed-PSVI (Algorithm 1) satisfies:",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p48",
+        "section_heading": "3 Delayed Posterior Sampling Value Iteration",
+        "text": "Here \u03b9 is a Polylog term of H, d,K, \u03b4.",
+        "seg_type": "par"
+      },
+      {
+        "box": [
+          435.6290283203125,
+          1349.4599609375,
+          786.5931396484375,
+          1378.9298095703125
+        ],
+        "text": [
+          "\\begin{array} { r } { R ( T ) \\leq c \\sqrt { d ^ { 3 } H ^ { 3 } T \\iota } + c ^ { \\prime } d ^ { 2 } H ^ { 2 } \\mathbb { E } [ \\tau ] \\iota + c ^ { \\prime \\prime } \\iota . } \\end{array}"
+        ],
+        "page": "sp_0358_page_0006",
+        "id": "sp_0358_page_0006-4",
+        "seg_type": "eq"
+      },
+      {
+        "caption": "Table 1: Summary of regret bounds in linear bandits and episodic MDPs under stochastic delay. We denote by T the time horizon, K the number of episodes, H the episode length, d the dimension of feature space, M the number of sampling rounds, and N the total iterations in running LMC. Our choice of M and N has order of Polylog(H,K, d, \u03b4), ensuring both Delayed-PSVI and Delayed-LPSVI are computationally efficient and statistically sample-efficient. We remark that the gap in the frequentist regret between PS and best UCBbased methods is unavoidable by a factor of \u221a d [24]. Thus, our dependencies on d and T are optimal for the class of PS algorithms. Our results fulfill the caveat [60] that no worst-case analysis exists for PS with delay.",
+        "captionBoundary": {
+          "x1": 107.99993133544922,
+          "x2": 504.00177001953125,
+          "y1": 234.19674682617188,
+          "y2": 300.75
+        },
+        "figType": "Table",
+        "imageText": [
+          "PS",
+          "Lower",
+          "bound",
+          "[24]",
+          "Linear",
+          "Bandits",
+          "PS",
+          "\u2126(",
+          "\u221a",
+          "d3T",
+          ")",
+          "\u2014\u2013",
+          "Delayed-PSLB",
+          "(Cor",
+          "2)",
+          "Linear",
+          "Bandits",
+          "PS",
+          "O\u0303(",
+          "\u221a",
+          "d3T",
+          "+",
+          "d2E[\u03c4",
+          "])",
+          "O((N",
+          "+",
+          "d)MK)",
+          "UCB",
+          "Lower",
+          "bound",
+          "[27]",
+          "Linear",
+          "MDPs",
+          "UCB",
+          "\u2126(dH",
+          "\u221a",
+          "T",
+          ")",
+          "\u2014\u2013",
+          "Delayed-LPSVI",
+          "(Thm",
+          "2)",
+          "Linear",
+          "MDPs",
+          "PS",
+          "O\u0303(",
+          "\u221a",
+          "d3H3T",
+          "+",
+          "d2H2E[\u03c4",
+          "])",
+          "O((N",
+          "+",
+          "d)MHK)",
+          "Delayed-PSVI",
+          "(Thm",
+          "1)",
+          "Linear",
+          "MDPs",
+          "PS",
+          "O\u0303(",
+          "\u221a",
+          "d3H3T",
+          "+",
+          "d2H2E[\u03c4",
+          "])",
+          "O((d3",
+          "+Md)HK)",
+          "k=1",
+          "\u03c4k)",
+          "Confidence",
+          "set",
+          "optimization",
+          "[28]",
+          "Linear",
+          "Bandits",
+          "UCB",
+          "O\u0303(d",
+          "\u221a",
+          "T",
+          "+",
+          "d3/2E[\u03c4",
+          "])",
+          "Confidence",
+          "set",
+          "optimization",
+          "[29]",
+          "Tabular",
+          "MDPs",
+          "UCB",
+          "O\u0303(",
+          "\u221a",
+          "SAH3T",
+          "+",
+          "S2AH3E[\u03c4",
+          "])",
+          "Active",
+          "update",
+          "[68]",
+          "Linear",
+          "MDPs",
+          "UCB",
+          "O\u0303(",
+          "\u221a",
+          "d3H3T",
+          "+",
+          "dH2E[\u03c4",
+          "])",
+          "Multi-batch",
+          "reduction",
+          "[40]",
+          "Adversarial",
+          "MDPs",
+          "UCB",
+          "O\u0303(H2S",
+          "\u221a",
+          "AK",
+          "+H3/2",
+          "\u221a",
+          "S",
+          "\u2211K",
+          "Algorithms",
+          "Setting",
+          "Exploration",
+          "Worst-case",
+          "Regret",
+          "Computation"
+        ],
+        "name": "1",
+        "page": 2,
+        "regionBoundary": {
+          "x1": 108.96,
+          "x2": 503.03999999999996,
+          "y1": 105.6,
+          "y2": 226.07999999999998
+        },
+        "renderDpi": 150,
+        "renderURL": "/Users/meghamariam/PROJECTS/PROJ1_Dataset/PROJ1_Crossmodal-Traversal/DATASET/Presentation/pap-seg/fig/sp_0358/sp_0358-Table1-1.png",
+        "id": "sp_0358-Table1-1",
+        "seg_type": "tab"
+      }
+    ]
+  },
+  {
+    "id": "012",
+    "title": "sp_0358_012",
+    "filename": "Videos/sp_0358.mp4",
+    "paper_filename": "Papers/sp_0358.pdf",
+    "type": "slides",
+    "relevant_segments": [
+      {
+        "caption": "Table 1: Summary of regret bounds in linear bandits and episodic MDPs under stochastic delay. We denote by T the time horizon, K the number of episodes, H the episode length, d the dimension of feature space, M the number of sampling rounds, and N the total iterations in running LMC. Our choice of M and N has order of Polylog(H,K, d, \u03b4), ensuring both Delayed-PSVI and Delayed-LPSVI are computationally efficient and statistically sample-efficient. We remark that the gap in the frequentist regret between PS and best UCBbased methods is unavoidable by a factor of \u221a d [24]. Thus, our dependencies on d and T are optimal for the class of PS algorithms. Our results fulfill the caveat [60] that no worst-case analysis exists for PS with delay.",
+        "captionBoundary": {
+          "x1": 107.99993133544922,
+          "x2": 504.00177001953125,
+          "y1": 234.19674682617188,
+          "y2": 300.75
+        },
+        "figType": "Table",
+        "imageText": [
+          "PS",
+          "Lower",
+          "bound",
+          "[24]",
+          "Linear",
+          "Bandits",
+          "PS",
+          "\u2126(",
+          "\u221a",
+          "d3T",
+          ")",
+          "\u2014\u2013",
+          "Delayed-PSLB",
+          "(Cor",
+          "2)",
+          "Linear",
+          "Bandits",
+          "PS",
+          "O\u0303(",
+          "\u221a",
+          "d3T",
+          "+",
+          "d2E[\u03c4",
+          "])",
+          "O((N",
+          "+",
+          "d)MK)",
+          "UCB",
+          "Lower",
+          "bound",
+          "[27]",
+          "Linear",
+          "MDPs",
+          "UCB",
+          "\u2126(dH",
+          "\u221a",
+          "T",
+          ")",
+          "\u2014\u2013",
+          "Delayed-LPSVI",
+          "(Thm",
+          "2)",
+          "Linear",
+          "MDPs",
+          "PS",
+          "O\u0303(",
+          "\u221a",
+          "d3H3T",
+          "+",
+          "d2H2E[\u03c4",
+          "])",
+          "O((N",
+          "+",
+          "d)MHK)",
+          "Delayed-PSVI",
+          "(Thm",
+          "1)",
+          "Linear",
+          "MDPs",
+          "PS",
+          "O\u0303(",
+          "\u221a",
+          "d3H3T",
+          "+",
+          "d2H2E[\u03c4",
+          "])",
+          "O((d3",
+          "+Md)HK)",
+          "k=1",
+          "\u03c4k)",
+          "Confidence",
+          "set",
+          "optimization",
+          "[28]",
+          "Linear",
+          "Bandits",
+          "UCB",
+          "O\u0303(d",
+          "\u221a",
+          "T",
+          "+",
+          "d3/2E[\u03c4",
+          "])",
+          "Confidence",
+          "set",
+          "optimization",
+          "[29]",
+          "Tabular",
+          "MDPs",
+          "UCB",
+          "O\u0303(",
+          "\u221a",
+          "SAH3T",
+          "+",
+          "S2AH3E[\u03c4",
+          "])",
+          "Active",
+          "update",
+          "[68]",
+          "Linear",
+          "MDPs",
+          "UCB",
+          "O\u0303(",
+          "\u221a",
+          "d3H3T",
+          "+",
+          "dH2E[\u03c4",
+          "])",
+          "Multi-batch",
+          "reduction",
+          "[40]",
+          "Adversarial",
+          "MDPs",
+          "UCB",
+          "O\u0303(H2S",
+          "\u221a",
+          "AK",
+          "+H3/2",
+          "\u221a",
+          "S",
+          "\u2211K",
+          "Algorithms",
+          "Setting",
+          "Exploration",
+          "Worst-case",
+          "Regret",
+          "Computation"
+        ],
+        "name": "1",
+        "page": 2,
+        "regionBoundary": {
+          "x1": 108.96,
+          "x2": 503.03999999999996,
+          "y1": 105.6,
+          "y2": 226.07999999999998
+        },
+        "renderDpi": 150,
+        "renderURL": "/Users/meghamariam/PROJECTS/PROJ1_Dataset/PROJ1_Crossmodal-Traversal/DATASET/Presentation/pap-seg/fig/sp_0358/sp_0358-Table1-1.png",
+        "id": "sp_0358-Table1-1",
+        "seg_type": "tab"
+      },
+      {
+        "para_id": "p15",
+        "section_heading": "1 Introduction",
+        "text": "Delayed-LPSVI reduces the computational complexity of Delayed-PSVI from O\u0303(d3HK)",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p16",
+        "section_heading": "1 Introduction",
+        "text": "2It provides a stronger guarantee t and Bayesian regret.",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p17",
+        "section_heading": "1 Introduction",
+        "text": "to O\u0303(dHK), expanding the applicability in complex high-dimensional RL tasks while potentially providing a more flexible form of approximation.",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p7",
+        "section_heading": "1 Introduction",
+        "text": "PS is a randomized Bayesian algorithm that extends Thompson sampling (TS) [57] to RL, which selects an action according to its posterior probability of being the best. This philosophy inspires a number of promising exploration strategies that explicitly or implicitly adopt PS to explore [52], including bootstrapped DQN [42, 47] and RLSVI [49]. Compared to the popular UCB algorithms, it bears greater robustness in the presence of delays [14], and provides exceptional computational efficiency with competitive empirical performance [14, 65]. The fact that posteriors are often intractable in practice necessitates the use of approximate Bayesian inference such as ensemble sampling, variational inference (VI) and Markov Chain Monte Carlo (MCMC) [20, 38, 47].",
+        "seg_type": "par"
+      }
+    ]
+  },
+  {
+    "id": "013",
+    "title": "sp_0358_013",
+    "filename": "Videos/sp_0358.mp4",
+    "paper_filename": "Papers/sp_0358.pdf",
+    "type": "slides",
+    "relevant_segments": [
+      {
+        "para_id": "p20",
+        "section_heading": "1.1 Related Work.",
+        "text": "Langevin Monte Carlo. LMC is a class of MCMC methods tailored for large-scale online learning with strong convergence guarantee by utilizing the first-order gradient information [64]. It has been successfully applied to stochastic bandits [43], linear bandits [65] and tabular RL [38], In this work, we extend its usage in linear MDPs and demonstrate its convergent property under delay.",
+        "seg_type": "par"
+      }
+    ]
+  },
+  {
+    "id": "014",
+    "title": "sp_0358_014",
+    "filename": "Videos/sp_0358.mp4",
+    "paper_filename": "Papers/sp_0358.pdf",
+    "type": "slides",
+    "relevant_segments": [
+      {
+        "para_id": "p20",
+        "section_heading": "1.1 Related Work.",
+        "text": "Langevin Monte Carlo. LMC is a class of MCMC methods tailored for large-scale online learning with strong convergence guarantee by utilizing the first-order gradient information [64]. It has been successfully applied to stochastic bandits [43], linear bandits [65] and tabular RL [38], In this work, we extend its usage in linear MDPs and demonstrate its convergent property under delay.",
+        "seg_type": "par"
+      },
+      {
+        "box": [
+          453.8898620605469,
+          888.4076538085938,
+          769.2578125,
+          920.01318359375
+        ],
+        "text": [
+          "w _ { t } \\gets w _ { t - 1 } - \\eta \\nabla \\mathscr { L } ( w _ { t - 1 } ) + \\sqrt { 2 \\eta \\gamma } \\epsilon _ { t } ,"
+        ],
+        "page": "sp_0358_page_0008",
+        "id": "sp_0358_page_0008-3",
+        "seg_type": "eq"
+      },
+      {
+        "para_id": "p65",
+        "section_heading": "4 Delayed Posterior Sampling via Langevin Dynamics",
+        "text": "where \u03f5t i.i.d.\u223c N (0, Id). It is based on the Euler-Murayama discretization of the Langevin stochastic differential equation (SDE):",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p64",
+        "section_heading": "4 Delayed Posterior Sampling via Langevin Dynamics",
+        "text": "To tackle these challenges, we incorporate a gradient-based approximate sampling scheme via Langevin dynamics for PS algorithms, namely, LMC, and introduce the Delayed-Langevin Posterior Sampling Value Iteration (Delayed-LPSVI) in Algorithm 2. The update rule of LMC essentially performs the following noisy gradient update:",
+        "seg_type": "par"
+      },
+      {
+        "box": [
+          436.2104797363281,
+          986.6571044921875,
+          786.4525756835938,
+          1018.7122192382812
+        ],
+        "text": [
+          "\\mathrm { d } \\pmb { w } ( t ) = - \\nabla L ( \\pmb { w } ( t ) ) \\mathrm { d } t + \\sqrt { 2 \\beta ^ { - 1 } } \\ \\mathrm { d } \\pmb { B } ( t ) ,"
+        ],
+        "page": "sp_0358_page_0008",
+        "id": "sp_0358_page_0008-2",
+        "seg_type": "eq"
+      }
+    ]
+  },
+  {
+    "id": "015",
+    "title": "sp_0358_015",
+    "filename": "Videos/sp_0358.mp4",
+    "paper_filename": "Papers/sp_0358.pdf",
+    "type": "slides",
+    "relevant_segments": [
+      {
+        "input_path": "/tmp/megha/PDF-Extract-Kit/Presentation/layout_pap/sp_0358/sp_0358_page_8.png",
+        "cls_id": 14,
+        "label": "algorithm",
+        "score": 0.948662519454956,
+        "coordinate": [
+          452.9598693847656,
+          310.31732177734375,
+          2097.843017578125,
+          1061.2117919921875
+        ],
+        "text": "Input: wo, \u03b7k, Nk, \u03b3 and rounds M, \u03bb. Delayed loss Lk as (5).\nInitialization: \u2200k  [K], h  [H], QkH+1(\u00b7, \u00b7) \u2190 0, V k+1(, \u00b7) \u2190 0, Vh(., \u00b7) \u2190 0\nfor episode k = 1, . . . , K do\nfor time step h = H, . . . , 1 do\nfor m = 1, . . . , M do\nwk,m \u2190 LMC(Lk, w0, \u03b7k, Nk, \u03b3)\nWh\n//LM C is given by Algorithm 3\nk,m(., \u00b7) \u2190 \u03c6(\u00b7)T\n\u223ck,m\nT\nWn\nUpdate Qh(, \u00b7) \u2190 maxm Q\nk,m\nh\nV k(, \u00b7) \u2190 maxa min{Qk(, a), H \u2212 h + 1}\n{I +  \u2212 H ( ')}\u00b5\u03c9 \u2200\u03c9 \u2192 (\u00b7) [\u03bfd pd\u2229\nfor time step h = 1, . . . , H do\n(sk)\nCollect trajectory observations Dh \u2190 Dh \u222a {(sk, ak, rk, sk+1)}\n/* Feedback generated in episode k cannot be immediately observed in the presence of delay",
+        "id": "sp_0358_page_8_1",
+        "seg_type": "algo"
+      },
+      {
+        "cls_id": 14,
+        "label": "algorithm",
+        "score": 0.7676428556442261,
+        "coordinate": [
+          1238.3160400390625,
+          589.7837524414062,
+          2099.224365234375,
+          880.638427734375
+        ],
+        "text": "Algorithm 3: Langevin Monte Carlo\nLMC(L, w0, \u03b7, N, \u03b3)\n1\nfor t = 1 . . . N \u2212 1 do\nDraw t \u223c N (0, Id)\n2\nwt \u2190 wt\u22121 \u2212 \u03b7L(wt\u22121) + \u221a2\u03b7\u03b3t\nQutput: wN",
+        "input_path": "/tmp/megha/PDF-Extract-Kit/Presentation/layout_pap/sp_0358/sp_0358_page_9.png",
+        "id": "sp_0358_page_9_1",
+        "seg_type": "algo"
+      }
+    ]
+  },
+  {
+    "id": "016",
+    "title": "sp_0358_016",
+    "filename": "Videos/sp_0358.mp4",
+    "paper_filename": "Papers/sp_0358.pdf",
+    "type": "slides",
+    "relevant_segments": [
+      {
+        "para_id": "p68",
+        "section_heading": "4 Delayed Posterior Sampling via Langevin Dynamics",
+        "text": "where y\u0304\u03c4h := r \u03c4 h+V\u0303 k h+1(s \u03c4 h+1). Compared to Delayed-PSVI, Algorithm 2 does not require the matrix inversion computation. Below we present the worst-case regret of Delayed-LPSVI and discuss the key insights in our analysis. The full proof is deferred to Appendix C. Theorem 2. Suppose delays satisfy Assumption 1. In any episodic linear MDP with time horizon T = KH , where K is the total number of episodes and H is the fixed episode length, for any 0 < \u03b4 < 1, let \u03bb = 1, Nk = max{log( 32H 2(K+\u03bb)dk \u03b3\u03bb + 1)/[2 log(1/(1 \u2212 1 2\u03bah",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p69",
+        "section_heading": "4 Delayed Posterior Sampling via Langevin Dynamics",
+        "text": "))], log 2",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p70",
+        "section_heading": "4 Delayed Posterior Sampling via Langevin Dynamics",
+        "text": "2 log(1/(1\u2212 12\u03bah )) , log( 4HK 3\u221a \u03bb/dK )/ log(1/(1 \u2212 12\u03bah ))}, \u03b7k = 1 4\u03bbmax(\u2126kh) , \u03b3 = 16C2\u03b4/4 \u2248 O\u0303(dMH 2),",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p71",
+        "section_heading": "4 Delayed Posterior Sampling via Langevin Dynamics",
+        "text": "w0 = 0 and M = log(4HK/\u03b4)/ log(64/63). Then with probability at least 1\u2212 \u03b4, there exists some absolute constants c, c\u2032, c\u2032\u2032 > 0 such that the regret of Algorithm 2 satisfies:",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p72",
+        "section_heading": "4 Delayed Posterior Sampling via Langevin Dynamics",
+        "text": "Here \u03b9 is a Polylog term of H, d,K, \u03b4 and C\u03b4 is defined in Lemma C.9.",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p73",
+        "section_heading": "4 Delayed Posterior Sampling via Langevin Dynamics",
+        "text": "Neglecting the constants and Polylog factors, Delayed-LPSVI maintains the same order regret of O\u0303( \u221a d3H3T + d2H2E[\u03c4 ]) as Delayed-PSVI while significantly improving the computational efficiency. Precisely, LMC requires O(N) complexity to perform gradient steps in Line 6 of Algorithm 2 and an extra O(d) operations to compute Q\u0303k,mh in Line 7. Thus, the total computation complexity of LMC is O((N + d)MHK). On the other hand, sampling without LMC (Line5-8 in Algorithm 1) requires O(d3) operations, and the multi-round sampling (Line9-11) incurs O(dM) additional operations, which implies for a total computation complexity of O((d3 + dM)HK). As the choice of N in Algorithm 2 has logarithmic order, and M = log(4HK/\u03b4)/ log(64/63), the overall complexity of Delayed-LPSVI is O\u0303(dHK), whereas the overall computational complexity of Delayed-PSVI is O\u0303(d3HK). Notably, Delayed-LPSVI reduces the computational overhead of Delayed-PSVI by O\u0303(d2).",
+        "seg_type": "par"
+      },
+      {
+        "box": [
+          436.0947570800781,
+          196.26162719726562,
+          785.43310546875,
+          226.4482421875
+        ],
+        "text": [
+          "\\begin{array} { r } { R ( T ) \\leq c \\sqrt { d ^ { 3 } H ^ { 3 } T ^ { } } + c ^ { \\prime } d ^ { 2 } H ^ { 2 } \\mathbb { E } [ { \\tau } ] \\iota + c ^ { \\prime \\prime } \\iota . } \\end{array}"
+        ],
+        "page": "sp_0358_page_0009",
+        "id": "sp_0358_page_0009-2",
+        "seg_type": "eq"
+      }
+    ]
+  },
+  {
+    "id": "017",
+    "title": "sp_0358_017",
+    "filename": "Videos/sp_0358.mp4",
+    "paper_filename": "Papers/sp_0358.pdf",
+    "type": "slides",
+    "relevant_segments": [
+      {
+        "caption": "Figure 2: Empirical distributions of three types of delays. (a) Multinomial delays with delay categories {10, 20, 30}. (b) Poisson delays with rate E[\u03c4 ] = 50. (c) Long-tail Pareto delays with shape 1.0, scale 500. The first two types of delays are well-behaved and decay exponentially fast, while pareto delays are heavy-tailed.",
+        "captionBoundary": {
+          "x1": 107.99998474121094,
+          "x2": 504.00067138671875,
+          "y1": 171.06173706054688,
+          "y2": 196.38897705078125
+        },
+        "figType": "Figure",
+        "imageText": [],
+        "name": "2",
+        "page": 41,
+        "regionBoundary": {
+          "x1": 117.6,
+          "x2": 496.32,
+          "y1": 73.92,
+          "y2": 160.32
+        },
+        "renderDpi": 150,
+        "renderURL": "/Users/meghamariam/PROJECTS/PROJ1_Dataset/PROJ1_Crossmodal-Traversal/DATASET/Presentation/pap-seg/fig/sp_0358/sp_0358-Figure2-1.png",
+        "id": "sp_0358-Figure2-1",
+        "seg_type": "fig"
+      },
+      {
+        "para_id": "p82",
+        "section_heading": "5.1 Synthetic Linear MDP",
+        "text": "We construct a synthetic linear MDP instance with |S| = 2, |A| = 50, d = 10, and H = 20. The linear feature mapping embeds each state-action pair with its binary representation and induces the following reward function: r(s, a) = 0.99 if s = 0, a = 0; r(s, a) = 0.01 otherwise. The design of the environment results in the same optimal value V \u22171 (s1) when d and H are fixed. Algorithms are examined under three types of delays that are commonly encountered in real-world phenomena, including sub-exponential delays and long-tail delays:",
+        "seg_type": "par"
+      }
+    ]
+  },
+  {
+    "id": "018",
+    "title": "sp_0358_018",
+    "filename": "Videos/sp_0358.mp4",
+    "paper_filename": "Papers/sp_0358.pdf",
+    "type": "slides",
+    "relevant_segments": [
+      {
+        "caption": "Figure 1: Left:(a) Multinomial delay with delay categories {10, 20, 30}. (b) Poisson delay with rate E[\u03c4 ] = 50. (c) Long-tail Pareto delay with shape 1.0, scale 500. Results are reported over 10 experiments. Delayed-PSVI and Delayed-LPSVI demonstrate robust performance under both well-behaved and long-tail delays.",
+        "captionBoundary": {
+          "x1": 108.0,
+          "x2": 504.0009765625,
+          "y1": 171.06173706054688,
+          "y2": 196.38897705078125
+        },
+        "figType": "Figure",
+        "imageText": [],
+        "name": "1",
+        "page": 9,
+        "regionBoundary": {
+          "x1": 115.67999999999999,
+          "x2": 496.32,
+          "y1": 73.92,
+          "y2": 160.32
+        },
+        "renderDpi": 150,
+        "renderURL": "/Users/meghamariam/PROJECTS/PROJ1_Dataset/PROJ1_Crossmodal-Traversal/DATASET/Presentation/pap-seg/fig/sp_0358/sp_0358-Figure1-1.png",
+        "id": "sp_0358-Figure1-1",
+        "seg_type": "fig"
+      },
+      {
+        "caption": "Table 2: Average return achieved by Delayed-PSVI, Delayed-LPSVI and Delayed-UCBVI upon convergence under different delays. Environment setup: |S| = 2, |A| = 20, d = 10, H = 20. Optimal average return is V \u2217 1 (s1) = 11.96. Results are obtained over 10 experiments.",
+        "captionBoundary": {
+          "x1": 107.99996948242188,
+          "x2": 504.00274658203125,
+          "y1": 677.1337280273438,
+          "y2": 704.0380249023438
+        },
+        "figType": "Table",
+        "imageText": [
+          "Delayed-LPSVI",
+          "(c\u03b7",
+          "=",
+          "0.5)",
+          "11.56\u00b1",
+          "0.48",
+          "11.37\u00b1",
+          "0.48",
+          "10.98\u00b1",
+          "0.40",
+          "Delayed-UCBVI",
+          "(c\u03b2",
+          "=",
+          "0.1)",
+          "10.61\u00b1",
+          "0.76",
+          "10.54\u00b1",
+          "0.81",
+          "7.20\u00b1",
+          "0.38",
+          "Delayed-PSVI",
+          "(\u03c3",
+          "=",
+          "0.1)",
+          "11.53\u00b1",
+          "0.76",
+          "11.48\u00b1",
+          "0.81",
+          "11.53\u00b1",
+          "0.74",
+          "Pareto",
+          "Delay",
+          "(Shape",
+          "1.0,",
+          "Scale",
+          "500)",
+          "Poisson",
+          "Delay",
+          "(E[\u03c4",
+          "]",
+          "=",
+          "50)",
+          "Multinomial",
+          "Delay",
+          "(10,",
+          "20,",
+          "30)"
+        ],
+        "name": "2",
+        "page": 40,
+        "regionBoundary": {
+          "x1": 108.0,
+          "x2": 504.0,
+          "y1": 612.9599999999999,
+          "y2": 672.0
+        },
+        "renderDpi": 150,
+        "renderURL": "/Users/meghamariam/PROJECTS/PROJ1_Dataset/PROJ1_Crossmodal-Traversal/DATASET/Presentation/pap-seg/fig/sp_0358/sp_0358-Table2-1.png",
+        "id": "sp_0358-Table2-1",
+        "seg_type": "tab"
+      },
+      {
+        "para_id": "p378",
+        "section_heading": "E.2 Synthetic Linear MDP Environment",
+        "text": "While delays following multinomial distribution and Poisson distributions decay exponentially fast, Pareto delays are heavy-tailed. When computational budget is limited or when episodes are finite, feedback is only partially observable under long-tailed delays and is not guaranteed to be revealed to the agent. This setup captures the practical scenarios when small time windows are considered for decision-making or in online recommender systems, where only positive feedback (e.g. click, make a purchase) are often observed. As shown in Table 2, performance of Delayed-UCBVI can dramatically deteriorate in the presence of long-tailed delays.",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p1",
+        "section_heading": "Abstract",
+        "text": "Recent studies in reinforcement learning (RL) have made significant progress by leveraging function approximation to alleviate the sample complexity hurdle for better performance. Despite the success, existing provably efficient algorithms typically rely on the accessibility of immediate feedback upon taking actions. The failure to account for the impact of delay in observations can significantly degrade the performance of real-world systems due to the regret blow-up. In this work, we tackle the challenge of delayed feedback in RL with linear function approximation by employing posterior sampling, which has been shown to empirically outperform the popular UCB algorithms in a wide range of regimes. We first introduce Delayed-PSVI, an optimistic value-based algorithm that effectively explores the value function space via noise perturbation with posterior sampling. We provide the first analysis for posterior sampling algorithms with delayed feedback in RL and show our algorithm achieves \u00d5( \u221a d3H3T + dHE[\u03c4 ]) worst-case regret in the presence of unknown stochastic delays. Here E[\u03c4 ] is the expected delay. To further improve its computational efficiency and to expand its applicability in high-dimensional RL problems, we incorporate a gradient-based approximate sampling scheme via Langevin dynamics for Delayed-LPSVI, which maintains the same order-optimal regret guarantee with \u00d5(dHK) computational cost. Empirical evaluations are performed to demonstrate the statistical and computational efficacy of our algorithms.",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p9",
+        "section_heading": "1 Introduction",
+        "text": "To tackle these challenges, we introduce two novel value-based algorithms for linear MDPs under unknown stochastic delayed feedback. Developed upon Bayesian linear modeling with a multiround ensembling mechanism (M \u2248 Polylog(H,K, d, \u03b4) round), our algorithms achieve a sublinear worst-case regret without requiring the knowledge of delay, thereby addressing the question raised in [60] that \u201cNo frequentist analysis exists for posterior sampling with delayed feedback\u201d. Empirical studies show that our algorithms outperform UCB-based methods in terms of both statistical accuracy and computational efficiency when delays are well-behaved or even long-tailed. We summarize our main contributions as follows.",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p81",
+        "section_heading": "5 Experiments",
+        "text": "To validate whether our posterior sampling algorithms are competitive or outperform the nonsampling-based algorithms in the delayed setting, in this section, we examine their empirical performance in two simulated RL environments with different delayed feedback distributions. In particular, we consider a linear MDP environment following [44, 46], and a variant of the popular RiverSwim [55]. In both environments, we benchmark Delayed-PSVI (Algorithm 1), Delayed-LPSVI (Algorithm 2) against LSVI-UCB [35] with delayed feedback, namely, Delayed-UCBVI. In this section, we discuss results in the first setting and defer the discussion of RiverSwim in Appendix E.",
+        "seg_type": "par"
+      }
+    ]
+  },
+  {
+    "id": "019",
+    "title": "sp_0358_019",
+    "filename": "Videos/sp_0358.mp4",
+    "paper_filename": "Papers/sp_0358.pdf",
+    "type": "slides",
+    "relevant_segments": [
+      {
+        "caption": "Table 3: Number of episodes for each method to achieve its highest expected return. Different synthetic environments are examined with varied |S| and |A|. Optimal average return is V \u2217 1 (s1) = 11.96 for all environments (d = 10, H = 20). Results are obtained over 10 experiments with Poisson delays (E[\u03c4 ] = 50).",
+        "captionBoundary": {
+          "x1": 108.0,
+          "x2": 504.0035095214844,
+          "y1": 288.4157409667969,
+          "y2": 313.7430114746094
+        },
+        "figType": "Table",
+        "imageText": [
+          "Delayed-UCBVI",
+          "(c\u03b2",
+          "=",
+          "0.1)",
+          "3205",
+          "2713",
+          "3351",
+          "3694",
+          "Delayed-LPSVI",
+          "(c\u03b7",
+          "=",
+          "0.5)",
+          "293",
+          "246",
+          "517",
+          "566",
+          "Delayed-PSVI",
+          "(\u03c3",
+          "=",
+          "0.1)",
+          "391",
+          "571",
+          "650",
+          "709",
+          "Delayed-PSVI",
+          "(\u03c3",
+          "=",
+          "0.2)",
+          "531",
+          "1114",
+          "1323",
+          "826",
+          "Delayed-PSVI",
+          "(\u03c3",
+          "=",
+          "0.3)",
+          "1418",
+          "1290",
+          "1669",
+          "2633",
+          "|S||A|",
+          "=",
+          "20",
+          "|S||A|",
+          "=",
+          "40",
+          "|S||A|",
+          "=",
+          "100",
+          "|S||A|",
+          "=",
+          "200"
+        ],
+        "name": "3",
+        "page": 41,
+        "regionBoundary": {
+          "x1": 108.96,
+          "x2": 500.15999999999997,
+          "y1": 210.72,
+          "y2": 284.15999999999997
+        },
+        "renderDpi": 150,
+        "renderURL": "/Users/meghamariam/PROJECTS/PROJ1_Dataset/PROJ1_Crossmodal-Traversal/DATASET/Presentation/pap-seg/fig/sp_0358/sp_0358-Table3-1.png",
+        "id": "sp_0358-Table3-1",
+        "seg_type": "tab"
+      }
+    ]
+  },
+  {
+    "id": "020",
+    "title": "sp_0358_020",
+    "filename": "Videos/sp_0358.mp4",
+    "paper_filename": "Papers/sp_0358.pdf",
+    "type": "slides",
+    "relevant_segments": [
+      {
+        "para_id": "p89",
+        "section_heading": "6 Conclusion",
+        "text": "In this paper, we study posterior sampling with episodic delayed feedback in linear MDPs. We introduce two novel value-based algorithms: Delayed-PSVI and Delayed-LPSVI. Both algorithms are proved to achieve O\u0303( \u221a d3H3T + d2H2E[\u03c4 ]) worst-case regret. Notably, by incorporating LMC",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p1",
+        "section_heading": "Abstract",
+        "text": "Recent studies in reinforcement learning (RL) have made significant progress by leveraging function approximation to alleviate the sample complexity hurdle for better performance. Despite the success, existing provably efficient algorithms typically rely on the accessibility of immediate feedback upon taking actions. The failure to account for the impact of delay in observations can significantly degrade the performance of real-world systems due to the regret blow-up. In this work, we tackle the challenge of delayed feedback in RL with linear function approximation by employing posterior sampling, which has been shown to empirically outperform the popular UCB algorithms in a wide range of regimes. We first introduce Delayed-PSVI, an optimistic value-based algorithm that effectively explores the value function space via noise perturbation with posterior sampling. We provide the first analysis for posterior sampling algorithms with delayed feedback in RL and show our algorithm achieves \u00d5( \u221a d3H3T + dHE[\u03c4 ]) worst-case regret in the presence of unknown stochastic delays. Here E[\u03c4 ] is the expected delay. To further improve its computational efficiency and to expand its applicability in high-dimensional RL problems, we incorporate a gradient-based approximate sampling scheme via Langevin dynamics for Delayed-LPSVI, which maintains the same order-optimal regret guarantee with \u00d5(dHK) computational cost. Empirical evaluations are performed to demonstrate the statistical and computational efficacy of our algorithms.",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p10",
+        "section_heading": "1 Introduction",
+        "text": "\u2022 We propose the Delayed Posterior Sampling Value Iteration (Delayed-PSVI, Algorithm 1) for linear MDPs. It achieves a high-probability worst-case regret of O\u0303( \u221a d3H3T +",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p11",
+        "section_heading": "1 Introduction",
+        "text": "d2H2E[\u03c4 ])2, where E[\u03c4 ] is the expected delay.",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p12",
+        "section_heading": "1 Introduction",
+        "text": "\u2022 We leverage Langevin Monte Carlo (LMC) for approximate inference and introduce Delayed Langevin Posterior Sampling Value Iteration (Delayed-LPSVI, Algorithm 2), which maintains the same order-optimal worst-case regret of O\u0303( \u221a d3H3T + d2H2E[\u03c4 ]). To the",
+        "seg_type": "par"
+      }
+    ]
+  }
+]

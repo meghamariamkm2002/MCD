@@ -1,0 +1,2 @@
+HeavyOwl follows the principle of optimism in the face of uncertainty and uses adaptive Huber regression to maintain a site CT that contains the unknown ground truth theta star with high probability.
+And in the end of each round, the agent updates CT and chooses action to maximize the estimated rewards.

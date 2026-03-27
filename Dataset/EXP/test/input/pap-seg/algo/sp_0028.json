@@ -1,0 +1,21 @@
+[
+  {
+    "input_path": "layout_results/sp_0028/sp_0028_page_5.png",
+    "page_index": null,
+    "boxes": [
+      {
+        "cls_id": 14,
+        "label": "algorithm",
+        "score": 0.9361528158187866,
+        "coordinate": [
+          442.671142578125,
+          338.8166198730469,
+          2098.765625,
+          1157.2215576171875
+        ],
+        "text": "Algorithm 1 Deep Q-learning with Experience Replay Initialize replay memory D to capacity N Initialize action-value function Q with random weights for episode = 1, M do Initialise sequence s1 = {x1} and preprocessed sequenced $1 = $(s1) for t = 1, T do With probability e select a random action at otherwise select at = maxa Q*($(st), a; 0) Execute action at in emulator and observe reward rt and image xt+1 Set St+1 = St, at, Xt+1 and preprocess $t+1 = $(St+1) Store transition ($t, at, ^t, $t+1) in D for terminal $j+1 rj+y maxa'Q($j+1,a';0) for non-terminal $j+1 Perform a gradient descent step on (yj - Q($j, aj; 0))? according to equation 3 end for end for",
+        "id": "sp_0028_page_5_1"
+      }
+    ]
+  }
+]

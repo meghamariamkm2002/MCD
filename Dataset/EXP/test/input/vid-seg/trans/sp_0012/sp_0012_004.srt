@@ -1,0 +1,64 @@
+1
+00:00:00,031 --> 00:00:02,255
+So let's dive in.
+
+2
+00:00:02,295 --> 00:00:04,319
+They make the following claims.
+
+3
+00:00:05,341 --> 00:00:07,946
+Let's just go through them really quick.
+
+4
+00:00:07,966 --> 00:00:10,430
+Data account reduces the amount of upstream.
+
+5
+00:00:11,372 --> 00:00:15,079
+So think of network reading or augmentation.
+
+6
+00:00:15,480 --> 00:00:21,651
+Computation needed to reach a competitive out of sample error rate on various data sets and model architectures.
+
+7
+00:00:21,631 --> 00:00:25,637
+Second, data echoing can provide a wall time speed up in practice.
+
+8
+00:00:26,117 --> 00:00:29,983
+Third, data echoing can support a wide range of echoing factors.
+
+9
+00:00:30,163 --> 00:00:33,468
+And that's the echoing factor is how often you repeat the data.
+
+10
+00:00:34,189 --> 00:00:42,340
+Fourth, the effectiveness of data echoing depends on the intersection point in the training pipeline, sorry, in the insertion point.
+
+11
+00:00:42,480 --> 00:00:45,765
+That's what that's what our hypothesis was, right?
+
+12
+00:00:45,745 --> 00:00:52,640
+Fifth, data echoing can benefit from additional shuffling after echoing, but does not require it.
+
+13
+00:00:53,262 --> 00:01:01,560
+And sixth, countering expectations, data echoing reaches the same final error rate as well-tuned baselines.
+
+14
+00:01:01,540 --> 00:01:11,451
+So I can absolutely accept one through five, especially in like an actual practical in the wild setting.
+
+15
+00:01:12,274 --> 00:01:16,688
+But six, we'll see about six.
+
+16
+00:01:16,708 --> 00:01:20,038
+So let's
+

@@ -1,0 +1,68 @@
+1
+00:00:00,031 --> 00:00:00,932
+That is the catch.
+
+2
+00:00:01,994 --> 00:00:06,281
+This is not a method that is like a magic pill.
+
+3
+00:00:06,661 --> 00:00:12,230
+The catch is even though your tree is not as deep, it is much, much wider.
+
+4
+00:00:12,290 --> 00:00:14,253
+And it is intuitive, right?
+
+5
+00:00:14,273 --> 00:00:19,120
+Because you still have to have the ability to construct any possible plan.
+
+6
+00:00:19,100 --> 00:00:28,264
+So your tree is going to have as many nodes as the original Monte Carlo tree search tree, if you were to fully expand it.
+
+7
+00:00:28,424 --> 00:00:31,492
+So it's your trading of depth for width here.
+
+8
+00:00:33,638 --> 00:00:35,944
+I hope that's a bit clear.
+
+9
+00:00:37,780 --> 00:00:52,971
+your entire, your entire promise of this method is going to be, can you, from all of these possibilities, so from all of these, you don't even, you don't even want to go and search even one layer deep through all of these.
+
+10
+00:00:52,951 --> 00:00:55,457
+You don't even want to consider all of them, right?
+
+11
+00:00:55,777 --> 00:01:05,138
+You want to search in this tree, you want to limit your search to very particular ways of subdivision here.
+
+12
+00:01:05,559 --> 00:01:10,470
+If you can do that efficiently, if you can pick efficiently
+
+13
+00:01:10,450 --> 00:01:26,804
+candidates to subdivide, then this could be a successful thing because your tree is not as deep as the original search tree would have been, and you can limit the width effectively to only very few candidates.
+
+14
+00:01:27,184 --> 00:01:40,035
+So here we could, for example, make a heuristic that will always only pick squares that are kind of on this straight path to the goal.
+
+15
+00:01:40,015 --> 00:01:43,721
+So everything rests on how you do this select action.
+
+16
+00:01:45,464 --> 00:01:59,126
+This thing here, the entire algorithm relies on the fact that you can select effectively select in between states where you're pretty sure that the algorithm will have to pass through there.
+
+17
+00:01:59,486 --> 00:02:05,095
+Because the worse you make these predictions, the worse your tree search is going to work.
+

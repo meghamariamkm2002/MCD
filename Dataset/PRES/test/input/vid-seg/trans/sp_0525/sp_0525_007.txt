@@ -1,0 +1,3 @@
+Then overall, the different drug algorithm consists of two alternating steps.
+And for the one step, we fine-tune the auxiliary differential model S5.
+And in the second step, we use the auxiliary differential model S5 and the teacher differential model SP together to update the student model.

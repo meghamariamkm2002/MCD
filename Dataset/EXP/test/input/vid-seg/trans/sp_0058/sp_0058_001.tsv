@@ -1,0 +1,25 @@
+start	end	text
+1027	5232	Hi there, take a look at this variant of the game Rock Paper Scissors.
+6313	18387	It's like usual Rock Paper Scissors, except with the added complexity that when either player chooses scissors, then the rewards and the losses are doubled.
+18847	22832	So for example, you see right here, player one chooses rock,
+22812	32448	and player two chooses scissors, so both the reward for player one and the loss for player two are double the size.
+33170	46913	Now you might know that in original Rock Paper Scissors the optimal strategy is to play one third of each of the three choices at any time, so you basically take a
+47180	51805	fair three-sided coin dice, does that exist?
+52286	52967	I'm not sure.
+53627	58713	And you throw it and whatever side is up, that's what you play.
+59394	67604	However, here, since one of the options is different, the sort of optimal strategy shifts and interestingly, it shifts as follows.
+68124	74892	What you wanna do is you wanna play rock and paper both with a 0.4 probability
+74872	78999	and you want to play scissors with only 0.2 probability.
+80001	81223	That is pretty interesting.
+82045	97352	You might intuitively conclude that you want to go more where there are more rewards to be had, but of course also you lose more, so you might also conclude, well, it doesn't make a difference ultimately, but
+97568	105664	Why does the optimal strategy shift such that you want to decrease your likelihood of playing scissors?
+106386	113620	Let's just quickly analyze this game before we jump into the paper because this game is a microcosm
+113600	116544	of what the paper of today is about.
+116944	133465	So the paper of today is called Combining Deep Reinforcement Learning and Search for Imperfect Information Games by Noam Brown, Anton Bakhtin, Adam Lehrer, and Chi Chen Gong of Facebook AI Research.
+133445	140855	So this paper brings basically what AlphaGo or AlphaZero has done for perfect information games.
+141276	155014	It brings this to the domain of imperfect information games and we'll see what the difficulties are in this and what can be done to solve it and not only do they have an algorithm but they have
+154994	168362	the interesting theoretical results that under some conditions, namely under the condition that neural networks do something useful, will actually converge to Nash equilibrium in these games.
+168427	172374	That is pretty cool, so practical and theoretical paper right here.
+173135	181408	As always, if you like content like this, don't hesitate to share it out and tell me what you think in the comments.
+181569	187819	This is not my field, so I might get quite a bit of stuff wrong right here.
+187799	200003	Also, if you haven't seen the Negranu poker challenge, so I think it's the last video I did, be sure to check that out just to see how you have to think about situations like this.

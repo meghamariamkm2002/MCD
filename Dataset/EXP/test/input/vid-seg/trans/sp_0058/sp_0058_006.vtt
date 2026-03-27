@@ -1,0 +1,278 @@
+WEBVTT
+
+00:00.031 --> 00:04.957
+are massive amounts, but in theory that makes no difference, right?
+
+00:04.977 --> 00:29.548
+So they say, since any imperfect information game can be viewed as a perfect information game consisting of public belief representations or public belief states, in theory, we could approximate a solution of any two player zero sum imperfect information game by running a perfect information RL plus search algorithm on a discretization of the belief representation.
+
+00:29.528 --> 00:44.060
+Okay, so nothing stops you from simply taking this and running alpha zero on this new thing, on this new thing, with the states being public belief states and the actions being descending around of these giant tables.
+
+00:44.481 --> 00:48.644
+You might have to discretize it as it says, but that's feasible.
+
+00:50.786 --> 00:59.333
+So you can think of constructing this game tree, but each node here is going to be a public belief state.
+
+00:59.313 --> 01:10.065
+Okay, instead of a world state like an alpha zero or like an info state like we started these imperfect information games with and then you can construct your tree down here.
+
+01:11.260 --> 01:19.037
+And then, you know, but this is infeasible because these public belief states are just too large and the actions are also too large.
+
+01:19.438 --> 01:20.740
+There are so many actions.
+
+01:21.362 --> 01:23.226
+These are super high dimensional.
+
+01:23.546 --> 01:24.990
+So this is not feasible.
+
+01:26.052 --> 01:29.860
+And we're going to, so they have to find a way.
+
+01:30.920 --> 01:39.188
+to do this thing, but to sort of do it in the domain of the original game.
+
+01:39.609 --> 01:57.127
+And that's the, I feel that's the entire trick of this rebel paper is to take this idea, let's do this search over the public belief states, but somehow this thing down here, because what we need is we need the values of these, right?
+
+01:57.227 --> 01:59.509
+If we figure out the value
+
+01:59.624 --> 02:09.741
+of this public belief state and the value of this one, right, this is of beta one, this is of beta two, then we would know which action to take.
+
+02:09.942 --> 02:17.074
+And then action is this huge thing, but if we knew the values of these, we would know which action to take.
+
+02:17.675 --> 02:20.440
+However, this is not feasible.
+
+02:20.640 --> 02:25.328
+So we need to find a way to figure out these values using
+
+02:25.561 --> 02:27.703
+the original formulation of the game.
+
+02:28.764 --> 02:32.068
+And that's what they do in the exact next section right here.
+
+02:34.430 --> 02:39.576
+So they go on saying, however, as shown in the example above, belief representation can be very high dimensional.
+
+02:39.636 --> 02:45.102
+So conducting search is, as is done in perfect information games would be intractable.
+
+02:45.282 --> 02:52.750
+They say, fortunately, in two player zero sum games, these high dimensional belief representations are convex optimization problems.
+
+02:53.455 --> 02:58.583
+Rebel leverages this fact via conducting search via an iterative gradient ascent-like algorithm.
+
+02:59.123 --> 03:11.221
+So I don't know what this sentence means, that the belief representations are convex optimization problems, maybe this is misformulated or I'm just not understanding it well enough.
+
+03:12.182 --> 03:22.838
+In general, this section here is a bit of a mystery to me, but I can sort of tell you what I understand of it, okay?
+
+03:23.172 --> 03:36.490
+So they say rebels search algorithm operates on super gradients of the PBS value function at the leaf nodes rather than on PBS values directly.
+
+03:36.773 --> 03:38.135
+This is the first indication.
+
+03:38.235 --> 03:39.657
+We don't want to work.
+
+03:39.678 --> 03:42.181
+So we want to construct this search tree.
+
+03:42.802 --> 03:46.568
+And at the leaf nodes, we need value functions, right?
+
+03:46.588 --> 03:47.530
+Like an alpha zero.
+
+03:47.950 --> 03:53.599
+Now, since we operate on public belief states, we would need value functions of public belief states.
+
+03:54.340 --> 03:59.288
+However, rebel finds a way to not do that.
+
+04:00.483 --> 04:06.931
+Specifically, the search algorithms require the values of info states for PBS.
+
+04:07.912 --> 04:15.400
+So they find a way to connect the values of info states to the values of public belief states.
+
+04:15.420 --> 04:25.212
+And just as a reminder, an info state is a state that as it looks to one player, that could have many different histories.
+
+04:25.913 --> 04:27.975
+A public belief state
+
+04:28.664 --> 04:34.736
+has all the info states that could lead to the public observation.
+
+04:34.836 --> 04:45.998
+So all the info states that you could be in, right, with all their histories, here, basically a distribution over all these info states, that entire thing
+
+04:46.957 --> 04:49.100
+is one public belief state.
+
+04:50.462 --> 04:57.592
+Now they are going to say we can determine the value of a public belief state.
+
+04:57.753 --> 05:06.305
+So the value of this is going to be equal to, and we can somehow approximate this with the values of these things here.
+
+05:06.385 --> 05:10.371
+We somehow don't need the value of the entire public belief state.
+
+05:10.391 --> 05:15.478
+We connect this to the values of the individual info states.
+
+05:15.796 --> 05:19.940
+And that's, I mean, that's done fairly easily because you simply sum over.
+
+05:20.681 --> 05:39.999
+So you can say the value of a given info state conditioned that you're in public belief state beta is simply going to be kind of the expectation over all the histories that could lead to this info state multiplied by the value of each history.
+
+05:40.099 --> 05:42.782
+Like you can have the value of a history
+
+05:42.762 --> 05:49.519
+given some policy and therefore you can approximate the value at a given info state.
+
+05:49.940 --> 05:56.516
+And this theorem one here is where they connect the value of a public belief state to the value of an info state.
+
+05:57.538 --> 05:58.982
+So they say
+
+05:58.962 --> 06:10.895
+For any public belief state, for the beliefs of player one and player two info states respectively, and any policy pi star that is a Nash equilibrium of the sub game rooted at beta.
+
+06:10.915 --> 06:13.984
+So now we root sub games at public belief states.
+
+06:15.483 --> 06:17.125
+this thing holds right here.
+
+06:17.685 --> 06:22.470
+So as you can see, this connects the value of the public belief states.
+
+06:22.530 --> 06:27.415
+This is what we sort of need in order for the search algorithm to work.
+
+06:27.995 --> 06:38.826
+It connects it to the value of an info of info states and info states are way lower dimensional than public belief states.
+
+06:39.046 --> 06:43.110
+So it connects, it connects
+
+06:44.862 --> 07:00.538
+the value of this right here to the value of let's say this, okay, this, this might be an info state here s. And the value, it connects the value of the global public belief set to the value of this particular info state.
+
+07:01.119 --> 07:03.361
+And it does so via this term right here.
+
+07:03.801 --> 07:09.267
+So this term right here, this is just the unit vector in the direction of that particular info state.
+
+07:09.247 --> 07:19.387
+And this here is a super gradient of an extension of the value function to unnormalize belief distributions.
+
+07:20.429 --> 07:28.504
+As I understand it, this G is the gradient with respect to
+
+07:29.142 --> 07:36.615
+probably beta one, if we care about S1 to V1 of beta, something like this.
+
+07:37.416 --> 07:42.785
+As I said, this is where I don't 100% see through it.
+
+07:43.226 --> 07:49.817
+But what I understand is that this connects the value of the public belief state, this thing
+
+07:49.797 --> 07:55.663
+to the value of the individual info states that are part of this public belief state.
+
+07:56.084 --> 08:00.008
+So we don't need a value function for public belief states.
+
+08:00.609 --> 08:06.435
+We can simply get away with learning a value function for the individual info states.
+
+08:06.915 --> 08:08.057
+And that's what they do.
+
+08:08.097 --> 08:14.083
+So the only, the learned part here in this algorithm, this is the first time we see like a neural network.
+
+08:14.063 --> 08:23.912
+Since rebel search algorithm uses info state values rather than learn a PBS value function rebel instead learns an info state value function.
+
+08:24.614 --> 08:28.545
+So we're going to input a public belief state.
+
+08:29.723 --> 08:30.003
+Yes.
+
+08:30.885 --> 08:35.853
+And we're going to get a value for each info state.
+
+08:35.913 --> 08:37.235
+We're going to get a value here.
+
+08:37.355 --> 08:41.562
+So we'll simply learn a value function as sort of a vector output.
+
+08:41.582 --> 08:46.329
+You could also input the public belief state and the info state and get out a single number.
+
+08:46.790 --> 08:49.234
+I guess that would turn out to be the same thing.
+
+08:49.214 --> 08:59.129
+Okay, so the info state value function directly approximates for each info state the average of the sampled values produced by rebel at beta.
+
+08:59.670 --> 09:06.140
+So we're going to learn this in a sort of bootstrap fashion like like alpha zero does it a bit like temporal difference learning.
+
+09:06.701 --> 09:14.192
+So what we're going to do in this algorithm is we're going to start out, then we're going to construct this sort of this subtree.
+
+09:14.172 --> 09:18.276
+And we're going to do this in the discrete representation of the game.
+
+09:18.577 --> 09:20.699
+Now that's the genius of the rebel algorithm.
+
+09:21.019 --> 09:26.925
+We're going to sort of evaluate these things in the discrete representation in the info state representation.
+
+09:27.926 --> 09:39.538
+And then we're going to be able to use what we find right here in order to determine the value of the next actions to take as far as I can tell.
+
+09:41.763 --> 09:46.487
+Okay, so there is only one thing left to do, right?
+
+09:47.908 --> 09:52.332
+We need to know how does this step here work?
+
+09:52.532 --> 09:59.057
+So we said we want to do this research over the public belief states, but we can't.
+
+09:59.318 --> 10:00.579
+It's too cumbersome.
+
+10:01.740 --> 10:11.668
+Therefore, we can now, we can evaluate values of a public belief state, but
+
+10:12.003 --> 10:19.498
+We still need to do to determine the policies and that's where the self-play reinforcement learning comes in.
+

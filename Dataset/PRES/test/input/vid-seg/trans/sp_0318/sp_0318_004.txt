@@ -1,0 +1,3 @@
+achieve.
+We introduce Fairness Pareto Frontier to characterize this information theoretic limit.
+For given this data distribution, Fairness Pareto Frontier is defined as the highest achievable accuracy among all classifiers satisfying the desired group fairness constraints.

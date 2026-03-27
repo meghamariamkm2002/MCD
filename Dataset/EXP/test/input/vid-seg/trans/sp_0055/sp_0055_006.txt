@@ -1,0 +1,14 @@
+in divide and conquer Monte Carlo tree search.
+You're not searching over actions.
+You are searching over the best way to subdivide this problem, right?
+You're searching over which of these all the black squares should I use to subdivide my problem into sub-problems, and that's what you build your search tree from.
+So naturally, you can already see what kind of possibilities do we have here to subdivide this problem.
+I drew one white square, but any of the black squares are candidates to subdivide this problem, right?
+Any of the black squares could be potential subdivisions.
+And this is what we search over.
+So in Monte Carlo tree search, we search over the actions, which gives us this four to the D tree.
+But in divide and conquer,
+we're searching over all the ways to subdivide the problem.
+And as you can see there, that are many, many more possibilities.
+So from this first starting node, we have like, like a hundred possibilities to subdivide this problem into two problems, right?
+And each of those, again, if you now

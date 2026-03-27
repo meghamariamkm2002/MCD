@@ -1,0 +1,380 @@
+1
+00:00:01,617 --> 00:00:03,660
+So bear with me for one second.
+
+2
+00:00:04,461 --> 00:00:08,567
+This is going to kind of snap together all that we've looked at so far.
+
+3
+00:00:09,609 --> 00:00:14,536
+In this section, we describe rebel and prove that it approximates a Nash equilibrium.
+
+4
+00:00:15,257 --> 00:00:21,786
+At the start of the game, a depth-limited sub-game rooted at the initial public belief state is generated.
+
+5
+00:00:22,660 --> 00:00:37,717
+This sub game is solved by running T iterations of an iterative equilibrium finding algorithm in the discrete representation of the game, but using the learned value network to approximate leaf values on every iteration.
+
+6
+00:00:39,218 --> 00:00:48,068
+Okay, so it might seem a bit complicated, but what we're going to do is we're going to, here's what I think happens.
+
+7
+00:00:48,088 --> 00:00:49,470
+And this is a bit unclear to me.
+
+8
+00:00:49,510 --> 00:00:50,811
+We're going to,
+
+9
+00:00:50,892 --> 00:00:54,342
+take any public belief that we find ourselves in.
+
+10
+00:00:54,442 --> 00:00:59,015
+They tell the beginning of the game, but any public belief state.
+
+11
+00:00:59,436 --> 00:01:06,336
+So the public belief state is maybe here, and it contains many different info states.
+
+12
+00:01:06,316 --> 00:01:18,654
+Now, what I think happens here is that they may be sampling one of the info states, I don't know, or they may input the public belief states at the beginning.
+
+13
+00:01:18,754 --> 00:01:19,835
+This is unclear to me.
+
+14
+00:01:19,855 --> 00:01:25,083
+But then they're going to solve the game in the discrete representation.
+
+15
+00:01:25,543 --> 00:01:31,231
+So they're going to use a classic solver to solve the game up to a limited depth.
+
+16
+00:01:31,251 --> 00:01:31,572
+Okay.
+
+17
+00:01:31,852 --> 00:01:35,918
+So this limited depth is going to be sort of these steps.
+
+18
+00:01:35,898 --> 00:01:37,741
+in into the future.
+
+19
+00:01:38,302 --> 00:01:40,346
+This is going to be in the classic representation.
+
+20
+00:01:40,406 --> 00:01:42,550
+So classic states and classic actions.
+
+21
+00:01:42,610 --> 00:01:47,359
+Now the solver that they use for this is counterfactual regret minimization.
+
+22
+00:01:47,820 --> 00:01:51,206
+This is a solver that works with info states.
+
+23
+00:01:51,447 --> 00:01:54,953
+Okay, so you can actually use CFR to solve poker.
+
+24
+00:01:54,933 --> 00:01:59,539
+However, you can't solve all of poker because the game is too big.
+
+25
+00:02:02,202 --> 00:02:08,229
+But you can solve a sub game provided that you have good value estimates here at the end.
+
+26
+00:02:08,790 --> 00:02:18,021
+Since they use CFR, that leads me to believe they don't use the entire public belief state as an input to CFR, but they either
+
+27
+00:02:18,001 --> 00:02:23,936
+maybe sample an info state or they actually sample one particular history that happened.
+
+28
+00:02:25,320 --> 00:02:26,383
+That is unclear to me.
+
+29
+00:02:26,483 --> 00:02:33,782
+However, what they do is they do this, they solve the sub game using CFR.
+
+30
+00:02:34,673 --> 00:02:37,859
+And then out of that, they get a strategy.
+
+31
+00:02:38,480 --> 00:02:45,894
+So here, you ask your solver, what should I do given my estimates of the values right here?
+
+32
+00:02:46,515 --> 00:02:50,202
+And the CFR will say, I know what you should do.
+
+33
+00:02:50,442 --> 00:02:51,364
+Here is a strategy.
+
+34
+00:02:51,625 --> 00:02:53,288
+Here is a policy that you should do.
+
+35
+00:02:53,949 --> 00:02:57,255
+Now, if this were alpha zero, if this were fully observable,
+
+36
+00:02:57,657 --> 00:02:59,786
+then you would be done, right?
+
+37
+00:02:59,826 --> 00:03:01,915
+You'd say, okay, I'm done, cool.
+
+38
+00:03:02,899 --> 00:03:03,763
+That's what I'm going to do.
+
+39
+00:03:04,204 --> 00:03:05,068
+However,
+
+40
+00:03:05,858 --> 00:03:19,074
+And what we saw above is that your values right here, your values down here, they are dependent on what comes before you.
+
+41
+00:03:19,575 --> 00:03:23,059
+Specifically, they are dependent on this strategy.
+
+42
+00:03:24,280 --> 00:03:28,305
+Now, CFR, it needs sort of an initial strategy.
+
+43
+00:03:28,285 --> 00:03:31,970
+And it outputs a best strategy for the given values.
+
+44
+00:03:32,551 --> 00:03:37,818
+But now that you have another strategy, these values here, they are no longer valid.
+
+45
+00:03:38,439 --> 00:03:40,662
+And you computed the strategy with the values.
+
+46
+00:03:41,062 --> 00:03:50,395
+So what you're going to do is you're going to plug in, you're going to use this thing to compute new values.
+
+47
+00:03:51,472 --> 00:04:01,027
+Okay, more values, you're going to construct another or the same sub game with new values and then use CFR again to solve that.
+
+48
+00:04:01,428 --> 00:04:04,974
+And that will give you the next policy for these values.
+
+49
+00:04:05,294 --> 00:04:07,177
+But then the values change again and so on.
+
+50
+00:04:07,418 --> 00:04:11,404
+Now this is going to converge eventually, but you're going to have to run
+
+51
+00:04:11,384 --> 00:04:15,131
+A couple of iterations of this for this to converge.
+
+52
+00:04:15,252 --> 00:04:21,083
+In fact, I believe it's the the running average or the average that's going to converge.
+
+53
+00:04:22,886 --> 00:04:30,962
+But you're going to solve a number of these sub games until you reach the actual best strategy.
+
+54
+00:04:32,427 --> 00:04:34,891
+And you're going to do that down the game tree.
+
+55
+00:04:34,951 --> 00:04:43,607
+So from this thing, you're going to construct sub game, you're going to construct 123 updating the values solving it.
+
+56
+00:04:44,067 --> 00:04:55,768
+And then once you have it, you sample some state in between from that, you're going to solve the sub game again, one time to time three time and so on until convergence and so on.
+
+57
+00:04:55,748 --> 00:05:00,094
+So this multiple solving of the same sub game, that's what we have to do.
+
+58
+00:05:00,695 --> 00:05:11,351
+So it is the price we have to pay for solving the game in the discrete representation because we can't solve it in the belief representation because it's too big.
+
+59
+00:05:12,112 --> 00:05:16,879
+There we would only have to solve it once, but here we have to solve it multiple times.
+
+60
+00:05:17,315 --> 00:05:19,718
+So this is the entire algorithm right here.
+
+61
+00:05:20,259 --> 00:05:27,667
+You can see while we're not in a terminal state, we're gonna construct a sub game and initialize some policy.
+
+62
+00:05:28,268 --> 00:05:35,417
+And then for each step, we're going to do first, sorry, we also set the leaf values.
+
+63
+00:05:35,937 --> 00:05:43,947
+So this setting of leaf values, that's simply forwarding, like if I know the policy,
+
+64
+00:05:45,614 --> 00:05:49,703
+I can go set the leaf values using my neural network, right?
+
+65
+00:05:50,064 --> 00:05:55,316
+My neural network can tell me what the value at each of the leaf nodes are.
+
+66
+00:05:55,537 --> 00:05:56,700
+That's what we train it for.
+
+67
+00:05:57,642 --> 00:06:03,876
+So in the set leaf values, there is a neural network, you see this by the fact that there are parameters right here.
+
+68
+00:06:04,430 --> 00:06:07,373
+And then we're going to do repeatedly the following two things.
+
+69
+00:06:08,234 --> 00:06:09,114
+Update policy.
+
+70
+00:06:10,376 --> 00:06:18,203
+So this here is where we use the solver, CFR, so we determine the best policy given the current value estimations.
+
+71
+00:06:19,084 --> 00:06:23,528
+And then we're going to set new values given the policy.
+
+72
+00:06:23,648 --> 00:06:30,255
+So see CFR, it will take in the last policy and it will output the next policy.
+
+73
+00:06:31,416 --> 00:06:33,778
+And set leaf values,
+
+74
+00:06:33,758 --> 00:06:40,251
+will in will take in these parameters, which meaning this here, that's going to be some kind of MLP or neural network.
+
+75
+00:06:40,792 --> 00:06:41,754
+And we're going to do this.
+
+76
+00:06:41,814 --> 00:06:50,712
+Then we're going to loop back again, and do the same thing, solve the game, set new values, solve the game, set new values, solve the game, set new values.
+
+77
+00:06:51,093 --> 00:06:53,758
+Okay, eventually,
+
+78
+00:06:53,738 --> 00:07:03,955
+By aggregating all of this information, we are going to be able to compute the expected value and that's going to be the value of the public belief state altogether.
+
+79
+00:07:04,576 --> 00:07:08,983
+And as we said, if we know the value, we can sort of take the best action.
+
+80
+00:07:09,424 --> 00:07:18,379
+In fact here, I believe that the policy that comes out, this average policy, is the Nash equilibrium and we can simply sample an action from that.
+
+81
+00:07:20,384 --> 00:07:22,648
+Alright, that's what they describe here.
+
+82
+00:07:23,269 --> 00:07:31,022
+They use, we describe rebel assuming the counterfactual regret minimization decomposition CFRD algorithm is used.
+
+83
+00:07:31,042 --> 00:07:36,030
+This is a depth limited version of CFR.
+
+84
+00:07:36,010 --> 00:07:38,794
+That's an entire research direction by itself, right?
+
+85
+00:07:38,994 --> 00:07:45,262
+Here, counterfactual regret minimization is simply used as sort of the inner solver, kind of a helper function to call.
+
+86
+00:07:45,642 --> 00:07:49,928
+And that thing by itself is an entire, entire algorithm.
+
+87
+00:07:49,988 --> 00:07:54,133
+It's like a very complicated algorithm, okay?
+
+88
+00:07:54,153 --> 00:07:59,180
+On each iteration, CFRD determines a policy profile in the sub game.
+
+89
+00:07:59,200 --> 00:08:03,165
+Next, the value of every discrete representation leaf node,
+
+90
+00:08:03,145 --> 00:08:07,150
+is set to this and this is this is the neural network, right?
+
+91
+00:08:07,190 --> 00:08:13,398
+So we're going to use the neural network to set the leaf node values of the discrete representation.
+
+92
+00:08:15,301 --> 00:08:24,192
+Okay, this means that the value of a leaf node during search is conditional on the policy, thus the leaf node value
+
+93
+00:08:24,492 --> 00:08:26,097
+change every iteration.
+
+94
+00:08:26,879 --> 00:08:31,733
+Given Pi and the leaf node values, each info state has a well-defined values.
+
+95
+00:08:32,515 --> 00:08:40,037
+This vector of values is stored and next, CFRD chooses a new policy profile and the process repeats for T it
+

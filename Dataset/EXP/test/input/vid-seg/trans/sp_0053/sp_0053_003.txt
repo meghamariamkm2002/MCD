@@ -1,0 +1,46 @@
+So that's a visual transformer.
+Now, what do we do with it in this dyno architecture?
+I've already shown you this picture.
+Let's go a little bit deeper into that.
+Self-supervised learning naturally means you have no labels.
+And in this case, you don't even have a negative sample mechanism or a contrastive learning mechanism.
+So what you want to do is you want to train a model that sort of gives you, gives you sensible representations.
+And that is easier said than done.
+If you have no labels.
+Now, the, when you do contrastive learning, the goal is that you have an image.
+And you just take two patches from the image, let's say, and you have another image, and you take a patch from that.
+And now you have what's called your anchor.
+This is your anchor.
+And then you have patch.
+patch A from the same patch B. Now you present the model, all the three patches, and you tell it which one is the anchor, and it needs to decide is the patch A or patch B from the same image.
+You can see how this objective can give you a sort of representation because the model learns
+what kind of stuff is likely to be in the same image.
+This is not the case right here.
+We don't do contrastive learning.
+We don't have negative samples.
+We only, we take one image and then we augment that image in different ways.
+Now augmentations are kind of a science by itself.
+I think they say they follow the paper BYOL in terms of augmentations.
+I've also made a video on that.
+Essentially what you do is you do various random perturbations of the image, you might flip it, you might apply some color jitter, you might apply like some solarization, anything like this, anything you can do to make the image different, but that you're relatively sure that, you know, it still looks like the same, like you would still recognize it as the same image.
+So a part of these augmentations are also crops.
+What I've shown you here are crops of the same image.
+They do something special right here.
+When they have an image, they crop in two different ways.
+One, they call, I think, global crops.
+And these are crops which generally cover more than 50% of the image.
+Whereas the other ones, they called local crops, and these are crops that cover less than 50% of the image.
+This is going to be important in one while.
+So these are global and these are local crops of the same image.
+So
+they exactly and keep that in mind.
+And now we have to understand what's up with this student and this teacher.
+So what we ideally want to do is we want to have
+two different augmentations of the same image.
+So here you have an image and you can see we make two different versions of that image.
+Now this could be two different crops and then we apply two different color jitters, we apply two different random rotations and so on.
+We just want two different versions of the same image.
+And our goal finally is going to be here, you can see the loss is that the representation we get out of it is the same.
+So we teach the network that look, these two things, they might look different, you know, but they are, in fact, the same.
+They are, you know, from their crops, differently augmented, differently cropped, but from the same image.
+So the easiest thing would be to just pass the two through

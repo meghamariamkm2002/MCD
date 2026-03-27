@@ -1,0 +1,136 @@
+1
+00:00:00,031 --> 00:00:00,892
+different things.
+
+2
+00:00:00,972 --> 00:00:05,419
+So here you can see examples of proteins and their high-level structure.
+
+3
+00:00:05,499 --> 00:00:12,951
+So in these proteins what you call the primary structure is this sequence of amino acid.
+
+4
+00:00:13,111 --> 00:00:16,977
+This is simply which amino acids are in which order.
+
+5
+00:00:16,957 --> 00:00:32,660
+There is a thing called the secondary structures and we often observe that spans of these amino acids like substrings form these what are called these helixes as you can see here or these sheets.
+
+6
+00:00:33,842 --> 00:00:36,445
+I don't know how they're strands in English.
+
+7
+00:00:37,467 --> 00:00:43,015
+We call them sheets or I think these are the alpha helixes and these are the beta sheets.
+
+8
+00:00:42,995 --> 00:00:47,201
+And there is also a turn, so I think this here might be a turn.
+
+9
+00:00:47,621 --> 00:00:59,698
+So there are these kind of secondary structures, and then the tertiary structure is how this is still one protein, this is one unbroken chain of amino acid.
+
+10
+00:01:00,078 --> 00:01:06,707
+And you can see this here kind of forms this double ring, which would be its tertiary structure.
+
+11
+00:01:06,687 --> 00:01:15,361
+Very important for predicting the tertiary structure is to predict when two amino acids are close to each other.
+
+12
+00:01:15,561 --> 00:01:23,093
+So if we have a chain right here and the chain as we saw before kind of turns and bends on itself,
+
+13
+00:01:23,073 --> 00:01:27,799
+then these two amino acids here are very close in close contact.
+
+14
+00:01:28,641 --> 00:01:38,013
+And to predict which amino acids are in close contact to each other helps you determine the tertiary structure.
+
+15
+00:01:38,094 --> 00:01:39,976
+So that's a consequence of it.
+
+16
+00:01:39,996 --> 00:01:52,253
+So we wonder, does BERT know intrinsically which of these amino acids are going to end up being in contact with each other without ever having been trained to do it?
+
+17
+00:01:53,448 --> 00:01:56,594
+The second thing we're interested in are binding sites.
+
+18
+00:01:57,075 --> 00:02:09,178
+So here, you might not be able to see, but we made this example before where this sort of forms a loop and then I say can trap something here, like another molecule.
+
+19
+00:02:09,158 --> 00:02:12,664
+And this is what we would call a binding site.
+
+20
+00:02:12,744 --> 00:02:27,370
+A binding site is a one amino acid that maybe through the structure of the surrounding amino acid as well, but also through its properties and how it is exposed in 3D shape,
+
+21
+00:02:27,350 --> 00:02:31,677
+acts as sort of a receptor for other molecules.
+
+22
+00:02:31,837 --> 00:02:33,479
+It binds to other things.
+
+23
+00:02:36,063 --> 00:02:42,073
+So think of your hemoglobin that traps the oxygen in your blood or something like this.
+
+24
+00:02:42,714 --> 00:02:50,205
+It is where a chemical reaction or a reaction with something else will happen.
+
+25
+00:02:50,265 --> 00:02:51,467
+That's a binding site.
+
+26
+00:02:51,447 --> 00:03:02,854
+And we are interested, does BERT, the BERT that is only trained on a language modeling objective know which ones are the binding sites?
+
+27
+00:03:02,954 --> 00:03:08,848
+Because, you know, that would be very interesting and not something BERT was trained on.
+
+28
+00:03:08,828 --> 00:03:12,415
+By the way, I particularly liked Richard Socker's tweet on this.
+
+29
+00:03:13,036 --> 00:03:25,899
+He, I think he tweeted out, Oh, Bert trained only on language model can predict minding sites and biological properties and formulated it like it was, you know, like GPT three was formulated.
+
+30
+00:03:25,919 --> 00:03:30,347
+Like if we train on Wikipedia, our model can do math.
+
+31
+00:03:30,327 --> 00:03:32,794
+I thought it was kind of a satire headline.
+
+32
+00:03:33,094 --> 00:03:40,775
+If we train on Wikipedia, our model can predict biology and also it can tie your shoes and cook your dinner.
+
+33
+00:03:42,039 --> 00:03:46,491
+So it's trained on language modeling on biological data and now that makes sense.
+
+34
+00:03:47,453 --> 00:03:50,040
+So they're going to look at two
+

@@ -1,0 +1,2 @@
+We formalize the VFL problem as a finite sum problem in composite form.
+I will minimize the loss while it still gets to gradient descent.

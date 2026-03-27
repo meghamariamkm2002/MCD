@@ -1,0 +1,65 @@
+[
+  {
+    "input_path": "/tmp/megha/PDF-Extract-Kit/Presentation/layout_pap/sp_0108/sp_0108_page_19.png",
+    "page_index": null,
+    "boxes": [
+      {
+        "cls_id": 14,
+        "label": "algorithm",
+        "score": 0.5772433280944824,
+        "coordinate": [
+          450.4403076171875,
+          303.48773193359375,
+          2095.727294921875,
+          1025.13037109375
+        ],
+        "text": "Ui \u2190 FC(data,st,w)\n1. (k, xk) \u2190 st\n2. Sample \u03bek from local data Di\nk+1\n = xk \u2212 \u03b7k (F(xk, \u03bek) + \u03bbsign(xk \u2212 wk))\n3. xk\n4. ui = xk\n5. st \u2190 (k +1,xk+1)\nVi \u2190 FP(ui)\n1. Set vi = sign(wk \u2212 ui)\nW \u2190 FR({vi}i[n])\n1. Set wk+1 = wk \u2212 \u03b7k (fo(wk) + \u03bb(\u2211i[n] vi))",
+        "input_path": "/tmp/megha/PDF-Extract-Kit/Presentation/layout_pap/sp_0108/sp_0108_page_19.png",
+        "id": "sp_0108_page_19_1",
+        "seg_type": "algo"
+      }
+    ]
+  },
+  {
+    "input_path": "/tmp/megha/PDF-Extract-Kit/Presentation/layout_pap/sp_0108/sp_0108_page_21.png",
+    "page_index": null,
+    "boxes": [
+      {
+        "cls_id": 14,
+        "label": "algorithm",
+        "score": 0.6932786107063293,
+        "coordinate": [
+          447.47509765625,
+          303.4932556152344,
+          2095.710205078125,
+          1802.7138671875
+        ],
+        "text": "1. (k,mk) \u2190 st\ninto d sets of \u03b8 values each, corresponding to the d parameters\nof the model. Index them as pih where i  [\u03b8] and h  [d]. // Parse and index the bitwise\nglobal update to align with parameters of the model\n3. For h  [d], Sh \u2190 \u2211i[\u03b8] pih \u00b7 2i / intermediate value of global update reconstruction\nk-1\n{wk} h[d]\nk\n\u2212 \u03b7(\n// reconstruct global model\n4.\nW\nW\nh\nh\nM\nparameters\n5. Sample \u03be from local data Di\n6. Compute ui = (1 \u2212 \u03b2k)(F(w\u2032, \u03bek)) + \u03b2kmk\n7. st \u2190 (k + 1,ui)\nVi \u2190 FP (ui, W)\n1. Compute v\" \u2190 min(\u03c4, max(\u2212\u03c4, ui \u2212 w)) + \u03c4\n2\n\u2190\nT\n3. Round and map entries of v' to unsigned \u03b8-bit integers values  [0, 2\u03b8  1]. Call the\nresult v.\n4. Decompose v into the component bits used to represent each value in the vector, indexed\nas bij for j  [d \u00b7 \u03b8]. Submit a vector of the individual bits as vi.\nw \u2190 FR({vi}i[n], W)\n1. (k) \u2190 st\n2. For j  [d \u00b7 \u03b8], compute b \u2190 \u2211i[m] ij. /| sum each bit across client updates\n3.w \u2190 {bj }j[d\u00b70]}\n4. st \u2190 (k +1)",
+        "input_path": "/tmp/megha/PDF-Extract-Kit/Presentation/layout_pap/sp_0108/sp_0108_page_21.png",
+        "id": "sp_0108_page_21_1",
+        "seg_type": "algo"
+      }
+    ]
+  },
+  {
+    "input_path": "/tmp/megha/PDF-Extract-Kit/Presentation/layout_pap/sp_0108/sp_0108_page_22.png",
+    "page_index": null,
+    "boxes": [
+      {
+        "cls_id": 14,
+        "label": "algorithm",
+        "score": 0.6581674814224243,
+        "coordinate": [
+          448.9251708984375,
+          299.0872802734375,
+          2098.025390625,
+          1801.0673828125
+        ],
+        "text": "Assume all client states S contain a public root dataset D0 (in addition to their private dataset Di\nUi \u2190 FC(data, st, w)\n1. g0 \u2190 ModelUpdate(w, D0) // compute update from root dataset, save in client state\n2. gi \u2190 ModelUpdate(w, Di) // compute local update from client dataset\n3. ui \u2190 gi\nVi \u2190 FP (ui, W)\n1. o \u2190\ngo\n// normalize to unit length\nlgoll\n2. i \u2190\nUi\n// normalize to unit length\nkuil\n3. M \u2190 rotation matrix aligning 0 with the x-axis.\n4. 0 \u2190 M 0\n5. \u00afi \u2190 M \u00afi // rotate client update by the same angle\n6. Represent i and o as \u03b8-bit fixed-point numbers with a designated sign bit, call this\nrepresentation g\u2032 and g.\n7. If the x-coordinate of gh is negative, submit  as vi.\n8. Otherwise, submit a vector of the individual bits of g' as vi. Each coordinate should\nbe submitted as a sign bit and a binary-encoded magnitude, except for the x-coordinate\nwhich should only have a magnitude since it is non-negative.\nW \u2190 FR({vi}i[n], W)\n1. Parse vi appropriately as g\n2. TSi \u2190 magnitude of x-coordinate of gh // since go is aligned with x-axis\n3. Submit g \u2190 \u2211i[n] g\u2032 \u00b7 TSi as global update. Denormalization, rotation, and computa-\ntion of global model parameters via w \u2190 w + \u03b1 \u00b7 g is performed as post-processing on\nthe client side",
+        "input_path": "/tmp/megha/PDF-Extract-Kit/Presentation/layout_pap/sp_0108/sp_0108_page_22.png",
+        "id": "sp_0108_page_22_1",
+        "seg_type": "algo"
+      }
+    ]
+  }
+]

@@ -1,0 +1,4 @@
+The training objective is a standard supervised loss.
+For AL, we train a target model from scratch.
+In the case of ASFDA, we replace it with a warm-up model.
+In ADA, objectives are coupled with labor source data.

@@ -1,0 +1,24 @@
+Hi there, take a look at this variant of the game Rock Paper Scissors.
+It's like usual Rock Paper Scissors, except with the added complexity that when either player chooses scissors, then the rewards and the losses are doubled.
+So for example, you see right here, player one chooses rock,
+and player two chooses scissors, so both the reward for player one and the loss for player two are double the size.
+Now you might know that in original Rock Paper Scissors the optimal strategy is to play one third of each of the three choices at any time, so you basically take a
+fair three-sided coin dice, does that exist?
+I'm not sure.
+And you throw it and whatever side is up, that's what you play.
+However, here, since one of the options is different, the sort of optimal strategy shifts and interestingly, it shifts as follows.
+What you wanna do is you wanna play rock and paper both with a 0.4 probability
+and you want to play scissors with only 0.2 probability.
+That is pretty interesting.
+You might intuitively conclude that you want to go more where there are more rewards to be had, but of course also you lose more, so you might also conclude, well, it doesn't make a difference ultimately, but
+Why does the optimal strategy shift such that you want to decrease your likelihood of playing scissors?
+Let's just quickly analyze this game before we jump into the paper because this game is a microcosm
+of what the paper of today is about.
+So the paper of today is called Combining Deep Reinforcement Learning and Search for Imperfect Information Games by Noam Brown, Anton Bakhtin, Adam Lehrer, and Chi Chen Gong of Facebook AI Research.
+So this paper brings basically what AlphaGo or AlphaZero has done for perfect information games.
+It brings this to the domain of imperfect information games and we'll see what the difficulties are in this and what can be done to solve it and not only do they have an algorithm but they have
+the interesting theoretical results that under some conditions, namely under the condition that neural networks do something useful, will actually converge to Nash equilibrium in these games.
+That is pretty cool, so practical and theoretical paper right here.
+As always, if you like content like this, don't hesitate to share it out and tell me what you think in the comments.
+This is not my field, so I might get quite a bit of stuff wrong right here.
+Also, if you haven't seen the Negranu poker challenge, so I think it's the last video I did, be sure to check that out just to see how you have to think about situations like this.

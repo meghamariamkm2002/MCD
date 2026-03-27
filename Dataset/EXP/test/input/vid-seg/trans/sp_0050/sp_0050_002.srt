@@ -1,0 +1,132 @@
+1
+00:00:00,031 --> 00:00:02,234
+people who maybe have never heard this.
+
+2
+00:00:03,055 --> 00:00:13,447
+In your every cell, you have this thing called DNA, which basically is an encoding of all of your biological functions.
+
+3
+00:00:13,547 --> 00:00:17,251
+Now, usually biological functions are realized through proteins.
+
+4
+00:00:17,752 --> 00:00:22,798
+So DNA is basically a building plan for all of your proteins.
+
+5
+00:00:22,778 --> 00:00:25,282
+This happens in the following two steps.
+
+6
+00:00:25,403 --> 00:00:30,031
+First, there is this transcription step where RNA is built.
+
+7
+00:00:30,051 --> 00:00:35,440
+This is basically a copy of your DNA, but is only single strand, as you can see right here.
+
+8
+00:00:36,462 --> 00:00:42,913
+And then there is a translation step that finally translates the RNA into the protein.
+
+9
+00:00:42,893 --> 00:00:47,742
+What will end up is just a sequence of these beads right here.
+
+10
+00:00:48,202 --> 00:00:50,947
+Now these beads are what are called amino acids.
+
+11
+00:00:51,108 --> 00:00:55,475
+So a protein is simply a chain of these amino acids.
+
+12
+00:00:55,495 --> 00:01:04,952
+There are 20 different amino acids and the order of these amino acids in the chain makes the function of the protein.
+
+13
+00:01:04,932 --> 00:01:13,420
+Now specifically we know about these proteins that it seems to be very important how their three-dimensional shape is.
+
+14
+00:01:13,860 --> 00:01:18,244
+So a lot of these different amino acids have different chemical properties.
+
+15
+00:01:18,284 --> 00:01:22,648
+Some are sort of, I think, negatively charged.
+
+16
+00:01:22,808 --> 00:01:24,230
+Some are neutral.
+
+17
+00:01:24,430 --> 00:01:26,252
+Some are acids and so on.
+
+18
+00:01:26,312 --> 00:01:28,614
+So they have very different chemical properties.
+
+19
+00:01:28,754 --> 00:01:33,218
+So once you build this protein and you kind of release it into the cell,
+
+20
+00:01:33,198 --> 00:01:36,682
+it will curl up into a three-dimensional structure.
+
+21
+00:01:36,742 --> 00:01:58,564
+So this one might be, you know, doing something like this and sort of form a circle or something like this just because these proteins here, they kind of attract each other maybe electrically and thus the protein forms a circle and the function of the protein is very much related to its shape.
+
+22
+00:01:58,544 --> 00:02:03,652
+So, if it is a circle, it could maybe, you know, trap something else in here.
+
+23
+00:02:04,013 --> 00:02:07,158
+So, you really have to think of these things like kind of tools.
+
+24
+00:02:07,799 --> 00:02:21,480
+There are proteins that cut other proteins and they are really shaped sort of like a scissor that exactly fits these other proteins such that you can effectively cut them.
+
+25
+00:02:21,460 --> 00:02:28,432
+So sometimes you can substitute an amino acid for a different amino acid like this here.
+
+26
+00:02:29,273 --> 00:02:34,221
+If it doesn't change the shape, very often you're fine.
+
+27
+00:02:34,241 --> 00:02:37,647
+The protein function isn't changed.
+
+28
+00:02:37,627 --> 00:02:47,696
+but if you change a different amino acid that is sort of vital to the shape and the shape changes, then your protein very often loses function.
+
+29
+00:02:47,716 --> 00:03:06,132
+So mutations in DNA sometimes lead to mutations in protein, not always because there is some redundancy in this in this translation step from RNA, but if they do lead to a different amino acid, it doesn't actually mean that the function changes.
+
+30
+00:03:06,472 --> 00:03:07,633
+So
+
+31
+00:03:07,613 --> 00:03:16,865
+there is sort of value in analyzing the sequence of the structure of proteins rather than the structure of DNA.
+
+32
+00:03:16,925 --> 00:03:36,051
+Of course, it's also important to analyze the structure of DNA, but it is also, it is equally important to analyze the structure of proteins because they, not all the information is in the sequence, not all the obvious information is in the sequence.
+
+33
+00:03:36,031 --> 00:03:40,050
+So what does this paper do this paper goes?
+

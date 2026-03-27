@@ -1,0 +1,77 @@
+start	end	text
+31	4578	Alright, let's get back to this rock, paper, scissors example right here.
+5679	13530	Interestingly to note is that these dashed lines here means that player two cannot decide which of these states they're in.
+13871	16915	So player two doesn't know what states are in.
+16935	19179	For player two, this is all basically the same state.
+19599	28452	It would be really easy, right, if player one plays first and then player two sees what player one does and then they just act like they always win.
+28938	35831	However, player two doesn't, so they have to sort of decide what to do, independent of which state they're in.
+36973	39919	Especially, this is a symmetric game, right?
+39959	42944	This is a two-player game, because it has two players.
+43225	49697	It's zero sum, because whenever one player wins a reward, the other player loses the same reward.
+49677	63568	And that makes it symmetric, so both players play at the same time, though that is not necessary in general, but here it's the case.
+64578	70285	This means in this particular case, whatever strategy player one has, player two must have as well.
+70425	72487	So we'll just do the analysis for player one.
+73428	77453	So let's say you deviate from this optimal strategy, right?
+77513	82439	We claim that this here is the optimal strategy, playing 20% of scissors.
+83300	85602	Let's say player one doesn't believe it.
+85762	88105	Player one deviates from it and says, nah,
+88085	89589	There is so much reward there.
+89609	90873	I'm going to get some more of that.
+90933	92176	So they up this, right?
+92216	99857	They up this to like, let's say point, I don't know, point three, three, like doing the classic one third or even higher, right?
+99877	101902	They up this, go more scissors.
+102243	103346	Okay.
+103426	104068	And
+104048	107775	They probably want to take this mask because they have to take it from somewhere.
+108016	110861	They probably want to take this from rock and paper.
+110881	118176	Let's say they just take it equally from rock and paper towards scissors to up the probability that they play scissors.
+118236	121382	So from paper and from rock, they go towards scissors.
+121936	126065	Now, player two observes this, right?
+126085	133321	They can just play against player one for a while, or what we're going to assume is that everyone announces their strategy publicly.
+134183	134905	It's the same thing.
+135005	141058	You can just observe someone for a while, or they can just announce their strategy.
+141038	143162	We'll treat this equally.
+143503	147631	So player two observes player one, playing scissors too often.
+148212	153983	So player two knows they are very often in this situation right here, in this right state.
+154084	162540	They can't directly observe, but they infer, I must be very often in this right most state where player one chooses scissors.
+162520	165344	And therefore, you see player two's payoffs.
+165825	169030	It's zero here, minus two here, and two here.
+169391	174960	So they'll say, well, I also have this optimal strategy of 0.4, 0.4, 0.2.
+175280	184735	What I can do is I can simply, knowing that I'm a lot in this state, I can simply take some mass from paper and put it on rock.
+184755	187920	So I play rock way more often.
+188272	204188	and I reduce the amount I play paper right scissors doesn't matter but now I lose to less often and I win too much more often and player one in turn loses too much more often and wins
+204168	206030	much less often, right?
+206230	211876	So player one wanted to get more reward, but they're sort of being punished by player two for playing this too often.
+212317	215020	Now you can say, well, player one can do the same thing.
+215420	218904	Knowing that player two plays rock too often now, right?
+218924	221207	They've taken away mass from paper towards rock.
+221527	230597	Knowing that player two has taken rock, player one knows that either they're here or they're here, right?
+230797	236949	And in this case, player one can say, all right, you play rock too often.
+237029	243422	Obviously, if I play scissors, then I'm going to lose, but I've already decided I want to play scissors much more.
+243462	245265	So they're trying to make it up right here.
+245646	249193	So what they can do in this case is they can say,
+249173	264600	when i play paper i win one instead of if i play rock two i win zero so i know player two is playing rock way more often than they should so i'm going to punish player two by playing paper more often so
+264580	266482	Let's erase this arrow.
+266582	269526	Let's say we play scissors Sorry, we play scissors.
+269846	290250	No, let's not erase this We play scissors by moving from rock and we also move from rock to paper like we're almost never playing rock We're just playing scissors more often because that's what we started with and we're playing also now paper more often So now we basically do the same thing that player 2 did to us we are
+290230	295076	Upping the likelihood of this thing happening and decreasing the likelihood of this thing happening.
+295096	299461	So now we can say, now I also, I play paper more often.
+300623	304668	Now I also win more often here and you lose more often.
+304988	312357	But you see, because the rewards are doubled over here, the fact that player two can achieve this,
+313484	317789	is much more meaningful than the fact that player one can achieve this.
+318370	324537	And that's why player one will be punished harder for deviating here.
+324998	327641	So that's sort of how you reason about these strategies.
+327801	337532	So if player one will play this point too often, they will be punished harder than player two for deviating in response to that.
+338013	340656	And the same counts for the symmetric part.
+341041	344988	This is a very important concept right here.
+345008	352040	Namely, you can see player 2 strategy depends on player 1 strategy.
+352561	357008	Even though you could conceptualize this game of player 1 plays a move,
+357730	361394	And then they play a move, but they don't show it yet, right?
+361455	368483	They play a move, they take like a picture of their hands doing rock, paper, scissors, and they just don't show the picture yet.
+369064	370926	And then player two plays a move.
+371527	377915	So now we're basically back in, we're in this game where it's sequential in nature.
+378495	381940	And usually in a sequential game, you can just do a sub game analysis.
+382400	384683	So you can just say, okay,
+384781	393394	and do a sub game analysis, but the sub game analysis depends on the strategy of player one because you don't know the situation.
+393755	397530	This is different than a full information game.
+398654	400039	And this is illustrated

@@ -1,0 +1,21 @@
+start	end	text
+31	6778	And it is end-to-end in the sense that usually what these pipelines do is they take the text.
+7558	12623	And we've looked at this, for example, in the video about this Facebook's text-to-speech system.
+12963	29059	So they take the text and the first thing they do is they would produce a set of whatever they would call features, like textual features, call it textual features.
+31250	36536	So these are sort of intermediate features for the text to be produced.
+36877	42544	And then another model would take these and it would produce something like spectrograms.
+44045	46048	Spectrograms.
+46629	53697	And then another model would take the spectrograms and finally produce sound or speech.
+53677	70639	So you have usually in these systems you have intermediate representation and each of these models right here can be trained by itself so that's an advantage that you can train for example you can train a model that goes from a spectrogram to a sound wave by itself.
+70619	73423	And you simply need sound for that.
+73483	76928	The computation from sound to spectrogram is super easy.
+77769	79832	So you can generate your own training data.
+80053	82416	So you can go from spectrogram to sound.
+82696	84178	You can train a model like this.
+84639	92290	So in these pipelines, usually there are multiple stages and each of these models has to be trained by itself.
+92270	94855	This paper tries to do this end to end.
+95316	101750	That means you input the text and you get out the sound wave.
+101770	113154	And there's nothing in between that the, I mean, of course there are latent representations, but you train it end to end in one go.
+113996	114096	Okay.
+114437	117945	So let's look at the different systems they employ.
+119247	120049	First of all,

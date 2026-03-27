@@ -1,0 +1,3 @@
+The self-gradient adjusting balancer is a crucial tool that ensures the continuous balancing of gradients during training.
+The SGV monitors the difference between cumulative positive and negative gradients and adjusts it to zero, ensuring failure across all clients.
+Overall, it dynamically adjust the model, ensuring that both majority and minority classes are treated fairly.

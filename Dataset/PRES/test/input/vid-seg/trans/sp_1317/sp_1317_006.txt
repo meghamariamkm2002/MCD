@@ -1,0 +1,6 @@
+As an example, imagine that a data scientist, they compute the correlation matrix, and they use it as a reference to select features that have the highest correlation with the target variable.
+Then they train their machine learning models using that set of features.
+
+Now imagine that they repeat this process within synthetic data in place of real data.
+If the correlation matrix of synthetic data does not match that of real data, they may choose a completely different set of features.
+And as a result, if they train their machine learning models using that set of features, the model may suffer from a performance reduction.

@@ -1,0 +1,45 @@
+{
+  "sp_0028_page_0003": {
+    "bboxes": [
+      {
+        "box": [
+          440.033935546875,
+          506.7078552246094,
+          782.5703735351562,
+          549.6973876953125
+        ],
+        "text": [
+          "L _ { i } \\left( \\theta _ { i } \\right) = \\mathbb { E } _ { s , a \\sim \\rho ( \\cdot ) } \\left[ \\left( y _ { i } - Q \\left( s , a ; \\theta _ { i } \\right) \\right) ^ { 2 } \\right] ,"
+        ],
+        "id": "sp_0028_page_0003-1",
+        "page": "sp_0028_page_0003"
+      },
+      {
+        "box": [
+          424.23065185546875,
+          200.3497772216797,
+          799.8648071289062,
+          244.2195587158203
+        ],
+        "text": [
+          "Q ^ { * } ( s , a ) = \\mathbb { E } _ { s ^ { \\prime } \\sim \\mathcal { E } } \\left[ r + \\gamma \\operatorname* { m a x } _ { a ^ { \\prime } } Q ^ { * } ( s ^ { \\prime } , a ^ { \\prime } ) \\middle | s , a \\right]"
+        ],
+        "id": "sp_0028_page_0003-2",
+        "page": "sp_0028_page_0003"
+      },
+      {
+        "box": [
+          241.20579528808594,
+          704.6537475585938,
+          960.1349487304688,
+          747.9783325195312
+        ],
+        "text": [
+          "\\nabla _ { \\theta _ { i } } L _ { i } \\left( \\theta _ { i } \\right) = \\mathbb { E } _ { s , a \\sim \\rho \\left( \\cdot \\right) s ^ { \\prime } \\sim \\mathcal { E } } \\left[ \\left( r + \\gamma \\operatorname* { m a x } _ { a ^ { \\prime } } Q ( s ^ { \\prime } , a ^ { \\prime } ; \\theta _ { i - 1 } ) - Q ( s , a ; \\theta _ { i } ) \\right) \\nabla _ { \\theta _ { i } } Q ( s , a ; \\theta _ { i } ) \\right] ."
+        ],
+        "id": "sp_0028_page_0003-3",
+        "page": "sp_0028_page_0003"
+      }
+    ]
+  }
+}

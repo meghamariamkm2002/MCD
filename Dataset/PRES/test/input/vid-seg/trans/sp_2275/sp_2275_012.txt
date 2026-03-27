@@ -1,0 +1,1 @@
+A class frequency experiment validates the ability of annotator to select more diverse and balanced data, particularly beneficial for long tail distributions.

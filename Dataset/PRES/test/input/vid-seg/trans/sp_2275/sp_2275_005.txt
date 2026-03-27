@@ -1,0 +1,2 @@
+For each LiDAR scan x, we first transform it into a 3D works of grid set, v, then access the importance of each works of grid, vj.
+Finally, select the top grids per scan for annotations.

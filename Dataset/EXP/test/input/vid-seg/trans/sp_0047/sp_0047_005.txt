@@ -1,0 +1,65 @@
+They went with this approach called negative sampling.
+Negative sampling has been, it's been very influential.
+Not only in word2vec, but negative sampling is one of the cornerstones of the current trend in self-supervised learning and contrastive estimation and so on.
+So this, all of this, you know, it pops up in unlikely ways in other fields.
+And it sort of, I'm not going to say it originated here, but definitely it was introduced into the popular deep learning world right here.
+So they say an alternative to hierarchical softmax is noise contrastive estimation.
+So in noise contrastive estimation posits that a good model should be able to differentiate data from noise by means of logistic regression.
+That seems very reasonable.
+This is similar to the hinge loss and so on.
+While NCE can be shown to approximately maximize the log probability of the softmax, the skip-gram model is only concerned with learning high-quality vector representations, so we are free to simplify noise-constructive estimation as long as the vector representations retain their quality.
+We define negative sampling by this following objective.
+So this is very interesting.
+They see, okay, noise contrastive estimation, you know, it approximately maximizes the law.
+So the noise contrastive estimation would actually be the correct way to approximate their problem.
+However, they say, well, as long as, you know, as long as something reasonable comes out, we're free to change that up a bit.
+So
+They go with this negative sampling approach right here.
+And you can see that this is almost the same.
+So it's written a bit differently from the original Softmax thing, because the original Softmax thing was written as a fraction, and here it's as a sum.
+But what you're trying to do in the negative sampling framework is you're trying to maximize the following.
+You're trying to maximize the inner product of the word you're considering and the words around them, okay?
+So you're trying to still predict the words around you, but now instead of having this prediction softmax over all of the classes, you only have the softmax over a subset of classes.
+So what you'll do is you sample words from your vocabulary at random and you sample K of them and you're simply trying to now minimize the inner product between those words and your word.
+Okay, so what does that ultimately lead to?
+It ultimately leads to the following.
+You have a word like this word here, negative, and what you're trying to do is you're not trying that much to predict the word sampling.
+What you're trying to do is you're trying to say that in my space right here,
+I simply want sampling to be closer than any other word that's not in the context window.
+Okay, so here is my word negative and here is my word sampling.
+And I want these two to be close.
+And if I sample another word, like here, this is the word cake.
+If I, sorry, if I sample that, I simply want that to be far away, farther than the word sampling.
+So this is now a comparative.
+It's not I classify sampling as the highest class.
+It's simply I want to classify the word sampling against the other classes higher.
+And this is now much, much easier.
+So instead of a thousand or 10,000 or a million way classification, I now maybe have, I have a K plus one way classification, right?
+Pretty easy, right?
+I simply sample K other words.
+And as I assume, because I have so many words, chances that I actually sample one that's in my context window is very small, right?
+So I simply sample other words and I say, well, these other words are random.
+They have nothing to do with the current frame that I'm looking at.
+So they should be, you know, they can be whatever they want, but at least they should be farther away than the words that are actually in my context.
+And that is negative sampling, the process of sampling negatives, this right here, and then making sure that the positives, which are these here, in this case, the words in the context are classified with a higher probability than the negatives for a given input word, right?
+This here is the input word.
+That's it.
+That's negative sampling.
+And of course, yeah, as I said, you recognize this from current things like self supervised learning, where you want to have the same image augmented twice, go through the pipeline, you know, you augment, you put a little bit of different noise, and then you have a different image.
+And at the end, you say, these two should be close together, while this other one should be far apart.
+It's the exact same thing here except that you have a different way of obtaining the positive and the negative samples.
+In this case, positive samples are everything that's in the context.
+Negative samples are just randomly sampled from the data set.
+And that, you know, works, of course, that works much, much, much faster.
+And you can see that this turns out to give you vectors that are pretty good.
+And you can train with higher vectors, sorry, with higher dimensional vectors, you can train with bigger vocabularies with this.
+This has turned out to be very, very influential.
+As I said, now with the rise of BERT and so on, word2vec is kind of getting forgotten, but this was a revolution and distributed vectors, so it wasn't a thing really.
+It kind of was a thing before that, but it wasn't really a thing that people used.
+What people would do is still they would do ngram models before that, so they would kind of
+sort of chunk up their sentences into n grams into overlapping n grams, and then have a big giant table for their where they index their n grams.
+So the word, I don't know, so the word hello is ID one, the word hello there.
+is ID2 and so on.
+So you have a big table for all the ngrams and then what you would try to do is you would try to do this kind of bag of words estimation where you would take a, you know, whatever ngrams appeared in your sentence and you would have this big, you know, classification where you associate the ngrams with each other and so on.
+So distributed word representations were kind of a revolution
+at that point, especially distributed representation that actually outperformed these old

@@ -1,0 +1,3 @@
+However, uncertainty-based strategies have limitations.
+To address miscollaborated uncertainty in new domains, we introduce works of confused degree, estimating the category diversity within a works of grid.
+VCD is calculated by obtaining pseudo-labors, dividing points into K clusters, and assessing the VCD

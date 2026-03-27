@@ -1,0 +1,21 @@
+[
+  {
+    "input_path": "layout_results/sp_0046/sp_0046_page_4.png",
+    "page_index": null,
+    "boxes": [
+      {
+        "cls_id": 14,
+        "label": "algorithm",
+        "score": 0.8277474641799927,
+        "coordinate": [
+          438.031982421875,
+          339.3204345703125,
+          2104.829833984375,
+          1419.8934326171875
+        ],
+        "text": "Algorithm 1 Minibatch stochastic gradient descent training of generative adversarial nets. The number of. steps to apply to the discriminator, k, is a hyperparameter. We used k = 1, the least expensive option, in our experiments. for number of training iterations do for k steps do  Sample minibatch of m noise samples {z(1), ..., z(m)} from noise prior pg(z). Pdata (x).  Update the discriminator by ascending its stochastic gradient:. V0d + log end for  Sample minibatch of m noise samples {z(1), ..., z(m)} from noise prior pg(z).  Update the generator by descending its stochastic gradient:. end for The gradient-based updates can use any standard gradient-based learning rule. We used momen. tum in our experiments.",
+        "id": "sp_0046_page_4_1"
+      }
+    ]
+  }
+]

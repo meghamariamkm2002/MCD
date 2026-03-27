@@ -1,0 +1,2 @@
+The data-driven configuration space restriction algorithm is directly informed by theoretical generalization analysis.
+At the high level, we select A from the full configuration space by choosing configurations that are effective but without being redundant.

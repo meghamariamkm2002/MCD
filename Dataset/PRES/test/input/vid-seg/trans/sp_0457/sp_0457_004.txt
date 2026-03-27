@@ -1,0 +1,3 @@
+The intuition of our framework is that we only apply the zero-order optimization on the most needed parts of VFL, that's the output layer of the client, and all other parts of VFL using the first-order optimization.
+With this framework, we not only leverage the privacy protection of zero-order optimization,
+but also we applied the zero of optimization on the minimal parts of VFL, which significantly relieved the slow convergence problem from the pure zero of order optimization with VFL.

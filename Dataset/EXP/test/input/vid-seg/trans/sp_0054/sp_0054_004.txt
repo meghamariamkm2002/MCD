@@ -1,0 +1,52 @@
+all of it.
+Okay.
+All right.
+And the rest is, is just like classic attention.
+Okay.
+Now you, you simply, so these P and H matrices are obtained by
+Sorry, the queries and the keys for this are obtained by linear transformation.
+So you see this is the incoming signal.
+You send it through a linear transformation to obtain the queries, and you also send it through a linear transformation to obtain the keys.
+So the H is the same, but these matrices here, these are learned weights to produce queries and keys.
+And then you multiply them together.
+That defines your attention matrix.
+You run that through a softmax to make a distribution out of each row.
+And then you multiply together with the values.
+So this part here is kind of like the routing table and the values are the information to be routed.
+The values are obtained from these input signal.
+As we said, we're going to amend that by, so this over here is the classic key queries, keys and values.
+Sorry, that's too much.
+The classic queries, keys and values.
+And then we augment that by two new.
+So there is the queries and the keys for the position.
+And you can see that the difference here is that, again, it's learned weights, but now there is this P thing right here.
+And the P is positional encodings, and that comes exactly out of this table we saw up here.
+So the positional encodings come from this.
+And it's important to see that this here is h and this is the p values.
+But this is only h0, right?
+h is actually transformed to h1 by the transformer, the first layer, to h2 by the second layer, and so on.
+The p always stays the same.
+So you would feed the P into this layer, and you would feed it again into this layer, and you would feed it again into this layer.
+So you can see it's only positional information.
+It's not content information.
+And by feeding the position each time and doing this in this disentangled way,
+the model can sort of keep the content and position information separate.
+I actually think it doesn't really keep the information separate because after layer one, you certainly have position information in your H, right?
+You can see that from this path here, from the actually feeding position information into the transformer layer, H one is already going to be
+a conglomerate of H0, which is pure content, plus the position somehow.
+This plus is not a real addition, but somehow the information is intermingled there.
+And if we weren't to feed in these things right here, it would just be like the classic BERT, right, what they criticize.
+Now by continuously feeding the positional information,
+That is one advantage.
+You can actually do that with BERT.
+You can just add the position information each time.
+I'm not sure if that would work super well, but you can do that.
+It just gives the model a bit more side information to work with.
+And then by keeping it separate,
+Yeah, as I said, I'm not I'm not sure it's actually separate.
+It's just that you keep feeding in position information layer after layer, therefore giving the model sort of more information every time it makes a transformation, because otherwise it would have to carry through the position information through all the layers, just from the very first layer.
+Okay.
+So in this mechanism, you can see it's true that the position encoding is kept separate because it comes in fresh every layer.
+But I don't, I don't see that the content, the content certainly has position information in it from the last layer.
+I hope you can, you can see that.
+So

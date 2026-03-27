@@ -1,0 +1,232 @@
+1
+00:00:00,031 --> 00:00:00,993
+And so on.
+
+2
+00:00:01,834 --> 00:00:04,920
+So the question, of course, is how do you train this model?
+
+3
+00:00:05,080 --> 00:00:08,867
+How do you train a model that gives you good candidates for subdivision?
+
+4
+00:00:09,508 --> 00:00:15,880
+And the answer here comes from the idea of hindsight experience replay.
+
+5
+00:00:15,860 --> 00:00:19,764
+So let's say, again, you are here and you want to go here.
+
+6
+00:00:20,304 --> 00:00:24,468
+And you're not very good at it initially.
+
+7
+00:00:25,069 --> 00:00:30,655
+So they train this model, as I understand, along with letting their agent act in this environment.
+
+8
+00:00:31,075 --> 00:00:34,458
+So the agent uses the model to plan, but initially it's not very good.
+
+9
+00:00:34,719 --> 00:00:37,321
+So maybe the agent will fail a lot of times.
+
+10
+00:00:37,681 --> 00:00:44,348
+So instead of going to the blue square, it will reach this white square right here.
+
+11
+00:00:44,328 --> 00:00:53,851
+It will go here here and here who reached the white square instead of saying I failed what you can do and this is the idea of hindsight experience replay is.
+
+12
+00:00:54,513 --> 00:01:00,868
+To say well I did fail but I did reach something right I have reached a thing.
+
+13
+00:01:00,848 --> 00:01:08,155
+And it's actually possible that that thing could have been the goal, but this particular episode, this was the goal.
+
+14
+00:01:08,315 --> 00:01:09,917
+Remember, the goal changes every time.
+
+15
+00:01:09,957 --> 00:01:12,679
+It's a goal directed policy.
+
+16
+00:01:12,940 --> 00:01:15,762
+So it says, well, this could have been the goal, possibly.
+
+17
+00:01:16,043 --> 00:01:23,550
+So if I just pretend this was the goal, then I have a training example for a successful run.
+
+18
+00:01:24,010 --> 00:01:28,054
+So the hindsight experience replay basically pretends that what you
+
+19
+00:01:28,034 --> 00:01:31,497
+have achieved, even if you failed, was your actual goal.
+
+20
+00:01:31,998 --> 00:01:36,082
+And that gives you a positive training example for an episode with that as a goal.
+
+21
+00:01:36,623 --> 00:01:42,088
+And it could have been the goal because the goal is chosen at random.
+
+22
+00:01:43,229 --> 00:01:45,752
+So this gives you a good training example.
+
+23
+00:01:46,232 --> 00:01:52,278
+Now this paper just generalizes the hindsight experience replay or applies it to their particular framework.
+
+24
+00:01:52,598 --> 00:01:56,202
+And they say, well, if I reach this thing, that means
+
+25
+00:01:56,182 --> 00:02:05,353
+Any point on this path is a good candidate for subdividing the path, because I did actually reach the point.
+
+26
+00:02:05,594 --> 00:02:12,983
+Remember, the goal is to propose a point where your foreshore are going to pass through.
+
+27
+00:02:13,023 --> 00:02:21,594
+Now, since I've taken this path to this goal, I have passed through any of the squares in between, and so these are my possible sub-candidates.
+
+28
+00:02:21,754 --> 00:02:25,058
+And all other black squares, I don't want that.
+
+29
+00:02:25,038 --> 00:02:33,430
+So now I have a classifier I can train, I can say any of these squares on my path are good squares to subdivide and any not on my path are bad ones.
+
+30
+00:02:33,890 --> 00:02:45,847
+They go a step further, I believe, and they actually say we're, so if this was m steps, we're actually going to take the particular square that is reached after m half steps.
+
+31
+00:02:45,907 --> 00:02:51,315
+So the exact middle point of that path is going to be our,
+
+32
+00:02:51,295 --> 00:02:54,901
+training example for subdivisions.
+
+33
+00:02:54,961 --> 00:03:02,052
+So you have a classifier that has exactly one target to train.
+
+34
+00:03:02,072 --> 00:03:05,858
+So this you train along with acting in the environment.
+
+35
+00:03:05,978 --> 00:03:11,667
+And of course, your model for proposing subdivisions is going to be better and better and better and better.
+
+36
+00:03:11,647 --> 00:03:16,071
+And that makes your planning algorithm better and better, and that makes you collect better episodes.
+
+37
+00:03:16,471 --> 00:03:24,558
+And so you can sort of bootstrap yourself up this thing.
+
+38
+00:03:25,719 --> 00:03:29,482
+Now, this is the basic experiment of the paper.
+
+39
+00:03:29,543 --> 00:03:35,187
+They also do this in a 3D manner, where they move this little spider here around.
+
+40
+00:03:35,227 --> 00:03:41,653
+So the spider was trained to just move from one block to the next block, and the planner basically has to tell it where to go.
+
+41
+00:03:41,633 --> 00:03:48,007
+And they show that they outperformed the traditional Monte Carlo tree search.
+
+42
+00:03:48,027 --> 00:03:58,470
+Now, I have to say this is cool, but you have to remember this is only advantageous in very, very specific types of problems.
+
+43
+00:03:58,490 --> 00:04:01,296
+So first of all, it has to be this goal-directed nature.
+
+44
+00:04:01,276 --> 00:04:07,488
+Otherwise, you probably couldn't train this predictor here super well.
+
+45
+00:04:07,949 --> 00:04:14,222
+Then, given that you have such a good predictor, the problem needs to be such that
+
+46
+00:04:16,126 --> 00:04:21,619
+If you have a start state, there could be many ways to go about reaching the end.
+
+47
+00:04:22,000 --> 00:04:25,608
+And if you have an end state, there could be many ways from where you could come from.
+
+48
+00:04:26,110 --> 00:04:34,810
+But there is some bottleneck state in the middle where you're pretty sure that you're going to have to pass through it.
+
+49
+00:04:34,790 --> 00:04:50,487
+If your problem is of that nature, if it has these bottleneck states where you can predict with reasonable accuracy that you're going to have to pass through, then this is a good algorithm to consider.
+
+50
+00:04:50,467 --> 00:05:06,452
+is intuitively outperforming the original Monte Carlo tree search because you have much less deep search tree and you can effectively limit its width by using that model.
+
+51
+00:05:07,253 --> 00:05:14,044
+They also have made this website where they show videos of their spider and
+
+52
+00:05:14,024 --> 00:05:18,088
+I haven't seen it in a while, but it is, it is like next to the mouse.
+
+53
+00:05:18,508 --> 00:05:19,249
+If you can see it.
+
+54
+00:05:19,709 --> 00:05:25,955
+So, so you, you see, this is kind of a continuous control problem that also requires planning.
+
+55
+00:05:26,475 --> 00:05:31,680
+And they also have these kind of gifts of how they're, they're, what order their plans are constructed in.
+
+56
+00:05:32,541 --> 00:05:34,763
+So I invite you to check this out, read the paper.
+
+57
+00:05:35,303 --> 00:05:41,228
+Uh, if you like this, uh, subscribe, leave a like, leave a comment, and thank you for listening.
+
+58
+00:05:41,589 --> 00:05:41,989
+Bye-bye.
+

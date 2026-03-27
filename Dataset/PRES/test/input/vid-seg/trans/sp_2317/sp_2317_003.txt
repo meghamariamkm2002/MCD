@@ -1,0 +1,4 @@
+To make RN striking back in deep learning era, we need to tackle the aforementioned drawbacks of RNs.
+For the late-call parallelism, we propose to use NMW's linear recurrency to facilitate the parallel list.
+Training for the long-term dependencies, we propose our hierarchically-gated recurrent unit, HGRU, to model shorter and longer dependencies.
+you know, we showed overall architecture of our proposed manual.

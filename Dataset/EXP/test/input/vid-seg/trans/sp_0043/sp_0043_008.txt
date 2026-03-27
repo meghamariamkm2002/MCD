@@ -1,0 +1,32 @@
+And the gradient of the log probability of x is exactly what we need to run gradient descent on our function.
+So here is our function again, g plus this regularization.
+Now they don't regularize over the entire future, but over these windows.
+But in essence, it's g plus the log probability of your plan.
+If you take the gradient of that, of course, you take the gradient of the sum.
+So it's the gradient of g.
+plus the gradient of the log probability with respect to the actions.
+And here a simple application of the chain rule will tell you that you have to propagate through the input, through the X. And you need this quantity, the gradient of the log probability with respect to its inputs.
+Now,
+As we just saw, the optimal denoising autoencoder is going to output that thing.
+So if we train a denoising autoencoder and we suppose it reaches a good accuracy, then we can obtain this quantity basically for free.
+And that's the entire trick here.
+So in essence, what does it mean?
+In essence, what it means is that if we are in our room again and we have our partial model of the world, let's say we have this model because we are here and all we've ever explored is so we've explored this, these things right here.
+Okay.
+And this.
+Now, when I go and do my trajectory optimization and my trajectory optimization wants to go here, I simply say, no, I don't know that.
+I haven't seen that yet.
+You can only plan basically within the space where we have already been.
+So you can plan like here.
+So here now, there is of course, there is going to be some exploration.
+So some probability that you can go away a bit, but not too much, right?
+So in this case, it would result in the planning only to happen in spaces where we've actually been.
+So it might go here and then here because, okay, here we haven't been anywhere.
+But then that would lead me to take the first step in this direction and not in this direction.
+And if I take my first step in this first direction, then of course, I'm going to be already a bit on the correct path right here.
+Whereas if I take the first step into this direction,
+Then after that, I'm going to have to, if once I crash here, I'm going to have to correct really hard.
+And that's exactly what's going to give you this super jittery control.
+Whereas if you only plan where you've already been, you won't, the probability that you're going to have to do like a 180 is going to be much, much lower.
+Okay.
+That seems.

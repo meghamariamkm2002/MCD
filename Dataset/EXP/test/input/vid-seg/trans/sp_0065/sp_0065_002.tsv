@@ -1,0 +1,22 @@
+start	end	text
+31	412	speech.
+472	18086	Text-to-speech is basically you take a piece of text, like this one, modern text-to-speech synthesis, pipelines typically involved, blah, blah, blah, and you want to make a model that takes this and outputs sound waves as if a human would say it, right?
+18106	23035	So either modern text to speech and so on.
+23015	25558	Now, I have multiple problems when doing this.
+27359	30743	First of all, the text here is words.
+30803	33205	Let's say we can tokenize the text into words.
+33665	36348	So you have modern text to speech.
+36708	37669	Those are four tokens.
+37930	42875	However, sound waves are, of course, much, much densely sampled.
+43235	49461	So these sound waves, they are typically in the order of something like 24 kilohertz sampled.
+49441	58019	So that's the ratio of one token to output samples is super high.
+58039	64733	So one token will produce many, many thousand samples in the speech.
+64713	65997	So that's the first problem.
+66618	79735	The second problem is that if you have training data, so you have data that has a piece of text and you have the sound wave that a human, you know the human read that particular piece of text.
+79715	85685	You still don't know which word exactly corresponds to which portion of that text.
+85726	89132	You simply know the entire text corresponds to the entire sound wave.
+89492	92017	You don't know this word text right here.
+92077	92578	You don't know.
+92858	97386	You don't know where it starts and where it ends in this sound wave.
+97366	110222	And the last problem you obviously have is that you want to make this in a way that it generalizes, that it sounds like a human, but also generalizes to some other text.
+110924	120049	And this paper here solves all of these problems jointly by doing an adversarial approach to learning.

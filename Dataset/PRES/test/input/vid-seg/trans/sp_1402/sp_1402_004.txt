@@ -1,0 +1,1 @@
+We have confirmed through both theory and experiments that if more feedback can be observed at each round, the policy will make better decisions.

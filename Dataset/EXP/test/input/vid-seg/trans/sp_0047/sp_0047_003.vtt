@@ -1,0 +1,215 @@
+WEBVTT
+
+00:00.031 --> 00:02.175
+they have performed very, very well.
+
+00:03.097 --> 00:06.002
+So how does the skipgram model work?
+
+00:06.142 --> 00:12.313
+How does it assign vectors to each word?
+
+00:12.814 --> 00:16.621
+So first of all, it has a dictionary.
+
+00:17.022 --> 00:19.847
+So there is a word, an input word.
+
+00:20.348 --> 00:23.153
+And for each word, you have a big dictionary.
+
+00:23.133 --> 00:32.148
+And the big dictionary basically says that the word two is going to be mapped to this vector point one and so on.
+
+00:32.529 --> 00:36.936
+The word learn is going to be mapped to that vector.
+
+00:37.658 --> 00:41.985
+And then you also have these output vectors.
+
+00:41.965 --> 00:42.566
+right here.
+
+00:43.507 --> 00:51.259
+And what you're trying to do is you're trying to take a phrase from the data set like this one right here.
+
+00:52.401 --> 00:57.008
+And you take out one word like this word vector right here.
+
+00:58.310 --> 00:58.590
+And
+
+01:01.169 --> 01:05.016
+you're trying to frame this as a prediction task.
+
+01:05.036 --> 01:10.106
+So you're trying to frame this as, in this case, four different prediction tasks.
+
+01:10.627 --> 01:19.363
+So you're telling your machine, I give you the word vector, and which other words are around the word vector?
+
+01:19.343 --> 01:20.625
+You just tell it that.
+
+01:20.685 --> 01:21.906
+You don't tell it anything else.
+
+01:21.926 --> 01:25.351
+You just say which other words are around the word vector.
+
+01:25.992 --> 01:32.460
+And the correct answers in this case would be to learn word and representations.
+
+01:33.001 --> 01:44.255
+So this you construct four different training examples where you have an x and a y. So the x is always vector and the y is 2.
+
+01:45.276 --> 01:48.220
+And then the next training sample the x is vector.
+
+01:48.200 --> 01:52.529
+and the y is learn and so on.
+
+01:53.892 --> 01:58.882
+So this here, each training sample is a classification task.
+
+01:59.183 --> 02:05.095
+And the classification task is, as you can see,
+
+02:05.075 --> 02:06.577
+No, you can't see right here.
+
+02:06.597 --> 02:17.389
+But the classification task is you have the input word and you classify it into one of many, many, many, many, many, many, many classes.
+
+02:17.830 --> 02:21.614
+Namely, there are as many classes as you have words in the dictionary.
+
+02:22.675 --> 02:28.602
+So each word in the dictionary will have a class associated with it.
+
+02:28.582 --> 02:42.262
+So in ImageNet, you have like a thousand classes, but in these, that's already a lot, but in these tasks, you're going to have a hundred thousand classes because there are a hundred thousand words in the English language that you want to treat.
+
+02:42.302 --> 02:48.692
+And there are many more, but in this case, they leave away all the words that appear less than five times in their corpus.
+
+02:48.952 --> 02:50.695
+That's still a lot of words.
+
+02:50.815 --> 02:55.382
+So it's like a super-duper-duper lot of a classification task.
+
+02:55.362 --> 03:07.478
+But ultimately, if you do something like this, then the representation that you end up with is going to be very, very good at doing these kind of downstream tasks.
+
+03:07.518 --> 03:08.820
+And that's what they discovered.
+
+03:09.861 --> 03:18.433
+So their skipgram model is nothing else than taking a word and predicting the surrounding words from that word.
+
+03:20.236 --> 03:21.940
+And this is what it means.
+
+03:22.401 --> 03:25.248
+This is the formal statement of the skipgram objective.
+
+03:25.689 --> 03:34.190
+What you want to do is the objective of the skipgram model is to maximize the average log probability, this one.
+
+03:34.671 --> 03:38.160
+So for the word we're considering the word T,
+
+03:38.140 --> 03:53.297
+We want to maximize the log probability of each word W that is around the word C, sorry, around the word W in a context window of C. That's exactly what we did before.
+
+03:53.437 --> 04:03.388
+We take a word like this model right here and from it, we predict all of the words around it in a given window, right?
+
+04:04.752 --> 04:05.235
+That's all.
+
+04:05.717 --> 04:06.923
+That's the entire objective.
+
+04:07.406 --> 04:10.442
+And that will give you very good representations.
+
+04:12.582 --> 04:14.645
+And this is how you would implement that.
+
+04:14.905 --> 04:23.355
+So what you'll have is you'll have these vector representation V that comes from your original dictionary.
+
+04:23.375 --> 04:24.757
+Those are the things you learn.
+
+04:25.257 --> 04:35.670
+And then because you have like an 30,000 way classifier, you know that a classification layer is nothing else than a linear layer followed by a softmax operation.
+
+04:35.650 --> 04:38.272
+And that linear layer also has parameters.
+
+04:38.493 --> 04:39.714
+These are the V primes.
+
+04:40.034 --> 04:40.314
+Okay.
+
+04:40.334 --> 04:46.840
+So first you have the look up in the dictionary for the word vector right here.
+
+04:47.361 --> 04:50.623
+And this is the vector of the classification layer.
+
+04:50.704 --> 04:56.409
+Now there are modifications where you can use like the same vectors and so on, or you can also make use of these vectors.
+
+04:56.849 --> 05:01.273
+But ultimately you care about these vectors right here.
+
+05:01.794 --> 05:05.657
+And the vectors here are simply the classification layers weights.
+
+05:05.637 --> 05:20.396
+So here you can see that there is what you're trying to maximize is the inner product between the word that you're considering and the words around that word.
+
+05:22.178 --> 05:25.903
+And you're trying to do a classification task.
+
+05:25.923 --> 05:27.165
+So you need to normalize.
+
+05:27.565 --> 05:33.012
+Now this is the normalization constant and it goes over all of your vocabulary.
+
+05:34.662 --> 05:36.925
+So that's what they tackle here.
+
+05:37.425 --> 05:42.291
+They say W is the number of words in the vocabulary.
+
+05:42.511 --> 05:50.942
+This formulation is impractical because the cost of computing the gradient is proportional to W, which is often large.
+
+05:51.142 --> 05:53.925
+And that's 10 to the five to 10 to the seven terms.
+
+05:53.965 --> 05:59.111
+So many, like tens of millions of terms in your vocabulary.
+
+05:59.472 --> 06:01.294
+That's just not feasible, right?
+
+06:01.274 --> 06:08.152
+So people have been sort of trying different ways to get around very, very large number of classes.
+
+06:08.713 --> 06:11.841
+And here it seems that that is really our bottleneck.
+
+06:11.861 --> 06:17.496
+In the previous paper, they've already shown that this objective can give you very good word representation.
+
+06:17.856 --> 06:20.042
+But now we need to get around the fact
+

@@ -1,0 +1,3 @@
+We can now get some theoretical type of bound in an expected number of search points that get generated during the search.
+We used the earlier bounds on the number of extreme points to compute the runtime needed to find them.
+Moreover, we used the two Hamming connectedness properties of the convex hull basis to compute the runtime needed to cover entire convex hulls.

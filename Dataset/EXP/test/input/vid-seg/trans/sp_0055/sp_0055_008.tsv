@@ -1,0 +1,18 @@
+start	end	text
+31	932	That is the catch.
+1994	6281	This is not a method that is like a magic pill.
+6661	12230	The catch is even though your tree is not as deep, it is much, much wider.
+12290	14253	And it is intuitive, right?
+14273	19120	Because you still have to have the ability to construct any possible plan.
+19100	28264	So your tree is going to have as many nodes as the original Monte Carlo tree search tree, if you were to fully expand it.
+28424	31492	So it's your trading of depth for width here.
+33638	35944	I hope that's a bit clear.
+37780	52971	your entire, your entire promise of this method is going to be, can you, from all of these possibilities, so from all of these, you don't even, you don't even want to go and search even one layer deep through all of these.
+52951	55457	You don't even want to consider all of them, right?
+55777	65138	You want to search in this tree, you want to limit your search to very particular ways of subdivision here.
+65559	70470	If you can do that efficiently, if you can pick efficiently
+70450	86804	candidates to subdivide, then this could be a successful thing because your tree is not as deep as the original search tree would have been, and you can limit the width effectively to only very few candidates.
+87184	100035	So here we could, for example, make a heuristic that will always only pick squares that are kind of on this straight path to the goal.
+100015	103721	So everything rests on how you do this select action.
+105464	119126	This thing here, the entire algorithm relies on the fact that you can select effectively select in between states where you're pretty sure that the algorithm will have to pass through there.
+119486	125095	Because the worse you make these predictions, the worse your tree search is going to work.

@@ -1,0 +1,140 @@
+information game or perfect information.
+Okay, so let's shortly go over a little bit of background.
+So we're going to need some terms right here.
+The first term we're going to need is what's called a world state.
+So a world state is the state of the world.
+I know easy, easy, but
+it's quite important that to see that in poker what is the world state so in heads up the limit hold them there are your cards you get two your opponent gets two cards right and then there are board cards like at at the end there are five but um
+Maybe there are only three or they're none yet depends on the state of the game.
+So the board cards, you know, this is maybe an ace, a king, an eight.
+You know your two whole cards, which is maybe an ace and an ace, but you don't know your opponent's cards.
+Okay.
+We're also going to assume that the actions are always public for the purposes of this video.
+They don't, not necessarily for rebel the algorithm, but for us, let's just say the actions are all public.
+So the world state is the fixed entire state of the world.
+So the world state would include
+the your cards, the public cards and your opponent's cards.
+So the world state is sort of like a super user can look at all of the cards.
+Okay, that's the world state.
+No one knows the full world state, but it still exists.
+Okay.
+What we also need is, so there's a concept of actions.
+There's an action space, which in poker is something like you can bet, you can raise and so on.
+So these are your classic actions and there is a transition function like in classic reinforcement learning.
+So the transition function depends on the world state.
+and the action and it gives you the next world state.
+And after an action, each agent receives a reward that is also a function of the world state and the action.
+Okay.
+So important to note that this is the reward you receive, but you don't know the, you maybe know the function, but you don't know the world state, right?
+So you can't explicitly sort of predict your reward.
+You can maybe predict the distribution.
+Alright, the next concepts are the concepts of observation.
+Since we are in an imperfect information game, an observation and the world state, these are not the same thing.
+Like in chess, you need to look at the board and that's all there is.
+That's all there is to know.
+So the world state and the observation are the same thing.
+Here, there is the concept of private and public observations.
+So public observation is what everyone knows in each step, whereas private observations are things that are just revealed to you personally.
+In poker, the private observation is simply your two whole cards and the public observation is the middle cards.
+So this is the public observation and this is your private observation.
+So the private observation is different for each player while the public observation is the same.
+I guess you could model the public observation as simply another player that doesn't get any whole cards, but that's a question of semantics.
+All right.
+The observations can also include the actions that happen so far, just for completeness.
+If you, like, you can get information about hidden actions and so on.
+There's lots of mathematical freedom here, but just the concept is you have private observations to each player individually and then public observations.
+The subscript I here always denotes a individual player while you see there is no such subscript in the public
+in the public observations.
+All right, the next concept is a history, and a history is pretty much what you think.
+A history or a trajectory is a finite sequence of legal actions and world states denoted by this.
+So you can see it's simply the history of world states and actions that happened.
+Again, no one knows the history fully, but it's still, it is still the case.
+And I know, I know, you can, I don't know, quantum mechanics, many worlds, theorem, blah, blah, blah.
+we'll just assume that whatever you don't know these, these are fixed currents.
+They're actually there.
+They have a value even though no one has looked at them yet.
+So the world state is defined even if you don't know it.
+So the first real interesting concept here is called an info state.
+So the info state is like the world state or like the history, but it's conditioned on what an individual player knows.
+The info state also called an action observation history for agent I is a sequence of an agent's observations and actions.
+So you can see it's very much like a history, except
+that it doesn't have the world states.
+So usually there would be the world state here.
+You said no.
+There is the observation for player i at each of the time steps.
+And these observations, they include public and private observations.
+And along with the actions, but we'll say the actions are public anyway.
+So an info state
+is basically the history as it looks to player i. Okay, that's an info state.
+In our original game, we said that player two can't distinguish between the three nodes.
+So if you look at the three nodes individually, like this node one, node two, node three, these are three different world states with three different histories.
+And to player two, they're simply the same info state, because all player two knows is that player one has taken some action, it doesn't know which action.
+So the observation that player two has is exactly the same.
+Therefore, it can't distinguish.
+So you can see that the info state is sort of the correct abstraction that we're going to look at here.
+In turn, if you look for player one, it looks different.
+Even though for player one, it's also three different world states, it is also three different info states, okay?
+Because player one knows which action they have taken.
+So player one can decide which of these three states player two is in.
+So player one, this corresponds to three different info states.
+So the info states is always conditioned on a player, and it is the unit that we'll look at here.
+So the info state, briefly, it includes the observations and actions for a given player, and the observations include the private and the public observations.
+the unique info state corresponding to a history for agent I is denoted by this, the set of histories that corresponds to some info state is denoted by large H. So as we said, if you have an info state, there are many different histories that could have led to the info state.
+Okay.
+so there are many different like there maybe for player two it looks like three different histories that could have happened lead to the same info state okay that's but any given history determined fully determines the info state if i tell you what happened you can give me the info state for each player you can say ah player one played rocks therefore player two is in that info state and player one is in that info state so that's why
+There is a unique info state for each history, but there is a set of histories for each info state.
+So the last concept from here is a policy.
+A policy is, again, what you think it is.
+So it is something, usually it's something that maps from an observation to an action or from a history to an action or from a world state to an action.
+But here it is a function necessarily that maps from an info state to a probability distribution over actions.
+So two things important here.
+The input to the policy is an info state.
+since the players they can't distinguish between the world states as long as they correspond to the same info state.
+Therefore their policy necessarily must be taking an info state as an input.
+So player 2's policy cannot depend on what player 1 did because it can't distinguish.
+It can depend on the strategy of player 1 but not on the concrete action.
+The second thing is that we map to a probability distribution over actions.
+Now this is usually the case in RL if you frame it as a general principle.
+However, here it's going to be quite important that this is always a probability distribution.
+Very often in these games your
+strategy is probabilistic.
+So there is no single best move in Rock, Paper, Scissors, but the best thing to do, the best strategy is to play each move with a one-third probability or the modified version at the beginning.
+But it's important to see that a policy will output a probability distribution and I will also call this the strategy of a player.
+So the strategy is going to be the policy.
+And I like to call it a strategy because it's a kind of a plan, what you would do in each situation.
+And we're going to see that that is going to be a central theme, lifting in solving these games right here using Rebel.
+So a policy profile is simply a tuple of policies.
+So it's simply the policies of all players.
+That's the policy profile.
+If you combine the policy profile with some info state or some history, you can calculate the expected value.
+So the expected value for a given history, given that the players play policy, players play policy profile pi,
+So this is all players play their strategies in history H. And we're going to look at player I and its value.
+So we can calculate the expected value of some policies.
+So I can, I can, given this function V, I can input, okay, here's what happened.
+And here's how everyone's strategy.
+Now tell me in expectation what the first player is going to net from this.
+Solving the value function is pretty much equivalent to solving the game.
+So if you give me a good value function, I can solve the game by simply choosing the next action that gives me the best value function.
+But there's a difficulty.
+We said, okay, we know Pi strategies are public, but we don't know what history we're in, right?
+So even if you had the perfect value function, I don't know what to input.
+So this is going to be a problem.
+All right, the last thing is a Nash equilibrium, you might know this term.
+Nash equilibrium is a policy profile such that no agent can achieve a higher expected value by switching to a different policy.
+Our goal here is going to be to find a Nash equilibrium strategy for these games.
+And the rebel algorithm is going to provably converge to a Nash equilibrium.
+All right.
+So, okay, there's also the concept of a sub game.
+A sub game is defined by a root history.
+It's simply if you're in a, it's simply a game that starts at some intermediate state.
+That's a sub game.
+Okay.
+Alpha zero, for example, constructs sub games.
+In fact, it constructs these depth limited sub games.
+because you only solve up to a certain depth.
+And at that point, you sort of ask your value estimator what the value is.
+This is different in different things.
+Like you can also do this, this kind of Monte Carlo estimation where you just play one trace to the end and so on.
+But the notion is we iteratively construct these depth limited sub games.
+That means we play for a certain depth and then we evaluate at that depth.
+The question is, how are we going to evaluate?

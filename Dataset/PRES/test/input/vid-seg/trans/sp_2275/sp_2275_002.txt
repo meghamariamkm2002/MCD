@@ -1,0 +1,9 @@
+LiDAR semantic segmentation is crucial for 3D sense understanding.
+Assign a semantic label to each point cloud.
+However, a significant challenge in looms, annotation cost.
+For instance, in semantic kitty, annotating a single scan takes up to 4.5 hours.
+Recent efforts, like scribal kitty, reduce costs with weak annotations, saving 90% of the time.
+Alternatives such as semi-supervised and active learning deliver comparable performance with limited annotations.
+In essence, each paradigm has its strengths.
+Weekly and semi-supervised learning excel in performance.
+While active learning and domain adaptation significantly cut labeling costs, our work strives to narrow this gap.

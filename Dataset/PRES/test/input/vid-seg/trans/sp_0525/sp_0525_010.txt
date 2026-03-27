@@ -1,0 +1,4 @@
+And in our second experiment, we find that the deep instruct is capable of consistently improving pre-trained gain generator model.
+As a conclusion, the deep instruct is a promising and universal approach for normally transferring from diffusion models.
+And we hope our work
+can shed some light to future works on diffusion models, newly transferring on diffusion models.

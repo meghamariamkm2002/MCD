@@ -1,0 +1,76 @@
+Alright, let's get back to this rock, paper, scissors example right here.
+Interestingly to note is that these dashed lines here means that player two cannot decide which of these states they're in.
+So player two doesn't know what states are in.
+For player two, this is all basically the same state.
+It would be really easy, right, if player one plays first and then player two sees what player one does and then they just act like they always win.
+However, player two doesn't, so they have to sort of decide what to do, independent of which state they're in.
+Especially, this is a symmetric game, right?
+This is a two-player game, because it has two players.
+It's zero sum, because whenever one player wins a reward, the other player loses the same reward.
+And that makes it symmetric, so both players play at the same time, though that is not necessary in general, but here it's the case.
+This means in this particular case, whatever strategy player one has, player two must have as well.
+So we'll just do the analysis for player one.
+So let's say you deviate from this optimal strategy, right?
+We claim that this here is the optimal strategy, playing 20% of scissors.
+Let's say player one doesn't believe it.
+Player one deviates from it and says, nah,
+There is so much reward there.
+I'm going to get some more of that.
+So they up this, right?
+They up this to like, let's say point, I don't know, point three, three, like doing the classic one third or even higher, right?
+They up this, go more scissors.
+Okay.
+And
+They probably want to take this mask because they have to take it from somewhere.
+They probably want to take this from rock and paper.
+Let's say they just take it equally from rock and paper towards scissors to up the probability that they play scissors.
+So from paper and from rock, they go towards scissors.
+Now, player two observes this, right?
+They can just play against player one for a while, or what we're going to assume is that everyone announces their strategy publicly.
+It's the same thing.
+You can just observe someone for a while, or they can just announce their strategy.
+We'll treat this equally.
+So player two observes player one, playing scissors too often.
+So player two knows they are very often in this situation right here, in this right state.
+They can't directly observe, but they infer, I must be very often in this right most state where player one chooses scissors.
+And therefore, you see player two's payoffs.
+It's zero here, minus two here, and two here.
+So they'll say, well, I also have this optimal strategy of 0.4, 0.4, 0.2.
+What I can do is I can simply, knowing that I'm a lot in this state, I can simply take some mass from paper and put it on rock.
+So I play rock way more often.
+and I reduce the amount I play paper right scissors doesn't matter but now I lose to less often and I win too much more often and player one in turn loses too much more often and wins
+much less often, right?
+So player one wanted to get more reward, but they're sort of being punished by player two for playing this too often.
+Now you can say, well, player one can do the same thing.
+Knowing that player two plays rock too often now, right?
+They've taken away mass from paper towards rock.
+Knowing that player two has taken rock, player one knows that either they're here or they're here, right?
+And in this case, player one can say, all right, you play rock too often.
+Obviously, if I play scissors, then I'm going to lose, but I've already decided I want to play scissors much more.
+So they're trying to make it up right here.
+So what they can do in this case is they can say,
+when i play paper i win one instead of if i play rock two i win zero so i know player two is playing rock way more often than they should so i'm going to punish player two by playing paper more often so
+Let's erase this arrow.
+Let's say we play scissors Sorry, we play scissors.
+No, let's not erase this We play scissors by moving from rock and we also move from rock to paper like we're almost never playing rock We're just playing scissors more often because that's what we started with and we're playing also now paper more often So now we basically do the same thing that player 2 did to us we are
+Upping the likelihood of this thing happening and decreasing the likelihood of this thing happening.
+So now we can say, now I also, I play paper more often.
+Now I also win more often here and you lose more often.
+But you see, because the rewards are doubled over here, the fact that player two can achieve this,
+is much more meaningful than the fact that player one can achieve this.
+And that's why player one will be punished harder for deviating here.
+So that's sort of how you reason about these strategies.
+So if player one will play this point too often, they will be punished harder than player two for deviating in response to that.
+And the same counts for the symmetric part.
+This is a very important concept right here.
+Namely, you can see player 2 strategy depends on player 1 strategy.
+Even though you could conceptualize this game of player 1 plays a move,
+And then they play a move, but they don't show it yet, right?
+They play a move, they take like a picture of their hands doing rock, paper, scissors, and they just don't show the picture yet.
+And then player two plays a move.
+So now we're basically back in, we're in this game where it's sequential in nature.
+And usually in a sequential game, you can just do a sub game analysis.
+So you can just say, okay,
+and do a sub game analysis, but the sub game analysis depends on the strategy of player one because you don't know the situation.
+This is different than a full information game.
+And this is illustrated

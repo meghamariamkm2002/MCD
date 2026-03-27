@@ -1,0 +1,34 @@
+[
+  {
+    "input_path": "layout_results/sp_0048/sp_0048_page_5.png",
+    "page_index": null,
+    "boxes": [
+      {
+        "cls_id": 14,
+        "label": "algorithm",
+        "score": 0.7007489204406738,
+        "coordinate": [
+          442.4058532714844,
+          300.8546447753906,
+          2102.086181640625,
+          1246.53466796875
+        ],
+        "text": "Algorithm 1 Implicit Model-Agnostic Meta-Learning (iMAML) 1: Require: Distribution over tasks P(T), outer step size n, regularization strength X, 2: while not converged do 3: Sample mini-batch of tasks {Ti}-1 ~ P(T) 4: for Each task T, do. 5: Compute task meta-gradient gi = Implicit-Meta-Gradient(Ti, 0, ) 6: end for 7: 8: Update meta-parameters with gradient descent: 0  0 - n F()II (or Adam) 9: end while. Algorithm 2 Implicit Meta-Gradient Computation 1: Input: Task T, meta-parameters 0, regularization strength X 2: Hyperparameters: Optimization accuracy thresholds  and 8' 3: Obtain task parameters ; using iterative optimization solver such that: i  Alg*(0)   4: Compute partial outer-level gradient v; = VoL(i) 5: Use an iterative solver (e.g. CG) along with reverse mode differentiation (to compute Hessian vector products) to compute gi such that: ||gi - (I + V2L($i))-'vi|l  8' 6: Return: gi",
+        "id": "sp_0048_page_5_1"
+      },
+      {
+        "cls_id": 14,
+        "label": "algorithm",
+        "score": 0.6255316138267517,
+        "coordinate": [
+          442.55853271484375,
+          299.9078369140625,
+          2096.9658203125,
+          795.0281372070312
+        ],
+        "text": "Algorithm 1 Implicit Model-Agnostic Meta-Learning (iMAML). 1: Require: Distribution over tasks P(T), outer step size n, regularization strength X 2: while not converged do. 3: Sample mini-batch of tasks {Ti}F=1 ~ P(T 4: for Each task T; do. 5: Compute task meta-gradient gi = Implicit-Meta-Gradient(T, 0, ) 6: end for 7: 8: Update meta-parameters with gradient descent: 0  0 - n F(0)II (or Adam) 9: end while",
+        "id": "sp_0048_page_5_2"
+      }
+    ]
+  }
+]

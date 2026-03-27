@@ -1,0 +1,172 @@
+1
+00:00:00,031 --> 00:00:01,894
+All right, let's dive in.
+
+2
+00:00:02,115 --> 00:00:19,626
+So they say in the abstract, neural architecture search explores a large space of architectural motives, which basically, so it basically means you want to find a neural architecture, let's say you have a multi-layer perceptron.
+
+3
+00:00:19,606 --> 00:00:22,813
+Right here couple of layers.
+
+4
+00:00:23,414 --> 00:00:23,514
+Okay.
+
+5
+00:00:24,136 --> 00:00:27,884
+And they're all connected by, you know, feet forward weights whatnot.
+
+6
+00:00:28,385 --> 00:00:31,892
+And each of these weights basically is a multiplication.
+
+7
+00:00:32,273 --> 00:00:36,923
+So each one of these is a multiplication of x by your weight w.
+
+8
+00:00:36,903 --> 00:00:38,806
+And then there is a nonlinearity.
+
+9
+00:00:39,547 --> 00:00:42,851
+So the nonlinearity could be a sigmoid.
+
+10
+00:00:43,292 --> 00:00:59,113
+So the sigmoid would be something like one over one plus e to the negative x. Now there's a bit of an extension in a sigmoid where you can do a sigmoid that has like a temperature parameter attached or a slope parameter where you go CX.
+
+11
+00:00:59,093 --> 00:01:05,389
+So in one case, you can set C such that the sigmoid has a shape like this.
+
+12
+00:01:05,429 --> 00:01:11,826
+And then if you put C to a different value, you can make this slope, you can make it like a shape.
+
+13
+00:01:12,327 --> 00:01:13,871
+Well, this is terrible.
+
+14
+00:01:14,292 --> 00:01:15,094
+Like this.
+
+15
+00:01:15,074 --> 00:01:16,076
+You know what I mean.
+
+16
+00:01:16,576 --> 00:01:22,946
+Okay, so this this C right here can potentially change the behavior of your network.
+
+17
+00:01:22,966 --> 00:01:26,932
+And you want to find a good parameter C. And this is a hyper parameter.
+
+18
+00:01:26,952 --> 00:01:29,236
+Now there are many hyper parameters like this.
+
+19
+00:01:29,737 --> 00:01:40,153
+For example, how many units you have in a particular layer in a CNN it could be your filter size in a transformer could be the number of heads and so on.
+
+20
+00:01:40,133 --> 00:01:55,066
+It could actually be not only the slope of the nonlinearity, but the actual nonlinearity itself, or famously in recurrent neural networks, you have these recurrent cells and they're like, okay, we have an input signal and a carry signal.
+
+21
+00:01:55,106 --> 00:01:57,231
+And then the input here is like,
+
+22
+00:01:57,211 --> 00:02:08,086
+Dot multiplied here and then there is like a gate with an own linearity and then it's kind of like multiplied by the carry but then there's also a like a forget gate and whatnot.
+
+23
+00:02:08,106 --> 00:02:09,348
+There's a minus right here.
+
+24
+00:02:09,388 --> 00:02:19,843
+It's very complicated and so people do architecture search over these kind of problems to find better architectures for particular problems.
+
+25
+00:02:19,823 --> 00:02:26,071
+Now, the problem is, of course, that how do you know if a given architecture is good?
+
+26
+00:02:26,912 --> 00:02:32,760
+What you have to do is you'll have to go take that cell that you have dreamed up.
+
+27
+00:02:32,840 --> 00:02:34,443
+You think, well, I think that's a good cell.
+
+28
+00:02:34,823 --> 00:02:38,148
+And you have to train it on the full training data set.
+
+29
+00:02:38,188 --> 00:02:40,791
+This is a data set, a database, right?
+
+30
+00:02:40,811 --> 00:02:42,493
+This is a full training data set.
+
+31
+00:02:43,014 --> 00:02:46,759
+Then you need to evaluate it on your validation data set.
+
+32
+00:02:46,739 --> 00:02:48,521
+And then you have like a number.
+
+33
+00:02:48,681 --> 00:02:50,564
+You have like, okay, this is eight good.
+
+34
+00:02:51,325 --> 00:02:55,630
+And then you go back and you say, okay, what if I change this cell here?
+
+35
+00:02:55,730 --> 00:02:58,674
+What if I change it to a plus instead of a minus?
+
+36
+00:02:59,074 --> 00:03:04,281
+And you do the entire thing again, train it for, I don't know how much, validate it.
+
+37
+00:03:04,621 --> 00:03:06,123
+And then this is like a nine.
+
+38
+00:03:06,403 --> 00:03:07,645
+And you can say, oh, cool.
+
+39
+00:03:07,705 --> 00:03:08,646
+That's a nine.
+
+40
+00:03:08,626 --> 00:03:11,574
+So this is a very basic architecture search.
+
+41
+00:03:11,594 --> 00:03:15,765
+And there has been a lot of development in this space.
+
+42
+00:03:15,845 --> 00:03:24,107
+So like evolutionary search and so on, but they most of the time they require pretty much evaluating the entire thing on the full data.
+
+43
+00:03:24,167 --> 00:03:30,043
+So you get a good, you get a good estimate of what your final performance back here is going to be.
+

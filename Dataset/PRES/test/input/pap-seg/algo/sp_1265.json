@@ -1,0 +1,23 @@
+[
+  {
+    "input_path": "/tmp/megha/PDF-Extract-Kit/Presentation/layout_pap/sp_1265/sp_1265_page_5.png",
+    "page_index": null,
+    "boxes": [
+      {
+        "input_path": "/tmp/megha/PDF-Extract-Kit/Presentation/layout_pap/sp_1265/sp_1265_page_5.png",
+        "cls_id": 14,
+        "label": "algorithm",
+        "score": 0.9176582098007202,
+        "coordinate": [
+          444.16668701171875,
+          346.77777099609375,
+          1326.1522216796875,
+          1071.69287109375
+        ],
+        "text": "1: Require: unannotated data pool U, target LM model\nquery strategy S, annotation budget B\n2: Initialization: A = , \u03b8 = \u03b8(0)on A\n2: for rounds r = 1, ..., R do\n.\nUt \u2190 Extract from U by random sub-sampling\n[QH , QG] \u2190 Acquire [BH, BG] samples by quer\n.\nfunction S on model f , data Ur\nAH \u2190 Annotate acquired samples QH by human\nAH = AH U AH\nExecute prompt retrieval from AH\nAG \u2190 Annotate acquired samples QG by LLMs\nAr = AH U AG\nU=U\\Ar\nf(xi; \u03b8(r)) \u2190 Fine-tune f (xi; \u03b8(r)) on Ar\nturn f (x: \u03b8(r)) 4",
+        "id": "sp_1265_page_5_1",
+        "seg_type": "algo"
+      }
+    ]
+  }
+]

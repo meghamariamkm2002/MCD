@@ -1,0 +1,122 @@
+WEBVTT
+
+00:00.031 --> 00:02.636
+already knew how to build image classifiers.
+
+00:02.696 --> 00:08.787
+This was shortly, as you can see before ResNet came on the scene.
+
+00:08.807 --> 00:13.796
+So people already kind of knew how to build CNNs, build really good image classifiers.
+
+00:14.277 --> 00:21.550
+And the thought here was really generative models weren't really a thing until then.
+
+00:21.530 --> 00:37.817
+People were in language models work to back was kind of coming up, but they were would still be doing like RNNs using these were to back vectors for generating language in images this type generative models weren't really much of a thing so.
+
+00:37.797 --> 00:47.829
+you would do like compositional models or you would do auto encoders, which were just either really blurry or really, really artifactory.
+
+00:48.350 --> 00:53.636
+And there were also approaches like deep belief networks and so on, but they had their own problems.
+
+00:53.816 --> 01:02.607
+So there wasn't really a satisfactory way to do image generation that resulted in really high quality images.
+
+01:02.587 --> 01:18.908
+Now here I think the entire thought and this is not really spelled out but the entire thought here is that hey we know how to train really really good image classifiers right this has been evident in these since since Alex net.
+
+01:18.888 --> 01:23.393
+So for two years, this was evident how to build really good image classifiers.
+
+01:23.833 --> 01:37.247
+And the question here is to say that rather than also building really good generators, can't we like harness the power of building really good classifiers for training a generator, right?
+
+01:37.267 --> 01:39.048
+And this is this idea right here.
+
+01:39.409 --> 01:40.570
+This wasn't the one before.
+
+01:40.630 --> 01:47.477
+As you know, in like an auto encoder, what you do is you'd input a sample into some kind of auto bottleneck
+
+01:47.457 --> 01:48.338
+thing, whatever.
+
+01:48.579 --> 01:55.429
+And then at the end, you train your output sample to match the input sample as close as possible.
+
+01:55.790 --> 02:00.396
+And then in here, after you've trained this, this part here is your generative model.
+
+02:00.497 --> 02:05.003
+And then here in here, you'd input like a MCMC sampler or whatnot.
+
+02:05.023 --> 02:08.909
+And then of course, variational auto encoders came up and so on.
+
+02:08.949 --> 02:15.038
+But still what you always would do is you would somehow use the data directly.
+
+02:15.079 --> 02:16.080
+So this is data.
+
+02:16.060 --> 02:25.696
+In order to train your model so you would somehow say ah the output here should probably match the input in some way or in some at least distributional way.
+
+02:27.218 --> 02:34.710
+This this was a new thing as you can see right here there is no direct connection between the data and the generator.
+
+02:34.690 --> 02:45.288
+And I think this, this was the success of this model, the fact that the generator did not, it wasn't trained from the data like you would do if you were just approaching this problem.
+
+02:45.809 --> 02:56.767
+But the philosophy here is let's use the power of discriminative models, which we know how to build in order to train this generator, right?
+
+02:56.787 --> 02:58.690
+So the generators task now isn't
+
+02:58.670 --> 03:07.232
+to match any sort of data point, the generator's task is to produce images that the discriminator would classify as data.
+
+03:07.512 --> 03:13.708
+And you can do that by simply back propagating through the discriminator to the generator.
+
+03:13.688 --> 03:24.062
+Okay, so I think that's the only thing that's kind of unstated in this paper, the reasoning behind why this is new, why this might work.
+
+03:25.104 --> 03:31.613
+But everything else is spelled out very well in this paper, I have to say, if you read through it.
+
+03:32.074 --> 03:40.185
+So the training procedure for G is to maximize the probability of D making a mistake.
+
+03:40.165 --> 03:43.508
+this framework corresponds to a mini max two player game.
+
+03:43.768 --> 03:55.419
+So as I said, the paper is very much focused on convincing you that there's something sound happening here because at that time, if you were to look at this, you would say something like, there is no way, right?
+
+03:56.660 --> 03:58.982
+You would be like, yeah.
+
+03:59.002 --> 04:10.172
+Um, so, so I can understand the, uh, motivation here to really convince people that, you know, something, something good is happening also on the, on the theoretical side.
+
+04:10.152 --> 04:20.243
+In the space of arbitrary functions, a unique solution exists with g recovering the training data distribution, d equals to 1 half everywhere.
+
+04:21.825 --> 04:27.291
+In the case where g and d are defined by multi-layer perceptrons, the entire system can be trained with back propagation.
+
+04:27.592 --> 04:35.721
+There is no need for any Markov chains or unrolled approximate inference networks during either training or generation of samples.
+
+04:35.701 --> 04:47.515
+Okay, so the point here is that it's much easier than current methods of producing of generative models, and also it does something sound.
+
+04:48.819 --> 04:49.120
+Now,
+

@@ -1,0 +1,348 @@
+{
+  "sp_0440_page_0004": {
+    "bboxes": [
+      {
+        "box": [
+          473.3788146972656,
+          1056.7918701171875,
+          750.2095947265625,
+          1084.46826171875
+        ],
+        "text": [
+          "[ \\mathbb { E } _ { h } | \\varepsilon _ { h } | ^ { 1 + \\epsilon } ] ( s , a ) = \\langle \\phi ( s , a ) , \\psi _ { h } ^ { * } \\rangle"
+        ],
+        "page": "sp_0440_page_0004",
+        "id": "sp_0440_page_0004-1",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          358.0860290527344,
+          723.2784423828125,
+          755.0338745117188,
+          746.5740356445312
+        ],
+        "text": [
+          "[ \\mathbb { E } _ { h } R _ { h } ] ( s , a ) = \\mathbb { E } [ R _ { h } ( s _ { h } , a _ { h } ) | ( s _ { h } , a _ { h } ) = ( s , a ) ] ,"
+        ],
+        "page": "sp_0440_page_0004",
+        "id": "sp_0440_page_0004-2",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          347.2763977050781,
+          752.7921752929688,
+          876.1493530273438,
+          779.5008544921875
+        ],
+        "text": [
+          "[ \\nu _ { 1 + \\epsilon } R _ { h } ] ( s , a ) = \\mathbb { E } [ | [ R _ { h } - \\mathbb { E } _ { h } R _ { h } ] ( s _ { h } , a _ { h } ) | ^ { 1 + \\epsilon } | ( s _ { h } , a _ { h } ) = ( s , a ) ]"
+        ],
+        "page": "sp_0440_page_0004",
+        "id": "sp_0440_page_0004-3",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          352.44097900390625,
+          869.4093017578125,
+          843.918701171875,
+          925.9513549804688
+        ],
+        "text": [
+          "\\begin{array} { r l } & { \\quad [ \\mathbb { E } _ { h } | \\varepsilon _ { h } | ^ { 1 + \\epsilon } ] ( s , a ) \\leq \\nu _ { R } ^ { 1 + \\epsilon } , \\quad [ \\nu _ { 1 + \\epsilon ^ { \\prime } } | \\varepsilon _ { h } | ^ { 1 + \\epsilon } ] ( s , a ) \\leq \\nu _ { R ^ { \\epsilon } } ^ { 1 + \\epsilon ^ { \\prime } } } \\\\ & { \\quad \\mathcal { S } \\times \\mathcal { A } \\times [ H ] . } \\end{array}"
+        ],
+        "page": "sp_0440_page_0004",
+        "id": "sp_0440_page_0004-4",
+        "seg_type": "eq"
+      }
+    ]
+  },
+  "sp_0440_page_0005": {
+    "bboxes": [
+      {
+        "box": [
+          474.486328125,
+          782.5734252929688,
+          748.1971435546875,
+          850.0242309570312
+        ],
+        "text": [
+          "\\ell _ { \\tau } ( x ) = \\left\\{ { \\frac { x ^ { 2 } } { 2 } } \\qquad { \\mathrm { i f ~ } } | x | \\leq \\tau , \\right."
+        ],
+        "page": "sp_0440_page_0005",
+        "id": "sp_0440_page_0005-1",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          437.0730285644531,
+          1169.8702392578125,
+          787.0347900390625,
+          1198.8245849609375
+        ],
+        "text": [
+          "\\begin{array} { r } { \\mathbb { E } [ \\varepsilon _ { t } | \\mathcal { F } _ { t - 1 } ] = 0 , \\quad \\mathbb { E } [ | \\varepsilon _ { t } | ^ { 1 + \\epsilon } | \\mathcal { F } _ { t - 1 } ] = \\nu _ { t } ^ { 1 + \\epsilon } } \\end{array}"
+        ],
+        "page": "sp_0440_page_0005",
+        "id": "sp_0440_page_0005-2",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          358.85870361328125,
+          1323.537841796875,
+          865.993408203125,
+          1357.7935791015625
+        ],
+        "text": [
+          "\\beta _ { t } = 3 \\sqrt \\lambda B + 2 4 t ^ { \\frac { 1 - \\epsilon } { 2 \\left( 1 + \\epsilon \\right) } } \\sqrt { 2 \\kappa } b ( \\log 3 T ) ^ { \\frac { 1 - \\epsilon } { 2 \\left( 1 + \\epsilon \\right) } } ( \\log ( 2 T ^ { 2 } / \\delta ) ) ^ { \\frac { \\epsilon } { 1 + \\epsilon } } ."
+        ],
+        "page": "sp_0440_page_0005",
+        "id": "sp_0440_page_0005-3",
+        "seg_type": "eq"
+      }
+    ]
+  },
+  "sp_0440_page_0007": {
+    "bboxes": [
+      {
+        "box": [
+          372.6493225097656,
+          914.2620849609375,
+          848.02880859375,
+          983.6370239257812
+        ],
+        "text": [
+          "\\theta _ { k , h } = \\operatorname * { a r g m i n } _ { \\theta \\in B _ { d } ( B ) } \\frac { \\lambda _ { R } } { 2 } \\| \\theta \\| ^ { 2 } + \\sum _ { i = 1 } ^ { k } \\ell _ { \\tau _ { i , h } } \\left( \\frac { R _ { i , h } - \\langle \\phi _ { i , h } , \\theta \\rangle } { \\nu _ { i , h } } \\right) ,"
+        ],
+        "page": "sp_0440_page_0007",
+        "id": "sp_0440_page_0007-1",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          348.7284851074219,
+          1116.01318359375,
+          873.4119262695312,
+          1185.07080078125
+        ],
+        "text": [
+          "\\psi _ { k , h } = \\operatorname * { a r g m i n } _ { \\psi \\in { \\cal B } _ { d } ( W ) } \\frac { \\lambda _ { R } } { 2 } \\| \\psi \\| ^ { 2 } + \\sum _ { i = 1 } ^ { k } \\ell _ { \\widetilde { \\tau } _ { i , h } } \\left( \\frac { | \\varepsilon _ { i , h } | ^ { 1 + \\epsilon } - \\langle \\phi _ { i , h } , \\psi \\rangle } { \\nu _ { i , h } } \\right) ,"
+        ],
+        "page": "sp_0440_page_0007",
+        "id": "sp_0440_page_0007-2",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          349.1494140625,
+          1258.402099609375,
+          875.6638793945312,
+          1326.5274658203125
+        ],
+        "text": [
+          "\\widehat { \\psi } _ { k , h } = \\mathop { \\mathrm { a r g m i n } } _ { \\psi \\in { \\cal B } _ { d } ( W ) } \\frac { \\lambda _ { R } } { 2 } \\| \\psi \\| ^ { 2 } + \\sum _ { i = 1 } ^ { k } \\ell _ { \\widetilde { \\tau } _ { i , h } } \\left( \\frac { | \\hat { \\varepsilon } _ { i , h } | ^ { 1 + \\epsilon } - \\langle \\phi _ { i , h } , \\psi \\rangle } { \\nu _ { i , h } } \\right) ."
+        ],
+        "page": "sp_0440_page_0007",
+        "id": "sp_0440_page_0007-3",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          390.88726806640625,
+          181.06640625,
+          833.4002685546875,
+          246.6837921142578
+        ],
+        "text": [
+          "\\begin{array} { r l } & { \\mathrm { R e g r e t } ( T ) = \\widetilde { O } \\left( d T ^ { \\frac { 1 - \\epsilon } { 2 ( 1 + \\epsilon ) } } \\sqrt { \\sum _ { t = 1 } ^ { T } \\nu _ { t } ^ { 2 } } + d T ^ { \\frac { 1 - \\epsilon } { 2 ( 1 + \\epsilon ) } } \\right) . } \\end{array}"
+        ],
+        "page": "sp_0440_page_0007",
+        "id": "sp_0440_page_0007-4",
+        "seg_type": "eq"
+      }
+    ]
+  },
+  "sp_0440_page_0008": {
+    "bboxes": [
+      {
+        "box": [
+          321.9685363769531,
+          1281.609619140625,
+          899.0946044921875,
+          1350.1258544921875
+        ],
+        "text": [
+          "{ \\pmb w } _ { h } [ f ] = \\int _ { s \\in \\mathcal { S } } \\mu _ { h } ^ { * } ( s ) f ( s ) \\mathrm { d } s , \\quad \\widehat { { \\pmb w } } _ { k , h } [ f ] = { \\bf { \\Sigma } } _ { k , h } ^ { - 1 } \\sum _ { i = 1 } ^ { k } \\sigma _ { i , h } ^ { - 2 } \\phi _ { i , h } f ( s _ { i , h + 1 } ) ,"
+        ],
+        "page": "sp_0440_page_0008",
+        "id": "sp_0440_page_0008-1",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          343.14984130859375,
+          1400.5697021484375,
+          880.2030639648438,
+          1452.783447265625
+        ],
+        "text": [
+          "[ \\mathbb { P } _ { h } f ] ( s , a ) = \\int _ { s ^ { \\prime } \\in S } \\langle \\phi ( s , a ) , \\mu _ { h } ^ { \\ast } ( s ^ { \\prime } ) \\rangle f ( s ^ { \\prime } ) \\mathrm { d } s ^ { \\prime } = \\langle \\phi ( s , a ) , w _ { h } [ f ] \\rangle ."
+        ],
+        "page": "sp_0440_page_0008",
+        "id": "sp_0440_page_0008-2",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          307.8350830078125,
+          986.39404296875,
+          913.48583984375,
+          1056.3905029296875
+        ],
+        "text": [
+          "\\nu _ { k , h } = \\operatorname* { m a x } \\left\\{ \\widehat { \\nu } _ { k , h } , \\nu _ { \\mathrm { m i n } } , \\frac { \\| \\phi _ { k , h } \\| _ { H _ { k - 1 , h } ^ { - 1 } } } { c _ { 0 } } , \\frac { \\sqrt { \\operatorname* { m a x } \\{ B , W \\} } } { c _ { 1 } ^ { \\frac { 1 } { 4 } } ( 2 \\kappa ) ^ { \\frac { 1 } { 4 } } } \\, \\| \\phi _ { k , h } \\| _ { H _ { k - 1 , h } ^ { - 1 } } ^ { \\frac { 1 } { 2 } } \\right\\} ,"
+        ],
+        "page": "sp_0440_page_0008",
+        "id": "sp_0440_page_0008-3",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          406.8685607910156,
+          1111.5618896484375,
+          815.9581909179688,
+          1214.684326171875
+        ],
+        "text": [
+          "\\begin{array} { r l } & { \\ \\quad [ \\widehat { \\nu } _ { 1 + \\epsilon } R _ { h } ] ( s _ { k , h } , a _ { k , h } ) = \\langle \\phi _ { k , h } , \\widehat { \\psi } _ { k - 1 , h } \\rangle , } \\\\ & { \\quad W _ { k , h } = ( \\beta _ { R ^ { \\epsilon } , k - 1 } + 6 \\mathcal { H } ^ { \\epsilon } \\beta _ { R , k - 1 } \\kappa ) \\, \\| \\phi _ { k , h } \\| _ { H _ { k - 1 , h } ^ { - 1 } } , } \\\\ & { \\quad \\mathrm { g o r i t h m } \\, 3 , \\beta _ { R ^ { \\epsilon } , k } = \\widetilde { O } ( \\sqrt { d } \\nu _ { R ^ { \\epsilon } } k ^ { \\frac { 1 - \\epsilon ^ { \\prime } } { 2 ( 1 + \\epsilon ^ { \\prime } ) } } / \\nu _ { \\mathrm { m i n } } ) \\, \\mathrm { a n d } \\, \\beta } \\end{array}"
+        ],
+        "page": "sp_0440_page_0008",
+        "id": "sp_0440_page_0008-4",
+        "seg_type": "eq"
+      }
+    ]
+  },
+  "sp_0440_page_0009": {
+    "bboxes": [
+      {
+        "box": [
+          264.1590576171875,
+          388.6988220214844,
+          922.9937133789062,
+          443.8091735839844
+        ],
+        "text": [
+          "\\begin{array} { r } { \\sigma _ { k , h } = \\operatorname* { m a x } \\left\\{ \\widehat { \\sigma } _ { k , h } , \\sqrt { d ^ { 3 } H D _ { k , h } } , \\sigma _ { \\operatorname* { m i n } } , \\left\\| \\phi _ { k , h } \\right\\| _ { { \\Sigma } _ { k - 1 , h } ^ { - 1 } } , \\sqrt { d ^ { \\frac { 5 } { 2 } } H \\mathcal { H } } \\left\\| \\phi _ { k , h } \\right\\| _ { { \\Sigma } _ { k - 1 , h } ^ { - 1 } } ^ { \\frac { 1 } { 2 } } \\right\\} , } \\end{array}"
+        ],
+        "page": "sp_0440_page_0009",
+        "id": "sp_0440_page_0009-1",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          410.91436767578125,
+          1306.0267333984375,
+          810.57763671875,
+          1348.6788330078125
+        ],
+        "text": [
+          "\\mathrm { R e g r e t } ( K ) = \\tilde { O } \\left( d \\sqrt { H \\mathscr { U } ^ { * } } K ^ { \\frac { 1 } { 1 + \\epsilon } } + d \\sqrt { H \\mathscr { V } ^ { * } K } \\right) ,"
+        ],
+        "page": "sp_0440_page_0009",
+        "id": "sp_0440_page_0009-2",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          323.7145080566406,
+          251.9951171875,
+          897.5797119140625,
+          284.4922180175781
+        ],
+        "text": [
+          "\\widehat { w } _ { k , h } = \\widehat { w } _ { k , h } [ V _ { h + 1 } ^ { k } ] , \\quad \\check { w } _ { k , h } = \\widehat { w } _ { k , h } [ \\check { V } _ { h + 1 } ^ { k } ] , \\quad \\widetilde { w } _ { k , h } = \\widehat { w } _ { k , h } [ ( V _ { h + 1 } ^ { k } ) ^ { 2 } ] ,"
+        ],
+        "page": "sp_0440_page_0009",
+        "id": "sp_0440_page_0009-3",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          328.5921325683594,
+          485.9881286621094,
+          892.4757080078125,
+          528.1830444335938
+        ],
+        "text": [
+          "\\begin{array} { r } { \\left[ \\widehat { \\mathbb { V } } _ { h } V _ { h + 1 } ^ { k } \\right] ( s _ { k , h } , a _ { k , h } ) = \\langle \\phi _ { k , h } , \\widetilde { w } _ { k - 1 , h } \\rangle _ { [ 0 , \\mathcal { H } ^ { 2 } ] } - \\langle \\phi _ { k , h } , \\widehat { w } _ { k - 1 , h } \\rangle _ { [ 0 , \\mathcal { H } ] } ^ { 2 } , } \\end{array}"
+        ],
+        "page": "sp_0440_page_0009",
+        "id": "sp_0440_page_0009-4",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          281.9617919921875,
+          540.578369140625,
+          893.3521118164062,
+          633.204833984375
+        ],
+        "text": [
+          "\\begin{array} { r l } & { E _ { k , h } = \\operatorname* { m i n } \\left\\{ 4 \\mathcal { H } \\langle { \\phi } _ { k , h } , \\widehat { w } _ { k - 1 , h } - { \\tilde { w } _ { k - 1 , h } } \\rangle + 1 1 \\mathcal { H } \\beta _ { 0 } \\left\\| { \\phi } _ { k , h } \\right\\| _ { { \\Sigma } _ { k - 1 , h } ^ { - 1 } } , { \\mathcal { H } } ^ { 2 } \\right\\} . } \\\\ & { \\ } \\\\ & { D _ { k , h } = \\operatorname* { m i n } \\left\\{ 2 \\mathcal { H } \\langle { \\phi } _ { k , h } , \\widehat { w } _ { k - 1 , h } - { \\tilde { w } _ { k - 1 , h } } \\rangle + 4 \\mathcal { H } \\beta _ { 0 } \\left\\| { \\phi } _ { k , h } \\right\\| _ { { \\Sigma } _ { k - 1 , h } ^ { - 1 } } , { \\mathcal { H } } ^ { 2 } \\right\\} , } \\end{array}"
+        ],
+        "page": "sp_0440_page_0009",
+        "id": "sp_0440_page_0009-5",
+        "seg_type": "eq"
+      }
+    ]
+  },
+  "sp_0440_page_0010": {
+    "bboxes": [
+      {
+        "box": [
+          504.8074951171875,
+          465.5668029785156,
+          719.1587524414062,
+          498.8108825683594
+        ],
+        "text": [
+          "\\widetilde { \\cal O } ( d H K ^ { \\frac { 1 } { 1 + \\epsilon } } + d \\sqrt { H ^ { 3 } K } ) ."
+        ],
+        "page": "sp_0440_page_0010",
+        "id": "sp_0440_page_0010-1",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          505.6639404296875,
+          696.0318603515625,
+          717.7604370117188,
+          729.3123168945312
+        ],
+        "text": [
+          "\\Omega ( d H K ^ { \\frac { 1 } { 1 + \\epsilon } } + d \\sqrt { H ^ { 3 } K } ) ."
+        ],
+        "page": "sp_0440_page_0010",
+        "id": "sp_0440_page_0010-2",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          468.01739501953125,
+          956.3209228515625,
+          755.76806640625,
+          988.7113647460938
+        ],
+        "text": [
+          "\\widetilde { O } ( d \\sqrt { H \\mathcal { U } ^ { * } } K ^ { \\frac { 1 } { 1 + \\epsilon } } + d \\sqrt { H \\mathcal { H } V _ { 1 } ^ { * } K } ) ."
+        ],
+        "page": "sp_0440_page_0010",
+        "id": "sp_0440_page_0010-3",
+        "seg_type": "eq"
+      }
+    ]
+  }
+}

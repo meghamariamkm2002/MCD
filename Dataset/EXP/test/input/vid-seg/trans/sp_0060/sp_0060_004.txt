@@ -1,0 +1,84 @@
+again is illustrated here.
+As we said, it's pretty simple.
+First, so step one, step one, train the teacher model with labeled data, as you would.
+Step two, you infer the pseudo labels on unlabeled data.
+Step three, you make a student, sorry, we'll step three over here, train an equal or larger student model with combined data and noise injected.
+So they use the original labeled data here and the pseudo labeled data right here in order to train the student.
+But still, the student doesn't have more information, more label information than the teacher had.
+It simply has this teacher labeled
+teacher labeled unlabeled data also to train on now the crucial part here is well first of all that the student can be larger and second of all that there can be noise and the noise comes in three different forms so first of all you use data augmentation which we've already seen this is sort of like random cropping or
+mild rotations, color, jitter, whatever.
+They use a random augment here, which is a specific technique to apply these augmentations.
+They use drop out, which is a fairly old technique where you, in the student model that you train, you randomly drop out connections, which makes it more robust and more generalizing.
+And then you also use stochastic depth.
+Now stochastic depth is a technique when you train a model, what you'll do during training, instead of always passing your data forward through the layers like this, you use some sort of a dropout but with entire layers.
+So what you'll do is you'll pass your data forward and then randomly you'll skip a layer and then pass it forward again.
+Now, these might seem weird first because, yeah, it might seem weird, but if you know that most models, especially computer vision models nowadays, are residual networks, which means that their layers look like, so you have the input
+You have some computation and then you have the output and then there is already a residual connection that basically adds the original signal together to the result of the computation.
+So all you do in this stochastic layer dropout or this stochastic depth right here is you basically disable this connection right here and all the signal has to flow through here.
+If you read the original ResNet paper, they make it pretty clear why the residual connection is a good idea.
+Basically, they say these computations here, if you have a very deep network, each layer only has to basically do a little bit of computation that
+that can be bypassed fairly efficiently for a lot of data points.
+So it's not that hurtful to bypass a layer.
+And in this case, they actually use it to just bypass some of these small computations and inject some more robustness into the student model.
+So with these three strategies to bring noise into the training process, one is on the data and two is on the student model itself.
+They train the student model and then fourth, and this is what we didn't have before, fourth, or maybe we put four here, make the student a new teacher.
+So now you can iterate.
+You can use the student model that you just trained to again label the unlabeled data.
+And then you can use another student model again under the influence of noise to train from that student model and so on.
+And you can go on and they do up to like three iterations of this where they always take the new the student as the new teacher.
+and then use a new student model to train from that teacher.
+And they get better and better as they do this.
+Of course, there's like a diminishing returns, but it's pretty impressive that this even works, right?
+The new students in fact aren't even larger than the old students.
+It's just that the students are larger than the original teacher model in most of these cases.
+So here's the algorithm written down.
+You'll require labeled images right here and unlabeled images, which are the ones with the tilde.
+So first you learn the teacher model, which minimizes the cross entropy on labeled images.
+This we already know this, right?
+This is the label, this is the image according to the label, and you train the teacher model, which is this thing here.
+And you can see here, noise.
+So already in the teacher training process, you want to introduce this noise, you want to introduce these data augmentations.
+These are, as I said, these are standard techniques to make models more robust and therefore more generalizable.
+Yeah, we know from these, from these self-supervised papers that these augmentations are very powerful and the way you design them, basically, if you, one of these augmentations is a random crop, which means if you have an image, you randomly crop out like part of that image and then that's your training sample and not the entire thing.
+So by doing this, you basically teaching the model to ignore the exact location and scale of things on an image.
+And you can do this because you as a human know that, you know, I can zoom in, I can zoom out into something and it won't change what's on the picture.
+And so that's, you use these augmentations to kind of heuristically tell the model what it should be invariant to.
+And that is a very powerful technique to regularize, basically, to robustify these deep methods.
+And this is used the same here.
+So already in the teacher model, we train with this noise and then
+Step two, use a normal IE not noise teacher model to generate soft or hard pseudo labels for the clean IE not distorted unlabeled images.
+And this is important.
+They stress this here that when you label the unlabeled images, you want to use the model that is without the noise and you do it on the not distorted unlabeled images.
+So when you infer the labels, it's very important that you have clean accurate labels without any sort of noise in them.
+So label noise is not something that they have found to help in this case.
+So not label noise on the teacher, that is.
+So you can see right here on the unlabeled images, we'll use that teacher model without the noise to infer the labels.
+Now, they say these can be hard model, hard labels or soft labels.
+So what does that mean?
+If we generate hard pseudo labels, that means that the Y here is simply going to be either zero or one or two or three and so on.
+So just the index of the class, whichever class is most likely, that's going to be our label.
+This is exactly how the supervised data sets come, right?
+So this is what you'll think first when you see that.
+However, soft pseudo labels means that the y will be a distribution.
+So instead of being of class zero, it will be sort of, let's say, 90% of class zero, but also 5% class one and 5% class two, right?
+So you'll output the distribution instead of the just the label.
+And they have found that the soft pseudo labels work slightly, slightly better than the hard pseudo labels.
+Okay, thanks.
+So they use the soft pseudo labels here because they work slightly better, but you can do it with hard or soft labels.
+The important thing is that you use the teacher to generate as accurate as possible labels for your unlabeled data.
+Then third, we've already seen this, learn an equal or larger student model, which minimizes the cross entropy loss on labeled images and unlabeled images with noise added to the student model.
+So as you can see, labeled images and unlabeled images, so we're in this semi
+semi-supervised learning setting right now you take in both together with noise and noise here is in bold which means they stress it again this is important.
+So you can see that the loss is composed of two different things.
+These are the true images of your original model.
+And you use that, and this means you noise the student model.
+And that noise can be on the data or in the model itself.
+And here, also the unlabeled images that you have labeled with the teacher, you do the exact same thing.
+So you train on both of these data sets.
+And step four is if you want to do iterative training, use the student as a teacher and go back to step two.
+Now they have some more tricks when they do this iterative training.
+They also up the batch size during the iterative training and so on.
+So they do a lot of things to make the student learn something more, something better than the teacher.
+And I think the whole paper, it doesn't state it explicitly, but I think the whole paper, everything they do here is to kind of force or allow the student to become better than the teacher by giving more noise, by making the student larger, by making the batch size for the student larger, and so on.
+So you want to sort of inject as much invariance as you can, and that will make the student learn more.

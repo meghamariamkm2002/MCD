@@ -1,0 +1,71 @@
+Well, this is one of the improvements.
+And that already helps a lot.
+But then they run into a problem.
+And this is not necessarily a problem with their method.
+But this is a problem in general, when you use relative positioning codings.
+So they say, given a sentence, a new store opened beside a new mall, right, that's a sentence, the words, store and mall,
+Let's say you do this mask language model pre-training.
+You mask out the words store and mall and you ask the model to reconstruct them.
+Using only the local context, e.g.
+relative position and surrounding words is insufficient for the model to distinguish store and mall in this sentence.
+Since both follow the word new,
+with the same relative positions.
+So from the word new, you know, relatively, it's always plus one.
+Oopsie.
+It's plus one to this word.
+So the model cannot distinguish the two.
+So there is a need for absolute position encodings, because if you had absolute position encodings, you could maybe make sense, though.
+Since you could figure out like store is probably kind of a smaller thing and mall is kind of a bigger thing, so it's more likely that the store opened beside the new mall than the mall opened beside the new store.
+So that means we need absolute positioning coatings or something like this, right?
+And especially we could have relative positioning coatings, but if this is a very long sentence and we truncate them somewhere, again, these two things are not in range of one another, and they're not going to know how far, you know, they are apart and each one by itself is just plus one apart.
+So
+How do we solve the problem?
+We feed in absolute positioning coatings.
+However, that's exactly what they criticize.
+They say, no, relative positioning coatings are much better than absolute for learning.
+And that's kind of the same reasoning why a convolution is better than a fully connected layer because you kind of slide the transformation over and it's simply data relative to each other.
+So relative positioning makes a lot of sense if when every word can do computation, not based on where exactly it is in the sentence, but how it is in relation to other words.
+Otherwise, if you have absolute positioning codings, what you would have to do is you would have to say, well, if I'm the word am, and I'm in position two,
+I need to learn to attend to position three.
+However, if I'm the word am and I'm in position three, I need to learn to attend to position four.
+And if I'm in position four, I need to learn to attend in position five.
+These are all different things you need to learn.
+However, if you have relative encoding, what you can do is you can simply say, I want to attend to the word that's right after me.
+Easy.
+But we do need absolute position encoding for some things, namely disambiguate between tasks like this.
+So they feed in absolute position information, but instead of doing it the beginning, they do it at the end.
+So at the beginning, we have the word vectors, right?
+They go in here.
+And then we have position information.
+One, two, three, four, five.
+We have that at every single layer of the transformer.
+We feed it in again and again and again.
+We feed in the same P vectors.
+They have different of these transformations in each layer.
+So the actual transformation that makes the keys and the values
+Sorry, the keys and the queries of the positional information are different, but the vectors are the same every time and then at the very top So these are p relative So this is sorry.
+Yeah, I mixed up.
+This is the this is this negative 2 negative 1 0 1 2 for the middle token and then at the end we're going to feed in Absolute position encodings so here we have you know your
+Let's start at one.
+Let's be good math lab people.
+Here we have 12345 that we're going to now combine with the vectors that come out of here.
+So the reasoning is
+They say there are two methods of incorporating absolute position.
+The BERT model incorporates absolute position in the input layer.
+In dBERT, we incorporate them right after all the transformer layers, but before the softmax layer for mask token prediction, as shown in Figure 2.
+I've looked at Figure 2, it's not really helpful, honestly.
+So that is this figure in the appendix, where they say, okay, so in the BERT, in the BERT, you have the absolute positioning coding somewhere down here, it goes through all the transformer layers, and then you have this classification layer at the top that does the language model decoding.
+However, in their model, what you'd have is you have all the transformer layers here, down here,
+And then you have the absolute position encodings that come in through the side here.
+And kind of the last transformer layer now has access to these absolute layers or the last N. I think N in their case is two or one, one or two.
+So in the last layer or the last layers, now the transformer has access to the absolute positions and before it's just relative position at each step.
+And the reason that that helps, because the transformer part learns to deal with relative positions.
+In this way, they say here, deberta captures the relative positions in all the transformer layers and only uses the absolute position that's complementary information when decoding the masked words.
+Thus we call deberta's decoding component an enhanced masked decoder.
+and they compare the two and they observed that EMD works much better.
+So feeding absolute positions at the end works better than feeding them at the beginning.
+We conjecture that the early incorporation of absolute positions used by Bert might undesirably hamper the model from learning sufficient information of relative position.
+In addition, EMD also enables us to introduce other useful information that is in two positions.
+We leave it for future work.
+So they say you could also feed in other information.
+I guess that's the case in every single neural network ever.

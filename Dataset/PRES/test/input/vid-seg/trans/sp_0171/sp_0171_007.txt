@@ -1,0 +1,2 @@
+Our paper also includes an extensive real data section featuring analysis on four real data sets and one simulated data set.
+The results presented here are compared against four other popular methods.

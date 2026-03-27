@@ -1,0 +1,92 @@
+are massive amounts, but in theory that makes no difference, right?
+So they say, since any imperfect information game can be viewed as a perfect information game consisting of public belief representations or public belief states, in theory, we could approximate a solution of any two player zero sum imperfect information game by running a perfect information RL plus search algorithm on a discretization of the belief representation.
+Okay, so nothing stops you from simply taking this and running alpha zero on this new thing, on this new thing, with the states being public belief states and the actions being descending around of these giant tables.
+You might have to discretize it as it says, but that's feasible.
+So you can think of constructing this game tree, but each node here is going to be a public belief state.
+Okay, instead of a world state like an alpha zero or like an info state like we started these imperfect information games with and then you can construct your tree down here.
+And then, you know, but this is infeasible because these public belief states are just too large and the actions are also too large.
+There are so many actions.
+These are super high dimensional.
+So this is not feasible.
+And we're going to, so they have to find a way.
+to do this thing, but to sort of do it in the domain of the original game.
+And that's the, I feel that's the entire trick of this rebel paper is to take this idea, let's do this search over the public belief states, but somehow this thing down here, because what we need is we need the values of these, right?
+If we figure out the value
+of this public belief state and the value of this one, right, this is of beta one, this is of beta two, then we would know which action to take.
+And then action is this huge thing, but if we knew the values of these, we would know which action to take.
+However, this is not feasible.
+So we need to find a way to figure out these values using
+the original formulation of the game.
+And that's what they do in the exact next section right here.
+So they go on saying, however, as shown in the example above, belief representation can be very high dimensional.
+So conducting search is, as is done in perfect information games would be intractable.
+They say, fortunately, in two player zero sum games, these high dimensional belief representations are convex optimization problems.
+Rebel leverages this fact via conducting search via an iterative gradient ascent-like algorithm.
+So I don't know what this sentence means, that the belief representations are convex optimization problems, maybe this is misformulated or I'm just not understanding it well enough.
+In general, this section here is a bit of a mystery to me, but I can sort of tell you what I understand of it, okay?
+So they say rebels search algorithm operates on super gradients of the PBS value function at the leaf nodes rather than on PBS values directly.
+This is the first indication.
+We don't want to work.
+So we want to construct this search tree.
+And at the leaf nodes, we need value functions, right?
+Like an alpha zero.
+Now, since we operate on public belief states, we would need value functions of public belief states.
+However, rebel finds a way to not do that.
+Specifically, the search algorithms require the values of info states for PBS.
+So they find a way to connect the values of info states to the values of public belief states.
+And just as a reminder, an info state is a state that as it looks to one player, that could have many different histories.
+A public belief state
+has all the info states that could lead to the public observation.
+So all the info states that you could be in, right, with all their histories, here, basically a distribution over all these info states, that entire thing
+is one public belief state.
+Now they are going to say we can determine the value of a public belief state.
+So the value of this is going to be equal to, and we can somehow approximate this with the values of these things here.
+We somehow don't need the value of the entire public belief state.
+We connect this to the values of the individual info states.
+And that's, I mean, that's done fairly easily because you simply sum over.
+So you can say the value of a given info state conditioned that you're in public belief state beta is simply going to be kind of the expectation over all the histories that could lead to this info state multiplied by the value of each history.
+Like you can have the value of a history
+given some policy and therefore you can approximate the value at a given info state.
+And this theorem one here is where they connect the value of a public belief state to the value of an info state.
+So they say
+For any public belief state, for the beliefs of player one and player two info states respectively, and any policy pi star that is a Nash equilibrium of the sub game rooted at beta.
+So now we root sub games at public belief states.
+this thing holds right here.
+So as you can see, this connects the value of the public belief states.
+This is what we sort of need in order for the search algorithm to work.
+It connects it to the value of an info of info states and info states are way lower dimensional than public belief states.
+So it connects, it connects
+the value of this right here to the value of let's say this, okay, this, this might be an info state here s. And the value, it connects the value of the global public belief set to the value of this particular info state.
+And it does so via this term right here.
+So this term right here, this is just the unit vector in the direction of that particular info state.
+And this here is a super gradient of an extension of the value function to unnormalize belief distributions.
+As I understand it, this G is the gradient with respect to
+probably beta one, if we care about S1 to V1 of beta, something like this.
+As I said, this is where I don't 100% see through it.
+But what I understand is that this connects the value of the public belief state, this thing
+to the value of the individual info states that are part of this public belief state.
+So we don't need a value function for public belief states.
+We can simply get away with learning a value function for the individual info states.
+And that's what they do.
+So the only, the learned part here in this algorithm, this is the first time we see like a neural network.
+Since rebel search algorithm uses info state values rather than learn a PBS value function rebel instead learns an info state value function.
+So we're going to input a public belief state.
+Yes.
+And we're going to get a value for each info state.
+We're going to get a value here.
+So we'll simply learn a value function as sort of a vector output.
+You could also input the public belief state and the info state and get out a single number.
+I guess that would turn out to be the same thing.
+Okay, so the info state value function directly approximates for each info state the average of the sampled values produced by rebel at beta.
+So we're going to learn this in a sort of bootstrap fashion like like alpha zero does it a bit like temporal difference learning.
+So what we're going to do in this algorithm is we're going to start out, then we're going to construct this sort of this subtree.
+And we're going to do this in the discrete representation of the game.
+Now that's the genius of the rebel algorithm.
+We're going to sort of evaluate these things in the discrete representation in the info state representation.
+And then we're going to be able to use what we find right here in order to determine the value of the next actions to take as far as I can tell.
+Okay, so there is only one thing left to do, right?
+We need to know how does this step here work?
+So we said we want to do this research over the public belief states, but we can't.
+It's too cumbersome.
+Therefore, we can now, we can evaluate values of a public belief state, but
+We still need to do to determine the policies and that's where the self-play reinforcement learning comes in.

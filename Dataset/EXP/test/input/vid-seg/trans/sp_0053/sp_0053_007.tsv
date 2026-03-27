@@ -1,0 +1,53 @@
+start	end	text
+31	7023	not cross product inner product, or you do L two distance between the representations or something.
+7384	8966	Here we do cross entropy.
+9928	17060	And the cross entropy after a softmax and the way I interpret this is the following.
+17581	24553	A softmax is like, what you get out is a normalized distribution, right?
+25613	27897	However, we have no class labels here.
+28518	34489	So what you do is you simply choose, you choose a number, any number, right?
+34549	40500	This is you as an implementer of this algorithm, choose what dimension you want to output here.
+41678	51510	Now, after the softmax, whatever your input is going to be, a distribution over the amount of things that you have input.
+52872	54955	And you can interpret this as classes, right?
+55315	57858	There's class zero, one, two, three, and so on.
+58339	68952	And you're gonna get class zero is probability 10%, class one, zero percent, class two, 40%, and so on.
+68932	70556	right?
+70576	76288	You don't know what it means, but you know, you get this as an output.
+76769	82462	And the teacher having this sharpening, it will have a much more peaked distribution.
+82802	87733	So for the same thing, it might have a distribution that's
+87713	93019	not as much class zero, not as much class one, very much class two.
+93640	95523	Alright, this even goes off screen for you.
+95543	98506	Yeah, very much class two, and so on.
+99688	105074	And since this is the since the teacher is the target for the student, you see here is a stop gradient.
+105735	108979	The student is sort of, this is a common
+108959	113207	I guess, I guess this is a common trick in distillation, like the teacher is very sure.
+113247	117836	And that means the student gets a better learning signal to match the teacher.
+118417	125049	So this this sharpening of the teacher gives these less noisy for the student.
+125390	129297	And also, I think it also helps prevent this.
+129277	130158	I'm not sure.
+130478	133922	So they speak of sharpening and centering.
+134542	144152	And one, I think one, they claim furthers collapse, probably the sharpening and one prevents it, which might be the centering, I might mix them up.
+144672	153581	But, you know, one sort of reduces the noise, but encourages, I think the sharpening must reduce noise, but encourage collapse.
+154302	158406	And then the centering counteracts that counteracts the collapse.
+160664	161926	Yeah, probably.
+162767	170540	Though there's an argument to be made that the sharpening might also counter collapse because, oh yes, that's what they say.
+170600	171241	Now I remember.
+171462	183381	So they say the sharp, so they, they say, uh, naturally this would then be biased towards the uniform distribution, um, with the centering, I believe, but the sharpening then counteracts that again.
+183401	184222	I don't know.
+184242	186486	It's in the text somewhere.
+186466	191295	I'm more interested in why this is even a softmax in the first place.
+191315	200813	So I interpret this as you force the model to come up with an k-dimensional classification problem by itself.
+201012	205021	And it has to choose by itself what the classes are, right?
+205582	215303	So it has to somehow make representations that allow itself to come up with a classification problem that it can solve.
+216165	218751	And I think that's, that's pretty smart.
+218731	225711	Um, you know, you instead of giving it a classification problem, you simply ask it to come up with one.
+226613	229341	Um, now this could go horribly wrong, right?
+229762	234495	But, uh, apparently if you do it like this, it goes well.
+235623	239449	So that's the dino architecture.
+239830	244638	Again, we augment image, we augment it in different ways.
+245559	249987	We put all the things through the student and through the teacher.
+250848	253733	The teacher is an exponential moving average of the student.
+253713	259487	That gives us different representations of different augmentations of the same image.
+260048	267486	We require the representations to be the same in terms of their
+268917	276308	So we take the representations, we ship them through a classifier, through a softmax, into a distribution.
+276889	294756	We require the outputs to be the same of the student and the teacher, while the teacher has centering, which is centering the logits by an exponential running average of all the representations it has ever seen.
+294736	310045	also it has a sharper softmax all of this together and yeah the teacher has a stop gradient so it's we train the student of this together gives us a system that comes up with good representations and does not collide

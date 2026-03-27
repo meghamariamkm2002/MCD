@@ -1,0 +1,26 @@
+the same network, but that it does not work.
+So if you don't have negative samples, your main goal is to avoid what's called collapse.
+If the network just maps everything to the same representation, then it always wins, right?
+It always is like, well, you know, okay, the two things are the same, because everything's the same.
+you don't want that.
+So a trick is to have two different models.
+One you call the student and one you call the teacher.
+And they're called student and teacher because from distillation.
+So in distillation,
+what you usually have is you have a data set.
+And then you train a big model, which is the teacher.
+And now what you want to do is you want to make you want to make that model maybe smaller, right, such that it runs on a mobile phone.
+And that's then the student.
+And there is a procedure where you take the data set and you take the teacher model and you sort of transfer the knowledge from the teacher model to the student model while using, you can use the data set to do so.
+And that usually works better than training the student model from scratch.
+It's very interesting why that even works.
+But this process is called distillation.
+So that's why it's called teacher and student.
+However, in this case, it's kind of a self distillation.
+So the teacher and the student, they're not big or small.
+They're the same architectures.
+In fact, we only train the student.
+Okay.
+And the teacher is made from the student.
+So here is where the terms break down a bit.
+Like, so in the distillation sense, the teacher is the teacher in the distillation.

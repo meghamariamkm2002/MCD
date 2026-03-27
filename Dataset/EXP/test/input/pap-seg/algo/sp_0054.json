@@ -1,0 +1,22 @@
+[
+  {
+    "input_path": "layout_results/sp_0054/sp_0054_page_4.png",
+    "page_index": null,
+    "boxes": [
+      {
+        "cls_id": 14,
+        "label": "algorithm",
+        "score": 0.9547098875045776,
+        "coordinate": [
+          439.39959716796875,
+          1569.056884765625,
+          2101.796630859375,
+          2744.22607421875
+        ],
+        "id": "sp_0054_page_4_1",
+        "seg_type": "algo",
+        "text": "Algorithm I Disentangled Attention\nnput: Hidden state H, relative distance embedding P, relative distance matrix δ. Content proj\ntion matrix Wk,c, Wq,c, Wv,c, position projection matrix Wk,r, Wq,r.\n1: Kc = HWk,c, Qc = HWq,c, Vc = HWv,c, Kr = PWk,r, Qr = PW\nq,r\n2: Ac→c = QcKT\n3: for i = 0, ..., N − 1 do\nAc→p[i, :] = Qc[i, :]KT\n•.\n: end for\n: for i = 0, ..., N − 1 do\nfor j = 0, ..., N − 1 do\nAc→p[i, j] = Ac→p[i, δ[i, j]]\nend for\nend for\nfor j = 0, .., N − 1 do\nAp→c[:, j] = Kc[j, :]Qτ\nend for\nfor j = 0, ..., N − 1 do\nfor i = 0, ..., N − 1 do\nAp→c[i, j] = Ap→c[δ[j, i], j]\nend for\nend for\nÅ = Ac→c + Ac→p + Ap→c\nL"
+      }
+    ]
+  }
+]

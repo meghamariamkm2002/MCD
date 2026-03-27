@@ -1,0 +1,2 @@
+Here are the details of our algorithm.
+As shown in the left image, if the tag for the image and the tag for the text fills, we move to the iterative cross attack, where we're alternating the image and text attack at each step until we successfully find an adversarial sample which codes for the downstream task model.

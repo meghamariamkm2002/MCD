@@ -1,0 +1,293 @@
+WEBVTT
+
+00:00.031 --> 00:00.171
+Right.
+
+00:00.552 --> 00:03.115
+So what does this thing do?
+
+00:03.355 --> 00:09.062
+It is a planning algorithm and planning might be not really familiar for you.
+
+00:09.502 --> 00:20.976
+So let's say you are in this room and or this set of rooms right here, there's a bunch of walls and you are up here and you want to reach the goal down here.
+
+00:20.956 --> 00:30.977
+So first of all, this is a goal directed problem, right here, it says goal directed goal directed means that you give the algorithm a goal to reach.
+
+00:31.498 --> 00:36.028
+And this could be a different goal each time you're on the algorithm, right?
+
+00:36.008 --> 00:37.489
+So you give it a goal to reach.
+
+00:38.170 --> 00:41.293
+Then the second thing here we see is planning.
+
+00:41.793 --> 00:43.415
+So it is a planning algorithm.
+
+00:43.495 --> 00:44.476
+What does planning mean?
+
+00:44.516 --> 01:02.291
+Planning means if you're traditionally reinforcement learning, you would think, ah, I'm just going to go ahead and run my agent here, and maybe you can move in the four different directions, run my agent here, do some things, right?
+
+01:02.592 --> 01:05.374
+Maybe I hit a wall, I get a negative reward, I try again.
+
+01:05.354 --> 01:10.563
+In planning, you don't have to move initially.
+
+01:10.803 --> 01:15.852
+What you can do is think about moving and you can think ahead of what's going to happen.
+
+01:16.273 --> 01:19.839
+And that's usually because you have some sort of model what happens.
+
+01:20.279 --> 01:30.737
+This is very famous applied in, for example, AlphaGo or AlphaZero, where you have, you know, if I move to the right here, I'm going to be here.
+
+01:30.717 --> 01:34.586
+So you will know once you've reached the goal, right?
+
+01:34.666 --> 01:36.972
+If I'm here, I go down, I reach the goal.
+
+01:37.252 --> 01:37.473
+Cool.
+
+01:38.395 --> 01:42.024
+So you can think all of this without actually moving in the environment.
+
+01:42.044 --> 01:43.647
+You can think yourself ahead.
+
+01:44.048 --> 01:47.376
+What would happen if I did certain things?
+
+01:47.356 --> 01:53.005
+And that in turn also means that you can think ahead multiple different paths.
+
+01:53.326 --> 01:55.409
+So you can think ahead, what would happen if I move right?
+
+01:55.650 --> 01:56.852
+What would happen if I move down?
+
+01:57.633 --> 02:04.004
+And then you can think in the next layer, if I move right, what would happen if I moved right again?
+
+02:04.064 --> 02:07.069
+What would happen if I moved down instead?
+
+02:07.049 --> 02:12.235
+So, you can easily see the planning problem becomes a tree search problem.
+
+02:12.656 --> 02:16.641
+In this case, we've done a breadth-first search.
+
+02:17.021 --> 02:21.327
+And eventually, you'll see that this will get you to the goal.
+
+02:22.047 --> 02:27.454
+So, this breadth-first search, or maybe you want to employ a depth-first search,
+
+02:27.434 --> 02:29.737
+will ultimately get you to the goal.
+
+02:30.117 --> 02:32.119
+We can represent this as a search tree.
+
+02:32.239 --> 02:39.908
+So you're here in a particular state and you have a bunch of actions, in this case four to move left, up, down, or right.
+
+02:40.949 --> 02:45.494
+And you can choose any of them and you will get into a new state.
+
+02:45.514 --> 02:47.997
+And from each of those, you could choose any again.
+
+02:48.197 --> 02:52.202
+And you can think ahead, all of this, you can construct this entire tree.
+
+02:52.562 --> 02:57.087
+And one of these branches will lead you to the goal.
+
+02:57.067 --> 02:57.608
+promise.
+
+02:59.390 --> 03:00.191
+What is the problem?
+
+03:00.251 --> 03:11.304
+The problem is, if the path to the goal here is, let's say D steps long, then this tree here is going to be D layers deep.
+
+03:11.945 --> 03:18.373
+And in our case, that means we'll have four to the D nodes in that tree before we even reach the goal.
+
+03:19.394 --> 03:24.220
+And that is just a long, long, or a big tree.
+
+03:24.660 --> 03:26.803
+And we can construct all of it.
+
+03:26.783 --> 03:34.753
+So algorithms have come along, for example, the A star algorithm, where you can incorporate something like a heuristic.
+
+03:34.813 --> 03:41.061
+And the heuristic would be, well, it's generally good if I'm close to the goal in L2 distance.
+
+03:41.081 --> 03:50.052
+So you would not build the entire tree here, but you would prefer nodes that will bring you towards this heuristic.
+
+03:50.173 --> 03:54.478
+So this node down here is closer to the green node in terms of L2 distance.
+
+03:54.458 --> 03:57.522
+And this note down here is even closer, but then you're kind of stuck.
+
+03:57.923 --> 04:02.669
+So A star will explore a bit, probably along this wall here.
+
+04:04.111 --> 04:08.397
+And once you're here, you have a clear path again, right?
+
+04:08.458 --> 04:11.542
+So you can simply take the actions that minimize this L2 distance.
+
+04:11.562 --> 04:16.088
+So this will already get you to a real good point.
+
+04:16.689 --> 04:23.098
+Monte Carlo Tree Search, as it was employed in AlphaGo or AlphaStar, has a similar
+
+04:23.078 --> 04:53.085
+Structure where it after a certain while it stops and it evaluates a heuristic to say what's the the value here and so on so it isn't for some problems an even better method of Constructing the search tree in a way where you don't get overblown by the number So the Monte Carlo search tree in this algorithm refers to the fact that we are generalizing Monte Carlo Tree search from the let's say the AlphaGo paper
+
+04:53.065 --> 04:56.950
+So, what's the idea here?
+
+04:56.970 --> 04:58.432
+So far, we've known everything.
+
+04:59.053 --> 05:00.174
+The idea is the following.
+
+05:00.555 --> 05:16.715
+If I had an oracle, if I am the master here and I can tell the agent, agent, look, I guarantee you that this state right here in the middle, you will pass that state.
+
+05:16.755 --> 05:21.081
+If you want to reach the goal, you will pass this.
+
+05:21.179 --> 05:21.780
+For sure.
+
+05:21.820 --> 05:25.829
+If I tell this to the agent, now what can the agent do?
+
+05:25.869 --> 05:31.240
+The agent could say, oh, okay, if I know that, I can simply, I don't have to search for a way to the goal.
+
+05:31.280 --> 05:40.639
+I'd much rather search for a way from my start point to that point where I know that I'm guaranteed to be at some place.
+
+05:40.619 --> 05:46.734
+And then I can search also from a way from there to the goal.
+
+05:48.117 --> 05:54.132
+So this now, remember our path was D steps long for the original problem.
+
+05:54.473 --> 05:57.480
+This is now let's say D half long.
+
+05:57.460 --> 05:59.143
+each of these paths.
+
+05:59.163 --> 06:01.428
+And that means we just construct two trees.
+
+06:01.909 --> 06:04.874
+Each one of them is going to be four to the D half.
+
+06:05.496 --> 06:07.900
+And the other one is also four to the D half.
+
+06:07.920 --> 06:14.052
+And if we add them, that is much smaller than the original four to the D tree that we build.
+
+06:14.032 --> 06:23.304
+So right there, we have subdivided our problem into two sub problems, and each of them are much easier than the original problem.
+
+06:24.285 --> 06:27.229
+This paper basically does this recursively.
+
+06:27.569 --> 06:35.179
+So it will subdivide the problem by proposing some middle state where you are going to be at some point for sure.
+
+06:35.159 --> 06:37.484
+and that for sure we're going to take a look at.
+
+06:37.845 --> 06:50.194
+And then for each of those problems, again, it will try to subdivide it into subproblems and therefore recursively solve the subproblems until they're small enough that they can be basically solved in one step.
+
+06:52.158 --> 06:53.421
+So that's the big idea here.
+
+06:54.970 --> 06:57.415
+And this is illustrated in this point right here.
+
+06:57.635 --> 07:05.632
+So you are in this S0, the start state, and you want to go to this S infinity, the goal state in your case.
+
+07:06.233 --> 07:14.430
+What this paper does is it proposes to split the problem here in the middle and then simply solve the two problems recursively.
+
+07:14.410 --> 07:23.420
+Now, what is a bit confusing right here is that it is the planning already is a tree search, right?
+
+07:23.460 --> 07:28.907
+So a plan is like a tree, but we are searching over plans.
+
+07:28.947 --> 07:37.937
+So we're searching for the best plan, which means that we are searching over trees and that search itself is a tree search.
+
+07:37.917 --> 07:47.247
+So the search itself is a problem where we go down one route and then, oh no, and then we maybe go down another route and here and then here.
+
+07:47.587 --> 07:50.029
+So the search is a tree.
+
+07:50.370 --> 07:53.193
+So we're now tree searching over trees.
+
+07:53.753 --> 07:56.256
+That's the kind of tricky thing to remember.
+
+07:56.776 --> 08:04.645
+So each of these plans, even if it's half, if it's only half done, like this is only half a plan, we don't know what's going to happen in here.
+
+08:05.305 --> 08:07.047
+This half a plan
+
+08:07.027 --> 08:11.552
+is a node in the tree that we're searching over.
+
+08:12.293 --> 08:16.939
+And then it splits as you can see here into two sub-problems.
+
+08:17.299 --> 08:21.424
+The two sub-problems also are nodes in that search tree.
+
+08:21.524 --> 08:29.894
+So you see that this top thing here would correspond to this node, even though in itself it is a plan, a tree, a string in this case.
+
+08:30.515 --> 08:36.882
+And each of the two sub-problems would become these nodes in the search tree.
+
+08:36.862 --> 08:41.400
+So keep that in mind as we go through this paper.
+
+08:42.524 --> 08:46.500
+It is very easy to get confused in this respect.
+

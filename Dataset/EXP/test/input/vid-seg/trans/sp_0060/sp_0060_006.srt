@@ -1,0 +1,88 @@
+1
+00:00:00,031 --> 00:00:16,048
+There is one additional trick and it's not and it's not one actually they have so many tricks and if you look at their experimental setup that it's crazy like they Describe exactly will reduce the learning rate like this and the batch size like this and so on so
+
+2
+00:00:16,028 --> 00:00:22,237
+To get state-of-the-art on ImageNet, it's not enough to just have a good idea of a new thing to do.
+
+3
+00:00:22,878 --> 00:00:35,375
+You have to have the good idea and then execute it almost really well because you have to regard all of these additional tricks that people have figured out over the years.
+
+4
+00:00:36,177 --> 00:00:42,205
+In any case, they say it works better with an additional trick, data filtering and balancing.
+
+5
+00:00:42,185 --> 00:00:49,082
+specifically, we filter images that the teacher model has low confidence on, since they are usually out of domain images.
+
+6
+00:00:49,443 --> 00:00:57,342
+So that goes to a point where if you see we have this image net labeled data set, right, and we have the larger data set.
+
+7
+00:00:57,322 --> 00:01:07,836
+Now, the larger data set simply contains images and there is no guarantee that the images are actually of the classes that we have in the ImageNet dataset right here.
+
+8
+00:01:08,176 --> 00:01:09,758
+We have a thousand classes here.
+
+9
+00:01:10,179 --> 00:01:20,072
+There's no guarantee that these images fit into any of those classes yet we still ask the teacher model to put them in some of these classes.
+
+10
+00:01:21,267 --> 00:01:29,720
+You can filter out part of those images if you can look at the teacher model and you look at its confidence.
+
+11
+00:01:29,740 --> 00:01:39,715
+So when it outputs a distribution, if there's just two labels, let's say, if it outputs a distribution like this, that's wildly different than if it outputs a distribution like this.
+
+12
+00:01:40,296 --> 00:01:45,925
+Both are class one labels, but one is much more confident than the other.
+
+13
+00:01:45,905 --> 00:01:54,800
+So what you want to do is you want to filter out these low confidence labels because, you know, the model isn't really sure, but it has to assign a class.
+
+14
+00:01:55,181 --> 00:01:59,068
+But that's usually an indication that it is an out of domain image.
+
+15
+00:01:59,929 --> 00:02:02,073
+So if they filter this, it works better.
+
+16
+00:02:02,113 --> 00:02:09,145
+And then also to ensure that the distribution of the unlabeled images match that of the training set,
+
+17
+00:02:09,125 --> 00:02:16,856
+We also need to balance the number of unlabeled images for each class, as all classes in ImageNet have a similar number of labeled images.
+
+18
+00:02:17,497 --> 00:02:21,523
+For this purpose, we duplicate images in classes where there are not enough images.
+
+19
+00:02:22,164 --> 00:02:26,931
+For classes where we have too many images, we take the images with the highest confidence.
+
+20
+00:02:29,155 --> 00:02:31,619
+Okay, so this is just another technique.
+
+21
+00:02:31,639 --> 00:02:42,997
+This has basically nothing to do with their core idea, but this is just another thing where they say, okay, we can treat this big thing that we scrape from the internet.
+
+22
+00:02:43,257 --> 00:02:48,025
+You know, we can somehow filter and balance it smartly and that will work even better.
+

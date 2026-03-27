@@ -1,0 +1,74 @@
+WEBVTT
+
+00:01.027 --> 00:05.232
+Hi there, take a look at this variant of the game Rock Paper Scissors.
+
+00:06.313 --> 00:18.387
+It's like usual Rock Paper Scissors, except with the added complexity that when either player chooses scissors, then the rewards and the losses are doubled.
+
+00:18.847 --> 00:22.832
+So for example, you see right here, player one chooses rock,
+
+00:22.812 --> 00:32.448
+and player two chooses scissors, so both the reward for player one and the loss for player two are double the size.
+
+00:33.170 --> 00:46.913
+Now you might know that in original Rock Paper Scissors the optimal strategy is to play one third of each of the three choices at any time, so you basically take a
+
+00:47.180 --> 00:51.805
+fair three-sided coin dice, does that exist?
+
+00:52.286 --> 00:52.967
+I'm not sure.
+
+00:53.627 --> 00:58.713
+And you throw it and whatever side is up, that's what you play.
+
+00:59.394 --> 01:07.604
+However, here, since one of the options is different, the sort of optimal strategy shifts and interestingly, it shifts as follows.
+
+01:08.124 --> 01:14.892
+What you wanna do is you wanna play rock and paper both with a 0.4 probability
+
+01:14.872 --> 01:18.999
+and you want to play scissors with only 0.2 probability.
+
+01:20.001 --> 01:21.223
+That is pretty interesting.
+
+01:22.045 --> 01:37.352
+You might intuitively conclude that you want to go more where there are more rewards to be had, but of course also you lose more, so you might also conclude, well, it doesn't make a difference ultimately, but
+
+01:37.568 --> 01:45.664
+Why does the optimal strategy shift such that you want to decrease your likelihood of playing scissors?
+
+01:46.386 --> 01:53.620
+Let's just quickly analyze this game before we jump into the paper because this game is a microcosm
+
+01:53.600 --> 01:56.544
+of what the paper of today is about.
+
+01:56.944 --> 02:13.465
+So the paper of today is called Combining Deep Reinforcement Learning and Search for Imperfect Information Games by Noam Brown, Anton Bakhtin, Adam Lehrer, and Chi Chen Gong of Facebook AI Research.
+
+02:13.445 --> 02:20.855
+So this paper brings basically what AlphaGo or AlphaZero has done for perfect information games.
+
+02:21.276 --> 02:35.014
+It brings this to the domain of imperfect information games and we'll see what the difficulties are in this and what can be done to solve it and not only do they have an algorithm but they have
+
+02:34.994 --> 02:48.362
+the interesting theoretical results that under some conditions, namely under the condition that neural networks do something useful, will actually converge to Nash equilibrium in these games.
+
+02:48.427 --> 02:52.374
+That is pretty cool, so practical and theoretical paper right here.
+
+02:53.135 --> 03:01.408
+As always, if you like content like this, don't hesitate to share it out and tell me what you think in the comments.
+
+03:01.569 --> 03:07.819
+This is not my field, so I might get quite a bit of stuff wrong right here.
+
+03:07.799 --> 03:20.003
+Also, if you haven't seen the Negranu poker challenge, so I think it's the last video I did, be sure to check that out just to see how you have to think about situations like this.
+

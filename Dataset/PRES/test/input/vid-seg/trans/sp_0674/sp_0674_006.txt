@@ -1,0 +1,1 @@
+Finally, due to the self-normalization constraints on local policies, the local state-value function can be obtained by slowing a convex optimization problem.

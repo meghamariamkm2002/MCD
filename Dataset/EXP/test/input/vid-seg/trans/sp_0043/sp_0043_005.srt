@@ -1,0 +1,156 @@
+1
+00:00:00,031 --> 00:00:02,414
+Okay.
+
+2
+00:00:03,595 --> 00:00:04,536
+So how do they do it?
+
+3
+00:00:05,317 --> 00:00:11,324
+Via what they call trajectory, via regularization of trajectory optimization.
+
+4
+00:00:11,924 --> 00:00:14,527
+So in essence, what do we want to regularize here?
+
+5
+00:00:14,768 --> 00:00:25,920
+There are many things we could do to solve this, but the way this paper goes is they say we not only do we want the most return, we also
+
+6
+00:00:25,900 --> 00:00:32,914
+want a high log probability of our taken path.
+
+7
+00:00:33,375 --> 00:00:39,446
+So this here, as you can see, this is observation action and so on, observation action.
+
+8
+00:00:39,767 --> 00:00:41,310
+So this is the future.
+
+9
+00:00:41,691 --> 00:00:44,837
+This right here is the future.
+
+10
+00:00:46,994 --> 00:00:55,210
+So this, this sequence here is going, is what is going to give me the reward right here.
+
+11
+00:00:55,550 --> 00:00:56,131
+Right.
+
+12
+00:00:56,152 --> 00:01:00,881
+So G is also dependent on these things, but it's not said explicitly here.
+
+13
+00:01:00,961 --> 00:01:04,788
+So G is dependent on your plan or maybe let's not call this the future.
+
+14
+00:01:04,828 --> 00:01:05,830
+This is the plan.
+
+15
+00:01:07,058 --> 00:01:07,439
+Okay.
+
+16
+00:01:07,719 --> 00:01:09,101
+This is the plan you came up with.
+
+17
+00:01:10,122 --> 00:01:14,508
+So this is directly going to influence G and G is the reward you're going to get under your model.
+
+18
+00:01:14,828 --> 00:01:19,314
+But also you want the log probability of the plan itself to be high.
+
+19
+00:01:20,216 --> 00:01:28,246
+Now there, I think there is a bit, there is something missing here and that is conditioned on your training distribution right here.
+
+20
+00:01:28,847 --> 00:01:31,451
+And I think that's a actually a rather crucial part.
+
+21
+00:01:32,092 --> 00:01:34,635
+No, that's, that's the KL thing.
+
+22
+00:01:34,615 --> 00:01:36,478
+So this is conditioned on your training.
+
+23
+00:01:36,738 --> 00:01:44,972
+So what you want is you want the plan to be basically in your training distribution.
+
+24
+00:01:45,533 --> 00:01:56,050
+So you want your plan that you're going to execute if that is actually part of your training data set.
+
+25
+00:01:56,030 --> 00:02:10,071
+then you know I have already executed this once before and it's reasonable to assume that therefore my world model has learned from this experience and is going to give me an accurate reward.
+
+26
+00:02:10,611 --> 00:02:14,477
+If we go back to our rooms example then
+
+27
+00:02:14,457 --> 00:02:16,762
+up here somewhere.
+
+28
+00:02:17,183 --> 00:02:26,161
+If we go back to our room's example, you see that anywhere in the green area where I have already explored, the world model is fairly good.
+
+29
+00:02:26,462 --> 00:02:33,597
+It's going to give me accurate reflection of the world, but as soon as I go outside the green area, it is not.
+
+30
+00:02:33,577 --> 00:02:38,805
+And inside the green area is basically where my training data is.
+
+31
+00:02:39,286 --> 00:02:45,735
+Now, if I in the future actually take a path here, crash into a wall right here, right?
+
+32
+00:02:45,915 --> 00:02:52,666
+You saw in the algorithm, at the end of an episode, I'm going to add my trajectory to the training data for the world model.
+
+33
+00:02:52,686 --> 00:02:56,351
+So this green part here expands to include that.
+
+34
+00:02:56,852 --> 00:03:00,377
+And now, if I go here again,
+
+35
+00:03:00,357 --> 00:03:07,585
+If my plan goes there again, now I can trust the world model, but also now it has, it is actually correct because it has a wall here.
+
+36
+00:03:08,105 --> 00:03:24,062
+So you see that the regularization basically, not only do I want the biggest reward possible under my world model, I also want that the plan that I'm about to execute is, has a high probability under my training distribution.
+
+37
+00:03:24,582 --> 00:03:24,862
+Okay.
+
+38
+00:03:25,463 --> 00:03:29,267
+And the way we do this is by denoising auto-encoders.
+
+39
+00:03:31,424 --> 00:03:40,050
+So I want the log probability here to be high and you do this via a denoising autoencoder.
+

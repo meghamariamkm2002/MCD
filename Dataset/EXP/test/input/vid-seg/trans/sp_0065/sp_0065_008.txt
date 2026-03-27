@@ -1,0 +1,85 @@
+This is down here.
+It goes in and the first thing they do is they normalize the text and they transform it into phonemes, which is you can do this in a deterministic fashion.
+There are scripts that do this.
+This is the only pre-processing they do.
+And they can also leave it away in the Heaven Ablation on their website.
+So this is like phoneme text, cat sat on the mat.
+Now, this phoneme text goes through these big block of convolutions and of dilated convolutions.
+And this outputs a 200 Hertz representation token length alignment.
+Okay, I should specify this.
+So for each token here, it outputs a length.
+So this thing predicts the length of each of the tokens.
+These, all of this, all of this thing here is to, um, to embed the tokens in hidden space and then predict its length.
+You can see that right here.
+Okay.
+So first,
+We use F to, to take X. So F is a stack of dilated convolutions and it takes X and outputs a hidden representation.
+So H. So first X goes to H and then H is used to predict L and L is the length of that token.
+So we embed this into a hidden representation with this right here.
+And then we use this stack to predict the length of each token.
+So this could be, this could say something like this cat token right here is 20 milliseconds long or
+Instead of milliseconds, you would use something like frames or data points.
+Maybe this is 200 data points long.
+And then SAT is a bit shorter.
+So this is 100 long.
+And ON is really short.
+So this is 50 long.
+So for each token, it predicts the length.
+So now if we have the length of each, we can sort of calculate where the starting point is.
+So if we want to know, if we know that here is the beginning and the beginning of the sentence, we conservatively assume that there is
+So they give some silence buffer here, but roughly you can assume that the beginning of the speech corresponds to the first token.
+You can simply trace the waveform and whenever it goes up, that's where the first token starts.
+So then, since we know that's where the first token starts, and if we could predict the length of each one correctly, we could simply sum those up to figure out where our word starts.
+So if we want to know where on starts, we simply go from the beginning and go 200 plus 100 milliseconds or data points.
+200 plus 100, here is where on starts, okay.
+And if we want to figure out the middle of on, we simply add the half of this number.
+So plus 25 gets you to the middle.
+So this is, this here is the center of the token on.
+So for each token, we predict the length like this and thereby we can just calculate for each one by summing up from the beginning and then adding half of its own length where the center of that token in the entire sequence is.
+Okay, now we do this, we said we take random two second audio, but we do this procedure for the entire text.
+Okay, for every single token in the text that we look at, so in the 20 second text, we do this because then for each token, we'll get a token center.
+and now the aligners job here is to align that to the actual sound.
+so what we also give the generators here the offset so let's say we have this twenty second of speech and we randomly sampled these two seconds and that's maybe five seconds from the beginning we also tell it this is five seconds right here so what we can now do is we can calculate back sort of and and say okay here i have
+I first need to discard five seconds of my signal, and I have a prediction how long each token is, so I can just cross out tokens until I have basically wasted five seconds.
+And then I know, okay, from here to wherever these things sum up to two seconds, from here to that, those are my two seconds that I want to look at.
+Now, this is how I figure out where in the big sound wave my fragment is.
+Because I have this offset where I sampled it, and I simply use this and the predicted lengths to figure it out.
+Now I still need to figure out these tokens that are actually in the span, how do they distribute?
+And that's what this aligner here does.
+Since we've already predicted the token centers, we simply assume that if these are correct, right, then if this is, let's say, if this is one second long, I assume that the middle is after 0.5 seconds or this is one second, the middle is 0.5 seconds.
+So I think that this token is aligned right here.
+This is the center of the token.
+Now, we want to be a little bit fuzzy with respect to that.
+So what they do is they sort of use a Gaussian kernel right here.
+So for each token, as you can see here, each token has a center, which is here.
+So the y-axis is the time in sound and the x-axis is the token.
+And for each token, we say, well, it doesn't have to be exactly there.
+It can be, so they put a Gaussian kernel like this.
+Okay, if you imagine this kernel popping out of the frame, they say this is about where the center is.
+And for this token right here, they say, well, it's probably here in the middle, but it could also be here, or here, or here, or here.
+And we wait this like this.
+So these are the weights and then you simply sum up the weights with these embeddings.
+So for each token out of this dilated convolution block you get a hidden embedding and by using this alignment matrix that you computed by predicting the lengths and therefore predicting the centers of the tokens you can then
+sort of shift.
+So first, you assume that h1, h2, h3, if you were to do nothing, these would just all take up like a third of the time.
+And now by multiplying with this matrix, you have the opportunity, because you predicted a longer length for the first token, you have the opportunity to shift that a bit to the right, and maybe shorten the second token a bit, and then the third token goes until the end.
+Okay, that's what this aligner thing is.
+This is not a model by itself.
+All that this takes in is the computation right here of the token lengths.
+This estimates these token lengths for each of the tokens.
+And the rest is deterministic.
+It's simply saying, okay, how much is the offset?
+Cool.
+That's how we know where in the sound wave we are.
+And then where is each of the centers?
+And we simply do that by summing up the predicted token lengths.
+And then we use a Gaussian kernel with like a set hyper parameter to be a little bit fuzzy with respect to these lengths right here.
+So to be differentiable basically.
+And that will, that will ultimately train this loss, this model right here that computes the token lengths.
+So we sum up in a weighted fashion these embeddings right here, and that's what goes into the generator.
+So now we have embeddings and we have the alignments for the embeddings, which are these pieces of where in the sound wave these are.
+And from that, the generator can now produce the sound wave itself.
+And that's basically, that's just an up sampling here.
+I think that's just an up convolution, um, up sampling from 200 Hertz signal to a 24 kilohertz signal.
+Cool.
+So.

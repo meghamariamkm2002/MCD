@@ -1,0 +1,2 @@
+At step 2, we leverage Blackwell's condition to refine the set of achievable set.
+Specifically, we solve a difference of convex program to find a piecewise linear function that separates the optimal conditional distribution obtained from step 1 from the achievable set.

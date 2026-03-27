@@ -1,0 +1,54 @@
+Um, so they give this example right here at the beginning that if you have a, a two layer, um, 100 wide, so 100 dimensional MNIST networks, it's two layers.
+It's, I think it's an MLP, it's a two layer MLP with a non-linearity that is this, um, the sigmoid right here, this.
+Okay.
+Now you can see it has this temperature parameter here.
+It has this slope parameter.
+And you want to do neural architecture search to find the best slope parameter.
+Now, usually you would just do a grid search, but this is an example because this can be, of course, much higher dimensional things.
+And then you don't want to do grid search anymore.
+Okay, so what do we do?
+If you look at how the 100 wide MNIST network, so we can draw it right here.
+So this is a 100 dimensional MNIST network.
+So this is 100.
+And each cell, each connection here first has a weight and then has the sigmoid nonlinearity.
+And the sigmoid nonlinearity is parameterized by the parameter C. And you have many of them.
+You have one here and so on.
+And each one has a different C. And each of these networks represents one blue dot here.
+So if you let C vary, so this sigmoid slope value right here, that's your parameter C. If you let this variant train the big network on the entire data set to convergence and then you eval on the validation data set, you get the slope like the blue curve.
+So if you see the blue curve, the blue curve,
+is if you start over here, if you reduce the slope, you'll gain in performance, but if you reduce it too much, you drop drastically, okay?
+Until it's, if it's zero, it's basically, you know, the X is not, the signal doesn't propagate anymore, and you have no learning occurring.
+Okay, so that's the original performance.
+Now, what if I only give you training data in this range right here?
+I only showed you this particular range.
+I can't actually zoom in that much.
+But if I give you this and I ask you to build one of these, please take the architecture and predict the performance that we saw at the beginning, like one of these girdle machines or Turing machines.
+You would basically say, well, that looks to me like a line.
+So I'm going to predict the red thing here.
+And even if you can evaluate a bunch of these, it just looks like a line.
+And you're going to predict there's probably a slope like this.
+This happens almost independently of which model you choose to predict right here.
+The data of training simply doesn't give away that the fact that there is this break down here, which happens in the real world.
+So if you just give this as training data, there's no way.
+So the criticism about these models is valid that they will only work where you give them training data.
+They can at best interpolate their training data, but they can't really extrapolate.
+Now here, since the synthetic Petri dish method, which is the green thing here, uses the actual
+not the actual nonlinearity that this thing characterizes.
+So it instantiates the sigmoid with the parameter C that you give it, just not on the large network, but on a small network.
+In fact, their network is just one unit, sorry, one unit, and then another unit.
+So it's just a two hidden layer, but just with one unit instead of 100.
+And of course, you can't feed in MNIST right here, right?
+But we said they don't feed in the data, they actually feed in their synthetic data that they learn.
+So you give them the points here and they learn the synthetic data to evaluate the others.
+And then once you ask them, well, if my C is right here, what's the performance gonna be?
+It's going to instantiate that in its small network.
+it is going to use the training data that it has learned from this region right here in order to train this.
+And then it's going to evaluate this on the synthetic validation data that is also learned on the training data.
+And it is going to come up with a performance metric.
+It says, okay, this is how good it's going to be.
+And since it is an approximation in its building plan to the entire network, it will react similarly
+So it will get that there is this performance tip right here.
+Okay, so you can see how this sort of makes sense.
+You were actually running an approximation to the actual program instead of just looking at the plan of the program and trying to predict it, which, you know, halting problem says hello.
+Okay, so that is the motivating example of their MNIST thing.
+And here is

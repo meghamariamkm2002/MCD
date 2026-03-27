@@ -1,0 +1,1 @@
+Similarly, for TCCO, we maintain MSVRS meters for both inner functions, G and H, and update the parameter W using SGD as well.

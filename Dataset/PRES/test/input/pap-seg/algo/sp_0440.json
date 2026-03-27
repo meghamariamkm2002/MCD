@@ -1,0 +1,65 @@
+[
+  {
+    "input_path": "/tmp/megha/PDF-Extract-Kit/Presentation/layout_pap/sp_0440/sp_0440_page_5.png",
+    "page_index": null,
+    "boxes": [
+      {
+        "input_path": "/tmp/megha/PDF-Extract-Kit/Presentation/layout_pap/sp_0440/sp_0440_page_5.png",
+        "cls_id": 14,
+        "label": "algorithm",
+        "score": 0.9229331016540527,
+        "coordinate": [
+          441.7348937988281,
+          299.1463317871094,
+          2099.12890625,
+          972.2135009765625
+        ],
+        "text": "equire: Number of total rounds T, confidence level \u03b4, regularization parameter \u03bb, \u03c3min, param\nfor adaptive Huber regression C0, C1, T0, estimated central moment vt and moment parame\nthat satisfy \u03bdt/vt \u2264 b for all t \u2264 T.\nnsure: The estimated coefficient \u03b8t.\n1: \u03ba = dlog(1 + TL2/(d\u03bb\u03c3\nmin)\n2\n2: Set Ht\u22121 = \u03bbI + \u2211t=1\n\u22121\nT\ns\n\u2225\u03c6t||\nH1\n\u221aLB\nHIN\n: Set \u03c3 =\n\u03bd, min\n\u22121\n||\u03c6t|\nmax\nc\n1\n\nH\n\u22121\nc4\n(2\u03bab2)\n\u22121\nt 2(1+e) with wt = |\u03c6t/\u03c3tH\u22121 .\n1\u2212\u20ac\n4: Set Tt = T0\nWt\n\u22121\n5: Define the loss function Lt(\u03b8) := \u03bbk|\u03b82 + \u2211ts=1 \u03c4s (\nys\u2212\u03c6s,\u03b8\n\u03c3 s\n5: Compute \u03b8t = argminecB.(R) Lt(\u03b8).",
+        "id": "sp_0440_page_5_1",
+        "seg_type": "algo"
+      }
+    ]
+  },
+  {
+    "input_path": "/tmp/megha/PDF-Extract-Kit/Presentation/layout_pap/sp_0440/sp_0440_page_6.png",
+    "page_index": null,
+    "boxes": [
+      {
+        "input_path": "/tmp/megha/PDF-Extract-Kit/Presentation/layout_pap/sp_0440/sp_0440_page_6.png",
+        "cls_id": 14,
+        "label": "algorithm",
+        "score": 0.9128726720809937,
+        "coordinate": [
+          438.0790100097656,
+          300.30706787109375,
+          2098.762939453125,
+          1044.6199951171875
+        ],
+        "text": "gorithm 2 HEAVY-OFUL\nRequire: Number of total rounds T, confidence level \u03b4, regularization parameter \u03bb, \u03c3min, parai\nfor adptive Huber regression c0, c1, T0, confidence radius \u03b2t.\n1: \u03ba = d log(1 +\nTL 2\n), C0 = B(B), H0 = \u03bbI.\nd\u03bb\u03c3\n2\nmin\nfor t = 1, . . . , T do\nObserve Dt.\nSet (\u03c6t, \u00b7) = argmax\u03c6Dt,\u03b8t\u22121 |\u03c6, \u03b8j.\nPlay \u03c6t and observe Rt, \u03bdt.\n\u2225t k H\u22121\nSet \u03c3t = max { \u03bdt, \u03c3min,\n\u22121\n\u221aLB\n||t||\nc0\n\n\u2212 1\n(2\u03ba)\n\u2212 1\n/1+w2\nt 21+e) with wt = ||\u03c6t/\u03c3 k Hi\n1\u2212\nSet T = T0\n\u22121\nwt\nUpdate Ht = Ht\u22121 + \u03c3\u22122\u03c6t\u03c6T .\n\u22121\nSolve for \u03b8t by Algorithm 1 and set Ct = {\u03b8  Rd|\u03b8 \u2212 \u03b8t | Ht \u2264 \u03b2t }.",
+        "id": "sp_0440_page_6_1",
+        "seg_type": "algo"
+      }
+    ]
+  },
+  {
+    "input_path": "/tmp/megha/PDF-Extract-Kit/Presentation/layout_pap/sp_0440/sp_0440_page_8.png",
+    "page_index": null,
+    "boxes": [
+      {
+        "input_path": "/tmp/megha/PDF-Extract-Kit/Presentation/layout_pap/sp_0440/sp_0440_page_8.png",
+        "cls_id": 14,
+        "label": "algorithm",
+        "score": 0.9540207386016846,
+        "coordinate": [
+          442.12579345703125,
+          300.1947937011719,
+          2103.11474609375,
+          1922.5133056640625
+        ],
+        "text": "Require: Number of episodes K, confidence level \u03b4, regularization parameter \u03bbR, \u03bbV , Vmin, O\nconfidence radius \u03b2Re , \u03b2o, \u03b2R, \u03b2V .\n1: \u03ba = dlog(1 +\nK\n).\nd\u03bbR\u03bd2\nmin\n: \u03b80,h = w0,h = w0,h = 0, H0,h = \u03bbRI, \u03a30,h = \u03bbV I, UPDATE = TRUE.\n: for k = 1, . . . , K do\nV H+1(\u00b7) = V H +1 (\u00b7) = 0.\nfor h = H, . . . , 1 do\nCompute \u03b8k\u22121,h, wk\u22121,h and wk\u22121,h via (5.1) and (5.8).\nif UPDATE then\nQh(, \u00b7) = h\u03c6(\u00b7, \u00b7), \u03b8k\u22121,h + wk\u22121,h\u03bb + \u03b2R,k\u22121\u2225|\u03c6(\u00b7, \u00b7)H\u221211\n+ \u03b2v\u2225|\u03c6(\u2234,\u00b7)||\n\u22121\n\u2211\nk\u22121\nk\u22121,h\nQh(, \u00b7) = h\u03c6(\u00b7, \u00b7), \u03b8k\u22121,h + k\u22121,h\u03bb \u2212 \u03b2R,k\u22121\u2225|\u03c6(, \u00b7)\u2225Hk\n\u2212 \u03b2v\u2225\u03c6(., \u00b7)||\n\u22121\n\u22121\nk\u22121,h\nQh(, \u00b7) = min{Qh(, \u00b7, Qk\u22121(, \u00b7), H}, Qh(, \u00b7) = max{Qh(, \u00b7), Qk\u22121(, \u00b7), 0}.\nSet klast = k.\nelse\nQh(, \u00b7) = Qk\u22121(, \u00b7, Qh(, \u00b7) = Qk\u22121(\u00b7, \u00b7).\nend if\nV k(\u00b7) = maxa Qh(, a), V k(\u00b7) = maxa h(\u00b7, a), \u03c0k(\u00b7) = argmaxa Qh(, a).\nend for\nObserve initial state Sk,1.\nfor h = 1, . . . , H do\nSet \u03bdk,h and \u03c3k,h according to (5.4) and (5.9) respectively.\n/1+\u03c9\n2\n1\u2212\n1-\u2032\nSet Tk,h = T0\nk,h\nk 2(1+)\n, \u03c4k,h = \u03c40\nWk,h\nWk,h\n\u03c6k,h\u03c6t,h.\nUpdate Hk,h = Hk\u22121,h +\n1\n\u03c6k,h\u03c6k,h and \u03a3k,h = \u03a3k\u22121,h +\n1\n2\nk,h\nend for\nif \u2203h\u2032  [H] such that det(Hk,h\u2032) \u2265 2 det(Hklast,h\u2032) or det(\u2211k, h\u2032) \u2265 2 det(\u2211klast,h\u2032) th\nSet UPDATE = TRUE.\nelse\nSet UPDATE = FALSE.\nend if",
+        "id": "sp_0440_page_8_1",
+        "seg_type": "algo"
+      }
+    ]
+  }
+]

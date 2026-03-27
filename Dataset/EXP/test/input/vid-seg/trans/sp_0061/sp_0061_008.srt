@@ -1,0 +1,52 @@
+1
+00:00:00,031 --> 00:00:20,673
+architecture search in that, so not only can you predict good architectures, what you can do is you can actually predict which architectures are good, and then you can use that prediction to get new, to basically input this into your neural architecture search to inform it.
+
+2
+00:00:21,034 --> 00:00:26,680
+So instead of the neural architecture search having to evaluate all of the candidates that it produces,
+
+3
+00:00:26,660 --> 00:00:35,748
+It only has to now evaluate the very small subset of candidates that the synthetic petri dish training deems most worthy of being evaluated.
+
+4
+00:00:36,149 --> 00:00:48,100
+In this case here, instead of evaluating all of the things here, it would limit itself to whatever the synthetic petri dish says are the highest performing ones.
+
+5
+00:00:48,580 --> 00:00:55,907
+Because if the synthetic petri dish is any good, then it will give accurate predictions of how they're performing.
+
+6
+00:00:55,887 --> 00:00:58,269
+And then that can go in multiple rounds.
+
+7
+00:00:58,309 --> 00:01:07,238
+So the architecture search can come up with new things that it thinks are better through an evolutionary mutation algorithm.
+
+8
+00:01:07,478 --> 00:01:17,308
+The Petri dish can evaluate them in the synthetic way and then suggest the 10 candidates to evaluate on the full test set.
+
+9
+00:01:17,748 --> 00:01:22,172
+And that way you don't have to evaluate all the 1,000 candidates.
+
+10
+00:01:23,313 --> 00:01:23,674
+All right?
+
+11
+00:01:24,054 --> 00:01:24,915
+All right.
+
+12
+00:01:24,895 --> 00:01:25,400
+Cool.
+
+13
+00:01:25,743 --> 00:01:30,045
+They do this for this MNIST and they also do it for
+

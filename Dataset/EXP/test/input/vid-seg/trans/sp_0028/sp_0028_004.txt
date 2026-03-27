@@ -1,0 +1,172 @@
+Okay, so in a bit of more formal setting, what you'll have in reinforcement learning are these rewards, right?
+So at each time step, you perform an action, you're in a state.
+So we said you get back an observation and we call the observation the state.
+Now, these two things aren't a, sorry, these two things aren't entirely the same thing.
+So the observation is what you get back directly from the environment.
+And then the state, it can be something more, like if you remember something from the last observation, that can be part of your state.
+The state is basically what you base your decision on, and the observation is the pure thing you get from the environment.
+Now, in this case, they do some processing, but essentially will will regard them as the same thing.
+So the state is what you see of the environment.
+Then in each of these steps, you perform an action, we'll call that this a thing right here.
+And in each step, you also get a reward for the last action that you took.
+And the reward is going to be lowercase r.
+Now, what you want to do formally is you want to maximize the reward that you get in time t. Sorry, that's the reward you get at time t prime.
+What you want to do if you play an episode, you're here and you perform an action, you go here, you perform an action, you go here, you perform an action, you go here, and then your episode is done.
+For each action, you'll get a reward, reward one, reward two, reward three.
+What you want to do is you want to maximize the total, the sum of all of these rewards.
+So over the course of your episode, you want to collect as much reward as you can.
+There is a discount factor right here, which is sort of saying that rewards that are very far in the future, they're not as important as rewards right now.
+However, you can set this to one if you want.
+So you see, you want to maximize the future, the sum of future rewards, which is this thing right here.
+Okay.
+So how do you, how do you do this?
+There are two main methods in reinforcement learning.
+The, the first one is called a policy gradient method.
+And very briefly, a policy we'll call it pi takes in a state s, and it gives you back an action.
+Okay.
+And I mean, this is the same for Q learning, but in a policy gradient method, which is not this paper, but is like a little bit easier to understand, I believe, will simply say, well, we'll simply train an neural network to do that.
+Right.
+And there is this, there's this policy gradient.
+trick where you can back propagate even though the reward isn't back propagatable and so on.
+You can simply say we'll learn a neural network to give us the action that's best, right?
+So we'll have a neural network, the state goes in neural network, and then we'll just have as many outputs as there are actions like action one, action two, action three, action four.
+and we'll treat it as a classification problem, right?
+So you simply train the network to pick the action that is best in this case, and irregardless of how you know which action is best right now.
+In queue learning, you do something else.
+Namely, you train this thing called the queue function.
+The Q function is a function that takes in a state and an action, and it gives you what the reward is going to be in the future if you are in this state and perform this action.
+Okay, so you are in a given state, right?
+And you have three actions at your proposal.
+Okay, you have action one, action two, and action three, and you are in state s. You, what you would do is you would call the q function, if you had a perfect q function, it could give you the reward.
+you would call the Q function three times.
+You would call the Q function first with A1, say what's Q of S and A1.
+And the Q function would maybe say that's seven.
+And here you say what's the Q function of S and A2 and it would maybe say that's four.
+And here the same thing for A3 and it maybe say that's one.
+Then you would know, aha, if I take action one, my reward from not only the reward for this step, but my reward from here on until the end of the episode is going to be seven.
+That is if you had a perfect Q function.
+Now the Q function is always, of course, conditioned on a policy right here.
+So there is what it basically says if I take action a one right now, and after that, I follow policy pi, then I'm going to get the reward of seven.
+It's a bit of a
+multi-layered reasoning approach.
+But ultimately, you don't have to worry much about this being conditioned on a policy.
+Ultimately, the Q function says, if you take this action right now, what will the reward be for the entire rest of the episode?
+So if you had a perfect Q function, you could simply ask it about all the actions as we did here, and then pick the action with the highest number.
+And then you're guaranteed because, you know, there could be a situation where, you know, your reward in a single step is going to be very high here, like a hundred and here zero, zero.
+Okay.
+And you would be tempted to take that action right here.
+But after that, it's just going to be zero, zero, zero.
+So your total reward is going to be 100.
+But here, even though it's zero now, it could be that after that it's 50, and then 40, and then 2000, and so on.
+So your total reward is going to be much, much more.
+If you were simply to train a function that tell you what's the reward in the next step,
+then you would lose because that function would not be able to look ahead sufficiently.
+What we're trying to do with the Q function is we're trying to predict to train a function that will tell us not only what's the reward in the next step, but what is the reward in all the steps to come from here, right?
+Of course, conditioned on all the decisions we make in the future, but
+That's this policy pi right here.
+I hope it's somewhat clear what a Q function is.
+Interestingly, we can take the same network architecture for this.
+So what you would do naively is you would build a neural network where you say, okay, a Q function takes a state and an action.
+So I'll put those into a neural network.
+And then out comes this estimation of the reward, which we usually call Q. So the value Q is this estimation of the future reward if you take this action in this state.
+Now, the disadvantage here is that we have to call this neural network once for each action in every state that we're in.
+So that's like, if there's 10 actions, that's like 10 forward passes.
+What we could do is we could simply take the same neural network we had for our initial or very initial policy method, and we use that and we simply input state and we'll train it to output the queue for action one and the queue, sorry for the state s and action one, the queue for the state s and action two,
+and so on.
+So there is going to be this kind of shared encoder.
+And then that's, it's basically going to encode the state into a latent space and then classify for each of the actions, how valuable this particular action would be in that state.
+So the, this here is called a deep queue network.
+It's a network that takes in a state and gives you back the Q value.
+Now the problem right here is we, here we said if we had a perfect Q function, a Q function that was always right, then the problem would be solved because we could just ask the Q function what to do.
+Of course, we don't have a perfect Q function, we need to train it.
+So how do we train a Q function?
+And the answer is surprisingly simple.
+So what you want to do is you are in this state and you want to estimate what your Q value is.
+You want to train your Q network.
+What you can do is you can simply play an episode according to the Q function you have.
+And you'll maybe play this episode right here, right?
+It's like, you go here and you collect all of this reward.
+So this entire thing now goes into your dataset.
+And then you have a sample, you know, I was here in this state S, I took action one, and I got in total 2,090 as a reward.
+So that is going to be your labeled sample, right?
+Your labeled sample is going to be S, I was in S, I did A1, and now I then got 2,090 reward.
+Cool.
+And in the next episode, you're going on playing and you maybe go down here and then you get a next training example.
+I was in state S. So you keep restarting the episode so you can get into the same state multiple times.
+I performed A3 and I got only 100 reward.
+So that's another training sample.
+So these training samples right here, you can use to train your Q function.
+This is called online reinforcement learning.
+You play the game at the same time as you train your neural network, and you use that improved neural network to play more games.
+And with time, there is this
+well known, there are theorems around Q learning that say if you do that iteratively, then your Q function will converge to the optimal Q functions under some assumptions, which of course not given if this is a deep neural network, but you know, who cares?
+Yeah.
+So formally, your Q function, as you can see right here, is going to be, there is this Bellman recurrence kind of recurrence property of the Q function.
+So if I am, if I am in a state S, and I'm wondering what is my Q
+of my state S and an action A. And I said with respect to a policy, which the star policy is going to be the policy where we always select the highest Q function.
+So we'll basically say, we're in state S, we select action A, and after that, we'll just always select whatever the highest scoring action is, right?
+Like right now, action A might not be the highest scoring, but we'll take A right now.
+And after that, the highest scoring, that's Q star.
+It's a queue function conditioned on the policy where after we perform the first action, which is a will take always the best one according to the queue function.
+right?
+That's right here.
+So we're in state s, we perform a, and s prime is going to be the state that we are going to.
+So we're in s, we perform a, we get to s prime.
+So in s prime, which is a function of your environment, we're always going to take the maximum action.
+And r is going to be the reward of the next step.
+So you can see this recurrence equation right here that q star can be framed in terms of q star.
+So the q star of this state is going to depend on the q star of the next state and you can use that fact and you can you know prove that pretty we've already done it basically you can use that fact to now train your neural network.
+So your neural network loss function is going to be the following.
+It's going to say, look, this here is the Q function for state S and action A. And this is my neural network telling me how much that's worth.
+And this is the label, right?
+So here you have to think in terms of backclassic supervised learning.
+This here is going to be your f of x. And this here is going to be your y. And we will take the squared loss between the two, except your input x is going to be which state am I in and which action am I taking.
+And your label is going to be bootstrapped by your own q function.
+So your label is going to be
+The reward you got, remember this comes from a replay buffer.
+We already played that game and we already know what happened after we performed this action.
+And what happened is we got this reward and we got into this state.
+So we can simply ask our own queue function again.
+What's the best action to take in this state and what reward would we get?
+And then we have our label, right?
+So our label Y is going to be.
+Um, yeah, I was, I was, I was pretty confused when I learned this the first time.
+So I'm going to assume some of you are confused as well.
+So your Q function is supposed to tell you what's going to be the reward from here until the end of the episode.
+Okay.
+that you can decompose in the reward that you get from this very next action plus the sum from then, so t plus one until the end of the episode.
+Okay.
+So, uh, t prime.
+So that's t prime equals t plus one.
+All right.
+So it's pretty simple.
+The total reward from now until the end, you can decompose in the reward now plus the reward after that until the end.
+Now, this here, we know, we've played the episode, we know what happened.
+This here, we can simply ask our Q function again, because we also know what state we got into.
+And this, as you can see, is very much this, but just one step later.
+So we can simply ask our own Q function, which might be imperfect, right?
+But it's certainly a good guess.
+We say, okay,
+This reward from now should be equal to the reward we got plus whatever reward we get later.
+And yes, you might be astounded by the fact that we are using our own neural network, though, be with the parameters one time step ago in order to produce our label.
+But that is exactly what these Q learning theorems are about.
+They basically say under some assumptions, if you do this,
+and you iterate, then this will converge to the optimal Q function.
+So as you can see right here, this is the gradient of the loss.
+It's astounding that back then they still wrote down the gradient of the loss, like almost no one does this now.
+You just say, put this into TensorFlow and go.
+Yeah, so they make some remarks here, namely that this algorithm is model free, right?
+There's no model of the environment.
+You simply learn a function that for each state tells you the key value for each action.
+That's
+That's all everything, everything that all the logic needs to be within the neural network itself.
+So that's pretty cool.
+And they say it's also off policy.
+It learns about the greedy strategy while following a behavior distribution that ensures adequate exploration of the state space.
+So while training, they do this epsilon greedy strategy that follows the greedy strategy, which is where you always take the maximum with one minus epsilon, selects a random action with probability epsilon.
+So while you do your experience, you follow your Q function, you always ask the Q function, what's the best thing to do right here?
+But, you know, that gets you into too much of exploitation.
+So in epsilon amount of time,
+you want to do a bit of exploration and just take a random action.
+All right, so that's basically the algorithm.
+So the algorithm is right here, and they have

@@ -1,0 +1,148 @@
+1
+00:00:00,031 --> 00:00:05,419
+for poker, because that's what they discuss in the broader impact statement.
+
+2
+00:00:05,439 --> 00:00:08,584
+So let's quickly look at broader impact, then we're done.
+
+3
+00:00:09,406 --> 00:00:17,398
+So just to say I love this broader impact statement, it is, it describes like
+
+4
+00:00:17,378 --> 00:00:18,839
+it praises the paper.
+
+5
+00:00:18,879 --> 00:00:21,422
+So it's kind of more advertisement for the paper.
+
+6
+00:00:22,403 --> 00:00:27,988
+It does almost like no harm to the paper itself, to its reputation.
+
+7
+00:00:29,029 --> 00:00:30,610
+It is actually accurate.
+
+8
+00:00:30,670 --> 00:00:42,942
+So this broader impact statement actually makes tangible predictions and it doesn't go beyond the, or it mostly doesn't go beyond the tangible things you can say about this algorithm.
+
+9
+00:00:43,302 --> 00:00:44,483
+And it actually
+
+10
+00:00:45,087 --> 00:00:49,236
+has as a conclusion an action that they take.
+
+11
+00:00:49,777 --> 00:00:58,156
+So, and further, it is nothing like what the original specification of broader impact statement says.
+
+12
+00:00:58,517 --> 00:01:00,581
+And that makes me happy.
+
+13
+00:01:01,002 --> 00:01:03,568
+So good job on this one.
+
+14
+00:01:04,797 --> 00:01:19,883
+We believe Rebel is a major step towards general agreement finding algorithm, yada yada yada, so they say if this is good because many things are, sorry, sort of these kind of games, if you can extend it to multi-agent and so on.
+
+15
+00:01:19,903 --> 00:01:24,171
+So this is the technology good section, but then the bad section is interesting.
+
+16
+00:01:24,531 --> 00:01:29,640
+The most immediate risk posed by this work is its potential for cheating in recreational games such as poker.
+
+17
+00:01:29,620 --> 00:01:40,865
+While a algorithm already exists, they say why they're better, why this particular algorithm could be used for cheating, where the others can't be done so easily.
+
+18
+00:01:41,226 --> 00:01:46,498
+By the way, this algorithm, by nature of performing this search is over and over again.
+
+19
+00:01:46,478 --> 00:01:48,282
+It needs a lot of compute.
+
+20
+00:01:48,763 --> 00:01:50,086
+Like it needs a lot of compute.
+
+21
+00:01:50,106 --> 00:01:51,309
+The learning isn't the problem.
+
+22
+00:01:51,349 --> 00:01:55,337
+The problem is performing these searches over and over and over again.
+
+23
+00:01:55,378 --> 00:01:59,466
+Yeah, so it's not super easy to replicate.
+
+24
+00:01:59,507 --> 00:02:01,551
+Like don't try this at home.
+
+25
+00:02:02,071 --> 00:02:07,943
+However, if they were to release the pre-trained network, that would make it easy.
+
+26
+00:02:08,404 --> 00:02:14,076
+And they also say if they release the code, that would maybe make it easier to cheat if you can simply run.
+
+27
+00:02:14,136 --> 00:02:20,569
+Maybe you don't have the hardware, but given massive poker winnings, who knows.
+
+28
+00:02:21,477 --> 00:02:28,007
+Retraining the algorithms to account for arbitrary cheek size requires more computational as feasible in real time.
+
+29
+00:02:28,147 --> 00:02:29,509
+That's about the other algorithms.
+
+30
+00:02:29,830 --> 00:02:35,418
+However, Rebel can compute a policy for arbitrary stack size and arbitrary bet size in seconds.
+
+31
+00:02:35,839 --> 00:02:36,960
+So that's at inference time.
+
+32
+00:02:37,481 --> 00:02:41,607
+Partly for this reason, we have decided to not to release the code for poker.
+
+33
+00:02:42,048 --> 00:02:47,957
+We instead open-sourcer implementation for Liars Dice Recreational Game that is not played competitively by humans.
+
+34
+00:02:48,697 --> 00:02:54,246
+Okay, so it's a concrete prediction of the impact of this work.
+
+35
+00:02:55,107 --> 00:03:13,375
+It has a concrete action to kind of its conclusion, and it doesn't dabble in who knows if we now solve these two player imperfect information games, then surely in the future bombs will fly and stuff like this.
+
+36
+00:03:14,056 --> 00:03:16,560
+Yeah, good job on this again.
+
+37
+00:03:16,540 --> 00:03:20,037
+All right, so this was the overview of
+

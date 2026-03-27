@@ -1,0 +1,959 @@
+[
+  {
+    "id": "002",
+    "title": "sp_1265_002",
+    "filename": "Videos/sp_1265.mp4",
+    "paper_filename": "Papers/sp_1265.pdf",
+    "type": "slides",
+    "relevant_segments": [
+      {
+        "para_id": "p1",
+        "section_heading": "Abstract",
+        "text": "Large language models (LLMs) have demonstrated remarkable capabilities in various tasks. However, their suitability for domain-specific tasks, is limited due to their immense scale at deployment, susceptibility to misinformation, and more importantly, high data annotation costs. We propose a novel Interactive Multi-Fidelity Learning (IMFL) framework for the cost-effective development of small domainspecific LMs under limited annotation budgets. Our approach formulates the domain-specific fine-tuning process as a multi-fidelity learning problem, focusing on identifying the optimal acquisition strategy that balances low-fidelity automatic LLM annotations and high-fidelity human annotations to maximize model performance. We further propose an exploration-exploitation query strategy that enhances annotation diversity and informativeness, incorporating two innovative designs: 1) prompt retrieval that selects in-context examples from human-annotated samples to improve LLM annotation, and 2) variable batch size that controls the order for choosing each fidelity to facilitate knowledge distillation, ultimately enhancing annotation quality. Extensive experiments on financial and medical tasks demonstrate that IMFL achieves superior performance compared with single fidelity annotations. Given a limited budget of human annotation, IMFL significantly outperforms the 3\u21e5 human annotation baselines in all four tasks and achieves very close performance as 5\u21e5 human annotation on two of the tasks. These promising results suggest that the high human annotation costs in domain-specific tasks can be significantly reduced by employing IMFL, which utilizes fewer human annotations, supplemented with cheaper and faster LLM (e.g., GPT-3.5) annotations to achieve comparable performance.",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p2",
+        "section_heading": "1 Introduction",
+        "text": "Large language models (LLMs) like GPT-3/ChatGPT/GPT-4 [4, 47, 5] have lately attracted great interest from both academia and industry due to their impressive in-context learning (ICL) abilities. However, the current state-of-the-art LLMs have since quickly grown from hundreds of billions [7] to even a trillion [20] parameters. Models of this scale require specialized hardware, massive-scale training data, and extensive computational power, which are inaccessible for most product or research teams. In addition, the generalizability of LLMs is predominantly decided by the scope of the underlying pre-training data. In fact, LLMs do not perform well out of the box in many real-world domains where specialized knowledge beyond the standard fields of pre-training is required (i.e., domain shifts), such as healthcare [26] and finance [46].",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p3",
+        "section_heading": "1 Introduction",
+        "text": "As an alternative to general-purpose LLMs, practitioners oftentimes find small domain-specific language models (LMs) to be more favorable as they require less training data and are faster to",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p4",
+        "section_heading": "1 Introduction",
+        "text": "compute, leading to faster development cycles and lower operating costs [55, 12]. A common practice of developing such models is through the classic pre-training and then fine-tuning paradigm. Unfortunately, to achieve comparable performance as LLMs, tuning small LMs requires high-quality manual annotations on target domain data, which in many fields requires extensive human effort and expert knowledge, making supervised fine-tuning very expensive.",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p5",
+        "section_heading": "1 Introduction",
+        "text": "One promising approach to alleviate human annotation efforts is to leverage LLMs as knowledge bases for automatically annotating new data [43, 45]. Unfortunately, such an approach is susceptible to the misinformation [8, 39, 32, 2] of LLMs through hallucination [16, 53, 48, 30, 52], which risks generating unreliable or falsified labels and will, in turn, demolish the model\u2019s utility for high-stakes applications like healthcare and finance, where the truth is of utmost importance. As a result, the key challenge at hand is how to effectively gather sufficient high-quality data given limited budgets on human annotation, which is a critical component in fine-tuning domain-specific LMs.",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p6",
+        "section_heading": "1 Introduction",
+        "text": "In this paper, we present a novel framework, named by IMFL, for achieving cost-effective development of domain-specific LMs, as illustrated in Fig. 1. Our approach capitalizes on the insight that different data samples inherently exhibit different levels of hardness for learning [6, 1]. Therefore, it is dispensable to request human annotation for every sample. By discerning each sample\u2019s hardness level, we can delegate the majority of the annotation tasks to automatic annotation tools such as LLMs while exclusively assigning a limited number of highly uncertain samples to human annotators, thereby reducing human effort significantly while still maintaining high annotation quality.",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p7",
+        "section_heading": "1 Introduction",
+        "text": "To improve cost efficiency, we formulate the domain-specific fine-tuning process as an interactive multi-fidelity learning problem. We deem LLMs and humans to be two sources of annotation with distinct fidelities, and aim to determine the optimal acquisition strategy that balances low-fidelity LLM-generated annotations and high-fidelity human annotations to maximize model performance under limited annotation budgets. We thus introduce an exploration-exploitation query strategy, wherein human annotations emphasize exploitation geared toward maximizing informativeness while LLM annotations concentrate on exploration to foster diversity and improve representatives.",
+        "seg_type": "par"
+      },
+      {
+        "caption": "Table 1: A qualitative comparison of human annotation, LLM annotation, and IMFL .",
+        "captionBoundary": {
+          "x1": 291.0929870605469,
+          "x2": 505.65032958984375,
+          "y1": 382.2467041015625,
+          "y2": 399.4670104980469
+        },
+        "figType": "Table",
+        "imageText": [
+          "Performance",
+          "Very",
+          "High",
+          "Low",
+          "High/Very",
+          "High",
+          "Quality",
+          "Very",
+          "High",
+          "Low",
+          "High",
+          "Ef\ufb01ciency",
+          "Low",
+          "Very",
+          "High",
+          "High",
+          "Cost",
+          "Saving",
+          "Low",
+          "Very",
+          "High",
+          "High",
+          "Human",
+          "LLM",
+          "IMFL"
+        ],
+        "name": "1",
+        "page": 1,
+        "regionBoundary": {
+          "x1": 292.8,
+          "x2": 502.08,
+          "y1": 409.44,
+          "y2": 473.28
+        },
+        "renderDpi": 150,
+        "renderURL": "/Users/meghamariam/PROJECTS/PROJ1_Dataset/PROJ1_Crossmodal-Traversal/DATASET/Presentation/pap-seg/fig/sp_1265/sp_1265-Table1-1.png",
+        "id": "sp_1265-Table1-1",
+        "seg_type": "tab"
+      },
+      {
+        "para_id": "p11",
+        "section_heading": "2 Interactive Multi-fidelity Learning",
+        "text": "We propose IMFL that builds on two key insights: (1) leveraging a substantial amount of low-fidelity annotations generated by LLMs to compensate for the insufficiency of high-fidelity human annotations during fine-tuning, and (2) utilizing high-fidelity human annotations as supervision signals to distill knowledge from LLMs while simultaneously enhancing their output annotation quality through incontext learning. Essentially, our approach, IMFL, can be regarded as a synergy between fine-tuning and knowledge distillation under sparse human supervision.",
+        "seg_type": "par"
+      }
+    ]
+  },
+  {
+    "id": "003",
+    "title": "sp_1265_003",
+    "filename": "Videos/sp_1265.mp4",
+    "paper_filename": "Papers/sp_1265.pdf",
+    "type": "slides",
+    "relevant_segments": [
+      {
+        "para_id": "p6",
+        "section_heading": "1 Introduction",
+        "text": "In this paper, we present a novel framework, named by IMFL, for achieving cost-effective development of domain-specific LMs, as illustrated in Fig. 1. Our approach capitalizes on the insight that different data samples inherently exhibit different levels of hardness for learning [6, 1]. Therefore, it is dispensable to request human annotation for every sample. By discerning each sample\u2019s hardness level, we can delegate the majority of the annotation tasks to automatic annotation tools such as LLMs while exclusively assigning a limited number of highly uncertain samples to human annotators, thereby reducing human effort significantly while still maintaining high annotation quality.",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p41",
+        "section_heading": "3.3 Main results",
+        "text": "In this section, we compare IMFL with single fidelity annotations to validate the effectiveness of the proposed multi-fidelity paradigm. Fig. 4 compares IMFL with using only human annotations, where 1\u21e5 Human, 3\u21e5 Human, and 5\u21e5 Human, represents the results obtained by fine-tuning on 200, 600, and 1000 human annotations, respectively. A detailed version of the main results are shown in Appendix C.1). Note that 5\u21e5 Human (1000 human annotations) can be seen as the performance upper bound of IMFL (200 Human + 800 GPT-3.5) if all budget is human annotation. From the results, we can clearly see that IMFL significantly outperforms the 3\u21e5 human annotation baselines in all four tasks. Particularly, IMFL achieves very close performance as 5\u21e5 human annotation on both Headline and PubMedQA datasets with only marginal differences (0.83% and 1.32% absolute loss respectively). This result indicates that the high human annotation cost in domain-specific tasks can be greatly reduced by employing IMFL, which utilizes fewer human annotations combined with cheaper and faster GPT-3.5 annotations to achieve similar performance.",
+        "seg_type": "par"
+      },
+      {
+        "caption": "Figure 1: (a) Proposed Interactive Multi-Fidelity Learning Framework (IMFL). IMFL aims at solving the best acquisition strategy that balances between low-fidelity automatic LLM annotations and high-fidelity human annotations to maximize model performance given limited annotation budgets. (b) IMFL significantly outperforms the 3\u21e5 human annotation baselines in all four tasks and is very close to 5\u21e5 upper bound in the Headline dataset (showed). This result indicates that the high human annotation cost in domain-specific tasks can be greatly reduced by employing IMFL, which utilizes fewer human annotations combined with cheaper GPT-3.5 annotations to achieve competitive performance.",
+        "captionBoundary": {
+          "x1": 107.6709976196289,
+          "x2": 505.7450256347656,
+          "y1": 216.55966186523438,
+          "y2": 299.2349853515625
+        },
+        "figType": "Figure",
+        "imageText": [
+          "(1X",
+          "Human",
+          "+",
+          "4X",
+          "GPT3.5)",
+          "with",
+          "human",
+          "annotators",
+          "(a)",
+          "Overview",
+          "of",
+          "IMFL",
+          "framework",
+          "(b)",
+          "Compare",
+          "IMFL",
+          "Assign",
+          "Prompt",
+          "retrieval",
+          "In-context",
+          "learning",
+          "Interactive",
+          "fine-tuning",
+          "Limited",
+          "annotation",
+          "budget",
+          "data",
+          "Low-fidelity",
+          "LLM-annotated",
+          "data",
+          "High-fidelity",
+          "human-annotated",
+          "LLM",
+          "annotator",
+          "(e.g.,",
+          "GPT-3.5)",
+          "Human",
+          "annotator",
+          "Query",
+          "Uncertainty",
+          "Score",
+          "Acquired",
+          "samples",
+          "Unannotated",
+          "data",
+          "pool",
+          "Target",
+          "LM"
+        ],
+        "name": "1",
+        "page": 1,
+        "regionBoundary": {
+          "x1": 109.92,
+          "x2": 502.08,
+          "y1": 72.96,
+          "y2": 207.35999999999999
+        },
+        "renderDpi": 150,
+        "renderURL": "/Users/meghamariam/PROJECTS/PROJ1_Dataset/PROJ1_Crossmodal-Traversal/DATASET/Presentation/pap-seg/fig/sp_1265/sp_1265-Figure1-1.png",
+        "id": "sp_1265-Figure1-1",
+        "seg_type": "fig"
+      }
+    ]
+  },
+  {
+    "id": "004",
+    "title": "sp_1265_004",
+    "filename": "Videos/sp_1265.mp4",
+    "paper_filename": "Papers/sp_1265.pdf",
+    "type": "slides",
+    "relevant_segments": [
+      {
+        "para_id": "p12",
+        "section_heading": "2.1 Problem Formulation",
+        "text": "Given a total annotation budget B and a computational cost C (e.g., costs for fine-tuning, inference, and query), we aim to fine-tune a small LM f(x; \u2713\u21e4) : X ! Y with pre-trained parameters \u2713\u21e4 on a downstream task by annotating samples from an unannotated data pool U = {xi}Ui=1 to constitute the annotated sample set A (|A|  B and initially A = ?) such that its performance is maximized. Note that in our multi-fidelity setting, the annotated set contains a human-annotated subset AH and an LLM-annotated subset AG, so A = AH [AG. Similarly, the total annotation budget is composed of human annotation budget BH and LLM annotation budget BG (BH is typically much smaller than BG), i.e., B = BH + BG. To solve for the best annotation strategy to maximize annotation and computation efficiency, we pose the annotation acquisition process as a multi-fidelity learning problem with interactions allowed for R rounds. In the r-th round (1  r  R), we query a set of instances Qr and annotate acquired samples Ar from the unannotated pool to add annotation, i.e., U = U \\ Ar and fine-tune the target model f on Ar to update \u2713(r). The goal is to minimize the empirical risk R(f) of the final LM f(x; \u2713(R)) on the downstream task, subject to preset annotation budget and computational cost constraints.",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p13",
+        "section_heading": "2.2 Multi-fidelity Learning Framework",
+        "text": "Initialization. We initialize the multi-fidelity learning loop by randomly selecting a small set of samples A0",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p17",
+        "section_heading": "2.2 Multi-fidelity Learning Framework",
+        "text": "Interactive fine-tuning. After model initialization, we begin query samples from the unannotated pool U0 = U \\ A0",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p33",
+        "section_heading": "2.2 Multi-fidelity Learning Framework",
+        "text": "Termination. The multi-fidelity learning process is stopped if either of the two stopping criteria is satisfied: (1) Annotation budget B: if the annotation budget after R rounds is greater than the total budget limit, i.e., BH + BG B, we terminate the interactive process. (2) Computational cost C: Compared with inference and query calculation cost, the computation cost of each fine-tuning round Cft is typically much more expensive and we thus stop the fine-tuning process if R\u21e5 Cft C. Finally, we return the fine-tuned target LM f(x; \u2713(r)) and annotated sample set A. Algorithm 1 illustrates the step-by-step workflow of our IMFL framework.",
+        "seg_type": "par"
+      },
+      {
+        "box": [
+          346.3458557128906,
+          1166.68994140625,
+          878.2921752929688,
+          1232.8626708984375
+        ],
+        "text": [
+          "\\theta ^ { ( 0 ) } = \\underset { \\theta ^ { * } } { \\arg \\operatorname* { m i n } } \\, \\frac { 1 } { | \\mathcal { A } _ { H } ^ { 0 } | } \\sum _ { ( \\substack { \\alpha _ { i } , y _ { i } ) \\in \\mathcal { A } _ { H } ^ { 0 } } } \\mathcal { L } \\left( f ( x _ { i } ; \\theta ^ { * } ) , y _ { i } \\right) , \\quad i = 1 , . . . , n _ { s }"
+        ],
+        "page": "sp_1265_page_0003",
+        "id": "sp_1265_page_0003-1",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          267.08013916015625,
+          296.15557861328125,
+          955.711181640625,
+          362.12994384765625
+        ],
+        "text": [
+          "\\mathcal { L } _ { t o t a l } = \\frac { 1 } { \\left| \\mathcal { A } _ { H } ^ { r } \\right| } \\sum _ { \\left( \\mathbf { x } _ { i } , y _ { i } \\right) \\in \\mathcal { A } _ { H } ^ { r } } \\mathcal { L } \\left( f ( \\mathbf { x } _ { i } ; \\theta ^ { ( r ) } ) , y _ { i } \\right) + \\frac { 1 } { \\left| \\mathcal { A } _ { G } ^ { r } \\right| } \\sum _ { \\left( \\mathbf { x } _ { j } , y _ { j } \\right) \\in \\mathcal { A } _ { G } ^ { r } } \\mathcal { L } \\left( f ( \\mathbf { x } _ { j } ; \\theta ^ { ( r ) } ) , y _ { j } \\right)"
+        ],
+        "page": "sp_1265_page_0004",
+        "id": "sp_1265_page_0004-2",
+        "seg_type": "eq"
+      }
+    ]
+  },
+  {
+    "id": "005",
+    "title": "sp_1265_005",
+    "filename": "Videos/sp_1265.mp4",
+    "paper_filename": "Papers/sp_1265.pdf",
+    "type": "slides",
+    "relevant_segments": [
+      {
+        "input_path": "/tmp/megha/PDF-Extract-Kit/Presentation/layout_pap/sp_1265/sp_1265_page_5.png",
+        "cls_id": 14,
+        "label": "algorithm",
+        "score": 0.9176582098007202,
+        "coordinate": [
+          444.16668701171875,
+          346.77777099609375,
+          1326.1522216796875,
+          1071.69287109375
+        ],
+        "text": "1: Require: unannotated data pool U, target LM model\nquery strategy S, annotation budget B\n2: Initialization: A = , \u03b8 = \u03b8(0)on A\n2: for rounds r = 1, ..., R do\n.\nUt \u2190 Extract from U by random sub-sampling\n[QH , QG] \u2190 Acquire [BH, BG] samples by quer\n.\nfunction S on model f , data Ur\nAH \u2190 Annotate acquired samples QH by human\nAH = AH U AH\nExecute prompt retrieval from AH\nAG \u2190 Annotate acquired samples QG by LLMs\nAr = AH U AG\nU=U\\Ar\nf(xi; \u03b8(r)) \u2190 Fine-tune f (xi; \u03b8(r)) on Ar\nturn f (x: \u03b8(r)) 4",
+        "id": "sp_1265_page_5_1",
+        "seg_type": "algo"
+      },
+      {
+        "para_id": "p25",
+        "section_heading": "2.2 Multi-fidelity Learning Framework",
+        "text": "Design 1 - In-context learning with similarity-based prompt retrieval. According to the annotation budget Br",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p28",
+        "section_heading": "2.2 Multi-fidelity Learning Framework",
+        "text": "Design 2 - Variable batch-size query. We propose a variable batch-size query strategy that puts more human budgets towards the initial steps of the learning process to annotate the most uncertain instances and gradually decrease the batch sizes until the total budget is reached, as illustrated in",
+        "seg_type": "par"
+      },
+      {
+        "caption": "Figure 2: Illustration of interactive finetuning. Human annotations are first executed and the resulting annotated data are iteratively merged into the human annotation tool, which provides rich examples for prompt retrieval when calling LLM for annotation. The batch size for human annotation varies and gradually decreases as the round progresses.",
+        "captionBoundary": {
+          "x1": 325.4429931640625,
+          "x2": 505.6558837890625,
+          "y1": 170.92770385742188,
+          "y2": 253.60302734375
+        },
+        "figType": "Figure",
+        "imageText": [
+          "\u2026",
+          "\u2026",
+          "Human",
+          "annotation",
+          "pool",
+          "Human",
+          "annotation",
+          "LLM",
+          "annotation",
+          "Prompt",
+          "retrieval",
+          "Prompt",
+          "retrieval",
+          "Prompt",
+          "retrieval",
+          "1st",
+          "round",
+          "2nd",
+          "round",
+          "3rd",
+          "round",
+          "An",
+          "no",
+          "ta",
+          "tio",
+          "n",
+          "ba",
+          "tc",
+          "h",
+          "si",
+          "ze"
+        ],
+        "name": "2",
+        "page": 4,
+        "regionBoundary": {
+          "x1": 329.28,
+          "x2": 501.12,
+          "y1": 72.96,
+          "y2": 161.76
+        },
+        "renderDpi": 150,
+        "renderURL": "/Users/meghamariam/PROJECTS/PROJ1_Dataset/PROJ1_Crossmodal-Traversal/DATASET/Presentation/pap-seg/fig/sp_1265/sp_1265-Figure2-1.png",
+        "id": "sp_1265-Figure2-1",
+        "seg_type": "fig"
+      }
+    ]
+  },
+  {
+    "id": "006",
+    "title": "sp_1265_006",
+    "filename": "Videos/sp_1265.mp4",
+    "paper_filename": "Papers/sp_1265.pdf",
+    "type": "slides",
+    "relevant_segments": [
+      {
+        "caption": "Figure 3: Illustration of exploration-exploitation query strategy with core components and steps.",
+        "captionBoundary": {
+          "x1": 114.16600036621094,
+          "x2": 497.8356018066406,
+          "y1": 561.0567016601562,
+          "y2": 567.3679809570312
+        },
+        "figType": "Figure",
+        "imageText": [
+          "Select",
+          "cluster",
+          "centers",
+          "Embeddings",
+          "Ranking",
+          "HighLow",
+          "Update",
+          "human",
+          "annotated",
+          "pool",
+          "ICL",
+          "with",
+          "prompt",
+          "retrieval",
+          "Human",
+          "annotator",
+          "LLM",
+          "annotator",
+          "Exploitation",
+          "Uncertainty",
+          "score",
+          "Exploration",
+          "Unannotated",
+          "data",
+          "pool",
+          "k-means",
+          "clustering"
+        ],
+        "name": "3",
+        "page": 4,
+        "regionBoundary": {
+          "x1": 109.92,
+          "x2": 502.08,
+          "y1": 480.0,
+          "y2": 552.0
+        },
+        "renderDpi": 150,
+        "renderURL": "/Users/meghamariam/PROJECTS/PROJ1_Dataset/PROJ1_Crossmodal-Traversal/DATASET/Presentation/pap-seg/fig/sp_1265/sp_1265-Figure3-1.png",
+        "id": "sp_1265-Figure3-1",
+        "seg_type": "fig"
+      },
+      {
+        "box": [
+          424.78594970703125,
+          787.768798828125,
+          798.2642822265625,
+          835.6012573242188
+        ],
+        "text": [
+          "\\begin{array} { r } { \\pmb { x } _ { i } ^ { * } = \\underset { \\pmb { x } _ { i } } { \\arg \\operatorname* { m a x } } \\left[ 1 - p ( f ( \\pmb { x } _ { i } ; \\theta ^ { ( r ) } ) \\; | \\; \\pmb { x } _ { i } ; \\theta ^ { ( r ) } ) \\right] , } \\end{array}"
+        ],
+        "page": "sp_1265_page_0005",
+        "id": "sp_1265_page_0005-1",
+        "seg_type": "eq"
+      },
+      {
+        "para_id": "p34",
+        "section_heading": "2.3 Exploration-Exploitation Query Strategy",
+        "text": "Based on the multi-fidelity learning framework, we introduce an innovative query strategy. This approach harnesses human annotation for exploitation by maximizing informativeness through",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p35",
+        "section_heading": "2.3 Exploration-Exploitation Query Strategy",
+        "text": "uncertainty sampling, and LLM annotation for exploration by enhancing representativeness through diversity sampling. The core idea is a two-stage selection: executing 1) diversity sampling, e.g., selecting cluster centers to reduce intra-iteration redundancy, and 2) uncertainty sampling, e.g., selecting instances with the least confidence, to avoid inter-iteration redundancy.",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p36",
+        "section_heading": "2.3 Exploration-Exploitation Query Strategy",
+        "text": "which has shown to be simple and effective in a variety of settings, resulting in enforcing uncertainty exploitation [28, 42]. As discussed in Section 2.2, we then update the human-annotated pool AH which enables us to retrieve a few examples as in-context examples for the LLM annotator which can annotate BG/R samples with better quality and stability. More detailed discussions about the query strategy are presented in Appendix B.",
+        "seg_type": "par"
+      }
+    ]
+  },
+  {
+    "id": "007",
+    "title": "sp_1265_007",
+    "filename": "Videos/sp_1265.mp4",
+    "paper_filename": "Papers/sp_1265.pdf",
+    "type": "slides",
+    "relevant_segments": [
+      {
+        "caption": "Table 2: Summary of the four domain-specific datasets used in our experiments.",
+        "captionBoundary": {
+          "x1": 146.36500549316406,
+          "x2": 465.32757568359375,
+          "y1": 80.29867553710938,
+          "y2": 86.6099853515625
+        },
+        "figType": "Table",
+        "imageText": [
+          "Financial",
+          "FPB",
+          "[29]",
+          "Sentiment",
+          "Analysis",
+          "3876/969",
+          "F-1",
+          "score",
+          "Financial",
+          "Headline",
+          "[40]",
+          "News",
+          "Classi\ufb01cation",
+          "9130/2282",
+          "Average",
+          "F-1",
+          "score",
+          "Medical",
+          "PubMedQA",
+          "[18]",
+          "Biomedical",
+          "QA",
+          "500/500",
+          "Accuracy",
+          "Medical",
+          "MedQA",
+          "[17]",
+          "Medical",
+          "knowledge",
+          "QA",
+          "11450/1273",
+          "Accuracy",
+          "Domain",
+          "Name",
+          "Task",
+          "Size",
+          "(train/test)",
+          "Metric"
+        ],
+        "name": "2",
+        "page": 5,
+        "regionBoundary": {
+          "x1": 114.72,
+          "x2": 497.28,
+          "y1": 89.75999999999999,
+          "y2": 156.0
+        },
+        "renderDpi": 150,
+        "renderURL": "/Users/meghamariam/PROJECTS/PROJ1_Dataset/PROJ1_Crossmodal-Traversal/DATASET/Presentation/pap-seg/fig/sp_1265/sp_1265-Table2-1.png",
+        "id": "sp_1265-Table2-1",
+        "seg_type": "tab"
+      },
+      {
+        "para_id": "p38",
+        "section_heading": "3.2 Experiments Setup",
+        "text": "Fine-tuning. We adopt Dolly 2.0, the first open-source, instruction-following LLM, as the target LM for fine-tuning. It is based on the EleutherAI Pythia [3] model family, which is a suite of decoder-only auto-regressive language models ranging from 70M to 12B parameters. Limited by our computational budget, we choose to use dolly-v2-3b as the pre-trained LM for our main results. We also provide additional results using larger LMs (e.g., dolly-v2-7b and dolly-v2-12b) in Appendix C.2 to show the impact of pre-trained LM size on the final performance. For efficiency, we leverage low-rank adaption techniques (LoRA) [13] to optimize the fine-tuning process for reducing memory and time cost. We execute all experiments on a GPU node with 8 NVIDIA V100 32G cores. More experiment setup details, e.g., hyperparameters, can be found in Appendix D.2.",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p39",
+        "section_heading": "3.2 Experiments Setup",
+        "text": "Query and annotation. In the query step, we remove all labels in the training data to create a pool of unannotated data. These original ground truth labels are treated as the high-fidelity annotations provided by Human Annotator and are only accessed at the cost of budget consumption. For the lowfidelity annotation, we employ GPT-3.5-turbo as the LLM Annotator to automatically generate annotation for unannotated data. We note that, in reality, even collecting a large set of unannotated samples can oftentimes be non-trivial. As such, in our experiments, we limited our unannotated data pool to only contain 3000 data samples (randomly sampled from the original training dataset), from which we perform our query strategy. Each experiment is repeated three times and the mean is reported as the final result to reduce noise.",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p40",
+        "section_heading": "3.2 Experiments Setup",
+        "text": "Annotation and computational budget. Unless mentioned otherwise, we assume a total annotation budget of 1000 for all datasets (see more discussions about the budget setting in Appendix C.4). As human annotation is far more expensive than using LLM (i.e., GPT-3.5) to generate annotation, we set the human annotation budget of IMFL to be 200 samples (20%) and the GPT-3.5 annotation budget to be 800 samples (80%). In Appendix C.5, we provide a discussion about the trade-off between annotation accuracy and cost expenses. Regarding the fine-tuning cost, we set the total number of interaction rounds for fine-tuning to be R = 5 to reflect the computational budgets. It is worth noting that the performance can be further improved if more rounds (i.e., a higher budget) are allowed.",
+        "seg_type": "par"
+      }
+    ]
+  },
+  {
+    "id": "008",
+    "title": "sp_1265_008",
+    "filename": "Videos/sp_1265.mp4",
+    "paper_filename": "Papers/sp_1265.pdf",
+    "type": "slides",
+    "relevant_segments": [
+      {
+        "caption": "Figure 3: Illustration of exploration-exploitation query strategy with core components and steps.",
+        "captionBoundary": {
+          "x1": 114.16600036621094,
+          "x2": 497.8356018066406,
+          "y1": 561.0567016601562,
+          "y2": 567.3679809570312
+        },
+        "figType": "Figure",
+        "imageText": [
+          "Select",
+          "cluster",
+          "centers",
+          "Embeddings",
+          "Ranking",
+          "HighLow",
+          "Update",
+          "human",
+          "annotated",
+          "pool",
+          "ICL",
+          "with",
+          "prompt",
+          "retrieval",
+          "Human",
+          "annotator",
+          "LLM",
+          "annotator",
+          "Exploitation",
+          "Uncertainty",
+          "score",
+          "Exploration",
+          "Unannotated",
+          "data",
+          "pool",
+          "k-means",
+          "clustering"
+        ],
+        "name": "3",
+        "page": 4,
+        "regionBoundary": {
+          "x1": 109.92,
+          "x2": 502.08,
+          "y1": 480.0,
+          "y2": 552.0
+        },
+        "renderDpi": 150,
+        "renderURL": "/Users/meghamariam/PROJECTS/PROJ1_Dataset/PROJ1_Crossmodal-Traversal/DATASET/Presentation/pap-seg/fig/sp_1265/sp_1265-Figure3-1.png",
+        "id": "sp_1265-Figure3-1",
+        "seg_type": "fig"
+      },
+      {
+        "para_id": "p41",
+        "section_heading": "3.3 Main results",
+        "text": "In this section, we compare IMFL with single fidelity annotations to validate the effectiveness of the proposed multi-fidelity paradigm. Fig. 4 compares IMFL with using only human annotations, where 1\u21e5 Human, 3\u21e5 Human, and 5\u21e5 Human, represents the results obtained by fine-tuning on 200, 600, and 1000 human annotations, respectively. A detailed version of the main results are shown in Appendix C.1). Note that 5\u21e5 Human (1000 human annotations) can be seen as the performance upper bound of IMFL (200 Human + 800 GPT-3.5) if all budget is human annotation. From the results, we can clearly see that IMFL significantly outperforms the 3\u21e5 human annotation baselines in all four tasks. Particularly, IMFL achieves very close performance as 5\u21e5 human annotation on both Headline and PubMedQA datasets with only marginal differences (0.83% and 1.32% absolute loss respectively). This result indicates that the high human annotation cost in domain-specific tasks can be greatly reduced by employing IMFL, which utilizes fewer human annotations combined with cheaper and faster GPT-3.5 annotations to achieve similar performance.",
+        "seg_type": "par"
+      }
+    ]
+  },
+  {
+    "id": "009",
+    "title": "sp_1265_009",
+    "filename": "Videos/sp_1265.mp4",
+    "paper_filename": "Papers/sp_1265.pdf",
+    "type": "slides",
+    "relevant_segments": [
+      {
+        "caption": "Figure 5: Comparisons between our multifidelity learning paradigm and single low-fidelity (all GPT-3.5) annotation on four domain-specific tasks given the same total 1000 annotation budget. Note that the samples for all GPT-3.5 are drawn based on the uncertainty score.",
+        "captionBoundary": {
+          "x1": 108.0,
+          "x2": 504.0014343261719,
+          "y1": 486.07568359375,
+          "y2": 514.2049560546875
+        },
+        "figType": "Figure",
+        "imageText": [],
+        "name": "5",
+        "page": 6,
+        "regionBoundary": {
+          "x1": 111.83999999999999,
+          "x2": 500.15999999999997,
+          "y1": 379.68,
+          "y2": 478.08
+        },
+        "renderDpi": 150,
+        "renderURL": "/Users/meghamariam/PROJECTS/PROJ1_Dataset/PROJ1_Crossmodal-Traversal/DATASET/Presentation/pap-seg/fig/sp_1265/sp_1265-Figure5-1.png",
+        "id": "sp_1265-Figure5-1",
+        "seg_type": "fig"
+      },
+      {
+        "para_id": "p42",
+        "section_heading": "3.3 Main results",
+        "text": "Fig. 5 compares IMFL with using only GPT-3.5 annotations with the same total annotation budget (varied from 260 to 1000 samples). We have the following observations. First, our IMFL outperforms the GPT-3.5 annotation by a large margin (in terms of absolute gain) on PFB (+7.35%), Headline (+8.3%), PubMedQA (+6.89%) and MedQA (+19.95%) given the same 1000 annotation budget.",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p44",
+        "section_heading": "3.3 Main results",
+        "text": "Second, on three out of four datasets (FPB, PubMedQA, and MedQA), models tuned using IMFL with a total annotation budget of 260 (100 Human + 160 GPT-3.5) are able to achieve better performance than using 1000 GPT-3.5 annotations. On the Headline dataset, using 1000 GPT-3.5 annotations performs slightly better than using IMFL with a total budget of 260, but still worse if the total budget is increased to 470 ((100 + 50) Human + (160 + 160) GPT-3.5). This shows that while GPT-3.5 demonstrates promising abilities to reproduce human-generated labels [14, 56], relying solely on low-fidelity GPT-3.5 labels is not ideal for fine-tuning LMs for domain-specific tasks. In addition, compared with using only GPT-3.5 annotations, IMFL shows more reliable results with smaller variance, which benefits from a combination of human annotation and the similarity-based prompt retrieval strategy for improving the in-context learning capability of LLMs. These results verified that IMFL can efficiently utilize sparse human supervision to enhance GPT-3.5 annotations and consequently achieve better performance.",
+        "seg_type": "par"
+      }
+    ]
+  },
+  {
+    "id": "010",
+    "title": "sp_1265_010",
+    "filename": "Videos/sp_1265.mp4",
+    "paper_filename": "Papers/sp_1265.pdf",
+    "type": "slides",
+    "relevant_segments": [
+      {
+        "caption": "Table 4: Effects of prompt retrieval, variable batch size, and batch orders.",
+        "captionBoundary": {
+          "x1": 159.53599548339844,
+          "x2": 452.1575012207031,
+          "y1": 405.5976867675781,
+          "y2": 411.90899658203125
+        },
+        "figType": "Table",
+        "imageText": [
+          "1000",
+          "5",
+          "Mini-Batch",
+          "Variable",
+          "Similar",
+          "47.88",
+          "81.09",
+          "73.76",
+          "67.98",
+          "1000",
+          "5",
+          "Mini-Batch",
+          "Equal",
+          "Similar",
+          "46.34",
+          "80.28",
+          "72.05",
+          "66.11",
+          "1000",
+          "5",
+          "Mini-Batch",
+          "Variable",
+          "Random",
+          "42.09",
+          "73.98",
+          "67.44",
+          "63.56",
+          "1000",
+          "5",
+          "Mini-Batch",
+          "Equal",
+          "Random",
+          "42.34",
+          "73.77",
+          "68.10",
+          "63.42",
+          "1000",
+          "1",
+          "Full-Batch",
+          "NA",
+          "Similar",
+          "43.72",
+          "75.48",
+          "68.90",
+          "63.79",
+          "1000",
+          "1",
+          "Full-Batch",
+          "NA",
+          "Random",
+          "39.80",
+          "72.11",
+          "65.94",
+          "57.23",
+          "Budget",
+          "Batch",
+          "Batch",
+          "size",
+          "Retrieval",
+          "FPB",
+          "Headline",
+          "PubMedQA",
+          "MedQA",
+          "Method",
+          "Dataset"
+        ],
+        "name": "4",
+        "page": 7,
+        "regionBoundary": {
+          "x1": 113.75999999999999,
+          "x2": 498.24,
+          "y1": 414.71999999999997,
+          "y2": 519.36
+        },
+        "renderDpi": 150,
+        "renderURL": "/Users/meghamariam/PROJECTS/PROJ1_Dataset/PROJ1_Crossmodal-Traversal/DATASET/Presentation/pap-seg/fig/sp_1265/sp_1265-Table4-1.png",
+        "id": "sp_1265-Table4-1",
+        "seg_type": "tab"
+      },
+      {
+        "caption": "Table 3: A comparison of our EEQ query strategy and random query strategy.",
+        "captionBoundary": {
+          "x1": 151.06199645996094,
+          "x2": 460.6297912597656,
+          "y1": 80.29867553710938,
+          "y2": 86.6099853515625
+        },
+        "figType": "Table",
+        "imageText": [
+          "Only",
+          "Human",
+          "1000",
+          "0",
+          "Random",
+          "43.81",
+          "75.46",
+          "68.87",
+          "70.17",
+          "Only",
+          "GPT-3.5",
+          "0",
+          "1000",
+          "Random",
+          "38.56",
+          "71.04",
+          "65.89",
+          "47.13",
+          "Human",
+          "+",
+          "GPT-3.5",
+          "200",
+          "800",
+          "EEQ",
+          "47.88",
+          "81.09",
+          "73.76",
+          "67.98",
+          "Human",
+          "+",
+          "GPT-3.5",
+          "200",
+          "800",
+          "Random",
+          "41.94",
+          "74.32",
+          "66.03",
+          "63.77",
+          "Multi/Single",
+          "Human",
+          "GPT-3.5",
+          "EEQ/Random",
+          "FPB",
+          "Headline",
+          "PubMedQA",
+          "MedQA",
+          "Method",
+          "Budget",
+          "Query",
+          "Strategy",
+          "Dataset"
+        ],
+        "name": "3",
+        "page": 7,
+        "regionBoundary": {
+          "x1": 111.83999999999999,
+          "x2": 500.15999999999997,
+          "y1": 89.75999999999999,
+          "y2": 166.07999999999998
+        },
+        "renderDpi": 150,
+        "renderURL": "/Users/meghamariam/PROJECTS/PROJ1_Dataset/PROJ1_Crossmodal-Traversal/DATASET/Presentation/pap-seg/fig/sp_1265/sp_1265-Table3-1.png",
+        "id": "sp_1265-Table3-1",
+        "seg_type": "tab"
+      },
+      {
+        "para_id": "p45",
+        "section_heading": "4.2 Prompt Retrieval with Variable Batch Size",
+        "text": "To evaluate the effectiveness of similarity-based prompt retrieval and variable batch size, in Table 4, we consider several variants with random prompt retrieval and equal batch size as baselines for comparison. We find that similarity-based retrieval shows superior performance compared to the random prompt retrieval baselines (e.g., 80.28 vs 73.77 on Headline and 72.05 vs 68.10 on PubMedQA), and using variable batch size further boosts the effectiveness of retrieval by providing a larger and more diverse set of candidate examples, which is crucial in the limited budget setting.",
+        "seg_type": "par"
+      }
+    ]
+  },
+  {
+    "id": "011",
+    "title": "sp_1265_011",
+    "filename": "Videos/sp_1265.mp4",
+    "paper_filename": "Papers/sp_1265.pdf",
+    "type": "slides",
+    "relevant_segments": [
+      {
+        "caption": "Table 5: A comparison of various alternative query strategies on two representative tasks.",
+        "captionBoundary": {
+          "x1": 127.99400329589844,
+          "x2": 483.6985778808594,
+          "y1": 80.29867553710938,
+          "y2": 86.6099853515625
+        },
+        "figType": "Table",
+        "imageText": [
+          "Headline",
+          "74.32",
+          "76.42",
+          "77.55",
+          "77.34",
+          "76.59",
+          "77.61",
+          "79.23",
+          "81.09",
+          "MedQA",
+          "63.77",
+          "65.15",
+          "65.21",
+          "65.28",
+          "66.44",
+          "66.41",
+          "66.94",
+          "67.98",
+          "Dataset",
+          "Random",
+          "Entropy",
+          "Least-c",
+          "Breaking-t",
+          "K-means",
+          "Diversity",
+          "Hybrid",
+          "EEQ"
+        ],
+        "name": "5",
+        "page": 8,
+        "regionBoundary": {
+          "x1": 108.96,
+          "x2": 503.03999999999996,
+          "y1": 89.75999999999999,
+          "y2": 134.4
+        },
+        "renderDpi": 150,
+        "renderURL": "/Users/meghamariam/PROJECTS/PROJ1_Dataset/PROJ1_Crossmodal-Traversal/DATASET/Presentation/pap-seg/fig/sp_1265/sp_1265-Table5-1.png",
+        "id": "sp_1265-Table5-1",
+        "seg_type": "tab"
+      },
+      {
+        "caption": "Table 6: A comparison of annotation accuracy by GPT-3 and GPT-3.5 in zero/few-shot learning.",
+        "captionBoundary": {
+          "x1": 114.07599639892578,
+          "x2": 497.6161193847656,
+          "y1": 258.2267150878906,
+          "y2": 264.53802490234375
+        },
+        "figType": "Table",
+        "imageText": [
+          "Headline",
+          "75.59",
+          "72.51",
+          "70.25",
+          "79.40",
+          "76.15",
+          "73.31",
+          "MedQA",
+          "51.42",
+          "44.89",
+          "42.03",
+          "59.45",
+          "53.57",
+          "50.82",
+          "retrieval",
+          "5-shot",
+          "0-shot",
+          "retrieval",
+          "5-shot",
+          "0-shot",
+          "Dataset",
+          "GPT-3",
+          "Annotation",
+          "GPT-3.5",
+          "Annotation"
+        ],
+        "name": "6",
+        "page": 8,
+        "regionBoundary": {
+          "x1": 168.95999999999998,
+          "x2": 443.03999999999996,
+          "y1": 267.36,
+          "y2": 328.32
+        },
+        "renderDpi": 150,
+        "renderURL": "/Users/meghamariam/PROJECTS/PROJ1_Dataset/PROJ1_Crossmodal-Traversal/DATASET/Presentation/pap-seg/fig/sp_1265/sp_1265-Table6-1.png",
+        "id": "sp_1265-Table6-1",
+        "seg_type": "tab"
+      }
+    ]
+  },
+  {
+    "id": "012",
+    "title": "sp_1265_012",
+    "filename": "Videos/sp_1265.mp4",
+    "paper_filename": "Papers/sp_1265.pdf",
+    "type": "slides",
+    "relevant_segments": [
+      {
+        "para_id": "p55",
+        "section_heading": "6 Discussion and Limitation",
+        "text": "We compare IMFL to single fidelity annotations to evaluate the effectiveness of our proposed multifidelity paradigm. The extensive experimental results reveal that employing IMFL can significantly reduce the high cost of human annotation in domain-specific tasks. Furthermore, we demonstrate that IMFL efficiently uses sparse human supervision to improve GPT-3.5 annotations through prompt retrieval and in-context learning, ultimately leading to enhanced performance.",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p56",
+        "section_heading": "6 Discussion and Limitation",
+        "text": "Despite the promising performance, we note there are certain limitations to our approach. First, the current IMFL framework assumes that the annotation budget is defined by the number of annotations, rather than reflecting the true cost which typically involves multiple complex factors (e.g., administrative cost, training cost of human annotators, time, etc.) in real-world scenarios. Second, IMFL\u2019s performance is limited by the size of the unannotated dataset and the diversity of examples presented in the dataset as IMFL only seeks to improve performance through annotating existing samples rather than creating new samples. Lastly, limited by budgets and the capacity of the LM to be fine-tuned, IMFL does not achieve state-of-the-art performance in some general NLP tasks, where directly adopting the latest LLMs remains a better choice. Nevertheless, we anticipate the performance of IMFL to continue to grow by incorporating stronger LLM annotators, such as GPT-4, to further improve annotation accuracy. We leave this as our future work.",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p10",
+        "section_heading": "1 Introduction",
+        "text": "We evaluate our approach on four language understanding tasks across two specialized application domains, i.e., finance and medicine. Our results highlight that LMs tuned through the proposed IMFL framework with GPT-3.5 as an auto-annotator significantly outperform LMs tuned with 3\u21e5 human annotations, and are even on par with LMs tuned with 5\u21e5 human annotations in some cases. In contrast to single-fidelity annotations such as only human or only LLMs, IMFL effectively addresses limitations related to cost saving, annotation quality, and efficiency (see Table 1). Furthermore, IMFL not only surpasses the performance of LLM annotators but also achieves highly competitive performance compared to human annotators, albeit at a substantially lower cost and effort.",
+        "seg_type": "par"
+      }
+    ]
+  }
+]

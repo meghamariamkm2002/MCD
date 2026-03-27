@@ -1,0 +1,70 @@
+{
+  "sp_1265_page_0003": {
+    "bboxes": [
+      {
+        "box": [
+          346.3458557128906,
+          1166.68994140625,
+          878.2921752929688,
+          1232.8626708984375
+        ],
+        "text": [
+          "\\theta ^ { ( 0 ) } = \\underset { \\theta ^ { * } } { \\arg \\operatorname* { m i n } } \\, \\frac { 1 } { | \\mathcal { A } _ { H } ^ { 0 } | } \\sum _ { ( \\substack { \\alpha _ { i } , y _ { i } ) \\in \\mathcal { A } _ { H } ^ { 0 } } } \\mathcal { L } \\left( f ( x _ { i } ; \\theta ^ { * } ) , y _ { i } \\right) , \\quad i = 1 , . . . , n _ { s }"
+        ],
+        "page": "sp_1265_page_0003",
+        "id": "sp_1265_page_0003-1",
+        "seg_type": "eq"
+      }
+    ]
+  },
+  "sp_1265_page_0004": {
+    "bboxes": [
+      {
+        "box": [
+          351.3855285644531,
+          944.713623046875,
+          873.164306640625,
+          1012.23046875
+        ],
+        "text": [
+          "{ \\frac { B _ { H } } { 2 ^ { 1 } } } + { \\frac { B _ { H } } { 2 ^ { 2 } } } + { \\frac { B _ { H } } { 2 ^ { 3 } } } + { \\frac { B _ { H } } { 2 ^ { 4 } } } + \\cdots + { \\frac { B _ { H } } { 2 ^ { r } } } = \\sum _ { r = 1 } ^ { R } \\left( { \\frac { 1 } { 2 } } \\right) ^ { r } B _ { H } \\to B _ { H } ."
+        ],
+        "page": "sp_1265_page_0004",
+        "id": "sp_1265_page_0004-1",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          267.08013916015625,
+          296.15557861328125,
+          955.711181640625,
+          362.12994384765625
+        ],
+        "text": [
+          "\\mathcal { L } _ { t o t a l } = \\frac { 1 } { \\left| \\mathcal { A } _ { H } ^ { r } \\right| } \\sum _ { \\left( \\mathbf { x } _ { i } , y _ { i } \\right) \\in \\mathcal { A } _ { H } ^ { r } } \\mathcal { L } \\left( f ( \\mathbf { x } _ { i } ; \\theta ^ { ( r ) } ) , y _ { i } \\right) + \\frac { 1 } { \\left| \\mathcal { A } _ { G } ^ { r } \\right| } \\sum _ { \\left( \\mathbf { x } _ { j } , y _ { j } \\right) \\in \\mathcal { A } _ { G } ^ { r } } \\mathcal { L } \\left( f ( \\mathbf { x } _ { j } ; \\theta ^ { ( r ) } ) , y _ { j } \\right)"
+        ],
+        "page": "sp_1265_page_0004",
+        "id": "sp_1265_page_0004-2",
+        "seg_type": "eq"
+      }
+    ]
+  },
+  "sp_1265_page_0005": {
+    "bboxes": [
+      {
+        "box": [
+          424.78594970703125,
+          787.768798828125,
+          798.2642822265625,
+          835.6012573242188
+        ],
+        "text": [
+          "\\begin{array} { r } { \\pmb { x } _ { i } ^ { * } = \\underset { \\pmb { x } _ { i } } { \\arg \\operatorname* { m a x } } \\left[ 1 - p ( f ( \\pmb { x } _ { i } ; \\theta ^ { ( r ) } ) \\; | \\; \\pmb { x } _ { i } ; \\theta ^ { ( r ) } ) \\right] , } \\end{array}"
+        ],
+        "page": "sp_1265_page_0005",
+        "id": "sp_1265_page_0005-1",
+        "seg_type": "eq"
+      }
+    ]
+  }
+}

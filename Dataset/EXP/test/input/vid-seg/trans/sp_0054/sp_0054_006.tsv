@@ -1,0 +1,72 @@
+start	end	text
+31	2695	Well, this is one of the improvements.
+3396	5398	And that already helps a lot.
+5499	7762	But then they run into a problem.
+7822	10726	And this is not necessarily a problem with their method.
+11066	15212	But this is a problem in general, when you use relative positioning codings.
+15232	24705	So they say, given a sentence, a new store opened beside a new mall, right, that's a sentence, the words, store and mall,
+24685	28930	Let's say you do this mask language model pre-training.
+29270	34096	You mask out the words store and mall and you ask the model to reconstruct them.
+35198	37560	Using only the local context, e.g.
+37600	43728	relative position and surrounding words is insufficient for the model to distinguish store and mall in this sentence.
+44108	47352	Since both follow the word new,
+47332	49454	with the same relative positions.
+49474	53979	So from the word new, you know, relatively, it's always plus one.
+54320	55761	Oopsie.
+55781	58364	It's plus one to this word.
+58745	60967	So the model cannot distinguish the two.
+61368	71719	So there is a need for absolute position encodings, because if you had absolute position encodings, you could maybe make sense, though.
+71699	89202	Since you could figure out like store is probably kind of a smaller thing and mall is kind of a bigger thing, so it's more likely that the store opened beside the new mall than the mall opened beside the new store.
+89182	94248	So that means we need absolute positioning coatings or something like this, right?
+94728	111186	And especially we could have relative positioning coatings, but if this is a very long sentence and we truncate them somewhere, again, these two things are not in range of one another, and they're not going to know how far, you know, they are apart and each one by itself is just plus one apart.
+112007	112928	So
+112908	114932	How do we solve the problem?
+115372	117616	We feed in absolute positioning coatings.
+117977	120441	However, that's exactly what they criticize.
+120481	125170	They say, no, relative positioning coatings are much better than absolute for learning.
+125791	137211	And that's kind of the same reasoning why a convolution is better than a fully connected layer because you kind of slide the transformation over and it's simply data relative to each other.
+137191	148245	So relative positioning makes a lot of sense if when every word can do computation, not based on where exactly it is in the sentence, but how it is in relation to other words.
+148386	157157	Otherwise, if you have absolute positioning codings, what you would have to do is you would have to say, well, if I'm the word am, and I'm in position two,
+157137	159599	I need to learn to attend to position three.
+160060	164544	However, if I'm the word am and I'm in position three, I need to learn to attend to position four.
+164924	167987	And if I'm in position four, I need to learn to attend in position five.
+168027	169808	These are all different things you need to learn.
+170489	177716	However, if you have relative encoding, what you can do is you can simply say, I want to attend to the word that's right after me.
+178536	178797	Easy.
+179657	185963	But we do need absolute position encoding for some things, namely disambiguate between tasks like this.
+185943	194309	So they feed in absolute position information, but instead of doing it the beginning, they do it at the end.
+194690	198422	So at the beginning, we have the word vectors, right?
+198482	199345	They go in here.
+200708	202732	And then we have position information.
+203774	205377	One, two, three, four, five.
+205737	209545	We have that at every single layer of the transformer.
+209585	212009	We feed it in again and again and again.
+212450	214634	We feed in the same P vectors.
+215195	219844	They have different of these transformations in each layer.
+220665	224252	So the actual transformation that makes the keys and the values
+224232	237604	Sorry, the keys and the queries of the positional information are different, but the vectors are the same every time and then at the very top So these are p relative So this is sorry.
+237704	238565	Yeah, I mixed up.
+238605	253058	This is the this is this negative 2 negative 1 0 1 2 for the middle token and then at the end we're going to feed in Absolute position encodings so here we have you know your
+253038	254663	Let's start at one.
+254883	256247	Let's be good math lab people.
+257732	264551	Here we have 12345 that we're going to now combine with the vectors that come out of here.
+266317	267520	So the reasoning is
+269879	274506	They say there are two methods of incorporating absolute position.
+274807	277771	The BERT model incorporates absolute position in the input layer.
+278352	286765	In dBERT, we incorporate them right after all the transformer layers, but before the softmax layer for mask token prediction, as shown in Figure 2.
+287206	290571	I've looked at Figure 2, it's not really helpful, honestly.
+290551	310614	So that is this figure in the appendix, where they say, okay, so in the BERT, in the BERT, you have the absolute positioning coding somewhere down here, it goes through all the transformer layers, and then you have this classification layer at the top that does the language model decoding.
+311094	317301	However, in their model, what you'd have is you have all the transformer layers here, down here,
+317281	322987	And then you have the absolute position encodings that come in through the side here.
+323768	335962	And kind of the last transformer layer now has access to these absolute layers or the last N. I think N in their case is two or one, one or two.
+336582	347254	So in the last layer or the last layers, now the transformer has access to the absolute positions and before it's just relative position at each step.
+347234	356668	And the reason that that helps, because the transformer part learns to deal with relative positions.
+358470	369226	In this way, they say here, deberta captures the relative positions in all the transformer layers and only uses the absolute position that's complementary information when decoding the masked words.
+369686	374473	Thus we call deberta's decoding component an enhanced masked decoder.
+374453	379400	and they compare the two and they observed that EMD works much better.
+379881	385168	So feeding absolute positions at the end works better than feeding them at the beginning.
+388292	397305	We conjecture that the early incorporation of absolute positions used by Bert might undesirably hamper the model from learning sufficient information of relative position.
+397285	403233	In addition, EMD also enables us to introduce other useful information that is in two positions.
+403274	404459	We leave it for future work.
+404479	406549	So they say you could also feed in other information.
+406610	410046	I guess that's the case in every single neural network ever.

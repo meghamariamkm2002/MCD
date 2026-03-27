@@ -1,0 +1,99 @@
+right here.
+So they say usually
+What something like alpha zero does is you are game starts here, right?
+And then you have two actions to take.
+You maybe take this action.
+Okay.
+Now your opponent has two action.
+Maybe they take this action.
+All right.
+And now you have two actions again.
+Which one do you take?
+What, what's something like deep Q learning or actor critic learning would do is they would simply put a neural network here.
+they would look at this state and they would simply tell you which action to pick.
+Like this action right here sounds good to the neural network.
+In contrast to that, alpha zero, if I draw the same situation right here, alpha zero, what it will do is
+it will say, well, I could do this or I could do this.
+If I do the left thing, then I'm going to have, my opponent's going to have two options.
+They could do this or they could do that.
+If they do the left thing again, and so on, you get the idea.
+It sort of goes down the tree and it does this over here, right?
+Sorry, this should be.
+So it goes down the tree.
+I'm stupid.
+And it evaluates, it kind of calculates ahead.
+It uses its internal simulator to look ahead.
+And it could technically do this until it reaches the end.
+And then it would know if it reaches the end state every time here, it would know it could simply backwards calculate which one is the best option for me to do right now.
+However, this game is often very, very deep, so the tree, the depth here, is often so deep that you can't solve the whole game.
+So what AlphaZero does instead is it says, I'm not going to play until the end, I'm going to play a certain amount ahead, right?
+I'm going to think some limited depth ahead, and I know AlphaZero does this adaptively, but
+Bear with me, I'm going to think some limited depth D ahead.
+So here in this case, D is equal to two because we think two layers ahead.
+And then at the end, I'm going to replace everything that comes after with a single value that indicates how good this is for me.
+Okay.
+So, and this thing right here is very hard to get.
+Of course, if you knew how good anything is for you, then you have solved the game.
+But...
+Alpha zero, at this point, the neural network comes in, right?
+This is a neural network, it's a black box.
+So it simply asks for each one of these states, how valuable do you think that is?
+Okay, how valuable do you think that is?
+Okay, and so on.
+So it asks for each state, the neural network, how valuable that particular node is.
+And then it does the same backwards calculation.
+So we've sort of substituted going to the end of the game by the neural network.
+But it is still more powerful than asking the neural network at the very beginning like we do here.
+The power comes from combining the learning.
+This is the learning and the search.
+This here is the search.
+right?
+So this is what alpha zero does.
+And this is what this paper does for imperfect information games.
+So imperfect information games is when you don't know a particular thing about the game at any point.
+So there is hidden information like in poker.
+And the problem is right here,
+If you do the same thing for this game right here and you look from player one's perspective and you say, okay, this game is very deep.
+Actually, it's just too deep, right?
+But let's assume that's too deep for you.
+And you want to replace, you want to say, okay, I'm just going to look ahead, d equals one, that's all I can afford.
+I go ahead and at the end, I'm going to ask my neural network what the value here is.
+and the neural network will tell you accurately that the value at each of these nodes is zero.
+So the average value, if you can see right here, the average value of each of these nodes is zero, depending of course on how player two acts, but in this case it's zero.
+So as player one,
+this information will not lead you to the correct optimal conclusion, the correct optimal conclusion being this 0.4, 0.4, 0.2.
+Okay, player one, like it's indifferent, any strategy could work here, right?
+If there is some regularization, it'll probably come to the point, the one third, one third, one third, right?
+Since all the values are equal,
+It might conclude it's probably best if I distribute my actions or something.
+So you can see the problem right here.
+And the problem is that this value right here, it depends on the strategy of player one.
+And this is something that alpha zero has no concept on.
+For alpha zero, the value of a node only ever depends on what comes downstream.
+In imperfect information game, the value of a node also depends on what has happened upstream.
+So on the strategy of the upstream events.
+And that is, as I said, that is quite important.
+Also for AlphaZero, once I have evaluated a game tree and determined the value of a node like this,
+I can evaluate the same game tree again, and the value is going to be the same.
+But for the same reason, because the value depends upstream, the value of this node right here, depending on upstream, if I change my strategy, so if here I determine either action one or action two with a certain probability, if this search process results
+in a result that tells me this is how often you should pick action one.
+And that's different from what I searched with, right?
+Then all of these values down here are going to change.
+And I can basically search again.
+So these are the problems of imperfect information games that we're going to tackle.
+So you see this poker thing is sort of a microcosm.
+And this was already half of the paper if you understood why exactly searching
+using kind of a value estimator combined with this tree search is a problem in imperfect information games.
+So let's quickly go through the abstract, then we're going to have to define a few terms, and then we can go into this algorithm.
+The algorithm is called rebel.
+It's a general framework for self play reinforcement learning and search that provably converges to a Nash equilibrium in any two player zero sum game.
+Okay.
+Um, it says that in the simpler setting of perfect information games, rebel reduces to an algorithm similar to alpha zero.
+and they say we also show rebel achieves superhuman performance in heads up no limit texas hold them poker while using far less domain knowledge than any prior poker ai so last video i've had a comment which is correct that is not the best hold them ai out there as far as i can tell
+However, it is a very performant one that uses very little domain knowledge of poker.
+So it, like AlphaZero, removed basically all domain knowledge out of the games it played.
+This bot right here, I think the domain knowledge is to the extent of it is given a limited set of bet sizes, even though it's kind of no limit.
+Hold them where you can bet whatever you want.
+It's given sort of a limited bet, limited size of bet sizes, like half the pot, full pot, two times the pot, and so on.
+In order to make the actions discrete, I think that's just easier for this algorithm.
+But in any case, the algorithm is applicable pretty much anywhere where you have a two player zero sum imperfecting from

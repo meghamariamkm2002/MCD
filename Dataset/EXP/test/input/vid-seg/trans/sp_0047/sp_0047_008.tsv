@@ -1,0 +1,11 @@
+start	end	text
+31	23490	Now we get into the empirical results and the empirical results in this case were already sort of given in the previous paper, but here They have these the analogical reasoning task Where you can see that the negative sampling Did outperform the others by quite a bit right here.
+23670	25633	So the negative sampling approaches are
+25613	43740	outperformed the hierarchical softmax and the noise contrastive estimation and in the previous paper they also compared with other baselines and saw that it also outperforms those while being quite time efficient.
+43720	56706	So you can see that, especially with the subsampling approaches, the time here is 36 minutes for, and I think they have like a huge corpus that they train on.
+57127	61496	These Word2Vec code turned out to be really, really efficient code.
+62177	65003	And that's why it got so popular as well.
+66147	68611	They did the same thing for phrases right here.
+68651	73138	So for phrases like New York Times and so on.
+73678	79187	But this was kind of more of a, this was more of a side thing.
+79207	88020	The phrase vectors turned out to be, you know, rather a side thing from the actual code right here.

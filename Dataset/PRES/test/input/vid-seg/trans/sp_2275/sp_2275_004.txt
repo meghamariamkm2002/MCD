@@ -1,0 +1,1 @@
+The framework includes the core algorithm, annotator, and its application to different settings, active learning, active source-free domain adaptation, and active domain adaptation.

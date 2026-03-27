@@ -1,0 +1,119 @@
+WEBVTT
+
+00:00.031 --> 00:03.919
+and takes a model that has been trained on protein data.
+
+00:04.360 --> 00:09.270
+So if you look at this protein, it is simply a sequence of amino acids.
+
+00:09.290 --> 00:11.314
+And these amino acids, they all have names.
+
+00:11.494 --> 00:13.358
+I think I have a table somewhere here.
+
+00:14.741 --> 00:14.921
+Yes.
+
+00:15.242 --> 00:18.428
+So these are the different amino acids that exist.
+
+00:18.408 --> 00:25.279
+And you can see a protein is simply a sequence of these names.
+
+00:25.479 --> 00:31.629
+So usually they're abbreviated by like a three-letter abbreviation or just a one-letter abbreviation.
+
+00:31.949 --> 00:40.483
+So a protein might be A, V, M, M, V, A, G and so on.
+
+00:40.463 --> 00:42.867
+And this is just a string of text, right?
+
+00:43.167 --> 00:46.853
+So what I can do is I can train a language model on this.
+
+00:46.953 --> 00:54.545
+A language model is simply a model that takes a piece of text and tells you what's the next piece of text.
+
+00:54.726 --> 00:55.747
+So what's the next letter?
+
+00:55.807 --> 00:56.709
+What's the next word?
+
+00:56.929 --> 00:59.333
+In this case, what's the next amino acid?
+
+00:59.313 --> 01:03.060
+And we can use tools from NLP for that.
+
+01:03.080 --> 01:06.006
+Specifically, we can train a BERT model.
+
+01:06.066 --> 01:10.294
+A BERT works a bit differently than a standard language model.
+
+01:10.354 --> 01:12.959
+BERT does what is called masked language modeling.
+
+01:13.300 --> 01:17.709
+So you would take this string, you would feed it into a BERT model right here.
+
+01:17.769 --> 01:22.097
+And I've made an entire video on BERT if you want to check that out.
+
+01:22.077 --> 01:27.243
+And what you'll do by inputting that, you'll mask out some of the tokens.
+
+01:27.483 --> 01:33.049
+So you'll maybe mask out this one, mask out this one, and then you ask the model to reconstruct those.
+
+01:33.590 --> 01:37.194
+We say that here is an M and here is an A without seeing them.
+
+01:37.474 --> 01:46.064
+So the model somehow has to learn from the surrounding amino acids what this amino acid could be.
+
+01:47.205 --> 01:49.468
+So it has to reconstruct this sequence.
+
+01:49.448 --> 01:58.059
+So, the hope here is in natural language is that Burt somehow learns something about language itself.
+
+01:58.499 --> 02:06.049
+By being able to reconstruct these things, it has learned something about language, about which words appear together and when.
+
+02:06.509 --> 02:13.498
+It might even learn very long distance relationships between words just because it has to predict those.
+
+02:14.812 --> 02:17.556
+the idea carries over to biology.
+
+02:17.997 --> 02:31.879
+So we might hope that a BERT trained on an amino acid sequence will learn something about the language of proteins about the amino acid sequence.
+
+02:32.220 --> 02:35.385
+And our goal here is to be to ask
+
+02:35.365 --> 02:44.473
+Can we somehow infer the 3D shape of a protein, which is the important part, from its sequence right here?
+
+02:44.593 --> 02:49.157
+So given its sequence, can we infer the 3D shape?
+
+02:49.698 --> 02:54.222
+Now, as I understand it, usually this has to be done in like a simulation.
+
+02:54.302 --> 03:05.372
+So you would build this in a simulator and then you do like some sort of a molecule simulation to see how this ends up in a 3D shape.
+
+03:05.352 --> 03:22.528
+you could train a model to just predict the 3D shape but in this case we're just interested what does the BERT model learn about the 3D shape while only ever having been trained on predicting the next or predicting the sequence of amino acids.
+
+03:22.548 --> 03:27.297
+So it's never been trained to to look at the 3D shape and that's our goal here.
+
+03:28.380 --> 03:30.043
+So specifically we'll look at two
+

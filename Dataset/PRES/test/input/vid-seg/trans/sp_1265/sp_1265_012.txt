@@ -1,0 +1,4 @@
+And finally, we want to give some discussion on the limitation.
+In the future, we want to investigate a little more about how to solve more realistic case by using true cost and also improve the IAM performance, IAM algorithm performance using better GPT annotations.
+OK, that's all.
+Thank you.

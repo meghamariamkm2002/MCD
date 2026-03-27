@@ -1,0 +1,107 @@
+[
+  {
+    "input_path": "/tmp/megha/PDF-Extract-Kit/Presentation/layout_pap/sp_2036/sp_2036_page_26.png",
+    "page_index": null,
+    "boxes": [
+      {
+        "cls_id": 14,
+        "label": "algorithm",
+        "score": 0.5987159609794617,
+        "coordinate": [
+          437.1481628417969,
+          304.59088134765625,
+          2103.094970703125,
+          1009.5895385742188
+        ],
+        "text": "verage\n1: Initialization: w0, {ui,0 : i  S1}, vi,j,0 = hi,j(w0; B0,i,j) for all (i, j)  S1 \u00d7 S2.\n2:\nfor t = 0, . . . , T \u2212 1 do\n3:\nSample batches Bt \u2282 S1, Bt \u2282 S2, and Bt,i,j  Di,j for i  Bt and j  Bt.\n\u222b (1 \u2212 \u03c41)vi,j,t + \u03c41hi,j(wt; Bt,i,j), (i, j)  Bt \u00d7 Bt\nvi,j,t+1 =\nvi,j,t, (i, j) ! Bt \u00d7 Bt\n\u222b (1 \u2212 \u03c42)ui,t + 12 \u2211 jBt \u03c42gi(vi,j,t), i  Bt\n\u2022\nUi,t+1\n=\ni $ Bt\nUi,t,\nGt = B1 \u2211iBt (12 \u2211iBt hi,j(wt; B3,j)\u2202gi(v,t) \u2202fi(uit]\nUpdate Wt+1 = wt \u2212 \u03b7Gt\nend for\nw- uuith unifonr",
+        "input_path": "/tmp/megha/PDF-Extract-Kit/Presentation/layout_pap/sp_2036/sp_2036_page_26.png",
+        "id": "sp_2036_page_26_1",
+        "seg_type": "algo"
+      }
+    ]
+  },
+  {
+    "input_path": "/tmp/megha/PDF-Extract-Kit/Presentation/layout_pap/sp_2036/sp_2036_page_30.png",
+    "page_index": null,
+    "boxes": [
+      {
+        "cls_id": 14,
+        "label": "algorithm",
+        "score": 0.8831181526184082,
+        "coordinate": [
+          440.7445068359375,
+          2281.784912109375,
+          2165.707763671875,
+          2994.033935546875
+        ],
+        "text": "1: Initialization: w0, {ui,0 : i  S+}, {si,0 : i  S+}, s|\nfor t = 0, . . . , T \u2212 1 do\nSample batches Bt  S+ and Bt  S_.\n (( :I\u2212\u2032S I\u2212M) \u2212 (\u03c4 :\u2032 M)\u03c8) + (\u03b6 :\u2032 M)i\u03c8\u22a5 + \u00b5n(\u22a5 \u2212 I))\nUi,t+1 =\nui,t, i  Bt\n\u222b si,t \u2212 \u03b7 1 \u2202s\u03c8i(wt, si,t; Bt)\u2202uf (ui,t, st), i  Bt\nSi,t+1 =\nsi,t, i \u00c9 Bt\nst+1 = st \u2212 \u03b7 11 \u2211iBt \u2202s\u2032 f (ui,t, st)\nCompute Gt = 1 \u2211iBt \u2202w\u03c8i(wt, Si,t; Bt)\u2202uf (ui,t, st)\nUpdate Wt+1 = wt \u2212 \u03b7Gt\nend for\nreturn w+ with t uniformly sampled from {0, . . . . T - 1}",
+        "input_path": "/tmp/megha/PDF-Extract-Kit/Presentation/layout_pap/sp_2036/sp_2036_page_30.png",
+        "id": "sp_2036_page_30_1",
+        "seg_type": "algo"
+      }
+    ]
+  },
+  {
+    "input_path": "/tmp/megha/PDF-Extract-Kit/Presentation/layout_pap/sp_2036/sp_2036_page_31.png",
+    "page_index": null,
+    "boxes": [
+      {
+        "cls_id": 14,
+        "label": "algorithm",
+        "score": 0.9243175387382507,
+        "coordinate": [
+          441.93572998046875,
+          302.7395935058594,
+          2120.408447265625,
+          1338.2384033203125
+        ],
+        "text": "1: Initialization: w0, {ui,0 : i  S+}, {si,0 : i  S+}, s0, {vi,j,0 : (i, j)  S+ \u00d7 S\u2212}\n: for t = 0, . . . , T \u2212 1 do\nSample batches Bt \u2282 S+, Bt \u2282 S_, and Bt,i  Xi for i  Bt \u222a Bt.\n.\n(\u03a0\u03b6n [(1 \u2212 \u03c41)vi,t + \u03c41hi(wt; Bt,i) + \u03b31(hi(wt; Bt,i) \u2212 hi(wt\u22121; Bt,i))],\n\u03a0cn [(1 \u2212 \u03c41)vi,t + \u03c41hi(wt; Bt,i) + \u03b32(hi(wt; Bt,i) \u2212 hi(wt\u22121; Bt,i))],\nVi,t+1 =\nvi,t, i E Bt and i / Bt\n\u222b (1 \u2212 \u03c42)ui,t + 12 \u2211jBt [\u03c42g(vj,t \u2212 vi,t, Ssi,t)\n+\u03b33(g(vj,t \u2212 vi,t, si,t) \u2212 g(vj,t\u22121 \u2212 vi,t\u22121, si,t\u22121))], i  Bt\n:\nUi,t+1\n=\ni $ Bt\nUi,t,\nsi,t \u2212 \u03b71 \u2211t ]\nSi,t+1 =\ni & Bt\nSi,t,\nst+1 = st \u2212 \u03b72 11 \u2211iBt \u2202s\u2032 f (ui,t, St)\nGt = 11 \u2211iBt \u2202uf (ui,t, st)\n[ B2 \u2211jBt (hj(wt; Bt,j \u2212 hi(wt; B3,i) \u2202vg(vj,t \u2212 vi, s,t)]\nUpdate wt+1 = wt \u2212 \u03b7Gt\nend for\nd from s0\nT = 1]",
+        "input_path": "/tmp/megha/PDF-Extract-Kit/Presentation/layout_pap/sp_2036/sp_2036_page_31.png",
+        "id": "sp_2036_page_31_1",
+        "seg_type": "algo"
+      }
+    ]
+  },
+  {
+    "input_path": "/tmp/megha/PDF-Extract-Kit/Presentation/layout_pap/sp_2036/sp_2036_page_5.png",
+    "page_index": null,
+    "boxes": [
+      {
+        "input_path": "/tmp/megha/PDF-Extract-Kit/Presentation/layout_pap/sp_2036/sp_2036_page_5.png",
+        "cls_id": 14,
+        "label": "algorithm",
+        "score": 0.8693020939826965,
+        "coordinate": [
+          441.1614990234375,
+          299.5213928222656,
+          2098.06787109375,
+          776.004638671875
+        ],
+        "text": "errredranrreog\n1: Initialization: w0, {ui,0 : i  S}.\n: for t = 0, . . . , T \u2212 1 do\nDraw sample batches Bt \u223c S, and Bt,i ~ Di for each i  Bt .\n\u222b (1 \u2212 \u03c4)ui,t + \u03c4gi(wt; Bt,i) + \u03b3(gi(wt; B2,i) \u2212 gi(wt\u22121; Bt,i)), i  B\nUi,t+1 =\nui,t, i E Bt\nCompute Gt = 1 \u2211iBt \u2202gi(wt; B2,i)\u2202fi(ui,t)\nUpdate Wt+1 = wt \u2212 \u03b7Gt\nend for",
+        "id": "sp_2036_page_5_1",
+        "seg_type": "algo"
+      }
+    ]
+  },
+  {
+    "input_path": "/tmp/megha/PDF-Extract-Kit/Presentation/layout_pap/sp_2036/sp_2036_page_6.png",
+    "page_index": null,
+    "boxes": [
+      {
+        "input_path": "/tmp/megha/PDF-Extract-Kit/Presentation/layout_pap/sp_2036/sp_2036_page_6.png",
+        "cls_id": 14,
+        "label": "algorithm",
+        "score": 0.7867981195449829,
+        "coordinate": [
+          440.2582092285156,
+          301.3232421875,
+          2178.2529296875,
+          979.35205078125
+        ],
+        "text": "Igorithm 2 Stochastic Optimization algorithm for Non-smooth TCCO (SONT)\n1: Initialization: w0, {ui,0 : i  S1}, vi,j,0 = hi,j(w0; B0,i,j) for all (i, j)  S1 \u00d7 S2.\n2: for t = 0, . . . , T \u2212 1 do\n3:\nSample batches Bt  S1, Bt  S2, and Bt,i,j  Di,j for i  Bt and j  Bt2.\n(\u03a0h [(1 \u2212 \u03c41)vi,j,t + \u03c41hi,j (wt; Bt,i,j) + \u03b31(hi,j (wt; Bt,i,j) \u2212 hi,j(wt\u22121; Bt\n1:\nvi,j,t+1 =\n(i, j)  Bt x Bt\nVi,j,t,\n(i, j) \u03be Bt \u00d7 Bt\n\u222b (1 \u2212 \u03c42)ui,t + 12 \u2211 jBt [\u03c42gi(vi,j,t) + \u03b32(gi(vi,t) \u2212 gi(vi,j,t\u22121)], i  Bt\n:\nUi,t+1\n=\nui,t, i & Bt\nGt = B1 \u2211iBt (B1 \u2211iBz hi,j(wt; B3,i,j)\u2202gi(vi,t) \u2202fi(ui,t]\nUpdate wt+1 = wt \u2212 \u03b7Gt",
+        "id": "sp_2036_page_6_1",
+        "seg_type": "algo"
+      }
+    ]
+  }
+]

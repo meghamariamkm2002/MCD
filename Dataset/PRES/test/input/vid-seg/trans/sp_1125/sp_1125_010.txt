@@ -1,0 +1,2 @@
+Moving to table two, we conduct experiments on C bar 100 and MDLAD as well as initialized data sets.
+The results clearly demonstrate that the superior performance of FATGRAP, especially in handling minority classes in FATGRAP long-tail setting across different data sets and scenarios,

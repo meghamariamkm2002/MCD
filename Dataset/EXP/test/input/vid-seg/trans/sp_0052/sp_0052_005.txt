@@ -1,0 +1,63 @@
+here.
+The first way is this short term memory.
+And the second way is the long term memory.
+Now the two are slightly different.
+As you can guess, the short term memory is going to be only over a short time period around the current frame.
+And the long term memory is going to be basically across a very long time horizon into the past.
+You can see
+We're trying to classify this blue frame right here that what we call the key frame.
+So what we'll do is we'll run it through stage one.
+Cool.
+So we have features for each region of interest.
+And then you can see this goes here and through these residual connections, this goes into stage two over here.
+So basically, stage two still receives the same input.
+It receives whatever stage one outputs for the keyframe.
+But we're going to add to that twice.
+So we're going to add two things as I said.
+So the short term memory is added right here.
+Now, how do we build the short term memory?
+We built the short term memory simply by considering all the frames around the key frame.
+And this you can see right here, the current window around the key frame, which can be like one frame around it or two frames or three frames, just a few frames around the current frame.
+And this can be fairly helpful, as we said, for example, if the deer moves a bit, the car moves a bit, you know, it gets into a slightly different lighting and so on.
+This can help us very much to classify the current keyframe if we also have features from the surrounding frames.
+So for each of these surrounding frames, we also run them through the stage one detector to also extract regions of interest.
+And that all of these features go into this memory short term memory bank right here.
+There's different strategies.
+You don't always have to extract all of the regions of interest.
+You can also extract just the top one and so on, or you can extract the mean, since these are fairly consistent.
+The camera is at the same place.
+There are many ways you can do this, but what you'll ultimately end up with is a short-term memory bank that
+You'll have a bank and you have lots of these feature vectors in here for your regions of interest of the surrounding frames.
+Now, if this here is your half occluded deer, so this is the half occluded deer,
+And you want to consider information from the surrounding frames.
+Maybe in the next frame, so maybe this is three frames, like one, two, three, and two is the key frame.
+Maybe in the next frame, the deer moves a bit and you see its nose.
+And this particular region of interest here is relevant.
+So how do you know how do you now get from this entire memory this feature vector that would be helpful?
+And the answer is you get it through an attention mechanism.
+You can see that right here.
+The way the short term memory is added is through this attention block.
+They describe the attention block right here.
+It is a fairly standard attention mechanism.
+So I've done a video on attention is all you need.
+If you don't know what an attention mechanism is, go check it out.
+But you can see it's very, very standard.
+So you have these input features, which are the features that come from the keyframe.
+and you have the context features which are all the features in your memory bank.
+You encode the input features into a query using a fully connected layers and the context features into keys.
+And then you match the queries with the keys and the softmax in order to get a weighting over the context features and then you aggregate the values from the context features.
+So this is a standard attention mechanism.
+What does it mean?
+It basically means that each of these vectors right here, they will emit a key that kind of describes what kind of information is contained in that vector.
+The vector over here will emit a query that describes what sort of information it is looking for to in order to describe what's in the region of interest as well as possible.
+And then you simply match the query with the keys.
+to determine which key fits best to that query and whichever one fits best, let's say this one here, then you take that vector from the memory bank and incorporate it together with your current information that you already have.
+So that's how you address things that from other frames using an attention mechanism.
+Okay, now if this were all, you know, we could train this right now.
+We could train all of this because all of this is differentiable, right?
+This stage one detector right here is differentiable.
+It goes here and here, you know, the information, the attention mechanism is differentiable.
+The stage two detector is differentiable, all differentiable.
+Cool.
+We can train this end to end.
+Now what's the problem?

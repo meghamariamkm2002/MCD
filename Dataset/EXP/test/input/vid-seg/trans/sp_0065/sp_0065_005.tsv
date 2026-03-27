@@ -1,0 +1,31 @@
+start	end	text
+31	3917	Let's look at the discriminators because that's the easiest.
+4397	10086	So they have these discriminators and these are adopted from this GAN TTS paper.
+11087	21482	Now, as we already said, the discriminator try to differentiate between real and fake sound and they do it in a sort of
+21462	28770	So if they were to just look at the entire sound wave, then it would just basically reduce to comparing the two.
+30051	33675	But instead, the discriminators, they operate on very small windows.
+34136	42205	So in specific, they have five different discriminators, and each of the five different discriminators take a different size window length.
+42225	44187	But all of these windows are super short.
+44287	48972	So one discriminator might take this long windows.
+48952	54901	Another discriminator might take a bit longer windows, and another discriminator might take a bit shorter windows.
+55181	57264	And that, of course, from the real and from the fake.
+57885	63733	And the discriminators simply try to discriminate only in these windows, whether it's real or fake.
+64154	73828	And now we're a bit more into the GAN setting, where you simply have one data point of the real and one data point of the fake, and you have to compare them.
+73808	92982	And this here, I believe, is one of the keys why this model generalizes, because the discriminators basically they try to assess whether a short sequence sounds like real or sounds like fake, and whether the two samples sound alike in different scales of time.
+92962	98530	And by only doing this on these short scales, the loss sort of generalizes.
+98651	108025	Otherwise, if you compare it on the entire sound wave, it would just reduce to comparing point by point right here.
+108546	116117	And if the generator produces something that's not exactly aligned, then of course every point would be wrong.
+116097	118100	You run into all sorts of questions.
+118180	130296	So this is a set of five discriminators that all try to take each takes a different length of subsound of this wave tries to discriminate real from fake.
+130316	131538	That's the discriminator loss.
+131558	137646	They have an additional discriminator loss where they compute spectrograms of these things.
+138467	139168	So
+139148	159368	Spectrograms and compute spectrogram of this and they have a discriminator and other neural network here that it tries to distinguish which one is real and which one is fake note that this is not the same as down here where the spectrogram is an intermediate representation.
+159348	165962	Here the sound is the output and from the sound you compute the spectrogram and then you compare the two.
+166383	172998	So this is simply a different, the spectrogram is a different feature space for the discriminator to compute the loss.
+173218	178690	It is not an intermediate representation on the way to produce the sound itself.
+178670	186607	So that's the difference here between the classic approach and this approach.
+187229	188652	So it's end-to-end adversarial.
+189013	190215	So we got the discriminator.
+190316	196970	The discriminators simply try to differentiate the sound waves and short scales as well as the spectrograms.
+197792	200037	Now the second part is of course the general

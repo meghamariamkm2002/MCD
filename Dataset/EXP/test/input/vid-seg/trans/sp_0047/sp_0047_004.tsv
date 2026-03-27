@@ -1,0 +1,26 @@
+start	end	text
+31	1834	that we have such large vocabularies.
+2294	4798	So the first idea here is hierarchical softmax.
+4818	6120	And this is kind of a tangent.
+6440	12670	I find this paper, by the way, it's sort of hard to read because it's like a half engineering paper.
+13731	20121	But yeah, so first they introduced this hierarchical softmax, which is kind of a distraction.
+20321	29194	It's kind of a, here is what we do, here is what we considered first, but then didn't end up using really, they do compare with it, but
+29174	34704	The flow of text is sort of that you expect this to be part of the final model, which it isn't.
+35104	48046	So in the hierarchical softmax, what you do instead of having this giant multi-class classification task right here, you take all of these classes right here and you put them in a sort of a tree.
+48948	53055	So you take this and you put them into a tree.
+53035	61333	So instead of classifying, you know, let's say we have a thousand classes, instead of classifying a thousand ways, we first classify in two ways.
+61915	66164	And then we classify in two ways again, from each one.
+66324	70694	And then we classify in two ways again, as you know, a thousand is like two to the 10.
+71075	72478	So
+72458	84634	We need approximately 10 layers of this before we are actually arriving at a thousand classes, but it also means that we only have two-way classifications each time.
+85855	95007	So in the hierarchical softmax, we build trees like this, and then we have a word, we look up its vector, sorry, its vector,
+94987	98891	And then we classify it for each of these nodes.
+99131	105217	So your output isn't going to be a thousand, um, a thousand log probabilities.
+105657	112624	Your output is going to be a log probability, a binary log probability for each of the nodes right here.
+112924	118950	So you want to know, okay, here is it in the upper half or the lower half of my classes?
+119431	119871	Okay, cool.
+119891	120792	It's in the upper half.
+120772	140721	okay here is in the upper half or the lower half and so on and you learn all to predict all of these junctions right here and that's going to end up you with you having to predict less now of course you are constrained you impose a very big prior on the class distribution classes aren't independently anymore.
+140701	157208	Namely, if two classes here are in the same subtree, that means that their predictions are going to be correlated because the path to them is the same partially.
+157188	167722	How you arrange the classes here is very important, and there has been a lot of work in this, but as I said, this is rather a distraction right here.
+168123	175045	Hierarchical Softmax is a way to solve this, however, they went with a different way right here.

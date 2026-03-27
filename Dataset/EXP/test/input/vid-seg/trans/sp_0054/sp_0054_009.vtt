@@ -1,0 +1,113 @@
+WEBVTT
+
+00:00.031 --> 00:08.842
+And now for their big thing, they build, they scale it up, and they have a bunch of tricks here.
+
+00:09.383 --> 00:10.905
+And pretty cool, they scale it up.
+
+00:10.925 --> 00:12.667
+I just want to highlight one trick.
+
+00:14.290 --> 00:16.132
+We optimize the model architecture as follows.
+
+00:16.152 --> 00:20.858
+First, we share the projection matrices of relative position embeddings.
+
+00:20.838 --> 00:21.239
+Okay.
+
+00:21.259 --> 00:27.707
+So they share the projection matrices of the relative position embeddings with each other.
+
+00:27.727 --> 00:28.208
+Okay.
+
+00:28.328 --> 00:35.116
+So they share the position matrices with the content matrices.
+
+00:35.237 --> 00:47.993
+So now instead of, for example, so here is the query of the content, the key of the content, here is the query of the projection and the key of the, sorry, position, position.
+
+00:51.668 --> 00:53.010
+My battery is soon over.
+
+00:53.030 --> 00:53.772
+I have to speed up.
+
+00:55.014 --> 01:06.313
+So the content right here and the position right here give rise to these matrices by means of these learned weights.
+
+01:06.934 --> 01:16.410
+So here is WKC.
+
+01:16.390 --> 01:29.218
+That's the matrix that generates the queries from the content, that generates the keys from the content, the matrix that generates the queries from the position, and the matrix that generates the keys from the position.
+
+01:29.755 --> 01:37.805
+So if you now share, you now want to share this and that, and also you want to share this and that.
+
+01:37.825 --> 01:40.448
+So if, and at the end they are added, right?
+
+01:40.868 --> 01:43.972
+So you multiply these things and then they are added.
+
+01:44.412 --> 01:52.422
+And in my mind, honestly, what, what that results in, because before,
+
+01:52.402 --> 01:56.026
+Let's just, let's just see.
+
+01:56.166 --> 02:09.822
+So before you had something like, if we simply multiply query times key transposed for the context side, that would give you sort of context, W, Q, and now we share them.
+
+02:10.142 --> 02:12.966
+So we don't care about C and P anymore.
+
+02:13.967 --> 02:19.253
+W, K transposed, K transposed, and, oh, sorry.
+
+02:21.190 --> 02:24.297
+of course, context this transposed.
+
+02:24.317 --> 02:26.883
+And now we add them to something else.
+
+02:27.104 --> 02:31.514
+And let's just say we have these position to position encodings that they leave away.
+
+02:31.794 --> 02:34.380
+But you know, we're going to consider them because it's easiest.
+
+02:34.541 --> 02:38.710
+So it's position wqw
+
+02:38.690 --> 02:43.380
+K, yeah, transposed, position transposed.
+
+02:43.741 --> 02:58.453
+You know, if these matrices are shared, this simply ends up to be being the addition of the position and content times these two matrices times the, again, this.
+
+02:58.433 --> 03:06.872
+So and this is just like the old school attention mechanism now I see there's these cross terms and maybe they influence something but it gets closer and closer.
+
+03:07.633 --> 03:13.827
+Back to the old mechanism where you simply add the encodings and don't consider them in a.
+
+03:13.807 --> 03:15.991
+in a disentangled way.
+
+03:16.292 --> 03:30.938
+If you share the matrices of the disentangled representations, it simply refers back to as if you were to feed the position in each layer of a traditional transformer.
+
+03:32.251 --> 03:43.482
+Yeah, I'm not sure how much really the disentanglement is super important or whether or not it's just more important that this positional information is actually available at each step.
+
+03:43.943 --> 03:46.430
+But I might be wrong here with the cross terms.
+
+03:46.691 --> 03:50.040
+I haven't actually looked entirely at that.
+

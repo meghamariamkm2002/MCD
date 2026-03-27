@@ -1,0 +1,34 @@
+So the architecture is described right here.
+Now, as you can see, we are still in the business of doing object detection.
+So what we'll do is we'll sort of hijack a existing object detector.
+And the object detector we're going to hijack is going to be this FRCNN, this faster RCNN object detector.
+That's an object detector for a single frame problem.
+So that means you have one image and you're supposed to detect what's on it.
+It has two stages, as you can see.
+So stage one, if you have an image, and let's say there's some stuff on it, stuff, stuff, stuff, there's stuff.
+Okay.
+What stage one is supposed to do is it's supposed to extract regions of interest.
+This could be, okay, all of these are regions of interest.
+So it simply says what there is something, there might be something right here in these regions of interest.
+And then it describes each of these regions of interest using features.
+Okay, so it extracts these regions of interest and each region of interest gets features assigned to it.
+So what these are?
+I think these are like seven by seven by 2048 features.
+But let's just say for the sake of describing it that these are just a vector of features for each region of interest.
+So each region of interest is going to be associated with one vector of features that this model extracts.
+And the next region of interest also has a vector and the next region of interest also has a vector and so on.
+Stage two then takes each one of these vectors and assigns a class to it.
+So this would be deer right here.
+Okay, so stage one proposes regions of interest along with features, then stage two takes each of these regions of interest and classifies them basically.
+And I guess there's many in between stages.
+Like this is massively simplified.
+There's non-maximum suppression.
+There is kind of an alignment stage where you can refine the bounding box and so on.
+But in essence, these are two stages.
+And you can see that this system here, it goes in between the two stages.
+So all of this right here, we shove in between the two stages.
+So we'll still use the stage one and we'll still use the stage two, but in between, in this thing right here, we'll try to sort of pimp these features such that the stage two detector has an easier time classifying.
+So we're going to pimp these features by incorporating, because these features right now, if you just do it vanilla, these are just from the current frame.
+And we're going to add to them information from other frames of the same camera.
+And we're going to do it in two different ways.
+So the first way, as you can see,

@@ -1,0 +1,86 @@
+[
+  {
+    "input_path": "/tmp/megha/PDF-Extract-Kit/Presentation/layout_pap/sp_0358/sp_0358_page_40.png",
+    "page_index": null,
+    "boxes": [
+      {
+        "cls_id": 14,
+        "label": "algorithm",
+        "score": 0.9151658415794373,
+        "coordinate": [
+          448.8863220214844,
+          2209.260986328125,
+          2098.265380859375,
+          3002.5654296875
+        ],
+        "text": "Input: bonus parameter \u03b2, regularization \u03bb.\nInitialization: \u2200k, h, Qk+1 (\u00b7, \u00b7), VH+1(\u00b7, \u00b7), Vh (\u00b7, \u00b7) \u2190 0, Dh \u2190 .\nfor episode k = 1, . . . , K do\nSample initial state s\nfor time step h = H, . . . , 1 do\nyh \u2190 [y1, . . . , yk\u22121], with yh \u2190 1\u03c4,k\u22121 \u00b7 [r\u03c4 + Vh+1(sh+1)]\n\u03a6h \u2190 [\u03c61, \u03c62, . . . , \u03c6k\u22121] with \u03c6\u03c4 = 1 \u03c4,k\u22121 \u00b7 \u03c6(sh, a\u03c4)\n\u03a9k \u2190 \u03a6h\u03a6T + \u03bbI\nwk \u2190 (\u03a9k)\u22121\u03a6hyhT\nQh(, \u00b7) \u2190 \u03c6(., \u00b7)Twk + \u03b2\u221a\u03c6(\u00b7, \u00b7)T(\u03a9k)\u22121\u03c6(, \u00b7)\nVh(\u00b7, \u00b7) \u2190 maxa min{Qk(\u00b7, a), H \u2212 h + 1}\nUpdate \u03c0k(\u00b7) \u2190 argmaxaA min{Qk(\u00b7, a), H \u2212 h + 1}\nfor time step h = 1, . . . , H do\nChoose action ak \u223c \u03c0k(sk)\nCollect transitions Dh \u2190 Dh \u222a {(sk, ak, rk, sk+1)}\n/* Feedback generated in episode k cannot be immediately observed in the presence of delay",
+        "input_path": "/tmp/megha/PDF-Extract-Kit/Presentation/layout_pap/sp_0358/sp_0358_page_40.png",
+        "id": "sp_0358_page_40_1",
+        "seg_type": "algo"
+      }
+    ]
+  },
+  {
+    "input_path": "/tmp/megha/PDF-Extract-Kit/Presentation/layout_pap/sp_0358/sp_0358_page_5.png",
+    "page_index": null,
+    "boxes": [
+      {
+        "input_path": "/tmp/megha/PDF-Extract-Kit/Presentation/layout_pap/sp_0358/sp_0358_page_5.png",
+        "cls_id": 14,
+        "label": "algorithm",
+        "score": 0.9553103446960449,
+        "coordinate": [
+          452.6309509277344,
+          311.0320739746094,
+          2097.83056640625,
+          1296.575927734375
+        ],
+        "text": "Input: priors po(wk) \u2190 N (0, \u03bbI), scaling factor \u03bd, multi-round paramter M, hyper parameters \u03bb\nand \u03c32.\nInitialization: \u2200k, h, Qk+1 (, \u00b7), VH+1(., \u00b7), Vh(\u00b7, \u00b7) \u2190 0, Dh \u2190 .\nfor episode k = 1, . . . , K do\nSample initial state sk\nk\nfor time step h = H, . . . , 1 do\nyh \u2190 [y1, . . , yk\u22121], with y\u03c4 \u2190 1\u03c4,k\u22121 \u00b7 [r\u03c4 + Vh+1(sh+1)\n\u03a6h \u2190 [\u03c61, \u03c62, . . . , \u03c6k\u22121] with \u03c6\u03c4 = 1\u03c4,k\u22121 \u00b7 \u03c6(sh, a\u03c4)\n\u03a9k \u2190 \u03c3\u22122\u03a6h\u03a6T + \u03bbI, wk \u2190 \u03c3\u22122(\u03a9k)\u22121\u03a6hyh\nT\np(wk | Dh, Yh) \u2190 N (wk, \u03bd2 . (\u03a9k)\u22121)\nfor m = 1, . . . , M do\nSample wk,\nk,m\n \u223c p(\u03c9k | Dh, Yh)\nWn\nUpdate Qk(, \u00b7) \u2190 maxm Q\nk,m\nh\nVh(, \u00b7) \u2190 maxa min{Qk(\u00b7, a), H \u2212 h + 1}\n{I +  \u2212 H ( \u00b7.)}u \u03c9 \u2192 (\u00b7) d\u2229\nfor time step h = 1, . . . , H do\n-\nCollect trajectory observations Dh \u2190 Dh \u222a {(sk, ak, rk, sk+1)}\n/* Feedback generated in episode k cannot be immediately observed in the presence of delay",
+        "id": "sp_0358_page_5_1",
+        "seg_type": "algo"
+      }
+    ]
+  },
+  {
+    "input_path": "/tmp/megha/PDF-Extract-Kit/Presentation/layout_pap/sp_0358/sp_0358_page_8.png",
+    "page_index": null,
+    "boxes": [
+      {
+        "input_path": "/tmp/megha/PDF-Extract-Kit/Presentation/layout_pap/sp_0358/sp_0358_page_8.png",
+        "cls_id": 14,
+        "label": "algorithm",
+        "score": 0.948662519454956,
+        "coordinate": [
+          452.9598693847656,
+          310.31732177734375,
+          2097.843017578125,
+          1061.2117919921875
+        ],
+        "text": "Input: wo, \u03b7k, Nk, \u03b3 and rounds M, \u03bb. Delayed loss Lk as (5).\nInitialization: \u2200k  [K], h  [H], QkH+1(\u00b7, \u00b7) \u2190 0, V k+1(, \u00b7) \u2190 0, Vh(., \u00b7) \u2190 0\nfor episode k = 1, . . . , K do\nfor time step h = H, . . . , 1 do\nfor m = 1, . . . , M do\nwk,m \u2190 LMC(Lk, w0, \u03b7k, Nk, \u03b3)\nWh\n//LM C is given by Algorithm 3\nk,m(., \u00b7) \u2190 \u03c6(\u00b7)T\n\u223ck,m\nT\nWn\nUpdate Qh(, \u00b7) \u2190 maxm Q\nk,m\nh\nV k(, \u00b7) \u2190 maxa min{Qk(, a), H \u2212 h + 1}\n{I +  \u2212 H ( ')}\u00b5\u03c9 \u2200\u03c9 \u2192 (\u00b7) [\u03bfd pd\u2229\nfor time step h = 1, . . . , H do\n(sk)\nCollect trajectory observations Dh \u2190 Dh \u222a {(sk, ak, rk, sk+1)}\n/* Feedback generated in episode k cannot be immediately observed in the presence of delay",
+        "id": "sp_0358_page_8_1",
+        "seg_type": "algo"
+      }
+    ]
+  },
+  {
+    "input_path": "/tmp/megha/PDF-Extract-Kit/Presentation/layout_pap/sp_0358/sp_0358_page_9.png",
+    "page_index": null,
+    "boxes": [
+      {
+        "cls_id": 14,
+        "label": "algorithm",
+        "score": 0.7676428556442261,
+        "coordinate": [
+          1238.3160400390625,
+          589.7837524414062,
+          2099.224365234375,
+          880.638427734375
+        ],
+        "text": "Algorithm 3: Langevin Monte Carlo\nLMC(L, w0, \u03b7, N, \u03b3)\n1\nfor t = 1 . . . N \u2212 1 do\nDraw t \u223c N (0, Id)\n2\nwt \u2190 wt\u22121 \u2212 \u03b7L(wt\u22121) + \u221a2\u03b7\u03b3t\nQutput: wN",
+        "input_path": "/tmp/megha/PDF-Extract-Kit/Presentation/layout_pap/sp_0358/sp_0358_page_9.png",
+        "id": "sp_0358_page_9_1",
+        "seg_type": "algo"
+      }
+    ]
+  }
+]

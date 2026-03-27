@@ -1,0 +1,53 @@
+start	end	text
+1010	1711	Hello there.
+2111	4074	I hope you have all seen this.
+4174	7438	This is a new system by Facebook AI.
+7878	14426	And what you're seeing here is a visualization of the attention maps of that neural network.
+14446	16589	In the middle is a supervised baseline.
+17009	20213	And on the right is this new system called dyno.
+20634	27642	It's not as much a system as it is a methodology for unsupervised pre-training
+27622	55536	visual transformers and you can see that the system has neither been trained to learn what a dog is nor has it been trained to do any sort of segmentation yet if you look at the attention maps it clearly can track objects it knows what to pay attention to in the images and it can do much more than that so here you can see that it can sort of track
+55516	70538	objects behind occlusion, so the ship goes behind the waves, the horse goes behind the grass, and you can see in the attention map that this is well reflected.
+70518	72521	You can do more than that, though, even.
+72901	89826	So if you use this feature representation that this model gives you for ImageNet, then as the model gets trained and you represent ImageNet in its feature space, it will cluster the
+89806	117197	Same the images of the same class will cluster them together, which is already pretty cool because it has no labels at training time, but also it will cluster similar classes with each other, which you know speaks to the it kind of speaks to the fact that this might be the next step in unsupervised representation learning for images and
+117177	130718	Specifically, it appears that the features that come out of a network that is trained with dyno are extremely valuable for the kinds of things we, you know, we are interested in when working with natural images.
+131239	134764	So this is image retrieval.
+134744	136727	and classification.
+137348	140754	So this system, let's just switch over to the paper right here.
+141215	145822	The paper is called Emerging Properties in Self-Supervised Vision Transformers.
+145962	148026	It presents a system called Dino.
+148507	161528	It's by Mathilde Caron, Hugo Touvrand, Ishan Misra, Hervé Gégo, Julia Mayral, Piotr Boyanovsky, and Armo Joulin of Facebook Air Research, India, and Sorbonne University.
+161508	170500	You can see a bit more here in these pictures, where again, this is the self-attention.
+170580	179753	So the attention map from a vision transformer that was trained with dyno and no supervision.
+179733	180194	Okay.
+180735	193400	And you can clearly see that in all the cases, the attention falls on what you would consider as a human, the relevant things in the image.
+193440	200273	Now, I have my hypotheses, why this is the case, like completely without labels, and we'll see about that.
+200253	206162	But the representations that come out of the systems are really useful.
+206283	214656	For example, you can fine tune linear classifiers on top of these representations and that gives you really good image classifiers.
+214816	216018	They do that with ImageNet.
+216459	223290	You can use these for image retrieval because similar images are clustered together.
+223270	230499	use even do zero shot classification simply by doing a k nearest neighbor classifier in that feature space.
+231180	238669	And yeah, here you can also do some sort of proto image segmentation by looking at the attention maps.
+238689	242653	You don't even have to do something special to visualize this like you have to do in CNNs.
+243174	250543	The attention map directly gives you the sort of segmentation map or something pretty close to it.
+251283	267598	As an overview, the system dyno is simply a, they push the self-supervised learning and they specifically make the case that self-supervised and visual transformer, they go together really well.
+268258	273503	And they, as I said, the dyno is called self distillation with no labels.
+273783	276185	So that is dyno.
+277006	281290	And yeah, they push various kind of,
+281270	299413	metrics in in self supervised systems or, you know, then linear classifier trained on top of them, for example, 80.1% top one on ImageNet in linear evaluation with the with a visual transformer base.
+299393	303780	A quick overview over the system is right here.
+303840	310890	So two things they say are important next to all the other self-supervised systems.
+311291	315076	First of all, they have a kind of student teacher.
+315116	317139	That's the self-distillation part.
+318021	327595	The teacher is a momentum teacher, and it does this centering, and it also does sharpening in the softmax right here.
+327575	331040	And then there is no contrastive learning.
+331080	341553	There's no negative samples that the sharpening and the centering sort of take care of keeping the model from mode collapse or from collapsing.
+342014	343115	Also, there's no batch norm.
+343536	352688	So if those things don't don't mean anything to you, maybe stay tuned, we'll we'll discuss them in a bit more detail as we go through the paper.
+352668	365128	If you like paper summaries like this and other content, for example, our cooking video, feel free to share this out and tell your friends about it.
+365228	367252	By the way, the cooking video did terribly.
+367492	368113	I don't know why.
+369575	374603	I guess my YouTuber skills are just not on par.
+375284	376587	But yeah, I don't know.
+377949	379992	Yeah, if anyone has any ideas.

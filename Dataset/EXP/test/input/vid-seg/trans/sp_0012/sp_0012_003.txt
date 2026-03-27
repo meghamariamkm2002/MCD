@@ -1,0 +1,58 @@
+And don't you just love these graphics?
+So here's time.
+And apparently it goes in both directions.
+And so does it go like this?
+I think what they mean is just time goes in this direction.
+And you're here and your upstream.
+So your upstream is your network.
+This is your network reading or your pre processing and the downstream, this is the GPU.
+So as you are pre processing things, you, you, um, and this should be, this should be different.
+It should mean, okay, to correct this right here.
+This is idle and this is running.
+So as your upstream processes images, right?
+At the beginning, your GPU is idle, but then as soon as it ships off the first batch of images, your GPU can run.
+Now it's running.
+While you're doing that, your upstream, your network is still reading new images, pre-processing them and so on, but it cannot, is too slow to insert a batch at the time that the GPU is done.
+The time the GPU is done, it's still processing this batch, so the GPU is idle.
+Until here where it finally manages to process that batch and then the GPU is running again I think that would have been a much better graphic But you know so their goal basically is that what you'll have is Right here for example after the batch what you'll do is you scrap this connection You take this and you put it into a smaller buffer
+And the buffer is a repeat buffer.
+So what it does is it simply will repeat.
+the whatever you have in the buffer until something new comes in, right?
+So new data point comes in, you just output that data point again, again, again, again.
+The for the GPU, it's going to feel like these are all new batches and they will continuously come in.
+But it's always the same until the next data point comes in, and then you output that one again, and again, and again, and again.
+Now the actual factor here you can of course tune by hand or you can just say repeat until something else comes in.
+In this paper they have an explicit factor where they say we repeat each data point four times or three times or so on.
+So this is data echoing.
+You basically echo the data point multiple times.
+And this can be done in various places.
+So they experiment with echoing in any of these places right here.
+So they experiment with it right here after reading and decoding, after shuffling.
+No, I think always before shuffling.
+Because if you have a shuffle buffer anyway, they say it makes sense that if you do the echoing, you do your shuffle buffer after your echoing.
+So here, then after augmentation and after batching.
+So they experiment with these three locations in echoing.
+Now, what could be the downturn of something like this?
+The downturn, of course, is that this SGD procedure right here, basically, it relies on the data incoming being an IID sample from your data distribution, right?
+That's how we formulate SGD, is that there's always new data incoming.
+Now, if you just output the same data point all the time, that is like no new information, first of all.
+And second of all, it could bias the SGD update, because it sees the same information over and over, it's going to think that's the whole data set.
+potentially it can make too many steps into the wrong direction.
+That just happens to be the bias in this particular data point.
+So the IID assumption is invalid.
+Now, why do you experiment with this in different locations?
+Because what you expect is that it hurts more or it hurts less the earlier you introduce this.
+So if you introduce echoing right here, so if you echo,
+your data until new data from the network comes in, it's still going to be shuffled differently, right?
+And it's still going to be augmented differently.
+So each time the data point comes out of the echo buffer, it is going to be shuffled and it is going to be augmented in a different way than the last time the same data point came out.
+And this is going to be batched together because you've shuffled differently.
+It's going to be batched together with a different bunch of data points.
+And that means SGD gets new information.
+But if you go onto the very last thing where you just after the batch right here, or you input the echo, that means SGD just gets to see the same batch of data augmented in the same way all the time, right?
+So the
+Of course, where you exactly have to echo, you have to trade this off.
+So you have to trade off the how much you basically violate the IID fresh data assumption against where in your data pipeline is the bottleneck.
+So if your bottleneck is in the data augmentation, it may make little sense to echo before that because your bottleneck is the data augmentation.
+And that being said, if the bottleneck is that you don't have enough GPUs, then it probably doesn't make sense to data echo at all.
+Though their experiments are somehow wonky on this.

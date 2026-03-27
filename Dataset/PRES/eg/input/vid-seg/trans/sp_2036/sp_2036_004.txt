@@ -1,0 +1,2 @@
+Previously, previous works have studied the FCCO problems under a smooth study.
+For example, the method SOX and MSVR achieve simple complexity of epsilon 2-negative-4 and epsilon 2-negative-3 respectively.

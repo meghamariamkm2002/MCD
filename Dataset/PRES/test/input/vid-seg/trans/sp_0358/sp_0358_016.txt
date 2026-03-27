@@ -1,0 +1,1 @@
+We also proved that our delayed LPSPI is able to achieve the same order optimal, worst case regret guarantee with the reduced computational complexity.

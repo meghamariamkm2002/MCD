@@ -1,0 +1,134 @@
+WEBVTT
+
+00:00.031 --> 00:01.833
+the entire algorithm.
+
+00:03.575 --> 00:12.584
+All right, so you take MNIST training and validation data, and you instantiate a bunch of really big networks.
+
+00:12.885 --> 00:13.966
+This is ground truth.
+
+00:14.226 --> 00:18.771
+Okay, you need this, you need this to learn from you instantiate a bunch of really big networks.
+
+00:18.831 --> 00:28.401
+Now, if I draw the graph from before, right, we had this was the performance of the actual
+
+00:28.381 --> 00:35.996
+networks, this comes from here, from this region right here, this is the training data.
+
+00:37.239 --> 00:44.533
+So you instantiate a bunch of these networks, each one, you instantiate in one of them, each one gives rise to a different nonlinearity.
+
+00:44.513 --> 00:51.385
+And you do the full training, ground truth training and evaluation on the full training set and the full validation set.
+
+00:51.686 --> 00:53.529
+And you get validation losses, right?
+
+00:53.930 --> 00:54.871
+For each of these.
+
+00:55.312 --> 00:57.416
+And these are the points right here.
+
+00:57.977 --> 01:03.386
+Now you've, that's the training data for your neural, for your neural architecture search.
+
+01:03.406 --> 01:04.969
+So for your petri dish method.
+
+01:05.776 --> 01:13.708
+What the Petri dish does is it says it extracts the motive and the motive is the thing that you optimize over.
+
+01:13.748 --> 01:21.399
+So as I said, you want to keep that thing in its essence, but you want to reduce everything else.
+
+01:21.419 --> 01:26.787
+So it reduces it instead of from a two layer on 100 wide MLP.
+
+01:26.807 --> 01:30.833
+It reduces that to a two layer single neuron wide MLP.
+
+01:32.375 --> 01:32.475
+Okay.
+
+01:32.455 --> 01:40.712
+And it now this over here is the training data for the procedure that we're going to do now.
+
+01:41.113 --> 01:51.915
+So what it would take is it would take it would take one of these values, it would instantiate and we have that here would instantiate the neural network in the small form.
+
+01:51.895 --> 01:52.476
+of that.
+
+01:53.076 --> 02:05.652
+And now we know that if I train the full data and evaluate, if I train on the full training data and evaluate on the full validation data, I should get this accuracy.
+
+02:06.954 --> 02:18.949
+So I will create, and we're going to look at in a second, I will create training and validation data such that if I train on this training data,
+
+02:18.929 --> 02:34.212
+and then validate on this validation data, I get the same validation loss as if I had trained the big network with the same, you know, the same C parameter on the full training data and evaluate on the full validation data.
+
+02:34.553 --> 02:34.813
+Okay.
+
+02:35.074 --> 02:40.482
+So in this step, I'm optimizing the data here, the training and validation data.
+
+02:40.462 --> 03:00.158
+And now in the second step, once I have this training and validation data that I can basically reproduce this graph right here, then I can go and actually ask my model, okay, now please tell me what happens over here.
+
+03:00.138 --> 03:01.340
+So what am I going to do?
+
+03:01.480 --> 03:19.132
+I'm going to take that, I'm going to instantiate it, I'm going to use my training data that I learned to train it, I'm going to use my validation data that I learned to evaluate it and it's going to give me a number and that number is going to be like close to, hopefully close to do this.
+
+03:19.292 --> 03:22.779
+So this is how we can extrapolate using that method.
+
+03:22.999 --> 03:23.580
+Okay.
+
+03:23.560 --> 03:30.388
+Now, there are a number of assumptions right here, and you can imagine this doesn't work in any situation.
+
+03:30.429 --> 03:40.281
+This works if basically you have to get lucky in that you have to abstract the correct things.
+
+03:40.801 --> 03:43.865
+I said you need to reduce everything else.
+
+03:44.826 --> 03:51.795
+Notably, you see they reduce the 100 layer width to a single neuron-wide MLP.
+
+03:51.775 --> 03:56.004
+and they sort of guess that this doesn't change the fundamental thing.
+
+03:56.365 --> 04:03.801
+But you can also see they leave the two-layer neural network.
+
+04:03.821 --> 04:11.978
+And I can almost guarantee you that they tried this, reducing this to a one-layer neural network, and it did not work.
+
+04:11.958 --> 04:19.426
+And so you have to be sort of very careful of what quantities you abstract and what quantities you don't.
+
+04:19.826 --> 04:25.652
+Because, okay, now you might always think, oh, I can reduce the number of dimensions or channels.
+
+04:25.672 --> 04:27.154
+That's also not always the case.
+
+04:29.056 --> 04:31.298
+So I think that's kind of the crux of the method.
+
+04:31.318 --> 04:39.687
+You have to actually engineer this down compressing of the architecture such that its properties are still kept.
+
+04:39.667 --> 04:45.036
+And yeah, but yeah, in other things.
+

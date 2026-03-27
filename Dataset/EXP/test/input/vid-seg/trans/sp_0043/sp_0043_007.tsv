@@ -1,0 +1,19 @@
+start	end	text
+31	2634	Sorry, the gradient of the log probability.
+3736	21779	Because optimal denoising theory says that for zero mean and Gaussian noise, the optimal denoising function, the optimal denoising function for zero mean Gaussian corruption is this thing right here.
+22419	28367	So it is, if you give me x and you tell me,
+28347	36366	X has been corrupted by zero mean Gaussian noise of size sigma n.
+38017	43083	then the best, and you simply tell me, give me back the original image.
+43143	57340	The best thing I can do is to take what you gave me and add this gradient of the log probability of X, if I can, if I have a model of the log probability, right?
+57360	59502	So that's the best thing I can do.
+61507	64258	And that's the best denoising function.
+64439	66427	And now you have to think a bit of in reverse.
+66507	69559	If we train a denoising auto encoder.
+71007	76173	that is going to approximate this best function that there is.
+77134	80357	So we know that the best possible denoising function is this.
+80697	87725	We train a denoising autoencoder, which in the optimal case is going to converge to the best denoising function.
+88025	94112	So if we then reformulate and we do denoising autoencoder,
+94092	100822	of x minus or x tilde minus x tilde.
+100842	103726	That is divided by the standard deviation.
+105008	105809	Sorry, the variance.
+106651	115003	That is going to give us this quantity right here, the gradient of the log probability.

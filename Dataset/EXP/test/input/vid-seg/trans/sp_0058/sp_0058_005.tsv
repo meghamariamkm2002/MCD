@@ -1,0 +1,142 @@
+start	end	text
+31	4864	So this is all sort of the build up.
+4884	11421	So we've built up that we can't deal with world states like in classic games, we need to deal with info states.
+11923	12644	Okay.
+12665	15492	And now
+16096	24089	with info states, we have a problem, namely, we can't use the alpha zero algorithm again, because it will result in the thing on the right.
+24569	37530	Okay, because if we simply ask our value estimator, our value estimator, even if it's perfect, it won't lead us to the correct strategy, because the value estimator here
+37510	51165	is the wrong tool, if we don't know all of the information, because of this fact that the value of a node doesn't only depend on the downstream actions, but also depends on the upstream strategies.
+52546	55750	Okay, so in an info state, we can't distinguish where we are.
+55790	61476	And that means our value estimations are going to be rather
+61456	64546	useless if we just apply this algorithm straightforward.
+64947	73474	So we need a way to transform a game where we don't know everything to a game where we do know everything.
+73589	77676	It sounds a bit weird, but that's exactly what we're going to do right here.
+78237	81944	So we're going to go from world states to public belief states.
+83066	89878	And the world states are sort of what we would like to have, but don't know.
+90319	95749	The public belief states, those are going to be things that
+95729	97391	everyone knows.
+97872	108487	So if we go from world states to public belief states we're going to be in a situation again where everyone knows everything and therefore it is a perfect information game.
+108607	118341	It's going to be a different game but if we find the solution to this different game we're going to end up with the solution to this to the original game.
+120064	123428	For that they ask you to imagine the following game.
+123689	125331	Consider a game
+125446	129772	in which one of 52 cards is privately dealt to each player.
+130753	134679	Okay, so you get a card, your opponent gets a card.
+135700	136161	One card.
+136501	145834	By the way, 52 for those of you maybe in different parts of the world, that's the number of cards in a standard card deck for like poker and blackjack and so on.
+145814	161848	I know different countries have different things like in Switzerland, you'll very often find 36 cards to a deck, but just that's why because 52 appears like a bit of a weird number in any case so
+161828	166393	On each turn, a player chooses between three actions.
+166753	168615	Fold, call, or raise.
+169075	171578	So these are the sort of standard poker actions.
+171598	180367	You can either throw away your card if you don't like it, you can match the bet of your opponent, or you can put in some money or some more money yourself.
+180827	186573	And at the end, I'm going to guess, yeah, here, eventually the game ends and players receive a reward.
+186773	191498	So let's say whoever has the higher card wins all the money in the middle.
+192389	197758	Now consider a modification of this game in which the players cannot see their private cards.
+199601	203107	Instead, their cards are seen by a referee.
+204068	212001	On the player's turn, they announce the probability they would take each action with each possible private card.
+212352	222885	The referee then samples an action and the player on the player's behalf from the announced probability distribution for the player's true private card.
+223709	225372	This is this is weird.
+225833	229881	So usually you'd look at your card like I have an ace.
+230222	230522	Okay.
+231204	235632	And then you come up with a with a sort of strategy.
+235672	237496	You come up with a policy.
+238037	242305	You want to say I'm going to raise with probability.
+242766	243508	Ace is pretty good.
+243528	246173	So I'm going to raise with probability 0.7.
+246153	253363	I'm going to call with a probability of 0.2 and I'm going to fold with a probability of 0.1.
+254104	260733	So this here, this would be an appropriate policy, let's say for getting an ace at the beginning, right?
+261174	267823	Maybe this goes back and forth a bit and you might change because you might change your belief, you don't know what your opponent has.
+268310	270995	Now the game changes.
+271496	277889	Namely, the game is going to be your opponent gets a card and you get a card and you don't get to look at even your card.
+278390	281296	So now you don't know your opponent's card and you don't know your card.
+281797	288951	But what you can do is you can announce to the referee, you can say okay referee,
+288931	291094	I am going to do this.
+291795	299766	If I have an ace, I'm going to raise with 0.7, call with 0.2, and fold with 0.1.
+300647	304412	If I have a king, I'm going to... Okay, I need a bit more space.
+304672	314245	If I have a king, I'm going to raise with 0.6, I'm going to call with 0.3, and I'm going to fold with 0.1.
+314606	317149	And so on until if I have a two,
+317129	324465	I'm going to raise with probability zero, I'm going to call with probability point one, I'm going to fold almost all of it.
+325126	331560	Okay, so you get to announce your entire strategy to the referee.
+331844	354510	the referee who is a super user or God or choose your favorite deity, sees everything, sees all the cards, the referee will take this entire table that you give it as input, it will go look at your card
+354490	366205	it will see, ah, it's a king or it's an ace and it will then choose the appropriate subtable here for you and then it will sample an action from that.
+366606	377981	So instead of you looking and just producing this table, you produce all the tables for all the things that you could have and then the referee does the same thing for you, okay?
+378001	379603	And so does your opponent.
+379803	380905	And you simply do this.
+381345	384790	So now you see it's a bit of a different game.
+384810	387794	The, the, namely the actions are different.
+387974	397387	So the action is no longer that you produce or sort of policy is no longer, you simply look at what you have and you determine the probabilities.
+397467	403395	Now the policy is you spout out this table for all the things you could have.
+403555	408342	And in each case for all the things you could do, the important thing is,
+409553	419488	So they say, okay, at when the game starts, each player's belief distribution about their private card is uniform random, and also about the opponent's private card, right?
+419869	428001	However, after each action by their referee, players can update their belief distribution about which card they are holding via base rule.
+427981	433888	Likewise, players can update their belief distribution about the opponent's private card through the same operation.
+434589	439215	So it's important to note that this already happened before.
+439635	448967	So even in the original game, you would update your belief about the opponent's private card according to Bayes' rule or whatever rule you want.
+449027	453212	You simply try to infer what they have.
+453192	461051	Now the difference is you also have to infer what you have depending on what actions the referee does.
+461071	470695	So you sort of treat yourself like a player, like a different player, like an opponent player that you don't know the private cards of.
+472801	480691	Thus, the probability that each player is holding each private card is common knowledge among all players at all times in this game.
+481512	484596	So that makes it such that you don't know your opponent's card.
+484616	485497	You don't know your card.
+485517	489442	You have to use sort of the same algorithm to determine what everyone has.
+489942	493327	So that means that all the knowledge is shared.
+493607	494488	Like...
+494468	499601	No one knows the true private cards, but everyone knows the same things.
+500363	503531	So if no one knows, then everyone knows the same.
+503972	507682	It's a bit like probability socialism.
+508283	510469	No one has anything, everyone's equal.
+511462	514086	Sorry, that was a slight right there.
+515128	522861	So the important thing, they say, the critical insight is that these two games are strategically identical.
+523963	529352	And that's very surprising, but if you think a bit about it, it becomes clear that
+529332	532478	Your strategy up here is the same as down here.
+532518	540132	You simply don't fully announce it every time explicitly, but we said anyway that policies are public.
+540653	544160	Therefore, this game here is equivalent to this game.
+544320	545803	These are the same games.
+547647	552015	But the latter contains no private information.
+553632	558858	and is instead a continuous state and action space perfect information game.
+560100	576079	While players do not announce their action probabilities for each possible card in the first game, we assume that all players policies are common knowledge and therefore the probability that a player would choose each action for each possible card is indeed known by all players.
+578472	585240	And this, you can even lift the restriction that you know or don't know the opponent's strategy.
+585280	590806	So you don't actually need to know it, but we'll simply assume that everyone knows everyone's strategy.
+590906	594711	They just don't know their private cards.
+595712	601138	So this is a new game that we've constructed where
+602165	603609	It's a bit different, right?
+603729	606014	There are different states and different actions.
+606155	610185	So the states that we deal with in this game, let's quickly analyze this.
+610425	615297	So we have state and action.
+615530	620157	in the in game one, the state is an info state.
+620478	621700	So this is an info state.
+622301	626648	And the action is going to be a probability distribution over actions.
+626788	628731	So P of each of the actions.
+629893	634060	In this game down here, we have different states and different actions.
+634160	636183	Now the states we're going to get to in a minute.
+636504	637365	But what's the action?
+637385	641031	The action is to send a table of
+641011	647706	all these probability distributions in each case, like in case I have this, in case I have this, in case I have this.
+648308	650032	So that's going to be the action.
+650052	653640	The action is going to be to send this entire table to the referee.
+654963	656607	Now, what are the states?
+657278	658620	This is this next section.
+659080	667211	We refer to the first game as the discrete representation, that's the top game, and the second game as the belief representation.
+667892	684535	In the example above, a history in the belief representation, which we refer to as a public belief state, is described by a sequence of public observations and 104 probabilities, the probability that each player holds each of the 52 possible private cards.
+684515	686157	Okay.
+686358	687960	So this is going to be the state.
+688020	690203	It's going to be called a public belief state.
+690864	696211	And it's described by the sequence of public observations and 104 probabilities.
+696632	707507	So the probabilities that probability that you have an ace, you have a king, you have a queen, and so on, like the distribution over your cards and this distribution of your opponent's cards.
+707868	709290	So it's simply the info.
+709550	711653	It's like an info state.
+711869	714633	of someone that just observes the game.
+715214	719801	That is going to be the public belief state.
+720743	729777	Likewise, an action is described by 156 probabilities, one per discrete action per private card.
+730550	736176	In general terms, the PBS is described by a joint probability distribution over the agent's possible info states.
+736757	740301	You see, it's a distribution over info states.
+741121	751633	So the state is a distribution for each info state, or they also call this a public belief state.
+753495	758160	So now we've gone from a game
+758360	763225	that is imperfect information to a game that is perfect information.
+763325	763565	Okay.
+763806	769512	This is, this is, this has unknowns, like many, like, oh, this is different for each player.
+770012	772675	But here, all the information is known.
+773155	774617	And these two games are equivalent.
+775218	777480	It's just that you can see already the problem.
+777900	785228	Like the states are way bigger because it's a distribution over each state that could be.
+785208	787361	And the actions are also way bigger.
+787522	795049	Namely, it's one policy for each state that you could be in.

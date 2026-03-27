@@ -1,0 +1,38 @@
+WEBVTT
+
+00:00.031 --> 00:08.988
+The last experiment they do is these linear probes, which where they just go and they just build classifiers from different parts of the network.
+
+00:09.690 --> 00:14.880
+And you can see right here that what is predicted and how well they work.
+
+00:14.900 --> 00:18.968
+So each bar here is going to be the difference of performance.
+
+00:18.988 --> 00:22.815
+So this is differential performance of diagnostic classifier by layer.
+
+00:22.795 --> 00:25.602
+sorted by task order in figure eight.
+
+00:26.284 --> 00:31.316
+Each plot shows the change in performance between the given layer and the previous layer.
+
+00:33.101 --> 00:40.399
+So a bar up shows it's performing better than the previous layer, a bar down shows it's performing worse than the previous layer.
+
+00:40.379 --> 00:45.750
+You see right here that these are the secondary structures right here.
+
+00:46.371 --> 00:55.309
+You can see that there is a lot of performance in the earlier layers right here and not that high performance in the later layers.
+
+00:55.730 --> 00:59.518
+Whereas for the tertiary structures, the binding site and the contact,
+
+00:59.498 --> 01:19.380
+You can see that there is a bit of performance in places, but it sort of tends to be more towards the middle, certainly more towards the middle of the end of the network than the secondary structures, which sort of makes sense with our hypothesis.
+
+01:19.360 --> 01:40.035
+You can also see this here, where they show the percent of attention focused as a function of layer, and the red is the center of mass, and you can see that as the secondary structure, their center of mass is at a lower layer in general than the tertiary.
+

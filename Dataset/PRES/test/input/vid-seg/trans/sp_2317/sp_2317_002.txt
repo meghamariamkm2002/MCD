@@ -1,0 +1,7 @@
+It has been a long history of using IRN to do 6 modeling.
+due to inculing dual-pecs of RNNs, such as the lack of parallelism and the limited capability in modeling long-term dependencies.
+It has been gradually replaced by transformers in the deep learning era.
+However, compared with transformers, RNNs have their own advantages.
+For example, they have a constant inference speed with computational complexity of ODH, where D is the feature dimension and H is the height dimension.
+They also have a linear training computational complexity with respect to the sequence length.
+And they can handle variable length sequences, which means that they initially have length determination capability.

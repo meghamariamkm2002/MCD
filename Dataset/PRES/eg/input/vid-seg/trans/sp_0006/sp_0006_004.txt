@@ -1,0 +1,8 @@
+Here is the pipeline of our work.
+As shown in the figure A, we first divide the input space into polyhedrons with oblique decision tree.
+A polyhedron is a subspace whose boundaries are hyperplanes for each sample.
+As shown in the figure B, we build an attention model to calculate each polyhedron's attention on the sample with a novel
+attention mechanism, then attention scores are regarded as weights to calculate the trainable value functions weighted summation, which is output of the polyhedron attention module.
+For the fitted polyhedron attention module, we propose an interpretable
+framework to extract the contribution of different interactions on model prediction.
+In the following presentation, I will first introduce our attention mechanism and then I will briefly introduce our interpretation framework.

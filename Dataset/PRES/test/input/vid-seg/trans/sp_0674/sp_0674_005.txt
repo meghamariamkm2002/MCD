@@ -1,0 +1,1 @@
+Furthermore, by using the value decomposition and policy decomposition formula, we can get relationship among local policy, local behavior policy, local Q value function, and local state value function.

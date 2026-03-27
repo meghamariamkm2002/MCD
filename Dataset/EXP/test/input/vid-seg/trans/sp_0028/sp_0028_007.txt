@@ -1,0 +1,34 @@
+pretty cool.
+And here they go into experiments.
+So they show that their average reward in these games is kind of noisy, but it improves over time, especially also if you look at the average Q of the max action, it continuously goes up during training.
+So this is really a successful training, especially this investigative experiment they did right here, where you can see one example of how the Q function, what the Q function says.
+Remember, the Q function gives us the, whatever the future reward is going to be.
+Okay.
+And here we always look at the max action.
+So in this first frame, you can see this enemy had just appeared.
+And you can see that from here to here, there's a spike in the queue value because you can shoot enemies.
+And that gives you reward.
+The A, this is already, so the enemy isn't shot yet by the simple appearance of the enemy, the queue function also like already jumps in value because it anticipates a future reward.
+Then the agent shoots, and you can see here the shot is about to land at the enemy, and that's when we're here.
+So this, now the Q function is very sure that in the future there's going to be a high reward.
+But then once the enemy is shot,
+then there is no more enemy to be shot.
+And the Q function drops drastically because it doesn't see a future reward as being as likely as at the beginning when there was this new enemy to be shot.
+So that's, you know, pretty interesting.
+And you can see pretty directly that there is a correlation between what's happening in the game and this learned Q function.
+If you compare this to other methods and they really say that these other methods, most of them have some kind of very special feature engineered, like, so their method just takes RGB, but the other methods recognize that, oh, in these Atari games, most of the time, you know, there are unique colors for the things.
+So, you know, the enemies are all like green, like, and they make unique channels for those green enemies, or they even have handcrafted object detectors.
+and tell the algorithm where these objects are.
+So the comparison really isn't fair, yet the DQN outperformed these others like almost everywhere.
+And they also evaluated against a human.
+And, um, I don't actually know, they just say an expert human.
+I have no idea.
+Maybe just put David Silver in front of the computer is like, okay, David, here you go.
+And you can, you can, uh, like what happened in Pong?
+Like, come on, David.
+But you can see there were still problems where the humans were vastly superior and they mainly attribute this to the difficulty of the problem.
+And it could also be because, for example, in breakout, there's this kind of the most famous example where the agent kind of figured out
+this strategy of shooting the ball, um, shooting like a hole into this wall that you have to break and then shooting the ball up here.
+So the ball bounces up and down and basically you win from then on, you just watch the ball go and the agent does nothing anymore.
+So this deep queue networks figured out that strategy and you need to pull it off very precisely, which of course the, um, the computer can do very well.
+So it sometimes achieves

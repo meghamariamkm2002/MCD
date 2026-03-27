@@ -1,0 +1,437 @@
+[
+  {
+    "id": "002",
+    "title": "sp_0503_002",
+    "filename": "Videos/sp_0503.mp4",
+    "paper_filename": "Papers/sp_0503.pdf",
+    "type": "slides",
+    "relevant_segments": [
+      {
+        "para_id": "p17",
+        "section_heading": "2.1 Robust Gromov-Wasserstein",
+        "text": "The Gromov-Wasserstein (GW) distance aims at matching distributions defined in different metric spaces. It is defined as follows:",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p18",
+        "section_heading": "2.1 Robust Gromov-Wasserstein",
+        "text": "Definition 2.1 (Gromov-Wasserstein). Suppose that we are given two unregistered complete separable metric spaces (X, dX), (Y, dY ) accompanied with Borel probability measures \u00b5, \u03bd respectively. The GW distance between \u00b5 and \u03bd is defined as",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p19",
+        "section_heading": "2.1 Robust Gromov-Wasserstein",
+        "text": "where \u03a0(\u00b5, \u03bd) is the set of all probability measures on X \u00d7 Y with \u00b5 and \u03bd as marginals.",
+        "seg_type": "par"
+      },
+      {
+        "box": [
+          378.3286437988281,
+          1027.870361328125,
+          841.6793823242188,
+          1079.8321533203125
+        ],
+        "text": [
+          "\\operatorname* { i n f } _ { \\pi \\in \\Pi ( \\mu , \\nu ) } \\iint | d \\chi ( x , x ^ { \\prime } ) - d \\chi ( y , y ^ { \\prime } ) | ^ { 2 } d \\pi ( x , y ) d \\pi ( x ^ { \\prime } , y ^ { \\prime } ) ,"
+        ],
+        "page": "sp_0503_page_0003",
+        "id": "sp_0503_page_0003-1",
+        "seg_type": "eq"
+      }
+    ]
+  },
+  {
+    "id": "003",
+    "title": "sp_0503_003",
+    "filename": "Videos/sp_0503.mp4",
+    "paper_filename": "Papers/sp_0503.pdf",
+    "type": "slides",
+    "relevant_segments": []
+  },
+  {
+    "id": "004",
+    "title": "sp_0503_004",
+    "filename": "Videos/sp_0503.mp4",
+    "paper_filename": "Papers/sp_0503.pdf",
+    "type": "slides",
+    "relevant_segments": [
+      {
+        "para_id": "p21",
+        "section_heading": "2.1 Robust Gromov-Wasserstein",
+        "text": "Definition 2.2 (Robust Gromov-Wasserstein). Suppose that we are given two unregistered complete separable metric spaces (X, dX), (Y, dY ) accompanied with Borel probability measures \u00b5, \u03bd respectively. The Robust GW between \u00b5 and \u03bd is defined as",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p22",
+        "section_heading": "2.1 Robust Gromov-Wasserstein",
+        "text": "where F (\u03b1, \u03b2) =",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p23",
+        "section_heading": "2.1 Robust Gromov-Wasserstein",
+        "text": "and (\u03c01, \u03c02) are two marginals of the joint distribution \u03c0, defined by \u03c01(A) = \u03c0(A \u00d7 Y ) for any Borel set A \u2282 X and \u03c02(B) = \u03c0(X \u00d7B) for any Borel set B \u2282 Y .",
+        "seg_type": "par"
+      }
+    ]
+  },
+  {
+    "id": "005",
+    "title": "sp_0503_005",
+    "filename": "Videos/sp_0503.mp4",
+    "paper_filename": "Papers/sp_0503.pdf",
+    "type": "slides",
+    "relevant_segments": []
+  },
+  {
+    "id": "006",
+    "title": "sp_0503_006",
+    "filename": "Videos/sp_0503.mp4",
+    "paper_filename": "Papers/sp_0503.pdf",
+    "type": "slides",
+    "relevant_segments": [
+      {
+        "para_id": "p29",
+        "section_heading": "2.2 Robustness Guarantees",
+        "text": "Theorem 2.3. Let \u00b5 and \u03bd be two distributions corrupted by fractions \u03f51 and \u03f52 of outliers, respectively. Specifically, \u00b5 is defined as (1\u2212 \u03f51)\u00b5c + \u03f51\u00b5a, and \u03bd is defined as (1\u2212 \u03f52)\u03bdc + \u03f52\u03bda, where \u00b5c and \u03bdc represent the clean distributions, and \u00b5a and \u03bda represent the outlier distributions. Then,",
+        "seg_type": "par"
+      },
+      {
+        "box": [
+          301.8070373535156,
+          1219.4605712890625,
+          923.5430908203125,
+          1334.8162841796875
+        ],
+        "text": [
+          "\\begin{array} { r l } & { \\mathbf { G } \\mathbf { W } _ { \\rho _ { 1 } , \\rho _ { 2 } } ^ { \\mathrm { r o b } } ( \\mu , \\nu ) \\leq \\mathbf { G } \\mathbf { W } ( \\mu _ { c } , \\nu _ { c } ) + \\operatorname* { m a x } \\left( 0 , \\epsilon _ { 1 } - \\frac { \\rho _ { 1 } } { d \\mathbf { K } \\mathbf { L } \\left( \\mu _ { a } , \\mu _ { c } \\right) } \\right) \\tau _ { 1 } d _ { \\mathbf { K L } } ( \\mu _ { c } , \\mu _ { a } ) } \\\\ & { \\qquad \\qquad \\qquad + \\operatorname* { m a x } \\left( 0 , \\epsilon _ { 2 } - \\frac { \\rho _ { 2 } } { d _ { \\mathbf { K L } } \\left( \\nu _ { a } , \\nu _ { c } \\right) } \\right) \\tau _ { 2 } d _ { \\mathbf { K L } } ( \\nu _ { c } , \\nu _ { a } ) . } \\end{array}"
+        ],
+        "page": "sp_0503_page_0004",
+        "id": "sp_0503_page_0004-1",
+        "seg_type": "eq"
+      }
+    ]
+  },
+  {
+    "id": "007",
+    "title": "sp_0503_007",
+    "filename": "Videos/sp_0503.mp4",
+    "paper_filename": "Papers/sp_0503.pdf",
+    "type": "slides",
+    "relevant_segments": [
+      {
+        "para_id": "p33",
+        "section_heading": "3.1 Problem Setup",
+        "text": "To start with our algorithmic developments, we consider the discrete case for simplicity and practicality, where \u00b5 and \u03bd are two empirical distributions, i.e., \u00b5 = \u2211n i=1 \u00b5i\u03b4xi and \u03bd = \u2211m j=1 \u03bdj\u03b4yj . Denote D \u2208 Sn, Dik = dX(xi, xk) and D\u0304 \u2208 Sm and D\u0304jl = dY (yj , yl). We construct a 4-way tensor as follows:",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p34",
+        "section_heading": "3.1 Problem Setup",
+        "text": "We define the tensor-matrix multiplication as",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p35",
+        "section_heading": "3.1 Problem Setup",
+        "text": "Then, the robust GW admits the following reformulation:",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p36",
+        "section_heading": "3.1 Problem Setup",
+        "text": "Here, \u03c01 = \u03c01m and \u03c02 = \u03c0T1n.",
+        "seg_type": "par"
+      },
+      {
+        "box": [
+          461.2877502441406,
+          825.4122314453125,
+          762.0787963867188,
+          908.7510375976562
+        ],
+        "text": [
+          "( \\mathcal { L } \\otimes T ) _ { i j } : = \\left( \\sum _ { k , \\ell } \\mathcal { L } _ { i , j , k , \\ell } T _ { k , \\ell } \\right) _ { i , j } ."
+        ],
+        "page": "sp_0503_page_0005",
+        "id": "sp_0503_page_0005-1",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          410.73175048828125,
+          742.919189453125,
+          811.3792114257812,
+          789.7001953125
+        ],
+        "text": [
+          "\\mathcal { L } ( D , \\bar { D } ) : = \\left( \\left| d _ { X } \\left( x _ { i } , x _ { k } \\right) - d _ { Y } \\left( y _ { j } , y _ { l } \\right) \\right| ^ { 2 } \\right) _ { i , j , k , l } ."
+        ],
+        "page": "sp_0503_page_0005",
+        "id": "sp_0503_page_0005-2",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          230.39639282226562,
+          1202.5582275390625,
+          975.0962524414062,
+          1419.268798828125
+        ],
+        "text": [
+          "\\begin{array} { c } { { \\displaystyle { \\pi ^ { k + 1 } = \\arg \\operatorname* { m i n } _ { \\tau \\geq 0 } \\left\\{ \\left( \\mathcal { L } ( D , \\bar { D } ) \\otimes \\pi ^ { k } , \\pi \\right) + \\tau _ { 1 } d _ { \\mathbf { k } \\mathbf { L } } ( \\pi _ { 1 } , \\alpha ^ { k } ) + \\tau _ { 2 } d _ { \\mathbf { k } \\mathbf { L } } ( \\pi _ { 2 } , \\beta ^ { k } ) + \\frac { 1 } { t _ { k } } d _ { \\mathbf { k } \\mathbf { L } } ( \\pi , \\pi ^ { k } ) \\right\\} , } } } \\\\ { { { \\displaystyle { \\qquad \\qquad \\qquad \\qquad \\quad \\mathrm { ~ a r g ~ m i n ~ } \\left\\{ d _ { \\mathbf { k } \\mathbf { L } } ( \\pi _ { 1 } ^ { k + 1 } , \\alpha ) + \\frac { 1 } { c _ { k } } d _ { \\mathbf { k } \\mathbf { L } } ( \\alpha ^ { k } , \\alpha ) \\right\\} , } } } } \\\\ { { { \\displaystyle { \\qquad \\qquad \\qquad \\quad d _ { \\mathbf { k } \\mathbf { L } } ( \\varepsilon , \\Delta ) \\leq \\rho _ { 1 } } \\left\\{ d _ { \\mathbf { k } \\mathbf { L } } ( \\pi _ { 2 } ^ { k + 1 } , \\beta ) + \\frac { 1 } { r _ { k } } d _ { \\mathbf { k } \\mathbf { L } } ( \\beta ^ { k } , \\beta ) \\right\\} , } } } \\\\ { { { \\displaystyle { \\qquad \\qquad \\qquad \\quad \\alpha ^ { k + 1 } = \\operatorname* { m a x } _ { ( \\mathbf { k } , \\delta ) \\leq \\rho _ { 2 } } \\left\\{ d _ { \\mathbf { k } \\mathbf { L } } ( \\pi _ { 2 } ^ { k + 1 } , \\beta ) + \\frac { 1 } { r _ { k } } d _ { \\mathbf { k } \\mathbf { L } } ( \\beta ^ { k } , \\beta ) \\right\\} } . } } } \\end{array}"
+        ],
+        "page": "sp_0503_page_0005",
+        "id": "sp_0503_page_0005-5",
+        "seg_type": "eq"
+      }
+    ]
+  },
+  {
+    "id": "008",
+    "title": "sp_0503_008",
+    "filename": "Videos/sp_0503.mp4",
+    "paper_filename": "Papers/sp_0503.pdf",
+    "type": "slides",
+    "relevant_segments": [
+      {
+        "para_id": "p37",
+        "section_heading": "3.2 Bregman Proximal Alternating Linearized Minimization (BPALM) Method",
+        "text": "As Problem (3) is non-convex and involves three variables, we employ BPALM [5, 2] to solve it. By choosing the KL divergence as Bregman distance, the updates of this algorithm are given by:",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p38",
+        "section_heading": "3.2 Bregman Proximal Alternating Linearized Minimization (BPALM) Method",
+        "text": "Here, tk, ck, and rk are stepsizes in BPALM.",
+        "seg_type": "par"
+      },
+      {
+        "box": [
+          381.874755859375,
+          949.6101684570312,
+          843.9811401367188,
+          1051.1566162109375
+        ],
+        "text": [
+          "\\begin{array} { r l } & { \\underset { \\pi , \\alpha , \\beta } { \\mathrm { m i n } } \\; \\left\\langle \\mathcal { L } ( D , \\bar { D } ) \\otimes \\pi , \\pi \\right\\rangle + \\tau _ { 1 } d _ { \\mathbf { K L } } ( \\pi _ { 1 } , \\alpha ) + \\tau _ { 2 } d _ { \\mathbf { K L } } ( \\pi _ { 2 } , \\beta ) } \\\\ & { \\quad \\mathrm { s . t . } \\; d _ { \\mathbf { K L } } ( \\mu , \\alpha ) \\leq \\rho _ { 1 } , d _ { \\mathbf { K L } } ( \\nu , \\beta ) \\leq \\rho _ { 2 } , } \\\\ & { \\qquad \\quad \\alpha \\in \\Delta ^ { n } , \\beta \\in \\Delta ^ { m } , \\pi \\geq 0 . } \\end{array}"
+        ],
+        "page": "sp_0503_page_0005",
+        "id": "sp_0503_page_0005-3",
+        "seg_type": "eq"
+      }
+    ]
+  },
+  {
+    "id": "009",
+    "title": "sp_0503_009",
+    "filename": "Videos/sp_0503.mp4",
+    "paper_filename": "Papers/sp_0503.pdf",
+    "type": "slides",
+    "relevant_segments": [
+      {
+        "caption": "Table 1: Comparison of the average matching accuracy (%) and wall-clock time (seconds) on subgraph alignment of 50% subgraph on datasets Synthetic, Proteins and Enzymes and Hit@1 and Hit@10 of dataset Douban.",
+        "captionBoundary": {
+          "x1": 107.69100189208984,
+          "x2": 504.00347900390625,
+          "y1": 560.4415283203125,
+          "y2": 588.261962890625
+        },
+        "figType": "Table",
+        "imageText": [
+          "RGW",
+          "94.44",
+          "361.44",
+          "53.30",
+          "834.76",
+          "69.38",
+          "466.91",
+          "63.43",
+          "293.84",
+          "75.58",
+          "96.24",
+          "srGW",
+          "1.60",
+          "152.01",
+          "21.30",
+          "63.00",
+          "12.08",
+          "172.48",
+          "24.13",
+          "19.68",
+          "4.03",
+          "11.54",
+          "RGWD",
+          "16.68",
+          "955.40",
+          "27.94",
+          "4396.41",
+          "59.69",
+          "3586.56",
+          "30.35",
+          "2629.00",
+          "4.11",
+          "16.46",
+          "UGW",
+          "89.88",
+          "176.24",
+          "25.72",
+          "4026.93",
+          "67.30",
+          "1853.82",
+          "43.73",
+          "1046.29",
+          "0.09",
+          "0.72",
+          "PGW",
+          "2.28",
+          "479.99",
+          "13.94",
+          "544.79",
+          "20.08",
+          "348.44",
+          "11.43",
+          "212.09",
+          "18.24",
+          "37.03",
+          "eBPG",
+          "3.71",
+          "85.31",
+          "19.88",
+          "1975.12",
+          "32.15",
+          "9645.05",
+          "21.58",
+          "1219.81",
+          "0.08",
+          "0.53",
+          "BPG",
+          "15.41",
+          "24.67",
+          "29.30",
+          "118.26",
+          "61.26",
+          "80.39",
+          "32.49",
+          "70.42",
+          "72.72",
+          "92.39",
+          "BAPG",
+          "48.89",
+          "27.95",
+          "30.98",
+          "122.13",
+          "66.84",
+          "16.49",
+          "35.64",
+          "16.41",
+          "72.18",
+          "92.58",
+          "FW",
+          "2.27",
+          "18.39",
+          "16.00",
+          "27.05",
+          "26.15",
+          "60.34",
+          "15.47",
+          "9.57",
+          "17.97",
+          "51.07",
+          "SpecGW",
+          "1.78",
+          "3.72",
+          "12.06",
+          "11.07",
+          "42.64",
+          "12.85",
+          "10.69",
+          "3.96",
+          "2.68",
+          "9.83",
+          "Method",
+          "Synthetic",
+          "Proteins-1",
+          "Proteins-2",
+          "Enzymes",
+          "Douban",
+          "Acc",
+          "Time",
+          "Acc",
+          "Time",
+          "Acc",
+          "Time",
+          "Acc",
+          "Time",
+          "Hit@1",
+          "Hit@10"
+        ],
+        "name": "1",
+        "page": 7,
+        "regionBoundary": {
+          "x1": 109.92,
+          "x2": 502.08,
+          "y1": 591.84,
+          "y2": 728.16
+        },
+        "renderDpi": 150,
+        "renderURL": "/Users/meghamariam/PROJECTS/PROJ1_Dataset/PROJ1_Crossmodal-Traversal/DATASET/Presentation/pap-seg/fig/sp_0503/sp_0503-Table1-1.png",
+        "id": "sp_0503-Table1-1",
+        "seg_type": "tab"
+      },
+      {
+        "para_id": "p52",
+        "section_heading": "4.2 Subgraph Alignment",
+        "text": "The subgraph alignment problem, which involves determining the isomorphism between a query graph and a subgraph of a larger target graph, has been extensively studied [16, 20]. While the",
+        "seg_type": "par"
+      }
+    ]
+  },
+  {
+    "id": "010",
+    "title": "sp_0503_010",
+    "filename": "Videos/sp_0503.mp4",
+    "paper_filename": "Papers/sp_0503.pdf",
+    "type": "slides",
+    "relevant_segments": [
+      {
+        "caption": "Figure 3: (a): 3D shape geometry of the source and target; (b)-(e): visualization of ground truth, initial point obtained from the partial functional map, and the matching results of PGW and RGW.",
+        "captionBoundary": {
+          "x1": 108.0,
+          "x2": 505.247314453125,
+          "y1": 265.6755065917969,
+          "y2": 282.5870056152344
+        },
+        "figType": "Figure",
+        "imageText": [
+          "(e)",
+          "Robust",
+          "GW(d)",
+          "Partial",
+          "GW(c)",
+          "Partial",
+          "Functional",
+          "Map",
+          "(a)",
+          "Shape",
+          "Geometry",
+          "(b)",
+          "Ground",
+          "Truth"
+        ],
+        "name": "3",
+        "page": 7,
+        "regionBoundary": {
+          "x1": 130.56,
+          "x2": 473.28,
+          "y1": 72.96,
+          "y2": 252.48
+        },
+        "renderDpi": 150,
+        "renderURL": "/Users/meghamariam/PROJECTS/PROJ1_Dataset/PROJ1_Crossmodal-Traversal/DATASET/Presentation/pap-seg/fig/sp_0503/sp_0503-Figure3-1.png",
+        "id": "sp_0503-Figure3-1",
+        "seg_type": "fig"
+      }
+    ]
+  }
+]

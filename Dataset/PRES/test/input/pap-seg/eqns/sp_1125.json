@@ -1,0 +1,80 @@
+{
+  "sp_1125_page_0004": {
+    "bboxes": [
+      {
+        "box": [
+          454.6003112792969,
+          791.2562255859375,
+          769.5389404296875,
+          823.89892578125
+        ],
+        "text": [
+          "\\nabla _ { z _ { j } } ^ { \\mathrm { p o s } } \\left( \\mathcal { L } \\right) = \\sigma _ { j } , \\quad \\nabla _ { z _ { i \\neq j } } ^ { \\mathrm { n e g } } \\left( \\mathcal { L } \\right) = \\sigma _ { i } - 1 ."
+        ],
+        "page": "sp_1125_page_0004",
+        "id": "sp_1125_page_0004-1",
+        "seg_type": "eq"
+      }
+    ]
+  },
+  "sp_1125_page_0005": {
+    "bboxes": [
+      {
+        "box": [
+          369.0041198730469,
+          630.9653930664062,
+          854.0134887695312,
+          701.8599853515625
+        ],
+        "text": [
+          "u _ { j } ( t ) = K _ { P } e _ { j } ( t ) + K _ { I } \\sum _ { j = 0 } ^ { t } e _ { j } ( t ) + K _ { D } ( e _ { j } ( t ) - e _ { j } ( t - 1 ) ) ,"
+        ],
+        "page": "sp_1125_page_0005",
+        "id": "sp_1125_page_0005-1",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          411.3591003417969,
+          343.2189025878906,
+          812.08251953125,
+          411.67431640625
+        ],
+        "text": [
+          "\\overset { \\circ } { E } ( z _ { j } ( t ) ) = \\sum _ { i = 1 } ^ { M - 1 } ( E ( \\sigma _ { i } ( t ) ) - 1 ) - E ( \\sigma _ { j } ( t ) ) = 0 ,"
+        ],
+        "page": "sp_1125_page_0005",
+        "id": "sp_1125_page_0005-2",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          476.0085144042969,
+          1250.52978515625,
+          745.2529907226562,
+          1317.658447265625
+        ],
+        "text": [
+          "\\left\\{ \\nabla _ { z _ { j } } ^ { \\mathrm { p o s } ^ { \\prime } } \\left( \\mathcal { L } ^ { t } \\right) = \\beta _ { j } ^ { \\mathrm { p o s } } ( t ) \\nabla _ { z _ { j } } ^ { \\mathrm { p o s } } \\left( \\mathcal { L } ^ { t } \\right) , \\right."
+        ],
+        "page": "sp_1125_page_0005",
+        "id": "sp_1125_page_0005-3",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          424.7867126464844,
+          1183.1748046875,
+          797.784912109375,
+          1214.29248046875
+        ],
+        "text": [
+          "\\beta _ { j } = \\mathbb { I } _ { r > \\mathcal { P } _ { c } [ j ] } \\cdot [ \\beta _ { j } ^ { p o s } , \\beta _ { j } ^ { n e g } ] + \\mathbb { I } _ { r \\leq \\mathcal { P } _ { c } [ j ] } \\cdot [ 1 , 1 ] ,"
+        ],
+        "page": "sp_1125_page_0005",
+        "id": "sp_1125_page_0005-4",
+        "seg_type": "eq"
+      }
+    ]
+  }
+}

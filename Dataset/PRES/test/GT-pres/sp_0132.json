@@ -1,0 +1,424 @@
+[
+  {
+    "id": "002",
+    "title": "sp_0132_002",
+    "filename": "Videos/sp_0132.mp4",
+    "paper_filename": "Papers/sp_0132.pdf",
+    "type": "slides",
+    "relevant_segments": [
+      {
+        "caption": "Figure 1: Model\u2019s prediction (pred.) and reference ground truth (ref.). Left: 2D Kolmogorov flow on 256\u00d7 256 grid; Right: 3D smoke buoyancy on 64\u00d7 64\u00d7 64 grid (zOy cross-section is shown).",
+        "captionBoundary": {
+          "x1": 107.7509994506836,
+          "x2": 503.9985656738281,
+          "y1": 186.22354125976562,
+          "y2": 203.135009765625
+        },
+        "figType": "Figure",
+        "imageText": [
+          "Time",
+          "Ref.",
+          "Pred."
+        ],
+        "name": "1",
+        "page": 1,
+        "regionBoundary": {
+          "x1": 108.0,
+          "x2": 508.32,
+          "y1": 72.96,
+          "y2": 174.23999999999998
+        },
+        "renderDpi": 150,
+        "renderURL": "/Users/meghamariam/PROJECTS/PROJ1_Dataset/PROJ1_Crossmodal-Traversal/DATASET/Presentation/pap-seg/fig/sp_0132/sp_0132-Figure1-1.png",
+        "id": "sp_0132-Figure1-1",
+        "seg_type": "fig"
+      },
+      {
+        "para_id": "p5",
+        "section_heading": "2 Related works",
+        "text": "Neural PDE solver Based on the emphases of model design, neural PDE solvers can generally be divided into the following groups. The first group of work focuses on using neural networks with mesh-specific architecture design (such as convolutional layers for uniform mesh, or a graph layer for irregular mesh) to learn the spatial and/or temporal correlation of the PDE data [10, 38, 48, 64, 65, 75, 88, 91, 92, 100, 104, 109, 114, 116]. With input-target data collected, the training process can be conducted without the knowledge of underlying PDEs. This can be appealing when the physics of the system is unknown or partially known, such as large-scale climate modeling [61, 83, 90, 97]. The second group of work, namely the Physics-Informed Neural Networks (PINNs)[15, 40, 42, 52, 77, 87, 96, 106, 127], treat neural networks as a parametrization of the underlying solution function. PINNs incorporate the knowledge of the governing equations into the construction of loss function, which includes the residual of the PDE, the consistency with given boundary condition and initial condition. Unlike the previous group of works, PINNs do not necessarily need inputtarget data and can be trained solely based on equation loss. The third group of works, often referred to as the neural operator, focuses on learning a mapping between the function spaces[5, 8, 9, 16, 36, 43, 50, 54, 60, 68, 70, 71, 76, 78, 86]. Neural operator has the generalization capability within a family of PDE and can potentially be adapted to different discretization without retraining. DeepONet [76] proposes a practical realization of the universal operator approximation theorem [21]. Concurrent work graph neural operator [69] proposes a learnable kernel integral to approximate the solution operator of parametric PDEs and the follow-up work Fourier Neural Operator (FNO) [68] achieves excelling accuracy and efficiency on certain types of problems. Broadly speaking, the",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p35",
+        "section_heading": "4.1 Benchmark problems",
+        "text": "2D Kolmogorov flow The first example is 2D Kolmogorov flow governed by incompressible Navier-Stokes equation with a periodic boundary condition. The Reynolds number Re determines how turbulent the system will be. We adopt the setting of forced turbulence following Kochkov et al. [56] and generate the data by using the pseudo-spectral method to simulate fluid flow with Reynolds number Re = 1000. The objective is to predict the vorticity \u03c9 of the flow field within an interval [t0, t0 + T ], where T = 1s and t0 is a random starting point in the sequence. We use a spatial grid of 256\u00d7 256 and temporal discretization of \u2206t = 0.0625s (therefore 1s corresponds to 16 frames) to train and evaluate the model.",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p38",
+        "section_heading": "4.1 Benchmark problems",
+        "text": "2D Darcy flow In addition to the above time-depedendent systems, the fourth example is 2D steady-state problem from Li et al. [68]. Given the diffusion coefficient, the model predicts the steady-state flow field. The boundary condition is also Dirichlet so we adopt settings for all models similar to the 3D smoke problem.",
+        "seg_type": "par"
+      }
+    ]
+  },
+  {
+    "id": "003",
+    "title": "sp_0132_003",
+    "filename": "Videos/sp_0132.mp4",
+    "paper_filename": "Papers/sp_0132.pdf",
+    "type": "slides",
+    "relevant_segments": [
+      {
+        "para_id": "p2",
+        "section_heading": "1 Introduction",
+        "text": "Various physics processes are modeled by partial differential equations (PDEs), from the interaction between atoms in molecular systems to large-scale cosmological phenomena. Solving PDEs advances the understanding of complex physical phenomena, enabling people to make accurate predictions, and make informed decisions across a wide range of scientific and engineering disciplines. Numerical solvers provide a practical way to simulate and predict PDEs since many PDEs are often difficult to solve analytically. Most numerical solvers divide the continuous domain into a discretized grid and reduce the continuous differential equations to algebraic equations via methods like finite difference/element/volume methods or spectral method. Despite the theoretical guarantees behind them, their practical realization of specific problems can pose challenges that require careful expertise to overcome, such as a sufficient understanding of the underlying physics, or a fine-tailored mesh that resolves the necessary spatio-temporal scales. The interest in developing user-friendly and efficient PDE solvers, along with the success of deep learning models in many other areas [13, 44, 51, 103], has facilitated the emergence of neural-network-based PDE solvers, where the neural network can be used to parameterize the solution function of the target equation [96], or to approximate the solution operator[69, 76]. Compared to many numerical solvers, neural PDE solvers appear to be more tolerant with coarse discretization [104], and can be applied without explicit meshing [96]. In addition, knowing the underlying equations are not strictly necessary for neural PDE solvers, which gives them the potential to simplify and accelerate the process of physics simulation based on PDEs.",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p15",
+        "section_heading": "3.1 Attention mechanism",
+        "text": "In this work, we continue on adopting the learnable kernel integral viewpoint of attention and view each channel of the hidden feature map as the sampling of a specific function on the discretization grid. Given query/key/value matrix {Q,K, V } \u2208 RN\u00d7d, their row vectors: qi/ki/vi, correspond to the sampling of a set of functions {ql(\u00b7), kl(\u00b7), vl(\u00b7)}dl=1 on grid point xi, where {xi}Ni=1 discretizes the underlying domain. As a more concrete example, the l-th column (channel) of qi, represents the sampling of function ql(\u00b7) on a grid point, i.e. (qi)l = ql(xi). Furthermore, softmax-free attention is equivalent to the numerical quadrature of a kernel integral:",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p3",
+        "section_heading": "1 Introduction",
+        "text": "Among various neural network designs, attention-based models (Transformer) [115] have become state-of-the-art for a wide array of applications [13, 18, 27, 51], which gives rise to a recent surge of interest in applying the Transformer to PDE modeling [16, 29, 35, 41, 43, 54, 67, 73, 82, 86]. By viewing the input sequence as a function sampled on a discretization grid, attention can be interpreted as a learnable kernel integral [17, 35, 54, 60] or a learnable Galerkin projection [16], and the sequence-to-sequence Transformer [115] can be modified correspondingly to be better suited for",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p4",
+        "section_heading": "1 Introduction",
+        "text": "PDE modeling [16, 35, 43, 54, 67, 74, 86]. In these works, attention is typically applied to every grid point in the domain to exploit both the local and non-local structure of the system, and therefore a linear-complexity variant of attention is usually necessary. As the number of grid points grows exponentially with respect to the number of dimensions, this results in a very large attention matrix that computes the interaction between every pair of the grid points (despite this attention matrix is not evaluated explicitly in linear attention). Consequently, cascading a deep stack of attention layers introduces instability and relatively high computational cost on high-resolution grid. To alleviate these issues and improve the scalability of Transformer in PDE modeling, we propose a modified attention mechanism. Our model is inspired by the kernel integral viewpoint of softmax-free attention, with a factorized integration scheme motivated by the inherent low-rank structure of dot-product kernel matrix. More specifically, we propose a multi-dimensional factorized kernel integral with each kernel function in the integral having only single-dimensional domains. To calculate these axial kernels, we propose a learnable integral operator that is able to project the input function with high-dimensional domain into a set of sub-functions with single-dimensional domain. The computation of each axial kernel is quadratic with respect to the number of grid points along that the corresponding axis but does not grow with the number of dimensions, which alleviates the curse of dimensionality in standard attention. With the modified attention mechanism, our proposed model can scale up to multi-dimensional problems with a large number of grid points and achieve competitive performance compared to state-of-the-art models. Moreover, we show that our factorized attention mechanism can reduce the computational cost and improve stability compared to softmax-free linear attention.1",
+        "seg_type": "par"
+      }
+    ]
+  },
+  {
+    "id": "004",
+    "title": "sp_0132_004",
+    "filename": "Videos/sp_0132.mp4",
+    "paper_filename": "Papers/sp_0132.pdf",
+    "type": "slides",
+    "relevant_segments": [
+      {
+        "para_id": "p29",
+        "section_heading": "3.2 Multidimensional factorized attention",
+        "text": "where Att(\u00b7) is the attention from (9), IN(\u00b7) is instance normalization [112] that normalizes each channel instance-wise. It is worth pointing out that the axial factorized kernel proposed here shares some similarities with the Axial Transformer proposed in Ho et al. [45], but has two significant differences despite the connection. Firstly, Axial Transformer reduces the computational cost by constraining the context of attention along each axis (e.g. a pixel can only attend to other pixels on the same row), which amounts to moving all but one axis to the batch dimension. In this way computing the axial kernel matrix is of O(NSmd) complexity (recall N = S1 \u00d7 . . .\u00d7 Sn) instead of O(S2md) as in our model. And its overall computation of attention is relatively more expensive due to the presence of softmax. Secondly, the decomposition in Axial Transformer is not layer-wise. For example, in the first layer, the attention is conducted in a row-wise manner and then the second block will conduct attention in a column-wise manner, whereas our model decomposes attention along all axes into a tensor-matrix product within every layer. We provide an illustrative example in Figure 27 of the Appendix.",
+        "seg_type": "par"
+      }
+    ]
+  },
+  {
+    "id": "005",
+    "title": "sp_0132_005",
+    "filename": "Videos/sp_0132.mp4",
+    "paper_filename": "Papers/sp_0132.pdf",
+    "type": "slides",
+    "relevant_segments": [
+      {
+        "para_id": "p1",
+        "section_heading": "Abstract",
+        "text": "Transformer has shown state-of-the-art performance on various applications and has recently emerged as a promising tool for surrogate modeling of partial differential equations (PDEs). Despite the introduction of linear-complexity attention, applying Transformer to problems with a large number of grid points can be numerically unstable and computationally expensive. In this work, we propose Factorized Transformer (FactFormer), which is based on an axial factorized kernel integral. Concretely, we introduce a learnable projection operator that decomposes the input function into multiple sub-functions with one-dimensional domain. These sub-functions are then evaluated and used to compute the instance-based kernel with an axial factorized scheme. We showcase that the proposed model is able to simulate 2D Kolmogorov flow on a 256 \u00d7 256 grid and 3D smoke buoyancy on a 64\u00d7 64\u00d7 64 grid with good accuracy and efficiency. The proposed factorized scheme can serve as a computationally efficient low-rank surrogate for the full attention scheme when dealing with multi-dimensional problems.",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p20",
+        "section_heading": "3.2 Multidimensional factorized attention",
+        "text": "Compared to the standard scaled dot product attention that has quadratic complexity with respect to the length of the input sequence, the attention in (4) can enjoy a linear complexity by making use of the associativity of matrix multiplication (calculate K\u0303TV first). In PDE modeling, the length of the input sequence is equal to the number of points on the underlying discretization grid. Assuming the n-dimensional domain is discretized by S1\u00d7S2\u00d7 . . .\u00d7Sn = N points, the softmax-free attention in (4) will compute the kernel in (2) with the dot product of Q and K, which are N by d matrices with N usually much larger than d. The kernel matrix computed is by design low-rank as it is the product of two tall and thin matrices. Meanwhile, attending a large number of grid points to each other can be unstable and the linear attention has a complexity that is quadratic to the channel dimension d, which can limit the scalability of the model in terms of its width. To improve the numerical stability and reduce the computational cost of the aforementioned attention mechanism, we propose a simple yet efficient way to modify the kernel integral discussed in the previous section which is motivated by the low-rank structure of attention. Essentially, our model computes the kernel integral in an axial factorized manner instead of convolving over all the grid points in the domain. For the following discussion, we will use tensor notation [57] to describe the operation. We assume the data is represented on a uniform Eulerian grid and can be treated as n-way tensor",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p4",
+        "section_heading": "1 Introduction",
+        "text": "PDE modeling [16, 35, 43, 54, 67, 74, 86]. In these works, attention is typically applied to every grid point in the domain to exploit both the local and non-local structure of the system, and therefore a linear-complexity variant of attention is usually necessary. As the number of grid points grows exponentially with respect to the number of dimensions, this results in a very large attention matrix that computes the interaction between every pair of the grid points (despite this attention matrix is not evaluated explicitly in linear attention). Consequently, cascading a deep stack of attention layers introduces instability and relatively high computational cost on high-resolution grid. To alleviate these issues and improve the scalability of Transformer in PDE modeling, we propose a modified attention mechanism. Our model is inspired by the kernel integral viewpoint of softmax-free attention, with a factorized integration scheme motivated by the inherent low-rank structure of dot-product kernel matrix. More specifically, we propose a multi-dimensional factorized kernel integral with each kernel function in the integral having only single-dimensional domains. To calculate these axial kernels, we propose a learnable integral operator that is able to project the input function with high-dimensional domain into a set of sub-functions with single-dimensional domain. The computation of each axial kernel is quadratic with respect to the number of grid points along that the corresponding axis but does not grow with the number of dimensions, which alleviates the curse of dimensionality in standard attention. With the modified attention mechanism, our proposed model can scale up to multi-dimensional problems with a large number of grid points and achieve competitive performance compared to state-of-the-art models. Moreover, we show that our factorized attention mechanism can reduce the computational cost and improve stability compared to softmax-free linear attention.1",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p20",
+        "section_heading": "3.2 Multidimensional factorized attention",
+        "text": "Compared to the standard scaled dot product attention that has quadratic complexity with respect to the length of the input sequence, the attention in (4) can enjoy a linear complexity by making use of the associativity of matrix multiplication (calculate K\u0303TV first). In PDE modeling, the length of the input sequence is equal to the number of points on the underlying discretization grid. Assuming the n-dimensional domain is discretized by S1\u00d7S2\u00d7 . . .\u00d7Sn = N points, the softmax-free attention in (4) will compute the kernel in (2) with the dot product of Q and K, which are N by d matrices with N usually much larger than d. The kernel matrix computed is by design low-rank as it is the product of two tall and thin matrices. Meanwhile, attending a large number of grid points to each other can be unstable and the linear attention has a complexity that is quadratic to the channel dimension d, which can limit the scalability of the model in terms of its width. To improve the numerical stability and reduce the computational cost of the aforementioned attention mechanism, we propose a simple yet efficient way to modify the kernel integral discussed in the previous section which is motivated by the low-rank structure of attention. Essentially, our model computes the kernel integral in an axial factorized manner instead of convolving over all the grid points in the domain. For the following discussion, we will use tensor notation [57] to describe the operation. We assume the data is represented on a uniform Eulerian grid and can be treated as n-way tensor",
+        "seg_type": "par"
+      }
+    ]
+  },
+  {
+    "id": "006",
+    "title": "sp_0132_006",
+    "filename": "Videos/sp_0132.mp4",
+    "paper_filename": "Papers/sp_0132.pdf",
+    "type": "slides",
+    "relevant_segments": [
+      {
+        "para_id": "p4",
+        "section_heading": "1 Introduction",
+        "text": "PDE modeling [16, 35, 43, 54, 67, 74, 86]. In these works, attention is typically applied to every grid point in the domain to exploit both the local and non-local structure of the system, and therefore a linear-complexity variant of attention is usually necessary. As the number of grid points grows exponentially with respect to the number of dimensions, this results in a very large attention matrix that computes the interaction between every pair of the grid points (despite this attention matrix is not evaluated explicitly in linear attention). Consequently, cascading a deep stack of attention layers introduces instability and relatively high computational cost on high-resolution grid. To alleviate these issues and improve the scalability of Transformer in PDE modeling, we propose a modified attention mechanism. Our model is inspired by the kernel integral viewpoint of softmax-free attention, with a factorized integration scheme motivated by the inherent low-rank structure of dot-product kernel matrix. More specifically, we propose a multi-dimensional factorized kernel integral with each kernel function in the integral having only single-dimensional domains. To calculate these axial kernels, we propose a learnable integral operator that is able to project the input function with high-dimensional domain into a set of sub-functions with single-dimensional domain. The computation of each axial kernel is quadratic with respect to the number of grid points along that the corresponding axis but does not grow with the number of dimensions, which alleviates the curse of dimensionality in standard attention. With the modified attention mechanism, our proposed model can scale up to multi-dimensional problems with a large number of grid points and achieve competitive performance compared to state-of-the-art models. Moreover, we show that our factorized attention mechanism can reduce the computational cost and improve stability compared to softmax-free linear attention.1",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p20",
+        "section_heading": "3.2 Multidimensional factorized attention",
+        "text": "Compared to the standard scaled dot product attention that has quadratic complexity with respect to the length of the input sequence, the attention in (4) can enjoy a linear complexity by making use of the associativity of matrix multiplication (calculate K\u0303TV first). In PDE modeling, the length of the input sequence is equal to the number of points on the underlying discretization grid. Assuming the n-dimensional domain is discretized by S1\u00d7S2\u00d7 . . .\u00d7Sn = N points, the softmax-free attention in (4) will compute the kernel in (2) with the dot product of Q and K, which are N by d matrices with N usually much larger than d. The kernel matrix computed is by design low-rank as it is the product of two tall and thin matrices. Meanwhile, attending a large number of grid points to each other can be unstable and the linear attention has a complexity that is quadratic to the channel dimension d, which can limit the scalability of the model in terms of its width. To improve the numerical stability and reduce the computational cost of the aforementioned attention mechanism, we propose a simple yet efficient way to modify the kernel integral discussed in the previous section which is motivated by the low-rank structure of attention. Essentially, our model computes the kernel integral in an axial factorized manner instead of convolving over all the grid points in the domain. For the following discussion, we will use tensor notation [57] to describe the operation. We assume the data is represented on a uniform Eulerian grid and can be treated as n-way tensor",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p1",
+        "section_heading": "Abstract",
+        "text": "Transformer has shown state-of-the-art performance on various applications and has recently emerged as a promising tool for surrogate modeling of partial differential equations (PDEs). Despite the introduction of linear-complexity attention, applying Transformer to problems with a large number of grid points can be numerically unstable and computationally expensive. In this work, we propose Factorized Transformer (FactFormer), which is based on an axial factorized kernel integral. Concretely, we introduce a learnable projection operator that decomposes the input function into multiple sub-functions with one-dimensional domain. These sub-functions are then evaluated and used to compute the instance-based kernel with an axial factorized scheme. We showcase that the proposed model is able to simulate 2D Kolmogorov flow on a 256 \u00d7 256 grid and 3D smoke buoyancy on a 64\u00d7 64\u00d7 64 grid with good accuracy and efficiency. The proposed factorized scheme can serve as a computationally efficient low-rank surrogate for the full attention scheme when dealing with multi-dimensional problems.",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p1",
+        "section_heading": "Abstract",
+        "text": "Transformer has shown state-of-the-art performance on various applications and has recently emerged as a promising tool for surrogate modeling of partial differential equations (PDEs). Despite the introduction of linear-complexity attention, applying Transformer to problems with a large number of grid points can be numerically unstable and computationally expensive. In this work, we propose Factorized Transformer (FactFormer), which is based on an axial factorized kernel integral. Concretely, we introduce a learnable projection operator that decomposes the input function into multiple sub-functions with one-dimensional domain. These sub-functions are then evaluated and used to compute the instance-based kernel with an axial factorized scheme. We showcase that the proposed model is able to simulate 2D Kolmogorov flow on a 256 \u00d7 256 grid and 3D smoke buoyancy on a 64\u00d7 64\u00d7 64 grid with good accuracy and efficiency. The proposed factorized scheme can serve as a computationally efficient low-rank surrogate for the full attention scheme when dealing with multi-dimensional problems.",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p4",
+        "section_heading": "1 Introduction",
+        "text": "PDE modeling [16, 35, 43, 54, 67, 74, 86]. In these works, attention is typically applied to every grid point in the domain to exploit both the local and non-local structure of the system, and therefore a linear-complexity variant of attention is usually necessary. As the number of grid points grows exponentially with respect to the number of dimensions, this results in a very large attention matrix that computes the interaction between every pair of the grid points (despite this attention matrix is not evaluated explicitly in linear attention). Consequently, cascading a deep stack of attention layers introduces instability and relatively high computational cost on high-resolution grid. To alleviate these issues and improve the scalability of Transformer in PDE modeling, we propose a modified attention mechanism. Our model is inspired by the kernel integral viewpoint of softmax-free attention, with a factorized integration scheme motivated by the inherent low-rank structure of dot-product kernel matrix. More specifically, we propose a multi-dimensional factorized kernel integral with each kernel function in the integral having only single-dimensional domains. To calculate these axial kernels, we propose a learnable integral operator that is able to project the input function with high-dimensional domain into a set of sub-functions with single-dimensional domain. The computation of each axial kernel is quadratic with respect to the number of grid points along that the corresponding axis but does not grow with the number of dimensions, which alleviates the curse of dimensionality in standard attention. With the modified attention mechanism, our proposed model can scale up to multi-dimensional problems with a large number of grid points and achieve competitive performance compared to state-of-the-art models. Moreover, we show that our factorized attention mechanism can reduce the computational cost and improve stability compared to softmax-free linear attention.1",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p24",
+        "section_heading": "3.2 Multidimensional factorized attention",
+        "text": "Factorized kernel integral Equipped with the above projection module, we now introduce our factorized kernel integral scheme. More specifically, we propose to use the following integral to replace the kernel integral in (2):",
+        "seg_type": "par"
+      },
+      {
+        "box": [
+          224.21432495117188,
+          1033.142333984375,
+          978.821044921875,
+          1131.5643310546875
+        ],
+        "text": [
+          "\\begin{array} { r l } & { z \\left( x _ { i _ { 1 } } ^ { ( 1 ) } , x _ { i _ { 2 } } ^ { ( 2 ) } , \\dots , x _ { i _ { n } } ^ { ( n ) } \\right) } \\\\ & { = \\displaystyle \\int _ { \\Omega _ { 1 } } \\kappa ^ { ( 1 ) } ( x _ { i _ { 1 } } ^ { ( 1 ) } , \\xi _ { 1 } ) \\int _ { \\Omega _ { 2 } } \\kappa ^ { ( 2 ) } ( x _ { i _ { 2 } } ^ { ( 2 ) } , \\xi _ { 2 } ) \\cdots \\int _ { \\Omega _ { n } } \\kappa ^ { ( n ) } ( x _ { i _ { n } } ^ { ( n ) } , \\xi _ { n } ) v ( \\xi _ { 1 } , \\xi _ { 2 } , \\dots , \\xi _ { n } ) d \\xi _ { 1 } d \\xi _ { 2 } \\dots d \\xi _ { n } , } \\end{array}"
+        ],
+        "page": "sp_0132_page_0005",
+        "id": "sp_0132_page_0005-2",
+        "seg_type": "eq"
+      }
+    ]
+  },
+  {
+    "id": "007",
+    "title": "sp_0132_007",
+    "filename": "Videos/sp_0132.mp4",
+    "paper_filename": "Papers/sp_0132.pdf",
+    "type": "slides",
+    "relevant_segments": [
+      {
+        "caption": "Figure 2: Schematic of the factorized kernel attention. Upper path: the input is transformed into the Value via a linear transformation. Lower path: the input is first projected into multiple sub-functions with a one-dimensional domain. These sub-functions are then used to derive the Query and Key on each axis, and their dot products form the kernel function of the corresponding axis. The Value is iteratively updated by the kernel integral transform along each axis and finally sent to an MLP.",
+        "captionBoundary": {
+          "x1": 107.39199829101562,
+          "x2": 504.000244140625,
+          "y1": 171.81454467773438,
+          "y2": 221.4539794921875
+        },
+        "figType": "Figure",
+        "imageText": [
+          "Input",
+          "function",
+          "Output",
+          "function",
+          "MLP",
+          "Q/K",
+          "Linear",
+          "Attention",
+          "Attention",
+          "Q/K",
+          "Linear",
+          "Attention",
+          "Q/K",
+          "Linear",
+          "V",
+          "Linear",
+          "Learnable",
+          "projection"
+        ],
+        "name": "2",
+        "page": 4,
+        "regionBoundary": {
+          "x1": 116.64,
+          "x2": 493.44,
+          "y1": 75.36,
+          "y2": 164.64
+        },
+        "renderDpi": 150,
+        "renderURL": "/Users/meghamariam/PROJECTS/PROJ1_Dataset/PROJ1_Crossmodal-Traversal/DATASET/Presentation/pap-seg/fig/sp_0132/sp_0132-Figure2-1.png",
+        "id": "sp_0132-Figure2-1",
+        "seg_type": "fig"
+      },
+      {
+        "para_id": "p22",
+        "section_heading": "3.2 Multidimensional factorized attention",
+        "text": "Learnable projection The first major component of the proposed framework is a set of learnable integral operators {G(1),G(2), . . . ,G(n)} that projects the input function u : Rn 7\u2192 Rd into a set of functions with one-dimensional domain {\u03d5(1), \u03d5(2), . . . , \u03d5(n)} \u2208 R 7\u2192 Rd, which is defined as:",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p23",
+        "section_heading": "3.2 Multidimensional factorized attention",
+        "text": "where h(m)(\u00b7) : Rd 7\u2192 Rd and \u03b3(m)(\u00b7) : Rd 7\u2192 Rd are pointwise learnable functions and w = 1/(L1L2 \u00b7 \u00b7 \u00b7Lm\u22121Lm+1 \u00b7 \u00b7 \u00b7Ln), with Lm being the size of domain \u2126m discretized by {x(m)i } Sm i=1. In practice, we implement h(m) as a three-layer multi-layer perception (MLP) similar to the feedforward network in Transformer [115] and \u03b3(m) as a simple linear transformation. When the underlying grid is uniform, (6) simply amounts to first transforming the input with pointwise learnable functions \u03b3(m)(\u00b7), applying mean pooling over all but the m-th spatial dimension, and then applying another pointwise learnable function h(m).",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p24",
+        "section_heading": "3.2 Multidimensional factorized attention",
+        "text": "Factorized kernel integral Equipped with the above projection module, we now introduce our factorized kernel integral scheme. More specifically, we propose to use the following integral to replace the kernel integral in (2):",
+        "seg_type": "par"
+      }
+    ]
+  },
+  {
+    "id": "008",
+    "title": "sp_0132_008",
+    "filename": "Videos/sp_0132.mp4",
+    "paper_filename": "Papers/sp_0132.pdf",
+    "type": "slides",
+    "relevant_segments": [
+      {
+        "para_id": "p40",
+        "section_heading": "4.3 Comparison against full attention",
+        "text": "In this subsection, we will present an ablation study of the proposed factorized attention mechanism with softmax-free attention (denoted as \"linear attention\") previously applied to PDE modeling[16, 67]. More specifically, we employ the attention from Li et al. [67] (in the form of (4)) to replace factorized attention in (10), with K\u0303, V normalized column-wise via instance normalization, e.g. ||V\u00b7,j ||2 = 1. To accommodate for the memory cost of linear attention, we further downsample the 2D Kolmogorov flow discussed in the last subsection to a 128\u00d7 128 grid and train both linear and factorized attention models on it (with latent marching and pushforward trick).",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p42",
+        "section_heading": "4.3 Comparison against full attention",
+        "text": "addition to the accuracy improvement, the benchmark on computation empirically demonstrates the computational efficiency improvement of factorized attention over linear attention. We provide more detailed comparison between factorized attention and linear attention in the Section D of Appendix, where we observed consistent efficiency improvement with different grid sizes and model sizes. Pattern of attention matrices We also investigate the structure of different attention matrices. By construction, when using softmax-free attention to compute the kernel integral in (2), the kernel matrix A = QKT is going to have a low-rank structure since rank(A) \u2264 min(rank(Q), rank(K)), Q,K \u2208 RN\u00d7d and usuallyN >> d. After training, we compute the attention matrices based on 100 samples and conduct singular value decomposition (SVD) on them. We define the total energy of the spectrum as the sum of singular values E = \u2211 i \u03c3i, where \u03c3i is the i-th singular value and report",
+        "seg_type": "par"
+      },
+      {
+        "caption": "Table 4: Comparison between factorized and linear attention on their forward/backward computational cost, Mem. denotes the peak memory usage. The benchmark is carried out using PyTorch 1.8.2 on an RTX 3090, with a batch size of 4. Enc. time: the time spent on obtaining the latent encoding, primarily includes attention layers and feedforward layers after each attention layer; Prop. time: the time used to propagate dynamics in the latent space with a 3-layer MLP.",
+        "captionBoundary": {
+          "x1": 107.677001953125,
+          "x2": 505.12432861328125,
+          "y1": 483.8045349121094,
+          "y2": 529.657958984375
+        },
+        "figType": "Table",
+        "imageText": [
+          "Factorized",
+          "attention",
+          "0.1529",
+          "0.0202",
+          "0.0112",
+          "0.0954",
+          "5217",
+          "Linear",
+          "attention",
+          "(matmul)",
+          "0.5853",
+          "0.1370",
+          "0.3013",
+          "12029",
+          "Linear",
+          "attention",
+          "(einsum)",
+          "0.1333",
+          "0.2938",
+          "12029",
+          "Enc.",
+          "time",
+          "(s)",
+          "Prop.",
+          "time",
+          "(s)",
+          "Time",
+          "(s)",
+          "Mem.",
+          "(MB)",
+          "Model",
+          "Avg.",
+          "rel.",
+          "L2",
+          "Norm",
+          "Fwd.",
+          "Fwd.",
+          "+",
+          "Bwd."
+        ],
+        "name": "4",
+        "page": 8,
+        "regionBoundary": {
+          "x1": 109.92,
+          "x2": 507.35999999999996,
+          "y1": 415.68,
+          "y2": 480.47999999999996
+        },
+        "renderDpi": 150,
+        "renderURL": "/Users/meghamariam/PROJECTS/PROJ1_Dataset/PROJ1_Crossmodal-Traversal/DATASET/Presentation/pap-seg/fig/sp_0132/sp_0132-Table4-1.png",
+        "id": "sp_0132-Table4-1",
+        "seg_type": "tab"
+      }
+    ]
+  },
+  {
+    "id": "009",
+    "title": "sp_0132_009",
+    "filename": "Videos/sp_0132.mp4",
+    "paper_filename": "Papers/sp_0132.pdf",
+    "type": "slides",
+    "relevant_segments": [
+      {
+        "caption": "Figure 1: Model\u2019s prediction (pred.) and reference ground truth (ref.). Left: 2D Kolmogorov flow on 256\u00d7 256 grid; Right: 3D smoke buoyancy on 64\u00d7 64\u00d7 64 grid (zOy cross-section is shown).",
+        "captionBoundary": {
+          "x1": 107.7509994506836,
+          "x2": 503.9985656738281,
+          "y1": 186.22354125976562,
+          "y2": 203.135009765625
+        },
+        "figType": "Figure",
+        "imageText": [
+          "Time",
+          "Ref.",
+          "Pred."
+        ],
+        "name": "1",
+        "page": 1,
+        "regionBoundary": {
+          "x1": 108.0,
+          "x2": 508.32,
+          "y1": 72.96,
+          "y2": 174.23999999999998
+        },
+        "renderDpi": 150,
+        "renderURL": "/Users/meghamariam/PROJECTS/PROJ1_Dataset/PROJ1_Crossmodal-Traversal/DATASET/Presentation/pap-seg/fig/sp_0132/sp_0132-Figure1-1.png",
+        "id": "sp_0132-Figure1-1",
+        "seg_type": "fig"
+      },
+      {
+        "para_id": "p39",
+        "section_heading": "4.2 Results and discussion",
+        "text": "For all the models, we study two protocols of training. The first is Latent Marching with Pushforward (denote as LM). The second is simply Autoregressive (denote as AR), where the model is rolled out for two steps during training. For LM models, each call to the model will output k future steps. On 2D Kolmogorov flow/3D smoke buoyancy, k is set to 4, and 2 for 3D isotropic turbulence. We interleave pushforward training with standard per-step training for LM models. The relative L2 norm is used to train and measure the error of each model following Li et al. [68]. The sequence-wise averaged error and the frame-wise error at the end frame are reported in Table 1, 2, 3. We also report the time cost of simulating a sequence and the number of parameters for each model. The frame-wise error trends are shown in Figure 6, 7, 8, 9, 10 in the Appendix. The visualization of predicted samples are provided in the Section F of Appendix. We observe that Dil-ResNet has a slightly better per-frame fitting capability compared to the other models on 3D flow problems. As shown in the loss trend plots, it starts at a lower error compared to other models. This coincides with the observation in Stachenfeld et al. [104] where Dil-ResNet\u2019s performance is strong on 3D fluid problems. On 2D flow, F-FNO has the best accuracy compared to other models. Interestingly, FactFormer can catch up with Dil-ResNet on 2D Kolmogorov flow and 3D smoke buoyancy when the time duration becomes longer. Yet for shorter-term prediction - 3D isotropic turbulence, Dil-ResNet still has the best final accuracy. This suggests that the accuracy of long-term prediction can potentially benefit from exploiting the global structure that lies in the input. Nonetheless, compared to Dil-ResNet, FactFormer offers superior efficiency as indicated by the inference time (time cost of simulating a sequence). Since the training time is roughly proportional to the model forward time, on 3D problems Dil-ResNet generally takes 3-4 times longer to train. In terms of different training strategies, we find that AR models are less stable than multi-step training (LM) and computationally more expensive as it requires more calls to the neural solver. Despite the average error varies case by case, LM models\u2019 error generally accumulates slower on the problems we studied, whereas AR models quickly blow up in some cases. Lastly, while Dil-ResNet has shown good accuracy for 3D flow problems, its performance is highly dependent on the training discretizations. As shown in the Figure 3, without changing model architecture, its evaluation errors increases significantly when the resolution increases, while Transformer-based models and FNO models\u2019 performance are roughly invariant to the resolution. This highlights a major difference between CNN-based models and neural operators.",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p1",
+        "section_heading": "Abstract",
+        "text": "Transformer has shown state-of-the-art performance on various applications and has recently emerged as a promising tool for surrogate modeling of partial differential equations (PDEs). Despite the introduction of linear-complexity attention, applying Transformer to problems with a large number of grid points can be numerically unstable and computationally expensive. In this work, we propose Factorized Transformer (FactFormer), which is based on an axial factorized kernel integral. Concretely, we introduce a learnable projection operator that decomposes the input function into multiple sub-functions with one-dimensional domain. These sub-functions are then evaluated and used to compute the instance-based kernel with an axial factorized scheme. We showcase that the proposed model is able to simulate 2D Kolmogorov flow on a 256 \u00d7 256 grid and 3D smoke buoyancy on a 64\u00d7 64\u00d7 64 grid with good accuracy and efficiency. The proposed factorized scheme can serve as a computationally efficient low-rank surrogate for the full attention scheme when dealing with multi-dimensional problems.",
+        "seg_type": "par"
+      }
+    ]
+  },
+  {
+    "id": "010",
+    "title": "sp_0132_010",
+    "filename": "Videos/sp_0132.mp4",
+    "paper_filename": "Papers/sp_0132.pdf",
+    "type": "slides",
+    "relevant_segments": [
+      {
+        "para_id": "p1",
+        "section_heading": "Abstract",
+        "text": "Transformer has shown state-of-the-art performance on various applications and has recently emerged as a promising tool for surrogate modeling of partial differential equations (PDEs). Despite the introduction of linear-complexity attention, applying Transformer to problems with a large number of grid points can be numerically unstable and computationally expensive. In this work, we propose Factorized Transformer (FactFormer), which is based on an axial factorized kernel integral. Concretely, we introduce a learnable projection operator that decomposes the input function into multiple sub-functions with one-dimensional domain. These sub-functions are then evaluated and used to compute the instance-based kernel with an axial factorized scheme. We showcase that the proposed model is able to simulate 2D Kolmogorov flow on a 256 \u00d7 256 grid and 3D smoke buoyancy on a 64\u00d7 64\u00d7 64 grid with good accuracy and efficiency. The proposed factorized scheme can serve as a computationally efficient low-rank surrogate for the full attention scheme when dealing with multi-dimensional problems.",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p45",
+        "section_heading": "5 Conclusion",
+        "text": "In this work, we propose an end-to-end Transformer for PDE modeling, which features a learnable projection operator and a factorized kernel integral. We demonstrate that the proposed model balances efficiency and accuracy well, making it a promising and scalable solution for PDE surrogate modeling. However, the proposed attention mechanism is still not free from the curse of dimensionality. The computation of the factorized kernel integral requires evaluating the function on all S1\u00d7S2\u00d7. . .\u00d7Sm grid points. A future direction could be extending the factorization scheme to a more efficient tensor decomposition format like tensor-train. The proposed model currently exploits the uniform structure of the underlying grids and use mean pooling when doing projection, but non-uniform quadrature weight will be necessary when applying to non-uniform grids. It is also observed that the proposed model and other neural PDE solvers can be unstable due to the error accumulation when solving time-dependent systems.",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p4",
+        "section_heading": "1 Introduction",
+        "text": "PDE modeling [16, 35, 43, 54, 67, 74, 86]. In these works, attention is typically applied to every grid point in the domain to exploit both the local and non-local structure of the system, and therefore a linear-complexity variant of attention is usually necessary. As the number of grid points grows exponentially with respect to the number of dimensions, this results in a very large attention matrix that computes the interaction between every pair of the grid points (despite this attention matrix is not evaluated explicitly in linear attention). Consequently, cascading a deep stack of attention layers introduces instability and relatively high computational cost on high-resolution grid. To alleviate these issues and improve the scalability of Transformer in PDE modeling, we propose a modified attention mechanism. Our model is inspired by the kernel integral viewpoint of softmax-free attention, with a factorized integration scheme motivated by the inherent low-rank structure of dot-product kernel matrix. More specifically, we propose a multi-dimensional factorized kernel integral with each kernel function in the integral having only single-dimensional domains. To calculate these axial kernels, we propose a learnable integral operator that is able to project the input function with high-dimensional domain into a set of sub-functions with single-dimensional domain. The computation of each axial kernel is quadratic with respect to the number of grid points along that the corresponding axis but does not grow with the number of dimensions, which alleviates the curse of dimensionality in standard attention. With the modified attention mechanism, our proposed model can scale up to multi-dimensional problems with a large number of grid points and achieve competitive performance compared to state-of-the-art models. Moreover, we show that our factorized attention mechanism can reduce the computational cost and improve stability compared to softmax-free linear attention.1",
+        "seg_type": "par"
+      }
+    ]
+  }
+]

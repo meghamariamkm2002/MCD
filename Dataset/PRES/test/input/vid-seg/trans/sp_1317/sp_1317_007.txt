@@ -1,0 +1,1 @@
+So the goal of this paper is to improve a synthetic data-sets utility on a set of measures given by the user, while preserving the differential privacy guarantee.

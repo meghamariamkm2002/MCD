@@ -1,0 +1,38 @@
+WEBVTT
+
+00:00.031 --> 00:02.433
+And the problem is fairly simple.
+
+00:02.453 --> 00:04.736
+You want to do object detection in images.
+
+00:04.916 --> 00:11.523
+Object detection is the task of basically, if I give you an image, you should tell me what is on the image and where.
+
+00:11.863 --> 00:17.428
+So in this case, here, you would have to draw me this bounding box and say, this is a deer.
+
+00:18.730 --> 00:21.713
+On the bottom, you would have to draw bounding boxes.
+
+00:22.413 --> 00:25.937
+Maybe they have to be rectangular, maybe not and say, this is a bus.
+
+00:25.917 --> 00:32.827
+And here is a truck and here is another truck and here is a car and so on.
+
+00:33.348 --> 00:36.232
+So there can be many objects in an image.
+
+00:36.272 --> 00:37.554
+There can be one object.
+
+00:37.594 --> 00:43.302
+There can be objects of different classes or there can be no objects at all.
+
+00:43.282 --> 00:53.719
+So this is just object detection and there have been many papers on this and specifically there has been this RCNN and this is the model that we're going to extend.
+
+00:53.920 --> 01:00.042
+So the RCNN model or specifically the faster RCNN model that we're going to build on
+

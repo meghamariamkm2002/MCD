@@ -1,0 +1,3 @@
+Based on the column-wise interpretation, attention can be wheeled as a numerical quadrature of the learnable kernel integral that's introduced and discussed in previous neural operator literatures.
+In this work, assuming that the target domain can be decomposed into a set of single-dimensional domains, we propose to factorize the first learnable kernel integral into an axial factorized integral.
+where each sub kernels are only computed based on single-dimensional domain.

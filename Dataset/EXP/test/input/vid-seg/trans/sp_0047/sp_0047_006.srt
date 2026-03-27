@@ -1,0 +1,132 @@
+1
+00:00:00,031 --> 00:00:01,294
+n gram methods.
+
+2
+00:00:03,137 --> 00:00:08,528
+So there are a number of tricks right here that are, I think, not understood until this day.
+
+3
+00:00:09,190 --> 00:00:13,278
+For example, the question is, how do you sample these negative samples?
+
+4
+00:00:14,020 --> 00:00:15,222
+Right here,
+
+5
+00:00:16,822 --> 00:00:24,332
+This basically says get k words from your vocabulary at random according to this distribution right here.
+
+6
+00:00:24,813 --> 00:00:25,914
+Now, how are you going to do that?
+
+7
+00:00:26,495 --> 00:00:29,139
+Basically, you have a spectrum of options.
+
+8
+00:00:29,599 --> 00:00:34,386
+The one side of the spectrum is going to be completely uniform.
+
+9
+00:00:35,147 --> 00:00:38,391
+Okay, we sample each word with the same probability.
+
+10
+00:00:38,371 --> 00:00:45,663
+And the other side of the spectrum is something like sample this according to their unigram.
+
+11
+00:00:46,545 --> 00:00:47,586
+These are two different things.
+
+12
+00:00:48,568 --> 00:00:50,692
+They're opposites in this fashion.
+
+13
+00:00:51,132 --> 00:00:58,184
+So here you say, hey, some words appear way, way, way more often than other words.
+
+14
+00:00:58,685 --> 00:01:01,490
+Shouldn't we prefer them when we sample, right?
+
+15
+00:01:01,570 --> 00:01:04,615
+Shouldn't we, if we have a corpus,
+
+16
+00:01:04,595 --> 00:01:08,260
+And shouldn't we sample from the corpus?
+
+17
+00:01:09,101 --> 00:01:16,090
+And if in the corpus, one word appears 50 times more than the other word, then shouldn't we sample that 50 times more as a negative?
+
+18
+00:01:16,250 --> 00:01:20,996
+Because it's, you know, so abundant and it should give a higher classification accuracy.
+
+19
+00:01:21,396 --> 00:01:26,162
+Whereas on the other hand, you could say, no, no, no, we should simply sample every word in our dictionary uniformly.
+
+20
+00:01:27,063 --> 00:01:32,290
+They came up with something in between, which they say,
+
+21
+00:01:32,270 --> 00:01:38,238
+Both NC and negative sampling have noise distribution as a free parameter.
+
+22
+00:01:38,338 --> 00:01:47,091
+We investigated a number of choices and found that the unigram distribution raised to the three-quarter power, i.e.
+
+23
+00:01:47,231 --> 00:01:58,767
+unigram to the three-quarter, outperformed significantly the unigram and uniform distributions for both NC and NEGA on every task we tried, including language modeling.
+
+24
+00:01:58,747 --> 00:02:22,535
+This I think is a mystery until today and it actually turned out that this exponent right here is Magically much better than like the exponent of one or even the exponent of one half like you might be reasonably assumed that the square root You know might be something but the three-quarters I think turned out to be very good and very mystical.
+
+25
+00:02:22,555 --> 00:02:23,556
+So what does it all?
+
+26
+00:02:23,536 --> 00:02:24,377
+What does it mean?
+
+27
+00:02:24,437 --> 00:02:29,742
+It means that you have kind of a balance between words that appear often and words that don't appear often.
+
+28
+00:02:30,182 --> 00:02:40,972
+Usually in these kind of things, you have a power law where you have very few words that appear very often, and then you have, okay, that's the tail shouldn't go up, but you have a very long tail of words.
+
+29
+00:02:42,053 --> 00:02:53,003
+And what you want to do is, in this case, you want to sample these words here more, but they appear so much more often than if you simply sample according to their unigram distribution,
+
+30
+00:02:52,983 --> 00:02:56,169
+You'll basically not regard these words right here.
+
+31
+00:02:56,270 --> 00:03:01,440
+You'll forget about them and your performance will suffer because they do appear every now and then.
+
+32
+00:03:02,061 --> 00:03:15,247
+So what you want to do is you want to push those down a little bit and the optimal amount for the little bit turns out to be to raise it to the three-quartered.
+
+33
+00:03:17,552 --> 00:03:20,037
+Strange, but you know turned out to work well.
+

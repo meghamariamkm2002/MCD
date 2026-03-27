@@ -1,0 +1,13 @@
+start	end	text
+31	2433	And the problem is fairly simple.
+2453	4736	You want to do object detection in images.
+4916	11523	Object detection is the task of basically, if I give you an image, you should tell me what is on the image and where.
+11863	17428	So in this case, here, you would have to draw me this bounding box and say, this is a deer.
+18730	21713	On the bottom, you would have to draw bounding boxes.
+22413	25937	Maybe they have to be rectangular, maybe not and say, this is a bus.
+25917	32827	And here is a truck and here is another truck and here is a car and so on.
+33348	36232	So there can be many objects in an image.
+36272	37554	There can be one object.
+37594	43302	There can be objects of different classes or there can be no objects at all.
+43282	53719	So this is just object detection and there have been many papers on this and specifically there has been this RCNN and this is the model that we're going to extend.
+53920	60042	So the RCNN model or specifically the faster RCNN model that we're going to build on

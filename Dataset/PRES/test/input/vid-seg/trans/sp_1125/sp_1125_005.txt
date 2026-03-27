@@ -1,0 +1,3 @@
+After obtaining the estimated long-term distribution, how to effectively implement local reweighting becomes another important issue.
+Inferiority setting, insurance synchronization of the reweighting process across each client is a challenge.
+We need to devise a method that allows all clients to reweight according to the same standard

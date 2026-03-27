@@ -1,0 +1,248 @@
+1
+00:00:01,685 --> 00:00:06,471
+So they do some qualitative results, which I find very interesting.
+
+2
+00:00:06,611 --> 00:00:12,558
+For example, they can visualize what the attention weights of their models are.
+
+3
+00:00:13,199 --> 00:00:23,772
+So here you always have a very long time frame, I think an entire month in this memory bank of the long-term memory.
+
+4
+00:00:24,472 --> 00:00:31,641
+Now in the top classification, you see the large thing here, the large frame is the one you actually want to classify.
+
+5
+00:00:31,621 --> 00:00:41,300
+And the other frames are the frames where the top attention score is, so that the attention weights are the highest.
+
+6
+00:00:43,685 --> 00:00:47,914
+So here in order to classify this, what does the model pay attention to?
+
+7
+00:00:48,314 --> 00:00:50,980
+Or which other frames does the model pay attention to?
+
+8
+00:00:51,421 --> 00:00:52,583
+And you can see right here,
+
+9
+00:00:53,660 --> 00:00:56,448
+They are all spread across the entire month.
+
+10
+00:00:56,628 --> 00:00:57,631
+Here is the timeline.
+
+11
+00:00:58,794 --> 00:01:07,618
+The most attended two pictures are spread across the entire month and almost all of them actually have that war talk in here.
+
+12
+00:01:09,016 --> 00:01:21,800
+So this must be like its regular route and the model recognizes that and pulls in information from all these other images in order to correctly classify it here.
+
+13
+00:01:22,962 --> 00:01:32,340
+On the other hand, on the next example, this gazelle and tablet crashed right here.
+
+14
+00:01:34,126 --> 00:01:45,661
+It also puts all the weight on top of images of that same gazelle, but you can see maybe that gazelle was only there for this one particular moment.
+
+15
+00:01:46,162 --> 00:01:53,331
+And all the pictures this camera has of it is in the very few moments that the gazelle was around.
+
+16
+00:01:53,671 --> 00:02:00,000
+You can see they all come here from the same point in time, or very, very close points in time.
+
+17
+00:02:00,460 --> 00:02:03,424
+And you can see that it puts a lot of weight
+
+18
+00:02:03,404 --> 00:02:06,489
+on wherever the gazelle is.
+
+19
+00:02:07,171 --> 00:02:18,831
+So, you know, that's a pretty strong indication that it actually learns to pull in the correct information, be that from long time horizon or from a short time horizon, if necessary.
+
+20
+00:02:18,811 --> 00:02:38,642
+You can also see right here, they visualize the top attention where the top attention weights go in terms of how long the frames where the attention goes to is away from the frame that they're trying to classify.
+
+21
+00:02:38,622 --> 00:02:43,748
+So these graphics are somewhat kind of weird to interpret.
+
+22
+00:02:44,429 --> 00:02:48,714
+This here always means how much is the total time of the buffer.
+
+23
+00:02:49,355 --> 00:02:59,627
+So the memory buffer here contains always pictures from one hour before until one hour after the keyframe you want to classify.
+
+24
+00:02:59,647 --> 00:03:03,111
+So this is the frame you want to classify at minute zero.
+
+25
+00:03:03,091 --> 00:03:09,162
+And the memory buffer contains images from 60 minutes before to 60 minutes after.
+
+26
+00:03:09,202 --> 00:03:11,687
+So it's not real time, right?
+
+27
+00:03:11,707 --> 00:03:15,033
+You go back through your footage and you try to classify.
+
+28
+00:03:15,053 --> 00:03:18,940
+So you can also pull out images from the future.
+
+29
+00:03:18,920 --> 00:03:23,567
+You can see there's most attention is on the current frame, which makes sense.
+
+30
+00:03:24,128 --> 00:03:29,636
+You're trying to classify the current frame and it kind of falls off as you go further and further away.
+
+31
+00:03:30,438 --> 00:03:32,561
+And this is across the entire data set.
+
+32
+00:03:32,581 --> 00:03:35,305
+So this is not a specific example, which also makes sense.
+
+33
+00:03:35,365 --> 00:03:39,932
+Probably in most of the time, the relevant information is
+
+34
+00:03:39,912 --> 00:03:43,476
+you know, closer in time rather than farther away.
+
+35
+00:03:43,876 --> 00:03:47,140
+But also you can see that the distribution is pretty spread out.
+
+36
+00:03:47,501 --> 00:03:51,725
+So it makes the model makes use of the entire range of time.
+
+37
+00:03:52,146 --> 00:04:04,840
+And you can see that throughout, even if you have an entire day in the buffer or two days, even if you have entire week before and week after in the buffer, and even if you have an entire month here.
+
+38
+00:04:04,820 --> 00:04:15,056
+And especially if you look at when you have an entire week in the buffer, you can see the periodicity through the days.
+
+39
+00:04:15,216 --> 00:04:25,191
+So that means the model tends to pay attention to images that are from the same time of day compared to the current keyframe.
+
+40
+00:04:25,171 --> 00:04:34,184
+That's fairly, fairly good indication that the model has actually learned to address this memory by its content.
+
+41
+00:04:34,985 --> 00:04:43,859
+Now night and day isn't super difficult because you can just go on the brightness and so on, but still, it's pretty cool to see that this is actually happening.
+
+42
+00:04:45,140 --> 00:04:53,693
+They do have some failure cases of the single frame model that their model is able to handle up here.
+
+43
+00:04:55,175 --> 00:04:56,476
+they make a lot of sense.
+
+44
+00:04:56,797 --> 00:05:21,840
+So here you can see that there's an object that's moving out of frame and the single frame detector wasn't able to recognize this probably because it's moving out of frame whereas this new, this context RCNN is able to detect it probably because it looked at the frame just before it where the car was somewhere back here and
+
+45
+00:05:21,820 --> 00:05:24,002
+it could correctly classify it.
+
+46
+00:05:24,042 --> 00:05:27,707
+Well, that's just disregard my drawings.
+
+47
+00:05:29,228 --> 00:05:37,718
+Here it managed to recognize this animal in the back, whereas this old model, the single frame model, hasn't.
+
+48
+00:05:38,098 --> 00:05:50,612
+Also probably by looking either at frames next to it or by looking at other frames of herds of animals and realizing that usually when there's two elephants there's more.
+
+49
+00:05:53,107 --> 00:05:59,914
+Here you can see that the object highly occluded, so we're talking about the object at the very edge of the frame.
+
+50
+00:06:01,255 --> 00:06:02,756
+Object poorly lit.
+
+51
+00:06:03,037 --> 00:06:05,179
+This is particularly impressive.
+
+52
+00:06:05,739 --> 00:06:11,025
+And also an example where the animals are often in herds.
+
+53
+00:06:11,045 --> 00:06:18,692
+And if you see one deer, the likelihood that there's other deer is very high in this particular camera.
+
+54
+00:06:18,672 --> 00:06:26,410
+And by aggregating information from different frames, you can see that maybe it's always the same patch of the error that comes by.
+
+55
+00:06:27,533 --> 00:06:34,369
+And here, the single frame detector detects this patch here as a vehicle.
+
+56
+00:06:34,349 --> 00:06:55,041
+where it shouldn't and of course the new model, the context RCNN is able to recognize that this is present in all of the frames and in most frames the single object detector doesn't detect it as a vehicle and so it can kind of carry over that information.
+
+57
+00:06:55,021 --> 00:06:58,625
+Now, you can already see sort of what the downsides might be.
+
+58
+00:06:58,765 --> 00:07:10,757
+If the single object detector is like very, very, very sure that this is in a single frame, that this is a car, it could carry over that information to the other frame.
+
+59
+00:07:10,837 --> 00:07:23,270
+So even though the single frame detector might have failed in that particular frame, if it fails super hard, it might, you know, shout that to all the other frames, basically dominate the memory saying like, look, this is a car.
+
+60
+00:07:23,351 --> 00:07:24,792
+I'm like pretty sure.
+
+61
+00:07:24,772 --> 00:07:31,175
+And it will carry over that information to all of the other frames.
+
+62
+00:07:31,275 --> 00:07:40,047
+And they say in one of these high confidence mistakes, it basically detected the same tree as a giraffe.
+

@@ -1,0 +1,2 @@
+To address this issue, we applied our algorithm to multi-level noise.
+We utilized a pre-trained multi-level score network and replaced the classic large-driven dynamics with a denoising Gibbs sampling with a moment matching scheme.

@@ -1,0 +1,125 @@
+WEBVTT
+
+00:00.031 --> 00:01.794
+see, I don't have it open right now.
+
+00:03.418 --> 00:08.648
+So what does that give us the implicit model agnostic meta learning?
+
+00:09.550 --> 00:10.471
+I mammal.
+
+00:10.491 --> 00:12.074
+This is what this paper suggests.
+
+00:13.437 --> 00:18.387
+While not converge to do sample a batch bunch of bunch of tasks, right?
+
+00:18.407 --> 00:22.174
+For each task, compute the meta gradient G.
+
+00:22.154 --> 00:30.749
+average these gradients to get a gradient for the outer parameters and then do gradient descent on the outer parameters.
+
+00:31.230 --> 00:31.751
+Pretty easy.
+
+00:31.971 --> 00:32.732
+How do you do this?
+
+00:32.853 --> 00:35.657
+How do you do this implicit meta gradient?
+
+00:36.078 --> 00:37.581
+This is this procedure right here.
+
+00:39.404 --> 00:42.289
+So what you are going to do is
+
+00:44.969 --> 00:49.134
+met the parameters theta, you initialize your parameters with the theater.
+
+00:49.154 --> 00:51.797
+By the way, they don't need to be initializations.
+
+00:51.817 --> 00:55.902
+They can be actually any sort of hyper parameters that this algorithm takes.
+
+00:56.683 --> 00:59.906
+Any parameterization of this algorithm will do fine.
+
+00:59.967 --> 01:09.778
+I just always said initial parameters such that it gets easier, but it can be any sort of hyper parameters of the inner task.
+
+01:11.733 --> 01:22.646
+obtain task parameters using iterative optimization solvers such that the, um, the inner parameters are close to the optimum of that algorithm.
+
+01:22.726 --> 01:33.979
+So they actually extend this also in theory, not so that you do not, don't have to optimize the inner objective really to the optimum, but you can be like a Delta close to it.
+
+01:35.020 --> 01:35.901
+That's pretty useful.
+
+01:37.467 --> 01:45.664
+And that's in the part of the paper that we won't go over because this video would be like super long, but I invite you to read it if you're interested.
+
+01:45.704 --> 01:50.936
+Then you compute the partial outer level gradient.
+
+01:51.737 --> 01:54.463
+So this, this would be
+
+01:54.443 --> 01:59.670
+your partial gradient, your V would be this gradient at the end, right?
+
+01:59.950 --> 02:06.679
+The gradient at the end of the optimization procedure with respect to your validation data sets.
+
+02:06.719 --> 02:08.021
+This is one backup.
+
+02:09.463 --> 02:12.507
+Now we need to relate that end gradient to the beginning.
+
+02:12.587 --> 02:18.375
+And that's, and we do that by multiplying it with this matrix inverted right here.
+
+02:18.355 --> 02:35.214
+Now, because obtaining the entire matrix, this is the Hessian matrix and inverted is very memory and computation intensive, because if you have D parameters in your neural network, this is going to be a D by D matrix.
+
+02:35.254 --> 02:35.976
+So if you have
+
+02:35.956 --> 02:43.949
+five million parameters, this is going to be 25 million, million size matrix, is just not possible.
+
+02:44.650 --> 02:49.939
+And that's why this paper extends this method to a second degree of approximation.
+
+02:50.420 --> 03:01.879
+Namely, you don't have to compute the exact inverse, you just have to compute something that is very close to the inverse times this final gradient.
+
+03:01.859 --> 03:07.686
+And a good method to do this is this conjugate gradient method.
+
+03:08.307 --> 03:20.302
+And that method is able to basically use the fact that you can compute Hessian vector products without having to compute the Hessian as a matrix.
+
+03:21.343 --> 03:25.268
+This you can also do with a sort of modified back propagation.
+
+03:25.248 --> 03:54.765
+algorithm also won't go in here but see you use iterative solver for example conjugate gradient along with reverse mode differentiation to compute Hessian vector products to compute gi so gi is going to be the final gradient pulled back through this matrix right here to give you the beginning gradient this meta gradient
+
+03:54.745 --> 03:57.271
+Okay, so two approximations here.
+
+03:57.692 --> 04:03.185
+First approximation, you don't actually have to solve to the very end, you can solve it delta close.
+
+04:03.886 --> 04:18.200
+And second approximation, you don't actually have to compute the inverse of that final gradient, sorry, compute the multiplication of the final gradient with the inverse of this matrix right here, you can also find something that's a delta prime close to that.
+
+04:19.142 --> 04:20.044
+And they have a bunch of
+

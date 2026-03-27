@@ -1,0 +1,23 @@
+[
+  {
+    "input_path": "/tmp/megha/PDF-Extract-Kit/Presentation/layout_pap/sp_0318/sp_0318_page_7.png",
+    "page_index": null,
+    "boxes": [
+      {
+        "input_path": "/tmp/megha/PDF-Extract-Kit/Presentation/layout_pap/sp_0318/sp_0318_page_7.png",
+        "cls_id": 14,
+        "label": "algorithm",
+        "score": 0.9284929633140564,
+        "coordinate": [
+          438.49798583984375,
+          300.77960205078125,
+          2096.857666015625,
+          1418.5855712890625
+        ],
+        "text": "Input: D = {(xi, yi, si)}N=1, max number of iterations T; max pieces k; classifier g(x); \u03b1sp, \u03b1Eo, C\n|{i|si=s,yi=y}|\nInitialize: set A = ; \u00b5s,y\n; t = 1.\nN\nRepeat:\nSolve a convex program:\nA\nC\n\u2211 \u2211 \u00b5s,yP(s,y),y\nmax\nP\ns=1y=1\ns.t. P  T(C|AC), SP \u2264 \u03b1sp, EO \u2264 \u03b1Eo, OAE \u2264 \u03b10AE\nC\n{aT \u039b\u00b5p0} \u2264 E [max{aT g(X)}]\n\u2200(a1,...,ak)  A.\nmax\ni  [k]\ni[k]\ny=1\nLet vt and Pt be the optimal value and optimal solution.\nSolve a DC program:\n[max{aT g(X)}]\n ie[k {aT \u039b\u00b5pt } .\nE\n \nmin\nai [\u22121, 1]AC\ni [k]\ni  [k]\ny=1\ni[k]\nIf the optimal value is \u2265 0 or t = T,\nstop;\notherwise,\nadd the optimal (a1, \u00b7 . \u00b7 , ak) to A and t = t + 1.\nturn:",
+        "id": "sp_0318_page_7_1",
+        "seg_type": "algo"
+      }
+    ]
+  }
+]

@@ -1,0 +1,98 @@
+WEBVTT
+
+00:00.031 --> 00:08.999
+And the gradient of the log probability of x is exactly what we need to run gradient descent on our function.
+
+00:09.400 --> 00:12.963
+So here is our function again, g plus this regularization.
+
+00:13.264 --> 00:16.747
+Now they don't regularize over the entire future, but over these windows.
+
+00:17.768 --> 00:21.491
+But in essence, it's g plus the log probability of your plan.
+
+00:22.052 --> 00:25.875
+If you take the gradient of that, of course, you take the gradient of the sum.
+
+00:25.956 --> 00:27.557
+So it's the gradient of g.
+
+00:27.537 --> 00:34.128
+plus the gradient of the log probability with respect to the actions.
+
+00:34.168 --> 00:47.952
+And here a simple application of the chain rule will tell you that you have to propagate through the input, through the X. And you need this quantity, the gradient of the log probability with respect to its inputs.
+
+00:49.414 --> 00:49.815
+Now,
+
+00:50.960 --> 00:59.132
+As we just saw, the optimal denoising autoencoder is going to output that thing.
+
+01:00.294 --> 01:09.768
+So if we train a denoising autoencoder and we suppose it reaches a good accuracy, then we can obtain this quantity basically for free.
+
+01:10.710 --> 01:12.192
+And that's the entire trick here.
+
+01:14.095 --> 01:16.758
+So in essence, what does it mean?
+
+01:16.798 --> 01:34.738
+In essence, what it means is that if we are in our room again and we have our partial model of the world, let's say we have this model because we are here and all we've ever explored is so we've explored this, these things right here.
+
+01:36.220 --> 01:36.500
+Okay.
+
+01:37.000 --> 01:37.521
+And this.
+
+01:39.543 --> 01:47.859
+Now, when I go and do my trajectory optimization and my trajectory optimization wants to go here, I simply say, no, I don't know that.
+
+01:47.999 --> 01:49.321
+I haven't seen that yet.
+
+01:49.401 --> 01:54.872
+You can only plan basically within the space where we have already been.
+
+01:54.932 --> 01:59.340
+So you can plan like here.
+
+01:59.320 --> 02:04.287
+So here now, there is of course, there is going to be some exploration.
+
+02:04.367 --> 02:09.435
+So some probability that you can go away a bit, but not too much, right?
+
+02:09.455 --> 02:15.584
+So in this case, it would result in the planning only to happen in spaces where we've actually been.
+
+02:15.664 --> 02:21.312
+So it might go here and then here because, okay, here we haven't been anywhere.
+
+02:21.292 --> 02:27.684
+But then that would lead me to take the first step in this direction and not in this direction.
+
+02:28.165 --> 02:36.702
+And if I take my first step in this first direction, then of course, I'm going to be already a bit on the correct path right here.
+
+02:36.742 --> 02:39.587
+Whereas if I take the first step into this direction,
+
+02:39.567 --> 02:44.295
+Then after that, I'm going to have to, if once I crash here, I'm going to have to correct really hard.
+
+02:45.096 --> 02:49.424
+And that's exactly what's going to give you this super jittery control.
+
+02:49.484 --> 02:59.080
+Whereas if you only plan where you've already been, you won't, the probability that you're going to have to do like a 180 is going to be much, much lower.
+
+03:01.444 --> 03:01.825
+Okay.
+
+03:03.568 --> 03:04.309
+That seems.
+

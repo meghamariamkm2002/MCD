@@ -1,0 +1,2444 @@
+[
+  {
+    "para_id": "p1",
+    "section_heading": "Abstract",
+    "text": "This paper investigates new families of compositional optimization problems, called non-smooth weakly-convex finite-sum coupled compositional optimization (NSWC FCCO). There has been a growing interest in FCCO due to its wide-ranging applications in machine learning and AI, as well as its ability to address the shortcomings of stochastic algorithms based on empirical risk minimization. However, current research on FCCO presumes that both the inner and outer functions are smooth, limiting their potential to tackle a more diverse set of problems. Our research expands on this area by examining non-smooth weakly-convex FCCO, where the outer function is weakly convex and non-decreasing, and the inner function is weakly-convex. We analyze a single-loop algorithm and establish its complexity for finding an ε-stationary point of the Moreau envelop of the objective function. Additionally, we also extend the algorithm to solving novel non-smooth weakly-convex tri-level finite-sum coupled compositional optimization problems, which feature a nested arrangement of three functions. Lastly, we explore the applications of our algorithms in deep learning for two-way partial AUC maximization and multi-instance two-way partial AUC maximization, using empirical studies to showcase the effectiveness of the proposed algorithms.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p2",
+    "section_heading": "1 Introduction",
+    "text": "In this paper, we consider two classes of non-convex compositional optimization problems. The first class is formulated as following:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p3",
+    "section_heading": "1 Introduction",
+    "text": "where S denotes a finite set of n items and Di denotes a distribution that could depend on i. The second class is given by:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p4",
+    "section_heading": "1 Introduction",
+    "text": "where S1 denotes a finite set of n1 items and S2 denotes a finite set of n2 items and Dij denotes a distribution that could depend on (i, j). For simplicity of discussion, we denote by gi(w) =",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p5",
+    "section_heading": "1 Introduction",
+    "text": "Eξ∼Di [gi(w; ξ)] : Rd → Rd1 and by hi,j(w) = Eξ∼Di,j [hi,j(w; ξ)] : Rd → Rd2 . For both classes of problems, we focus our attention on non-convex F with non-smooth non-convex functions fi and gi, which, to the best of our knowledge, has not been studied in any prior works.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p6",
+    "section_heading": "1 Introduction",
+    "text": "The first problem (1) with smooth functions fi and gi has been explored in previous works [26, 15, 21, 33], which is known as finite-sum coupled compositional optimization (FCCO). It is subtly different from standard stochastic compositional optimization (SCO) [27] and conditional stochastic optimization (CSO) [13]. FCCO has been successfully applied to optimizing a wide range of X-risks [33] with convergence guarantee, including smooth surrogate losses of areas under the curves [20] and ranking measures [21], listwise losses [21], and contrastive losses [36]. The second problem (2) is a novel class and is referred to as tri-level finite-sum coupled compositional optimization (TCCO). Both problems differ from traditional two-level or multi-level compositional optimization due to the coupling of variables i, ξ in (1) or the coupling of variables i, j, ξ in (2) at the inner most level.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p7",
+    "section_heading": "1 Introduction",
+    "text": "One limitation of prior works about non-convex FCCO is that their convergence analysis heavily rely on the smoothness conditions of fi and gi [26, 15]. This raises a concern about whether existing techniques can be leveraged for solving non-smooth non-convex FCCO problems with non-asymptotic convergence guarantee. Non-smooth non-convex FCCO and TCCO problems have important applications in ML and AI, e.g., group distributionally robust optimization [4] and two-way partial AUC maximization for deep learning [44]. We defer discussions and formulations of these problems to Section 5. The difficulty for solving smooth FCCO lies at high costs of computing a stochastic gradient ∇gi(w)∇fi(gi(w)) for a randomly sampled i and the overall gradient ∇F (w). To approximate the stochastic gradient, a variance-reduced estimator of gi(wt) denoted by ui,t is usually maintained and updated for sampled data in the mini-batch i ∈ Bt. As a result, the stochastic gradient can be approximated by ∇gi(wt; ξt)∇fi(ui,t), where ξt ∼ Di is a random sample. The overall gradient can be estimated by averaging the stochastic gradient estimator over the mini-batch or using variance-reduction techniques. A key insight of the convergence analysis for smooth FCCO is to bound the following error using the L-smoothness of fi, which reduces to bounding the error of ui,t for estimating gi(wt):",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p9",
+    "section_heading": "1 Introduction",
+    "text": "A central question to be addressed in this paper is “Can these gradient estimators be used in stochastic optimization for solving non-smooth non-convex FCCO with provable convergence guarantee\"? To address this question we focus our attention on a specific class of FCCO/TCCO called non-smooth weakly-convex (NSWC) FCCO/TCCO. This approach aligns with many established works on NSWC optimization [6–9]. Nevertheless, NSWC FCCO/TCCO is more complex than a standard weakly-convex optimization problem because an unbiased stochastic subgradient is not readily accessible. In addition, the convergence measure in terms of the gradient norm of smooth non-convex objectives is not applicable to weakly convex optimization, which will complicate the analysis involving the biased stochastic gradient estimator ∂gi(wt; ξt)∂fi(uti) 1.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p10",
+    "section_heading": "1 Introduction",
+    "text": "Contributions. A major contribution of this paper is to present novel convergence analysis of singleloop stochastic algorithms for solving NSWC FCCO/TCCO problems, respectively. In particular, • For non-smooth FCCO, we analyze the following single-loop updates:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p11",
+    "section_heading": "1 Introduction",
+    "text": "where Bt is a random mini-batch of B items, and ui,t is an appropriate variance-reduced estimator of gi(wt) that is updated only for i ∈ Bt at the t-th iteration. To overcome the non-smoothness, we adopt the tool of Moreau envelop of the objective as in previous works [6, 7]. The key difference of our convergence analysis from previous ones for smooth FCCO is that we bound the inner product ⟨Ei∂gi(w)∂fi(ui,t), ŵt −wt⟩, where ŵt is the solution of the proximal mapping of the objective at wt. To this end, specific conditions of fi, gi are imposed, i.e., fi is weakly convex and non-decreasing and gi(w) is weakly convex, under which we establish an iteration complexity of T = O(ϵ−6) for finding an ϵ-stationary point of the Moreau envelope of F (·).",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p12",
+    "section_heading": "1 Introduction",
+    "text": "• For non-smooth TCCO, we analyze the following single-loop updates:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p13",
+    "section_heading": "1 Introduction",
+    "text": "1We use ∇ to denote gradient of a differentiable function and ∂ to denote a subgradient of a non-smooth function.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p14",
+    "section_heading": "1 Introduction",
+    "text": "where B1t and B2t are random mini-batches of B1 and B2 items, respectively, and ui,t is an appropriate variance-reduced estimator of 1n2 ∑ j∈S2 gi(hij(wt)) that is updated only for i ∈ B 1 t , and vi,j,t is an appropriate variance-reduced estimator of hi,j(wt) that is updated only for i ∈ B1t , j ∈ B2t . To prove the convergence, we impose conditions of fi, gi, hi,j , i.e., fi is weakly convex and non-decreasing and gi(·) is weakly convex and non-decreasing (or monotonic), hij is weakly convex (or smooth), and establish an iteration complexity of T = O ( ϵ−6 )",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p15",
+    "section_heading": "1 Introduction",
+    "text": "for finding an ϵ-stationary point of the Moreau envelope of F (·).",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p16",
+    "section_heading": "1 Introduction",
+    "text": "• We extend the above algorithms to solving (multi-instance) two-way partial AUC maximization for deep learning, and conduct extensive experiments to verify the effectiveness of the both algorithms.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p17",
+    "section_heading": "2 Related work",
+    "text": "Smooth SCO. There are many studies about two-level smooth SCO [27, 38, 10, 19, 3, 28] and multi-level smooth SCO [32, 32, 1, 39]. The complexities of finding an ϵ-stationary point for twolevel smooth SCO have been improved from O(ϵ−5) [27] to O(ϵ−3) [19], and that for multi-level smooth SCO have been improved from a level-dependent complexity of O(ϵ−(7+K)/2) [32] to a level-independent complexity of O(ϵ−3) [32], where K is the number of levels. The improvements mostly come from using advanced variance reduction techniques for estimating each level function or its Jacobian and for estimating the overall gradient. Two stochastic algorithms have been developed in [13] for CSO but suffer a limitation of requiring large batch sizes.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p18",
+    "section_heading": "2 Related work",
+    "text": "Smooth FCCO. FCCO was first introduced in [20] for optimizing average precision. Its algorithm and convergence analysis was improved in [26] and [15]. The former work [26] proposed an algorithm named SOX by using moving average (MA) to estimate the inner function values and the overall gradient. In the smooth non-convex setting, SOX is proved to achieve an iteration complexity of O(ϵ−4). The latter work [15] proposed a novel multi-block-single-probe variance reduced (MSVR) estimator for estimating the inner function values, which helps achieve a lower iteration complexity O(ϵ−3). Recently, [11] proposed an extrapolation based estimator for the inner function, which yields a method with a complexity that matches MSVR when n ≤ ϵ2/3. These techniques have been employed for optimizing various X-risks, including contrastive losses [36], ranking measures and listwise losses [21], and other objectives [26, 15]. However, all of these prior works assume the smoothness of fi and gi. Hence, their analysis is not applicable to NSWC FCCO problems. Our novel analysis of a simple algorithm for NSWC FCCO problems yields an iteration complexity of O(ϵ−6) for using the MSVR estimators of the inner functions. The comparison with [26, 15] is shown in Table 1.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p19",
+    "section_heading": "2 Related work",
+    "text": "Non-smooth Weakly Convex Optimization. Analysis of weakly convex optimization with unbiased stochastic subgradients was pioneered by [6, 7]. Optimization of compositional functions that are weakly convex have been tackled in earlier works [8, 9], where the inner function is deterministic or does not involve coupling between two random variables. A closely related work to our NSWC FCCO is weakly-convex concave minimax optimization [22]. Assuming fi is convex, (1) can be written as: minw maxπ∈Rn 1n ∑ i∈S⟨πi, gi(w)⟩ − f∗i (πi), where f∗i (·) is the convex conjugate of fi. It can be solved using existing methods [22, 31, 41, 43, 17] but with several limitations: (i) the algorithms in [22, 31, 41, 43] have a comparable complexity of O(1/ϵ6) but have unnecessary double loops which require setting the number of iterations for the inner loop; (ii) the algorithm in [17] is single loop but has a worse complexity of O(1/ϵ8); (iii) these existing algorithms and analysis does not account for complexity of updating all coordinates of π, which could be prohibitive in",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p20",
+    "section_heading": "2 Related work",
+    "text": "many applications; iv) these approaches are not applicable to NSWC FCCO/TCCO with weakly convex fi. In fact, the double loop algorithm has been leveraged and extended to solving the two-way partial AUC maximization problem, a special case of NSWC FCCO [44], by sampling and updating a batch of coordinates of π at each iteration. However, it is less practical thus not implemented and its analysis did not explicitly show the convergence rate dependency on n+, n− and the block batch size.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p21",
+    "section_heading": "2 Related work",
+    "text": "A special case of NSWC SCO problem was considered in [46], which is given by minx∈X f(x, g(x)), with f(x, u) = Eζ [u+ κmax(0, g(x; ζ)− u)], g(x) = Eξ[g(x; ξ)]. They proposed two methods, SCS for smooth g(x) and SCS with SPIDER for non-smooth g(x). For both proposed methods, they proved a sample complexity of O(1/ϵ6) for achieving an ϵ-stationary point of the objective’s Moreau envelope 2. We would like to remark that the above problem with a non-smooth g(x) is a special case of NSWC FCCO with only a convex outer function, one block and no coupled structure. Nevertheless, their algorithm for non-smooth g(·) suffers a limitation of requiring a large batch size in the order of O(1/ϵ2) for achieving the same convergence.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p22",
+    "section_heading": "2 Related work",
+    "text": "Finally, we would like to mention that non-smooth convex or strongly convex SCO problems have been considered in [27, 42, 26], which, however, are out of scope of the present work.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p23",
+    "section_heading": "3 Preliminaries",
+    "text": "Let ∥ · ∥ be the Euclidean norm of a vector and spectral norm of a matrix. We use ΠC [·] to denote the Euclidean projection onto {v ∈ Rm : ∥v∥ ≤ C}. For vectors, inequality notations including ≤,≥, >,< are used to denote element-wise inequality. For an expectation function f(·) = Eξ[f(·; ξ)], let f(·;B) = 1|B| ∑ ξ∈B f(·; ξ) be its stochastic unbiased estimator evaluated on a sample batch B. A stochastic unbiased estimator is said to have bounded variance σ2 if Eξ[∥f(·)− f(·; ξ)∥2] ≤ σ2. The Jacobian matrix of function f : Rm1 → Rm2 is in dimension Rm1×m2 . We recall the definition of general subgradient and subdifferential following [6, 24]. Definition 3.1 (subgradient and subdifferential). Consider a function f : Rn → R ∪ {∞} and a point with f(x) finite. A vector v ∈ Rn is a general subgradient of f at x, if",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p24",
+    "section_heading": "3 Preliminaries",
+    "text": "The subdifferential ∂f(x) is the set of subgradients of f at point x.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p25",
+    "section_heading": "3 Preliminaries",
+    "text": "For simplicity, we abuse the notation and also use ∂f(x) to denote one subgradient from the corresponding subgradient set when no confusion could be caused. We use ∂f(x;B) to represent a stochastic unbiased estimator of the subgradient ∂f(x) that is evaluated on a sample batch B. A function is called C1-smooth if it is continuously differentiable. A function f = (f1, . . . , fm2) : Rm1 → Rm2 is called monotone if ∀i ∈ {1, . . . ,m2}, fi : Rm1 → R is monotone with respect to each element of the input. Note that if a Lipschitz continuous function f : O → Rm2 is assumed to be non-increasing (resp. non-decreasing), where the domain O ⊂ Rm1 is open, then all subgradients of f are element-wise non-positive (resp. non-negative). We refer the details to Appendix D.1.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p26",
+    "section_heading": "3 Preliminaries",
+    "text": "A function f is C-Lipschitz continuous if ∥f(x)− f(y)∥ ≤ C∥x− y∥. A differentiable function f is L-smooth if ∥∇f(x)−∇f(y)∥ ≤ L∥x− y∥. A function f : Rd → R ∪ {∞} is ρ-weakly-convex if the function f(·) + ρ2∥ · ∥",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p27",
+    "section_heading": "3 Preliminaries",
+    "text": "2 is convex. A vector-valued function f : Rd → {R ∪ {∞}}m is called ρ-weakly-convex if it is ρ-weakly-convex for each output. It is difficult sometimes impossible to find an ϵ-stationary point of a non-smooth weakly-convex function F , i.e., dist(0, ∂F (w)) ≤ ϵ. For example, an ϵ-stationary point of function f(x) = |x| does not exist for 0 ≤ ϵ < 1 unless it is the optimal solution. To tackle this issue, [6] proposed to use the stationarity of the problem’s Moreau envelope as the convergence metric, which has become a standard metric for solving weakly-convex problems [7, 22, 31, 41, 43, 17]. Given a weakly-convex function φ : Rm → R, its Moreau envelope and proximal map with λ > 0 are constructed as",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p28",
+    "section_heading": "3 Preliminaries",
+    "text": "The Moreau envelope is an implicit smoothing of the original problem. Thus it attains a continuous differentiation. As a formal statement, the following lemma follows from standard results [6, 18]. Lemma 3.2. Given a ρ-weakly-convex function φ and λ < ρ−1, the envelope φλ is C1-smooth with gradient given by ∇φλ(x) = λ−1(x− proxλφ(x)).",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p29",
+    "section_heading": "3 Preliminaries",
+    "text": "2It is notable that we use a slightly different definition of ϵ-stationary point with ∥∇Fρ(w)∥2 ≤ ϵ2.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p30",
+    "section_heading": "3 Preliminaries",
+    "text": "Moreover, for any point x ∈ Rm, the proximal point x̂ := proxλφ(x) satisfies [6] ∥x̂− x∥ = λ∥∇φλ(x)∥, φ(x̂) ≤ φ(x), dist(0, ∂φ(x̂)) ≤ ∥∇φλ(x)∥. Thus if ∥∇φλ(x)∥ ≤ ϵ, we can say x is close to a point x̂ that is ϵ-stationary, which is called nearly ϵ-stationary solution of φ(x).",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p31",
+    "section_heading": "4.1 Non-Smooth Weakly-Convex FCCO",
+    "text": "In this section, we assume the following conditions hold for the FCCO problem (1).",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p32",
+    "section_heading": "4.1 Non-Smooth Weakly-Convex FCCO",
+    "text": "Assumption 4.1. For all i ∈ S, we assume that",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p33",
+    "section_heading": "4.1 Non-Smooth Weakly-Convex FCCO",
+    "text": "• fi is ρf -weakly-convex, Cf -Lipschitz continuous and non-decreasing;",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p34",
+    "section_heading": "4.1 Non-Smooth Weakly-Convex FCCO",
+    "text": "• gi(·) is ρg-weakly-convex and gi(·; ξ) is Cg-Lipschitz continuous;",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p35",
+    "section_heading": "4.1 Non-Smooth Weakly-Convex FCCO",
+    "text": "• Stochastic gradient estimators gi(w; ξ) and ∂gi(w; ξ) have bounded variance σ2. Proposition 4.2. Under Assumption 4.1, F (w) in (1) is ρF weakly convex with ρF = √ d1ρgCf + ρfC 2 g .",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p36",
+    "section_heading": "4.1 Non-Smooth Weakly-Convex FCCO",
+    "text": "One challenge in solving FCCO is the lack of access to unbiased estimation of the subgradients 1 n ∑ i∈S ∂gi(w)∂fi(gi(w)) due to the expectation form of gi(w) inside a non-linear function fi. A common solution in existing works for solving smooth FCCO is to maintain function value estimators {ui : i ∈ S} for {gi(w) : i ∈ S}, and approximate the true gradient by a stochastic version 1 B1 ∑ i∈B1 ∂gi(w;B2)∂fi(ui) [26, 15], where B1, B2 are sampled mini-batches. Simply using a mini-batch estimator of gi inside fi does not ensure convergence if mini-batch size is small.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p37",
+    "section_heading": "4.1 Non-Smooth Weakly-Convex FCCO",
+    "text": "Inspired by existing algorithms of smooth FCCO, a simple method for solving non-smooth FCCO is presented in Algorithm 1 referred to as SONX. A key step is the step 4, which uses the multiblock-single-probe variance reduced (MSVR) estimator proposed in [15] to update {ui : i ∈ S} in a block-wise manner. It is an advanced variance reduced update strategy for multi-block variable inspired by STORM [5]. In the update of MSVR estimator, for each sampled i ∈ Bt1, ui,t is updated following a STORM-like rule with a specialized parameter γ = n−B1B1(1−τ) + (1 − τ) for the error correction term. For the unsampled i ̸∈ Bt1, no update for ui,t is needed. When γ = 0, the estimator becomes the moving average estimator analyzed in [26] for smooth FCCO, which is also analyzed in the Appendix. With the function values of {gi(wt) : i ∈ S} well-estimated, the gradient can be approximated by Gt in step 5. Next, we directly update wt by subgradient descent using the stochastic gradient estimatorGt. Note that unlike existing works on smooth FCCO that often maintain a moving average estimator [26] or a STORM estimator [15] for the overall gradient to attain better rates, this is not possible in the non-smooth case as those variance reduction techniques for the overall gradient critically rely on the Lipschitz continuity of ∇F , i.e., the smoothness of F .",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p38",
+    "section_heading": "4.2 Non-Smooth Weakly-Convex TCCO",
+    "text": "In this section, we consider non-smooth TCCO problem and aim to extend Algorithm 1 to solve it. First of all, for convergence analysis and to ensure the weak convexity of F (w) in (2), we make the following assumptions.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p39",
+    "section_heading": "4.2 Non-Smooth Weakly-Convex TCCO",
+    "text": "Assumption 4.3. For all (i, j) ∈ S1 × S2, we assume that",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p40",
+    "section_heading": "4.2 Non-Smooth Weakly-Convex TCCO",
+    "text": "• fi is Cf -Lipschitz continuous, ρf -weakly-convex and non-decreasing;",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p41",
+    "section_heading": "4.2 Non-Smooth Weakly-Convex TCCO",
+    "text": "• gi is ρg-weakly-convex and Cg-Lipschitz continuous. hi,j(·; ξ) is Ch-Lipschitz continuous.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p42",
+    "section_heading": "4.2 Non-Smooth Weakly-Convex TCCO",
+    "text": "• Either gi is non-decreasing, hi,j is Lh-weakly-convex or gi is monotone, hi,j is Lh-smooth.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p43",
+    "section_heading": "4.2 Non-Smooth Weakly-Convex TCCO",
+    "text": "• Stochastic estimators hi,j(w, ξ) and ∂hi,j(w, ξ) have bounded variance σ2, and ∥hi,j(w)∥ ≤ C̃h. Ei∥gi(v)− 1n2 ∑ j∈S2 gi(v)∥ 2 ≤ σ2 for any v.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p44",
+    "section_heading": "4.2 Non-Smooth Weakly-Convex TCCO",
+    "text": "The weak convexity of F (w) in (2) is guaranteed by the following Proposition. Proposition 4.4. Under Assumption 4.3, F (w) in (2) is ρF -weakly-convex with ρF =√ d1( √ d2LhCg + ρgC 2 h)Cf + ρfC 2 gC 2 h.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p45",
+    "section_heading": "4.2 Non-Smooth Weakly-Convex TCCO",
+    "text": "We extend SONX to Algorithm 2 for (2), which is referred to as SONT. For dealing with the extra layer of compositional problem, we maintain another multi-block variable to track the extra layer of function value estimation. To understand this, we first write down the true subgradient:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p46",
+    "section_heading": "4.2 Non-Smooth Weakly-Convex TCCO",
+    "text": "To approximate this subgradient, we need the estimations of 1n2 ∑ j∈S2 gi(hi,j(w)) and hi,j(w), which can be tracked by using MSVR estimators denoted by {ui,t : i ∈ S1} and {vi,j,t : (i, j) ∈ S1 × S2}, respectively. As a result, a stochastic estimation of ∂F (wt) is computed in step 6 of Algorithm 2, and the model parameter is updated similarly as before.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p47",
+    "section_heading": "4.3 Convergence Analysis",
+    "text": "In this section, we present the proof sketch of the convergence guarantee for Algorithm 1. The analysis for Algorithm 2 follows in a similar manner. The detailed proofs can be found in Appendix A (please refer to the supplement). Before starting the proof, we define a constant M2 ≥ C2fC2g so that under Assumption 4.1 we have Et[∥Gt∥2] ≤ M2. Then we start by giving the error bound of the MSVR estimator in Algorithm 1. The following norm bound of the estimation error follows from the squared-norm error bound in Lemma 1 from [15], whose proof is given in Appendix D.3. Lemma 4.5. Consider the update for {ui,t : i ∈ S} in Algorithm 1. Assume gi is Cg-Lipshitz for all i ∈ S. With γ = n−B1B1(1−τ) + (1− τ), τ ≤ 1 2 , we have",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p48",
+    "section_heading": "4.3 Convergence Analysis",
+    "text": "For simplicity, denote by ŵt := proxF/ρ̄(wt). Then using the definition of Moreau envelope and the update rule of wt, we can obtain a bound for the change in the Moreau envelope,",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p49",
+    "section_heading": "4.3 Convergence Analysis",
+    "text": "where Et[Gt] = 1n ∑ i∈S1 ∂gi(wt)∂fi(ui,t) is the subgradient approximation based on the MSVR estimator ui,t of the inner function value. This is a standard result in weakly-convex optimization [6].",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p50",
+    "section_heading": "4.3 Convergence Analysis",
+    "text": "To bound the inner product ⟨ŵt−wt,Et[Gt]⟩ on the right-hand-side of (5), we apply the assumptions that fi is weakly-convex, Lipschitz continuous and non-decreasing, and gi is weakly-convex. Its upper bound is given as follows.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p51",
+    "section_heading": "4.3 Convergence Analysis",
+    "text": "Due to the ρF -weak convexity of F (w), we have (ρ̄−ρF )-strong convexity of w 7→ F (w)+ ρ̄2∥wt− w∥2. Then it follows F (ŵt)−F (wt) ≤ (ρF2 − ρ̄)∥wt− ŵt∥",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p52",
+    "section_heading": "4.3 Convergence Analysis",
+    "text": "2. Combining this with inequalities (5), (6), and setting ρ̄ sufficiently large we have",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p53",
+    "section_heading": "4.3 Convergence Analysis",
+    "text": "Recall Lemma 3.2, we have ∥wt − ŵt∥2 = 1ρ̄2 ∥∇F1/ρ̄(wt)∥ 2. Moreover, the last three terms on the R.H.S of inequality (7) can be bounded using the Lipschitz continuity of fi and the error bound given in Lemma 4.5. Then we can conclude the complexity of SONX with the following theorem.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p54",
+    "section_heading": "4.3 Convergence Analysis",
+    "text": "Theorem 4.6. Under Assumption 4.1 with γ = n−B1B1(1−τ) + (1 − τ), τ = O(B2ϵ 4) ≤ 12 , η = O(B1B 1/2 2 ϵ 4",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p55",
+    "section_heading": "4.3 Convergence Analysis",
+    "text": "n ), and ρ̄ = ρF + ρgCf + 2ρfC 2 g , Algorithm 1 converges to an ϵ-stationary point of the",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p56",
+    "section_heading": "4.3 Convergence Analysis",
+    "text": "Moreau envelope F1/ρ̄ in T = O( n B1B 1/2 2 ϵ−6) iterations.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p57",
+    "section_heading": "4.3 Convergence Analysis",
+    "text": "Remark. Similar to the complexity for smooth FCCO problems [26, 15], Theorem 4.6 guarantees that SONX for NSWC FCCO has a parallel speed-up in terms of the batch size B1 and linear dependency on n. The dependency of the complexity on the batch size B2 is due to the use of MSVR estimator, which matches the results in [15]. If the MSVR estimator in SONX is replaced by moving average estimator, the complexity becomes O( nB1B2 ϵ −8) (cf. Appendix B).",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p58",
+    "section_heading": "4.3 Convergence Analysis",
+    "text": "Following a similar proof strategy, the convergence guarantee of Algorithm 2 is given below. Theorem 4.7. (Informal) Under Assumption 4.3, with appropriate values of γ1, γ2, τ1, τ2, η and a proper constant ρ̄, Algorithm 2 converges to an ϵ-stationary point of the Moreau envelope F1/ρ̄ in",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p59",
+    "section_heading": "4.3 Convergence Analysis",
+    "text": "Remark. In the worst case, the complexity has a worse dependency on n1/B1, i.e., O(n3/21 /B 3/2 1 ). This is caused by the two layers of block-sampling update for {ui,t, i ∈ S1} and {vi,j,t : (i, j) ∈ S1 × S2}. When n1 = B1 = 1 and B3 ≤ √ n2, the complexity of SONT becomes similar as SONX, which is understandable as the inner two levels in TCCO is the same as FCCO.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p60",
+    "section_heading": "5 Applications",
+    "text": "NSWC FCCO finds important applications in group distributionally robust optimization (group DRO) and two-way partial AUC (TPAUC) maximization.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p61",
+    "section_heading": "5 Applications",
+    "text": "Consider N groups with different distributions. Each group k has an averaged loss Lk(w) = 1 nk ∑nk i=1 ℓ(fw(x k i ), y k i ), where w is the the model parameter and (x k i , y k i ) is a data point. It has been shown in previous study [23] that the group DRO problem can be formulated into",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p62",
+    "section_heading": "5 Applications",
+    "text": "This formulation can be mapped into non-smooth weakly-convex FCCO under certain assumptions. Due to space limitation, we defer the comprehensive discussion of group DRO to Appendix E. The rest of this section focuses on TPAUC maximization.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p63",
+    "section_heading": "5 Applications",
+    "text": "Let X denote an input example and hw(X) denote a prediction of a parameterized deep net on data X . Denote by S+ the set of n+ positive examples and by S− the set of n− negative examples. TPAUC measures the area under ROC curve where the true positive rate (TPR) is higher than α and the false positive rate (FPR) is lower than an upper bound β. A surrogate loss for optimizing TPAUC",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p64",
+    "section_heading": "5 Applications",
+    "text": "with FPR≤ β, TPR≥ α is given by [34]:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p65",
+    "section_heading": "5 Applications",
+    "text": "where ℓ(·) is a convex, monotonically non-decreasing surrogate loss of the indicator function I(hw(Xj) ≥ hw(Xi)), S↑+[1, k1] is the set of positive examples with k1 = ⌊n+α⌋ smallest scores, and S↓−[1, k2] is the set of negative examples with k2 = ⌊n−β⌋ largest scores. To tackle the challenge of selecting examples from S↑+[1, k1] and S ↓ −[1, k2], the above problem is cast into the following [44]:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p66",
+    "section_heading": "5 Applications",
+    "text": "min w,s′,s",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p68",
+    "section_heading": "5 Applications",
+    "text": "∑ Xi∈S+ fi(ψi(w, si), s ′),",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p69",
+    "section_heading": "5 Applications",
+    "text": "where fi(g, s′) = s′ + (g − s′)+",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p70",
+    "section_heading": "5 Applications",
+    "text": "α , ψi(w, si) =",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p72",
+    "section_heading": "5 Applications",
+    "text": "∑ Xj∈S− si + (ℓ(hw(Xj)− hw(Xi))− si)+ β ,",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p73",
+    "section_heading": "5 Applications",
+    "text": "where s = (s1, . . . , sn+). We will consider two scenarios, namely regular learning scenario where Xi ∈ Rd0 is an instance, and multi-instance learning (MIL) scenario where Xi = {x1i , . . . ,x mi i ∈ Rd0} contains multiple instances (e.g., one patient has hundreds of high-resolution CT images). A challenge in MIL is that the number of instances mi for each data might be large such that it is difficult to load all instances into the memory for mini-batch training. It becomes more nuanced especially because MIL involves a pooling operation that aggregates the predicted information of individual instances into a single prediction, which can be usually written as a compositional function with the inner function being an average over instances from X . For simplicity of exposition, below we consider the mean pooling hw(X) = 1|X| ∑ x∈X e(we;x)",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p74",
+    "section_heading": "5 Applications",
+    "text": "⊤wc, where e(we,x) is the encoded feature representation of instance x with a parameter we, and wc is the parameter of the classifier. We will map the regular learning problem as NSWC FCCO and the MIL problem as NSWC TCCO.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p75",
+    "section_heading": "5 Applications",
+    "text": "The problem (9) is slightly more complicated than (1) or (2) due to the presence of s′, s. In order to understand the applicability of our analysis and results to (9), we ignore s′, s for a moment. In the regular learning setting when hw(X) = e(we, X)⊤wc can be directly computed, we can map the problem into NSWC FCCO, where fi(g, s′) is non-smooth, convex, and non-decreasing in terms of g, and gi(w, si) = ψi(w, si) is non-smooth, and is proved to be weakly when ℓ(·) is convex and hw(X) is smooth in terms of w. In the MIL setting with mean pooling, we can map the problem into NSWC TCCO by defining hi(w) = 1|Xi| ∑ x∈Xi e(we;x)",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p76",
+    "section_heading": "5 Applications",
+    "text": "⊤wc, hij(w) = hj(w)− hi(w) and gi(hi,j(w), si) = si + (ℓ(hi,j(w))−si)+ β , and fi(gi, s ′) = s′ + (gi−s ′)+",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p77",
+    "section_heading": "5 Applications",
+    "text": "α , where fi is non-smooth, convex, and non-decreasing in terms of gi, and gi(hij(w), si) is non-smooth, convex, monotonic in terms of hij(w) when ℓ(·) is convex and monotonically non-decreasing, and gi(hij(w), si) is weakly convex in terms of w when hij(w) is smooth and Lipchitz continuous in terms of w. Hence, the problem (9) satisfies the conditions in Assumption 4.1 for the regular learning setting and that in Assumption 4.3 for the MIL with mean pooling under mild regularity conditions of the neural network. We present full details in Appendix C.1 for interested readers.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p78",
+    "section_heading": "5 Applications",
+    "text": "To compute the gradient estimator w.r.t w, ui,t will be maintained for tracking gi(w, si) in the regular setting or 1n− ∑ Xj∈S− gi(hi,j(w), si) in the MIL setting, vi,t will be maintained for tracking hi(w) in the MIL setting, which are updated similar to that in SONX and SONT. One difference from SONT is that vi,j,t is decoupled into vi,t and vj,t due to that hi,j can be decoupled. In terms of the extra variable s′, s, the objective function is convex w.r.t both s′ and s, which allows us to simply update s′ by SGD using the stochastic gradient estimator 1B1 ∑ i∈Bt1 ∂s′fi(ui,t, s ′ t) and we update",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p79",
+    "section_heading": "5 Applications",
+    "text": "si by SGD using the stochastic gradient estimator [",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p80",
+    "section_heading": "5 Applications",
+    "text": "1 B2 ∑ j∈Bt2 ∂sigi(vj,t − vi,t, si,t) ] ∂ufi(ui,t, s ′ t).",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p81",
+    "section_heading": "5 Applications",
+    "text": "Detailed updates are presented in Algorithm 5 and Algorithm 6 in Appendix C.2. We can extend the convergence analysis of SONX and SONT to the two learning settings of TPAUC maximization, which is included in Appendix C.4. Finally, it is worth mentioning that we can also extend the results to other pooling operations, including smoothed max pooling and attention-based pooling [45]. Due to limit of space, we include discussions in Appendix C.3 as well.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p82",
+    "section_heading": "6 Experimental Results",
+    "text": "We justify the effectiveness of the proposed SONX and SONT algorithms for TPAUC Maximization in the regular learning setting and MIL setting [14, 45].",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p83",
+    "section_heading": "6 Experimental Results",
+    "text": "Baselines. For regular TPAUC maximization, we compare SONX with the following competitive methods: 1) Cross Entropy (CE) loss minimization; 2) AUC maximization with squared hinge loss (AUC-SH); 3) AUC maximization with min-max margin loss (AUC-M) [37]; 4) Mini-Batch based heuristic loss (MB) [16]; 5) Adhoc-Weighting based method with polynomial function (AWpoly) [35]; 5) a single-loop algorithm (SOTAs) for optimizing a smooth surrogate for TPAUC [44]. For MIL TPAUC maximization, we consider the following baselines: 1) AUC-M with attention-based pooling (AUC-M [att]); 2) SOTAs with attention-based pooling, which is a natural combination between advanced TPAUC optimization and MIL pooling technique; 3) the recently proposed provable multi-instance deep AUC maximization methods with stochastic smoothed-max pooling and attention-based pooling (MIDAM [smx] and MIDAM [att]) [45]. The first two baselines use naive mini-batch pooling for computing the loss function in AUC-M and SOTAs. We implement SONT for MIL TPAUC maximization with attention-based pooling, which is referred to as SONT (att).",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p84",
+    "section_heading": "6 Experimental Results",
+    "text": "Datasets. For regular TPAUC maximization, we use three molecule datasets as in [44], namely moltox21 (the No.0 target), molmuv (the No.1 target) and molpcba (the No.0 target) [29]. For MIL TPAUC maximization, we use four MIL datasets, including two tabular datasets MUSK2 and Fox, and two medical image datasets Colon and Lung. MUSK2 and Fox are two tabular datasets that have been widely adopted for MIL benchmark study [14]. Colon and Lung are two histopathology (medical image) datasets that have large image size (512×512) but local interests for classification [2]. For Colon dataset, the adenocarcinoma is regarded as positive label and benign is negative; for Lung dataset, we treat adenocarcinoma as positive and squamous cell carcinoma as negative 3. For both of the histopathology datasets, we uniformly randomly sample 100 positive and 1000 negative data for experiments. For all MIL datasets, we uniformly randomly split 10% as the testing and the remaining as the training and validation. The statistics for all used datasets are summarized in Table 3and",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p85",
+    "section_heading": "6 Experimental Results",
+    "text": "Table 4 in Appendix F.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p86",
+    "section_heading": "6 Experimental Results",
+    "text": "Experiment Settings. For regular TPAUC maximization, we use the same setting as in [44]. The adopted backbone Graph Nueral Network (GNN) model is Graph Isomorphism Network (GIN), which has 5 mean-pooling layers with 64 number of hidden units and dropout rate 0.5 [30]. We utilize the sigmoid function for the final output layer to generate the prediction score, and set the surrogate loss ℓ(·) as squared hinge loss with a margin parameter. We follow the setups for model training and tuning exactly the same as the prior work [44]. Essentially, the model is trained by 60 epochs and the learning rate is decreased by 10-fold after every 20 epochs. The model is initialized as a pretrained model from CE loss on the training datasets. We fix the learning rate of SONX as 1e-2 and moving average parameter τ as 0.9; tune the parameter γ in {0, 1e-1,1e-2,1e-3}, the parameter α, β in {0.1,0.3,0.5} and fix the margin parameter of the surrogate loss ℓ as 1.0, which cost the same",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p87",
+    "section_heading": "6 Experimental Results",
+    "text": "3Data available: https:// d-colon-cancer",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p88",
+    "section_heading": "6 Experimental Results",
+    "text": "tuning effort as the other baselines. The weight decay is set as the same value (2e-4) with the other baselines. For baselines, we directly use the results reported in [44] since we use the same setting.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p89",
+    "section_heading": "6 Experimental Results",
+    "text": "For MIL TPAUC maximization, we train a simple Feed Forward Neural Network (FFNN) with one hidden layer (the number of neurons equals to data dimension) for the two tabular datasets and ResNet20 for the two medical image datasets. Sigmoid transformation is adopted for the output layer to generate prediction score. The training epoch number is fixed as 100 epochs for all methods; the bag batch size is fixed as 16 (resp. 8) and the number of sampled instances per bag is fixed as 4 (resp. 128) for tabular (resp. medical image) datasets; the learning rate is tuned in {1e-2, 1e-3, 1e-4} and decreased by 10 folds at the end of 50-th and 75-th epoch for all baselines. For SONT (att), we set moving average parameter τ1 = τ2 as 0.9; tune the parameter γ1 = γ2 = γ in {0, 1e-1,1e-2,1e-3} and fix the margin parameter of the surrogate loss ℓ as 0.5, and the parameter α, β in {0.1,0.5,0.9}. Similar parameters in baselines are set the same or tuned similarly. For all experiments, we utilize 5-fold-cross-validation to evaluate the testing performance based on the best validation performance with possible early stopping choice.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p90",
+    "section_heading": "6 Experimental Results",
+    "text": "Results. The testing results for the regular and MIL TPUAC maximization with different TPAUC measures are summarized in the Table 2. From Table 2, we observe that our method SONX achieves the best performance for regular TPAUC maximization. It is better than the state-of-the-art method SOTAs for TPAUC maximization. We attribute the better performance of SONX to the fact that the objective of SONX is an exact estimator of TPAUC while the smoothed objective of SOTAs is an inexact estimator of TPAUC. We also observe that SONT (att) achieves the best performance in all cases, which is not surprising since it is the only one that directly optimizes the TPAUC surrogate. In contrast, other baselines either optimizes a different objective (MIDAM) or does not ensure convergence due to the use of mini-batch pooling (AUC-M, SOTAs).",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p91",
+    "section_heading": "6 Experimental Results",
+    "text": "Ablation Study. We conduct ablation studies to demonstrate the effect of the error correction term on the training convergence by varying the γ value for SONX and SONT, where γ1 = γ2 = γ is set as the same value in SONT. The training convergence results are presented in Figure 1. We can see that an appropriate value of γ > 0 can yield a faster convergence than γ = 0, which verifies the faster convergence of using MSVR estimators than using moving average estimators. However, we do observe a gap between theory and practice, as setting a large value of γ > 1 as in the theory might not yield convergence. This phenomenon is also observed in [12]. We conjecture that the gap could be fixed by considering convex objectives [40], which is left as future work.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p92",
+    "section_heading": "7 Conclusions",
+    "text": "In this paper, we have considered non-smooth weakly-convex two-level and tri-level finite-sum coupled compositional optimization problems. We presented novel convergence analysis of two stochastic algorithms and established their complexity. Applications in deep learning for two-way partial AUC maximization was considered and great performance of proposed algorithms were demonstrated through experiments on multiple datasets. A future work is to prove the convergence of both algorithms for convex objectives.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p93",
+    "section_heading": "Acknowledgements",
+    "text": "We thank anonymous reviewers for constructive comments. Q. Hu, D. Zhu and T. Yang were partially supported by NSF Career Award 2246753, NSF Grant 2246757, 2246756 and 2306572.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p94",
+    "section_heading": "A Proofs of Theorem 4.6 and Theorem 4.7",
+    "text": "In this section, we provide the detailed proofs for Theorem 4.6 and Theorem 4.7. We first give a basic property for weakly-convex functions.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p95",
+    "section_heading": "A Proofs of Theorem 4.6 and Theorem 4.7",
+    "text": "Proposition A.1 (Proposition 2.1 in [7]). Suppose function g : Rd → R ∪ {∞} is lowersemicontinuous. Then g is ρ-weakly-convex if and only if",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p96",
+    "section_heading": "A Proofs of Theorem 4.6 and Theorem 4.7",
+    "text": "holds for all vectors v ∈ ∂g(x) and x, y ∈ Rd.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p97",
+    "section_heading": "A.1 Proof of Theorem 4.6",
+    "text": "Note that the proof of Lemma 4.5 also implies the following squared-norm error bound,",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p98",
+    "section_heading": "A.1 Proof of Theorem 4.6",
+    "text": "Proof of Theorem 4.6. Define ŵt := proxF/ρ̄(wt). For a given i ∈ S, we have",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p99",
+    "section_heading": "A.1 Proof of Theorem 4.6",
+    "text": "where (a) follows from the ρf -weak-convexity of fi, (b) follows from that fi(·) is non-decreasing and the weak convexity of gi, (c) is due to 0 ≤ ∂fi(ui,t) ≤ Cf . Then it follows",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p100",
+    "section_heading": "A.1 Proof of Theorem 4.6",
+    "text": "Now we consider the change in the Moreau envelope:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p102",
+    "section_heading": "A.1 Proof of Theorem 4.6",
+    "text": "and the second inequality uses the bound of E[∥Gt∥2], which follows from the Lipschitz continuity and bounded variance assumptions and is denoted by M .",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p103",
+    "section_heading": "A.1 Proof of Theorem 4.6",
+    "text": "Combining inequality 29 and 30 yields",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p104",
+    "section_heading": "A.1 Proof of Theorem 4.6",
+    "text": "Due to the ρF -weak convexity of Fi(w), we have (ρ̄ − ρF )-strong convexity of w 7→ Fi(w) + ρ̄∥wt −w∥2. Then it follows",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p105",
+    "section_heading": "A.1 Proof of Theorem 4.6",
+    "text": "Plugging inequality 32 into inequality 31 yields",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p106",
+    "section_heading": "A.1 Proof of Theorem 4.6",
+    "text": "Set ρ̄ = ρF + ρgCf + 2ρfC2g . We have",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p107",
+    "section_heading": "A.1 Proof of Theorem 4.6",
+    "text": "where inequality (a) follows from Lemma 3.2.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p108",
+    "section_heading": "A.1 Proof of Theorem 4.6",
+    "text": "Using the Lipschitz continuity of fi, we have",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p109",
+    "section_heading": "A.1 Proof of Theorem 4.6",
+    "text": "By Lemma 4.5, the error bound of the MSVR update gives",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p112",
+    "section_heading": "A.1 Proof of Theorem 4.6",
+    "text": "Taking summation from t = 0 to T − 1 yields E[F1/ρ̄(wT )]",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p113",
+    "section_heading": "A.1 Proof of Theorem 4.6",
+    "text": "where (a) uses ∑T−1 t=0 (1− µ)t ≤ 1 µ .",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p114",
+    "section_heading": "A.1 Proof of Theorem 4.6",
+    "text": "Lower bounding the left-hand-side by minw F (w), we obtain",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p115",
+    "section_heading": "A.1 Proof of Theorem 4.6",
+    "text": "where we assume F1/ρ̄(w0, s0, s′0)−minw,s,s′ F (w, s, s′) ≤ ∆ and",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p118",
+    "section_heading": "A.1 Proof of Theorem 4.6",
+    "text": "To reach an ϵ-stationary point, we need",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p119",
+    "section_heading": "A.2 Proof of Theorem 4.7",
+    "text": "A formal statement in given below.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p120",
+    "section_heading": "A.2 Proof of Theorem 4.7",
+    "text": "Theorem A.2. Under Assumption 4.3, with γ1 = n1n2−B1B2B1B2(1−τ1) + (1 − τ1), γ2 = n1−B1 B1(1−τ2) + (1 − τ2), τ1 = O ( min{B3, B 1/2 1 n 1/2 2",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p121",
+    "section_heading": "A.2 Proof of Theorem 4.7",
+    "text": "n 1/2 1",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p122",
+    "section_heading": "A.2 Proof of Theorem 4.7",
+    "text": "}ϵ4 )",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p123",
+    "section_heading": "A.2 Proof of Theorem 4.7",
+    "text": "≤ 12 , τ2 = O(B2ϵ 4) ≤ 12 , η = O ( min { B",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p124",
+    "section_heading": "A.2 Proof of Theorem 4.7",
+    "text": "1/2 3 ,",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p125",
+    "section_heading": "A.2 Proof of Theorem 4.7",
+    "text": "B 1/4 1 n 1/4 2",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p126",
+    "section_heading": "A.2 Proof of Theorem 4.7",
+    "text": "n 1/4 1",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p127",
+    "section_heading": "A.2 Proof of Theorem 4.7",
+    "text": ", B",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p128",
+    "section_heading": "A.2 Proof of Theorem 4.7",
+    "text": "1/2 1 n 1/2 2",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p129",
+    "section_heading": "A.2 Proof of Theorem 4.7",
+    "text": "n 1/2 1",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p130",
+    "section_heading": "A.2 Proof of Theorem 4.7",
+    "text": "} B1B2 n1n2 ϵ4 ) , and ρ̄ = ρF + 4ρfC2g + 2ρgCfC 2 h + CfCgLh,",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p131",
+    "section_heading": "A.2 Proof of Theorem 4.7",
+    "text": "Algorithm 2 converges to an ϵ-stationary point of the Moreau envelope F1/ρ̄ in T = O ( max { 1",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p132",
+    "section_heading": "A.2 Proof of Theorem 4.7",
+    "text": "B 1/2 3",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p133",
+    "section_heading": "A.2 Proof of Theorem 4.7",
+    "text": ", n 1/4 1",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p134",
+    "section_heading": "A.2 Proof of Theorem 4.7",
+    "text": "B 1/4 1 n 1/4 2",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p135",
+    "section_heading": "A.2 Proof of Theorem 4.7",
+    "text": ", n 1/2 1",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p136",
+    "section_heading": "A.2 Proof of Theorem 4.7",
+    "text": "B 1/2 1 n 1/2 2",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p137",
+    "section_heading": "A.2 Proof of Theorem 4.7",
+    "text": "} n1n2 B1B2 ϵ−6 ) iterations.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p138",
+    "section_heading": "A.2 Proof of Theorem 4.7",
+    "text": "We first define constantM2 ≥ max{ 3C 2 fC 2 gσ 2",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p139",
+    "section_heading": "A.2 Proof of Theorem 4.7",
+    "text": "B3 +",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p140",
+    "section_heading": "A.2 Proof of Theorem 4.7",
+    "text": "3C2fC 2 gC 2 h",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p141",
+    "section_heading": "A.2 Proof of Theorem 4.7",
+    "text": "B2 +",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p142",
+    "section_heading": "A.2 Proof of Theorem 4.7",
+    "text": "3C2fC 2 gC 2 h",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p143",
+    "section_heading": "A.2 Proof of Theorem 4.7",
+    "text": "B1 , C̃2h+σ 2} so that Et[∥Gt∥2] ≤ M2 and ∥vi,j,t∥2 ≤ M2 for all i ∈ S1, j ∈ S2 and t. Then to prove Theorem A.2, we need the following Lemmas.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p144",
+    "section_heading": "A.2 Proof of Theorem 4.7",
+    "text": "Lemma A.3. Consider MSVR update for v. Assume hi,j(w; ξ) is Ch-Lipshitz for all (i, j) ∈ S1×S2 , and E[∥Gt∥2] ≤M2. With γ1 = n1n2−B1B2B1B2(1−τ1) + (1− τ1), and τ1 ≤ 1 2 , we have",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p145",
+    "section_heading": "A.2 Proof of Theorem 4.7",
+    "text": "Lemma A.4. Consider MSVR update for u. Assume gi(·) is Cg-Lipshitz for all i ∈ S1. With γ2 =",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p146",
+    "section_heading": "A.2 Proof of Theorem 4.7",
+    "text": "n+−B1 B1(1−τ2) + (1− τ2) and τ2 ≤ 1 2 , we have",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p147",
+    "section_heading": "A.2 Proof of Theorem 4.7",
+    "text": "where C2 is a constant defined in the proof.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p148",
+    "section_heading": "A.2 Proof of Theorem 4.7",
+    "text": "Proof of Theorem A.2. Consider the change in the Moreau envelope:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p149",
+    "section_heading": "A.2 Proof of Theorem 4.7",
+    "text": "Note that",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p150",
+    "section_heading": "A.2 Proof of Theorem 4.7",
+    "text": "and the second inequality uses the bound of E[∥Gt∥2], which follows from the Lipschitz continuity and bounded variance assumptions and is denoted by M .",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p151",
+    "section_heading": "A.2 Proof of Theorem 4.7",
+    "text": "2 where (a) follows from the convexity of fi, (b) uses the assumption that fi(·) is non-decreasing and gi is weak convex, (c) is due to 0 ≤ ∂fi(ui,t) ≤ Cf .",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p152",
+    "section_heading": "A.2 Proof of Theorem 4.7",
+    "text": "The Lh-smoothness assumption of hi,j(w) (or weakly-convexity of hi,j(w), then only the second inequality holds) for all i,w implies",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p153",
+    "section_heading": "A.2 Proof of Theorem 4.7",
+    "text": "We first assume that gi(·) is non-increasing. Since ∂fi(ui,t) ≥ 0 and ∂gi(vi,j,t) ≤ 0, we bound A1 as following",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p154",
+    "section_heading": "A.2 Proof of Theorem 4.7",
+    "text": "where inequality (a) follows from the first inequality in (20), (b) follows from the Lipschitz continuity and monotone assumptions on fi, gi, hi,j . On the other hand, if we assume gi(·) is non-decreasing, we may use the second inequality in (20) and obtain the same result as (21). Now plugging the new formulation of A1 back to inequality 19 yields",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p155",
+    "section_heading": "A.2 Proof of Theorem 4.7",
+    "text": "It follows ⟨Et[Gt], ŵt −wt⟩",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p156",
+    "section_heading": "A.2 Proof of Theorem 4.7",
+    "text": "Combining inequality 22 and 18 yields",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p157",
+    "section_heading": "A.2 Proof of Theorem 4.7",
+    "text": "where (a) follows from the Lipschitz continuity of fi, gi, hi,j .",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p158",
+    "section_heading": "A.2 Proof of Theorem 4.7",
+    "text": "Due to the ρF -weak convexity of Fi(w), we have (ρ̄ − ρF )-strong convexity of w 7→ Fi(w) + ρ̄∥wt −w∥2. Then it follows",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p159",
+    "section_heading": "A.2 Proof of Theorem 4.7",
+    "text": "Plugging inequality 23 back into A.2, we obtain E",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p160",
+    "section_heading": "A.2 Proof of Theorem 4.7",
+    "text": "where in inequality (a) we use ρ̄ = ρF + 4ρfC2g + 2ρgCfC 2 h + CfCgLh and C1 = max{2CfCg, 2Cf , (2ρfC2g + ρgCf ), ρf}, and equality (b) uses Lemma 3.2. With general error bounds",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p161",
+    "section_heading": "A.2 Proof of Theorem 4.7",
+    "text": "we have E[F1/ρ̄(wt+1)]",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p162",
+    "section_heading": "A.2 Proof of Theorem 4.7",
+    "text": "where µmin = min{µ1, µ2}.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p163",
+    "section_heading": "A.2 Proof of Theorem 4.7",
+    "text": "Taking summation from t = 0 to T − 1 yields E[F1/ρ̄(wT )]",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p164",
+    "section_heading": "A.2 Proof of Theorem 4.7",
+    "text": "where we use ∑T−1 t=0 (1− µmin)t ≤ 1 µmin and define constant ∆0 such that",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p165",
+    "section_heading": "A.2 Proof of Theorem 4.7",
+    "text": "Then it follows",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p166",
+    "section_heading": "A.2 Proof of Theorem 4.7",
+    "text": "where we define constant ∆ such that F1/ρ̄(w0, s0, s′0)− E[F1/ρ̄(wT , sT , s′T )] ≤ ∆. With MSVR updates for vi,j,t and ui,t, following from Lemma A.3 and Lemma A.4, we have",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p168",
+    "section_heading": "A.2 Proof of Theorem 4.7",
+    "text": "Algorithm 3 Stochastic Optimization algorithm for Non-smooth FCCO with coordinate moving average",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p169",
+    "section_heading": "A.2 Proof of Theorem 4.7",
+    "text": "1: Initialization: w0, {ui,0 : i ∈ S}. 2: for t = 0, . . . , T − 1 do 3: Draw sample batches Bt1 ∼ S, and Bt2,i ∼ Di for each i ∈ Bt1.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p170",
+    "section_heading": "A.2 Proof of Theorem 4.7",
+    "text": "4: ui,t+1 = { (1− τ)ui,t + τgi(wt;Bt2,i), i ∈ Bt1 ui,t, i ̸∈ Bt1",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p171",
+    "section_heading": "A.2 Proof of Theorem 4.7",
+    "text": "5: Compute Gt = 1B1 ∑ i∈Bt1",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p172",
+    "section_heading": "A.2 Proof of Theorem 4.7",
+    "text": "∂gi(wt;Bt2,i)∂fi(ui,t) 6: Update wt+1 = wt − ηGt 7: end for 8: return wt̄ with uniformly sampled t̄ ∈ {0, T − 1}.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p174",
+    "section_heading": "A.2 Proof of Theorem 4.7",
+    "text": "then with",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p175",
+    "section_heading": "A.2 Proof of Theorem 4.7",
+    "text": "we have",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p176",
+    "section_heading": "B Solving Non-smooth FCCO and TCCO with Coordinate Moving Average",
+    "text": "In this section we consider solving non-smooth weakly-convex FCCO and TCCO without variance reduction method. To be specific, we use coordinate moving average updates for function values estimations instead of MSVR. This allows us to weaken the assumption on the Lipschitz continuity, i.e. the Lipschitz continuity of the stochastic function value estimation is not required, and can be replaced by the Lipschitz continuity of the function value. Moreover, compared with MSVR, coordinate moving average update does not need the stochastic evaluation from the previous iteration, and thus has a simpler implementation. However, as a result of not using variance reduction technique, the algorithms suffer from worse convergence rates in terms of ϵ.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p177",
+    "section_heading": "B.1 Solving Non-smooth FCCO with Coordinate Moving Average",
+    "text": "We first assume the followings assumptions hold.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p178",
+    "section_heading": "B.1 Solving Non-smooth FCCO with Coordinate Moving Average",
+    "text": "Assumption B.1. For all i ∈ S, we assume that",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p179",
+    "section_heading": "B.1 Solving Non-smooth FCCO with Coordinate Moving Average",
+    "text": "• fi(·) is ρf -weakly-convex, Cf -Lipschitz continuous and non-decreasing;",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p180",
+    "section_heading": "B.1 Solving Non-smooth FCCO with Coordinate Moving Average",
+    "text": "• gi(·) is ρg-weakly-convex and Cg-Lipschitz continuous;",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p181",
+    "section_heading": "B.1 Solving Non-smooth FCCO with Coordinate Moving Average",
+    "text": "• Stochastic gradient estimators gi(w; ξ) and ∂gi(w; ξ) have bounded variance σ2.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p182",
+    "section_heading": "B.1 Solving Non-smooth FCCO with Coordinate Moving Average",
+    "text": "With coordinate moving average update, we present the following lemma of error bound.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p183",
+    "section_heading": "B.1 Solving Non-smooth FCCO with Coordinate Moving Average",
+    "text": "Lemma B.2. Consider the coordinate moving average update for {ui,t : i ∈ S1} in Algorithm 3, assume gi(w) is Cg-Lipschitz continuous for all i ∈ S1 and τ ≤ 1, then we have",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p184",
+    "section_heading": "B.1 Solving Non-smooth FCCO with Coordinate Moving Average",
+    "text": "Then we have a convergence analysis similar to Theorem 4.6.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p185",
+    "section_heading": "B.1 Solving Non-smooth FCCO with Coordinate Moving Average",
+    "text": "Theorem B.3. Consider non-smooth weakly-convex FCCO problem, under Assumption B.1, setting τ = O(B2ϵ4) ≤ 1, η = O(B1B2n1 ϵ",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p186",
+    "section_heading": "B.1 Solving Non-smooth FCCO with Coordinate Moving Average",
+    "text": "6), Algorithm 3 converges to an ϵ-stationary point of the Moreau envelope F1/ρ̄ in T = O( n1B1B2 ϵ −8) iterations.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p187",
+    "section_heading": "B.1 Solving Non-smooth FCCO with Coordinate Moving Average",
+    "text": "Proof of Theorem B.3. Since the only difference between SONX and Algorithm 3 is the update for {ui,t : i ∈ S1}, the proof of Theorem 4.6 still holds with the error bound replaced by Lemma B.2, i.e.,",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p188",
+    "section_heading": "B.1 Solving Non-smooth FCCO with Coordinate Moving Average",
+    "text": "Then proof proceeds to",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p190",
+    "section_heading": "B.1 Solving Non-smooth FCCO with Coordinate Moving Average",
+    "text": "then to reach a nearly ϵ-stationary point, Algorithm 3 needs",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p192",
+    "section_heading": "B.2 Solving Non-smooth TCCO with Coordinate Moving Average",
+    "text": "We first assume the following assumptions hold.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p193",
+    "section_heading": "B.2 Solving Non-smooth TCCO with Coordinate Moving Average",
+    "text": "Assumption B.4. For all (i, j) ∈ S1 × S2, we assume that",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p194",
+    "section_heading": "B.2 Solving Non-smooth TCCO with Coordinate Moving Average",
+    "text": "• fi(·) is ρf -weakly-convex, Cf -Lipschitz continuous and non-decreasing;",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p195",
+    "section_heading": "B.2 Solving Non-smooth TCCO with Coordinate Moving Average",
+    "text": "• gi(·) is ρg-weakly-convex and Cg-Lipschitz continuous. hi,j(·) is differentiable and Ch-Lipschitz continuous.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p196",
+    "section_heading": "B.2 Solving Non-smooth TCCO with Coordinate Moving Average",
+    "text": "• Either gi is monotone and hi,j(·) is Lh-smooth, or gi is non-decreasing and hi,j(·) is Lh-weaklyconvex.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p197",
+    "section_heading": "B.2 Solving Non-smooth TCCO with Coordinate Moving Average",
+    "text": "• Stochastic estimators hi,j(w, ξ), ∂hi,j(w, ξ) and gi(vi,j) have bounded variance σ2, and ∥hi,j(w)∥ ≤ C̃h.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p198",
+    "section_heading": "B.2 Solving Non-smooth TCCO with Coordinate Moving Average",
+    "text": "With coordinate moving average update, we present the following lemmas of error bounds.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p199",
+    "section_heading": "B.2 Solving Non-smooth TCCO with Coordinate Moving Average",
+    "text": "Lemma B.5. Consider the coordinate moving average update for {vi,j,t : (i, j) ∈ S1 × S2} in Algorithm 4, assume hi,j(w) is Ch-Lipschitz continuous for all (i, j) ∈ S1 ×S2 and τ1 ≤ 1, then we have",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p200",
+    "section_heading": "B.2 Solving Non-smooth TCCO with Coordinate Moving Average",
+    "text": "Lemma B.6. Consider the coordinate moving average update for {ui,t : i ∈ S1} in Algorithm 4, assume gi(·) is Cg-Lipschitz continuous for all i ∈ S1 and τ2 ≤ 1, then we have",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p201",
+    "section_heading": "B.2 Solving Non-smooth TCCO with Coordinate Moving Average",
+    "text": "Then we have a convergence analysis similar to Theorem A.2.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p202",
+    "section_heading": "B.2 Solving Non-smooth TCCO with Coordinate Moving Average",
+    "text": "Theorem B.7. Consider non-smooth weakly-convex TCCO problem, under Assumption B.4, setting τ1 = O ( min { B3ϵ 4, B 1/2 1 n 1/2 2",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p203",
+    "section_heading": "B.2 Solving Non-smooth TCCO with Coordinate Moving Average",
+    "text": "n 1/2 1 B 1/2 2",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p204",
+    "section_heading": "B.2 Solving Non-smooth TCCO with Coordinate Moving Average",
+    "text": "B2ϵ 6 }) ≤ 1, τ2 = O(B2ϵ4) ≤ 1, η =",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p205",
+    "section_heading": "B.2 Solving Non-smooth TCCO with Coordinate Moving Average",
+    "text": "O ( min { B3ϵ 4, B 1/2 1 n 1/2 2",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p206",
+    "section_heading": "B.2 Solving Non-smooth TCCO with Coordinate Moving Average",
+    "text": "n 1/2 1 B 1/2 2",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p207",
+    "section_heading": "B.2 Solving Non-smooth TCCO with Coordinate Moving Average",
+    "text": "B2ϵ 6 } B1B2 n1n2 ϵ2 ) , Algorithm 4 converges to an ϵ-stationary point of the",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p208",
+    "section_heading": "B.2 Solving Non-smooth TCCO with Coordinate Moving Average",
+    "text": "Moreau envelope F1/ρ̄ in T = O ( max { 1 B3 ,",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p209",
+    "section_heading": "B.2 Solving Non-smooth TCCO with Coordinate Moving Average",
+    "text": "n 1/2 1",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p210",
+    "section_heading": "B.2 Solving Non-smooth TCCO with Coordinate Moving Average",
+    "text": "B 1/2 1 B 1/2 2 n 1/2 2",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p211",
+    "section_heading": "B.2 Solving Non-smooth TCCO with Coordinate Moving Average",
+    "text": "ϵ−2 }",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p212",
+    "section_heading": "B.2 Solving Non-smooth TCCO with Coordinate Moving Average",
+    "text": "n1n2 B1B2",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p213",
+    "section_heading": "B.2 Solving Non-smooth TCCO with Coordinate Moving Average",
+    "text": "ϵ−8 ) iterations.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p214",
+    "section_heading": "B.2 Solving Non-smooth TCCO with Coordinate Moving Average",
+    "text": "Proof of Theorem B.7. Since the only difference between SONT and Algorithm 4 is the update for {ui,t : i ∈ S1} and {vi,j,t : (i, j) ∈ S1 × S2}, the proof of Theorem A.2 still holds with the error bound replaced by Lemma B.5 and Lemma B.6, i.e.,",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p216",
+    "section_heading": "B.2 Solving Non-smooth TCCO with Coordinate Moving Average",
+    "text": "Then the proof proceeds to",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p218",
+    "section_heading": "B.2 Solving Non-smooth TCCO with Coordinate Moving Average",
+    "text": "then to reach a nearly ϵ-stationary point, Algorithm 4 need",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p220",
+    "section_heading": "C.1 Assumption Verification",
+    "text": "We first present two lemmas about the weak convexity of the objective in the regular learning setting and in the multi-instance learning setting with mean pooling.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p221",
+    "section_heading": "C.1 Assumption Verification",
+    "text": "Lemma C.1. Consider the formulation in problem (9) in the regular learning setting and assume that function ℓ(·) is non-decreasing, Cℓ Lipschitz continuous and ρℓ-weakly-convex, and function hw(Xi) is Ch Lipschitz continuous and ρh-weakly-convex. then the following statements are true:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p222",
+    "section_heading": "C.1 Assumption Verification",
+    "text": "• fi(g, s′) is convex and Cf -Lipschitz continuous w.r.t. (g, s′), and non-decreasing w.r.t. g.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p223",
+    "section_heading": "C.1 Assumption Verification",
+    "text": "• ψi(w, si) is ρψ-weakly-convex w.r.t. (w, si), and the stochastic estimator of the finite sum function value ψi(w, si) is Cψ-Lipschitz continuous w.r.t. (w, si). • 1n+ ∑ i∈S+ fi(ψi(w, si), s ′) is ρF -weakly-convex w.r.t. (w, s, s′).",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p224",
+    "section_heading": "C.1 Assumption Verification",
+    "text": "Lemma C.2. Consider the formulation in problem (9) in the multi-instance learning setting with mean pooling, and assume that function hi(w) = 1|Xi| ∑ x∈Xi e(we;x) ⊤wc is L̃h-smooth and is bounded by C̃h, and hi(w; ξ) = e(we; ξ)⊤wc is Ch-Lipschitz continuous and has bounded variance σ2, ℓ is non-decreasing and Lℓ-weakly-convex, then the followings are true:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p225",
+    "section_heading": "C.1 Assumption Verification",
+    "text": "• fi(g, s′) is convex and Cf -Lipschitz-continuous w.r.t. (g, s′), and non-decreasing w.r.t. g;",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p226",
+    "section_heading": "C.1 Assumption Verification",
+    "text": "• gi(v, si) = si + (ℓ(v)−si)+",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p227",
+    "section_heading": "C.1 Assumption Verification",
+    "text": "β is ρg-weakly convex and non-decreasing w.r.t. v, convex w.r.t. si, and Cg-Lipschitz continuous w.r.t. (v, si);",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p228",
+    "section_heading": "C.1 Assumption Verification",
+    "text": "• hi,j(w) = hj(w)− hi(w) is Lh-weakly-convex, and hi,j(w; ξ, ζ) is Ch-Lipschitz continuous; • 1n+ ∑ Xi∈S+ fi(gi(hi,j(w), si), s ′) is ρF -weakly-convex w.r.t. (w, s, s′).",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p229",
+    "section_heading": "C.1.1 Proof of Lemma C.1",
+    "text": "Proof of Lemma C.1. The convexity of fi(g, s′) with respect to (g, s′) follows from the convexity definition. With subgradients ∂s′fi(g, s′) ∈ [1− 1α , 1], ∂gfi(g, s ′) ∈ [0, 1α ], we can see that fi(g, s ′) is 1α -Lipschitz continuous w.r.t. (g, s ′), and non-decreasing w.r.t. u.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p230",
+    "section_heading": "C.1.1 Proof of Lemma C.1",
+    "text": "We first show that ℓ(hw(Xj)− hw(Xi)) is weakly-convex w.r.t. w. ℓ(hw̃(Xj)− hw̃(Xi)) ≥ ℓ(hw(Xj)− hw(Xi)) + ⟨∂ℓ(hw(Xj)− hw(Xi)), (hw̃(Xj)− hw̃(Xi))− (hw(Xj)− hw(Xi))⟩",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p231",
+    "section_heading": "C.1.1 Proof of Lemma C.1",
+    "text": "+ ρℓ 2 ∥(hw̃(Xj)− hw̃(Xi))− (hw(Xj)− hw(Xi))∥2",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p232",
+    "section_heading": "C.1.1 Proof of Lemma C.1",
+    "text": "(a) ≥ ℓ(hw(Xj)− hw(Xi)) + ⟨∂ℓ(hw(Xj)− hw(Xi)), ⟨∇hw(Xj)−∇hw(Xi), w̃ −w⟩⟩ + 2ρℓC 2 h∥w̃ −w∥2",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p233",
+    "section_heading": "C.1.1 Proof of Lemma C.1",
+    "text": "where (a) uses the weak-convexity of hw(Xi) and hw(Xj),",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p234",
+    "section_heading": "C.1.1 Proof of Lemma C.1",
+    "text": "Thus ℓ(hw(Xj)− hw(Xi)) is 4ρℓC2h-weakly-convex w.r.t. w.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p235",
+    "section_heading": "C.1.1 Proof of Lemma C.1",
+    "text": "where (a) follows from the monotonicity of ψi w.r.t. ℓ and weak-convexity of ℓ(hw(Xj)− hw(Xi)), and (b) is due to the Lipschitz continuity of (ℓ, si) 7→ si + (ℓ−si)+β w.r.t. ℓ. Thus ψi is 4ρℓC 2 h",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p236",
+    "section_heading": "C.1.1 Proof of Lemma C.1",
+    "text": "β -weaklyconvex w.r.t. (w, si).",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p237",
+    "section_heading": "C.1.1 Proof of Lemma C.1",
+    "text": "With a similar argument using the convexity and Lipschitz continuity of fi(g, s′) w.r.t. (g, s′) and the weak-convexity of ψi(w, si), we can show that fi(ψi(w, si), s′) is 4ρℓC 2 h",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p238",
+    "section_heading": "C.1.1 Proof of Lemma C.1",
+    "text": "β -weakly-convex w.r.t.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p239",
+    "section_heading": "C.1.1 Proof of Lemma C.1",
+    "text": "(w, si, s ′). Thus, F (w, si, s′) is ρF =",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p240",
+    "section_heading": "C.1.1 Proof of Lemma C.1",
+    "text": "4ρℓC 2 h",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p241",
+    "section_heading": "C.1.1 Proof of Lemma C.1",
+    "text": "β -weakly-convex w.r.t. (w, s, s ′).",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p242",
+    "section_heading": "C.1.1 Proof of Lemma C.1",
+    "text": "Now we show the Lipschitz continuity of ψi(w, si;Xj), i.e. an unbiased stochastic estimator of ψi(w, si). We have",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p243",
+    "section_heading": "C.1.1 Proof of Lemma C.1",
+    "text": "Thus ψi(w, si;Xj) is (2 + 4+16C2ℓC 2 h β2 ) 1/2-Lipschitz continuous w.r.t. (w, si).",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p244",
+    "section_heading": "C.1.2 Proof of Lemma C.2",
+    "text": "Proof of Lemma C.2. First of all, the convexity of fi(u, s′) w.r.t. (u, s′) and the convexity of gi(vij , si) w.r.t. (ℓ, si) directly follows from the convexity definition. Moreover, one can see from the formulation that ∂s′fi(g, s′) ∈ [1 − 1α , 1], ∂ufi(g, s ′) ∈ [0, 1α ], ∂ℓgi(vij , si) ∈ [1 − 1 β , 1], ∂sigi(vij , si) ∈ [0, 1β ]. Thus fi is Cf = 1 α -Lipschitz continuous w.r.t. (u, s",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p245",
+    "section_heading": "C.1.2 Proof of Lemma C.2",
+    "text": "′) and non-decreasing w.r.t. u, gi is 1β -Lipschitz continuous w.r.t. (ℓ, si) and non-decreasing w.r.t. ℓ. Since ℓ(·) is nondecreasing, gi(vij , si) is non-decreasing w.r.t. vij . As a result of Proposition 4.2, gi(vij , si) is ρg = 1 βLℓ-weakly-convex w.r.t. vij . Due to the composition structure and the Lipschitz continuity of gi and ℓ, one can see that gi(vij , si) is Cg = 1βCℓ-Lipschitz continuous w.r.t. (vij , si).",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p246",
+    "section_heading": "C.1.2 Proof of Lemma C.2",
+    "text": "The Lh = 2L̃h-weakly-convexity of hi,j(w) and Ch = 2C̃h-Lipschitz continuity of hi,j(w; ξ, ζ) directly follows from the L̃h-smoothness of hi(w) and C̃h-Lipschitz continuity of hi(w; ξ). Finally,",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p247",
+    "section_heading": "C.1.2 Proof of Lemma C.2",
+    "text": "i i i ℓ",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p248",
+    "section_heading": "C.1.2 Proof of Lemma C.2",
+    "text": "of ℓ, (d) uses the smoothness of hi,j . Thus fi(gi(hi,j(w), si), s′) is ρF = (CfCgC2hLℓ +CfCgLh)weakly-convex w.r.t. (w, si, s′). Therefore, 1n+ ∑ i∈S+ fi(gi(hi,j(w), si), s",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p249",
+    "section_heading": "C.1.2 Proof of Lemma C.2",
+    "text": "′) is ρF -weakly-convex w.r.t. (w, s, s′).",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p250",
+    "section_heading": "C.1.2 Proof of Lemma C.2",
+    "text": "C.2 Algorithms for TPAUC and Multi-instance TPAUC Maximization",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p251",
+    "section_heading": "C.1.2 Proof of Lemma C.2",
+    "text": "C.3 TPAUC in MIL with smoothed-max pooling and attention-based pooling",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p252",
+    "section_heading": "C.1.2 Proof of Lemma C.2",
+    "text": "We can extend our results to smoothed-max pooling and attention-based pooling.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p253",
+    "section_heading": "C.1.2 Proof of Lemma C.2",
+    "text": "Smoothed-max Pooling. The smoothed-max pooling can be written as [45]:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p254",
+    "section_heading": "C.1.2 Proof of Lemma C.2",
+    "text": "where τ > 0 is a hyperparameter and ϕ(w;x) = e(we,x)⊤wc is the prediction score for instance x.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p255",
+    "section_heading": "C.1.2 Proof of Lemma C.2",
+    "text": "We can see that hw(X) itself is a compositional function. To map the problem into TCCO, we define hi(w) =",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p256",
+    "section_heading": "C.1.2 Proof of Lemma C.2",
+    "text": "1 |Xi| ∑ x∈Xi exp(ϕ(w;x)/τ) +C, where C > 0 is a constant. Then the objective function",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p258",
+    "section_heading": "C.1.2 Proof of Lemma C.2",
+    "text": "In this case we define gi(ℓ(v), si) = si + (ℓ(τ log v1−τ log v2)−si)+",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p259",
+    "section_heading": "C.1.2 Proof of Lemma C.2",
+    "text": "β and hi,j(w) = [hi(w), hj(w)]. We can still prove that gi(ℓ(v), si) is monotone w.r.t to each component of v. It is not difficult to prove that ℓ(τ log v1 − τ log v2) is weakly convex w.r.t v because τ log v1 − τ log v2 is a smooth mapping of v due to v ≥ C and ℓ is a convex function [8]. As a result, since gi(ℓ, si) is non-decreasing and convex w.r.t to ℓ, it is easy to prove that gi(ℓ(v), si) is weakly convex w.r.t v and is monotone (either non-decreasing or non-increasing) w.r.t to each component of v. Hence, assuming hi(w) is a smooth and Lipchitz continuous function, we can prove that gi(hi,j(w), si) is weakly convex w.r.t. to w.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p260",
+    "section_heading": "C.1.2 Proof of Lemma C.2",
+    "text": "Attention-based Pooling. Attention-based pooling was recently introduced for deep MIL [14], which aggregates the feature representations using attention, i.e.,",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p261",
+    "section_heading": "C.1.2 Proof of Lemma C.2",
+    "text": "where g(w;x) is a parametric function, e.g., g(w;x) = w⊤a tanh(V e(we;x)) + C, where V ∈ Rm×do and wa ∈ Rm. Based on the aggregated feature representation, the bag level prediction can be computed by",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p262",
+    "section_heading": "C.1.2 Proof of Lemma C.2",
+    "text": "where δ(w;x) = w⊤c e(we;x).",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p263",
+    "section_heading": "C.1.2 Proof of Lemma C.2",
+    "text": "We can see that hw(X) itself is a compositional function. To map the problem into TCCO, we define h1i (w) = 1 |Xi| ∑ x∈Xi exp(g(w;x))δ(w;x), and h 2 i (w) = 1 |Xi| ∑ x′∈Xi exp(g(w;x",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p264",
+    "section_heading": "C.1.2 Proof of Lemma C.2",
+    "text": "′)). Assume |w⊤a tanh(V e(we;x))| ≤ Cb then h2i (w) ≥ exp(C − Cb). Then the objective function becomes",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p265",
+    "section_heading": "C.1.2 Proof of Lemma C.2",
+    "text": "In this case we define gi(ℓ(v), si) = si + (ℓ(",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p266",
+    "section_heading": "C.1.2 Proof of Lemma C.2",
+    "text": "v3 v4 − v1v2 )−si)+ β and hi,j(w) =",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p267",
+    "section_heading": "C.1.2 Proof of Lemma C.2",
+    "text": "[h1i (w), h 2 i (w), h 1 j (w), h 2 j (w)]. We can still prove that gi(ℓ(v), si) is monotone w.r.t to each component of v. It is not difficult to prove that ℓ( v3v4 − v1 v2 ) is weakly convex w.r.t v because v3 v4",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p268",
+    "section_heading": "C.1.2 Proof of Lemma C.2",
+    "text": "− v1v2 is a smooth mapping of v when v2, v4 are lower bounded and ℓ is a convex function [8]. As a result, since gi(ℓ, si) is non-decreasing and convex w.r.t to ℓ, it is easy to prove that gi(ℓ(v), si) is weakly convex w.r.t v and is monotone (either non-decreasing or non-increasing) w.r.t to each component of v. Hence, assuming h1i (w), h 2 i (w) are smooth and Lipchitz continuous, we can prove that gi(hi,j(w), si) is weakly convex w.r.t. to w.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p269",
+    "section_heading": "C.4.1 Convergence analysis for Algorithm 5",
+    "text": "We first consider TPAUC maximization in the regular learning setting. Define F (w, s, s′) := 1 n+ ∑ Xi∈S+ fi(ψi(w, si), s",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p270",
+    "section_heading": "C.4.1 Convergence analysis for Algorithm 5",
+    "text": "′). Due to the weak-convexity ofF (w, s, s′) w.r.t. (w, s, s′), we consider the following Moreau envelope and proximal map defined as",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p271",
+    "section_heading": "C.4.1 Convergence analysis for Algorithm 5",
+    "text": "Following the same proof of Lemma 4.5, we have the following error bound",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p272",
+    "section_heading": "C.4.1 Convergence analysis for Algorithm 5",
+    "text": "Lemma C.3. Consider the update for {ui,t : Xi ∈ S+} in Algorithm 5. Assume ψi(w, si) is Cψ-Lipshitz continuous for all Xi ∈ S+. Assume Et[∥Gt∥2] ≤ M2 and Et[∥ 1B1 ∑ Xi∈Bt1",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p273",
+    "section_heading": "C.4.1 Convergence analysis for Algorithm 5",
+    "text": "∂sψi(wt, si,t;Bt2)∂uf(ui,t, s′t)ei∥2] ≤M2, where ei is the n+-dimensional vector with 1 at the i-th entry and 0 everywhere else. With γ = n+−B1B1(1−τ) + (1− τ) and τ ≤ 1 2 , we have",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p274",
+    "section_heading": "C.4.1 Convergence analysis for Algorithm 5",
+    "text": "Then we have following convergence guarantee.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p275",
+    "section_heading": "C.4.1 Convergence analysis for Algorithm 5",
+    "text": "Theorem C.4. Under the assumptions given in Lemma C.1, with γ = n+−B1B1(1−τ) + (1 − τ), τ =",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p276",
+    "section_heading": "C.4.1 Convergence analysis for Algorithm 5",
+    "text": "O(B2ϵ4) ≤ 12 , η = O( B1B",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p277",
+    "section_heading": "C.4.1 Convergence analysis for Algorithm 5",
+    "text": "1/2 2 ϵ 4",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p278",
+    "section_heading": "C.4.1 Convergence analysis for Algorithm 5",
+    "text": "n+ ), and ρ̄ = ρF + ρψCf , Algorithm 5 converges to an ϵ-stationary",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p279",
+    "section_heading": "C.4.1 Convergence analysis for Algorithm 5",
+    "text": "point of the Moreau envelope F1/ρ̄ in T = O( n+ B1B 1/2 2 ϵ−6) iterations.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p280",
+    "section_heading": "C.4.1 Convergence analysis for Algorithm 5",
+    "text": "Proof of Theorem C.4. Define (ŵt, ŝt, ŝ′t) := proxF/ρ̄(wt, st, s ′ t). For a given Xi ∈ S+, we have fi(ψi(ŵt, ŝi,t), ŝ ′ t)− fi(ui,t, s′t)",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p281",
+    "section_heading": "C.4.1 Convergence analysis for Algorithm 5",
+    "text": "where (a) follows from the convexity of fi, (b) follows from the monotonicity of fi(·, s′) and weak convexity of ψi, (c) is due to 0 ≤ ∂ufi(ui,t, s′t) ≤ Cf . Then it follows",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p282",
+    "section_heading": "C.4.1 Convergence analysis for Algorithm 5",
+    "text": "Now we consider the change in the Moreau envelope:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p283",
+    "section_heading": "C.4.1 Convergence analysis for Algorithm 5",
+    "text": "where for simplicity we denote G1t = 1 B1 ∑ Xi∈Bt1 ∂ufi(ui,t, s ′ t)∂sψi(wt, si,t;Bt2) and G2t =",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p284",
+    "section_heading": "C.4.1 Convergence analysis for Algorithm 5",
+    "text": "1 B1 ∑ Xi∈Bt1 ∂s′fi(ui,t, s ′ t). The second inequality in the above derivation uses the bounds of E[∥Gt∥2],E[∥G1t∥2] and E[∥G2t∥2], which follow from the Lipschitz continuity and bounded variance",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p285",
+    "section_heading": "C.4.1 Convergence analysis for Algorithm 5",
+    "text": "assumptions and are denoted by M . Moreover, we have",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p287",
+    "section_heading": "C.4.1 Convergence analysis for Algorithm 5",
+    "text": "Combining inequality 29 and 30 yields",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p289",
+    "section_heading": "C.4.1 Convergence analysis for Algorithm 5",
+    "text": "Due to the ρF -weak convexity of F (w, s, s′), we have (ρ̄ − ρF )-strong convexity of (w, s, s′) 7→ F (w, s, s′) + ρ̄2∥(wt, st, s ′ t)− (w, s, s′)∥2. Then it follows",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p290",
+    "section_heading": "C.4.1 Convergence analysis for Algorithm 5",
+    "text": "Plugging inequality 32 into inequality 31 yields",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p291",
+    "section_heading": "C.4.1 Convergence analysis for Algorithm 5",
+    "text": "Set ρ̄ = ρF + ρψCf . We have",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p292",
+    "section_heading": "C.4.1 Convergence analysis for Algorithm 5",
+    "text": "where inequality (a) follows from Lemma 3.2.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p293",
+    "section_heading": "C.4.1 Convergence analysis for Algorithm 5",
+    "text": "Using the Lipschitz continuity of f , we have",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p294",
+    "section_heading": "C.4.1 Convergence analysis for Algorithm 5",
+    "text": "With the error bound from Lemma C.3, we have",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p295",
+    "section_heading": "C.4.1 Convergence analysis for Algorithm 5",
+    "text": "with µ = B1τ2n+ , R = 2τ1/2σ",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p296",
+    "section_heading": "C.4.1 Convergence analysis for Algorithm 5",
+    "text": "B 1/2 2",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p297",
+    "section_heading": "C.4.1 Convergence analysis for Algorithm 5",
+    "text": "+ 4n+CψMη",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p298",
+    "section_heading": "C.4.1 Convergence analysis for Algorithm 5",
+    "text": "B1τ1/2 +",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p299",
+    "section_heading": "C.4.1 Convergence analysis for Algorithm 5",
+    "text": "4n 1/2 + CψMη",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p300",
+    "section_heading": "C.4.1 Convergence analysis for Algorithm 5",
+    "text": "B1τ1/2 . Then",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p301",
+    "section_heading": "C.4.1 Convergence analysis for Algorithm 5",
+    "text": "Taking summation from t = 0 to T − 1 yields",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p302",
+    "section_heading": "C.4.1 Convergence analysis for Algorithm 5",
+    "text": "where (a) uses ∑T−1 t=0 (1− µ)t ≤ 1 µ .",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p303",
+    "section_heading": "C.4.1 Convergence analysis for Algorithm 5",
+    "text": "Lower bounding the left-hand-side by minw,s,s′ F1/ρ̄(w, s, s′), we obtain",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p304",
+    "section_heading": "C.4.1 Convergence analysis for Algorithm 5",
+    "text": "where we assume F1/ρ̄(w0, s0, s′0)−minw,s,s′ F1/ρ̄(w, s, s′) ≤ ∆ and",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p305",
+    "section_heading": "C.4.1 Convergence analysis for Algorithm 5",
+    "text": "Plugging the expression of µ and R yields",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p306",
+    "section_heading": "C.4.1 Convergence analysis for Algorithm 5",
+    "text": "Setting τ = O(B2ϵ4) and η = O(B1B 1/2 2",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p307",
+    "section_heading": "C.4.1 Convergence analysis for Algorithm 5",
+    "text": "n+ ϵ4), with T = O( n+",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p308",
+    "section_heading": "C.4.1 Convergence analysis for Algorithm 5",
+    "text": "B1B 1/2 2",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p309",
+    "section_heading": "C.4.1 Convergence analysis for Algorithm 5",
+    "text": "ϵ−6) iterations, we have",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p310",
+    "section_heading": "C.4.2 Convergence analysis for Algorithm 6",
+    "text": "We now consider MIL TPAUC maximization with mean pooling. Define F (w, s, s′) := 1 n+ ∑ Xi∈S+ fi(gi(hj(w)−hi(w), si), s",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p311",
+    "section_heading": "C.4.2 Convergence analysis for Algorithm 6",
+    "text": "′). Due to the weak-convexity of F (w, s, s′) w.r.t. (w, s, s′), we consider the following Moreau envelope and proximal map defined as",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p312",
+    "section_heading": "C.4.2 Convergence analysis for Algorithm 6",
+    "text": "Following the same proofs of Lemma A.3 and Lemma A.4, we have the following error bounds",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p313",
+    "section_heading": "C.4.2 Convergence analysis for Algorithm 6",
+    "text": "Lemma C.5. Consider the update for {vi,t : Xi ∈ S+ ∪ S−} in Algorithm 6. Assume hi(w; ξ) is Ch-Lipshitz for all Xi ∈ S+ ∪ S−, and E[∥Gt∥2] ≤ M2. With γ1 = n+−B1B1(1−τ1) + (1 − τ1),",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p314",
+    "section_heading": "C.4.2 Convergence analysis for Algorithm 6",
+    "text": "Lemma C.6. Consider update for {ui,t : Xi ∈ S+} in Algorithm 6. Assume gi(vij , si) isCg-Lipshitz w.r.t. (vij , si) for all Xi ∈ S+ and Xj ∈ S−. With γ3 = n+−B1B1(1−τ2) + (1− τ2) and τ2 ≤ 1 2 , we have",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p315",
+    "section_heading": "C.4.2 Convergence analysis for Algorithm 6",
+    "text": "where C2 is a constant defined in the proof.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p316",
+    "section_heading": "C.4.2 Convergence analysis for Algorithm 6",
+    "text": "Then we have the following covnergence guarantee.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p317",
+    "section_heading": "C.4.2 Convergence analysis for Algorithm 6",
+    "text": "Theorem C.7. Under assumptions given in Lemma C.2, with γ1 = n1−B1B1(1−τ1) + (1 − τ1), γ2 = n2−B2B2(1−τ1) + (1 − τ1), γ3 = n1−B1 B1(1−τ2) + (1 − τ2), τ1 =",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p318",
+    "section_heading": "C.4.2 Convergence analysis for Algorithm 6",
+    "text": "O ( min { B3,",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p319",
+    "section_heading": "C.4.2 Convergence analysis for Algorithm 6",
+    "text": "B1 n+",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p320",
+    "section_heading": "C.4.2 Convergence analysis for Algorithm 6",
+    "text": "min{ n 1/2 +",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p321",
+    "section_heading": "C.4.2 Convergence analysis for Algorithm 6",
+    "text": "B 1/2 1",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p322",
+    "section_heading": "C.4.2 Convergence analysis for Algorithm 6",
+    "text": ", n 1/2 −",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p323",
+    "section_heading": "C.4.2 Convergence analysis for Algorithm 6",
+    "text": "B 1/2 2",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p324",
+    "section_heading": "C.4.2 Convergence analysis for Algorithm 6",
+    "text": "}B1/22 } ϵ4 ) ≤ 1/2, τ2 = O(B2ϵ4) ≤ 1/2, η =",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p325",
+    "section_heading": "C.4.2 Convergence analysis for Algorithm 6",
+    "text": "O ( min { min{B1n+ , B2 n− }min{B1/23 , B 1/2 1",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p326",
+    "section_heading": "C.4.2 Convergence analysis for Algorithm 6",
+    "text": "n 1/2 +",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p327",
+    "section_heading": "C.4.2 Convergence analysis for Algorithm 6",
+    "text": "min{ n 1/4 +",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p328",
+    "section_heading": "C.4.2 Convergence analysis for Algorithm 6",
+    "text": "B 1/4 1",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p329",
+    "section_heading": "C.4.2 Convergence analysis for Algorithm 6",
+    "text": ", n 1/4 −",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p330",
+    "section_heading": "C.4.2 Convergence analysis for Algorithm 6",
+    "text": "B 1/4 2",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p331",
+    "section_heading": "C.4.2 Convergence analysis for Algorithm 6",
+    "text": "}B1/42 }, B1n+ min{ B",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p332",
+    "section_heading": "C.4.2 Convergence analysis for Algorithm 6",
+    "text": "1/2 1 n 1/2 + , B 1/2 2 n 1/2 −",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p333",
+    "section_heading": "C.4.2 Convergence analysis for Algorithm 6",
+    "text": "}B1/23 } ϵ4 ) ,",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p334",
+    "section_heading": "C.4.2 Convergence analysis for Algorithm 6",
+    "text": "then after",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p335",
+    "section_heading": "C.4.2 Convergence analysis for Algorithm 6",
+    "text": "T ≥ O ( max { max{n+",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p336",
+    "section_heading": "C.4.2 Convergence analysis for Algorithm 6",
+    "text": "B1 , n− B2 }max{ 1 B",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p337",
+    "section_heading": "C.4.2 Convergence analysis for Algorithm 6",
+    "text": "1/2 3",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p338",
+    "section_heading": "C.4.2 Convergence analysis for Algorithm 6",
+    "text": ", n 1/2 +",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p339",
+    "section_heading": "C.4.2 Convergence analysis for Algorithm 6",
+    "text": "B 1/2 1",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p340",
+    "section_heading": "C.4.2 Convergence analysis for Algorithm 6",
+    "text": "max{B 1/4 1",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p341",
+    "section_heading": "C.4.2 Convergence analysis for Algorithm 6",
+    "text": "n 1/4 +",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p342",
+    "section_heading": "C.4.2 Convergence analysis for Algorithm 6",
+    "text": ", B",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p343",
+    "section_heading": "C.4.2 Convergence analysis for Algorithm 6",
+    "text": "1/4 2 n 1/4 − } 1 B 1/4 2 }, n+ B1 max{ n 1/2 + B 1/2 1 , n 1/2 − B 1/2 2 } 1 B 1/2 2",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p344",
+    "section_heading": "C.4.2 Convergence analysis for Algorithm 6",
+    "text": "} ϵ−6 ) iterations, Algorithm 6 gives ϵ-stationary point to the Moreau envelope, i.e.,",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p345",
+    "section_heading": "C.4.2 Convergence analysis for Algorithm 6",
+    "text": "where ρ̄ = ρF + ρgCf + 8ρgCfCh + CfCgLh.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p346",
+    "section_heading": "C.4.2 Convergence analysis for Algorithm 6",
+    "text": "Proof of Theorem C.7. Consider the change in the Moreau envelope:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p347",
+    "section_heading": "C.4.2 Convergence analysis for Algorithm 6",
+    "text": "where for simplicity we denote G2t = 1 B1 ∑ i∈Bt1 ∂s′fi(ui,t, s ′ t), and G 1 t is a n+-dimensional vector whose i-th coordinate is defined as",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p348",
+    "section_heading": "C.4.2 Convergence analysis for Algorithm 6",
+    "text": "The second inequality in the above derivation uses the bounds of E[∥Gt∥2],E[∥G1t∥2] and E[∥G2t∥2], which follow from the Lipschitz continuity and bounded variance assumptions and are denoted by M .",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p350",
+    "section_heading": "C.4.2 Convergence analysis for Algorithm 6",
+    "text": "Define (ŵt, ŝt, ŝ′t) := proxF/ρ̄(wt, st, s ′ t). For a given i ∈ {1, . . . ,m}, we have",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p351",
+    "section_heading": "C.4.2 Convergence analysis for Algorithm 6",
+    "text": "where (a) follows from the convexity of fi, (b) follows from the monotonicity of fi(·, s′) and weak convexity of gi, (c) is due to 0 ≤ ∂ufi(ui,t, s′t) ≤ Cf . The Lh-smoothness assumption of hi(w)− hj(w) for all i,w implies",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p352",
+    "section_heading": "C.4.2 Convergence analysis for Algorithm 6",
+    "text": "Since ∂ufi(ui,t, s′ )∂vgi(vj,t − vi,t, si,t) ≥ 0, we bound A1 as following",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p353",
+    "section_heading": "C.4.2 Convergence analysis for Algorithm 6",
+    "text": "where inequality (a) follows from inequality 39, (b) follows from the Lipschitz continuity and monotone assumptions on fi, gi, hi, hj . Then plugging the new formulation of A1 back to inequality 38",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p355",
+    "section_heading": "C.4.2 Convergence analysis for Algorithm 6",
+    "text": "Taking average over i ∈ S+ gives",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p357",
+    "section_heading": "C.4.2 Convergence analysis for Algorithm 6",
+    "text": "Combining inequality 37 and 40 yields",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p358",
+    "section_heading": "C.4.2 Convergence analysis for Algorithm 6",
+    "text": "where (a) follows from the Lipschitz continuity of fi, gi, hi, hj and inequality 40.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p359",
+    "section_heading": "C.4.2 Convergence analysis for Algorithm 6",
+    "text": "Due to the ρF -weak convexity of F (w, si, s′), we have (ρ̄− ρF )-strong convexity of (w, si, s′) 7→ F (w, s, s′) + ρ̄2∥(wt, st, s ′ t)− (w, s, s′)∥2. Then it follows",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p360",
+    "section_heading": "C.4.2 Convergence analysis for Algorithm 6",
+    "text": "Plugging inequality 42 back into 41, we obtain",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p361",
+    "section_heading": "C.4.2 Convergence analysis for Algorithm 6",
+    "text": "where in inequality (a) we use ρ̄ = ρF + ρgCf + 8ρgCfCh + CfCgLh and C1 = max{2CfCg, 2ρgCf , 2Cf}, and inequality (b) uses Lemma 3.2. With general error bounds",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p362",
+    "section_heading": "C.4.2 Convergence analysis for Algorithm 6",
+    "text": "≤ E[F1/ρ̄(wt, st, s′t)] + 3η2ρ̄M2 2 − η 2 E[∥∇F1/ρ̄(wt, st, s′t)∥2]",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p363",
+    "section_heading": "C.4.2 Convergence analysis for Algorithm 6",
+    "text": "where µmin = min{µ1, µ2, µ3}. Taking summation from t = 0 to T − 1 yields",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p364",
+    "section_heading": "C.4.2 Convergence analysis for Algorithm 6",
+    "text": "where we use ∑T−1 t=0 (1− µmin)t ≤ 1 µmin and define constant ∆0 such that",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p365",
+    "section_heading": "C.4.2 Convergence analysis for Algorithm 6",
+    "text": "Then it follows",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p366",
+    "section_heading": "C.4.2 Convergence analysis for Algorithm 6",
+    "text": "where we define constant ∆ such that F1/ρ̄(w0, s0, s′0)− E[F1/ρ̄(wT , sT , s′T )] ≤ ∆. With MSVR updates for vi,t and ui,t, following from Lemma C.5 and Lemma C.6, we have",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p367",
+    "section_heading": "C.4.2 Convergence analysis for Algorithm 6",
+    "text": "Then we have",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p368",
+    "section_heading": "D.1 Additional Proposition",
+    "text": "Proposition D.1. Consider a Lipschitz continuous function f : O → R where O ⊂ Rd is an open set. Assume f to be non-increasing (resp. non-decreasing) with respect to each element in the input, then all subgradients of f are element-wise non-positive (resp. non-negative).",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p369",
+    "section_heading": "D.1 Additional Proposition",
+    "text": "Proof of Proposition D.1. Let D be the subset of O where f is differentiable. By Theorem 9.60 in [24], a Lipschitz continuous function f : O → R, where O ⊂ Rd is an open set, is differentiable almost everywhere, i.e., D is dense in O. Then by Theorem 9.61 in [24], the subdifferential of f at x is defined as",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p370",
+    "section_heading": "D.1 Additional Proposition",
+    "text": "where con denotes the convex hull. If we assume that f is non-increasing with respect to each element in the input, then ∇f(x) ≤ 0 (element-wise) for all differentiable points x ∈ D. It implies that the all vectors in {v|∃xk → x with xk ∈ D,∇f(xk) → v} are element-wise non-positive. Therefore, all subgradients of f are element-wise non-positive. On the other hand, if we assume that f is non-decreasing, one may follow the same argument and conclude that all subgradients of f are element-wise non-negative.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p371",
+    "section_heading": "D.1 Additional Proposition",
+    "text": "For functions f : O → Rm where O ⊂ Rd is an open set, one may write f = (f1, . . . , fm) and apply the above proposition for each fk, k = 1, . . . ,m.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p372",
+    "section_heading": "D.2 Proofs of Proposition 4.2 and Proposition 4.4",
+    "text": "To prove Proposition 4.2 and Proposition 4.4, we first present the following proposition on the weak-convexity of composition functions.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p373",
+    "section_heading": "D.2 Proofs of Proposition 4.2 and Proposition 4.4",
+    "text": "Proposition D.2. Assume f : Rd → R is ρ1-weakly-convex and C1-Lipschitz continuous, g : Rd̄ → Rd is C2-Lipschitz continuous, and either of the followings holds:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p374",
+    "section_heading": "D.2 Proofs of Proposition 4.2 and Proposition 4.4",
+    "text": "1. f(·) is monotone and g(·) is L2-smooth;",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p375",
+    "section_heading": "D.2 Proofs of Proposition 4.2 and Proposition 4.4",
+    "text": "2. f(·) is non-decreasing and g(·) is L2-weakly-convex,",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p376",
+    "section_heading": "D.2 Proofs of Proposition 4.2 and Proposition 4.4",
+    "text": "then f ◦ g is ρ̃-weakly-convex with ρ̃ = √ dL2C1 + ρ1C 2 2 .",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p377",
+    "section_heading": "D.2 Proofs of Proposition 4.2 and Proposition 4.4",
+    "text": "Proof of Proposition D.2. The weak convexity of f implies",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p378",
+    "section_heading": "D.2 Proofs of Proposition 4.2 and Proposition 4.4",
+    "text": "where v ∈ ∂f(g(x)). Moreover, due to the smoothness of g(·) (or weakly-convexity of g(·), then only the second inequality holds), we have",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p379",
+    "section_heading": "D.2 Proofs of Proposition 4.2 and Proposition 4.4",
+    "text": "where v(e) denotes a d-dimensional vector with value e on each dimensions. We first assume that f is non-increasing, then we may use the first inequality in (43) and the Lipschitz continuity of g to get",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p380",
+    "section_heading": "D.2 Proofs of Proposition 4.2 and Proposition 4.4",
+    "text": "On the other hand, if we assume f is non-decreasing, the same result follows from the second inequality in (43). Thus f ◦ g is ρ̃-weakly-convex with ρ̃g = √ dL2C1 + ρ1C 2 2 .",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p381",
+    "section_heading": "D.2 Proofs of Proposition 4.2 and Proposition 4.4",
+    "text": "Proof of Proposition 4.2. Under Assumption 4.1, Proposition D.2 directly implies the ρF -weakconvexity of F (w) with ρF = √ d1ρgCf + ρfC 2 g .",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p382",
+    "section_heading": "D.2 Proofs of Proposition 4.2 and Proposition 4.4",
+    "text": "Proof of Proposition 4.4. Under Assumption 4.3, we first apply Proposition D.2 to the composite function gi(hi,j(·)) and obtain its ρg̃ = √ d2LhCg + ρgC 2 h-weak-convexity. To show it Lipschitz continuity, we use the Lipschitz continuity of gi and hi,j to obtain",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p383",
+    "section_heading": "D.2 Proofs of Proposition 4.2 and Proposition 4.4",
+    "text": "Thus gi(hi,j(w)) is Cg̃ = CgCh-Lipschitz-continuous",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p384",
+    "section_heading": "D.2 Proofs of Proposition 4.2 and Proposition 4.4",
+    "text": "Since we assume fi(·) is non-decreasing, ρf -weakly-convex and Cf -Lipschitz continuous, and gi(hi,j(·)) is ρg̃-weakly-convex and Cg̃-Lipschitz-continuous, we apply Proposition D.2 again to conclude that F (·) is ρF = √ d1ρg̃Cf + ρfC 2 g̃ -weakly-convex.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p385",
+    "section_heading": "D.3 Proof of Lemma 4.5",
+    "text": "Proof of Lemma 4.5. With γ = n1−B1B1(1−τ) +(1−τ), τ ≤ 1 2 , MSVR update gives recursive error bound [15]",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p386",
+    "section_heading": "D.3 Proof of Lemma 4.5",
+    "text": "Applying this inequality recursively, we obtain",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p387",
+    "section_heading": "D.3 Proof of Lemma 4.5",
+    "text": "where we use ∑t j=0(1− B1τ 2n1 )2(t−j) ≤ 2n1B1τ .",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p388",
+    "section_heading": "D.3 Proof of Lemma 4.5",
+    "text": "It follows",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p390",
+    "section_heading": "D.3 Proof of Lemma 4.5",
+    "text": "Taking summation over i ∈ S, we obtain the desired result",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p391",
+    "section_heading": "D.4 Proof of Lemma C.6",
+    "text": "Proof of Lemma C.6. With γ3 = n+−B1 B1(1−τ2) +(1− τ2) and τ2 ≤ 1 2 , MSVR update gives the following recursive error bound [15]",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p392",
+    "section_heading": "D.4 Proof of Lemma C.6",
+    "text": "It remains to bound E[∥vi,t− vi,t+1∥2] and E[∥vj,t− vj,t+1∥2]. We bound the former, and the latter’s bound naturally follows. Consider the update of vi,t+1 and we have",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p393",
+    "section_heading": "D.4 Proof of Lemma C.6",
+    "text": "where inequality (a) uses τ1 ≤ 1/2 and γ1 = n+−B1B1(1−τ1) + (1 − τ1) ≤ 2n+ B1",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p394",
+    "section_heading": "D.4 Proof of Lemma C.6",
+    "text": ". Plugging the above inequality back into inequality 44 gives",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p395",
+    "section_heading": "D.4 Proof of Lemma C.6",
+    "text": "where we use ∑t j=0(1 − B1τ2 2n+ )2(t−j) ≤ 2n+B1τ1 and denotes C 2 2 = 2max{256C2gM2, 256C2gC2hM2, 16C2gM2}. Taking average over i ∈ S+ gives the squarednorm error bound.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p396",
+    "section_heading": "D.4 Proof of Lemma C.6",
+    "text": "To derive the norm error bound, we derive",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p398",
+    "section_heading": "D.4 Proof of Lemma C.6",
+    "text": "Taking average over i ∈ S+, we obtain the norm error bound",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p399",
+    "section_heading": "D.5 Proof of Lemma A.3",
+    "text": "Proof of Lemma A.3. With γ1 = n1n2−B1B2B1B2(1−τ1) +(1−τ1) and τ1 ≤ 1 2 , MSVR update has the following recursive error bound [15][15]",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p400",
+    "section_heading": "D.5 Proof of Lemma A.3",
+    "text": "Applying this inequality recursively, we obtain",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p401",
+    "section_heading": "D.5 Proof of Lemma A.3",
+    "text": "where we use ∑t j=0(1− B1B2τ1 2n1n2",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p402",
+    "section_heading": "D.5 Proof of Lemma A.3",
+    "text": ")2(t−j) ≤ 2n1n2B1B2τ1 . Taking average over (i, j) ∈ S1 × S2 gives the squared-norm error bound.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p403",
+    "section_heading": "D.5 Proof of Lemma A.3",
+    "text": "To derive the norm error bound, we derive",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p405",
+    "section_heading": "D.5 Proof of Lemma A.3",
+    "text": "Taking average over (i, j) ∈ S1 × S2, we obtain the norm error bound",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p406",
+    "section_heading": "D.6 Proof of Lemma A.4",
+    "text": "Proof of Lemma A.4. With γ2 = n1−B1B1(1−τ2) + (1− τ2) and τ2 ≤ 1 2 , MSVR update has the following recursive error bound [15]",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p407",
+    "section_heading": "D.6 Proof of Lemma A.4",
+    "text": "It remains to bound E[∥vi,j,t+1 − vi,j,t∥2], which is done as following",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p408",
+    "section_heading": "D.6 Proof of Lemma A.4",
+    "text": "where inequality (a) uses τ1 ≤ 1/2 and γ1 = n1n2−B1B2B1B2(1−τ1) + (1− τ1) ≤ 2n1n2 B1B2",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p409",
+    "section_heading": "D.6 Proof of Lemma A.4",
+    "text": ". Plugging the above inequality back into inequality 45 gives",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p410",
+    "section_heading": "D.6 Proof of Lemma A.4",
+    "text": "Applying this inequality recursively, we obtain",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p411",
+    "section_heading": "D.6 Proof of Lemma A.4",
+    "text": "where we use ∑t j=0(1− B1τ2 2n1",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p412",
+    "section_heading": "D.6 Proof of Lemma A.4",
+    "text": ")2(t−j) ≤ 2n1B1τ1 . Taking average over i ∈ S1 gives the squared-norm error bound.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p413",
+    "section_heading": "D.6 Proof of Lemma A.4",
+    "text": "To derive the norm error bound, we derive",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p414",
+    "section_heading": "Proof of Lemma B.2. Define",
+    "text": "Then we have",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p415",
+    "section_heading": "Proof of Lemma B.2. Define",
+    "text": "It follows",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p416",
+    "section_heading": "Proof of Lemma B.2. Define",
+    "text": "where we use",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p418",
+    "section_heading": "Proof of Lemma B.2. Define",
+    "text": "where we use B1τ4n1 ≤ 1. Applying this inequality recursively, we obtain",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p419",
+    "section_heading": "Proof of Lemma B.2. Define",
+    "text": "where we use ∑t j=0(1− B1τ 4n1 )2(t−j) ≤ 4n1B1τ .",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p420",
+    "section_heading": "Proof of Lemma B.2. Define",
+    "text": "To obtain the absolute bound, we derive E[∥ui,t+1 − gi(wt+1)∥]2 ≤ E[∥ui,t+1 − gi(wt+1)∥2]",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p421",
+    "section_heading": "Proof of Lemma B.2. Define",
+    "text": "The desired result follows by taking squared root on both sides.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p422",
+    "section_heading": "D.8 Proof of Lemma B.5",
+    "text": "Proof of Lemma B.5. The proof of Lemma B.5 is the same as Lemma B.2.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p423",
+    "section_heading": "Proof of Lemma B.6. Define",
+    "text": "Then we have",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p424",
+    "section_heading": "Proof of Lemma B.6. Define",
+    "text": "I where we use",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p425",
+    "section_heading": "Proof of Lemma B.6. Define",
+    "text": "where we use B1τ24n1 ≤ 1, and",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p426",
+    "section_heading": "Proof of Lemma B.6. Define",
+    "text": "Applying this inequality recursively, we obtain",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p427",
+    "section_heading": "Proof of Lemma B.6. Define",
+    "text": "where we use ∑t j=0(1− B1τ2 4n1 )2(t−j) ≤ 4n1B1τ2 .",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p428",
+    "section_heading": "Proof of Lemma B.6. Define",
+    "text": "To obtain the absolute bound, we derive",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p429",
+    "section_heading": "Proof of Lemma B.6. Define",
+    "text": "The desired result follows by taking squared root on both sides.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p430",
+    "section_heading": "E Group Distributionally Robust Optimization",
+    "text": "NSWC FCCO finds an important application in group distributionally robust optimization (group DRO), particularly valuable in addressing distributional shift [25]. Consider N groups with different distributions. Each group k has an averaged loss Lk(w) = 1nk ∑nk i=1 ℓ(fw(x k i ), y k i ), where w is the the model parameter and (xki , y k i ) is a data point. For robust optimization, we assign different weights to different groups and form the following robust loss minimization problem:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p431",
+    "section_heading": "E Group Distributionally Robust Optimization",
+    "text": "where Ω ⊂ ∆ and ∆ denotes a simplex. A common choice for Ω is Ω = {p ∈ ∆, pi ≤ 1/K} where K is an integer, resulting in the so-called CVaR losses, i.e., average of top-K group losses. Consequently, the above problem can be equivalently reformulated as [23]:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p432",
+    "section_heading": "E Group Distributionally Robust Optimization",
+    "text": "This formulation can be mapped into non-smooth weakly-convex FCCO when the loss function ℓ(·, ·) is weakly convex in terms of w. In comparison to directly solving the min-max problem, solving the above FCCO problem avoids the need of dealing with the projection onto the constraint Ω and expensive sampling as in existing works [4].",
+    "seg_type": "par"
+  }
+]

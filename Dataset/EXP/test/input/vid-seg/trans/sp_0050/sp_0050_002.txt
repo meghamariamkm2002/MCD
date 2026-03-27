@@ -1,0 +1,33 @@
+people who maybe have never heard this.
+In your every cell, you have this thing called DNA, which basically is an encoding of all of your biological functions.
+Now, usually biological functions are realized through proteins.
+So DNA is basically a building plan for all of your proteins.
+This happens in the following two steps.
+First, there is this transcription step where RNA is built.
+This is basically a copy of your DNA, but is only single strand, as you can see right here.
+And then there is a translation step that finally translates the RNA into the protein.
+What will end up is just a sequence of these beads right here.
+Now these beads are what are called amino acids.
+So a protein is simply a chain of these amino acids.
+There are 20 different amino acids and the order of these amino acids in the chain makes the function of the protein.
+Now specifically we know about these proteins that it seems to be very important how their three-dimensional shape is.
+So a lot of these different amino acids have different chemical properties.
+Some are sort of, I think, negatively charged.
+Some are neutral.
+Some are acids and so on.
+So they have very different chemical properties.
+So once you build this protein and you kind of release it into the cell,
+it will curl up into a three-dimensional structure.
+So this one might be, you know, doing something like this and sort of form a circle or something like this just because these proteins here, they kind of attract each other maybe electrically and thus the protein forms a circle and the function of the protein is very much related to its shape.
+So, if it is a circle, it could maybe, you know, trap something else in here.
+So, you really have to think of these things like kind of tools.
+There are proteins that cut other proteins and they are really shaped sort of like a scissor that exactly fits these other proteins such that you can effectively cut them.
+So sometimes you can substitute an amino acid for a different amino acid like this here.
+If it doesn't change the shape, very often you're fine.
+The protein function isn't changed.
+but if you change a different amino acid that is sort of vital to the shape and the shape changes, then your protein very often loses function.
+So mutations in DNA sometimes lead to mutations in protein, not always because there is some redundancy in this in this translation step from RNA, but if they do lead to a different amino acid, it doesn't actually mean that the function changes.
+So
+there is sort of value in analyzing the sequence of the structure of proteins rather than the structure of DNA.
+Of course, it's also important to analyze the structure of DNA, but it is also, it is equally important to analyze the structure of proteins because they, not all the information is in the sequence, not all the obvious information is in the sequence.
+So what does this paper do this paper goes?

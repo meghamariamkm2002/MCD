@@ -1,0 +1,128 @@
+1
+00:00:00,031 --> 00:00:01,033
+All right, let's dive in.
+
+2
+00:00:01,093 --> 00:00:05,402
+So vision transformers are a new thing, right?
+
+3
+00:00:05,843 --> 00:00:07,005
+Vision transformers.
+
+4
+00:00:07,546 --> 00:00:11,113
+I've also made a video about vision transformers.
+
+5
+00:00:11,514 --> 00:00:18,748
+They are the easy, the simple application of the transformer architecture, which was
+
+6
+00:00:18,728 --> 00:00:28,082
+prevalent in natural language processing with the introduction of attention is all you need and follow up papers, BERT and so on.
+
+7
+00:00:28,863 --> 00:00:32,308
+And applying this to images.
+
+8
+00:00:32,769 --> 00:00:34,431
+And the concept is very simple.
+
+9
+00:00:35,293 --> 00:00:38,117
+You have an image and you divide this into patches.
+
+10
+00:00:38,598 --> 00:00:40,821
+So you divide the image into patches.
+
+11
+00:00:42,404 --> 00:00:45,831
+And then you simply unroll that array sort of.
+
+12
+00:00:45,951 --> 00:00:47,374
+So you unroll that array.
+
+13
+00:00:47,394 --> 00:00:51,483
+So you have patch, patch, patch, patch, and so on.
+
+14
+00:00:52,304 --> 00:01:01,864
+And then you simply consider this as a sequence, like a sentence, like, Hello, my name is, and so on.
+
+15
+00:01:01,844 --> 00:01:06,633
+you simply consider the sequence of patches as word embeddings.
+
+16
+00:01:06,994 --> 00:01:14,848
+So there's like one, I think there is one fully connected layer to actually get the word embedding or the token embedding.
+
+17
+00:01:15,229 --> 00:01:20,659
+And then you put a transformer as you would in an LP.
+
+18
+00:01:20,679 --> 00:01:23,785
+So there is a transformer
+
+19
+00:01:24,710 --> 00:01:24,990
+here.
+
+20
+00:01:25,972 --> 00:01:28,957
+And you do whatever you do with a transformer.
+
+21
+00:01:29,137 --> 00:01:42,820
+So usually, if you don't know, people prepend a special token, that special token is usually called something where I might not draw this, that special token is usually called CLS token.
+
+22
+00:01:42,800 --> 00:01:49,229
+And that is also passed through the transformer and the transformer in its base configuration.
+
+23
+00:01:50,852 --> 00:01:53,616
+It keeps the length of the sequence the same.
+
+24
+00:01:53,716 --> 00:01:57,722
+It's actually not necessary to do this, but that's just how we do things.
+
+25
+00:01:58,503 --> 00:02:07,997
+So for every input token, you'll get a corresponding output token or output embedding or output signal, whatever you want to call it.
+
+26
+00:02:07,977 --> 00:02:20,517
+And such that none of the input tokens is, you know, kind of preferred because every input token sort of refers to some little patch here in the image.
+
+27
+00:02:21,538 --> 00:02:26,165
+If you want to say something about the entire image, you don't want to prefer any one of them.
+
+28
+00:02:26,586 --> 00:02:30,492
+So what you do is you have this special token, the CLS token.
+
+29
+00:02:30,472 --> 00:02:33,476
+which is associated with no location in the image.
+
+30
+00:02:33,496 --> 00:02:41,486
+And that's ultimately what you use to classify the image or also here to do representation learning.
+
+31
+00:02:41,546 --> 00:02:49,336
+So the representation we're looking to get out is the final layer embedding of the CLS token.
+
+32
+00:02:49,816 --> 00:02:59,989
+And that through the transformer architecture had aggregated all the information or we hope so from all the visual tokens in the image.
+

@@ -1,0 +1,158 @@
+WEBVTT
+
+00:00.031 --> 00:00.592
+all of it.
+
+00:01.013 --> 00:01.193
+Okay.
+
+00:03.396 --> 00:03.717
+All right.
+
+00:04.258 --> 00:08.745
+And the rest is, is just like classic attention.
+
+00:08.845 --> 00:09.165
+Okay.
+
+00:10.528 --> 00:18.360
+Now you, you simply, so these P and H matrices are obtained by
+
+00:18.340 --> 00:23.187
+Sorry, the queries and the keys for this are obtained by linear transformation.
+
+00:23.207 --> 00:24.749
+So you see this is the incoming signal.
+
+00:25.109 --> 00:32.640
+You send it through a linear transformation to obtain the queries, and you also send it through a linear transformation to obtain the keys.
+
+00:33.220 --> 00:40.230
+So the H is the same, but these matrices here, these are learned weights to produce queries and keys.
+
+00:40.210 --> 00:42.535
+And then you multiply them together.
+
+00:42.555 --> 00:44.879
+That defines your attention matrix.
+
+00:45.501 --> 00:48.827
+You run that through a softmax to make a distribution out of each row.
+
+00:49.188 --> 00:51.512
+And then you multiply together with the values.
+
+00:51.933 --> 00:57.564
+So this part here is kind of like the routing table and the values are the information to be routed.
+
+00:57.605 --> 01:01.392
+The values are obtained from these input signal.
+
+01:03.076 --> 01:11.208
+As we said, we're going to amend that by, so this over here is the classic key queries, keys and values.
+
+01:11.508 --> 01:12.890
+Sorry, that's too much.
+
+01:13.972 --> 01:16.936
+The classic queries, keys and values.
+
+01:17.777 --> 01:20.521
+And then we augment that by two new.
+
+01:20.601 --> 01:24.527
+So there is the queries and the keys for the position.
+
+01:24.507 --> 01:32.723
+And you can see that the difference here is that, again, it's learned weights, but now there is this P thing right here.
+
+01:32.823 --> 01:40.879
+And the P is positional encodings, and that comes exactly out of this table we saw up here.
+
+01:40.859 --> 01:44.364
+So the positional encodings come from this.
+
+01:45.386 --> 01:50.013
+And it's important to see that this here is h and this is the p values.
+
+01:50.053 --> 01:51.976
+But this is only h0, right?
+
+01:52.637 --> 02:00.189
+h is actually transformed to h1 by the transformer, the first layer, to h2 by the second layer, and so on.
+
+02:00.669 --> 02:03.053
+The p always stays the same.
+
+02:03.033 --> 02:10.788
+So you would feed the P into this layer, and you would feed it again into this layer, and you would feed it again into this layer.
+
+02:10.888 --> 02:13.953
+So you can see it's only positional information.
+
+02:14.134 --> 02:15.957
+It's not content information.
+
+02:16.558 --> 02:22.830
+And by feeding the position each time and doing this in this disentangled way,
+
+02:22.810 --> 02:30.039
+the model can sort of keep the content and position information separate.
+
+02:30.800 --> 02:39.912
+I actually think it doesn't really keep the information separate because after layer one, you certainly have position information in your H, right?
+
+02:39.932 --> 02:50.826
+You can see that from this path here, from the actually feeding position information into the transformer layer, H one is already going to be
+
+02:50.806 --> 02:57.193
+a conglomerate of H0, which is pure content, plus the position somehow.
+
+02:57.334 --> 03:01.759
+This plus is not a real addition, but somehow the information is intermingled there.
+
+03:02.119 --> 03:10.469
+And if we weren't to feed in these things right here, it would just be like the classic BERT, right, what they criticize.
+
+03:10.509 --> 03:14.113
+Now by continuously feeding the positional information,
+
+03:14.093 --> 03:15.616
+That is one advantage.
+
+03:16.939 --> 03:18.262
+You can actually do that with BERT.
+
+03:18.282 --> 03:20.547
+You can just add the position information each time.
+
+03:20.667 --> 03:24.575
+I'm not sure if that would work super well, but you can do that.
+
+03:25.076 --> 03:29.746
+It just gives the model a bit more side information to work with.
+
+03:29.766 --> 03:33.013
+And then by keeping it separate,
+
+03:32.993 --> 03:36.419
+Yeah, as I said, I'm not I'm not sure it's actually separate.
+
+03:36.700 --> 03:54.674
+It's just that you keep feeding in position information layer after layer, therefore giving the model sort of more information every time it makes a transformation, because otherwise it would have to carry through the position information through all the layers, just from the very first layer.
+
+03:55.155 --> 03:55.255
+Okay.
+
+03:56.922 --> 04:05.032
+So in this mechanism, you can see it's true that the position encoding is kept separate because it comes in fresh every layer.
+
+04:05.433 --> 04:11.998
+But I don't, I don't see that the content, the content certainly has position information in it from the last layer.
+
+04:12.580 --> 04:14.086
+I hope you can, you can see that.
+
+04:14.949 --> 04:15.049
+So
+

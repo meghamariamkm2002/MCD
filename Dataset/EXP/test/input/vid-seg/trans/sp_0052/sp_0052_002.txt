@@ -1,0 +1,12 @@
+And the problem is fairly simple.
+You want to do object detection in images.
+Object detection is the task of basically, if I give you an image, you should tell me what is on the image and where.
+So in this case, here, you would have to draw me this bounding box and say, this is a deer.
+On the bottom, you would have to draw bounding boxes.
+Maybe they have to be rectangular, maybe not and say, this is a bus.
+And here is a truck and here is another truck and here is a car and so on.
+So there can be many objects in an image.
+There can be one object.
+There can be objects of different classes or there can be no objects at all.
+So this is just object detection and there have been many papers on this and specifically there has been this RCNN and this is the model that we're going to extend.
+So the RCNN model or specifically the faster RCNN model that we're going to build on

@@ -1,0 +1,3 @@
+Let's dive into experimental results.
+Annotator achieves 87% performance for AL, 88% for ASFDA, and 94% for ADA, compared to the fully supervised counterpart.
+Demonstrating its effectiveness.

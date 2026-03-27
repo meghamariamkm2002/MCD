@@ -1,0 +1,55 @@
+start	end	text
+31	13751	Um, so they give this example right here at the beginning that if you have a, a two layer, um, 100 wide, so 100 dimensional MNIST networks, it's two layers.
+13831	23625	It's, I think it's an MLP, it's a two layer MLP with a non-linearity that is this, um, the sigmoid right here, this.
+25107	25508	Okay.
+25788	30256	Now you can see it has this temperature parameter here.
+30276	31879	It has this slope parameter.
+32300	37790	And you want to do neural architecture search to find the best slope parameter.
+37830	45625	Now, usually you would just do a grid search, but this is an example because this can be, of course, much higher dimensional things.
+45725	48550	And then you don't want to do grid search anymore.
+48530	52055	Okay, so what do we do?
+52095	58505	If you look at how the 100 wide MNIST network, so we can draw it right here.
+58605	63473	So this is a 100 dimensional MNIST network.
+63493	64935	So this is 100.
+64915	70902	And each cell, each connection here first has a weight and then has the sigmoid nonlinearity.
+70942	79032	And the sigmoid nonlinearity is parameterized by the parameter C. And you have many of them.
+79653	81875	You have one here and so on.
+81895	88223	And each one has a different C. And each of these networks represents one blue dot here.
+88203	103713	So if you let C vary, so this sigmoid slope value right here, that's your parameter C. If you let this variant train the big network on the entire data set to convergence and then you eval on the validation data set, you get the slope like the blue curve.
+103913	106077	So if you see the blue curve, the blue curve,
+106057	114330	is if you start over here, if you reduce the slope, you'll gain in performance, but if you reduce it too much, you drop drastically, okay?
+114670	126428	Until it's, if it's zero, it's basically, you know, the X is not, the signal doesn't propagate anymore, and you have no learning occurring.
+126408	129872	Okay, so that's the original performance.
+130273	134819	Now, what if I only give you training data in this range right here?
+134879	137102	I only showed you this particular range.
+137142	139064	I can't actually zoom in that much.
+139545	154744	But if I give you this and I ask you to build one of these, please take the architecture and predict the performance that we saw at the beginning, like one of these girdle machines or Turing machines.
+154724	159735	You would basically say, well, that looks to me like a line.
+159935	162200	So I'm going to predict the red thing here.
+163102	167591	And even if you can evaluate a bunch of these, it just looks like a line.
+167992	172682	And you're going to predict there's probably a slope like this.
+172662	177768	This happens almost independently of which model you choose to predict right here.
+177829	187220	The data of training simply doesn't give away that the fact that there is this break down here, which happens in the real world.
+187521	193168	So if you just give this as training data, there's no way.
+193148	200577	So the criticism about these models is valid that they will only work where you give them training data.
+200677	205143	They can at best interpolate their training data, but they can't really extrapolate.
+206184	213553	Now here, since the synthetic Petri dish method, which is the green thing here, uses the actual
+213533	217721	not the actual nonlinearity that this thing characterizes.
+217801	225655	So it instantiates the sigmoid with the parameter C that you give it, just not on the large network, but on a small network.
+226016	233330	In fact, their network is just one unit, sorry, one unit, and then another unit.
+233350	237297	So it's just a two hidden layer, but just with one unit instead of 100.
+237277	240900	And of course, you can't feed in MNIST right here, right?
+241081	246546	But we said they don't feed in the data, they actually feed in their synthetic data that they learn.
+247487	255795	So you give them the points here and they learn the synthetic data to evaluate the others.
+256736	262361	And then once you ask them, well, if my C is right here, what's the performance gonna be?
+262401	266625	It's going to instantiate that in its small network.
+266605	273172	it is going to use the training data that it has learned from this region right here in order to train this.
+273533	280120	And then it's going to evaluate this on the synthetic validation data that is also learned on the training data.
+280620	283323	And it is going to come up with a performance metric.
+283343	286827	It says, okay, this is how good it's going to be.
+287528	296578	And since it is an approximation in its building plan to the entire network, it will react similarly
+296558	301169	So it will get that there is this performance tip right here.
+301630	304317	Okay, so you can see how this sort of makes sense.
+304337	316346	You were actually running an approximation to the actual program instead of just looking at the plan of the program and trying to predict it, which, you know, halting problem says hello.
+318471	323904	Okay, so that is the motivating example of their MNIST thing.
+324385	325047	And here is

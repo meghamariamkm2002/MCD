@@ -1,0 +1,1 @@
+and this is intuitively the architecture of our methods where you can see the two losses at different points of the network and the gradient flow back.

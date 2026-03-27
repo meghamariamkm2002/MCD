@@ -1,0 +1,394 @@
+{
+  "sp_0674_page_0003": {
+    "bboxes": [
+      {
+        "box": [
+          440.0564270019531,
+          1316.45068359375,
+          782.0211791992188,
+          1403.0977783203125
+        ],
+        "text": [
+          "\\begin{array} { c } { { Q _ { t o t } ( o , a ) = \\displaystyle \\sum _ { i } w _ { i } ( o ) Q _ { i } ( o _ { i } , a _ { i } ) + b ( o ) , } } \\\\ { { \\mathrm { ~ } } } \\\\ { { w _ { i } \\geq 0 , \\; \\forall i = 1 \\cdots , n } } \\end{array}"
+        ],
+        "page": "sp_0674_page_0003",
+        "id": "sp_0674_page_0003-1",
+        "seg_type": "eq"
+      }
+    ]
+  },
+  "sp_0674_page_0004": {
+    "bboxes": [
+      {
+        "box": [
+          383.2735900878906,
+          306.3779296875,
+          837.7919921875,
+          374.4211120605469
+        ],
+        "text": [
+          "\\underset { \\pi } { \\operatorname* { m a x } } \\mathbb { E } \\left[ \\sum _ { t = 0 } ^ { \\infty } \\gamma ^ { t } \\left( r \\left( s _ { t } , a _ { t } \\right) - \\alpha f \\left( \\pi \\left( a _ { t } | s _ { t } \\right) , \\mu \\left( a _ { t } | s _ { t } \\right) \\right) \\right) \\right] ,"
+        ],
+        "page": "sp_0674_page_0004",
+        "id": "sp_0674_page_0004-1",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          378.1854248046875,
+          1007.515869140625,
+          843.9107055664062,
+          1068.485107421875
+        ],
+        "text": [
+          "\\operatorname* { m a x } _ { \\pi _ { t o t } } \\mathbb { E } \\left[ \\sum _ { t = 0 } ^ { \\infty } \\gamma ^ { t } \\left( r \\left( o _ { t } , a _ { t } \\right) - \\alpha f \\left( \\pi _ { t o t } \\left( a _ { t } \\vert \\pmb { o } _ { t } \\right) , \\mu _ { t o t } \\left( a _ { t } \\vert \\pmb { o } _ { t } \\right) \\right) \\right) \\right]"
+        ],
+        "page": "sp_0674_page_0004",
+        "id": "sp_0674_page_0004-2",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          406.79400634765625,
+          490.3937683105469,
+          815.909912109375,
+          560.3884887695312
+        ],
+        "text": [
+          "\\begin{array} { r l } & { \\quad \\ \\ \\left( \\mathcal { T } _ { f } ^ { \\pi } \\right) Q ( s , a ) : = r ( s , a ) + \\gamma \\mathbb { E } _ { s ^ { \\prime } | s , a } \\left[ V \\left( s ^ { \\prime } \\right) \\right] } \\\\ & { \\quad \\left( \\mathcal { T } _ { f } ^ { \\pi } \\right) V ( s ) : = \\mathbb { E } _ { a \\sim \\pi } \\left[ r ( s , a ) + \\gamma \\mathbb { E } _ { s ^ { \\prime } | s , a } \\left[ V \\left( s ^ { \\prime } \\right) \\right] \\right] , } \\end{array}"
+        ],
+        "page": "sp_0674_page_0004",
+        "id": "sp_0674_page_0004-3",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          402.0841064453125,
+          578.0653076171875,
+          820.3616333007812,
+          605.7525634765625
+        ],
+        "text": [
+          "V ( s ) = \\mathbb { E } _ { a \\sim \\pi } \\left[ Q ( s , a ) - \\alpha f \\left( \\pi \\left( a _ { t } | s _ { t } \\right) , \\mu \\left( a _ { t } | s _ { t } \\right) \\right) \\right] ."
+        ],
+        "page": "sp_0674_page_0004",
+        "id": "sp_0674_page_0004-4",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          364.83660888671875,
+          1356.7713623046875,
+          860.5452880859375,
+          1455.92333984375
+        ],
+        "text": [
+          "\\begin{array} { r l } & { \\qquad \\left( \\mathcal { T } _ { f } ^ { \\pi _ { t o t } } \\right) Q _ { t o t } ( o , a ) : = r ( o , a ) + \\gamma \\mathbb { E } _ { o ^ { \\prime } | o , a } \\left[ V _ { t o t } \\left( o ^ { \\prime } \\right) \\right] \\qquad } \\\\ & { \\qquad \\left( \\mathcal { T } _ { f } ^ { \\pi _ { t o t } } \\right) V _ { t o t } ( o ) : = \\mathbb { E } _ { a \\sim \\pi _ { t o t } } \\left[ r ( o , a ) + \\gamma \\mathbb { E } _ { o ^ { \\prime } | o , a } \\left[ V _ { t o t } \\left( o ^ { \\prime } \\right) \\right] \\right] , } \\end{array}"
+        ],
+        "page": "sp_0674_page_0004",
+        "id": "sp_0674_page_0004-5",
+        "seg_type": "eq"
+      }
+    ]
+  },
+  "sp_0674_page_0005": {
+    "bboxes": [
+      {
+        "box": [
+          388.25152587890625,
+          163.56149291992188,
+          835.5806274414062,
+          218.81472778320312
+        ],
+        "text": [
+          "V _ { t o t } ( o ) = \\mathbb { E } _ { a \\sim \\pi _ { t o t } } \\left[ Q _ { t o t } ( o , a ) - \\alpha \\log \\left( \\frac { \\pi _ { t o t } ( a | o ) } { \\mu _ { t o t } ( a | o ) } \\right) \\right]"
+        ],
+        "page": "sp_0674_page_0005",
+        "id": "sp_0674_page_0005-1",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          442.252197265625,
+          1100.122802734375,
+          781.2821655273438,
+          1240.6600341796875
+        ],
+        "text": [
+          "\\begin{array} { c } { { Q _ { t o t } ( \\pmb { o } , \\pmb { a } ) = \\displaystyle \\sum _ { i } w _ { i } ( \\pmb { o } ) Q _ { i } ( o _ { i } , a _ { i } ) + b ( \\pmb { o } ) } } \\\\ { { \\phantom { \\pmb { o } } V _ { t o t } ( \\pmb { o } ) = \\displaystyle \\sum _ { i } w _ { i } ( \\pmb { o } ) V _ { i } ( o _ { i } ) + b ( \\pmb { o } ) } } \\\\ { { \\phantom { \\pmb { o } } w _ { i } \\geq 0 , \\, \\forall i = 1 \\cdots \\, , n } } \\end{array}"
+        ],
+        "page": "sp_0674_page_0005",
+        "id": "sp_0674_page_0005-2",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          393.14471435546875,
+          792.4103393554688,
+          831.2645874023438,
+          847.9190063476562
+        ],
+        "text": [
+          "\\pi _ { t o t } ^ { * } ( a | o ) = \\mu _ { t o t } ( a | o ) \\cdot \\exp \\left( \\frac { Q _ { t o t } ^ { * } ( o , a ) - V _ { t o t } ^ { * } ( o ) } { \\alpha } \\right)"
+        ],
+        "page": "sp_0674_page_0005",
+        "id": "sp_0674_page_0005-3",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          379.80291748046875,
+          518.5632934570312,
+          844.7593383789062,
+          639.9742431640625
+        ],
+        "text": [
+          "\\begin{array} { r l } & { Q _ { t o t } ^ { * } ( \\pmb { o } , \\pmb { a } ) = r ( \\pmb { o } , \\pmb { a } ) + \\gamma \\mathbb { E } _ { \\pmb { o } ^ { \\prime } | \\pmb { o } , \\pmb { a } } \\left[ V _ { t o t } ^ { * } \\left( \\pmb { o } ^ { \\prime } \\right) \\right] } \\\\ & { V _ { t o t } ^ { * } ( \\pmb { o } ) = u ^ { * } ( \\pmb { o } ) + \\alpha } \\\\ & { \\pi _ { t o t } ^ { * } ( \\pmb { a } | \\pmb { o } ) = \\mu _ { t o t } ( \\pmb { a } | \\pmb { o } ) \\cdot \\mathrm { e x p } \\left( \\frac { Q _ { t o t } ^ { * } \\left( \\pmb { o } , \\pmb { a } \\right) - u ^ { * } \\left( \\pmb { o } \\right) } { \\alpha } - 1 \\right) } \\end{array}"
+        ],
+        "page": "sp_0674_page_0005",
+        "id": "sp_0674_page_0005-4",
+        "seg_type": "eq"
+      }
+    ]
+  },
+  "sp_0674_page_0006": {
+    "bboxes": [
+      {
+        "box": [
+          394.9322509765625,
+          834.6300048828125,
+          829.4655151367188,
+          890.2505493164062
+        ],
+        "text": [
+          "\\mathbb { E } _ { a _ { i } \\sim \\mu _ { i } } \\left[ \\exp \\left( \\frac { 1 } { \\alpha } w _ { i } ( o ) \\left( Q _ { i } ^ { * } ( o _ { i } , a _ { i } ) - V _ { i } ^ { * } ( o _ { i } ) \\right) \\right) \\right] = 1"
+        ],
+        "page": "sp_0674_page_0006",
+        "id": "sp_0674_page_0006-1",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          335.8302917480469,
+          1042.8067626953125,
+          885.2639770507812,
+          1109.616455078125
+        ],
+        "text": [
+          "\\operatorname* { m i n } _ { V _ { i } } \\; \\mathbb { E } _ { a _ { i } \\sim \\mu _ { i } } \\left[ \\exp \\left( \\frac { w _ { i } ( o ) } { \\alpha } \\left( Q _ { i } ^ { * } ( o _ { i } , a _ { i } ) - V _ { i } ( o _ { i } ) \\right) \\right) + \\frac { w _ { i } ( o ) V _ { i } ( o _ { i } ) } { \\alpha } \\right]"
+        ],
+        "page": "sp_0674_page_0006",
+        "id": "sp_0674_page_0006-2",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          280.21990966796875,
+          326.54669189453125,
+          944.1951904296875,
+          450.2781066894531
+        ],
+        "text": [
+          "\\begin{array} { l } { \\displaystyle \\pi _ { t o t } ^ { * } \\left( a | \\sigma \\right) = \\mu _ { t o t } ( a | \\sigma ) \\cdot \\exp \\left( \\frac { \\sum _ { i } w _ { i } ( o ) \\left( Q _ { i } ^ { * } ( o _ { i } , a _ { i } ) - V _ { i } ^ { * } ( o _ { i } ) \\right) } { \\alpha } \\right) } \\\\ { \\displaystyle \\qquad = \\prod _ { i = 1 } ^ { n } \\mu _ { i } ( a _ { i } | \\sigma _ { i } ) \\cdot \\exp \\left( \\frac { w _ { i } ( o ) } { \\alpha } \\left( Q _ { i } ^ { * } ( o _ { i } , a _ { i } ) - V _ { i } ^ { * } ( o _ { i } ) \\right) \\right) = \\prod _ { i = 1 } ^ { n } \\pi _ { i } ^ { * } \\left( a _ { i } | \\sigma _ { i } \\right) } \\end{array}"
+        ],
+        "page": "sp_0674_page_0006",
+        "id": "sp_0674_page_0006-3",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          364.0728454589844,
+          224.11141967773438,
+          859.2201538085938,
+          278.4970703125
+        ],
+        "text": [
+          "\\pi _ { i } ^ { * } \\left( a _ { i } | o _ { i } \\right) = \\mu _ { i } ( a _ { i } | o _ { i } ) \\cdot \\exp \\left( \\frac { w _ { i } ( o ) } { \\alpha } \\left( Q _ { i } ^ { * } ( o _ { i } , a _ { i } ) - V _ { i } ^ { * } ( o _ { i } ) \\right) \\right)"
+        ],
+        "page": "sp_0674_page_0006",
+        "id": "sp_0674_page_0006-4",
+        "seg_type": "eq"
+      }
+    ]
+  },
+  "sp_0674_page_0007": {
+    "bboxes": [
+      {
+        "box": [
+          325.98828125,
+          563.2090454101562,
+          896.7810668945312,
+          630.6295776367188
+        ],
+        "text": [
+          "\\operatorname* { m i n } _ { V _ { i } } \\mathbb { E } _ { ( o _ { i } , a _ { i } ) \\sim \\mathcal { D } } \\left[ \\exp \\left( \\frac { w _ { i } ( o ) } { \\alpha } \\left( Q _ { i } ( o _ { i } , a _ { i } ) - V _ { i } ( o _ { i } ) \\right) \\right) + \\frac { w _ { i } ( o ) V _ { i } ( o _ { i } ) } { \\alpha } \\right]"
+        ],
+        "page": "sp_0674_page_0007",
+        "id": "sp_0674_page_0007-1",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          330.080322265625,
+          874.3604736328125,
+          892.9617309570312,
+          941.6586303710938
+        ],
+        "text": [
+          "\\operatorname* { m a x } _ { \\pi _ { i } } \\mathbb { E } _ { ( o _ { i } , a _ { i } ) \\sim \\mathcal { D } } \\left[ \\exp \\left( \\frac { w _ { i } ( o ) } { \\alpha } \\left( Q _ { i } ( o _ { i } , a _ { i } ) - V _ { i } ( o _ { i } ) \\right) \\right) \\cdot \\log \\pi _ { i } ( a _ { i } | o _ { i } ) \\right]"
+        ],
+        "page": "sp_0674_page_0007",
+        "id": "sp_0674_page_0007-2",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          383.4142150878906,
+          719.3760986328125,
+          839.3506469726562,
+          774.0428466796875
+        ],
+        "text": [
+          "\\operatorname* { m i n } _ { Q _ { i } , w _ { i } , b } \\mathbb { E } _ { ( o , a , o ^ { \\prime } ) \\sim \\mathcal { D } } \\left[ \\left( r ( o , a ) + \\gamma V _ { t o t } \\left( o ^ { \\prime } \\right) - Q _ { t o t } ( o , a ) \\right) ^ { 2 } \\right]"
+        ],
+        "page": "sp_0674_page_0007",
+        "id": "sp_0674_page_0007-3",
+        "seg_type": "eq"
+      }
+    ]
+  },
+  "sp_0674_page_0013": {
+    "bboxes": [
+      {
+        "box": [
+          386.8053283691406,
+          1387.61669921875,
+          837.7578125,
+          1442.9981689453125
+        ],
+        "text": [
+          "\\pi _ { t o t } ( a | \\pmb { \\sigma } ) = \\mu _ { t o t } ( \\pmb { a } | \\pmb { o } ) \\cdot \\exp \\left( \\frac { Q _ { t o t } ( \\pmb { o } , \\pmb { a } ) - u ( \\pmb { o } ) } { \\alpha } - 1 \\right)"
+        ],
+        "page": "sp_0674_page_0013",
+        "id": "sp_0674_page_0013-1",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          215.25930786132812,
+          299.21295166015625,
+          1037.2962646484375,
+          483.750732421875
+        ],
+        "text": [
+          "\\begin{array} { r l } & { \\left( T _ { f } ^ { * } V _ { t o t } ^ { 1 } \\right) \\left( 0 \\right) - \\left( T _ { f } ^ { * } V _ { t o t } ^ { 2 } \\right) \\left( 0 \\right) } \\\\ & { = \\displaystyle \\sum _ { \\alpha } \\pi _ { t o t } ^ { 1 } \\left( \\alpha \\right| \\omega \\right) \\left[ r + \\gamma \\mathbb { E } _ { \\omega ^ { \\prime } } \\left[ V _ { t o t } ^ { 1 } \\left( \\alpha ^ { \\prime } \\right) \\right] - \\alpha \\log \\left( \\frac { \\pi _ { t o t } ^ { 1 } \\left( \\alpha \\right| \\alpha \\right) } { \\mu _ { t o t } \\left( \\alpha \\right| \\alpha \\right) } \\right) \\right] - \\frac { \\pi _ { t o t } } { \\kappa _ { t o t } } \\sum _ { \\alpha } \\pi _ { t o t } \\left( \\alpha \\left| \\omega \\right. \\right) \\left[ r + \\gamma \\mathbb { E } _ { \\omega ^ { \\prime } } \\left[ V _ { t o t } ^ { 2 } \\left( \\alpha ^ { \\prime } \\right) \\right] - \\alpha \\log \\left( \\frac { \\pi _ { t o t } \\left( \\alpha \\right| \\alpha \\right) } { \\mu _ { t o t } \\left( \\alpha \\right| \\alpha \\right) } \\right) \\right] } \\\\ & { \\le \\displaystyle \\sum _ { \\alpha } \\pi _ { t o t } ^ { 1 } \\left( \\alpha \\left| \\omega \\right| \\left[ r + \\gamma \\mathbb { E } _ { \\omega ^ { \\prime } } \\left[ V _ { t o t } ^ { 1 } \\left( \\alpha ^ { \\prime } \\right) \\right] - \\alpha \\log \\left( \\frac { \\pi _ { t o t } ^ { 1 } \\left( \\alpha \\right| \\alpha \\right) } { \\mu _ { t o t } \\left( \\alpha \\right| \\alpha \\right) } \\right) \\right] - \\displaystyle \\sum _ { \\alpha } \\pi _ { t o t } ^ { 1 } \\left( \\alpha \\left| \\omega \\right| \\right) \\left[ r + \\gamma \\mathbb { E } _ { \\omega ^ { \\prime } } \\left[ V _ { t o t } ^ { 2 } \\left( \\alpha ^ { \\prime } \\right) \\right] - \\alpha \\log \\left( \\frac { \\pi _ { t o t } ^ { 1 } \\left( \\alpha \\right| \\alpha \\right) } { \\mu _ { t o t } \\left( \\alpha \\right| \\alpha \\right) } \\right) \\right] } \\\\ & { = \\gamma \\sum _ { \\alpha } \\pi _ { t o t } \\left( \\alpha | \\varpi \\mathbb { E } _ { \\omega ^ { \\prime } } \\left[ V _ { t o t } ^ { 1 } \\left( \\alpha ^ { \\prime } \\right) - V _ { t o t } ^ { 2 } \\left( \\alpha ^ { \\prime } \\right) \\right] \\right) } \\\\ & { \\le \\gamma \\left\\| \\Gamma _ { t o t } ^ { 1 } - V _ { t o t } ^ { 2 } \\right\\| _ { \\infty } } \\end{array}"
+        ],
+        "page": "sp_0674_page_0013",
+        "id": "sp_0674_page_0013-2",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          351.7567443847656,
+          978.74560546875,
+          870.3285522460938,
+          1148.2325439453125
+        ],
+        "text": [
+          "\\begin{array} { l } { \\displaystyle \\sum _ { a } \\pi _ { t o t } ( a , a ) - \\alpha \\left( \\log \\left( \\frac { \\pi _ { t o t } ( a | o ) } { \\mu _ { t o t } ( a | o ) } \\right) + 1 \\right) - u ( o ) + \\beta ( a | o ) = 0 } \\\\ { \\displaystyle \\sum _ { a } \\pi _ { t o t } ( a | o ) = 1 \\ \\ \\ \\ } \\\\ { \\displaystyle \\beta ( a | o ) \\pi _ { t o t } ( a | o ) = 0 } \\\\ { \\displaystyle 0 \\leq \\pi _ { t o t } ( a | o ) \\leq 1 \\ \\mathrm { a n d } \\ 0 \\leq \\beta ( a | o ) } \\end{array}"
+        ],
+        "page": "sp_0674_page_0013",
+        "id": "sp_0674_page_0013-3",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          345.7593688964844,
+          1188.357666015625,
+          879.1112670898438,
+          1244.1279296875
+        ],
+        "text": [
+          "\\pi _ { t o t } ( a | \\sigma ) = \\mu _ { t o t } ( a | \\sigma ) \\cdot \\exp \\left( \\frac { Q _ { t o t } ( o , a ) - u ( o ) + \\beta ( a | \\sigma ) } { \\alpha } - 1 \\right)"
+        ],
+        "page": "sp_0674_page_0013",
+        "id": "sp_0674_page_0013-4",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          261.94207763671875,
+          740.4845581054688,
+          960.7557983398438,
+          872.8150634765625
+        ],
+        "text": [
+          "\\begin{array} { r l } & { L ( \\pi _ { t o t } , \\beta , u ) = \\displaystyle \\sum _ { o } d _ { \\pi _ { t o t } } ( o ) \\sum _ { a } \\pi _ { t o t } ( a | o ) \\left( Q _ { t o t } ( o , a ) - \\alpha \\log \\left( \\frac { \\pi _ { t o t } ( a | o ) } { \\mu _ { t o t } ( a | o ) } \\right) \\right) } \\\\ & { \\qquad \\qquad - \\displaystyle \\sum _ { o } d _ { \\pi _ { t o t } } ( o ) \\left[ u ( o ) \\left( \\sum _ { a } \\pi _ { t o t } ( a | o ) - 1 \\right) + \\sum _ { a } \\beta ( a | o ) \\pi _ { t o t } ( a | o ) \\right] , } \\end{array}"
+        ],
+        "page": "sp_0674_page_0013",
+        "id": "sp_0674_page_0013-5",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          435.9602966308594,
+          522.37451171875,
+          787.6124267578125,
+          555.2750854492188
+        ],
+        "text": [
+          "\\left\\| \\mathcal { T } _ { f } ^ { * } V _ { t o t } ^ { 1 } - \\mathcal { T } _ { f } ^ { * } V _ { t o t } ^ { 2 } \\right\\| _ { \\infty } \\leq \\gamma \\left\\| V _ { t o t } ^ { 1 } - V _ { t o t } ^ { 2 } \\right\\| _ { \\infty }"
+        ],
+        "page": "sp_0674_page_0013",
+        "id": "sp_0674_page_0013-6",
+        "seg_type": "eq"
+      }
+    ]
+  },
+  "sp_0674_page_0014": {
+    "bboxes": [
+      {
+        "box": [
+          360.975830078125,
+          339.1501770019531,
+          861.3453979492188,
+          518.3613891601562
+        ],
+        "text": [
+          "\\begin{array} { l } { { \\displaystyle \\dot { V } _ { t o t } ^ { * } ( \\pmb { o } ) = \\dot { T } _ { f } ^ { * } V _ { t o t } ^ { * } ( \\pmb { o } ) } } \\\\ { { \\displaystyle \\qquad = \\sum _ { \\pmb { \\alpha } } \\pi _ { t o t } ^ { * } ( \\pmb { a } | \\pmb { o } ) \\left( Q _ { t o t } ^ { * } ( \\pmb { o } , \\pmb { a } ) - \\alpha \\log \\left( \\frac { \\pi _ { t o t } ^ { * } ( \\pmb { a } | \\pmb { o } ) } { \\mu _ { t o t } ( \\pmb { a } | \\uprho ) } \\right) \\right) } } \\\\ { { \\displaystyle \\qquad = \\sum _ { \\pmb { \\alpha } } \\pi _ { t o t } ^ { * } ( \\pmb { a } | \\pmb { o } ) \\left( u ^ { * } ( \\pmb { o } ) + \\alpha \\right) } } \\\\ { { \\displaystyle \\qquad = u ^ { * } ( \\pmb { o } ) + \\alpha } } \\end{array}"
+        ],
+        "page": "sp_0674_page_0014",
+        "id": "sp_0674_page_0014-1",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          379.99652099609375,
+          584.497314453125,
+          845.8356323242188,
+          705.39208984375
+        ],
+        "text": [
+          "\\begin{array} { r l } & { Q _ { t o t } ^ { * } ( \\pmb { o } , \\pmb { a } ) = r ( \\pmb { o } , \\pmb { a } ) + \\gamma \\mathbb { E } _ { \\pmb { o } ^ { \\prime } \\mid \\pmb { o } , \\pmb { a } } \\left[ V _ { t o t } ^ { * } \\left( \\pmb { o } ^ { \\prime } \\right) \\right] } \\\\ & { V _ { t o t } ^ { * } ( \\pmb { o } ) = u ^ { * } ( \\pmb { o } ) + \\alpha } \\\\ & { \\pi _ { t o t } ^ { * } ( \\pmb { a } | \\pmb { o } ) = \\mu _ { t o t } ( \\pmb { a } | \\pmb { o } ) \\cdot \\mathrm { e x p } \\left( \\frac { Q _ { t o t } ^ { * } \\left( \\pmb { o } , \\pmb { a } \\right) - u ^ { * } \\left( \\pmb { o } \\right) } { \\alpha } - 1 \\right) } \\end{array}"
+        ],
+        "page": "sp_0674_page_0014",
+        "id": "sp_0674_page_0014-2",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          420.7023010253906,
+          179.45162963867188,
+          803.31982421875,
+          235.2061309814453
+        ],
+        "text": [
+          "\\mathbb { E } _ { a \\sim \\mu _ { t o t } } \\left[ \\exp \\left( \\frac { Q _ { t o t } ( o , a ) - u ( o ) } { \\alpha } - 1 \\right) \\right] = 1"
+        ],
+        "page": "sp_0674_page_0014",
+        "id": "sp_0674_page_0014-3",
+        "seg_type": "eq"
+      }
+    ]
+  }
+}

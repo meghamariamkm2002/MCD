@@ -1,0 +1,65 @@
+jump into their models, they train the following four models.
+So they train a transformer on these two data sets, LM1B and Common Crawl.
+So technically it's five models on language modeling.
+They train the ResNet32 on C410, they train the ResNet50 on ImageNet, and they train SSD on Cocoa.
+Now, here is the accuracies they get.
+And here is, sorry, this is the target.
+So what they do is they train these models and then they say, okay, what's the accuracy we reach?
+And then they set a target value.
+So on ResNet 50 on ImageNet, a very common number to reach is something like 76.5.
+If you look at, for example, torch vision models, they reach something like this.
+And so they say, well, our target accuracy here is just a little bit below that.
+And then we just measure how many steps or how many their measurement here is fresh data points.
+So how many actual fresh training samples do we need to reach this target?
+And this is this is where it gets wonky because for example take the the 91% here on C for 10 that is quite quite low and Also the res net 50 is I mean this is standard, but still image net is much further nowadays and I think the effectiveness of something like that
+this has a lot to do with how competitive you want to get.
+Maybe this is all just an effect of how much under par this target performance really is.
+And I would expect that even though they say it doesn't hurt their performance in their experiments, I would at least expect it will hurt your performance in general if you try to get competitive.
+Because these things aren't as as as of now at least the ones I know like the the Resonance aren't really competitive, but
+And so what do they do?
+They measure data echoing with an echoing factor of two.
+So that means data that's incoming is output twice in a row.
+And every data point that's coming in is just emitted twice from the buffer.
+And then the next data point is emitted twice and so on.
+And what they measure, again, is the fresh examples read.
+So how many fresh data points do you need to achieve something?
+This is a good measurement because this is kind of independent of hardware.
+So if you're really in the situation where your GPU is twice as fast as the rest of your pipeline,
+then an echoing factor of two will speed up at most your training procedure by factor of two.
+All right, so you have the baseline in red, and then you have a batch echoing, which is where you echo
+What we said at the worst possible time right after batching so this might hurt your performance the most but also it has the potential to be the fastest if your if maybe your augmentation is very expensive then sorry or your batching.
+You have example echoing after augmentation.
+So that would mean the augmentation is very expensive.
+So you save the augmented data point and then you emit it multiple times, but each time it is batched differently.
+So it is shuffled and then batched with different other data points.
+So you have a shuffle buffer after it.
+And then you have example echoing before data augmentation.
+So that means the same data point emitted multiple times will be augmented in different ways and basically will lead to slightly different data points.
+So the results here are pretty much what you could expect in that the earlier you do the echoing, as you can see here, the more this echoing helps.
+So the number, for example, this is the object segmentation task.
+The baseline needs this many fresh examples to reach this target accuracy.
+With batch echoing, you need less fresh training examples.
+So that means even though you kind of train on the same data twice, this helps you more or this helps you.
+It doesn't help you fully because the dash line here is the if
+If it would help you as much as a fresh data point, you'd be at the dash line, right?
+This is exactly half of this because the echoing factor is two.
+So if a repeated data point was as useful as a fresh data point, you'd be at the dash line.
+As you can see right here, you're not at the dash line, but at least it doesn't hurt.
+You might expect that it hurts, but it doesn't hurt.
+It actually speeds up.
+So the repeated data points at least have some utility.
+Again, this is only useful if you have this asymmetry in your pipeline.
+If your pipeline is actually symmetric and you do an echoing factor of two, the wall time here, the wall time plot would look this for the baseline and then almost twice as high for the batch echoing because even though it needs the same amount of fresh or almost the same amount of fresh example,
+you echo each one twice, so it needs to process it twice, so it'll take much longer.
+So again, this is useful if you have this asymmetry, and if the echoing factor is kind of smaller than your asymmetry.
+Otherwise, you're simply wasting time repeating data points.
+Then if you do example echoing here after augmentation, you use even less fresh data points.
+And if you do it before augmentation, this is really surprising.
+You almost get the benefit of fresh data points, which is something you might expect, right?
+an augmented newly shuffled data point is kind of almost a new data point, but still it's quite surprising that you almost get to the level of the theoretical possible.
+And also here on the ImageNet task, now here is actually an example where you can see that it hurts to do this batch echoing, because the reasons why it could hurt is just that you have, you violate this IID assumption, you basically have correlated data points.
+This is a big, big problem, for example, in reinforcement learning.
+where already by nature of you running episodes and then feeding the episodes back into the training procedure, you have correlated data points.
+And that hurts your performance here, actually compared to the baseline.
+But then if you go to example echoing and the example echoing before augmentation, again, you get a speedup, which is pretty cool.
+Okay.

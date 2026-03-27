@@ -1,0 +1,60 @@
+in GAN variations.
+They introduced the reasoning behind this so that there's an intuition right here.
+And you can see already, in practice, equation one may not provide sufficient gradient for G to learn well.
+Early in learning when G is poor, D can reject samples with high confidence because they're clearly different from the training data.
+In this case, this saturates rather than training G to minimize that, we can train G to maximize log D. This objective function results in the same fixed point for the dynamic, but provides much stronger gradients in early, much stronger gradients early in learning.
+This is in contrast to like other papers that simply say, oh, we do this and they at least say it provides the same fixed point, right?
+Yeah, so again, they're trying to convince you that this is doing something useful and that this is easier.
+Okay.
+So this strategy is analogous to other things training, maintain samples, um, from a Markov chain from one learning step in the next order to avoid burning in a Markov chain in another loop of learning.
+Sorry.
+Okay.
+This is from another paper.
+So their point here is that it's analogous.
+to other papers that use these Markov chains where you always do one step in G and one step in D. We alternate between K steps of optimizing D and one step of optimizing G because you have this inner maximization over D and then the outer maximization, outer minimization over G.
+So this has already been around the fact that you kind of have to have these optimizations in lockstep.
+But the difference here is you don't need any sort of like Markov chain in the inner loop and so on.
+You simply need back propagation.
+So here's an illustration of how that might
+work.
+So at the beginning here, you have your Z space, and this is always sampled uniformly, as you can see right here.
+This is from a prior distribution.
+And through the mapping, so this here is from Z to X is G. So this is the mapping G. You can see that the uniform distribution is now mapped to something non uniform, which results in the green thing.
+So G is the green line.
+while as this is data, the black dots are data.
+And if you have a discriminator, the discriminator is supposed to tell you where there's data and where there's fake data.
+Now, so green here is fake.
+Now this blue line is sort of a half trained discriminator.
+Now you train D, right?
+You maximize D the discriminator, and that gives you this blue line right here.
+So this is a perfect discriminator for these two data distributions.
+It tells you it's basically the ratio of green to black at each point.
+And now you train the generator according to this.
+And you can see that the gradient of the discriminator is in this direction.
+So it's like up this hill.
+And that's why you want to shift your green curve over here according to the gradient of the discriminator.
+Note that we first trained the discriminator and now in a second step we optimize the generator.
+So now we shift this green curve over in order to along the gradient of the blue curve.
+So it's important the green curve doesn't see the black curve ever.
+The generator doesn't see the data.
+The generator simply sees that blue curve and it goes along the gradient of that blue curve of the discriminator.
+Okay.
+And then if you do this many, many steps, actually there are dots right here, you will end up with a discriminator that has no clue what's where this is one half probability everywhere because the ratio is the same.
+And you will end up with the probability of data equal to the probability of the output generated samples.
+And this can happen if the generator simply remembers the training data.
+But there are a number of things that counter that.
+For example, the generator is continuous while the training data is, of course, discrete.
+So there is this in-between things right here where there is no training data.
+In fact, to hit exactly training data is very, very unlikely.
+But of course, you can still peek at the training data.
+But also, I think there are two things why the generator doesn't simply remember the training data first because it doesn't ever see the training data directly.
+So it can only see it through the discriminator.
+And second of all, because it is built as these multi-layer neural networks, it doesn't have the power to just remember this because as there is kind of this notion of continuous function.
+So, and the, these neural networks are rather smooth functions often.
+And therefore I think that is something that helps the generator avoid remembering the training data.
+Of course, there is still this problem of mode collapse that was really big in GANs.
+So even if it doesn't remember the training data, it might focus on the easiest part of the training data and forget all other parts.
+And that was a direct result, actually, of this objective.
+So where was it?
+So this objective directly led to mode collapse in some form because it penalizes different errors differently.
+Of course, people have come up with ways to solve that.

@@ -1,0 +1,29 @@
+start	end	text
+31	1092	Hi there.
+1112	7480	Today we'll look at playing Atari with Deep Reinforcement Learning by Vladimir Mne at All of DeepMind.
+7960	12625	So this is another one of our series of impactful past papers.
+13206	18552	This paper right here kicked off an entire revolution in reinforcement learning.
+18692	23558	Specifically, it sort of started the Deep Reinforcement Learning hype.
+23538	30769	Before that I reinforcement learning was kind of this weird field of Markov decision processes and so on.
+30869	35136	Now I know there were successes and all and stuff was happening.
+35477	42728	But this really made a lot of waves because it brought the power of deep neural networks.
+42708	61982	to reinforcement learning and with a pretty simple application of convolutional networks managed to solve these reinforcement learning games where previous algorithms really couldn't either or were heavily reliant on hand engineered features.
+61962	71360	So we'll take a look here and what people did back then, what was the state of the art and what they are telling us about that.
+71380	73865	Kind of set it in relation to today.
+73925	83042	Alright, if you do like papers like this, commentary like this, share it out, leave a like and tell me in the comments what you think.
+83022	84765	So, let's dive in.
+85366	95986	They say we present the first deep learning model to successfully learn control policies directly from high-dimensional sensory input using reinforcement learning.
+97109	102178	The model is a convolutional neural network trained with a variant of Q-learning,
+102158	108209	whose input is raw pixels and whose output is a value function estimating future rewards.
+108890	117906	We apply our method to seven Atari 2600 games from the arcade learning environment with no adjustment of the architecture or learning algorithm.
+118667	126040	We find that it outperforms all approaches on six of the games and surpasses a human expert on three of them.
+126020	128044	So there's a lot packed into this.
+128264	135437	First of all, I wanted to recognize the absolute Lattec savagery right here and here.
+137541	140927	Yeah, you know, it's just something.
+141709	143913	I'm not OCD about that kind of stuff.
+143993	146297	I think we should ditch Lattec, honestly.
+146878	147319	But
+147299	151767	So there's a lot of information packed in this abstract right here.
+152368	158158	So they say this is the first deep learning model to learn control policies.
+158399	167795	So that's the task of these reinforcement learning algorithms directly from high dimensional sensory inputs using using reinforcement learning.
+168216	169999	So what do they mean, these are

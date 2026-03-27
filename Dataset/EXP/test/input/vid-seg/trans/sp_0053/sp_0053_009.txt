@@ -1,0 +1,51 @@
+Why does this give you such extraordinary representations in unsupervised fashion?
+And I sort of, I have two things that I think contribute mostly to this.
+So if we look at the question of why, right?
+The first thing I think is the augmentations.
+The augmentations have played a large role, not as much in NLP.
+In NLP, we do it a little bit differently.
+but augmentations in computer vision and self supervised learning have a central role.
+And it's really important that you have the correct ones, which is a thing they also say right here, right?
+They really stress that this multi crop augmentation is quite important.
+So augmentations seem to be central.
+And to me, augmentations are a bit like that's where you put the, that's where you put the human prior.
+That's where you tell the model what it should pay attention to and what it shouldn't pay attention to, right?
+Because all the things you destroy with an augmentation, like you make the color brighter, that's, you tell the model color doesn't matter, right?
+Or brightness variations don't matter.
+So by augmenting, you tell the model what it should and shouldn't or, you know, what it shouldn't pay attention to, essentially.
+So all the things that, you know, it's the same if you have an, if you have a data set of dogs and cats, right?
+And, um, you know, you tell it, you know, this is a dog, this is a dog, this is a dog.
+Essentially, you tell it, you shouldn't pay attention to, you know, what is different in these images.
+You should only pay attention to what is the same.
+And the augmentations, that's kind of where the knowledge goes in.
+So if we want to go towards fully, let's say fully autonomous self supervised learning, that's what we need to get rid of, we need to get rid of the augmentations, or we need to get rid of
+us designing augmentations for the domain.
+If we want this to be, you know, domain agnostic, and also if we want better image representations, because the probability that we as humans exactly capture the correct augmentations is zero, right?
+We seem to capture pretty good ones.
+But, you know, the probability that we have the best ones is like zero.
+Okay.
+The second thing, and this is a thing that's, I think more hidden is the data set.
+And what I mean is how the data set is constructed.
+So these things are often, you know, trained on something like ImageNet data set.
+And you can see
+in these pictures, there always seems to be like an object of interest in these in these pictures, right?
+Even if you train this from pictures in the wild, like you scrape pictures from Instagram or whatever,
+the way people don't take pictures of random things.
+People, if you're, you know, it would be pretty weird to have a picture and, you know, there's just like dirt road.
+Like it's just like dirt road and here's like, you know, a bit of grass.
+And you post this on social media and you're like, whoa, look at this.
+So,
+by how you construct the data set, even if you scrape it from the internet by how humanity takes pictures, you are implicitly telling the model what's important.
+So the model learns
+How should I say this?
+How you make the data set speaks a lot about where your attention goes.
+And that's what you feed the model, right?
+So these things, these self supervised methods in this way, they rely a lot on data set construction.
+So we shouldn't expect this to transfer to domains where we get like random IID data from the world, because these things aren't IID.
+We tell the model pretty clearly by the data we give it, what's important, what isn't.
+So that is a little bit of my opinion.
+And I think that's correct, right?
+I think the model, if we have self supervised learning, the information should be taken from the data set.
+Right.
+So that the model should look at the data sense a what seems to be given how this data set is, what seem to be the important things in there.
+I'm more a fan of getting rid of the augmentations.

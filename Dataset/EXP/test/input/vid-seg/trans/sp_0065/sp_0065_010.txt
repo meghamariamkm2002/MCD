@@ -1,0 +1,62 @@
+But of course, you'd run into the same problem as I said, and the fact that if you have two spectrograms, they don't necessarily align again.
+And here, they use this dynamic time warping loss.
+Now, this looks very, very similar to the aligner, but it is something different.
+Because now you have two, the difference here is you have two things that you know should match, right?
+You have this thing and you have this thing.
+And they both have the same amount of entries.
+So they both have A, B, C, D, E. This has an A, a B, a C, a D and an E slot.
+And this also has an A, a B, a C, a D and an E slot.
+And you know that you assume, so here's something you assume, you assume that the beginning and the ends match.
+This is not true, of course, because we could have completely unaligned, but they say, in practice, this works.
+So you assume that sort of at least a little bit, these are aligned.
+All right, so
+They have, by the way, there's so much to this paper, by the way, they have an auxiliary loss where the produced lengths, all the lengths that this length prediction module produces, they, I don't remember where that is,
+But they have an auxiliary loss where all the lengths must add up, right here.
+All the lengths that these length predictors produce must add up to the total length of the sound, which in our case, I guess, is the two seconds.
+Okay.
+So that's how they, if so really quickly, these length predictions will sort of, at least the least thing they can do is they can all predict like L over N.
+And that will give you a sort of a rough alignment such that it kind of makes sense to do this dynamic time-warping to assume that the beginnings and the endings align.
+All right, so we have two things.
+They have the same amount of slots.
+We know the beginnings and ends align, or we assume that.
+How do we make it?
+How do we
+find out which slots align to which and this is a dynamic programming they formulate this as a dynamic programming problem that you might you know from.
+You might know from from like these are often taught in algorithms and data structure courses and so on.
+where you can figure out which of these align.
+So if you go a step here, that means that you go one step in each of the sequences.
+And then if you go a step here, that means only this one advances and this one still corresponds to this one right here.
+And okay, I formulated wrong at the beginning.
+You don't have ABCDE.
+I guess you would actually have all of these slots and you would figure out which ones correspond to which.
+But I hope you recognize these sort of problems where and here you align them again.
+So these are classic dynamic programming alignment problems.
+And they align it like this.
+And they simply say the more that this path deviates from the straight path, the larger penalty we give.
+So they give a penalty.
+with respect to how much this path deviates.
+So here you can see how much the spectrogram of the generated sound aligns with the spectrogram of the ground truth.
+And here is a penalty for each time that the two spectrograms don't align correctly.
+they do this in a soft way so they do every single possible path right here and you can again do this using dynamic programming and the entire catch here is that the alignment must be monotonic because
+no matter how long or short the sequences are, they always follow one after another in both of the spectrograms and both of the sounds.
+So that's why you can optimize it in a way.
+So over all the possible paths that you can align them, you weigh these paths by their score that you give them here, and then you calculate the loss across all these different paths.
+And that will give you, that is sort of a fuzzy loss.
+So you don't compare the spectrograms directly, but you compare them and you sort of forgive them for not aligning too well.
+But the more they don't align, you give a penalty and that's how you sort of force the generator.
+Again, you force the generator to produce things that are aligned.
+You produce these length predictions that make the spectrograms closer to each other.
+So that's how you calculate the spectrogram loss.
+This is entirely deterministic.
+There's no learned weights right here.
+Okay.
+Cool.
+Last thing they say is that they use this phony miser.
+That's the very beginning, but they also ablate that.
+So in the results, they do a lot, lot of ablation studies, which I don't want to go into right now.
+I've already shown you some.
+They do even, I think they do a human evaluation.
+Do they do a human evaluation?
+I know this might have been in another paper.
+but as you have heard from the examples, this sounds extremely realistic.
+I'll link the website to

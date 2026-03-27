@@ -1,0 +1,71 @@
+they have performed very, very well.
+So how does the skipgram model work?
+How does it assign vectors to each word?
+So first of all, it has a dictionary.
+So there is a word, an input word.
+And for each word, you have a big dictionary.
+And the big dictionary basically says that the word two is going to be mapped to this vector point one and so on.
+The word learn is going to be mapped to that vector.
+And then you also have these output vectors.
+right here.
+And what you're trying to do is you're trying to take a phrase from the data set like this one right here.
+And you take out one word like this word vector right here.
+And
+you're trying to frame this as a prediction task.
+So you're trying to frame this as, in this case, four different prediction tasks.
+So you're telling your machine, I give you the word vector, and which other words are around the word vector?
+You just tell it that.
+You don't tell it anything else.
+You just say which other words are around the word vector.
+And the correct answers in this case would be to learn word and representations.
+So this you construct four different training examples where you have an x and a y. So the x is always vector and the y is 2.
+And then the next training sample the x is vector.
+and the y is learn and so on.
+So this here, each training sample is a classification task.
+And the classification task is, as you can see,
+No, you can't see right here.
+But the classification task is you have the input word and you classify it into one of many, many, many, many, many, many, many classes.
+Namely, there are as many classes as you have words in the dictionary.
+So each word in the dictionary will have a class associated with it.
+So in ImageNet, you have like a thousand classes, but in these, that's already a lot, but in these tasks, you're going to have a hundred thousand classes because there are a hundred thousand words in the English language that you want to treat.
+And there are many more, but in this case, they leave away all the words that appear less than five times in their corpus.
+That's still a lot of words.
+So it's like a super-duper-duper lot of a classification task.
+But ultimately, if you do something like this, then the representation that you end up with is going to be very, very good at doing these kind of downstream tasks.
+And that's what they discovered.
+So their skipgram model is nothing else than taking a word and predicting the surrounding words from that word.
+And this is what it means.
+This is the formal statement of the skipgram objective.
+What you want to do is the objective of the skipgram model is to maximize the average log probability, this one.
+So for the word we're considering the word T,
+We want to maximize the log probability of each word W that is around the word C, sorry, around the word W in a context window of C. That's exactly what we did before.
+We take a word like this model right here and from it, we predict all of the words around it in a given window, right?
+That's all.
+That's the entire objective.
+And that will give you very good representations.
+And this is how you would implement that.
+So what you'll have is you'll have these vector representation V that comes from your original dictionary.
+Those are the things you learn.
+And then because you have like an 30,000 way classifier, you know that a classification layer is nothing else than a linear layer followed by a softmax operation.
+And that linear layer also has parameters.
+These are the V primes.
+Okay.
+So first you have the look up in the dictionary for the word vector right here.
+And this is the vector of the classification layer.
+Now there are modifications where you can use like the same vectors and so on, or you can also make use of these vectors.
+But ultimately you care about these vectors right here.
+And the vectors here are simply the classification layers weights.
+So here you can see that there is what you're trying to maximize is the inner product between the word that you're considering and the words around that word.
+And you're trying to do a classification task.
+So you need to normalize.
+Now this is the normalization constant and it goes over all of your vocabulary.
+So that's what they tackle here.
+They say W is the number of words in the vocabulary.
+This formulation is impractical because the cost of computing the gradient is proportional to W, which is often large.
+And that's 10 to the five to 10 to the seven terms.
+So many, like tens of millions of terms in your vocabulary.
+That's just not feasible, right?
+So people have been sort of trying different ways to get around very, very large number of classes.
+And here it seems that that is really our bottleneck.
+In the previous paper, they've already shown that this objective can give you very good word representation.
+But now we need to get around the fact

@@ -1,0 +1,1 @@
+In our paper, the main theoretical result is to leverage Blackwell's seminal work on comparison of experiments to derive a precise characterization of this achievable set.

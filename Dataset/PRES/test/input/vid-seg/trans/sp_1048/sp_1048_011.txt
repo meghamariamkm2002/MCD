@@ -1,0 +1,3 @@
+Here are all the conditions needed to provide convergence.
+So we can find a very straightforward and intuitive solution.
+So we can use clipping after the regular gradient update and also VDK operations.

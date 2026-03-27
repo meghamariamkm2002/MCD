@@ -1,0 +1,4 @@
+we introduce the episodic-delayed feedback model, which considers the stochastic delays across the episode.
+The trajectory of each episode is not immediately observable.
+Instead, the feedback of episode K becomes observable only at the beginning of the K plus tau K's episode.
+We also assume that the delays are exponential for the analysis purpose.

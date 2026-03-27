@@ -1,0 +1,5 @@
+There's a growing line of research that apply differential privacy to generate private synthetic data.
+They mostly are agnostic to downstream tasks.
+However, end users may have their specific requirements for the synthetic data to satisfy.
+Those requirements are often coming from their data science pipeline, which are well-established and difficult to modify.
+Failure to meet these requirements can reduce the downstream utility.

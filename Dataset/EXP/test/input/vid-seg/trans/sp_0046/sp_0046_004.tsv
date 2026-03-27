@@ -1,0 +1,61 @@
+start	end	text
+31	1519	in GAN variations.
+2304	7915	They introduced the reasoning behind this so that there's an intuition right here.
+9413	16019	And you can see already, in practice, equation one may not provide sufficient gradient for G to learn well.
+16700	22185	Early in learning when G is poor, D can reject samples with high confidence because they're clearly different from the training data.
+22205	38880	In this case, this saturates rather than training G to minimize that, we can train G to maximize log D. This objective function results in the same fixed point for the dynamic, but provides much stronger gradients in early, much stronger gradients early in learning.
+38860	47637	This is in contrast to like other papers that simply say, oh, we do this and they at least say it provides the same fixed point, right?
+47938	53950	Yeah, so again, they're trying to convince you that this is doing something useful and that this is easier.
+53930	55152	Okay.
+55172	69009	So this strategy is analogous to other things training, maintain samples, um, from a Markov chain from one learning step in the next order to avoid burning in a Markov chain in another loop of learning.
+69029	69389	Sorry.
+69410	69610	Okay.
+69630	70851	This is from another paper.
+70891	73795	So their point here is that it's analogous.
+73775	93218	to other papers that use these Markov chains where you always do one step in G and one step in D. We alternate between K steps of optimizing D and one step of optimizing G because you have this inner maximization over D and then the outer maximization, outer minimization over G.
+93198	99149	So this has already been around the fact that you kind of have to have these optimizations in lockstep.
+99169	105361	But the difference here is you don't need any sort of like Markov chain in the inner loop and so on.
+105381	106984	You simply need back propagation.
+108046	110751	So here's an illustration of how that might
+110731	111252	work.
+111512	118422	So at the beginning here, you have your Z space, and this is always sampled uniformly, as you can see right here.
+118682	120345	This is from a prior distribution.
+121006	135386	And through the mapping, so this here is from Z to X is G. So this is the mapping G. You can see that the uniform distribution is now mapped to something non uniform, which results in the green thing.
+135406	137329	So G is the green line.
+137309	142417	while as this is data, the black dots are data.
+143399	151972	And if you have a discriminator, the discriminator is supposed to tell you where there's data and where there's fake data.
+152593	154997	Now, so green here is fake.
+157053	160378	Now this blue line is sort of a half trained discriminator.
+160518	162221	Now you train D, right?
+162361	169052	You maximize D the discriminator, and that gives you this blue line right here.
+169212	174080	So this is a perfect discriminator for these two data distributions.
+175101	180630	It tells you it's basically the ratio of green to black at each point.
+180610	184981	And now you train the generator according to this.
+185141	193542	And you can see that the gradient of the discriminator is in this direction.
+194244	196830	So it's like up this hill.
+196810	204466	And that's why you want to shift your green curve over here according to the gradient of the discriminator.
+204827	215950	Note that we first trained the discriminator and now in a second step we optimize the generator.
+215930	224081	So now we shift this green curve over in order to along the gradient of the blue curve.
+224842	229027	So it's important the green curve doesn't see the black curve ever.
+229628	231310	The generator doesn't see the data.
+231350	238680	The generator simply sees that blue curve and it goes along the gradient of that blue curve of the discriminator.
+238660	239121	Okay.
+239702	253085	And then if you do this many, many steps, actually there are dots right here, you will end up with a discriminator that has no clue what's where this is one half probability everywhere because the ratio is the same.
+253626	263082	And you will end up with the probability of data equal to the probability of the output generated samples.
+263888	268873	And this can happen if the generator simply remembers the training data.
+269113	271255	But there are a number of things that counter that.
+271476	278463	For example, the generator is continuous while the training data is, of course, discrete.
+278843	284769	So there is this in-between things right here where there is no training data.
+285210	289494	In fact, to hit exactly training data is very, very unlikely.
+289514	293558	But of course, you can still peek at the training data.
+293538	304368	But also, I think there are two things why the generator doesn't simply remember the training data first because it doesn't ever see the training data directly.
+304749	308560	So it can only see it through the discriminator.
+308540	322656	And second of all, because it is built as these multi-layer neural networks, it doesn't have the power to just remember this because as there is kind of this notion of continuous function.
+323156	327361	So, and the, these neural networks are rather smooth functions often.
+327902	334429	And therefore I think that is something that helps the generator avoid remembering the training data.
+334713	338697	Of course, there is still this problem of mode collapse that was really big in GANs.
+338757	345845	So even if it doesn't remember the training data, it might focus on the easiest part of the training data and forget all other parts.
+346205	351111	And that was a direct result, actually, of this objective.
+351591	352812	So where was it?
+353453	364585	So this objective directly led to mode collapse in some form because it penalizes different errors differently.
+364565	370035	Of course, people have come up with ways to solve that.

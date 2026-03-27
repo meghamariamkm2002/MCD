@@ -1,0 +1,64 @@
+1
+00:00:00,031 --> 00:00:07,121
+cod learning environment, if you don't know what it is, it's basically these old games right here, you can kind of emulate them and run them.
+
+2
+00:00:07,682 --> 00:00:10,887
+And the inputs are always sort of the same.
+
+3
+00:00:10,967 --> 00:00:13,591
+So you have one joystick, I believe.
+
+4
+00:00:13,711 --> 00:00:20,701
+So you have kind of this joystick, and it can go into various directions like left, right, up, down, and then also the intermediate directions.
+
+5
+00:00:21,161 --> 00:00:25,768
+And then you have a, I think also a button that you can push
+
+6
+00:00:25,748 --> 00:00:32,600
+And that gives you a total of some somewhere around 16 or 20 actions in each of the games.
+
+7
+00:00:32,640 --> 00:00:37,008
+So the good thing about this environment is that the actions are always the same.
+
+8
+00:00:37,088 --> 00:00:39,472
+But of course, they mean different things in different games.
+
+9
+00:00:39,993 --> 00:00:46,845
+So the games here, you know, for example, Pong or this breakout, these games are
+
+10
+00:00:46,825 --> 00:00:53,831
+kind of really low pixel games, as you can see, and they come in form of an image, right?
+
+11
+00:00:53,851 --> 00:00:54,632
+So this is an image.
+
+12
+00:00:54,712 --> 00:00:58,716
+This is like 180 pixels, and this is like 150 pixels.
+
+13
+00:00:59,416 --> 00:01:13,749
+And the task here is to learn a policy, which means which buttons and directions you need to push, depending on the observation right here, these pixels, and achieve the maximum amount of reward.
+
+14
+00:01:13,989 --> 00:01:16,832
+So reward is given in each game differently as well.
+
+15
+00:01:16,812 --> 00:01:31,912
+For example, in this pong game, the reward is every time you score kind of a goal against your opponent in breakout, you get a reward every time you manage to hit or kill a one of these blocks and so on.
+
+16
+00:01:32,152 --> 00:01:35,040
+So reward is different, but your objective is
+

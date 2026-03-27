@@ -1,0 +1,62 @@
+WEBVTT
+
+00:00.031 --> 00:10.564
+But when they do this, they do outperform the current or the single frame baselines by quite a bit.
+
+00:10.945 --> 00:23.220
+So this SS and this CCT are these wildlife data sets, whereas this CC, I think this is the city, something city cam, these are this street data set.
+
+00:23.200 --> 00:28.711
+As you can see, they do outperform the single frame baseline and buy quite a bit.
+
+00:29.472 --> 00:42.357
+Now, interesting, as you can see right here, as they increase the time horizon of this long term memory, so they can now choose how much information do they want to put in that long term memory.
+
+00:42.337 --> 01:00.417
+As they increase the time horizon for one minute, one hour, one day, and so on, the performance goes up and up and up, which is a strong indication that these features actually help from the time horizon because you don't have more parameters.
+
+01:01.077 --> 01:07.264
+You simply increase the amount of information in the memory bank and
+
+01:08.459 --> 01:18.427
+If the performance goes up, you can make a very strong claim that this is actually due to the fact that you have more information in that memory bank.
+
+01:18.849 --> 01:23.582
+Couldn't really guess any other explanation right here.
+
+01:25.148 --> 01:28.594
+They do investigate different memory strategies.
+
+01:28.614 --> 01:35.366
+They do a lot of ablations right here, where they also say, okay, what if we only have the short-term attention?
+
+01:35.786 --> 01:37.770
+What if we only have the long-term attention?
+
+01:37.890 --> 01:46.465
+What do only, if we only have self-attention, that means attention only into the current frame, but across regions of interest.
+
+01:46.605 --> 01:49.570
+That's interesting if you have like a herd of animals and so on.
+
+01:49.550 --> 01:50.692
+and they all help.
+
+01:50.932 --> 01:56.841
+But as you can see, the long-term attention tends to help the most in this data set.
+
+01:58.123 --> 02:04.272
+And the short-term attention helps a lot in this data set if you just compare to the other owner.
+
+02:04.392 --> 02:07.437
+These are two different metrics, not data sets.
+
+02:07.697 --> 02:09.079
+Sorry about that.
+
+02:09.260 --> 02:14.427
+But in essence, it helps the most when you combine the two.
+
+02:15.289 --> 02:18.814
+And that's pretty cool to see.
+

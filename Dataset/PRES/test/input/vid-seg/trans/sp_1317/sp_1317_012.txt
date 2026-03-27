@@ -1,0 +1,5 @@
+We apply our post-processing procedure to the home credit dataset, which is a very large steel dataset.
+We generate synthetic data applying an existing big DP mechanism.
+Then we apply our technique to align the correlation matrix of synthetic data with real data.
+As drawn in this figure, the discrepancy between the correlation matrix of real data and that of synthetic data is reduced.
+Additionally, our method only takes around 4 minutes to run on a single GPU.

@@ -1,0 +1,70 @@
+{
+  "sp_0054_page_0003": {
+    "bboxes": [
+      {
+        "box": [
+          420.5042419433594,
+          1319.0234375,
+          793.9671630859375,
+          1389.9283447265625
+        ],
+        "text": "\\delta ( i , j ) = \\left\\{ \\begin{array} { c l l } { { 0 } } & { { \\mathrm { f o r } } } & { { i - j \\leqslant - k } } \\\\ { { 2 k - 1 } } & { { \\mathrm { f o r } } } & { { i - j \\geqslant k } } \\\\ { { i - j + k } } & { { \\mathrm { o t h e r s . } } } & { { } } \\end{array} \\right.",
+        "id": "sp_0054_page_0003-1",
+        "page": "sp_0054_page_0003",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          409.5158386230469,
+          397.9336853027344,
+          813.8196411132812,
+          449.1913146972656
+        ],
+        "text": "\\operatorname* { m a x } _ { \\theta } \\log \\, p _ { \\theta } ( \\mathbf { X } | \\tilde { \\mathbf { X } } ) = \\operatorname* { m a x } _ { \\theta } \\sum _ { i \\in \\mathcal { C } } \\log \\, p _ { \\theta } ( \\tilde { x } _ { i } = x _ { i } | \\tilde { \\mathbf { X } } )",
+        "id": "sp_0054_page_0003-2",
+        "page": "sp_0054_page_0003",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          415.2316589355469,
+          729.3154907226562,
+          808.5093383789062,
+          794.7156982421875
+        ],
+        "text": "\\begin{array} { r l } & { A _ { i , j } = \\{ H _ { i } , P _ { i | j } \\} \\times \\{ H _ { j } , P _ { j | i } \\} ^ { \\mathsf { T } } } \\\\ & { \\qquad = H _ { i } H _ { j } ^ { \\mathsf { T } } + H _ { i } P _ { j | i } ^ { \\mathsf { T } } + P _ { i | j } H _ { j } ^ { \\mathsf { T } } + P _ { i | j } P _ { j | i } ^ { \\mathsf { T } } } \\end{array}",
+        "id": "sp_0054_page_0003-3",
+        "page": "sp_0054_page_0003",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          400.88067626953125,
+          1106.2421875,
+          824.372314453125,
+          1190.638916015625
+        ],
+        "text": "\\begin{array} { c } { { Q = H W _ { q } , K = H W _ { k } , V = H W _ { v } , A = \\displaystyle { \\frac { Q K ^ { \\intercal } } { \\sqrt { d } } } } } \\\\ { { H _ { o } = \\mathrm { s o f t m a x } ( A ) V } } \\end{array}",
+        "id": "sp_0054_page_0003-4",
+        "page": "sp_0054_page_0003",
+        "seg_type": "eq"
+      }
+    ]
+  },
+  "sp_0054_page_0004": {
+    "bboxes": [
+      {
+        "box": [
+          292.8340148925781,
+          329.8638000488281,
+          931.4076538085938,
+          490.6128845214844
+        ],
+        "text": "\\begin{array} { r l } { Q _ { c } = H W _ { q , c } , K _ { c } = H W _ { k , c } , V _ { c } = H W _ { v , c } , Q _ { r } = P W _ { q , r } , K _ { r } = P W _ { k , r } } & { } \\\\ { \\tilde { A } _ { i , j } = \\underbrace { Q _ { i } ^ { c } K _ { j } ^ { c \\tau } } _ { \\mathrm { ( a ) \\, c o n t e n t i o \\, c o n t a t } } + \\underbrace { Q _ { i } ^ { c } K _ { \\delta ( i , j ) } ^ { r } } _ { \\mathrm { ( b ) \\, c o n t e n t \\, o r p o s i l i o n } } + \\underbrace { K _ { j } ^ { c } Q _ { \\delta ( j , i ) } ^ { r } } _ { \\mathrm { ( c ) \\, p o s i t i o n \\, \\ t o c o n t } } } & { } \\\\ { H _ { o } = \\operatorname { s o f t m a x } ( \\frac { \\displaystyle \\tilde { A } } { \\displaystyle \\sqrt { 3 d } } ) V _ { c } } & { } \\end{array}",
+        "id": "sp_0054_page_0004-1",
+        "page": "sp_0054_page_0004",
+        "seg_type": "eq"
+      }
+    ]
+  }
+}

@@ -1,0 +1,116 @@
+WEBVTT
+
+00:00.031 --> 00:04.276
+or synthetic PetriDitch is a way to combine the two together.
+
+00:04.316 --> 00:14.749
+It says, can we take the building plan here, but actually run on the data, on data to predict the performance.
+
+00:14.769 --> 00:26.663
+So what they're saying is basically, if I have this cell right here, and usually this cell, you know, it deals with vectors of let's say size 512 and so on.
+
+00:26.643 --> 00:44.955
+it will say it since this is let me draw it again up here so here you have the cell and here you have somehow the connections in there when you carry and the input and the input here okay and this is the output or the carry
+
+00:44.935 --> 01:06.538
+I have 512 embedding like size of this so this is a giant cell there's 512 the vector has 512 dimensions going in basically can't I take the exact same thing but and keep the connection pattern so I would keep the entire pattern of connection right here but I only do it for
+
+01:06.518 --> 01:11.692
+1 or 2, so this is 512 and this is just 2.
+
+01:11.713 --> 01:21.540
+I just reduce the dimensionality, but I sort of keep the connection pattern alive.
+
+01:21.520 --> 01:25.350
+If I only do that, I have like a very small network right now.
+
+01:25.971 --> 01:32.608
+And the same goes for if this is so a lot of times these RNNs, they have multiple layers of these things.
+
+01:32.628 --> 01:38.483
+So they have another exactly equal box up here, and then another up here.
+
+01:38.463 --> 01:40.767
+I can just reduce this to one layer.
+
+01:41.308 --> 01:56.818
+And out of the regularity of these neural network things, it is known that, or one can make the assumption that the performance on this thing will sort of kind of be correlated to the performance of the entire thing.
+
+01:57.239 --> 02:01.247
+And that's one of the things that this Petri dish paper does.
+
+02:02.577 --> 02:08.971
+So we try to take out what we are trying to search over, namely the connection pattern.
+
+02:09.312 --> 02:15.205
+We keep that as it is up here, but we reduce everything else.
+
+02:15.366 --> 02:18.793
+We reduce the dimensionality, we reduce the number of layers and so on.
+
+02:18.813 --> 02:21.379
+Now they don't actually reduce the number of layers here.
+
+02:21.359 --> 02:24.327
+But you can reduce the number of units and so on.
+
+02:24.387 --> 02:24.668
+Okay.
+
+02:25.210 --> 02:36.381
+So this, in essence, this works whenever you can do that, whenever you can keep the structure you're searching over, but can reduce the rest.
+
+02:36.361 --> 02:38.403
+So that's one precondition.
+
+02:38.423 --> 02:39.564
+It doesn't work for everything.
+
+02:40.625 --> 02:48.013
+The second part here is that you don't want to use this particular training data and then this particular validation data.
+
+02:48.293 --> 02:50.516
+Because first of all, it's a lot of training data.
+
+02:51.036 --> 02:55.361
+And second of all, it won't give you that good of a prediction.
+
+02:55.441 --> 03:06.132
+Instead of what you're trying to do, and this is the second part of the idea of PetriDish, is you're trying to abstract the training data.
+
+03:06.112 --> 03:29.250
+to get you a very small data set, such that and the validation data as well, such that if you train on this data and evaluate on this data, the performance that you get will be very predictive of the performance had you trained the big model on the big data set.
+
+03:29.230 --> 03:38.606
+In fact, in this Petri dish paper, these little data sets, they have nothing to do with the original train and validation data.
+
+03:39.327 --> 03:41.731
+I think that's one of the cool things here.
+
+03:42.613 --> 03:46.159
+These things, this training data and this validation data,
+
+03:46.139 --> 03:49.384
+They are optimized as well by the procedure.
+
+03:49.664 --> 03:54.131
+They're optimized special data points that are trained.
+
+03:54.211 --> 04:08.873
+These are trained parameters such that if you train on the training, on the small training data and evaluate on the small eval data, you will be able to predict this performance back here with high accuracy.
+
+04:08.853 --> 04:24.465
+And this I think is where previous approaches have or might have failed because it's, you know, the idea of scaling down your network in order to do the architecture search is probably has appeared to many people before that's not, you know,
+
+04:24.445 --> 04:29.633
+really genius idea, but probably they have all found that now we can't really do it.
+
+04:29.693 --> 04:31.956
+It doesn't really give us accurate enough numbers.
+
+04:32.297 --> 04:51.685
+But in this case, the addition of adding these synthetic data sets that are much smaller, but can still, if you train and evaluate on them, can still predict with high accuracy the full score of the full model that I think makes this idea work.
+
+04:51.665 --> 04:59.582
+Alright, so I guess we're already through the idea and problem setting and everything without actually reading the paper.
+

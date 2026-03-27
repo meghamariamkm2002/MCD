@@ -1,0 +1,78 @@
+That's that.
+Now they discover this doesn't work.
+And why doesn't it work?
+It's because at the beginning of training, these token length predictions here are pretty crappy.
+And so that means that, I guess, especially this part, even where you say, well, where, where in the sound wave
+of my 20 seconds do I even need to cut out to compare with the discriminator, right?
+If you sample this piece here, and that's what you give to the discriminator, but your length predictions are so far off that the generator is trying to produce this particular piece because it thinks, oh, instead of producing this token here, which is what the discriminator looks at,
+It produces these tokens here.
+Of course, you have no chance, no matter how good your adversarial loss is.
+Remember, these length predictions are used to see basically to see which of these tokens the generator needs to produce the sound for and how they're aligned.
+So they have an additional loss right here.
+What they do is they produce from the, again, they go via the spectrograms within this spectrogram prediction loss.
+So they say, we discovered that adversarial feedback is insufficient to learn alignment.
+At the start of training, the aligner does not produce an accurate alignment.
+So the information in the input tokens is incorrectly temporarily distributed.
+This encourages the decoder to ignore the aligner output.
+The unconditional discriminators provide no useful signal to correct this.
+Oh yeah, I should have mentioned this.
+The discriminators here, since you don't know, you don't know which tokens you should produce, the discriminators are unconditional.
+They don't know which text is produced.
+You don't give them the tokens, you simply give them the sound waves.
+That's something I find particularly interesting here.
+Now you, of course, this wouldn't work in a like a traditional GAN because you simply have a data sample here and a data sample right here.
+But in this case, you of course have the corresponding sound samples.
+But still they are, you know, they are cut down to a subsequence so you don't know which text you're producing.
+So you have to make the discriminators unconditional.
+and therefore they are going to discriminate as we said between potentially between two completely non-overlapping pieces of the sound wave which of course doesn't help you and then the aligner can also not learn anything because there's no learning signal because everything just says this is not the same.
+Okay.
+And that's what they say here.
+Um, we face a different problem.
+We do not have aligned ground truth.
+Um, conditional discriminators, which they don't have need an aligner module, which cannot function correctly at the start of training, effectively turning them into unconditional discriminators.
+So even if they were to input the text, it would still be the wrong text because their aligner is wrong at the beginning.
+Although it should be possible in theory to train the discriminators a liner module adversarily, we find that this does not work in practice and training gets stuck.
+So what do they do?
+They say instead we propose to guide learning by using an explicit prediction loss in the spectrogram domain.
+We minimize the L1 loss between the log-scaled male spectrograms of the generator output and the corresponding ground truth training window.
+This helps learning to take off and renders conditional discriminators unnecessary simplifying the model.
+So they take the spectrogram of the generator output and the corresponding ground truth training window, and they simply calculate the L1 difference of these spectrograms.
+Now this, as I understand it, this is different from, this is different from, because we said they also have a discriminator on the spectrograms.
+Now this is different from that.
+This is even in addition to that.
+So here somewhere we had, yeah, this, this was the discriminator on the spectrograms.
+And I think this is even different.
+So what they're doing is they also,
+The discriminator simply decides, do the spectrograms look real or fake?
+Does the spectrogram look real or fake?
+Now they also take the spectrograms and compare them with the L1 loss.
+So this is exactly what they said they wouldn't do.
+Right here.
+Now it's still the case, right?
+It's still the case that they don't use spectrograms as intermediate representations, but they now do have a supervised loss on the spectrograms.
+And one of the motivations to do this end to end is saying,
+You know, maybe these auxiliary losses and supervised losses, they sort of distract.
+They're good to guide the training, but they sort of distract and now they see, okay, maybe we have to introduce this one right here in order to make the training start because this is a real signal.
+But again, you run into a problem.
+Namely, if you produce something with the generator and
+So first of all, this is not a discriminator anymore.
+This is a true L one loss.
+So we potentially run into this problem, right?
+Of the, of the generator simply copying the input because you always tell it what the correct input is.
+This is now a supervised loss that we guide the training with.
+And, um, what was I going to say?
+Yeah, so you take the generator output, you transform it into a spectrogram, you take the real output, transform it into a spectrum, compare the L1 loss.
+Now, you sort of run into the same problem in that if these are completely not aligned, then this is not going to work.
+But since you have a supervised loss, this, it can, it gives you a much stronger learning signal of what the generator should produce.
+So you're kind of counting at the beginning of training, you're counting on sort of a reverse
+uh reverse learning process in that the real the real sound will go into a spectrogram and the generator will go here and then that learning signal will sort of travel to make the generator produce more of whatever the real sound is and that almost like if you think that
+The aligner is so bad that we have even non-overlapping fragments.
+Basically you teach the generator to ignore the input that it gets from down here, that it gets from its entire backbone.
+You teach it to sort of ignore all of that, if that makes any sense.
+It simply produces the sound according to this supervised loss.
+Now, of course, it doesn't ignore it, it still takes the features, but it ignores this whole alignment thing.
+And now, once the generator gets a better signal of what it should produce, that signal can travel back to the aligner module, to this length estimation module, and guide that one to make better predictions about the lengths, okay?
+So that's how you, at the beginning of training, you sort of rely on this path of learning to make, to initialize this module of the aligner.
+And then once these length predictors are better, then the loss can travel in its intended path where you forward produce these aligned sound waves and then these discriminators take over.
+I don't exactly know if they trade this off during training or they simply set it to a number such that it helps them.
+at the beginning, but it's a good idea and it's a good trick to introduce here a supervised portion to make the beginning easier.

@@ -1,0 +1,34 @@
+start	end	text
+31	1294	n gram methods.
+3137	8528	So there are a number of tricks right here that are, I think, not understood until this day.
+9190	13278	For example, the question is, how do you sample these negative samples?
+14020	15222	Right here,
+16822	24332	This basically says get k words from your vocabulary at random according to this distribution right here.
+24813	25914	Now, how are you going to do that?
+26495	29139	Basically, you have a spectrum of options.
+29599	34386	The one side of the spectrum is going to be completely uniform.
+35147	38391	Okay, we sample each word with the same probability.
+38371	45663	And the other side of the spectrum is something like sample this according to their unigram.
+46545	47586	These are two different things.
+48568	50692	They're opposites in this fashion.
+51132	58184	So here you say, hey, some words appear way, way, way more often than other words.
+58685	61490	Shouldn't we prefer them when we sample, right?
+61570	64615	Shouldn't we, if we have a corpus,
+64595	68260	And shouldn't we sample from the corpus?
+69101	76090	And if in the corpus, one word appears 50 times more than the other word, then shouldn't we sample that 50 times more as a negative?
+76250	80996	Because it's, you know, so abundant and it should give a higher classification accuracy.
+81396	86162	Whereas on the other hand, you could say, no, no, no, we should simply sample every word in our dictionary uniformly.
+87063	92290	They came up with something in between, which they say,
+92270	98238	Both NC and negative sampling have noise distribution as a free parameter.
+98338	107091	We investigated a number of choices and found that the unigram distribution raised to the three-quarter power, i.e.
+107231	118767	unigram to the three-quarter, outperformed significantly the unigram and uniform distributions for both NC and NEGA on every task we tried, including language modeling.
+118747	142535	This I think is a mystery until today and it actually turned out that this exponent right here is Magically much better than like the exponent of one or even the exponent of one half like you might be reasonably assumed that the square root You know might be something but the three-quarters I think turned out to be very good and very mystical.
+142555	143556	So what does it all?
+143536	144377	What does it mean?
+144437	149742	It means that you have kind of a balance between words that appear often and words that don't appear often.
+150182	160972	Usually in these kind of things, you have a power law where you have very few words that appear very often, and then you have, okay, that's the tail shouldn't go up, but you have a very long tail of words.
+162053	173003	And what you want to do is, in this case, you want to sample these words here more, but they appear so much more often than if you simply sample according to their unigram distribution,
+172983	176169	You'll basically not regard these words right here.
+176270	181440	You'll forget about them and your performance will suffer because they do appear every now and then.
+182061	195247	So what you want to do is you want to push those down a little bit and the optimal amount for the little bit turns out to be to raise it to the three-quartered.
+197552	200037	Strange, but you know turned out to work well.

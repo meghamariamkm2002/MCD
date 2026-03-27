@@ -1,0 +1,3 @@
+Specifically, the type and curvature of functions are important.
+Traditional methods require the information in advance to select suitable algorithms, which is burdensome in practice.
+Universal methods aim to develop a single algorithm, which is not stick to the function information while achieving the same regretful bounds.

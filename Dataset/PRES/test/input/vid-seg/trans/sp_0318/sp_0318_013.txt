@@ -1,0 +1,5 @@
+We divide our grid-make discrimination into aleatoric and epistemic discrimination.
+Aleatoric discrimination captures inherent biases in the data distribution that can lead to unfair decisions in downstream tasks.
+Epistemic discrimination is due to algorithmic choices made during model development and lack of knowledge about the optimal fair predictive models.
+We use Fairfront to quantify adiatoric discrimination and measures epistemic discrimination by comparing a classifier's accuracy and fairness valuation with Fairfront.
+This figure shows that state of the art fairness interventions are effective at reducing epistemic

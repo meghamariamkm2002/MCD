@@ -1,0 +1,12 @@
+1
+00:00:00,031 --> 00:00:01,113
+Hi there.
+
+2
+00:00:01,294 --> 00:00:10,934
+Today we're looking at meta-learning with implicit gradients by Arwind Rajeshwaran, Chelsea Finn, Shyamkakad and Sergey Levine.
+
+3
+00:00:11,675 --> 00:00:15,002
+So this paper deals with the task of meta-learning.
+

@@ -1,0 +1,3 @@
+Now we present our proposed algorithms.
+At each iteration first, for some simple i's, we update the MSVR estimators for the inner function GI.
+Then we compute the stochastic gradient estimation in capital GT and update the parameter W using SGT.

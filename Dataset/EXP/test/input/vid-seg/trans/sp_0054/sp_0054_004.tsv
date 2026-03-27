@@ -1,0 +1,53 @@
+start	end	text
+31	592	all of it.
+1013	1193	Okay.
+3396	3717	All right.
+4258	8745	And the rest is, is just like classic attention.
+8845	9165	Okay.
+10528	18360	Now you, you simply, so these P and H matrices are obtained by
+18340	23187	Sorry, the queries and the keys for this are obtained by linear transformation.
+23207	24749	So you see this is the incoming signal.
+25109	32640	You send it through a linear transformation to obtain the queries, and you also send it through a linear transformation to obtain the keys.
+33220	40230	So the H is the same, but these matrices here, these are learned weights to produce queries and keys.
+40210	42535	And then you multiply them together.
+42555	44879	That defines your attention matrix.
+45501	48827	You run that through a softmax to make a distribution out of each row.
+49188	51512	And then you multiply together with the values.
+51933	57564	So this part here is kind of like the routing table and the values are the information to be routed.
+57605	61392	The values are obtained from these input signal.
+63076	71208	As we said, we're going to amend that by, so this over here is the classic key queries, keys and values.
+71508	72890	Sorry, that's too much.
+73972	76936	The classic queries, keys and values.
+77777	80521	And then we augment that by two new.
+80601	84527	So there is the queries and the keys for the position.
+84507	92723	And you can see that the difference here is that, again, it's learned weights, but now there is this P thing right here.
+92823	100879	And the P is positional encodings, and that comes exactly out of this table we saw up here.
+100859	104364	So the positional encodings come from this.
+105386	110013	And it's important to see that this here is h and this is the p values.
+110053	111976	But this is only h0, right?
+112637	120189	h is actually transformed to h1 by the transformer, the first layer, to h2 by the second layer, and so on.
+120669	123053	The p always stays the same.
+123033	130788	So you would feed the P into this layer, and you would feed it again into this layer, and you would feed it again into this layer.
+130888	133953	So you can see it's only positional information.
+134134	135957	It's not content information.
+136558	142830	And by feeding the position each time and doing this in this disentangled way,
+142810	150039	the model can sort of keep the content and position information separate.
+150800	159912	I actually think it doesn't really keep the information separate because after layer one, you certainly have position information in your H, right?
+159932	170826	You can see that from this path here, from the actually feeding position information into the transformer layer, H one is already going to be
+170806	177193	a conglomerate of H0, which is pure content, plus the position somehow.
+177334	181759	This plus is not a real addition, but somehow the information is intermingled there.
+182119	190469	And if we weren't to feed in these things right here, it would just be like the classic BERT, right, what they criticize.
+190509	194113	Now by continuously feeding the positional information,
+194093	195616	That is one advantage.
+196939	198262	You can actually do that with BERT.
+198282	200547	You can just add the position information each time.
+200667	204575	I'm not sure if that would work super well, but you can do that.
+205076	209746	It just gives the model a bit more side information to work with.
+209766	213013	And then by keeping it separate,
+212993	216419	Yeah, as I said, I'm not I'm not sure it's actually separate.
+216700	234674	It's just that you keep feeding in position information layer after layer, therefore giving the model sort of more information every time it makes a transformation, because otherwise it would have to carry through the position information through all the layers, just from the very first layer.
+235155	235255	Okay.
+236922	245032	So in this mechanism, you can see it's true that the position encoding is kept separate because it comes in fresh every layer.
+245433	251998	But I don't, I don't see that the content, the content certainly has position information in it from the last layer.
+252580	254086	I hope you can, you can see that.
+254949	255049	So

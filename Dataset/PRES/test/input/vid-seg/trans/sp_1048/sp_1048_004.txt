@@ -1,0 +1,7 @@
+So how to mitigate this problem?
+My solution is that we can introduce an additional regularization term besides the original optimization objective.
+For example, in Fedprox, we take the instance between current model and the global model as the regularization.
+And in Scaffold, we directly modify the gradient by the constant.
+Naturally, VDK can be also viewed as the solution to this problem.
+It's a common practice in conventional centralized training as well as federated learning.
+And it can be directly integrated with various federated learning algorithms, such as Fedprox and Scaffold.

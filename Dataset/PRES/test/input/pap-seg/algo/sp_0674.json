@@ -1,0 +1,23 @@
+[
+  {
+    "input_path": "/tmp/megha/PDF-Extract-Kit/Presentation/layout_pap/sp_0674/sp_0674_page_7.png",
+    "page_index": null,
+    "boxes": [
+      {
+        "input_path": "/tmp/megha/PDF-Extract-Kit/Presentation/layout_pap/sp_0674/sp_0674_page_7.png",
+        "cls_id": 14,
+        "label": "algorithm",
+        "score": 0.8092183470726013,
+        "coordinate": [
+          441.81005859375,
+          300.8643798828125,
+          2102.468505859375,
+          949.2633666992188
+        ],
+        "text": "Igoritlm I Pseudocode of OMiGA\nRequire: Offline dataset D. hyperparameter \u03b1.\n1: Initialize local state-value network Vi, local action-value network Qi and its target network\nand policy network \u03c0i for agent i=1, 2, ... n.\nInitialize the weight function network w and b.\nfor t = 1, . . . , max-value-iteration do\nSample batch transitions (o, a, r, o') from D\nUpdate local state-value function Vi (oi) for each agent i via Eq. (12).\nCompute Vtot(o\u2032), Qtot(o, a) via Eq. (8).\nUpdate local action-value network Qi(oi, ai), weight function network w(o) and b(c\nobjective Eq. (13).\nUpdate local policy network \u03c0i for each agent i via Eq. (14).\nSoft update target network Qi(oi, ai) by Qi(oi, ai) for each agent i.",
+        "id": "sp_0674_page_7_1",
+        "seg_type": "algo"
+      }
+    ]
+  }
+]

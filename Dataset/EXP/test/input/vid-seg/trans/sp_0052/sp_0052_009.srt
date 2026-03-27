@@ -1,0 +1,60 @@
+1
+00:00:00,031 --> 00:00:01,072
+over and over again.
+
+2
+00:00:03,255 --> 00:00:22,478
+What I find particularly interesting is they do look at, so here, they have this curve of, on the bottom, you have confidence threshold, so how confident the model is, and on the y-axis you have the number of false positives.
+
+3
+00:00:22,458 --> 00:00:34,359
+And you can see that in the low confidence regime, the context RCNN has lower false positives than the single frame detector.
+
+4
+00:00:35,942 --> 00:00:45,158
+And the green line here is when you only have positive boxes, so when you only include regions of interest where there is an actual object.
+
+5
+00:00:45,138 --> 00:00:48,642
+which in this case is sort of hurtful.
+
+6
+00:00:48,702 --> 00:00:56,771
+You also want the regions of interest where there is nothing because that helps you avoid false positives in other frames.
+
+7
+00:00:57,191 --> 00:00:59,093
+That's why the orange line is below the green line.
+
+8
+00:00:59,113 --> 00:01:08,644
+But strangely here, in the high confidence regime, you can see that the single frame model has fewer false positives than the context RCNN.
+
+9
+00:01:08,684 --> 00:01:12,748
+And I like the text that they have to this.
+
+10
+00:01:12,728 --> 00:01:25,079
+In Figure 7, we can see that adding empty representations reduces the number of false positives across all confidence threshold compared to the same model with only positive representations.
+
+11
+00:01:25,740 --> 00:01:42,195
+We investigated the 100 highest confidence false positives from context RCN and found that in almost all of them, in 97 out of 100, the model had correctly found and classified animals that were missed by human annotators.
+
+12
+00:01:42,175 --> 00:01:58,338
+So basically these graphs are even underestimating how good that model is because the model seems to be better than the human annotators of the test set.
+
+13
+00:01:58,478 --> 00:02:02,023
+I find that to be pretty impressive.
+
+14
+00:02:03,590 --> 00:02:30,913
+And here you can see failure modes, where they say, for example, when exploring the confident false positives on the snapshot Serengeti dataset, the three out of a hundred images, so whatever was not human failure, where context RCNN erroneously detected an animal, where all of the same tree, highly confidently predicted to be a giraffe.
+
+15
+00:02:30,893 --> 00:02:40,043
+So this is a failure mode when the model is highly confident it might spill that over to other frames because we now
+

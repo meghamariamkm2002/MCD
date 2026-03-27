@@ -1,0 +1,539 @@
+[
+  {
+    "start_time": 0.0,
+    "end_time": 60.0,
+    "id": "001",
+    "title": "Introduction",
+    "filename": "Videos/sp_0043.mp4",
+    "paper_filename": "Papers/sp_0043.pdf",
+    "type": "exp-vid",
+    "relevant_segments": []
+  },
+  {
+    "start_time": 60.0,
+    "end_time": 220.0,
+    "id": "002",
+    "title": "What is Reinforcement Learning",
+    "filename": "Videos/sp_0043.mp4",
+    "paper_filename": "Papers/sp_0043.pdf",
+    "type": "exp-vid",
+    "relevant_segments": [
+      {
+        "para_id": "p1",
+        "section_heading": "Abstract",
+        "text": "Trajectory optimization using a learned model of the environment is one of the core elements of model-based reinforcement learning. This procedure often suffers from exploiting inaccuracies of the learned model. We propose to regularize trajectory optimization by means of a denoising autoencoder that is trained on the same trajectories as the model of the environment. We show that the proposed regularization leads to improved planning with both gradient-based and gradientfree optimizers. We also demonstrate that using regularized trajectory optimization leads to rapid initial learning in a set of popular motor control tasks, which suggests that the proposed approach can be a useful tool for improving sample efficiency.",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p3",
+        "section_heading": "1 Introduction",
+        "text": "In model-based RL, planning is done by computing the expected result of a sequence of future actions using an explicit model of the environment. Model-based planning has been demonstrated to be efficient in many applications where the model (a simulator) can be built using first principles. For example, model-based control is widely used in robotics and has been used to solve challenging tasks such as human locomotion [34, 35] and dexterous in-hand manipulation [21].",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p9",
+        "section_heading": "2 Model-Based Reinforcement Learning",
+        "text": "In this section, we explain the basic setup of model-based RL and present the notation used. At every time step t, the environment is in state st, the agent performs action at, receives reward rt = r(st, at) and the environment transitions to new state st+1 = f(st, at). The agent acts based on the observations ot = o(st) which is a function of the environment state. In a fully observable Markov decision process (MDP), the agent observes full state ot = st. In a partially observable Markov decision process (POMDP), the observation ot does not completely reveal st. The goal of the agent is select actions {a0, a1, . . .} so as to maximize the return, which is the expected cumulative reward E [ ∑∞ t=0 r(st, at)].",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p5",
+        "section_heading": "1 Introduction",
+        "text": "However, planning using a learned (and therefore inaccurate) model of the environment is very difficult in practice. The process of optimizing the sequence of future actions to maximize the",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p6",
+        "section_heading": "1 Introduction",
+        "text": "expected return (which we call trajectory optimization) can easily exploit the inaccuracies of the model and suggest a very unreasonable plan which produces highly over-optimistic predicted rewards. This optimization process works similarly to adversarial attacks [1, 13, 33, 7] where the input of a trained model is modified to achieve the desired output. In fact, a more efficient trajectory optimizer is more likely to fall into this trap. This can arguably be the reason why gradient-based optimization (which is very efficient at for example learning the models) has not been widely used for trajectory optimization.",
+        "seg_type": "par"
+      }
+    ]
+  },
+  {
+    "start_time": 220.0,
+    "end_time": 402.0,
+    "id": "003",
+    "title": "Exploiting Inaccurate Models",
+    "filename": "Videos/sp_0043.mp4",
+    "paper_filename": "Papers/sp_0043.pdf",
+    "type": "exp-vid",
+    "relevant_segments": [
+      {
+        "para_id": "p1",
+        "section_heading": "Abstract",
+        "text": "Trajectory optimization using a learned model of the environment is one of the core elements of model-based reinforcement learning. This procedure often suffers from exploiting inaccuracies of the learned model. We propose to regularize trajectory optimization by means of a denoising autoencoder that is trained on the same trajectories as the model of the environment. We show that the proposed regularization leads to improved planning with both gradient-based and gradientfree optimizers. We also demonstrate that using regularized trajectory optimization leads to rapid initial learning in a set of popular motor control tasks, which suggests that the proposed approach can be a useful tool for improving sample efficiency.",
+        "seg_type": "par"
+      }
+    ]
+  },
+  {
+    "start_time": 402.0,
+    "end_time": 855.0,
+    "id": "004",
+    "title": "Proposed Approach",
+    "filename": "Videos/sp_0043.mp4",
+    "paper_filename": "Papers/sp_0043.pdf",
+    "type": "exp-vid",
+    "relevant_segments": [
+      {
+        "para_id": "p1",
+        "section_heading": "Abstract",
+        "text": "Trajectory optimization using a learned model of the environment is one of the core elements of model-based reinforcement learning. This procedure often suffers from exploiting inaccuracies of the learned model. We propose to regularize trajectory optimization by means of a denoising autoencoder that is trained on the same trajectories as the model of the environment. We show that the proposed regularization leads to improved planning with both gradient-based and gradientfree optimizers. We also demonstrate that using regularized trajectory optimization leads to rapid initial learning in a set of popular motor control tasks, which suggests that the proposed approach can be a useful tool for improving sample efficiency.",
+        "seg_type": "par"
+      },
+      {
+        "box": [
+          535.1690063476562,
+          1034.3887939453125,
+          689.4344482421875,
+          1061.80419921875
+        ],
+        "text": [
+          "s _ { t + 1 } = f _ { \\theta } ( s _ { t } , a _ { t } ) \\, ."
+        ],
+        "id": "sp_0043_page_0002-1",
+        "page": "sp_0043_page_0002",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          419.8957824707031,
+          1272.222900390625,
+          806.275390625,
+          1374.2435302734375
+        ],
+        "text": [
+          "G ( a _ { t } , \\ldots , a _ { t + H } ) = \\mathbb { E } \\left[ \\sum _ { \\tau = t } ^ { t + H } r ( o _ { \\tau } , a _ { \\tau } ) \\right]"
+        ],
+        "id": "sp_0043_page_0002-3",
+        "page": "sp_0043_page_0002",
+        "seg_type": "eq"
+      },
+      {
+        "cls_id": 14,
+        "label": "algorithm",
+        "score": 0.889184296131134,
+        "coordinate": [
+          445.3645935058594,
+          298.3349304199219,
+          2097.68603515625,
+          785.2958374023438
+        ],
+        "text": "Algorithm 1 End-to-end model-based reinforcement learning Collect data D by random policy for each episode do Train dynamics model fe using D. for time t until the episode is over do Optimize trajectory {t, Ot+1, ..., At+H, Ot+H+1} Implement the first action at and get new observation Ot. end for Add data {(s1, a1, ..., aT, oT)} from the last episode to D.. end for",
+        "id": "sp_0043_page_3_1",
+        "seg_type": "algo"
+      }
+    ]
+  },
+  {
+    "start_time": 855.0,
+    "end_time": 1075.0,
+    "id": "005",
+    "title": "Regularization",
+    "filename": "Videos/sp_0043.mp4",
+    "paper_filename": "Papers/sp_0043.pdf",
+    "type": "exp-vid",
+    "relevant_segments": [
+      {
+        "box": [
+          431.2576599121094,
+          1420.8109130859375,
+          791.8261108398438,
+          1448.4727783203125
+        ],
+        "text": [
+          "G _ { \\mathrm { r e g } } = G + \\alpha \\log p ( o _ { t } , a _ { t } \\ldots , o _ { t + H } , a _ { t + H } ) \\, ,"
+        ],
+        "id": "sp_0043_page_0003-1",
+        "page": "sp_0043_page_0003",
+        "seg_type": "eq"
+      },
+      {
+        "caption": "Figure 1: Open-loop planning for a continuous nonlinear two-phase reactor from [28]. Three subplots in every subfigure show three measured variables (solid lines): product rate, pressure and A in the purge. The black curves represent the model’s imagination while the red curves represent the reality if those controls are applied in an open-loop mode. The targets for the variables are shown with dashed lines. The fourth (low right) subplots show the three manipulated variables: valve for feed 1 (blue), valve for feed 2 (red) and valve for stream 3 (green).",
+        "captionBoundary": {
+          "x1": 107.6709976196289,
+          "x2": 504.74810791015625,
+          "y1": 229.29751586914062,
+          "y2": 289.8450012207031
+        },
+        "figType": "Figure",
+        "imageText": [
+          "(a)",
+          "Multiloop",
+          "PI",
+          "control",
+          "(b)",
+          "No",
+          "regularization",
+          "(c)",
+          "DAE",
+          "regularization",
+          "80",
+          "Manipulated",
+          "variables",
+          "[%]",
+          "70",
+          "60",
+          "50",
+          "40",
+          "30",
+          "0",
+          "10",
+          "20",
+          "30",
+          "A",
+          "in",
+          "purge",
+          "[mole",
+          "%]",
+          "62.5",
+          "60.0",
+          "57.5",
+          "55.0",
+          "52.5",
+          "50.0",
+          "47.5",
+          "0",
+          "10",
+          "20",
+          "30",
+          "2875",
+          "Pressure",
+          "[kPa]",
+          "2850",
+          "2825",
+          "2800",
+          "2775",
+          "2750",
+          "2725",
+          "2700",
+          "130",
+          "Product",
+          "Rate",
+          "[kmol/h]",
+          "125",
+          "120",
+          "115",
+          "110",
+          "105",
+          "100",
+          "150",
+          "Manipulated",
+          "variables",
+          "[%]",
+          "100",
+          "50",
+          "0",
+          "50",
+          "0",
+          "10",
+          "20",
+          "30",
+          "A",
+          "in",
+          "purge",
+          "[mole",
+          "%]",
+          "62.5",
+          "60.0",
+          "57.5",
+          "55.0",
+          "52.5",
+          "50.0",
+          "47.5",
+          "0",
+          "10",
+          "20",
+          "30",
+          "Pressure",
+          "[kPa]",
+          "3100",
+          "3000",
+          "2900",
+          "2800",
+          "2700",
+          "Product",
+          "Rate",
+          "[kmol/h]",
+          "150",
+          "140",
+          "130",
+          "120",
+          "110",
+          "100",
+          "90",
+          "80",
+          "Manipulated",
+          "variables",
+          "[%]",
+          "60",
+          "40",
+          "20",
+          "0",
+          "10",
+          "20",
+          "30",
+          "0",
+          "A",
+          "in",
+          "purge",
+          "[mole",
+          "%]",
+          "65",
+          "60",
+          "55",
+          "50",
+          "0",
+          "10",
+          "20",
+          "30",
+          "Pressure",
+          "[kPa]",
+          "2880",
+          "2860",
+          "2840",
+          "2820",
+          "2800",
+          "2780",
+          "2760",
+          "130",
+          "Product",
+          "Rate",
+          "[kmol/h]",
+          "125",
+          "120",
+          "115",
+          "110",
+          "105",
+          "100"
+        ],
+        "name": "1",
+        "page": 3,
+        "regionBoundary": {
+          "x1": 113.75999999999999,
+          "x2": 506.88,
+          "y1": 77.28,
+          "y2": 214.56
+        },
+        "renderDpi": 150,
+        "renderURL": "//Users/meghamariam/PROJECTS/PROJ1_Dataset/PROJ1_Crossmodal-Traversal/DATASET/pap-seg/fig/sp_0043/sp_0043-Figure1-1.png",
+        "id": "sp_0043-Figure1-1",
+        "seg_type": "fig"
+      },
+      {
+        "para_id": "p21",
+        "section_heading": "3.1 Problem with using learned models for planning",
+        "text": "In this paper, we focus on the inner loop of model-based RL which is trajectory optimization using a learned forward model fθ. Potential inaccuracies of the trained model cause substantial difficulties for the planning process. Rather than optimizing what really happens, planning can easily end up exploiting the weaknesses of the predictive model. Planning is effectively an adversarial attack against the agent’s own forward model. This results in a wide gap between expectations based on the model and what actually happens.",
+        "seg_type": "par"
+      }
+    ]
+  },
+  {
+    "start_time": 1075.0,
+    "end_time": 1215.0,
+    "id": "006",
+    "title": "Denoising Autoencoders",
+    "filename": "Videos/sp_0043.mp4",
+    "paper_filename": "Papers/sp_0043.pdf",
+    "type": "exp-vid",
+    "relevant_segments": [
+      {
+        "para_id": "p23",
+        "section_heading": "3.2 Regularizing Trajectory Optimization with Denoising Autoencoders",
+        "text": "We propose to regularize the trajectory optimization with denoising autoencoders (DAE). The idea is that we want to reward familiar trajectories and penalize unfamiliar ones because the model is likely to make larger errors for the unfamiliar ones.",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p24",
+        "section_heading": "3.2 Regularizing Trajectory Optimization with Denoising Autoencoders",
+        "text": "This can be achieved by adding a regularization term to the objective function:",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p7",
+        "section_heading": "1 Introduction",
+        "text": "In this paper, we study this adversarial effect of model-based planning in several environments and show that it poses a problem particularly in high-dimensional control spaces. We also propose to remedy this problem by regularizing trajectory optimization using a denoising autoencoder (DAE) [37]. The DAE is trained to denoise trajectories that appeared in the past experience and in this way the DAE learns the distribution of the collected trajectories. During trajectory optimization, we use the denoising error of the DAE as a regularization term that is subtracted from the maximized objective function. The intuition is that the denoising error will be large for trajectories that are far from the training distribution, signaling that the dynamics model predictions will be less reliable as it has not been trained on such data. Thus, a good trajectory has to give a high predicted return and it can be only moderately novel in the light of past experience.",
+        "seg_type": "par"
+      }
+    ]
+  },
+  {
+    "start_time": 1215.0,
+    "end_time": 1330.0,
+    "id": "007",
+    "title": "Optimal Denoising Function",
+    "filename": "Videos/sp_0043.mp4",
+    "paper_filename": "Papers/sp_0043.pdf",
+    "type": "exp-vid",
+    "relevant_segments": [
+      {
+        "para_id": "p29",
+        "section_heading": "3.2 Regularizing Trajectory Optimization with Denoising Autoencoders",
+        "text": "the optimal denoising function g(x̃) (for zero-mean Gaussian corruption) is given by:",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p30",
+        "section_heading": "3.2 Regularizing Trajectory Optimization with Denoising Autoencoders",
+        "text": "where p(x̃) is the probability density function for data x̃ corrupted with noise and σn is the standard deviation of the Gaussian corruption. Thus, the DAE-denoised signal minus the original gives the gradient of the log-probability of the data distribution convolved with a Gaussian distribution: ∂ ∂x̃ log p(x̃) ∝ g(x)− x . Assuming ∂ ∂x̃ log p(x̃) ≈ ∂ ∂x log p(x) yields",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p31",
+        "section_heading": "3.2 Regularizing Trajectory Optimization with Denoising Autoencoders",
+        "text": "Using ∂∂x̃ log p(x̃) instead of ∂ ∂x log p(x) can behave better in practice because it is similar to replacing p(x) with its Parzen window estimate [36]. In automatic differentiation software, this gradient can be computed by adding the penalty term ‖g(xτ )− xτ‖2 to G and stopping the gradient propagation through g. In practice, stopping the gradient through g did not yield any benefits in our experiments compared to simply adding the penalty term ‖g(xτ )− xτ‖2 to the cumulative reward, so we used the simple penalty term in our experiments. Also, this kind of regularization can easily be used with gradient-free optimization methods such as cross-entropy method (CEM) [3].",
+        "seg_type": "par"
+      },
+      {
+        "box": [
+          441.0305480957031,
+          335.8064270019531,
+          784.7010498046875,
+          403.3226013183594
+        ],
+        "text": [
+          "{ \\frac { \\partial G _ { \\mathrm { r e g } } } { \\partial a _ { i } } } = { \\frac { \\partial G } { \\partial a _ { i } } } + \\alpha \\sum _ { \\tau = i } ^ { i + w } { \\frac { \\partial x _ { \\tau } } { \\partial a _ { i } } } ( g ( x _ { \\tau } ) - x _ { \\tau } ) \\, ."
+        ],
+        "id": "sp_0043_page_0005-1",
+        "page": "sp_0043_page_0005",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          496.82666015625,
+          179.6521759033203,
+          725.4793090820312,
+          225.60682678222656
+        ],
+        "text": [
+          "g ( \\tilde { x } ) = \\tilde { x } + \\sigma _ { n } ^ { 2 } \\frac { \\partial } { \\partial \\tilde { x } } \\log p ( \\tilde { x } ) \\, ,"
+        ],
+        "id": "sp_0043_page_0005-2",
+        "page": "sp_0043_page_0005",
+        "seg_type": "eq"
+      }
+    ]
+  },
+  {
+    "start_time": 1330.0,
+    "end_time": 1515.0,
+    "id": "008",
+    "title": "Gradient Descent",
+    "filename": "Videos/sp_0043.mp4",
+    "paper_filename": "Papers/sp_0043.pdf",
+    "type": "exp-vid",
+    "relevant_segments": [
+      {
+        "box": [
+          436.010986328125,
+          1177.30810546875,
+          787.073486328125,
+          1244.238525390625
+        ],
+        "text": [
+          "\\frac { \\partial G _ { \\mathrm { r e g } } } { \\partial a _ { i } } = \\frac { \\partial G } { \\partial a _ { i } } + \\alpha \\sum _ { \\tau = i } ^ { i + w } \\frac { \\partial x _ { \\tau } } { \\partial a _ { i } } \\frac { \\partial } { \\partial x _ { \\tau } } \\log p ( x _ { \\tau } ) \\, ,"
+        ],
+        "id": "sp_0043_page_0004-1",
+        "page": "sp_0043_page_0004",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          482.6571350097656,
+          960.13330078125,
+          741.8516845703125,
+          1030.474365234375
+        ],
+        "text": [
+          "G _ { \\mathrm { r e g } } = G + \\alpha \\sum _ { \\tau = t } ^ { t + H - w } \\log p ( x _ { \\tau } )"
+        ],
+        "id": "sp_0043_page_0004-2",
+        "page": "sp_0043_page_0004",
+        "seg_type": "eq"
+      },
+      {
+        "para_id": "p27",
+        "section_heading": "3.2 Regularizing Trajectory Optimization with Denoising Autoencoders",
+        "text": "where we denote by x\u03c4 a concatenated vector of observations o\u03c4 , . . . o\u03c4+w and actions a\u03c4 , . . . a\u03c4+w, over a window of size w. Thus to enable a regularized gradient-based optimization procedure, we need means to compute \u2202\u2202x\u03c4 log p(x\u03c4 ).",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p28",
+        "section_heading": "3.2 Regularizing Trajectory Optimization with Denoising Autoencoders",
+        "text": "In order to evaluate log p(x\u03c4 ) (or its derivative), one needs to train a separate model p(x\u03c4 ) of the past experience, which is the task of unsupervised learning. In principle, any probabilistic model can be used for that. In this paper, we propose to regularize trajectory optimization with a denoising autoencoder (DAE) which does not build an explicit probabilistic model p(x\u03c4 ) but rather learns to approximate the derivative of the log probability density. The theory of denoising [23, 27] states that",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p26",
+        "section_heading": "3.2 Regularizing Trajectory Optimization with Denoising Autoencoders",
+        "text": "where x\u03c4 = {o\u03c4 , a\u03c4 , . . . o\u03c4+w, a\u03c4+w} is a short window of the optimized trajectory. Suppose we want to find the optimal sequence of actions by maximizing (4) with a gradient-based optimization procedure. We can compute gradients \u2202Greg\u2202ai by backpropagation in a computational graph where the trained forward model is unrolled into the future (see Fig. 2). In such backpropagationthrough-time procedure, one needs to compute the gradient with respect to actions ai.",
+        "seg_type": "par"
+      }
+    ]
+  },
+  {
+    "start_time": 1515.0,
+    "end_time": 1797,
+    "id": "009",
+    "title": "Experiments",
+    "filename": "Videos/sp_0043.mp4",
+    "paper_filename": "Papers/sp_0043.pdf",
+    "type": "exp-vid",
+    "relevant_segments": [
+      {
+        "caption": "Figure 4: Results of our experiments on the five benchmark environments, in comparison to PETS [5]. We show the return obtained in each episode. All the results are averaged across 5 seeds, with the shaded area representing standard deviation. PETS is a recent state-of-the-art model-based RL algorithm and GP-based (Gaussian Processes) control algorithms are well known to be sampleefficient and are extensively used for the control of simple systems.",
+        "captionBoundary": {
+          "x1": 108.0,
+          "x2": 505.6536865234375,
+          "y1": 293.99151611328125,
+          "y2": 343.6310119628906
+        },
+        "figType": "Figure",
+        "imageText": [],
+        "name": "4",
+        "page": 7,
+        "regionBoundary": {
+          "x1": 108.0,
+          "x2": 504.0,
+          "y1": 70.56,
+          "y2": 281.28
+        },
+        "renderDpi": 150,
+        "renderURL": "//Users/meghamariam/PROJECTS/PROJ1_Dataset/PROJ1_Crossmodal-Traversal/DATASET/pap-seg/fig/sp_0043/sp_0043-Figure4-1.png",
+        "id": "sp_0043-Figure4-1",
+        "seg_type": "fig"
+      },
+      {
+        "para_id": "p53",
+        "section_heading": "5 Discussion",
+        "text": "• Local minima for trajectory optimization. There can be multiple trajectories that are reasonable solutions but in-between trajectories can be very bad. For example, we can take a step with a right or left foot but both will not work. We tackled this issue by trying multiple initializations, which worked for the considered environments, but better techniques will be needed for more complex environments.",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p54",
+        "section_heading": "5 Discussion",
+        "text": "• The planning horizon problem. In the presented experiments, the planning procedure did not care about what happens after the planning horizon. This was not a problem for the considered environments due to nicely formatted reward. Other solutions like value functions, multiple time scales or hierarchy for planning are required with sparser reward problems. All of these are compatible with model-based RL.",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p55",
+        "section_heading": "5 Discussion",
+        "text": "• Open-loop vs. closed-loop (compounding errors). The implicit planning assumption of trajectory optimization is open-loop control. However, MPC only takes the first action and then replans (closed-loop control). If the outcome is uncertain (e.g., due to stochastic environments or imperfect forward model), this can lead to overly pessimistic controls.",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p66",
+        "section_heading": "B Description of Environments",
+        "text": "Half-cheetah. This environment involves training a two-legged \"half-cheetah\" to run forward as fast as possible by applying torques to 6 different joints. The cost at every time step is measured as the negative forward velocity. Each episode is 1000 steps long, but the length is reduced to 200 for the benchmark with [6].",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p67",
+        "section_heading": "B Description of Environments",
+        "text": "Ant. This is the most challenging environment we consider. It consists of a four-legged \"ant\" controlled by applying torques to its 8 joints. Similar to [25], we use a gear ratio to 30 for all joints (this prevents the ant from flipping over frequently during the initially phase of training). The cost, similar to Half-cheetah, is the negative forward velocity. Each episode is 1000 steps long.",
+        "seg_type": "par"
+      }
+    ]
+  }
+]

@@ -1,0 +1,40 @@
+All right.
+So let's go into the experiments.
+Of course they're, um, so what they do, I think, where is the graphic?
+What they do is they take an image net, sorry, they take an efficient net right here.
+And they first train a smaller efficient net, as we said, to be the teacher, and then they train a larger efficient net for the student.
+The best model in our experiments is a result of three iterations of putting back the student as a new teacher.
+We first trained an efficient net B7 on ImageNet as the teacher model.
+So you can see in the table right here what the B7 achieves.
+The EfficientNet B7 here, you can see it has 66 million parameters, which is fairly small compared to these other kind of previous state-of-the-art methods on ImageNet.
+So they first train this, and that will achieve something like an 85% accuracy.
+Now, if you just train a larger model, this efficient net L2 right here that has, you can see 480 million parameters.
+So a lot of more million parameters, but you just train it on the same data set on ImageNet.
+You will get a 0.5% improvement.
+And you can see that here, with noisy student training with the exact same model, so it has the same amount of parameters, you'll actually get an 88.4, so more than a 3% improvement.
+And that's with the same model, just with this different training procedure and inputting these 300 million unlabeled images that you have laying around.
+But all the information about all the label information comes from the ImageNet dataset and comes from this EfficientNet B7 teacher model.
+So that's basically you can, it's a testament that out of this, out of this 85, you can make this 88 just by smartly using the information that the model, that this model has learned about the data and transferring it to new data.
+So they train an efficient net B7, that's the small model, as a teacher model.
+Then by using the B7 model as a teacher, we trained an efficient net L2 model with the unlabeled batch size set to 14 times the labeled batch size.
+And they stress that it's important that you up the batch size.
+That's another thing that makes the student learn more than the teacher.
+Then we trained a new efficient net.
+So by the way, these, these 14 times, it's also, it can be done because now you have more data, right?
+So you can also up the batch size.
+Then we trained a new EfficientNet L2 model with the EfficientNet L2 model as the teacher.
+Lastly, we iterated again and used an unlabeled batch size of 28 times the labeled batch size.
+The detailed result of the three iterations and so on.
+Okay, so you can see that it's a fairly complicated procedure, but you can gain and gain and gain by simply upping the
+by simply iterating on this procedure.
+And I think they have it somewhere here, yes.
+So as you can see, if iteration one, you train the EfficientNet L2, you start it with the B7.
+And you train the EfficientNet A2 with a batch size 14 times larger.
+And you gain significantly, right?
+This gains about 2% over the original EfficientNet.
+then you iterate again with the same batch size and you get like a 5.5% improvement and you iterate again with an even larger batch size and you get a 0.3% improvement.
+So there's diminishing returns, but still you can see that, you know, the more with the introduction of noise, with the introduction of the larger model, with the introduction of the larger batch size, these are all things that help the student basically become better than the teacher.
+All right, so they do a bunch of other experiments.
+So their main comparison is right here, where they say, look, if we, even if we train the same model with this noisy student training, we can make, you know, pretty large gains over the model, over the same model where we do not train it with this noisy student training.
+This really seems to help due to the noise, due to the additional data.
+They do a lot of ablation studies.

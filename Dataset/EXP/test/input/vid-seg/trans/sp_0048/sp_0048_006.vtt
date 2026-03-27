@@ -1,0 +1,500 @@
+WEBVTT
+
+00:00.031 --> 00:03.855
+this implicit gradient correspondence.
+
+00:03.875 --> 00:07.338
+So they formulate their entire algorithm as follows.
+
+00:07.959 --> 00:28.620
+We want to find the best meta learning parameters by minimizing the function F, where F is the average losses and L here, now that's the test set loss, the average validation loss for each task,
+
+00:30.305 --> 00:37.936
+of the parameters that the inner optimization procedure finds when it runs to its optimum.
+
+00:38.938 --> 00:41.682
+You can see here this is already different from the original mammal.
+
+00:41.722 --> 00:50.275
+The original mammal was simply running it for a number of steps and now we're really running it to the optimum, at least in the ideal case.
+
+00:51.296 --> 00:53.680
+What does the inner optimization algorithm do?
+
+00:53.660 --> 01:00.373
+The Alex star here minimizes this function g. Now, g has two arguments.
+
+01:00.754 --> 01:07.327
+G has these parameters, which are the local parameters, and these are the meta parameters.
+
+01:07.447 --> 01:10.132
+And we only optimize the local parameters.
+
+01:10.593 --> 01:15.162
+We take these as initial, and then fine tune them.
+
+01:16.441 --> 01:24.110
+where the function g is defined as the training loss of the local parameters plus this closeness regularizer.
+
+01:24.150 --> 01:25.171
+Okay.
+
+01:27.333 --> 01:28.975
+Cool.
+
+01:28.995 --> 01:33.060
+Now the question of course is how does that lead to gradient descent?
+
+01:33.100 --> 01:37.945
+So ultimately we want to minimize this function f right here.
+
+01:38.546 --> 01:43.832
+So we're going to have to do something like df.
+
+01:43.812 --> 01:45.494
+by d theta.
+
+01:45.914 --> 01:52.300
+In order to run gradient descent, we need to calculate this gradient because we need to do gradient descent.
+
+01:52.840 --> 01:54.442
+So what's that going to be?
+
+01:55.503 --> 02:05.231
+That's going to be, of course, since f is this one over m up here, the gradient simply distributes over that sum.
+
+02:06.232 --> 02:13.819
+Now, it's the derivative of each of these inner loss functions.
+
+02:13.799 --> 02:23.170
+Let's go with this alg star i theta.
+
+02:23.190 --> 02:25.092
+That's basically what you have right here.
+
+02:26.794 --> 02:34.222
+So in order to take the gradient of f, we need to be able to derive these loss functions.
+
+02:35.083 --> 02:39.108
+And you can see right here, theta is not the argument to the loss function.
+
+02:39.288 --> 02:41.571
+Theta is the argument to this inner procedure.
+
+02:41.771 --> 02:43.553
+So by the chain rule,
+
+02:43.533 --> 02:46.459
+Right now, this gives us this.
+
+02:46.619 --> 02:52.772
+So the chain rule says we derive the outer thing with respect to its input.
+
+02:52.792 --> 02:59.907
+That's this part right here, the gradient of the loss with respect to the neural network.
+
+02:59.927 --> 03:03.955
+And that thing here, that's the ALG star.
+
+03:05.082 --> 03:11.831
+So we need the gradient of the loss function with respect to the end parameters of the optimization procedure.
+
+03:11.951 --> 03:12.752
+Now that's easy.
+
+03:13.153 --> 03:14.655
+That's, we know how to do that.
+
+03:15.035 --> 03:26.010
+That is the, or that is the, so if you remember the drawing at the beginning, this gradient is the end arrow right here.
+
+03:27.256 --> 03:27.837
+This is easy.
+
+03:27.897 --> 03:29.680
+This is one backward propagation.
+
+03:29.720 --> 03:32.524
+This is regular supervised learning back prop.
+
+03:33.025 --> 03:33.185
+Right.
+
+03:33.205 --> 03:37.371
+You have parameters of a neural network, a gradient for the loss function.
+
+03:37.511 --> 03:37.772
+Cool.
+
+03:39.034 --> 03:47.366
+The hard part is to have the derivative of the algorithm itself with respect to the, to the meta parameters.
+
+03:48.728 --> 03:52.133
+So this is going to be, this here is going to be a vector.
+
+03:54.593 --> 04:15.825
+It's the gradient with respect to these parameters, and this is going to be a matrix, and the matrix will relate basically one dimension, each dimension of this vector, sorry, this is going to be a product between this thing and this thing, and it will result in this thing.
+
+04:15.805 --> 04:19.930
+So the left thing is the gradient we want.
+
+04:20.030 --> 04:22.333
+This is the derivative of the entire thing.
+
+04:22.774 --> 04:23.295
+That's this.
+
+04:25.037 --> 04:29.242
+Now, the right thing is the gradient at the end of the optimization procedure.
+
+04:29.723 --> 04:41.018
+And this matrix here relates the individual dimension of this end gradient to the gradient that we want, right?
+
+04:41.038 --> 04:44.462
+This is a matrix that relates the two in a linear fashion.
+
+04:45.067 --> 04:46.008
+This is what we're looking.
+
+04:46.389 --> 04:56.825
+How do we need to change the initial parameters in order to change the end parameters in a certain way?
+
+04:56.905 --> 05:00.109
+Because we only know this, but we want to know this.
+
+05:00.690 --> 05:04.236
+So how do we calculate this thing here, this Jacobian?
+
+05:04.796 --> 05:05.798
+That's the question, right?
+
+05:05.858 --> 05:11.867
+How do we derive the algorithmic procedure, this thing here?
+
+05:13.889 --> 05:22.756
+And the paper goes on to say, well, okay, yeah, so we need to do this, this is the entire gradient descent optimization procedure.
+
+05:22.836 --> 05:26.768
+So we must compute this thing right here.
+
+05:28.402 --> 05:30.285
+and they just throw it in your face.
+
+05:30.705 --> 05:31.066
+It's this.
+
+05:31.566 --> 05:32.828
+Boom.
+
+05:32.848 --> 05:33.429
+Shagadabam.
+
+05:34.170 --> 05:34.711
+This thing here.
+
+05:35.592 --> 05:35.792
+Done.
+
+05:36.513 --> 05:37.014
+Let's go on.
+
+05:37.154 --> 05:37.275
+No.
+
+05:38.436 --> 05:48.851
+So you can see it's basically putting this just right here, but we kind of want to explore where that comes from.
+
+05:48.931 --> 05:53.177
+So the fact you can see here, you can derive this gradient
+
+05:53.157 --> 06:11.242
+as a close form expression of the inverse of a matrix that contains, this is the identity matrix, contains somehow this lambda factor that we saw before, and it contains this Hessian matrix of the training loss, right?
+
+06:11.282 --> 06:14.466
+So this is this end gradient that we can calculate easily.
+
+06:15.027 --> 06:18.692
+And the second derivative of that is the Hessian.
+
+06:18.672 --> 06:22.098
+which is basically the curvature in the landscape of that loss.
+
+06:22.499 --> 06:31.875
+But nowhere in this thing is the, is the SGD procedure showing up, even though this thing here is the SGD procedure.
+
+06:32.356 --> 06:33.477
+And that's pretty impressive.
+
+06:33.798 --> 06:37.504
+And we're going to look at how that comes about.
+
+06:38.326 --> 06:42.553
+So, so where,
+
+06:44.558 --> 06:46.952
+Where do we start?
+
+06:47.717 --> 06:51.700
+First, let's take this, let's take this G right here.
+
+06:53.300 --> 06:55.983
+this G function, right?
+
+06:56.003 --> 07:02.550
+And let's calculate the derivative with respect to these parameters right here.
+
+07:03.151 --> 07:05.354
+So let's go for this end gradient.
+
+07:05.374 --> 07:07.115
+What's this end gradient going to be?
+
+07:08.577 --> 07:14.724
+So we'll derive the G with respect to these parameters.
+
+07:16.005 --> 07:16.506
+All right.
+
+07:19.895 --> 07:20.918
+So this is a sum.
+
+07:21.881 --> 07:23.505
+This first thing is pretty easy.
+
+07:24.327 --> 07:29.522
+It's going to be the gradient of this loss function, loss function is a scalar, right?
+
+07:30.023 --> 07:31.086
+So we can
+
+07:34.238 --> 07:39.225
+This we can calculate, this is the one backward prop through the network.
+
+07:40.207 --> 07:43.852
+The second thing we can also do pretty easily, this is an L2 norm.
+
+07:44.273 --> 07:46.897
+We know how to derive a square.
+
+07:47.798 --> 07:56.271
+So the two comes down and this will simply result in this vector right here.
+
+07:56.411 --> 08:00.938
+So it's going to be lambda times phi minus theta.
+
+08:02.065 --> 08:06.074
+Okay, now this was relatively easy.
+
+08:07.597 --> 08:20.344
+Now, imagine what happens when in this particular thing, we have one additional information, namely that f, the inside of f, f
+
+08:21.893 --> 08:25.340
+we will always optimize to the end.
+
+08:25.560 --> 08:29.007
+We will always optimize this to its minimum, right?
+
+08:29.388 --> 08:36.462
+This star denotes that the inner optimization procedure will always go to the minimum of that function.
+
+08:37.284 --> 08:40.089
+So what do we know about the minimum of a function?
+
+08:40.250 --> 08:44.037
+We know that it's gradient at that particular point.
+
+08:44.017 --> 08:44.978
+is zero.
+
+08:46.281 --> 08:48.063
+This is an important part.
+
+08:48.103 --> 08:49.666
+So now we can restructure.
+
+08:50.407 --> 08:56.456
+So if we take one to the right, I might actually use black here because it's kind of burning my eyes.
+
+08:57.498 --> 09:00.122
+We can isolate this part right here.
+
+09:00.883 --> 09:06.632
+So we say the phi is equal to, first of all, let's
+
+09:06.612 --> 09:09.855
+Let's take this to the right side.
+
+09:10.035 --> 09:15.060
+So we'll have this gradient right here, and I'm just going to write L phi.
+
+09:16.882 --> 09:18.464
+Let's keep the hat alive.
+
+09:19.865 --> 09:22.648
+We'd have to divide this by lambda, right?
+
+09:23.028 --> 09:24.990
+And then bring over the theta.
+
+09:25.871 --> 09:36.602
+So we have an expression that says at the optimum, the parameters phi, the inner parameters, are going to be given by this expression.
+
+09:38.050 --> 09:41.314
+Now that's pretty, pretty cool.
+
+09:42.276 --> 09:53.130
+But we know also that these parameters aren't just, you know, parameters per se, they depend on these parameters, right?
+
+09:53.150 --> 10:00.700
+The end parameters depend on the initial parameters because we use the initial parameters to initialize these end parameters.
+
+10:00.680 --> 10:04.448
+So these are actually a function of the initial parameters.
+
+10:04.568 --> 10:08.697
+So what we can do is we can derive this using red again.
+
+10:09.819 --> 10:10.480
+Let's use blue.
+
+10:11.302 --> 10:12.765
+We can derive this thing.
+
+10:14.332 --> 10:16.054
+by the initial parameters, right?
+
+10:16.335 --> 10:20.259
+How do the end parameters relate to the initial parameters?
+
+10:20.540 --> 10:30.172
+Now, this is our basic question all along, but we now have an exact expression for the end parameters, which we didn't have before, before we just knew they came about by SGD.
+
+10:31.073 --> 10:35.058
+So, important to say this only works at the optimum, right?
+
+10:35.078 --> 10:39.484
+This is at the optimum that this relation counts, not anywhere.
+
+10:41.025 --> 10:43.849
+And the paper is abusing this quite a bit right here.
+
+10:43.829 --> 10:49.902
+So what does this do if we derive this thing here with respect to theta?
+
+10:49.942 --> 10:52.347
+It's simply giving us the identity matrix, right?
+
+10:52.367 --> 10:55.494
+This is now our Jacobian that appears here.
+
+10:56.396 --> 11:03.812
+It's simply giving us this, then this one divided by lambda is going to stay.
+
+11:03.792 --> 11:15.509
+And now it gets a bit tricky because these things right here, of course, are also a function of theta.
+
+11:15.529 --> 11:26.425
+So essentially this thing right here is a gradient of another function of theta.
+
+11:26.405 --> 11:29.088
+So we can apply the chain rule again.
+
+11:29.589 --> 11:46.128
+Since this is already the first derivative, it will give us the second derivative with respect to the loss function right here of with whatever goes into the loss function.
+
+11:46.769 --> 11:52.115
+So that times the inner derivative.
+
+11:52.836 --> 11:55.399
+Now the inner derivative is simply how
+
+11:56.712 --> 12:06.672
+to derive again the phi by the theta.
+
+12:08.120 --> 12:10.844
+Just, okay.
+
+12:10.864 --> 12:11.084
+Yes.
+
+12:11.725 --> 12:23.021
+So you can see, first of all, interesting that the expression here, or the expression that we're looking to find appears in the expression itself, right?
+
+12:23.201 --> 12:36.220
+Since these parameters appear over here as a function argument as well, we'll get basically this expression here twice, but we can reformulate that
+
+12:36.200 --> 12:47.034
+and find that this term, this Jacobian, is basically this here, inverted.
+
+12:47.655 --> 12:51.980
+So the matrix we're looking for is, sorry, the inverse Jacobian.
+
+12:52.421 --> 13:00.351
+The matrix we're looking for is given by this quantity right here, the identity matrix minus this Hessian term right here.
+
+13:02.272 --> 13:02.612
+Okay.
+
+13:02.632 --> 13:05.776
+And this is exactly what you see appearing here.
+
+13:06.797 --> 13:07.839
+This is exactly that.
+
+13:08.680 --> 13:15.949
+So the derivative we're looking for, sorry, this is actually the Jacobian, not the inverse.
+
+13:16.049 --> 13:16.730
+That's my bad.
+
+13:18.271 --> 13:21.976
+What you're looking for is given by this expression.
+
+13:22.216 --> 13:24.539
+Now my eraser got stuck.
+
+13:26.281 --> 13:26.601
+Hello.
+
+13:29.305 --> 13:29.545
+Cool.
+
+13:32.512 --> 13:33.854
+So that's how that appears.
+
+13:34.614 --> 13:37.978
+You see, it's the same thing if I had done everything correctly.
+
+13:39.660 --> 13:48.931
+And so this you do by simply shipping this to the other side, which will make it the inverse, right?
+
+13:49.251 --> 13:57.180
+So you basically divide both sides by this, and then you get this as an inverse.
+
+13:57.200 --> 13:58.722
+Now, why does this work?
+
+13:58.702 --> 14:03.789
+Again, I want to stress, why did we get this identity here?
+
+14:03.909 --> 14:11.520
+Why were we able to express, get a close form solution for the inner thing?
+
+14:12.561 --> 14:15.765
+Or sorry, for the end parameters in terms of the beginning parameters.
+
+14:16.406 --> 14:17.708
+That doesn't have SGD.
+
+14:18.089 --> 14:23.055
+First reason, because we optimized to the end, to the optimum.
+
+14:23.516 --> 14:26.380
+That's why we got the equal zero right here.
+
+14:26.360 --> 14:34.909
+Second reason, because we have this regularizer, you see this directly comes from this expression right here.
+
+14:35.431 --> 14:45.043
+If we wouldn't have this regularizer, then we could not make this expression, we could not get phi as a standalone quantity here.
+

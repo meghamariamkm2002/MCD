@@ -1,0 +1,4 @@
+architecture.
+To summarize, we propose a transformer architecture for handling multi-dimensional problems.
+Meanwhile, the current model assumes the target domain is decomposable, and we explore the uniform grid architecture structure when doing the projection.
+So it cannot be directly applied to non-uniform grid, but it do have the potential to apply to other tensor data like image or videos.

@@ -1,0 +1,8 @@
+So the message is,
+
+is the following.
+We are trying to learn directly the acquisition function values for which we have no true labels.
+And this is why we use reinforcement learning.
+Formally, we have the following MDP, where the state is the past history of the collected points, the current step of the optimization, and the total budget.
+The action is the next point we want to query.
+And the reward is the simple regret.

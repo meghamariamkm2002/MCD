@@ -1,0 +1,2 @@
+So the first result is about how can the local VDK influence model updates.
+So we can see that local VDK actually introduces a deviation, mu g t x t in the global update.

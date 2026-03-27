@@ -1,0 +1,6 @@
+We use the term way and order to define the interaction effect.
+The order is a degree of the polynomial.
+For example, in the green books, the order of the interaction h times x square is 3.
+Well, the way of it is 2 because it contains only two features.
+Note that with nonlinear function, the order of term can be infinity, because if we conduct Taylor expansion on the nonlinear function, there might be infinity polynomial terms.
+In our paper, we propose the polyhagian attention module, which explicitly models interaction effect defined by polynomial terms with finite orders.

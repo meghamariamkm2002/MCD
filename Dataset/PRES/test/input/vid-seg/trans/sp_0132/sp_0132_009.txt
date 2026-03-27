@@ -1,0 +1,3 @@
+We also apply our model to high resolution 2D comagrow flow simulation and 3D turbulent flow simulation.
+We observe the model achieve comparable performance with state-of-the-art models and also has good efficiency.
+In addition, we observe the arrow remains invariant under different training resolutions like previous popular neural operator

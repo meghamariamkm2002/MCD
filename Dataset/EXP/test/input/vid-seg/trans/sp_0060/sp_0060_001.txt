@@ -1,0 +1,9 @@
+Hi there, today we'll look at self-training with noisy student improves ImageNet classification by T. Z. Sie, Min Tan Luong, Edward Hovey and Kwok Wili.
+So this paper takes an ImageNet classifier that's been trained on the ImageNet dataset and uses that classifier as a teacher model to label a whole bunch of unlabeled images.
+And then it trains a student model that is larger than the original teacher model on those teacher labeled images.
+And that turns out to improve the classification on the ImageNet validation set.
+Now that there is a couple of things that make this all work.
+And today we're going to explore how this paper does it and what they say is important.
+If you enjoy content like this, as always, don't hesitate to share it out or tell your friends about it.
+And if you're not subscribed yet, then do so.
+I would appreciate that and you'll get more content.

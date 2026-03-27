@@ -1,0 +1,194 @@
+WEBVTT
+
+00:01.853 --> 00:05.498
+Okay, final set of experiments.
+
+00:05.618 --> 00:18.396
+As you can tell, this is mostly an experimental paper and it is always easy to criticize experimental papers and rightfully so because I would not trust this very much.
+
+00:20.519 --> 00:30.814
+But given that it comes from a big institution and it is a very well-written paper, I would trust it more than I would a regular paper.
+
+00:30.794 --> 00:34.885
+And I would say if you're in practice, this is certainly worth trying.
+
+00:35.065 --> 00:35.646
+Absolutely.
+
+00:36.208 --> 00:47.537
+I just think that some of the things aren't researched, like some of my questions aren't answered of this.
+
+00:47.517 --> 00:49.722
+So they investigate sizes.
+
+00:49.822 --> 00:51.906
+So they now build shuffle buffers.
+
+00:52.307 --> 00:58.379
+So we have batch echoing, but they say, ah, but we can do batch echoing with shuffle buffers.
+
+00:58.560 --> 01:04.933
+So after the batch echoing, right, we have this state where we have the batching, and then we have the echoing.
+
+01:05.474 --> 01:06.977
+So this is our echo buffer.
+
+01:06.957 --> 01:10.666
+where we output the each data point multiple times.
+
+01:11.167 --> 01:14.776
+And then we have another buffer, which is a shuffle buffer.
+
+01:15.237 --> 01:20.188
+Now the shuffle buffer just collects data points and then shuffles them around before outputting them.
+
+01:20.670 --> 01:22.975
+And that means even though we, you know,
+
+01:24.305 --> 01:31.653
+output this five times, it might not come out five times after each other, it might be that it comes out once.
+
+01:32.133 --> 01:35.677
+And then another data point that was already in the shuffle buffer comes out.
+
+01:35.817 --> 01:43.145
+And then it'll just say that in total, it comes out five times, but it is first shuffle together with a bunch of other data points.
+
+01:43.465 --> 01:50.633
+Of course, this uses more memory, but it returns to that more IID setting.
+
+01:50.613 --> 02:00.745
+And you can see here as the buffer size increases, then the performance gets more and more to the performance that you would have with completely fresh data.
+
+02:01.546 --> 02:14.781
+So again, trading off freshness and doing multiple steps by basically repeating data points
+
+02:15.993 --> 02:19.178
+straight out versus repeating data points shuffled.
+
+02:20.740 --> 02:24.426
+And also here you have the same with example echoing.
+
+02:24.906 --> 02:36.904
+So if you apply the shuffle buffer to example echoing and you increase its size, you can get very, very, very close to the performance that you would get with fresh data.
+
+02:36.884 --> 02:44.416
+Which, of course, if you increase the shuffle buffer to the size of the dataset, you are at the situation.
+
+02:44.436 --> 02:45.097
+That's the limit.
+
+02:45.117 --> 02:47.041
+You are at the situation of fresh data.
+
+02:47.461 --> 02:49.104
+If you do example echoing.
+
+02:49.144 --> 02:55.855
+Here is where it gets into the funky part, where they say we actually measure
+
+02:56.240 --> 03:03.748
+the validation cross entropy and the validation accuracy versus the number of fresh examples read.
+
+03:03.808 --> 03:07.793
+And here I want to concentrate on the ResNet 50 on ImageNet.
+
+03:08.153 --> 03:15.601
+And as you can see, most of these models, um, they pretty much end up in the same place here.
+
+03:16.102 --> 03:20.267
+It's just that the echoing models end up there faster, right?
+
+03:20.947 --> 03:23.310
+And this, this is, I mean,
+
+03:24.893 --> 03:33.184
+This is where it gets a bit confusing, honestly, because why do you have this super sharp thing here?
+
+03:33.284 --> 03:42.397
+Because usually, and here it sort of speeds up in the middle, you see that, and then it kind of sharply declines.
+
+03:43.018 --> 03:47.003
+Is this maybe because they drop the learning rate or something?
+
+03:46.983 --> 04:04.907
+Now, my main thing is that the performance here, even though this target thing is lower than the, even though this target thing is the same for everyone, it is lower than the best reachable accuracy.
+
+04:06.473 --> 04:09.340
+I'm, I'm just this, this is just confusing.
+
+04:09.421 --> 04:10.463
+If this is really true.
+
+04:11.406 --> 04:11.646
+Whoa.
+
+04:12.328 --> 04:22.153
+If this is really true, I think we have a lot to learn about, um, SGD yet and how we're not actually doing SGD correctly.
+
+04:22.133 --> 04:32.383
+And because it seems like almost the echo versions are better or reach a better accuracy than the baseline.
+
+04:32.824 --> 04:36.327
+I don't know, do they just cap it at the performance?
+
+04:36.347 --> 04:37.048
+I don't think so.
+
+04:37.068 --> 04:38.890
+I think they say they let it reach.
+
+04:39.731 --> 04:49.120
+They also have these things right here, these curves where they say this is the best we reach and this is the ResNet32 on C410.
+
+04:49.100 --> 04:53.685
+And again, 91% on C410 is just very, very low.
+
+04:55.186 --> 05:15.748
+And I'm almost thinking that, okay, this might help if you just throw something that we know is kind of overpowered because we can reach 99% or at least you can reach something like 94% on C410 easily, easily with a network smaller than ResNet32.
+
+05:15.863 --> 05:25.014
+Maybe this effect manifests if you have actually something that could reach higher, but for some reason you only reach this low.
+
+05:25.835 --> 05:29.559
+I'm not sure, but this is confusing.
+
+05:29.940 --> 05:41.854
+And if this is really true, yeah, I would just, if it's true, which I believe, I believe this paper, it might be just an effect of not reaching the actual ceiling.
+
+05:43.285 --> 05:44.408
+And again, look at this.
+
+05:45.069 --> 05:47.756
+This is just the curves are just strange, right?
+
+05:47.856 --> 05:58.864
+You have the echoing before augmentation, like it seems like it's outperforming the fresh data points.
+
+06:00.683 --> 06:03.508
+I don't know, there's a little bell in my head that doesn't like this.
+
+06:04.169 --> 06:07.496
+If it's actually true, then you know, that's cool.
+
+06:08.577 --> 06:24.126
+But yeah, so my main criticisms are a bit with the experimental methodology, for example, where they increase the batch size, but still reach the same target accuracy, even though we know that there is a higher ceiling if you increase the batch size for language models.
+
+06:24.106 --> 06:35.268
+My other criticism is the non-investigation of this connection, this connection right here, maybe, but all in all, it's a pretty cool paper.
+
+06:35.428 --> 06:41.100
+If I had a big company with these pipeline issues, I would absolutely implement this.
+
+06:41.160 --> 06:47.091
+This seems like a no-brainer to do this and can help you tremendously.
+
+06:48.214 --> 06:48.815
+All right, that was it.
+
+06:49.015 --> 06:49.877
+Thank you for listening.
+
+06:50.398 --> 06:54.045
+If you're still here, subscribe, like, tell a friend, bye-bye.
+

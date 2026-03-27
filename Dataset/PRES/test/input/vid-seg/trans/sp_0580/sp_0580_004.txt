@@ -1,0 +1,7 @@
+To set up the scenarios, we are to minimize k-waste maps on the ground sets by finding a set of bases that make sure it's defined over these ground sets.
+A linear trade-off between objectives is a non-negative factor that is multiplied with the objective factors to give a scalarized objective values.
+A convectoral point is an image of solutions that minimizes the objective scalarized as some trade-off.
+Extreme points or corner points represent the smallest possible subset of convex hall points that cover all linear trade-offs.
+That is given any trade-offs.
+There is a extreme point that minimizes the objective that is categorized as that trade-off.
+As such, extreme points holds practical significance.

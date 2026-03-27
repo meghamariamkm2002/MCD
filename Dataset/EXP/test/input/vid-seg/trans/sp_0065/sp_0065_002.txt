@@ -1,0 +1,21 @@
+speech.
+Text-to-speech is basically you take a piece of text, like this one, modern text-to-speech synthesis, pipelines typically involved, blah, blah, blah, and you want to make a model that takes this and outputs sound waves as if a human would say it, right?
+So either modern text to speech and so on.
+Now, I have multiple problems when doing this.
+First of all, the text here is words.
+Let's say we can tokenize the text into words.
+So you have modern text to speech.
+Those are four tokens.
+However, sound waves are, of course, much, much densely sampled.
+So these sound waves, they are typically in the order of something like 24 kilohertz sampled.
+So that's the ratio of one token to output samples is super high.
+So one token will produce many, many thousand samples in the speech.
+So that's the first problem.
+The second problem is that if you have training data, so you have data that has a piece of text and you have the sound wave that a human, you know the human read that particular piece of text.
+You still don't know which word exactly corresponds to which portion of that text.
+You simply know the entire text corresponds to the entire sound wave.
+You don't know this word text right here.
+You don't know.
+You don't know where it starts and where it ends in this sound wave.
+And the last problem you obviously have is that you want to make this in a way that it generalizes, that it sounds like a human, but also generalizes to some other text.
+And this paper here solves all of these problems jointly by doing an adversarial approach to learning.

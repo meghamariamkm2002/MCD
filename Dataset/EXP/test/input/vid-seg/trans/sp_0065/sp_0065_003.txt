@@ -1,0 +1,12 @@
+it does it end to end.
+Now adversarial simply means that you have a generator that takes in the piece of text right here and generates this sound wave and then you have a discriminator that looks at this sound wave and it looks at the real sound wave.
+So the real
+Okay, the real sense, let's say this over here is real, and this is what the generator has produced, the discriminator tries to discriminate between the two.
+Now, this is not entirely the same thing as a supervised loss.
+Usually in a GAN, you do not have the corresponding samples, right?
+You simply input a real sample here,
+and the generator produces a generated sample here.
+You do not necessarily have in a classic GAN the corresponding sample.
+Here you assume that you have the corresponding real sample, but it's still different than supervised learning in that both go through a discriminator and the discriminator tries to tell, the discriminator is a neural network, tries to tell which one is real and which one is generated.
+In fact, the discriminator is a set of neural networks that we're going to go into that shortly.
+So it's adversarial in the sense that there is a generator and a discriminator.

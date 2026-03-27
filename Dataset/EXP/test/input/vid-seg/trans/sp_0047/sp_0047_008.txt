@@ -1,0 +1,10 @@
+Now we get into the empirical results and the empirical results in this case were already sort of given in the previous paper, but here They have these the analogical reasoning task Where you can see that the negative sampling Did outperform the others by quite a bit right here.
+So the negative sampling approaches are
+outperformed the hierarchical softmax and the noise contrastive estimation and in the previous paper they also compared with other baselines and saw that it also outperforms those while being quite time efficient.
+So you can see that, especially with the subsampling approaches, the time here is 36 minutes for, and I think they have like a huge corpus that they train on.
+These Word2Vec code turned out to be really, really efficient code.
+And that's why it got so popular as well.
+They did the same thing for phrases right here.
+So for phrases like New York Times and so on.
+But this was kind of more of a, this was more of a side thing.
+The phrase vectors turned out to be, you know, rather a side thing from the actual code right here.

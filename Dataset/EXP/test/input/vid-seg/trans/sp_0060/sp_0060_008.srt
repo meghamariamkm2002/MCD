@@ -1,0 +1,148 @@
+1
+00:00:00,031 --> 00:00:00,752
+pretty interesting.
+
+2
+00:00:01,332 --> 00:00:05,916
+And they also do these studies on this special ImageNet dataset.
+
+3
+00:00:05,976 --> 00:00:10,180
+For example, ImageNet C, you can see that there are quite a bit of distortions right here.
+
+4
+00:00:10,260 --> 00:00:13,823
+I don't even see if you can see it on this video, but this is a swing.
+
+5
+00:00:13,883 --> 00:00:21,711
+So the swing right here is like something like this, but you almost can't see it.
+
+6
+00:00:22,171 --> 00:00:30,038
+And you see that the bold on the left is always the prediction of their model, while the thing on the right is the prediction of the original model.
+
+7
+00:00:30,018 --> 00:00:45,040
+So this model they claim is significantly more robust to these kinds of perturbations, and they do an analysis of this where they show, yes, in fact, it is.
+
+8
+00:00:45,020 --> 00:00:56,400
+So I think we've already seen this at the beginning that the noisy student is significantly more robust to these perturbations and they also test this to adversarial perturbations.
+
+9
+00:00:56,840 --> 00:01:02,831
+So right here you can see that the original model drops pretty quickly as you increase the epsilon.
+
+10
+00:01:02,851 --> 00:01:06,437
+The epsilon is kind of the strength of the adversarial perturbation.
+
+11
+00:01:06,417 --> 00:01:19,178
+And the original model drops very quickly to fairly low accuracy, while as the noisy student training drops much, much less quickly.
+
+12
+00:01:19,462 --> 00:01:30,017
+Now, this is another testament to the fact that what you do, I think what's happening is you have your data space, right?
+
+13
+00:01:30,037 --> 00:01:31,960
+And you have your data points in it.
+
+14
+00:01:32,701 --> 00:01:44,578
+Now, when you do the like normal data augmentation, what you'll do is you not only force the model to predict those points correctly, but you'll sort of make a bit of a cloud around them.
+
+15
+00:01:44,838 --> 00:01:48,844
+And you force the model to predict that cloud correctly.
+
+16
+00:01:49,246 --> 00:01:59,679
+Now, if you introduce more data and you do even more noise, what you do is you'll make these clouds kind of larger.
+
+17
+00:01:59,719 --> 00:02:05,706
+And that means the model is more robust to any sort of perturbations in these clouds, right?
+
+18
+00:02:06,166 --> 00:02:11,693
+And that means it's probably also going to be more robust to adversarial perturbations.
+
+19
+00:02:11,673 --> 00:02:17,944
+So that's sort of how you can think of this introduction of noise to make it more generalizable.
+
+20
+00:02:18,205 --> 00:02:19,607
+How does this generalize better?
+
+21
+00:02:19,988 --> 00:02:28,163
+So if you think of this data point right here, if I'm looking to generalize, that means I have this IID data set.
+
+22
+00:02:28,143 --> 00:02:32,632
+Probably my test data is going to be related to the training data.
+
+23
+00:02:32,652 --> 00:02:41,028
+So I might get a data point that's fairly close to that data point and generalizing means I classified correctly.
+
+24
+00:02:41,368 --> 00:02:46,438
+Now, if this cloud is very small, like it is here, my decision boundary could be like
+
+25
+00:02:46,418 --> 00:02:47,640
+here, right?
+
+26
+00:02:48,521 --> 00:02:58,075
+And even though the test data set is fairly close to the original training data point, it won't be classified incorrectly.
+
+27
+00:02:58,295 --> 00:03:11,734
+However, if my original cloud during training is larger, you can see if I train a model, it can maybe put the decision boundary here, and then my test data point will be included in on that same side.
+
+28
+00:03:11,714 --> 00:03:14,439
+So that's kind of the idea behind generalizing better.
+
+29
+00:03:14,479 --> 00:03:16,983
+Of course, that's a vast simplification.
+
+30
+00:03:17,444 --> 00:03:21,110
+And also to say that this here is an FGSM attack.
+
+31
+00:03:21,130 --> 00:03:26,599
+So this is kind of the weakest attack in the adversarial perturbation spectrum.
+
+32
+00:03:27,080 --> 00:03:36,135
+They do say under a stronger attack, PGD, which is a fairly strong attack with 10 iterations at epsilon equals 16,
+
+33
+00:03:36,115 --> 00:03:41,382
+noisy student training improves efficient netl2's accuracy from 1.1% to 4.4% like this.
+
+34
+00:03:41,402 --> 00:03:51,495
+1.1% really means the model is almost dead.
+
+35
+00:03:51,535 --> 00:03:55,660
+This is like random performance.
+
+36
+00:03:55,640 --> 00:04:08,614
+And 4.4% is still a bit above random performance, but you could probably get there by simply using any sort of noise in that case.
+
+37
+00:04:09,476 --> 00:04:20,044
+But still, you can see that it is more robust, especially to natural distortions, and therefore it generalizes better.
+

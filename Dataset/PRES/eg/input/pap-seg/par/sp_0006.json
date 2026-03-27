@@ -1,0 +1,494 @@
+[
+  {
+    "para_id": "p1",
+    "section_heading": "Abstract",
+    "text": "Learning feature interactions can be the key for multivariate predictive modeling. ReLU-activated neural networks create piecewise linear prediction models. Other nonlinear activation functions lead to models with only high-order feature interactions, thus lacking of interpretability. Recent methods incorporate candidate polynomial terms of fixed orders into deep learning, which is subject to the issue of combinatorial explosion, or learn the orders that are difficult to adapt to different regions of the feature space. We propose a Polyhedron Attention Module (PAM) to create piecewise polynomial models where the input space is split into polyhedrons which define the different pieces and on each piece the hyperplanes that define the polyhedron boundary multiply to form the interactive terms, resulting in interactions of adaptive order to each piece. PAM is interpretable to identify important interactions in predicting a target. Theoretic analysis shows that PAM has stronger expression capability than ReLU-activated networks. Extensive experimental results demonstrate the superior classification performance of PAM on massive datasets of the click-through rate prediction and PAM can learn meaningful interaction effects in a medical problem.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p2",
+    "section_heading": "1 Introduction",
+    "text": "Learning feature interactions provides insights into how predictors (features in x) interact to vary a dependent variable y, and could significantly improve prediction performance in a wide range of research areas, such as recommendation systems [1, 2, 3, 4], genetic analysis [5, 6] and neuroscience [7, 8], and help explain the decision-making of a complex model.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p3",
+    "section_heading": "1 Introduction",
+    "text": "Interactions among features can significantly improve the model’s expression capability. For a simple example, by incorporating the two-way interaction effect between gender (0/1: female and male) and age into the linear regression model height ∼ w1 · gender + w2 · age+ w3 · gender × age+ w0 (where w0, w1, w2, w3 are trainable parameters), the effects of female’s age on the heights will be different from that of male (w2 v.s. w2+w3). A predictive model f(x) has a k-way interaction effect if it satisfies [9]:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p4",
+    "section_heading": "1 Introduction",
+    "text": "Definition 1 (k-way interaction effect) Let x be the input of a function f(x) : Rp → R, and xi be the ith feature of x. Let I ⊆ {1, 2, ..., p} be a set of feature indices and k (k > 2) be the cardinality of I. If",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p5",
+    "section_heading": "1 Introduction",
+    "text": "37th Conference on Neural Information Processing Systems (NeurIPS 2023).",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p6",
+    "section_heading": "1 Introduction",
+    "text": "f(x) exhibits a k-way interaction effect among features indexed by i1, i2, ..., ik ∈ I.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p7",
+    "section_heading": "1 Introduction",
+    "text": "A k-th order polynomial f(x) can define k-order interactions which may not be k-way. A k-way interaction must occur among k different features. For instance, a 2-way interaction between xi and xj may occur as xixj or x2ix 3 j , so can be generally written as ∑ mi,mj wmi,mjx mi i x mj j for some nonzero mi and mj if coefficients w’s are nonzero. However, high dimensional features can generate enormous candidate interactions due to the combinatorial explosion, causing the curse of dimensionality. For example, k binary features can have 2k possible k-way interactions. This challenge in learning feature interactions attracts tremendous research interest in various models ranging from logistic regression to deep neural networks (DNN).",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p8",
+    "section_heading": "1 Introduction",
+    "text": "Early methods learn the effects of feature interaction by multiplying features together and employing the multiplications as input to create an additive model. Two lines of methods have been used to reduce the quantity of candidate interactions. Penalization methods (e.g., Hierarchical LASSO [10, 11] and Group-LASSO [12]) assume a hierarchy of interactions, so high-way interactions may be eliminated by removing low-way interactive terms. Factorization Machines (FM) require fewer parameters to fit all predefined interaction terms, which implicitly selects among candidate interactions [13, 14, 15]. Only 2- and/or 3-way interactions were considered by these methods. To learn interactions among more features (higher-way), models such as FM-supported NN [16], product-based NN [17], AutoInt+ [18], DESTINE [19] and AFN [20] predict the target with sigmoidal-activated (such as the softmax or sigmoid function) DNNs. However, sigmoidal-activated DNN models only capture extremely high-order interactions among all features according to Definition 1, because sigmoidal activation functions have continuous (non-zero) derivatives up to infinite order with respect to all input features.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p9",
+    "section_heading": "1 Introduction",
+    "text": "To capture interaction effects among a subset of features, an increasing number of works adopt ReLU-activated plain DNN which fits a piecewise linear function [21], as the backbone to develop interaction learning models. Models such as MaskNet [22] first form interaction effects and then use them as the input of a ReLU-activated DNN, also known as the stacked structure. Recently, more state-of-the-art performance has been achieved with models such as DeepIM [23], DeepFM [24], DCN [25], xDeepFM [26], AOANet [4], DCN-V2 [25], EDCN [27] and FinalMLP [28] in a parallel structure, which combines outputs of the proposed feature interaction learning models with those of a ReLU-activated plain DNN by operators such as summation, concatenation or Hadamard product.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p10",
+    "section_heading": "1 Introduction",
+    "text": "By fusing ReLU-activated DNNs with models that explicitly incorporate interaction effects, piecewise polynomial functions can be formed. Rather than predicting the target with a highly non-linear function infinitely differentiable on the input space, these methods divide the input space into pieces (e.g., polyhedrons), map instances to different pieces, and predict the target with a piece-specific polynomial function. For all existing models, the piece-specific polynomial functions fit the same format of interactions (fixed ∏ xm1i1 x m2 i2",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p11",
+    "section_heading": "1 Introduction",
+    "text": "· xmkik terms for a specific k) across all pieces once they are identified. However, data instances belonging to different pieces may endorse interactions in different ways. To address this problem, we propose a new type of attention module called Polyhedron Attention Module (PAM). The main contribution of this paper are summarized as follows:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p12",
+    "section_heading": "1 Introduction",
+    "text": "• PAM splits the input space into polyhedrons and predicts the target using a piecewise polynomial function which contains an attention term for each piece. The attention captures interaction effects of adaptive orders for different polyhedrons according to their local structure.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p13",
+    "section_heading": "1 Introduction",
+    "text": "• We propose a model interpretation approach for PAM to identify important interaction effects for any given data instance.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p14",
+    "section_heading": "1 Introduction",
+    "text": "• We prove a universal approximation theorem for PAM, and show that DNNs incorporating PAMs need fewer parameters than ReLU-activated plain DNNs to maintain the same level of approximation error in fitting functions in the Sobolev space.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p15",
+    "section_heading": "1 Introduction",
+    "text": "• Empirical studies are designed to validate PAM on benchmark datasets that are previously recognized to require feature interaction learning, such as the massive Criteo (33 million samples, 2.1 million features) and Avazu (28.3 million samples, 1.5 million features) click-through-rate datasets. Using a medical database with feature meanings, we explore the interpretation of PAM.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p16",
+    "section_heading": "2 Motivation - Reinterpreting ReLU-based DNN",
+    "text": "We argue that a plain fully-connected DNN with ReLU activation function may be interpreted as an attention mechanism. Such a neural network contains L consecutive blocks each constituting",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p17",
+    "section_heading": "2 Motivation - Reinterpreting ReLU-based DNN",
+    "text": "a fully-connected layer and a ReLU-activation layer. Let xℓ be the input of the ℓ-th block which outputs a nested function ReLU(W ℓxℓ + bℓ). The ReLU(z) returns z when activated (if z ≥ 0) or 0 otherwise. The consecutive L blocks together create piecewise linear functions (each output in layer L defines such a function). For a given raw input x, let Iℓ contains the indices of the activated ReLU functions in layer ℓ when x passes through the layer, and WIℓ and bIℓ contain the original weights, respectively, in W ℓ and bℓ for those rows indexed in Iℓ and 0 vectors for those in the complement set of Iℓ (denoted by Iℓ−). Then, at a layer ℓ, W (ℓ)x + b(ℓ) ≥ 0 where W (ℓ) = ∏ℓ j=1 WIj and b (ℓ) = ∑ℓ j=1 bIj ∏ℓ",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p18",
+    "section_heading": "2 Motivation - Reinterpreting ReLU-based DNN",
+    "text": "k=j+1 WIk . More precisely, it means that x stays in a polyhedron that is defined by the intersection of all the half-spaces {x : W (ℓ)x + b(ℓ) ≥ 0} and {x : W (ℓ−)x + b(ℓ−) < 0} for all ℓ = 1, · · · , L − 1 where W (ℓ−) = WIℓ− ∏ℓ−1 j=1 WIj and",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p19",
+    "section_heading": "2 Motivation - Reinterpreting ReLU-based DNN",
+    "text": "b(ℓ−) = bIℓ− + ∑ℓ−1 j=1 bIjWIℓ− ∏ℓ−1",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p20",
+    "section_heading": "2 Motivation - Reinterpreting ReLU-based DNN",
+    "text": "k=j+1 WIk specify those affine functions not activated in layer ℓ. Here, WIℓ− and bIℓ− contain the original weights in W ℓ and bℓ for those rows indexed in Iℓ− and 0 vectors for those in Iℓ. For all x in this polyhedron, the L-th layer outputs affine functions W (L)x+ b(L).",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p21",
+    "section_heading": "2 Motivation - Reinterpreting ReLU-based DNN",
+    "text": "Precisely, the input space is divided into non-overlapping polyhedrons and each polyhedron ∆ is defined by a combination of activated ReLU functions across the layers (a formal proof is given in Appendix A). To ease the notation, we simply use ∆ to denote the set of indices of the activated ReLU across all layers that identify the polyhedron and ∆− denotes the index set of the inactivated ReLU in the layers. We use an indicator function 1(x ∈ ∆) to define the polyhedron which returns 1 for all vectors x that satisfy W (ℓ)∆ x+b (ℓ) ∆ ≥ 0 and W (ℓ−)∆ x + b (ℓ−) ∆ < 0 for ℓ = 1, · · · , L − 1, and 0 otherwise. The i-th activated ReLU in the L-th layer corresponds to a piecewise linear function that computes W (L)∆,i x+ b (L) ∆,i on each piece ∆. Note that W (L)∆,i and b (L) ∆,i vary for different polyhedrons due to the differences in the ReLU activation in the early layers (illustrated in",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p22",
+    "section_heading": "2 Motivation - Reinterpreting ReLU-based DNN",
+    "text": "Fig. 1). Denote the hyperplane {x : W (L)∆,i x+ b (L) ∆,i = 0} by H∆,i,L, which further splits ∆ into two polyhedrons ∆1 = 1(x ∈ ∆,W (L)∆,i x+ b (L) ∆,i ≥ 0) and ∆2 = 1(x ∈ ∆,W (L)",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p23",
+    "section_heading": "2 Motivation - Reinterpreting ReLU-based DNN",
+    "text": "∆,i x+ b",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p25",
+    "section_heading": "2 Motivation - Reinterpreting ReLU-based DNN",
+    "text": "∆,i < 0). Thus,",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p26",
+    "section_heading": "2 Motivation - Reinterpreting ReLU-based DNN",
+    "text": "this piecewise linear function can be written as:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p27",
+    "section_heading": "2 Motivation - Reinterpreting ReLU-based DNN",
+    "text": "where dist(x, H∆,i,L) means the distance from x to the hyperplane H∆,i,L. The values on the two pieces ∆1 and ∆2 are constant ||W (L)∆,i || where || · || is the ℓ2 vector norm or 0. The attention is a function of x and depends on how far x is from one of the hyperplanes that define the polyhedron boundary (see Fig. 1 for illustration).",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p28",
+    "section_heading": "2 Motivation - Reinterpreting ReLU-based DNN",
+    "text": "We observe that a polyhedron ∆ is defined using a sequence of hyperplanes corresponding to the affine functions in different layers, but the attention of ReLU-activated DNNs is calculated based only on the hyperplane in the last layer for the polyhedron (piece). Although not all of the hyperplanes in early layers make the active boundary of a polyhedron (i.e., the polyhedron can locate in the interior of a half-space), using only one hyperplane in the attention is restrictive. An attention mechanism that allows multiple active boundary hyperplanes of a polyhedron to aid attention calculation may increase the model’s expression power. Let H∆ contain all of the active boundary hyperplanes H of ∆. For convenient notation, and with mild relaxation, we rescale the WH to −WH for those inactivated affine functions in the DNN so the half-spaces can all be written in the form of WHx + bH ≥ 0. Then, 1(x ∈ ∆) = ∏ H∈H∆ 1(WHx+bH ≥ 0). To learn feature interaction effects, we multiply the distances from x to each hyperplane in H∆. Given a hyperplane is linear in terms of x, multiplying the distances from x to two (m) hyperplanes creates quadratic (m-th order) terms. Thus, the number of active boundary hyperplanes of ∆ offers the upper bound on the order of the multiplicative terms",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p29",
+    "section_heading": "2 Motivation - Reinterpreting ReLU-based DNN",
+    "text": "if each hyperplane is used only once. To allow the order to be adaptive to each ∆ within the upper limit, we further enclose a bounding constraint on the distance (other strategies may exist, which we leave for future investigation). Thus, the new attention formula can be written as follows:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p30",
+    "section_heading": "2 Motivation - Reinterpreting ReLU-based DNN",
+    "text": "where UH determines an upper bound on the distance from x to H and is a trainable parameter. Fig. 2 demonstrates how adding the upper bounds UH allows the attention module to learn interaction effects of adaptive orders. For example, the instances in the area marked by 0 in the figure (left) are far from each boundary hyperplane H beyond their respective upper bounds, so the min operator returns a constant 2UH||WH || . These x instances thus receive a constant attention that is the multiplication of these upper bounds each for an H ∈ H∆, which gives a 0-order interaction. When x is close to two of the hyperplanes (in those areas labeled by 2), two distance terms are used in Eq. 3, defining two-way interactions.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p31",
+    "section_heading": "2 Motivation - Reinterpreting ReLU-based DNN",
+    "text": "Early methods pre-specify a set of polynomial terms and use them as input features to a DNN [23] which limits the search space. In another line of methods [20], each feature is associated with an order parameter mi and products in the form of ∏ xmii are used as input (rather than raw features xi) to a ReLU-activated DNN. The DNN is required to also learn the proper values of mi. It is an excellent approach to identify useful interactions, but once these mi’s are determined, the orders of feature interaction are fixed and cannot adapt to different pieces because the piecewise linear model (linear in terms of the input products) learned by the DNN does not change interaction orders. Unlike these methods, our attention module automatically identifies the interactions (polynomial terms) of appropriate orders according to the topology of a piece (particularly, using the number of active boundary hyperplanes of the polyhedron). Using introduced parameters UH , we can learn the appropriate order of the interactive terms within a polyhedron by adjusting UH (larger values of UH lead to higher-orders of feature interaction). Our theoretical analysis (Section 5) shows that a DNN incorporating our attention module can approximate any function represented by ReLU-activated DNN at any arbitrarily accurate level with fewer model parameters.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p32",
+    "section_heading": "3 The Proposed Polyhedron Attention Module (PAM)",
+    "text": "This section elaborates on the PAM with the attention score defined in Eq. 3. With input x ∈ Rp, a DNN using PAM defines a function fPAM :",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p33",
+    "section_heading": "3 The Proposed Polyhedron Attention Module (PAM)",
+    "text": "where V (x; θG) is a global value function with trainable parameter θG, and V (x; θ∆) is the local value function on a piece ∆ with trainable parameters θ∆. We set both the global and local value",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p34",
+    "section_heading": "3 The Proposed Polyhedron Attention Module (PAM)",
+    "text": "functions to be affine functions, so θ contains the normal vector W and offset b. Sec 3.2 explains why affine functions are our choice. Instead of forming polyhedrons by intersecting hyperplanes as done in ReLU-activated DNNs, we use a tree search to partition the input space into overlapping polyhedrons. Note that the potential set of partitions created by tree search is a superset of that created by hyperplance intersections (see Appendix B). We introduce how we generate polyhedrons and then discuss the attention and value functions.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p35",
+    "section_heading": "3.1 Generating polyhedrons via oblique tree",
+    "text": "Let S∆ contain all the polyhedrons needed to form a partition of the input space. We adopt the oblique tree to generate S∆. An oblique tree is a binary tree where each node splits the space by a hyperplane rather than by thresholding a single feature. The tree starts with the root of the full input space S, and by recursively splitting S, the tree grows deeper. For a D-depth (D ≥ 3) binary tree, there are 2D−1 − 1 internal nodes and 2D−1 leaf nodes. As shown in Fig. 3A, each internal and leaf node maintains a sub-space representing a polyhedron ∆ in S , and each layer of the tree corresponds to a partition of the input space into polyhedrons. Denote the polyhedron defined in node n by ∆n, and the left and right child nodes of n by nL and nR. Unlike classic oblique trees that partition S into non-overlapping sub-spaces, we perform soft partition to split each ∆n into ∆nL and ∆nR with an overlapping buffer. Let the splitting hyperplane be {x ∈ Rp : Wnx + bn = 0}. Then the two sub-spaces ∆nL and ∆nR are defined as follows:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p36",
+    "section_heading": "3.1 Generating polyhedrons via oblique tree",
+    "text": "where Un indicates the width of the overlapping buffer. Eq. 5 shows that those instances satisfying |Wnx+ bn| < Un belong to the buffer in both ∆nL and ∆nR . This buffer creates a symmetric band around the splitting hyperplane.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p37",
+    "section_heading": "3.1 Generating polyhedrons via oblique tree",
+    "text": "Let Pn be the node set containing all the ancestor nodes above n. We can group the nodes in Pn into two subsets P ln or Prn where n appears in the left or right subtree of those ancestors. Let i index the nodes in P ln and j index the nodes in Prn. Then for any node n except the root node, ∆n can be expressed as the intersection of the half-spaces:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p38",
+    "section_heading": "3.1 Generating polyhedrons via oblique tree",
+    "text": "Based on the polyhedron defined by Eq. 6, the attention a∆n(x) (which we refer to as an(x) to simplify notation) can be rewritten as",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p39",
+    "section_heading": "3.1 Generating polyhedrons via oblique tree",
+    "text": "where we use the buffer width Ui to bound the corresponding distance term from above by 2Ui||Wi|| .",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p40",
+    "section_heading": "3.1 Generating polyhedrons via oblique tree",
+    "text": "Let Nd consist of all the nodes at the dth layer of the tree, d ∈ {1, 2, ..., D}. The nodes in Nd altogether specify a soft partition of the input space that maps an instance x to one sub-space or an intersection of overlapping sub-spaces in |Nd|. Rather than merely utilizing the instance partitioning map defined by the last layer of the tree (2D−1 polyhedrons), we allow PAM to leverage polyhedrons generated at all layers in fPAM with S∆ = ∪Dd=2{∆n|n ∈ Nd} which gives 2D − 2 polyhedrons.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p41",
+    "section_heading": "3.2 Learning the attention and value functions",
+    "text": "Each internal node n in the oblique tree needs to learn two affine functions: a splitting function used to form a hyperplane to split the sub-space into child nodes, and a value function. Because nested affine functions still produce affine functions, the set of affine functions is closed under linear transformations. Thus, we can use the value function to absorb the denominator ||Wi|| from the attention Eq.7. In other words, for any learned θn, we can find a θ′n (by rescaling θn with those",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p42",
+    "section_heading": "3.2 Learning the attention and value functions",
+    "text": "1 ||Wi|| ) such that an(x)Vn(x, θn) = a ′ n(x)Vn(x, θ ′ n) where a ′ n(x) = ∏ i∈Pln max(min(Wix+ bi +",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p43",
+    "section_heading": "3.2 Learning the attention and value functions",
+    "text": "Ui, 2Ui), 0) ∏",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p44",
+    "section_heading": "3.2 Learning the attention and value functions",
+    "text": "i∈Prn max(min(−Wix − bi + Ui, 2Ui), 0) and we use the subscript n to denote the",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p45",
+    "section_heading": "3.2 Learning the attention and value functions",
+    "text": "polyhedron ∆ represented in node n. We thus directly set off to learn θ′n and use a ′ n as an.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p46",
+    "section_heading": "3.2 Learning the attention and value functions",
+    "text": "More importantly, with affine value functions, we can derive another property. For any internal node n, the attention of its two child nodes contains an as a factor, so anL(x) = an(x)max(min(Wnx+",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p47",
+    "section_heading": "3.2 Learning the attention and value functions",
+    "text": "bn + Un, 2Un), 0) and anR(x) = an(x)max(min(−Wnx − bn + Un, 2Un), 0). It gives rise an observation that no matter where x is located (inside the buffer or outside), anL(x) + anR(x) = 2Unan(x). Thus, we can substitute anL(x) in the model fPAM by 2Unan(x) − anR(x). Then, an(x)V (x, θn) + anL(x)V (x, θnL) + anR(x)V (x, θnR) = an(x) (V (x, θn) + 2UnV (x, θnL)) + anR(x) (V (x, θnR)− V (x, θnL)), which can be written as an(x)V (x, θ̄)+anR(x)V (x, θ̃) for some parameters θ̄ and θ̃ due to the closure of affine functions under linear transformations. Hence, once again, we directly learn θ̄ and θ̃ in our model training process. Note that we can recursively apply the above subsitution for all internal nodes n, so we can reduce the polyhedrons in S∆ by half. The following theorem characterize the above discussion (proof is in Appendix C.)",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p48",
+    "section_heading": "3.2 Learning the attention and value functions",
+    "text": "Theorem 1 If all value functions V belong to a function set that is closed under linear transformations, then the function learned by PAM fPAM can be equivalently written as",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p49",
+    "section_heading": "3.2 Learning the attention and value functions",
+    "text": "where the polyhedron set S−∆ contains half of the polyhedrons (e.g., the right child nodes or the left child nodes) in S∆ and",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p51",
+    "section_heading": "3.2 Learning the attention and value functions",
+    "text": "Remark 1 Although we include polyhedrons identified by the internal nodes in our calculation, fPAM only needs to learn 12 (2",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p52",
+    "section_heading": "3.2 Learning the attention and value functions",
+    "text": "D − 2) = 2D−1 − 1 value functions, which is actually in the same scale as that of only using leaf nodes in fPAM .",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p53",
+    "section_heading": "3.2 Learning the attention and value functions",
+    "text": "Optimization of PAM. The output of fPAM (x) can be treated as a prediction of x’s label or an embedding of x. PAM can be used as a constituent component in a DNN to approximate a target y = f(fPAM (x)). For a classification task, we can calculate the conditional distribution ŷ = Pr(y|x) = softmax(f(fPAM (x))) and optimize the cross-entropy LCE = −E(x,y)∼Dy log ŷ−(1−y) log(1−ŷ) between the observed y and estimated ŷ to determine the parameters in PAM. For a regression task, the mean square loss LMSE = E(x,y)∼D(y − f(fPAM (x)))2 can be used.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p54",
+    "section_heading": "4 Model Interpretation",
+    "text": "We propose a conceptual framework to quantify and interpret the interaction effects learned by PAM. Without loss of generality, we assume that the DNN has a single output. Additional outputs can be similarly interpreted using the derived algorithm. The fPAM can be rewritten as a summation of k-way interaction terms for all possible values of k ≤ D: fPAM (x) = ∑ I⊆{1,2,...,p} ϕI(x) where ϕI(x) captures the total contribution to the output from the |I|-way interactions among the features indexed in I. If I ≠ ∅, ϕI(x) = ∑∑ mi≤D wI ∏ i∈I x mi i where xi represents the i",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p55",
+    "section_heading": "4 Model Interpretation",
+    "text": "th feature of x, mi calculates the power of xi in the interaction, and w’s are constant coefficients in front of the corresponding interaction terms. Given the definition of our attention in Eq.9, the highest polynomial order is D−1 in the attention, together with the affine value function, the highest polynomial order of fPAM is D, so ∑ mi can not exceed the depth of the tree. If I = ∅, ϕI = w∅ which is a constant.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p56",
+    "section_heading": "4 Model Interpretation",
+    "text": "We develop a method here to estimate the contribution values ϕI in fPAM = ∑",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p57",
+    "section_heading": "4 Model Interpretation",
+    "text": "I⊆{1,2,...,p} ϕI for a fixed input x without computing the individual polynomial terms.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p58",
+    "section_heading": "4 Model Interpretation",
+    "text": "For a given x, fPAM can be written explicitly out as g(x) according to which polyhedron(s) x belongs to. To determine g(x), we pass x through the model Eq.8 and evaluate every term in Eq.9. For instance, for the first product in Eq.9, if x makes Wix + bi ≥ Ui, we replace the term max(min(Wix+ bi + Ui, 2Ui), 0) by 2Ui; if Wix+ bi ≤ −Ui, we replace it by 0; or otherwise, we use Wix + bi + Ui. Once the g function is computed, we can use Algorithm 1 to evaluate the contribution ϕI , ∀I ⊆ {1, · · · , p}.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p59",
+    "section_heading": "4 Model Interpretation",
+    "text": "A simple example can be used to demonstrate Algorithm 1. Let I = {1, 2} which means we calculate the sum of those cross terms that involve exactly x1 and x2. Thus we set all other elements in x to 0",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p60",
+    "section_heading": "4 Model Interpretation",
+    "text": "and calculate g(0−I ⊙ x) to obtain the value v that adds the terms involving only x1 and x2. We then additionally set either x1 = 0 or x2 = 0, or x1 = x2 = 0 (i.e., make all elements 0), re-compute g to estimate the linear terms of either x1 or x2, or the constant term in g, and subtract these values from v to eventually obtain ϕI . The following theorem characterize our results.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p61",
+    "section_heading": "4 Model Interpretation",
+    "text": "Theorem 2 For any input x, by calculating ϕI(x) for each I ⊆ {1, 2, ..., p} via Algorithm 1, we have ∑ I⊆{1,2,...,p} ϕI(x) = fPAM (x).",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p62",
+    "section_heading": "4 Model Interpretation",
+    "text": "The instance-level explanation of fPAM can be obtained by examining the magnitude of ϕI which reflects the impact of the feature interaction among the features in I. If ϕI(x) > 0, the interaction increase the predicted value; if ϕI < 0, it reduces the output. The model-level interpretation can be approximated by computing the mean absolute value of the ϕI across all sample instances.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p63",
+    "section_heading": "5 Theoretical Justification - Approximation Theorems",
+    "text": "We examine whether using PAM can enhance the expression power for universal approximation. We first introduce the Sobolev space, which characterizes a space of functions satisfying specific smoothness properties - Lipschitz continuous up to order n - which is formally defined as:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p64",
+    "section_heading": "5 Theoretical Justification - Approximation Theorems",
+    "text": "Definition 2 (Sobolev space) Let Wn,∞([0, 1]p) be the Sobolev space which comprises of functions on [0, 1]p lying in L∞ along with their weak derivatives up to order n. The norm of a function f in Wn,∞([0, 1]p) is",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p65",
+    "section_heading": "5 Theoretical Justification - Approximation Theorems",
+    "text": "where n = (n1, n2, ..., np) ∈ {1, 2, ..., n}p, |n| = n1 + n2 + ...+ np ≤ n, and Dnf is the n-order weak derivative. The essential supreme ess sup g(E) = inf{M ∈ R : µ({x ∈ E : f(x) > M}) = 0} captures the smallest value that the function g can approach or exceed on a set E, except for a negligible subset of points with the measure µ. Essentially, the space Wn,∞([0, 1]p) is Cn−1([0, 1]p) whose functions’ derivatives up to order n are Lipschitz continuous.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p66",
+    "section_heading": "5 Theoretical Justification - Approximation Theorems",
+    "text": "The following assumption is commonly used in the discussion of DNNs. Without loss of generality, it narrows our focus on a normalized Sobolev sphere. This assumption constrains the functions having Sobolev norm no greater than 1 within the sphere.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p67",
+    "section_heading": "5 Theoretical Justification - Approximation Theorems",
+    "text": "Assumption 1 Let Fn,p be a set of functions lying in the unit ball in Wn,∞([0, 1]p), we have",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p68",
+    "section_heading": "5 Theoretical Justification - Approximation Theorems",
+    "text": "This assumption is sufficient for our analysis, as functions encountered in real-world learning tasks can typically be linearly transformed into Wn,∞([0, 1]p), as shown in previous studies [29]. This allows us to analyze the error bounds for terms in the polynomial approximation after performing Taylor expansion. Theorem 3 demonstrates that our model can almost surely approximate any ReLU-activated DNN model without error. All proofs can be found in Appendix E and F.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p69",
+    "section_heading": "5 Theoretical Justification - Approximation Theorems",
+    "text": "Theorem 3 If x is bounded and sampled from a distribution with upper-bounded probability density function, then for any ReLU activated plain DNN model fDNN(x), there exists a PAM with",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p70",
+    "section_heading": "5 Theoretical Justification - Approximation Theorems",
+    "text": "Theorem 4 examines the parameter efficiency, and demonstrates that networks incorporating the proposed polyhedron attention require fewer parameters compared to those relying solely on ReLU activation, while maintaining the same approximation error in fitting functions in the Sobolev space.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p71",
+    "section_heading": "5 Theoretical Justification - Approximation Theorems",
+    "text": "Theorem 4 For any p, n > 0 and ϵ ∈ (0, 1), we have a PAM which can 1) approximates any function from Fn,p with an error bound ϵ in the sense of L∞ with at most 2pn(N +1)p(p+n−1) parameters, where N = ⌈( n!2ppn ϵ 2 ) − 1n ⌉.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p72",
+    "section_heading": "5 Theoretical Justification - Approximation Theorems",
+    "text": "Remark 2 For the purpose of comparison, the ReLU-activated plain DNN needs pn(N + 1)p(p+ 1)nO(log(1/ϵ)) parameters under the same setting in Theorem 4 [30, 29].",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p73",
+    "section_heading": "5 Theoretical Justification - Approximation Theorems",
+    "text": "It is worth noting that extensive research has been conducted on the approximation theory of DNNs with the ReLU-activation, which often concerns common function classes in specific function spaces such as Besov [31, 32] and Sobolev spaces [33, 34]. These analyses reveal a notable influence of the smoothness of the target function on the resulting approximation errors. Since Sobolev spaces characterize the smoothness properties of functions, we can investigate the ability of neural networks with ReLU activation to approximate functions with different degrees of regularity and smoothness. These theorems highlight the expressivity of our model and provide theoretical insights for the parameter efficiency of our proposed attention module in neural network architectures.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p74",
+    "section_heading": "6 Empirical Evaluation",
+    "text": "We evaluate the effectiveness and efficiency of PAM on three large-scale datasets: the Criteo1 and Avazu1 click-through-rate (CTR) datasets, and the UK Biobank2 medical database. We conduct an analysis of the hyperparameters of PAM, and perform ablation studies by individually removing each of the three key components of PAM and evaluating the performance variations. Given the lack of known feature meanings in CTR benchmark datasets, we utilize the UK Biobank dataset as an example for studying model interpretation. Specifically, we validate the interaction effects captured by our interpretation framework, as detailed in Sec. 4, in the prediction of brain-age by the grey matter volumes from distinct brain regions. For implementation details, computation and space complexity of our model, please refer to Appendix G.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p75",
+    "section_heading": "6.1 Experimental Setup",
+    "text": "Datasets. Both the Criteo and the Avazu are massive industry datasets containing feature values and click feedback for display ads, and are processed following the benchmark protocol in BARS [35, 36]. The UK Biobank serves as a comprehensive biomedical database and research resource, offering extensive genetic and health-related information, where our objective is to predict participants’ age by leveraging the grey matter volumes from 139 distinct brain regions. The summary statistics are listed in Table 1. Evaluation metrics. Criteo and Avazu datasets are concerned with binary classification tasks, evaluated using Area Under the ROC Curve (AUC). For brain-age prediction, a regression problem, we assess performance using the R2 score. Baseline Algorithms. We compare PAM against the top 5 algorithms from a pool of 33 baseline methods, selected based on the overall AUC scores in BARS, including DESTINE [19] (currently the best performer on Avazu), DCN [37], AOANet [4], EDCN [27] (best on Criteo), and DCN-V2 [25]. Given that our model and the selected algorithms are DNN-based, we also include a well-tuned DNN1 as a strong baseline for our model comparison. It is worth noting that several state-of-the-art studies on CTR datasets, such as Criteo and Avazu, from Google [2, 24, 37], Microsoft [38] and Huawei [24], have recognized that even a marginal improvement of AUC at the level of 1‰ is considered a significant performance enhancement.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p76",
+    "section_heading": "6.2 Effectiveness and efficiency evaluation",
+    "text": "Performance Comparison. We compare the results over five runs. As shown in Fig. 4a, PAM achieves the highest AUC and R2 score amongst all benchmark algorithms. PAM outperforms the second-best model by 1.4 ‰ for Criteo, 0.6 ‰ for Avazu, and 2.2 for UK Biobank, which is much higher than the improvement achieved by the second-best model from the next model (0.4 ‰ for Criteo, 0.16 ‰ for Avazu and 0.6 ‰ for UK Biobank). It is also worth noting that, despite being well-tuned, none of the benchmark algorithms performs optimally across all three datasets simultaneously. We evaluate the computation time of PAM by comparing the training and inferecing runtime (seconds) per batch to the number of trainable parameters (#Par). As shown in Table 2, almost all models have a similar amount of free parameters, and their runtime per batch is comparable among the methods (PAM is superior than half of the methods and inferior than the other half.)",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p77",
+    "section_heading": "6.2 Effectiveness and efficiency evaluation",
+    "text": "Hyper-parameter Study. Although Ui’s are trainable parameters in PAM, their initialization may affect how well PAM works. We hence study the effects of the initial values of Ui’s by testing a set of choices from 1 to 3 by a step size of 0.5. We also examine the effects of the tree depth D on PAM’s performance. Fig. 4b shows the comparison where the initial values of Un do not substantially change PAM’s performance, which indicates that Un may be well trained during the PAM optimization. As for the tree depth D, the performance of PAM initially improves as D increases, but when D becomes large, the performance may deteriorate. An appropriate value of D will help PAM to learn more domain knowledge, but if D is too large, highly complex interactions may not necessarily lead to better prediction due to issues such as overfitting.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p78",
+    "section_heading": "6.2 Effectiveness and efficiency evaluation",
+    "text": "Ablation Study of PAM. The following specifies the three components for our ablation experiments. 1) PAM without overlapping polyhedrons (PAM w/o OP). As shown in Eqs. 5, 6 and 7, overlapping polyhedrons are generated in PAM to fit the target. To demonstrate the importance of soft splitting, we calculate an(x) with ∏ i∈Pln max(min(Wix+ bi, 2Ui), 0) ∏ i∈Prn max(min(−Wix− bi, 2Ui), 0). 2) PAM without adaptively learning interaction (PAM w/o ALI). As shown in Fig. 5, the upperbound 2Ui enables PAM to learn interactions with different orders in different polyhedrons. To exam the effectiveness of the upper bound, we remove this upper bound 2Ui from Eq. 9. 3) PAM without removing ||Wi|| (PAM w/o RW). According to Theorem 1, the denominator of Eq. 7 can be removed without reducing the expression capability of PAM. To examine the correctness of this claim, we directly use PAM without removing ||Wi|| from the denominator.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p79",
+    "section_heading": "6.2 Effectiveness and efficiency evaluation",
+    "text": "Fig. 4c clearly demonstrates a notable decline in the performance of the PAM when key components are removed. In particular, the standard PAM significantly outperforms the PAM w/o OP. It confirms the critical role of overlapping polyhedrons in enhancing PAM’s performance. The removal of ALI decreases the AUC and R2 of PAM as well, indicating the significance of combining low-way interaction effects with high-way ones to fit the target. Moreover, PAM w/o RW shows that removing ||Wi|| from the denominator in Eq. 7 improves PAM’s performance. Although, according to Theorem 1, PAM without RW has the same expressive capability as standard PAM, the inclusion of W ’s norm in the denominator of Eq. 7 may result in unstable gradient variances, potentially compromising the performance of the optimizer.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p80",
+    "section_heading": "6.3 Identified interaction effects among neural markers in predicting brain age",
+    "text": "Although the interpretation framework was developed for PAM, it can be applied to those DNN architectures whose functions are piece-wise polynomials (see Appendix D). After carefully checking",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p81",
+    "section_heading": "6.3 Identified interaction effects among neural markers in predicting brain age",
+    "text": "all baseline methods, we found that our interpretation framework could be used to extract interactions from DCN and AOANet. Fig. 5 presents the top five main effects (Figs. a, c and e) and two-way interaction effects (Figs. b, d and f) between brain regions to brain-age prediction, as determined by the trained PAM, DCN and AOANet.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p82",
+    "section_heading": "6.3 Identified interaction effects among neural markers in predicting brain age",
+    "text": "According to Figs. 5a and 5b, PAM found that the grey matter volumes (GMV) of both the left and right frontal poles (FP) play significant main effect as individual features, which is well aligned with previous research findings[39, 40, 41]. The other three brain regions, lateral occipital cortex (LOC), precentral gyrus (PG) and thalamus (T), are also discussed in early studies[42, 43, 44]. Existing aging studies primarily focus on main effects of GMV, but the top five two-way GMV interactions of identified brain regions have been acknowledged in works such as [42]. As shown in Fig. 5c, 5d, 5e and 5f, the main effects of PG and T identified by PAM were found by DCN and AOANet, respectively, and all three algorithms found the two-way interactions between the left and right FP. In addition to the shared top-5 brain regions identified by PAM, AOANet and DCN, PAM additionally identified the main effect of the LOC and FP and two-way interaction effects related to the insular and subcallosal cortex (SC) regions.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p83",
+    "section_heading": "7 Conclusions and Future Work",
+    "text": "We propose a novel feature interaction learning module, namely Polyhedron Attention Module (PAM), to fit a target with adaptive-order interaction effects. PAM produces a self-attention mechanism partitioning the input space into overlapping polyhedrons and learning the boundary hyperplanes for each polyhedron automatically. These hyperplanes multiply to identify interaction effects specific to individual polyhedrons. Under this mechanism, PAM automatically captures both simple and complex interaction effects. In our theoretic analysis, we show that PAM can enhance the model expression power for universal approximation. Experimental results demonstrate that the proposed model achieves better performance on massive datasets than the state-of-the-art. In the future, we will study how to dynamically pruning PAM’s oblique tree during the training process to regularize the model. It will also be interesting to investigate how to define boundaries with non-linear functions.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p84",
+    "section_heading": "Acknowledgments",
+    "text": "This research has been conducted using the UK Biobank Resource under the Application 51296 – Machine Learning Analysis of Brain Images, Behaviors, and Genotypes to Understand Mental Disorders, and was supported in part by the NIH grant K02-DA043063 and NSF award #2122309.",
+    "seg_type": "par"
+  }
+]

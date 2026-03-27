@@ -1,0 +1,1 @@
+Now, as I mentioned, we have collected many source tasks, so we have actually a set of MDPs, and we want to learn a policy that performs well on average over multiple episodes and over many of these source tasks.

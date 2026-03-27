@@ -1,0 +1,56 @@
+1
+00:00:00,031 --> 00:00:08,167
+And what they do, of course, is they use deep learning as you might have guessed to do that.
+
+2
+00:00:08,187 --> 00:00:16,745
+So they will have a model that for a particular start and end goal will give them a probability distribution across candidates.
+
+3
+00:00:16,845 --> 00:00:21,955
+Now, everything that's black here also has probability mass, but it's just so small you can't see.
+
+4
+00:00:21,935 --> 00:00:30,884
+And these blue ones are the lighter blue, the more probable this model thinks that this is going to be an in-between state.
+
+5
+00:00:31,825 --> 00:00:39,593
+Now the tree search can now limit itself effectively to only the ones here with the highest probability, right?
+
+6
+00:00:39,894 --> 00:00:49,984
+So we select the ones with the highest probability and we'll only search plans that have these as the first possible subdivisions.
+
+7
+00:00:49,964 --> 00:00:52,406
+Again, we're searching over plans.
+
+8
+00:00:52,566 --> 00:00:57,851
+So we're searching over ways to subdivide the problem into smaller problems.
+
+9
+00:00:57,991 --> 00:00:59,132
+That is our search space.
+
+10
+00:00:59,793 --> 00:01:06,999
+So once we've decided on one of them, let's say here the yellow one, again, we have to evaluate that model for each of the sub problems.
+
+11
+00:01:07,019 --> 00:01:09,402
+And this, this is kind of a step that's missing here.
+
+12
+00:01:09,422 --> 00:01:19,971
+So in between here, there would be a model evaluation that would again tell you which of these in between states were probable subdivision candidates.
+
+13
+00:01:19,951 --> 00:01:24,200
+and then you would select again one of those in that particular search branch.
+
+14
+00:01:24,541 --> 00:01:34,382
+And in a different search branch, you're searching over these things, in a different search branch you would select a different one and see is this possibly a better way to subdivide the problem.
+

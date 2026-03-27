@@ -1,0 +1,62 @@
+{
+  "sp_0061_page_0005": {
+    "bboxes": [
+      {
+        "box": [
+          680.9593505859375,
+          549.162109375,
+          1015.484375,
+          619.643798828125
+        ],
+        "text": [
+          "\\mathcal { L _ { o u t e r } } = \\frac { 1 } { N } \\sum _ { i = 1 } ^ { N } ( \\hat { \\mathcal { L } } _ { i n n e r \\_ v a l i d } ^ { i } - \\hat { \\mathcal { L } } _ { t r u e } ^ { i } ) ^ { 2 }"
+        ],
+        "id": "sp_0061_page_0005-1",
+        "page": "sp_0061_page_0005",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          115.3460693359375,
+          666.513427734375,
+          579.6046752929688,
+          698.9278564453125
+        ],
+        "text": [
+          "\\begin{array} { r } { \\theta _ { t + 1 } ^ { i } = \\theta _ { t } ^ { i } - \\alpha \\nabla \\mathcal { L } _ { i n n e r \\_ t r a i n } ^ { i } ( S ^ { t r a i n } , \\theta _ { t } ^ { i } ) \\quad i \\in { 1 , 2 , . . , N } } \\end{array}"
+        ],
+        "id": "sp_0061_page_0005-2",
+        "page": "sp_0061_page_0005",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          727.962890625,
+          721.1915283203125,
+          969.1199340820312,
+          755.2723388671875
+        ],
+        "text": [
+          "S _ { t + 1 } ^ { v a l i d } = S _ { t } ^ { v a l i d } - \\beta \\nabla \\mathcal { L } _ { o u t e r }"
+        ],
+        "id": "sp_0061_page_0005-3",
+        "page": "sp_0061_page_0005",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          726.5131225585938,
+          648.1891479492188,
+          970.91455078125,
+          679.81005859375
+        ],
+        "text": [
+          "S _ { t + 1 } ^ { t r a i n } = S _ { t } ^ { t r a i n } - \\beta \\nabla \\mathcal { L } _ { o u t e r }"
+        ],
+        "id": "sp_0061_page_0005-4",
+        "page": "sp_0061_page_0005",
+        "seg_type": "eq"
+      }
+    ]
+  }
+}

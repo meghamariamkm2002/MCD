@@ -1,0 +1,56 @@
+1
+00:00:00,031 --> 00:00:07,822
+The other thing they do is they do a subsampling of frequent words.
+
+2
+00:00:07,842 --> 00:00:23,685
+So again, this is a way to kind of push down the often appearing words where they say the most frequent words can easily occur hundreds of millions of times, like in the or a such words usually provide less information value than the rare words.
+
+3
+00:00:23,725 --> 00:00:28,232
+For example, while the skipgram model benefits from observing the co-occurrences of France and
+
+4
+00:00:28,212 --> 00:00:37,822
+Paris, it benefits much less from observing the frequent co-occurrences of France and the as nearly every word co-occurs frequently within a sentence with the.
+
+5
+00:00:39,203 --> 00:00:45,389
+So they do another trick here to counter this imbalance between rare and frequent words.
+
+6
+00:00:45,830 --> 00:00:47,411
+Use a simple subsampling approach.
+
+7
+00:00:47,732 --> 00:00:53,157
+Each word in the training set is discarded with probability computed by that formula.
+
+8
+00:00:54,605 --> 00:01:20,207
+right so therefore formula right here and asking again why why this formula so this is the sampling probability of a word and it goes with one over t t is a temperature parameter and f is the frequency with which the word appears in the corpus so as you can see as the word appears more in the
+
+9
+00:01:20,187 --> 00:01:36,610
+in the corpus then so this is the frequency as the word appears more then this thing goes down then this thing goes up so it's discarded with this probability so it's discarded with a higher probability if it appears more often
+
+10
+00:01:38,733 --> 00:01:42,979
+where f is the frequency of a word, t is a chosen threshold.
+
+11
+00:01:43,399 --> 00:01:52,431
+We chose this subsampling formula because it aggressively subsamples words whose frequency is greater than t while preserving the ranking of the frequencies.
+
+12
+00:01:53,212 --> 00:01:57,577
+Although this subsampling formula was chosen heuristically, we found it to work well in practice.
+
+13
+00:01:58,098 --> 00:02:06,529
+It accelerates learning and even significantly improves the accuracy of the learned vectors of the rare words as will be shown in the following sections.
+
+14
+00:02:06,509 --> 00:02:25,041
+so again something sort of arbitrary it's even it's more understandable than the three quarters but still it's sort of arbitrary the experimented around they found this works well and then every everybody ended up you know using that so that's how this kind of stuff happens okay so
+

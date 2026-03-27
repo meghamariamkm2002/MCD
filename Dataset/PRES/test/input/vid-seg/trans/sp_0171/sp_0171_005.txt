@@ -1,0 +1,1 @@
+The key insight driving tree recovery in our paper is that the dot product between two data vectors reveals the height of their most recent common ancestor.

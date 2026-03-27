@@ -1,0 +1,112 @@
+1
+00:00:00,031 --> 00:00:00,271
+it.
+
+2
+00:00:01,073 --> 00:00:06,203
+Okay, so this paper on a high level deals with model based reinforcement learning.
+
+3
+00:00:06,965 --> 00:00:13,638
+Model based reinforcement learning means that you are using a model of the world to do reinforcement learning.
+
+4
+00:00:14,119 --> 00:00:16,183
+So in essence,
+
+5
+00:00:17,395 --> 00:00:27,629
+If you have your reinforcement learning setup where you are an agent and you have to interact with the world, you have to do so in many steps in like a round trip fashion.
+
+6
+00:00:27,709 --> 00:00:41,108
+So you put an action, you act and the world gives you back an observation and you have to act in the world over and over and over such that you will be able to maximize your reward.
+
+7
+00:00:41,088 --> 00:00:43,778
+Now, what is model based reinforcement learning?
+
+8
+00:00:44,159 --> 00:00:49,680
+Model based reinforcement learning basically means that the agent here has internally
+
+9
+00:00:51,601 --> 00:00:52,944
+a model of the world.
+
+10
+00:00:53,445 --> 00:00:57,092
+So it sort of understands how the world works.
+
+11
+00:00:58,274 --> 00:01:02,162
+Situations where you have a accurate model of the world are things like chess.
+
+12
+00:01:02,322 --> 00:01:04,326
+So in chess, the rules are very clear.
+
+13
+00:01:04,386 --> 00:01:08,534
+You know how the world's going to behave if you perform a certain action.
+
+14
+00:01:08,955 --> 00:01:14,065
+But in real world applications, it's very, very hard to actually make a model.
+
+15
+00:01:14,045 --> 00:01:16,769
+So people usually rely on learned models.
+
+16
+00:01:17,230 --> 00:01:18,071
+So what does it mean?
+
+17
+00:01:18,092 --> 00:01:23,460
+You basically learn a neural network that tries to predict how the world is going to act.
+
+18
+00:01:24,342 --> 00:01:30,732
+So this here is going to be a deep neural network that you learn from what you see in the world.
+
+19
+00:01:31,353 --> 00:01:33,977
+Now trajectory optimization
+
+20
+00:01:33,957 --> 00:01:50,278
+Basically means that you are now you now have this world model and you use it to look ahead as I said so you are in the state like here and you can do let's say three different actions and you use your world model here world.
+
+21
+00:01:50,258 --> 00:01:55,126
+And you see, you think, how's the world going to react if I do either of those three things?
+
+22
+00:01:55,366 --> 00:01:57,169
+And then you get into three different states.
+
+23
+00:01:57,590 --> 00:02:03,900
+And then again, after each one, you consider three actions, three actions here, three actions here, and so on.
+
+24
+00:02:04,340 --> 00:02:14,376
+So ultimately, you're going to kind of have an overview over a planning horizon, which here we call H. You kind of look ahead a couple of steps.
+
+25
+00:02:14,356 --> 00:02:21,928
+Or there are various ways of doing this, but ultimately you will basically find that this path here is really good.
+
+26
+00:02:22,309 --> 00:02:25,674
+So I think I'm going to take this as a first action.
+
+27
+00:02:28,298 --> 00:02:37,473
+So trajectory optimization considers finding the best green path here in this tree of possibilities that your world model gives you.
+
+28
+00:02:37,513 --> 00:02:38,575
+Okay.
+

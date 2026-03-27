@@ -1,0 +1,3 @@
+Current literature often assumes that the rewards are either uniformly bounded or subcaution.
+However, in real-world scenarios, the heavy-tailed rewards are common.
+Therefore, we need to further tackle these challenges and design new algorithms.

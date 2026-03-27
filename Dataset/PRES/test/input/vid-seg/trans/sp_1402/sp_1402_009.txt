@@ -1,0 +1,2 @@
+Theoretically, we have confirmed that our method can obtain a smaller variance and decreasing additional bias.
+Therefore, we can gradually increase the input rate gamma.

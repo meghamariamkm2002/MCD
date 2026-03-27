@@ -1,0 +1,629 @@
+[
+  {
+    "id": "002",
+    "title": "sp_0457_002",
+    "filename": "Videos/sp_0457.mp4",
+    "paper_filename": "Papers/sp_0457.pdf",
+    "type": "slides",
+    "relevant_segments": [
+      {
+        "para_id": "p2",
+        "section_heading": "1 Introduction",
+        "text": "Federated Learning [30, 22, 23, 18, 31] is an emerging technique that has raised wide attention recently. It has become one of the most important distributed learning frameworks for enabling multiple data holders to train a model collaboratively without sharing their local privacy data explicitly.",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p3",
+        "section_heading": "1 Introduction",
+        "text": "Our research focuses on VFL, where each client possesses all the data points, but only a nonintersecting subset of the features (vertically distributed). In VFL, all participants collaborate to train a single global model. The client trains a feature extraction model that maps its local data sample to embeddings, and the server collects the embeddings from all clients to make a prediction [21, 34, 6, 39, 16, 37, 14, 42, 43, 13].",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p4",
+        "section_heading": "1 Introduction",
+        "text": "Ensuring both privacy and computation-communication efficiency is crucial for practical VFL implementations. One common approach to achieve this is starting with a basic VFL [5, 6, 28] and subsequently applying privacy protection techniques, such as Secure Multiparty Computation (SMC) [8], Differential Privacy (DP) [32, 36], and Homomorphic Encryption (HE) [36, 32] to protect privacy. However, the addition of these protection techniques often increases computationcommunication costs. To avoid these costly protective add-ons, research attention has turned to Zero-Order Optimization (ZOO). Literature reports that ZOO-based VFL is able to conceal the internal information of the model (gradient/model parameter) making the SOTA privacy inference attack ineffective [41]. This finding highlights the potential of ZOO for efficient and secure VFL.",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p5",
+        "section_heading": "1 Introduction",
+        "text": "However, two critical problems remained. First, the convergence rate of ZOO-based VFL is significantly slower [41] compared to VFL frameworks optimized with gradient, resulting in a high number of communication rounds and increased communication costs. Furthermore, the convergence rate is negatively correlated to the size of the parameters optimized using ZOO [41, 27, 12], which hinders the application of ZOO-based VFL on large neural networks. Second, although ZO-based VFL has demonstrated resistance to SOTA attacks, its privacy guarantee has not been theoretically explained.",
+        "seg_type": "par"
+      }
+    ]
+  },
+  {
+    "id": "003",
+    "title": "sp_0457_003",
+    "filename": "Videos/sp_0457.mp4",
+    "paper_filename": "Papers/sp_0457.pdf",
+    "type": "slides",
+    "relevant_segments": [
+      {
+        "para_id": "p1",
+        "section_heading": "Abstract",
+        "text": "Vertical Federated Learning (VFL) is a collaborative machine learning paradigm that enables multiple participants to jointly train a model on their private data without sharing it. To make VFL practical, privacy security and communication efficiency should both be satisfied. Recent research has shown that Zero-Order Optimization (ZOO) in VFL can effectively conceal the internal information of the model without adding costly privacy protective add-ons, making it a promising approach for privacy and efficiency. However, there are still two key problems that have yet to be resolved. First, the convergence rate of ZOO-based VFL is significantly slower compared to gradient-based VFL, resulting in low efficiency in model training and more communication round, which hinders its application on large neural networks. Second, although ZOO-based VFL has demonstrated resistance to state-of-the-art (SOTA) attacks, its privacy guarantee lacks a theoretical explanation. To address these challenges, we propose a novel cascaded hybrid optimization approach that employs a zeroth-order (ZO) gradient on the most critical output layer of the clients, with other parts utilizing the first-order (FO) gradient. This approach preserves the privacy protection of ZOO while significantly enhancing convergence. Moreover, we theoretically prove that applying ZOO to the VFL is equivalent to adding Gaussian Mechanism to the gradient information, which offers an implicit differential privacy guarantee. Experimental results demonstrate that our proposed framework achieves similar utility as the Gaussian mechanism under the same privacy budget, while also having significantly lower communication costs compared with SOTA communication-efficient VFL frameworks.",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p5",
+        "section_heading": "1 Introduction",
+        "text": "However, two critical problems remained. First, the convergence rate of ZOO-based VFL is significantly slower [41] compared to VFL frameworks optimized with gradient, resulting in a high number of communication rounds and increased communication costs. Furthermore, the convergence rate is negatively correlated to the size of the parameters optimized using ZOO [41, 27, 12], which hinders the application of ZOO-based VFL on large neural networks. Second, although ZO-based VFL has demonstrated resistance to SOTA attacks, its privacy guarantee has not been theoretically explained.",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p6",
+        "section_heading": "1 Introduction",
+        "text": "To solve the first problem, we reevaluate the advantages and disadvantages of applying first-order (FO) or zero-order (ZO) gradient methods for each component of the VFL, and find an optimal balance between efficiency and privacy protection. This analysis leads to a novel cascaded hybrid optimization framework that efficiently solves the convergence problems while fully preserving privacy protection. Specifically, our proposed framework (VFL-CZOFO) utilizes the ZO gradient for optimizing the most critical output layer of the clients, while other parts are optimized with the FO gradient2. To address the second problem, we theoretically prove that applying ZOO on VFL is equivalent to adding Gaussian Mechanism [7] to the gradient information and can provide a corresponding intrinsic (\u03f5, \u03b4)-DP guarantee.",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p8",
+        "section_heading": "1 Introduction",
+        "text": "The primary innovations of our paper are as follows: 1) Our framework employs a novel cascaded hybrid optimization method, in which different optimization methods are applied to different layers of the global model in each iteration, which significantly improves the convergence rate of ZOO-based VFL while preserving privacy. To the best of our knowledge, no prior research in VFL has proposed a similar method that cascaded a hybrid optimization and exploits its advantages. 2) We provide",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p10",
+        "section_heading": "1 Introduction",
+        "text": "a theoretical explanation of the intrinsic privacy guarantee of ZOO, based on (\u03f5, \u03b4)-DP, which is fundamentally different from the common DP mechanism, where noise is added to items afterward.",
+        "seg_type": "par"
+      },
+      {
+        "caption": "Figure 1: Comparing the Asyn-VFL Frameworks",
+        "captionBoundary": {
+          "x1": 207.7790069580078,
+          "x2": 404.2215270996094,
+          "y1": 198.65054321289062,
+          "y2": 204.65301513671875
+        },
+        "figType": "Figure",
+        "imageText": [],
+        "name": "1",
+        "page": 1,
+        "regionBoundary": {
+          "x1": 108.0,
+          "x2": 504.0,
+          "y1": 72.0,
+          "y2": 191.04
+        },
+        "renderDpi": 150,
+        "renderURL": "/Users/meghamariam/PROJECTS/PROJ1_Dataset/PROJ1_Crossmodal-Traversal/DATASET/Presentation/pap-seg/fig/sp_0457/sp_0457-Figure1-1.png",
+        "id": "sp_0457-Figure1-1",
+        "seg_type": "fig"
+      },
+      {
+        "para_id": "p1",
+        "section_heading": "Abstract",
+        "text": "Vertical Federated Learning (VFL) is a collaborative machine learning paradigm that enables multiple participants to jointly train a model on their private data without sharing it. To make VFL practical, privacy security and communication efficiency should both be satisfied. Recent research has shown that Zero-Order Optimization (ZOO) in VFL can effectively conceal the internal information of the model without adding costly privacy protective add-ons, making it a promising approach for privacy and efficiency. However, there are still two key problems that have yet to be resolved. First, the convergence rate of ZOO-based VFL is significantly slower compared to gradient-based VFL, resulting in low efficiency in model training and more communication round, which hinders its application on large neural networks. Second, although ZOO-based VFL has demonstrated resistance to state-of-the-art (SOTA) attacks, its privacy guarantee lacks a theoretical explanation. To address these challenges, we propose a novel cascaded hybrid optimization approach that employs a zeroth-order (ZO) gradient on the most critical output layer of the clients, with other parts utilizing the first-order (FO) gradient. This approach preserves the privacy protection of ZOO while significantly enhancing convergence. Moreover, we theoretically prove that applying ZOO to the VFL is equivalent to adding Gaussian Mechanism to the gradient information, which offers an implicit differential privacy guarantee. Experimental results demonstrate that our proposed framework achieves similar utility as the Gaussian mechanism under the same privacy budget, while also having significantly lower communication costs compared with SOTA communication-efficient VFL frameworks.",
+        "seg_type": "par"
+      }
+    ]
+  },
+  {
+    "id": "004",
+    "title": "sp_0457_004",
+    "filename": "Videos/sp_0457.mp4",
+    "paper_filename": "Papers/sp_0457.pdf",
+    "type": "slides",
+    "relevant_segments": [
+      {
+        "para_id": "p7",
+        "section_heading": "1 Introduction",
+        "text": "For a clear illustration, a schematic diagram of our proposed framework is presented in Figure 1-(c). The advantage of our framework is two-fold. First, it greatly alleviates the slow convergence problem of ZOO-based VFL (Figure 1-b), where our framework\u2019s convergence is solely limited by the output size of the clients, rather than the parameter size of the entire model. Second, compared with the FOO-based VFL (Figure 1-a), the connection layer of our framework used ZOO, allowing the backward messages to be solely losses, thus inheriting the privacy protection of the ZOO-based VFL.",
+        "seg_type": "par"
+      },
+      {
+        "caption": "Figure 1: Comparing the Asyn-VFL Frameworks",
+        "captionBoundary": {
+          "x1": 207.7790069580078,
+          "x2": 404.2215270996094,
+          "y1": 198.65054321289062,
+          "y2": 204.65301513671875
+        },
+        "figType": "Figure",
+        "imageText": [],
+        "name": "1",
+        "page": 1,
+        "regionBoundary": {
+          "x1": 108.0,
+          "x2": 504.0,
+          "y1": 72.0,
+          "y2": 191.04
+        },
+        "renderDpi": 150,
+        "renderURL": "/Users/meghamariam/PROJECTS/PROJ1_Dataset/PROJ1_Crossmodal-Traversal/DATASET/Presentation/pap-seg/fig/sp_0457/sp_0457-Figure1-1.png",
+        "id": "sp_0457-Figure1-1",
+        "seg_type": "fig"
+      }
+    ]
+  },
+  {
+    "id": "005",
+    "title": "sp_0457_005",
+    "filename": "Videos/sp_0457.mp4",
+    "paper_filename": "Papers/sp_0457.pdf",
+    "type": "slides",
+    "relevant_segments": [
+      {
+        "para_id": "p14",
+        "section_heading": "3 Method",
+        "text": "Problem Definition In the VFL framework, there is one server and M clients4. The server holds the label yi for each sample i \u2208 [n], ([n] \u225c {1, 2 \u00b7 \u00b7 \u00b7n}), while each client holds a non-intersecting feature set for all the samples. Specifically, the features for sample i on client m are denoted as xm,i. Client m\u2019s model, hm(wm;xm,i), is parameterized by wm and takes local feature xm,i as input, outputting the embedding. The server inputs the embeddings from all clients into its own model, which is parameterized by w0, and then calculates the losses for updating the parameters. The VFL framework can be viewed as solving a finite-sum problem in composite form:",
+        "seg_type": "par"
+      },
+      {
+        "box": [
+          228.73690795898438,
+          350.1566162109375,
+          996.0170288085938,
+          427.3354187011719
+        ],
+        "text": [
+          "f ( w _ { 0 } , \\mathbf { w } ; X , Y ) = \\frac { 1 } { n } \\sum _ { i = 1 } ^ { n } \\underbrace { [ \\mathcal { L } ( w _ { 0 } , h _ { 1 , i } , \\ldots , h _ { M , i } ; y _ { i } ) ] } _ { f _ { i } ( w _ { 0 } , h _ { 1 , i , \\ldots , h _ { M , i } } ) } \\; \\mathrm { w i t h } \\; h _ { m , i } = h _ { m } ( w _ { m } ; x _ { m , i } ) \\quad \\forall m \\in [ M ]"
+        ],
+        "page": "sp_0457_page_0004",
+        "id": "sp_0457_page_0004-2",
+        "seg_type": "eq"
+      }
+    ]
+  },
+  {
+    "id": "006",
+    "title": "sp_0457_006",
+    "filename": "Videos/sp_0457.mp4",
+    "paper_filename": "Papers/sp_0457.pdf",
+    "type": "slides",
+    "relevant_segments": [
+      {
+        "para_id": "p17",
+        "section_heading": "3 Method",
+        "text": "ZOO [12] estimates the gradient of a function by sampling a random perturbation within the function\u2019s domain of definition and evaluating its shift on the value domain. To estimate the partial derivative with respect to the output layer of the client\u2019s model, we apply the average random gradient estimation (Avg-RandGradEst) [27, 25] which utilizes q i.i.d. samples {ujm,i} q j=1 on the objective function:",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p20",
+        "section_heading": "3 Method",
+        "text": "The theoretical difficulty in analyzing our framework is that different optimization methods are cascaded within a single model. Unlike most VFL research [34, 5, 28, 6, 41] which updates the global model with a unified optimization method, e.g. \u2207fi (wm) (VAFL [6]) or the \u2207\u0302fi (wm) (ZOOVFL [41]), we apply a cascaded hybrid gradient via chain rule, i.e. \u2207\u0302hmfi (hm,i) \u00b7 \u2207wmhm,i, where \u2207\u0302hmfi (hm,i) is the stochastic gradient estimator of the partial derivative w.r.t. the output layer of the client, and\u2207wmhm(wm) is the local gradient of the client.",
+        "seg_type": "par"
+      },
+      {
+        "box": [
+          278.4573059082031,
+          877.4207763671875,
+          946.2233276367188,
+          962.2327270507812
+        ],
+        "text": [
+          "\\hat { \\nabla } _ { h _ { m } , i } f _ { i } \\left( w _ { 0 } , h _ { 1 , i } , \\cdots , h _ { M , i } \\right) = \\frac { \\phi ( d _ { h _ { m } } ) } { q \\mu _ { m } } \\sum _ { j = 1 } ^ { q } [ \\underbrace { f _ { i } ( h _ { m , i } + \\mu _ { m } u _ { m , i } ^ { j } ) - f _ { i } \\left( h _ { m , i } \\right) } _ { \\delta _ { m , i } ^ { j } } ] u _ { m , i } ^ { j }"
+        ],
+        "page": "sp_0457_page_0004",
+        "id": "sp_0457_page_0004-1",
+        "seg_type": "eq"
+      }
+    ]
+  },
+  {
+    "id": "007",
+    "title": "sp_0457_007",
+    "filename": "Videos/sp_0457.mp4",
+    "paper_filename": "Papers/sp_0457.pdf",
+    "type": "slides",
+    "relevant_segments": [
+      {
+        "para_id": "p1",
+        "section_heading": "Abstract",
+        "text": "Vertical Federated Learning (VFL) is a collaborative machine learning paradigm that enables multiple participants to jointly train a model on their private data without sharing it. To make VFL practical, privacy security and communication efficiency should both be satisfied. Recent research has shown that Zero-Order Optimization (ZOO) in VFL can effectively conceal the internal information of the model without adding costly privacy protective add-ons, making it a promising approach for privacy and efficiency. However, there are still two key problems that have yet to be resolved. First, the convergence rate of ZOO-based VFL is significantly slower compared to gradient-based VFL, resulting in low efficiency in model training and more communication round, which hinders its application on large neural networks. Second, although ZOO-based VFL has demonstrated resistance to state-of-the-art (SOTA) attacks, its privacy guarantee lacks a theoretical explanation. To address these challenges, we propose a novel cascaded hybrid optimization approach that employs a zeroth-order (ZO) gradient on the most critical output layer of the clients, with other parts utilizing the first-order (FO) gradient. This approach preserves the privacy protection of ZOO while significantly enhancing convergence. Moreover, we theoretically prove that applying ZOO to the VFL is equivalent to adding Gaussian Mechanism to the gradient information, which offers an implicit differential privacy guarantee. Experimental results demonstrate that our proposed framework achieves similar utility as the Gaussian mechanism under the same privacy budget, while also having significantly lower communication costs compared with SOTA communication-efficient VFL frameworks.",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p6",
+        "section_heading": "1 Introduction",
+        "text": "To solve the first problem, we reevaluate the advantages and disadvantages of applying first-order (FO) or zero-order (ZO) gradient methods for each component of the VFL, and find an optimal balance between efficiency and privacy protection. This analysis leads to a novel cascaded hybrid optimization framework that efficiently solves the convergence problems while fully preserving privacy protection. Specifically, our proposed framework (VFL-CZOFO) utilizes the ZO gradient for optimizing the most critical output layer of the clients, while other parts are optimized with the FO gradient2. To address the second problem, we theoretically prove that applying ZOO on VFL is equivalent to adding Gaussian Mechanism [7] to the gradient information and can provide a corresponding intrinsic (\u03f5, \u03b4)-DP guarantee.",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p8",
+        "section_heading": "1 Introduction",
+        "text": "The primary innovations of our paper are as follows: 1) Our framework employs a novel cascaded hybrid optimization method, in which different optimization methods are applied to different layers of the global model in each iteration, which significantly improves the convergence rate of ZOO-based VFL while preserving privacy. To the best of our knowledge, no prior research in VFL has proposed a similar method that cascaded a hybrid optimization and exploits its advantages. 2) We provide",
+        "seg_type": "par"
+      },
+      {
+        "cls_id": 14,
+        "label": "algorithm",
+        "score": 0.9369055032730103,
+        "coordinate": [
+          440.193603515625,
+          1430.8275146484375,
+          2097.524169921875,
+          2349.293701171875
+        ],
+        "text": "nput: Learning rate \u03b7m, smoothing parameter \u00b5m, compressor Cm for m  {0, 1, ...M }.\nutput: Parameter wm for m  {0, 1, ..M }.\n: Initialize model parameter wm for all participants m  {0, 1, ..M }\n: while not convergent do\nwhen a client m is activated, do:\nRandomly select a sample xm,i\nCompute and send Cm (hm(wm; xm,i)) to server\nReceive Co(\u2206m,i) from the server (in a listen manner)\nCompute  hm,i fi (w0, \u03a6i) via Avg-RandGradEst (Eq. 2)\nCompute  wm hm (wm; xm,i) via backpropagation.\nCompute vm =  hm, i fi (\u03c90, \u03a6i) \u00b7 wm hm,i\nUpdate wm \u2190 Wm \u2212 \u03b7mVm\nwhen server receives from client m, do:\nCompute \u03b4\ni and group into \u2206m,i\nSend Co(\u2206m,i) to the client m\nCompute v0 = wo fi(w0, \u03a6i), (FOO)\nUpdate W0 \u2190 W0 \u2212 N0V0",
+        "input_path": "/tmp/megha/PDF-Extract-Kit/Presentation/layout_pap/sp_0457/sp_0457_page_5.png",
+        "id": "sp_0457_page_5_1",
+        "seg_type": "algo"
+      },
+      {
+        "caption": "Figure 1: Comparing the Asyn-VFL Frameworks",
+        "captionBoundary": {
+          "x1": 207.7790069580078,
+          "x2": 404.2215270996094,
+          "y1": 198.65054321289062,
+          "y2": 204.65301513671875
+        },
+        "figType": "Figure",
+        "imageText": [],
+        "name": "1",
+        "page": 1,
+        "regionBoundary": {
+          "x1": 108.0,
+          "x2": 504.0,
+          "y1": 72.0,
+          "y2": 191.04
+        },
+        "renderDpi": 150,
+        "renderURL": "/Users/meghamariam/PROJECTS/PROJ1_Dataset/PROJ1_Crossmodal-Traversal/DATASET/Presentation/pap-seg/fig/sp_0457/sp_0457-Figure1-1.png",
+        "id": "sp_0457-Figure1-1",
+        "seg_type": "fig"
+      },
+      {
+        "cls_id": 14,
+        "label": "algorithm",
+        "score": 0.9369055032730103,
+        "coordinate": [
+          440.193603515625,
+          1430.8275146484375,
+          2097.524169921875,
+          2349.293701171875
+        ],
+        "text": "nput: Learning rate \u03b7m, smoothing parameter \u00b5m, compressor Cm for m  {0, 1, ...M }.\nutput: Parameter wm for m  {0, 1, ..M }.\n: Initialize model parameter wm for all participants m  {0, 1, ..M }\n: while not convergent do\nwhen a client m is activated, do:\nRandomly select a sample xm,i\nCompute and send Cm (hm(wm; xm,i)) to server\nReceive Co(\u2206m,i) from the server (in a listen manner)\nCompute  hm,i fi (w0, \u03a6i) via Avg-RandGradEst (Eq. 2)\nCompute  wm hm (wm; xm,i) via backpropagation.\nCompute vm =  hm, i fi (\u03c90, \u03a6i) \u00b7 wm hm,i\nUpdate wm \u2190 Wm \u2212 \u03b7mVm\nwhen server receives from client m, do:\nCompute \u03b4\ni and group into \u2206m,i\nSend Co(\u2206m,i) to the client m\nCompute v0 = wo fi(w0, \u03a6i), (FOO)\nUpdate W0 \u2190 W0 \u2212 N0V0",
+        "input_path": "/tmp/megha/PDF-Extract-Kit/Presentation/layout_pap/sp_0457/sp_0457_page_5.png",
+        "id": "sp_0457_page_5_1",
+        "seg_type": "algo"
+      }
+    ]
+  },
+  {
+    "id": "008",
+    "title": "sp_0457_008",
+    "filename": "Videos/sp_0457.mp4",
+    "paper_filename": "Papers/sp_0457.pdf",
+    "type": "slides",
+    "relevant_segments": [
+      {
+        "para_id": "p7",
+        "section_heading": "1 Introduction",
+        "text": "For a clear illustration, a schematic diagram of our proposed framework is presented in Figure 1-(c). The advantage of our framework is two-fold. First, it greatly alleviates the slow convergence problem of ZOO-based VFL (Figure 1-b), where our framework\u2019s convergence is solely limited by the output size of the clients, rather than the parameter size of the entire model. Second, compared with the FOO-based VFL (Figure 1-a), the connection layer of our framework used ZOO, allowing the backward messages to be solely losses, thus inheriting the privacy protection of the ZOO-based VFL.",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p29",
+        "section_heading": "5 Convergence Analysis",
+        "text": "Assumption 5.1. The formal definition and detailed discussion of the assumptions are in Appendix B. We assume that there is a feasible optimal solution for f(\u00b7),\u2207fi (\u00b7) is L-Lipschitz continuous, fi (\u00b7) has an unbiased gradient, bounded Hessian Hm and bounded block-coordinate gradient Gm. The activation of the clients is independent, and the client has a uniformly bounded delay \u03c4 . Theorem 5.2. Under assumption 5.1, to solve the problem 1 with algorithm 1, the following inequality holds.",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p31",
+        "section_heading": "5 Convergence Analysis",
+        "text": "Remark 5.3. If we choose \u03b7 = 1\u221a T and \u00b5\u2217 = 1\u221aT . Design the compression to make E = O ( 1\u221a T ) and \u0393 = O ( 1\u221a T ) we can derive:",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p32",
+        "section_heading": "5 Convergence Analysis",
+        "text": "where dh = max m {dhm} is the maximum output layer size of the clients. Remark 5.4. This theorem proves that we significantly relieve the slow convergence problem of ZOO-based VFL [41] from O( d\u221a",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p33",
+        "section_heading": "5 Convergence Analysis",
+        "text": "T ) to O( dh\u221a T ).",
+        "seg_type": "par"
+      },
+      {
+        "box": [
+          452.55078125,
+          1386.9593505859375,
+          771.4524536132812,
+          1451.9674072265625
+        ],
+        "text": [
+          "\\frac { 1 } { T } \\sum _ { t = 0 } ^ { T - 1 } \\mathbb { E } \\left\\| \\nabla f \\left( w _ { 0 } ^ { t } , \\mathbf { w } ^ { t } \\right) \\right\\| ^ { 2 } = \\mathcal { O } \\left( \\frac { d _ { h } } { \\sqrt { T } } \\right)"
+        ],
+        "page": "sp_0457_page_0006",
+        "id": "sp_0457_page_0006-2",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          260.6859130859375,
+          1060.6297607421875,
+          962.5413818359375,
+          1195.1622314453125
+        ],
+        "text": [
+          "\\begin{array} { r l } & { \\displaystyle \\frac { 1 } { T } \\sum _ { t = 0 } ^ { T - 1 } \\mathbb { E } \\left\\| \\nabla f \\left( w _ { 0 } ^ { t } , \\mathbf { w } ^ { t } \\right) \\right\\| ^ { 2 } \\leq \\frac { 4 p _ { * } \\mathbb { E } \\left( f ^ { 0 } - f ^ { * } \\right) } { T \\eta } + 2 \\eta p _ { * } L _ { * } \\left( 4 d _ { * } \\mathbf { G } _ { * } ^ { 4 } + \\mu _ { * } ^ { 2 } L _ { * } ^ { 2 } d _ { * } ^ { 2 } \\mathbf { G } _ { * } ^ { 2 } + 2 \\sigma _ { 0 } ^ { 2 } \\right) } \\\\ & { \\qquad \\qquad \\qquad \\qquad \\qquad \\qquad + 7 \\eta ^ { 2 } p _ { * } \\tau \\mathbf { G } _ { * } ^ { 2 } \\left( 4 d _ { * } \\mathbf { G } _ { * } ^ { 2 } + \\mu _ { * } ^ { 2 } L _ { * } ^ { 4 } d _ { * } ^ { 2 } + 2 L _ { * } ^ { 2 } \\Gamma \\right) } \\\\ & { \\qquad \\qquad \\qquad \\qquad \\qquad + \\mu _ { * } ^ { 2 } p _ { * } L _ { * } ^ { 2 } d _ { * } ^ { 2 } \\mathbf { G } _ { * } ^ { 2 } + \\mathcal { E } p _ { * } H _ { * } ^ { 2 } \\left( 6 + 1 6 \\mathbf { G } _ { * } ^ { 2 } \\right) + 1 7 \\mathrm { T } p _ { * } \\mathbf { G } _ { * } ^ { 2 } } \\end{array}"
+        ],
+        "page": "sp_0457_page_0006",
+        "id": "sp_0457_page_0006-3",
+        "seg_type": "eq"
+      }
+    ]
+  },
+  {
+    "id": "009",
+    "title": "sp_0457_009",
+    "filename": "Videos/sp_0457.mp4",
+    "paper_filename": "Papers/sp_0457.pdf",
+    "type": "slides",
+    "relevant_segments": [
+      {
+        "para_id": "p25",
+        "section_heading": "4 Security Analysis",
+        "text": "Theorem 4.1. Differential Privacy Guarantee of Sharing the ZO Gradient: Under the \u201chonestbut-colluded\" threat model where the attacker can access all information of all clients through the entire training process, including the client\u2019s dataset, model, and the ZO gradient received from the server. Under algorithm 1, with q being sufficiently large, \u03b6 being the maximum l2-norm of the partial gradient w.r.t. any client\u2019s output through the entire training. If the following condition holds:",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p26",
+        "section_heading": "4 Security Analysis",
+        "text": "we can derive that sharing the stochastic gradient estimation from the server ensures (\u03f5\u0304, \u03b4\u0304)-DP for all \u03f5, \u03b4, \u03b4\u2032 > 0, where \u03f5\u0304 = \u221a 2T ln(1/\u03b4\u2032)\u03f5+ T\u03f5(e\u03f5 \u2212 1), \u03b4\u0304 = T\u03b4 + \u03b4\u2032.",
+        "seg_type": "par"
+      },
+      {
+        "box": [
+          400.3837585449219,
+          263.9081115722656,
+          824.2298583984375,
+          344.20867919921875
+        ],
+        "text": [
+          "\\sigma _ { m _ { t } , s } = \\sqrt { \\frac { 1 } { q d _ { h } T } \\sum _ { t = 0 } ^ { T - 1 } \\mathbf { t r } ( \\Psi _ { m _ { t } } ^ { t } ) } > \\frac { 2 \\zeta \\sqrt { 2 \\ln ( 1 . 2 5 / \\delta ) } } { N \\cdot \\epsilon }"
+        ],
+        "page": "sp_0457_page_0006",
+        "id": "sp_0457_page_0006-1",
+        "seg_type": "eq"
+      }
+    ]
+  },
+  {
+    "id": "010",
+    "title": "sp_0457_010",
+    "filename": "Videos/sp_0457.mp4",
+    "paper_filename": "Papers/sp_0457.pdf",
+    "type": "slides",
+    "relevant_segments": [
+      {
+        "caption": "Table 3: Evaluating the Test Accuracy and the Comm. Cost",
+        "captionBoundary": {
+          "x1": 187.21200561523438,
+          "x2": 424.4813232421875,
+          "y1": 80.6075210571289,
+          "y2": 86.6099853515625
+        },
+        "figType": "Table",
+        "imageText": [
+          "VAFL[6]+DP[1]",
+          "\u2713",
+          "95.81",
+          "\u00b1",
+          "0.20",
+          "123",
+          "MB",
+          "184",
+          "MB",
+          "799",
+          "MB",
+          "1413",
+          "MB",
+          "6144",
+          "MB",
+          "Syn-ZOO-VFL",
+          "\u2713",
+          "84.51",
+          "\u00b1",
+          "0.72",
+          "1406",
+          "MB",
+          "2520",
+          "MB",
+          "-",
+          "-",
+          "-",
+          "ZOO-VFL",
+          "[41]",
+          "\u2713",
+          "85.62",
+          "\u00b1",
+          "0.45",
+          "860",
+          "MB",
+          "1300",
+          "MB",
+          "-",
+          "-",
+          "-",
+          "Ours",
+          "\u2713",
+          "95.00",
+          "\u00b1",
+          "0.21",
+          "16",
+          "MB",
+          "24",
+          "MB",
+          "39",
+          "MB",
+          "205",
+          "MB",
+          "790",
+          "MB",
+          "Split",
+          "learning",
+          "[34]",
+          "\u2717",
+          "98.03",
+          "\u00b1",
+          "0.07",
+          "175",
+          "MB",
+          "234",
+          "MB",
+          "937",
+          "MB",
+          "1758",
+          "MB",
+          "5859",
+          "MB",
+          "Compressed-VFL",
+          "[5]",
+          "\u2717",
+          "98.17",
+          "\u00b1",
+          "0.13",
+          "109",
+          "MB",
+          "330",
+          "MB",
+          "440",
+          "MB",
+          "1099",
+          "MB",
+          "3663",
+          "MB",
+          "VAFL",
+          "[6]",
+          "\u2717",
+          "97.36",
+          "\u00b1",
+          "0.14",
+          "123",
+          "MB",
+          "184",
+          "MB",
+          "307",
+          "MB",
+          "1106",
+          "MB",
+          "6144",
+          "MB",
+          "Privacy",
+          "Test",
+          "Accuracy",
+          "Cost(60%)",
+          "Cost",
+          "(80%)",
+          "Cost(90%)",
+          "Cost",
+          "(95%)",
+          "Cost",
+          "(total)"
+        ],
+        "name": "3",
+        "page": 8,
+        "regionBoundary": {
+          "x1": 108.96,
+          "x2": 505.44,
+          "y1": 95.52,
+          "y2": 180.0
+        },
+        "renderDpi": 150,
+        "renderURL": "/Users/meghamariam/PROJECTS/PROJ1_Dataset/PROJ1_Crossmodal-Traversal/DATASET/Presentation/pap-seg/fig/sp_0457/sp_0457-Table3-1.png",
+        "id": "sp_0457-Table3-1",
+        "seg_type": "tab"
+      },
+      {
+        "para_id": "p12",
+        "section_heading": "2 A Detailed Comparison with SOTA VFL Frameworks",
+        "text": "Compared to the FOO-based VFL [34, 5, 6] our framework has two distinct advantages. First, our framework leverages the intrinsic privacy protection of ZOO, which is a result of its stochastic characteristics and the concealment of internal information. Second, we leverage the advantage of ZOO to reduce the communication cost from the server to the client where the backward message consists of merely q elements, which is typically significantly smaller than the FO-based VFL with dhB elements. The key difference between our framework and the FOO-based framework is that our approach reduces communication costs while simultaneously ensuring privacy protection. In contrast, FOO-based VFL typically shares internal information (parameters/gradient) [6, 5] and then applies for extra privacy protection mechanism [36, 32].",
+        "seg_type": "par"
+      }
+    ]
+  },
+  {
+    "id": "011",
+    "title": "sp_0457_011",
+    "filename": "Videos/sp_0457.mp4",
+    "paper_filename": "Papers/sp_0457.pdf",
+    "type": "slides",
+    "relevant_segments": [
+      {
+        "caption": "Table 2: Sampling Times of Avg-RandGradEst and the Corresponding Differential Privacy Guarantee",
+        "captionBoundary": {
+          "x1": 107.69100189208984,
+          "x2": 503.9951477050781,
+          "y1": 80.6075210571289,
+          "y2": 86.6099853515625
+        },
+        "figType": "Table",
+        "imageText": [
+          "100",
+          "0.15",
+          "7.3",
+          "10\u22126",
+          "3.3\u00d7",
+          "10\u22123",
+          "10\u22126",
+          "93.6",
+          "9.4\u00d7",
+          "10\u22122",
+          "10",
+          "1.61",
+          "20.1",
+          "10\u22126",
+          "2.8\u00d7",
+          "10\u22123",
+          "10\u22126",
+          "85.9",
+          "9.4\u00d7",
+          "10\u22122",
+          "q",
+          "\u03c32",
+          "\u03b6",
+          "\u03b4",
+          "\u03f5",
+          "\u03b4\u2032",
+          "\u03f5\u0304",
+          "\u03b4\u0304"
+        ],
+        "name": "2",
+        "page": 7,
+        "regionBoundary": {
+          "x1": 180.95999999999998,
+          "x2": 431.03999999999996,
+          "y1": 94.56,
+          "y2": 134.4
+        },
+        "renderDpi": 150,
+        "renderURL": "/Users/meghamariam/PROJECTS/PROJ1_Dataset/PROJ1_Crossmodal-Traversal/DATASET/Presentation/pap-seg/fig/sp_0457/sp_0457-Table2-1.png",
+        "id": "sp_0457-Table2-1",
+        "seg_type": "tab"
+      },
+      {
+        "para_id": "p40",
+        "section_heading": "6.2 Evaluation on the Privacy Protection",
+        "text": "We obtain the DP guarantee w.r.t. the sampling times of ZOO in the dist-MNIST experiment and report the result in Table 2. We estimate \u03c32 by freezing the model and repeatedly applying Eq.2 100 times, then calculating the variance of the estimated gradients. We obtain the maximum gradient norm \u03b6 by recording the norm throughout the entire training process10. We set \u03b4 = 10\u22126 and calculate \u03f5 based on the given sampling times q. The iteration T was set to the total iteration of 50 epochs, which is 93800.",
+        "seg_type": "par"
+      }
+    ]
+  },
+  {
+    "id": "012",
+    "title": "sp_0457_012",
+    "filename": "Videos/sp_0457.mp4",
+    "paper_filename": "Papers/sp_0457.pdf",
+    "type": "slides",
+    "relevant_segments": [
+      {
+        "para_id": "p48",
+        "section_heading": "8 Conclusion",
+        "text": "We propose a solution in VFL that improves communication efficiency and privacy simultaneously. Our method has been theoretically proven to outperform ZOO-based VFL in terms of convergence, while also providing proof of the intrinsic differential privacy guarantees. Through our experiments, we demonstrate that our method substantially reduces the communication cost of VFL in comparison to the state-of-the-art communication-efficient VFL. Furthermore, our method achieves comparable utility to VFL models that offer the same level of privacy guarantee.",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p1",
+        "section_heading": "Abstract",
+        "text": "Vertical Federated Learning (VFL) is a collaborative machine learning paradigm that enables multiple participants to jointly train a model on their private data without sharing it. To make VFL practical, privacy security and communication efficiency should both be satisfied. Recent research has shown that Zero-Order Optimization (ZOO) in VFL can effectively conceal the internal information of the model without adding costly privacy protective add-ons, making it a promising approach for privacy and efficiency. However, there are still two key problems that have yet to be resolved. First, the convergence rate of ZOO-based VFL is significantly slower compared to gradient-based VFL, resulting in low efficiency in model training and more communication round, which hinders its application on large neural networks. Second, although ZOO-based VFL has demonstrated resistance to state-of-the-art (SOTA) attacks, its privacy guarantee lacks a theoretical explanation. To address these challenges, we propose a novel cascaded hybrid optimization approach that employs a zeroth-order (ZO) gradient on the most critical output layer of the clients, with other parts utilizing the first-order (FO) gradient. This approach preserves the privacy protection of ZOO while significantly enhancing convergence. Moreover, we theoretically prove that applying ZOO to the VFL is equivalent to adding Gaussian Mechanism to the gradient information, which offers an implicit differential privacy guarantee. Experimental results demonstrate that our proposed framework achieves similar utility as the Gaussian mechanism under the same privacy budget, while also having significantly lower communication costs compared with SOTA communication-efficient VFL frameworks.",
+        "seg_type": "par"
+      }
+    ]
+  }
+]

@@ -1,0 +1,100 @@
+1
+00:00:00,031 --> 00:00:01,834
+that we have such large vocabularies.
+
+2
+00:00:02,294 --> 00:00:04,798
+So the first idea here is hierarchical softmax.
+
+3
+00:00:04,818 --> 00:00:06,120
+And this is kind of a tangent.
+
+4
+00:00:06,440 --> 00:00:12,670
+I find this paper, by the way, it's sort of hard to read because it's like a half engineering paper.
+
+5
+00:00:13,731 --> 00:00:20,121
+But yeah, so first they introduced this hierarchical softmax, which is kind of a distraction.
+
+6
+00:00:20,321 --> 00:00:29,194
+It's kind of a, here is what we do, here is what we considered first, but then didn't end up using really, they do compare with it, but
+
+7
+00:00:29,174 --> 00:00:34,704
+The flow of text is sort of that you expect this to be part of the final model, which it isn't.
+
+8
+00:00:35,104 --> 00:00:48,046
+So in the hierarchical softmax, what you do instead of having this giant multi-class classification task right here, you take all of these classes right here and you put them in a sort of a tree.
+
+9
+00:00:48,948 --> 00:00:53,055
+So you take this and you put them into a tree.
+
+10
+00:00:53,035 --> 00:01:01,333
+So instead of classifying, you know, let's say we have a thousand classes, instead of classifying a thousand ways, we first classify in two ways.
+
+11
+00:01:01,915 --> 00:01:06,164
+And then we classify in two ways again, from each one.
+
+12
+00:01:06,324 --> 00:01:10,694
+And then we classify in two ways again, as you know, a thousand is like two to the 10.
+
+13
+00:01:11,075 --> 00:01:12,478
+So
+
+14
+00:01:12,458 --> 00:01:24,634
+We need approximately 10 layers of this before we are actually arriving at a thousand classes, but it also means that we only have two-way classifications each time.
+
+15
+00:01:25,855 --> 00:01:35,007
+So in the hierarchical softmax, we build trees like this, and then we have a word, we look up its vector, sorry, its vector,
+
+16
+00:01:34,987 --> 00:01:38,891
+And then we classify it for each of these nodes.
+
+17
+00:01:39,131 --> 00:01:45,217
+So your output isn't going to be a thousand, um, a thousand log probabilities.
+
+18
+00:01:45,657 --> 00:01:52,624
+Your output is going to be a log probability, a binary log probability for each of the nodes right here.
+
+19
+00:01:52,924 --> 00:01:58,950
+So you want to know, okay, here is it in the upper half or the lower half of my classes?
+
+20
+00:01:59,431 --> 00:01:59,871
+Okay, cool.
+
+21
+00:01:59,891 --> 00:02:00,792
+It's in the upper half.
+
+22
+00:02:00,772 --> 00:02:20,721
+okay here is in the upper half or the lower half and so on and you learn all to predict all of these junctions right here and that's going to end up you with you having to predict less now of course you are constrained you impose a very big prior on the class distribution classes aren't independently anymore.
+
+23
+00:02:20,701 --> 00:02:37,208
+Namely, if two classes here are in the same subtree, that means that their predictions are going to be correlated because the path to them is the same partially.
+
+24
+00:02:37,188 --> 00:02:47,722
+How you arrange the classes here is very important, and there has been a lot of work in this, but as I said, this is rather a distraction right here.
+
+25
+00:02:48,123 --> 00:02:55,045
+Hierarchical Softmax is a way to solve this, however, they went with a different way right here.
+

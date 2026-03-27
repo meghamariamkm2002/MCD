@@ -1,0 +1,299 @@
+WEBVTT
+
+00:00.031 --> 00:00.457
+right here.
+
+00:00.518 --> 00:02.852
+So they say usually
+
+00:03.490 --> 00:08.798
+What something like alpha zero does is you are game starts here, right?
+
+00:09.338 --> 00:11.502
+And then you have two actions to take.
+
+00:11.862 --> 00:13.104
+You maybe take this action.
+
+00:13.244 --> 00:13.444
+Okay.
+
+00:13.505 --> 00:14.987
+Now your opponent has two action.
+
+00:15.568 --> 00:16.729
+Maybe they take this action.
+
+00:16.929 --> 00:17.250
+All right.
+
+00:17.631 --> 00:20.134
+And now you have two actions again.
+
+00:20.795 --> 00:21.676
+Which one do you take?
+
+00:22.277 --> 00:30.409
+What, what's something like deep Q learning or actor critic learning would do is they would simply put a neural network here.
+
+00:30.389 --> 00:35.059
+they would look at this state and they would simply tell you which action to pick.
+
+00:35.079 --> 00:38.426
+Like this action right here sounds good to the neural network.
+
+00:39.508 --> 00:48.567
+In contrast to that, alpha zero, if I draw the same situation right here, alpha zero, what it will do is
+
+00:48.682 --> 00:52.285
+it will say, well, I could do this or I could do this.
+
+00:52.966 --> 00:57.811
+If I do the left thing, then I'm going to have, my opponent's going to have two options.
+
+00:57.951 --> 00:59.853
+They could do this or they could do that.
+
+01:00.754 --> 01:04.017
+If they do the left thing again, and so on, you get the idea.
+
+01:04.337 --> 01:07.840
+It sort of goes down the tree and it does this over here, right?
+
+01:08.361 --> 01:09.582
+Sorry, this should be.
+
+01:11.083 --> 01:12.945
+So it goes down the tree.
+
+01:13.005 --> 01:14.807
+I'm stupid.
+
+01:16.627 --> 01:21.293
+And it evaluates, it kind of calculates ahead.
+
+01:21.313 --> 01:24.036
+It uses its internal simulator to look ahead.
+
+01:24.817 --> 01:28.621
+And it could technically do this until it reaches the end.
+
+01:29.002 --> 01:39.394
+And then it would know if it reaches the end state every time here, it would know it could simply backwards calculate which one is the best option for me to do right now.
+
+01:39.374 --> 01:48.766
+However, this game is often very, very deep, so the tree, the depth here, is often so deep that you can't solve the whole game.
+
+01:49.167 --> 01:57.598
+So what AlphaZero does instead is it says, I'm not going to play until the end, I'm going to play a certain amount ahead, right?
+
+01:57.618 --> 02:02.985
+I'm going to think some limited depth ahead, and I know AlphaZero does this adaptively, but
+
+02:02.965 --> 02:07.330
+Bear with me, I'm going to think some limited depth D ahead.
+
+02:07.370 --> 02:10.974
+So here in this case, D is equal to two because we think two layers ahead.
+
+02:11.355 --> 02:20.345
+And then at the end, I'm going to replace everything that comes after with a single value that indicates how good this is for me.
+
+02:20.625 --> 02:20.926
+Okay.
+
+02:21.526 --> 02:24.990
+So, and this thing right here is very hard to get.
+
+02:25.170 --> 02:32.719
+Of course, if you knew how good anything is for you, then you have solved the game.
+
+02:32.699 --> 02:33.817
+But...
+
+02:33.965 --> 02:37.390
+Alpha zero, at this point, the neural network comes in, right?
+
+02:38.191 --> 02:40.113
+This is a neural network, it's a black box.
+
+02:40.614 --> 02:45.681
+So it simply asks for each one of these states, how valuable do you think that is?
+
+02:45.961 --> 02:47.884
+Okay, how valuable do you think that is?
+
+02:48.044 --> 02:49.146
+Okay, and so on.
+
+02:49.166 --> 02:53.532
+So it asks for each state, the neural network, how valuable that particular node is.
+
+02:54.232 --> 02:57.116
+And then it does the same backwards calculation.
+
+02:57.517 --> 03:03.465
+So we've sort of substituted going to the end of the game by the neural network.
+
+03:04.053 --> 03:09.645
+But it is still more powerful than asking the neural network at the very beginning like we do here.
+
+03:10.167 --> 03:13.414
+The power comes from combining the learning.
+
+03:13.634 --> 03:17.703
+This is the learning and the search.
+
+03:18.084 --> 03:19.868
+This here is the search.
+
+03:22.362 --> 03:22.783
+right?
+
+03:22.803 --> 03:24.827
+So this is what alpha zero does.
+
+03:24.887 --> 03:29.276
+And this is what this paper does for imperfect information games.
+
+03:29.296 --> 03:35.388
+So imperfect information games is when you don't know a particular thing about the game at any point.
+
+03:35.849 --> 03:38.334
+So there is hidden information like in poker.
+
+03:38.795 --> 03:40.759
+And the problem is right here,
+
+03:40.739 --> 03:48.811
+If you do the same thing for this game right here and you look from player one's perspective and you say, okay, this game is very deep.
+
+03:48.992 --> 03:50.754
+Actually, it's just too deep, right?
+
+03:50.915 --> 03:53.218
+But let's assume that's too deep for you.
+
+03:53.819 --> 04:02.572
+And you want to replace, you want to say, okay, I'm just going to look ahead, d equals one, that's all I can afford.
+
+04:02.993 --> 04:08.181
+I go ahead and at the end, I'm going to ask my neural network what the value here is.
+
+04:09.325 --> 04:16.595
+and the neural network will tell you accurately that the value at each of these nodes is zero.
+
+04:16.615 --> 04:27.189
+So the average value, if you can see right here, the average value of each of these nodes is zero, depending of course on how player two acts, but in this case it's zero.
+
+04:27.830 --> 04:30.473
+So as player one,
+
+04:30.638 --> 04:37.330
+this information will not lead you to the correct optimal conclusion, the correct optimal conclusion being this 0.4, 0.4, 0.2.
+
+04:37.350 --> 04:44.484
+Okay, player one, like it's indifferent, any strategy could work here, right?
+
+04:44.764 --> 04:50.715
+If there is some regularization, it'll probably come to the point, the one third, one third, one third, right?
+
+04:50.955 --> 04:53.440
+Since all the values are equal,
+
+04:53.420 --> 04:58.284
+It might conclude it's probably best if I distribute my actions or something.
+
+04:58.324 --> 05:00.266
+So you can see the problem right here.
+
+05:00.667 --> 05:08.874
+And the problem is that this value right here, it depends on the strategy of player one.
+
+05:10.656 --> 05:14.099
+And this is something that alpha zero has no concept on.
+
+05:14.479 --> 05:21.165
+For alpha zero, the value of a node only ever depends on what comes downstream.
+
+05:21.297 --> 05:29.389
+In imperfect information game, the value of a node also depends on what has happened upstream.
+
+05:29.709 --> 05:32.974
+So on the strategy of the upstream events.
+
+05:33.935 --> 05:37.540
+And that is, as I said, that is quite important.
+
+05:38.121 --> 05:47.254
+Also for AlphaZero, once I have evaluated a game tree and determined the value of a node like this,
+
+05:47.403 --> 05:50.949
+I can evaluate the same game tree again, and the value is going to be the same.
+
+05:51.090 --> 06:10.103
+But for the same reason, because the value depends upstream, the value of this node right here, depending on upstream, if I change my strategy, so if here I determine either action one or action two with a certain probability, if this search process results
+
+06:10.083 --> 06:13.768
+in a result that tells me this is how often you should pick action one.
+
+06:14.309 --> 06:17.833
+And that's different from what I searched with, right?
+
+06:18.033 --> 06:20.337
+Then all of these values down here are going to change.
+
+06:20.957 --> 06:22.900
+And I can basically search again.
+
+06:22.940 --> 06:28.047
+So these are the problems of imperfect information games that we're going to tackle.
+
+06:28.067 --> 06:30.991
+So you see this poker thing is sort of a microcosm.
+
+06:31.671 --> 06:39.702
+And this was already half of the paper if you understood why exactly searching
+
+06:39.682 --> 06:47.397
+using kind of a value estimator combined with this tree search is a problem in imperfect information games.
+
+06:48.018 --> 06:55.549
+So let's quickly go through the abstract, then we're going to have to define a few terms, and then we can go into this algorithm.
+
+06:55.729 --> 06:57.191
+The algorithm is called rebel.
+
+06:57.772 --> 07:06.484
+It's a general framework for self play reinforcement learning and search that provably converges to a Nash equilibrium in any two player zero sum game.
+
+07:07.045 --> 07:07.866
+Okay.
+
+07:07.886 --> 07:16.438
+Um, it says that in the simpler setting of perfect information games, rebel reduces to an algorithm similar to alpha zero.
+
+07:18.342 --> 07:39.253
+and they say we also show rebel achieves superhuman performance in heads up no limit texas hold them poker while using far less domain knowledge than any prior poker ai so last video i've had a comment which is correct that is not the best hold them ai out there as far as i can tell
+
+07:39.233 --> 07:46.263
+However, it is a very performant one that uses very little domain knowledge of poker.
+
+07:46.343 --> 07:51.870
+So it, like AlphaZero, removed basically all domain knowledge out of the games it played.
+
+07:52.391 --> 08:02.785
+This bot right here, I think the domain knowledge is to the extent of it is given a limited set of bet sizes, even though it's kind of no limit.
+
+08:02.825 --> 08:04.988
+Hold them where you can bet whatever you want.
+
+08:04.968 --> 08:15.553
+It's given sort of a limited bet, limited size of bet sizes, like half the pot, full pot, two times the pot, and so on.
+
+08:16.555 --> 08:21.587
+In order to make the actions discrete, I think that's just easier for this algorithm.
+
+08:22.068 --> 08:30.047
+But in any case, the algorithm is applicable pretty much anywhere where you have a two player zero sum imperfecting from
+

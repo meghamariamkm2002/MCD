@@ -1,0 +1,5 @@
+is that we have pre-trained the teacher-different model SP and a student implicit-generated model G theta, which can generate data samples efficiently.
+And we use PT and QT to denote the underlying distribution of teacher-different model and the distribution of diffuse the student distribution.
+And our goal is to minimize some divergence between Q0 and P0.
+such that the student can learn from the teacher.
+To do this we

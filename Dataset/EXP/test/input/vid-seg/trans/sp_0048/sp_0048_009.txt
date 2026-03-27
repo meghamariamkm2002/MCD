@@ -1,0 +1,38 @@
+theory of that this still works.
+They compare this, of course, to the other algorithms.
+They observe that their algorithm uses substantially less memory.
+And well, substantially less memory and substantially less compute time.
+Um, once you go up to a number of inner gradient steps and it works better than this first order mammal.
+So this first order mammal was our kind of initial guess of how we could do this.
+This tends to perform very poorly.
+As you can see, uh, their, their, um,
+Oh, you can't actually see that here.
+Their method is better, but their method is better and uses less time because you have this inner conjugate gradient optimizer.
+Sorry, this is the outer optimizer.
+Okay.
+So this is the error plot of how well are these methods are able to approximate the true gradient.
+So if you could compute this true outer gradient, you know, that we did with mammal, but we optimize to the end.
+How close are you getting?
+Of course, the problem with this method right here is that you do these approximations.
+and those could hurt you.
+But the problem with mammal is that you're back propagating through the optimization procedure, and that means the non-linear errors could sort of accumulate.
+And as you can see here, even though both might eventually get to the zero error, if you give them enough inner gradient steps,
+Especially at the low inner gradient step regime, the implicit mammal is much better than mammal.
+Now, I've just said the errors accumulate, but the effect probably here is that the fact that with mammal, you don't actually do enough inner steps to reach a good enough optimum of the inner tasks.
+So these inner gradient of the tasks,
+their gradients when they're still very not optimized.
+And therefore they are a very bad estimate for your outer gradient than when you do more gradient steps.
+So that actually hurts you more, which is also a bit surprising to me.
+And then at the end you see
+these conjugate gradient steps.
+This is when you approximate this matrix inverse.
+If you just do two steps, then at some point that error dominates.
+But if you do more steps, you can reach a much lower error.
+And 10 steps isn't that much for an algorithm like this.
+As you can see here, the 10 steps
+Your computation time will still in the regime of many gradient steps will still be lower than the original mammal.
+And then they actually test this thing.
+And of course, they're the best at pretty much everything.
+I don't want to go into the exact details here.
+I invite you to check out the paper for that, check out if you're interested in the proofs and the approximation guarantees.
+And with that, bye-bye.

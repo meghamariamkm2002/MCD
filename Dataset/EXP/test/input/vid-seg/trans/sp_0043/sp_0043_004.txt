@@ -1,0 +1,81 @@
+They propose actually to solve this problem.
+They say we propose to regularize trajectory optimization by means of a denoising autoencoder that is trained on the same trajectories as the model of the environment.
+We show that the proposed regularization leads to improved planning with both gradient based and gradient free optimizers.
+We also demonstrate that using regularized trajectory optimization leads to rapid initial learning in a set of popular motor control tasks, which suggests that the proposed approach can be a useful tool for improving sample efficiency.
+So, in essence, what do they do?
+They basically say, okay, we want to regularize this using a denoising autoencoder.
+And I think it's best if we look at the math for doing this.
+So the math here starts off as follows saying you want to learn a world model.
+This is F here.
+F is the world model.
+It takes in a state and an action and it gives you the next state or an approximation to it.
+And the parameters here indicate that this is some sort of function that you learn like a deep neural network.
+You can do this in fully or partially observed environments.
+Now, when you plan, what you want to do is you say, I have a planning horizon H, right?
+And I have a reward function.
+And the reward function is going to give me a reward for each state action pair.
+Right?
+So if I'm in a state and I do a certain action, I'm going to get some reward.
+This could be you have reached the target, or this could be, you know, how much money you've collected or whatnot.
+So you're going to look a horizon H, you're going to look H steps into the future, and you want to maximize the sum of all the rewards here.
+So in the limit, this reduces to simply like, for example, reaching the target in our room's case, if H is infinite.
+But you can consider a lower planning horizon.
+So you want to find the action sequence that maximizes this reward in the future.
+Okay.
+And now this reward.
+relies on your environment model.
+Here's the algorithm.
+First, you collect some data.
+That's how you start off.
+Then train the dynamics model, the world model, using the data you've already collected.
+Then for each time step T, you want to optimize this trajectory.
+So I want to find the best next action sequence and take the first action, implement the first action and get the new observation.
+And do you do this in a loop until the end?
+And at the end you say add this data to D. So that's what you do.
+You use your world model.
+to get the best action sequence.
+That's how you optimize the trajectory.
+And then at the end of the episode, you've, you've done an episode, right?
+You went somewhere, you put all of this into your training data to make the world model better.
+Important to note here is that the world model will only learn about things that you have done, right?
+So there is kind of an interaction effect.
+That's the green area here.
+The world model only knows the paths.
+The world model only can accurately estimate the world where you have been.
+And that's going to turn out to be the entire problem because this blue arrow finder can now go away from there from that.
+That's explained here.
+Potential inaccuracies of the trained model cause substantial difficulties for the planning process.
+Rather than optimizing what really happens, planning can easily end up exploiting the weaknesses of the predictive model.
+Planning is effectively an adversarial attack against the agent's own forward model.
+This results in a wide gap between expectations based on the model and what actually happens.
+Okay, and they have this example here, where it's like an industrial control process.
+And what you have to imagine, there's like some sort of a container here with a liquid in it.
+And there are two pipes that lead to this container, pipe one and pipe two.
+And there are valves here.
+So there's this valve right here.
+And there's this valve right here.
+So these are valve one and valve two.
+And there is also an output pipe right here, and that's another valve right here.
+So you can control these three valves, the two inputs and one output, and you have to somehow optimize the reaction in here.
+So this is a chemical reaction made up out of the two liquids that flow in here.
+and you have to somehow optimize a property of that and that's highly non-linear and has maybe like a time shift so when you open a valve it's going to take a while and then it's very non-linear and then you are not supposed to break the pressure limit so you have to also outflow some stuff.
+And if you just do this with a learned model, it looks like this.
+So first of all, here is a classic controller.
+Like people have been doing this stuff in industry and they basically build controllers for it.
+And you can do that and that works out really okay-ish.
+As you can see right here, this is the product rate, what you're supposed to optimize.
+And you see some sort of a smooth
+You're supposed to actually bring it to this dashed line right here.
+And this is some sort of smooth thing, right?
+And you're supposed to, I guess, bring the pressure here and the A in purge.
+I don't know what these quantities are, but you're supposed to bring them to the dashed line and it's very nonlinear and very time dependent.
+So that works.
+And you see here kind of the smoothness by which the variables are manipulated.
+Now, if you just learn a world model and then do this trajectory optimization, basically, this is some sort of a planning based reinforcement learning with a world model.
+You see right here, it works, but it's super jittery.
+The pressure spikes here, and apparently this here is a pressure limit, so it spikes the pressure limit.
+And you can see that the manipulated variables are up and down and up and down and up and down, because at each step, it basically completely overestimates its potential reward.
+It thinks like, wow, this is really good, but all it does is find a weakness in the model and not a really good action per se.
+Now, with their method to already take it away, you can see that now the control task super smoothly and very quickly converges to these optimal things.
+And you can see that the variables being manipulated are also rather smoothly manipulated.
+And that's an indication that the model is accurately estimating their rewards.

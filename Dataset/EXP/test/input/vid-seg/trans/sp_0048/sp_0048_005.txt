@@ -1,0 +1,54 @@
+up this.
+So the crucial part of the paper I think is right here and it's sort of like, you know, section 2.2.
+But I would want to point out that I think this is the crucial part, this is why the method works ultimately, why it's able to build this implicit gradient.
+So the section is called proximal regularization in the inner level.
+And we'll go through this with a bit of detail.
+To have sufficient learning in the inner level while also avoiding overfitting, ALG, that's the inner optimization procedure, needs to incorporate some form of regularization.
+So their goal here, or their point here is that, especially if these individual tasks have small training data sets, you need to have some kind of protection against overfitting.
+And they say since MAML uses a small number of gradient steps, this corresponds to early stopping and can be interpreted as a form of regularization and Bayesian prior.
+So MAML is this previous method, this basic method that back propagates through the optimization procedure.
+And since it does this, since it back propagates through the optimization procedure,
+It's computationally limited to only run very few forward optimization steps because it then has to back propagate through each one, right, needs to store each one.
+So it's computationally limited.
+So by necessity.
+it uses only a small number of gradient steps.
+And therefore, this is kind of early stopping.
+And we know to prevent overfitting, one thing you can do is to stop before your training accuracy reaches full zero.
+And you can stop earlier than that, ideally at a point when your validation accuracy reaches the low point.
+But they say basically this this limited number of steps is a form of regularization.
+Now, of course, in this new method, we don't have this constraint anymore.
+We can run our inner optimization to super convergence, and therefore, we don't have this implicit regularizer anymore, and we'll have to make up for that.
+They say, in cases like ill conditioned optimization landscapes and medium shot learning, we may want to take many gradient steps, which poses two challenges for mammal.
+First, we need to store and differentiate through the long optimization path of ALG, which imposes a considerable computation and memory burden, right?
+That's what we said.
+Second, the dependence of the model parameters phi i on the meta parameters shrinks and vanishes as the number of gradient steps in algroes, making meta learning difficult.
+So what they're saying is if you optimize your inner optimization algorithm to the very end, then it is not very, it's dependence and especially for gradient descent, it's linear dependence
+on the initial parameters, so on the meta parameters, shrinks the more optimization steps you do, because the more and more you're going to basically forget about your initialization, move away from that and move to a local optimum, which you could reach from many, many different initializations.
+Though that's still a question of whether that's happening.
+But that's the idea here, right?
+If you're at the local optimum, you could have reached that from any sort of point.
+And there's going to be very little information about the end of the procedure from the beginning.
+And therefore, if you want to calculate the gradient, that's going to be like super inaccurate.
+And they say to overcome these limitations, so they solve these two things in one right here, we consider a more explicitly regularized algorithm.
+So what they'll say is they'll say, we don't just want to optimize this inner objective.
+So this would be here.
+So we don't just want to find the minimum of this inner loss function.
+That's one goal we have.
+But the other goal we have is to stay close to the initial parameters.
+And that's where this regularizer comes in here.
+So this basically says we want with our parameters here that we are optimizing, we want to find them such that they minimize this loss function, really minimize it, find the best point.
+But also with a trade-off of lambda, we want to stay close to the initial parameters that we started from.
+This is the initial parameters and the closeness is measured in the L2 norm.
+So it's a quadratic regularizer on how close you might know from initial supervised learning or something that sometimes you do something like plus lambda times the L2 norm of the weight.
+So this would be called weight regularization, weight decay, L2 normalization, something like this.
+where you regularize your weights such that you stay close to the zero point, right?
+Implicitly in this, there is a minus zero given.
+But here, you want to stay close to your initial parameters.
+So the inner optimization is no longer just minimizing the loss on the training data set.
+The inner optimization is that.
+And with ALG star, we denote, so if ALG has a star, we say that this is referring not to the procedure of the algorithm, but to the minimum that the algorithm has found.
+So Alex star means the algorithm has optimized this inner procedure to its minimum, which is a balance of the training loss of that task and staying close to the original parameters.
+And this, I think this, um, they say that here, the,
+Proximal regularization term in equation three encourages Phi i to remain close to Theta, thereby retaining a strong dependence throughout.
+This is why their method works.
+And we're going to see in the math right soon how exactly they're able through this to establish

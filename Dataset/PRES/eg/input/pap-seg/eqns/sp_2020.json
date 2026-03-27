@@ -1,0 +1,56 @@
+{
+  "sp_2020_page_0004": {
+    "bboxes": [
+      {
+        "box": [
+          296.3745422363281,
+          929.4197998046875,
+          923.1715698242188,
+          968.2312622070312
+        ],
+        "text": [
+          "\\operatorname* { m a x } _ { \\mathbf { I } ^ { \\prime } , \\mathbf { T } ^ { \\prime } } \\mathbb { 1 } \\{ S ( \\mathbf { I } ^ { \\prime } , \\mathbf { T } ^ { \\prime } ) \\neq \\mathbf { y } \\} , \\quad s . t . \\, \\, \\| \\mathbf { I } ^ { \\prime } - \\mathbf { I } \\| _ { \\infty } < \\sigma _ { i } , \\, \\, \\, C o s ( U _ { s } ( \\mathbf { T } ^ { \\prime } ) , U _ { s } ( \\mathbf { T } ) ) > \\sigma _ { s } ,"
+        ],
+        "page": "sp_2020_page_0004",
+        "id": "sp_2020_page_0004-1",
+        "seg_type": "eq"
+      }
+    ]
+  },
+  "sp_2020_page_0005": {
+    "bboxes": [
+      {
+        "box": [
+          298.5412902832031,
+          413.36505126953125,
+          924.3945922851562,
+          497.45477294921875
+        ],
+        "text": [
+          "\\mathcal { L } = \\sum _ { i = 1 } ^ { M _ { i } } \\sum _ { j = 1 } ^ { M _ { j } ^ { i } } C o s ( \\mathbf { F } _ { \\alpha } ^ { i , j } ( \\mathbf { I } ) , \\ \\mathbf { F } _ { \\alpha } ^ { i , j } ( \\mathbf { I } ^ { ' } ) ) + \\sum _ { k = 1 } ^ { M _ { k } } \\sum _ { t = 1 } ^ { M _ { t } ^ { k } } C o s ( \\mathbf { F } _ { \\beta } ^ { k , t } ( \\mathbf { I } , \\mathbf { T } ) , \\ \\mathbf { F } _ { \\beta } ^ { k , t } ( \\mathbf { I } ^ { ' } , \\mathbf { T } ) ) ,"
+        ],
+        "page": "sp_2020_page_0005",
+        "id": "sp_2020_page_0005-1",
+        "seg_type": "eq"
+      }
+    ]
+  },
+  "sp_2020_page_0006": {
+    "bboxes": [
+      {
+        "box": [
+          460.5022277832031,
+          1073.8812255859375,
+          762.0416259765625,
+          1130.8780517578125
+        ],
+        "text": [
+          "K = \\left\\{ \\begin{array} { l l } { N - N _ { s } , } & { \\mathrm { i f } \\, \\left| \\boldsymbol { \\mathcal { T } } \\right| > N - N _ { s } ; } \\\\ { \\left| \\boldsymbol { \\mathcal { T } } \\right| , } & { \\mathrm { i f } \\, \\left| \\boldsymbol { \\mathcal { T } } \\right| \\leqslant N - N _ { s } . } \\end{array} \\right."
+        ],
+        "page": "sp_2020_page_0006",
+        "id": "sp_2020_page_0006-1",
+        "seg_type": "eq"
+      }
+    ]
+  }
+}

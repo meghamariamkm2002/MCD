@@ -1,0 +1,10 @@
+start	end	text
+31	1735	Yeah, so that's the paper.
+1895	19272	They have kind of a discussion, the depiction of attention matrices down here, where they show that their model, you know, does something kind of different from other models in terms of where it attends and it has less of these global attention patterns like Roberta has right here.
+19252	27388	except for the very first one, which is the CLS vector, which makes sense and otherwise has a rather diagonal attention matrix.
+27408	38070	So that's, you know, it's pretty sensible, though you can also make the case that sometimes there are just really important words in a sentence that everything should attend to.
+38050	45771	I don't know, but it is state-of-the-art and it is a cool algorithm and is worth considering if you build your next model.
+46332	48859	Alright, with that, I thank you for listening.
+49461	50463	Subscribe if you haven't.
+50684	51326	I'll see you next time.
+51386	51807	Bye-bye.

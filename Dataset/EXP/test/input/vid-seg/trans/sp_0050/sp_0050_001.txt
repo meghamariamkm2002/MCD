@@ -1,0 +1,10 @@
+Hi there, today we'll look at Bertology meets Biology, Interpreting Attention in Protein Language Models, by Jesse Vig, Ali Madani, Lav Arvarshani, Keiming Xiong, Richard Sokker, and Nazneen Fatima Rajani.
+This paper is an investigative paper into models that are trained on biological data, specifically into BERT models, actually into a one specific BERT model that is trained on protein sequences.
+Now, it is trained to simply perform language modeling on these protein sequences.
+But out of this language model, you can then inspect this BERT model and read important biological data of these proteins, higher order data from the attention heads of the BERT model, which is pretty interesting, basically means that the information of these higher order functions is at some point encoded in the structure of the language of the protein sequence.
+So we're going to go through what this means and how this comes about and what they did in order to investigate.
+I think this is a pretty cool investigative work and probably very promising for future research.
+Yeah.
+As always, if you like content like this, consider sharing it out and leaving a like.
+Also, tell me what you think in the comments.
+Biology, really quick.

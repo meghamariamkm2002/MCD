@@ -1,0 +1,34 @@
+different things.
+So here you can see examples of proteins and their high-level structure.
+So in these proteins what you call the primary structure is this sequence of amino acid.
+This is simply which amino acids are in which order.
+There is a thing called the secondary structures and we often observe that spans of these amino acids like substrings form these what are called these helixes as you can see here or these sheets.
+I don't know how they're strands in English.
+We call them sheets or I think these are the alpha helixes and these are the beta sheets.
+And there is also a turn, so I think this here might be a turn.
+So there are these kind of secondary structures, and then the tertiary structure is how this is still one protein, this is one unbroken chain of amino acid.
+And you can see this here kind of forms this double ring, which would be its tertiary structure.
+Very important for predicting the tertiary structure is to predict when two amino acids are close to each other.
+So if we have a chain right here and the chain as we saw before kind of turns and bends on itself,
+then these two amino acids here are very close in close contact.
+And to predict which amino acids are in close contact to each other helps you determine the tertiary structure.
+So that's a consequence of it.
+So we wonder, does BERT know intrinsically which of these amino acids are going to end up being in contact with each other without ever having been trained to do it?
+The second thing we're interested in are binding sites.
+So here, you might not be able to see, but we made this example before where this sort of forms a loop and then I say can trap something here, like another molecule.
+And this is what we would call a binding site.
+A binding site is a one amino acid that maybe through the structure of the surrounding amino acid as well, but also through its properties and how it is exposed in 3D shape,
+acts as sort of a receptor for other molecules.
+It binds to other things.
+So think of your hemoglobin that traps the oxygen in your blood or something like this.
+It is where a chemical reaction or a reaction with something else will happen.
+That's a binding site.
+And we are interested, does BERT, the BERT that is only trained on a language modeling objective know which ones are the binding sites?
+Because, you know, that would be very interesting and not something BERT was trained on.
+By the way, I particularly liked Richard Socker's tweet on this.
+He, I think he tweeted out, Oh, Bert trained only on language model can predict minding sites and biological properties and formulated it like it was, you know, like GPT three was formulated.
+Like if we train on Wikipedia, our model can do math.
+I thought it was kind of a satire headline.
+If we train on Wikipedia, our model can predict biology and also it can tie your shoes and cook your dinner.
+So it's trained on language modeling on biological data and now that makes sense.
+So they're going to look at two

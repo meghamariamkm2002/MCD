@@ -1,0 +1,38 @@
+start	end	text
+31	4517	So as I said, they do relative position encoding.
+4537	5198	What does that mean?
+5658	13648	So that means that the position encoding depends on where you look from.
+13989	18435	So what I've drawn at the beginning, like this here, this isn't entirely correct.
+19376	21439	You have to look at each token individually.
+21499	24182	So for this middle token here, for example,
+24162	26225	The positions look like this.
+26285	29430	They look like negative 2, negative 1, 0, 1, 2.
+29791	40247	And you would have kind of a table, not with absolute positions, but you'd actually have a table with negative 2, negative 1, 0, plus 1, plus 2, and so on.
+40787	42210	And you would retrieve those vectors.
+42270	47398	And then when you consider the next vector, this one right here, it would look different.
+47698	51604	It would write this would be 0, this minus 1, minus 2, and so on.
+51584	53506	So they do two things.
+53686	55528	First of all, they truncate at some point.
+56188	58250	They simply say, well, our context window is two.
+58711	63415	So instead of going negative three here, we simply keep it at negative two.
+63515	67279	So everything beyond negative two gets also the vector for negative two.
+67359	73805	So that vector here is going to be just plugged into here and into here for this token.
+74606	81372	And for this token, for the previous token, it is only going to be plugged here.
+81352	81993	nowhere else.
+82974	87559	There are ways to efficiently implement this, and that's this algorithm right here.
+87939	96909	Don't want to go too much into it, but just so you're aware, you don't have to consider each token really individually during it attention.
+96990	99112	That would be prohibitively expensive.
+99212	109063	So you can do one big matrix multiply and then sort of pick and choose together from your, from the matrix that results, especially with this truncation.
+109644	110785	This is this algorithm.
+112182	114044	So they call it efficient implementation.
+115004	122491	All right, so that is this position enhanced or disentangled information.
+122551	123912	Why is it disentangled again?
+124332	127975	Because in every layer, they have a side input.
+128255	136442	This piece right here is the side input that they sort of feed on top of this information.
+136963	141987	And they specifically construct the attention matrix out of the three things.
+141967	143851	It's almost like two contributions.
+143891	147700	The one contribution is, hey, let's feed in position information in each layer.
+148001	150165	And I think that has been tried before.
+150226	151027	That's pretty simple.
+151067	168507	But then the second thing is that we don't simply add the two vectors when we input it into the attention, but we're going to construct basically three attention matrices and then add those together once we determine the inner products between each of those.
+168787	170050	Okay.

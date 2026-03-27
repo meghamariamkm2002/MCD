@@ -1,0 +1,4 @@
+start	end	text
+31	1113	Hi there.
+1294	10934	Today we're looking at meta-learning with implicit gradients by Arwind Rajeshwaran, Chelsea Finn, Shyamkakad and Sergey Levine.
+11675	15002	So this paper deals with the task of meta-learning.

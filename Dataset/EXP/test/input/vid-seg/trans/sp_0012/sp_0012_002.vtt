@@ -1,0 +1,200 @@
+WEBVTT
+
+00:00.031 --> 00:00.572
+jump in.
+
+00:01.252 --> 00:07.579
+So they basically make a point of saying that machine learning doesn't happen in just one thing.
+
+00:07.639 --> 00:10.982
+It's not like sklearn.fit anymore.
+
+00:11.423 --> 00:12.984
+It is more of a pipeline.
+
+00:13.725 --> 00:15.107
+So what do we mean by this?
+
+00:15.627 --> 00:25.077
+If you have, if you think of something like you want to train an ImageNet model, what you want to do is you have like your data set somewhere.
+
+00:25.057 --> 00:30.965
+And that could be on in a database, it could be in the network somewhere.
+
+00:31.285 --> 00:38.575
+So if you have even something larger than ImageNet, you'll probably store it on a central server on an Amazon bucket somewhere.
+
+00:38.615 --> 00:40.217
+So this is in AWS.
+
+00:40.878 --> 00:44.723
+And the first thing you actually need to do is you need to read that data set.
+
+00:45.203 --> 00:51.992
+Now, usually you're not going to have enough memory on a machine to just load in the entire data set into memory.
+
+00:51.972 --> 00:55.616
+So that means this process here is streaming.
+
+00:57.398 --> 00:59.660
+So this is continuously streaming data points.
+
+00:59.700 --> 01:04.466
+And once you have used the data point, you're going to throw it away because you need space for the next one.
+
+01:05.427 --> 01:08.470
+And so the streaming is done continuously.
+
+01:09.111 --> 01:11.674
+The next process is read and decode.
+
+01:12.054 --> 01:21.304
+That means you have to read it from the network and actually bring it into a format where you can use it, usually something like an umpire array or a TensorFlow tensor.
+
+01:21.284 --> 01:30.981
+You need to apply some shuffling because usually you can't really trust the order that it is stored in.
+
+01:31.181 --> 01:35.409
+Often times there is a bias in the ordering, so you need some sort of a shuffle buffer here.
+
+01:37.092 --> 01:40.298
+Then often you want to apply some data augmentation to it.
+
+01:40.718 --> 01:43.984
+That means that you have one image.
+
+01:43.964 --> 01:55.445
+And we know for these models, if this is your cat, we know for these models that what can help is to basically make many, many different images from one image.
+
+01:55.846 --> 02:04.922
+So this could be by cropping part of it and saying, well, if it was a cat before the small upper right part here is still a cat.
+
+02:04.942 --> 02:08.048
+So this is one date, it's called data augmentation.
+
+02:08.028 --> 02:10.912
+and you're gonna apply a whole bunch of these things.
+
+02:10.932 --> 02:14.857
+So you can crop, you can rotate the image a bit, it's still a cat, right?
+
+02:15.158 --> 02:24.190
+And you can also change its luminance and a bit of its colors, you can jitter the colors, you can horizontally flip it and it'll still be a cat.
+
+02:24.691 --> 02:28.416
+And that's basically how you make many data points from one data point.
+
+02:28.676 --> 02:29.918
+And we know that helps.
+
+02:29.898 --> 02:34.064
+Then what you want to do is you want to batch this data.
+
+02:34.084 --> 02:35.947
+So you want to put it into mini batches.
+
+02:37.288 --> 02:49.105
+Since you've shuffled here, that means when the next time the same data point comes along, it's going to be batched with a different group of images and of course augmented differently.
+
+02:49.085 --> 02:55.175
+with a different group of images and that basically means it's a different training batch for the model.
+
+02:55.375 --> 03:06.152
+So this entire pipeline is basically a way that we take data points that we have and we make a whole bunch of variations and various groupings and batchings of it.
+
+03:06.432 --> 03:12.021
+And we know that helps enormously with the generalization capability of your final models.
+
+03:12.001 --> 03:15.847
+And then here you do your apply your SGD update.
+
+03:15.868 --> 03:26.105
+So that's usually where you forward propagate your data through your network, which here is F, you'll get like some Y hat as an output.
+
+03:26.566 --> 03:30.432
+And then you have your labels that also come through the pipeline.
+
+03:30.412 --> 03:37.565
+And you have some sort of loss function L that takes both as an input and gives you an output.
+
+03:38.166 --> 03:40.590
+And then you do your back propagation.
+
+03:40.710 --> 03:48.825
+So the back propagation would go through your loss function through your network and update the network parameters.
+
+03:48.805 --> 03:51.409
+search that your network learned something.
+
+03:52.951 --> 03:58.018
+Now this step to the right here is usually what we focus on when we do deep learning.
+
+03:59.921 --> 04:11.758
+The step on the right here, all of this, this can be done on a GPU or is usually done on something like a GPU or a TPU.
+
+04:13.156 --> 04:18.226
+But these things are getting faster and faster.
+
+04:18.267 --> 04:23.036
+The point the paper makes is that the TPUs and GPUs of the world are getting faster.
+
+04:24.058 --> 04:29.229
+But this entire other thing right here, this is basically CPU land.
+
+04:29.530 --> 04:34.540
+Now, I know there is some data augmentation now happening on the GPU and so on.
+
+04:34.520 --> 04:42.672
+But in essence, you can think of a pipeline where the thing to the left is happening on CPU and the thing to the right is happening on TPU.
+
+04:43.073 --> 04:50.865
+And even worse, let's say, the speed is continuously increasing.
+
+04:51.125 --> 04:58.857
+So in your pipeline, the kind of speed would be... So here is the network reading.
+
+05:00.490 --> 05:06.136
+And here over here is the GPU SGD step.
+
+05:06.156 --> 05:07.197
+And this is speed.
+
+05:08.378 --> 05:16.746
+Basically, the further to the right in your pipeline you go, the faster your hardware gets.
+
+05:17.487 --> 05:23.373
+And that means that if this is a continuous pipeline, right?
+
+05:23.793 --> 05:27.797
+That basically means that if I input something here,
+
+05:27.777 --> 05:29.359
+It goes through the pipeline.
+
+05:29.399 --> 05:35.187
+And even if this is all running in parallel, this thing over here is going to idle.
+
+05:36.288 --> 05:41.215
+Since this is the fastest part of the pipeline, it is going to just idle a lot.
+
+05:43.678 --> 05:47.203
+Because it can only consume things as fast as this thing can produce.
+
+05:47.183 --> 05:57.198
+Now, if you have some sort of a multi GPU machine and just train ImageNet, like you just run the code, usually, this is not the bottleneck.
+
+05:57.318 --> 06:01.544
+Usually, your GPUs here are at 100% capacity.
+
+06:01.985 --> 06:03.367
+So this paper is not for you.
+
+06:03.907 --> 06:11.959
+But if you are, let's say, a big company, have this network storage, have a big data set, have very expensive data augmentation,
+
+06:11.939 --> 06:15.852
+This happens, for example, this can happen in NLP and so on.
+
+06:16.916 --> 06:25.003
+This can be quite your situation where the earlier in the pipeline, the slower it is.
+

@@ -1,0 +1,2 @@
+But to better understand the nature of the coupled compositional problems and the non-smooth setting, we first prove that given the outer and inner functions to be weakly convex, leptchase continues, and outer function to be non-decreasing, then the coupled compositional problem is also weakly convex.
+In fact, for non-smooth problems, it may not be possible to achieve epsilon stationary point in finite number of iterations.

@@ -1,0 +1,2 @@
+We choose multi-agent Mojoko and Stuckraft multi-agent challenges as our experiment environments.
+The results present that our master also performs all business and achieves total performance in most tasks.

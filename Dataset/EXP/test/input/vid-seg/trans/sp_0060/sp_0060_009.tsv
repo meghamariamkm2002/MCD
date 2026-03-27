@@ -1,0 +1,40 @@
+start	end	text
+31	9487	As I said, they do quite a bit of drop, sorry, not dropout, ablation studies to figure out where exactly the performance comes from.
+9968	14335	And the answer is it pretty much comes from all the things that they've described.
+14696	20426	So here you can see the effect of that extra data set.
+20486	26055	And you can see pretty much with that extra data set, all the situations improve.
+26035	37211	Here you can see what is happening when you do not augment the student, when you do not date to augment, you can immediately see that the accuracy drops.
+37231	43740	And then when you do not augment and also don't use these model noises, then the performance drops again.
+44721	54675	And lastly, when you use the teacher, but you noise the teacher, you can see also here the performance is dropping from the original quite a bit.
+54655	61347	So all of these things kind of contribute and they do much more ablations and they have listed their findings here.
+62088	67398	So using a large teacher model with better performance leads to better result.
+67558	75432	So, you know, as the original teacher you should use as good as possible a teacher model you can find.
+75412	82965	Second, a large amount of unlabeled data is necessary for better performance.
+83866	93683	Okay, so if you want to do this, you better get a large amount of extra data, because that's one thing that makes the student perform better.
+94765	100795	Soft pseudo labels work better than hard pseudo labels for out of the main data in certain cases.
+100775	107751	Fourth, a large student model is important to enable the student to learn a more powerful model.
+108172	115790	Okay, so because usually this knowledge distillation is what it, this is usually called knowledge distillation.
+116171	119138	If you use a teacher model to train a student model,
+119118	125830	And it is often used when the student model is smaller than the teacher because you want to kind of become more efficient to you.
+126151	132642	So the teacher is large, you make the student small, and you usually sacrifice some accuracy.
+132682	137030	And here they say, if you want to gain some accuracy, you need a large student model.
+137210	138713	It can't be like a small one.
+141612	144955	Number five, data balancing is useful for small models.
+145916	155865	Number six, joint training on labeled data and unlabeled data outperforms the pipeline that first pre-trains with unlabeled data and then fine-tunes unlabeled data.
+156486	169037	So this is in contrast to like what people have done before in the self-supervised learning and so on, where it's always kind of pre-training then fine-tuning or in the transfer learning setting.
+169017	180027	Seven, using a large ratio between unlabeled batch size and labeled batch size enables models to train longer on unlabeled data to achieve a higher accuracy.
+181048	183410	Okay, we've already seen that they have used that.
+184191	190517	And number eight, training the student from scratch is sometimes better than initializing the student with the teacher.
+190957	197083	And the student initialized with the teacher still requires a large number of training epochs to perform well.
+197063	212727	This is fairly interesting because it kind of alludes to the fact that the minima in weight space, so this is of course the case if the student model is the same as the teacher model, so in iteration two or three or whatnot.
+212707	223779	It means that, you know, in weight space, if we look at, you know, you might want to start the student here and the minimum is right here.
+224479	232067	And you might want to think that if I learn the same thing, then the minima are fairly close together, right?
+232087	237313	So the teacher's minima might be here and the student minima might be fairly close.
+237293	243584	might be beneficial if I start not over here, but actually start at the teacher's minimum.
+243884	246248	But this doesn't always seem to be the case.
+246609	252399	And that is a fairly interesting observation, because it kind of means that we're talking about different minima here.
+252639	256466	We're talking about the student model learning different things.
+256606	261715	And that's what we've discussed already, the student model kind of learns to be robust.
+261695	277754	And that's probably a minimum that's fairly far away in weight space, at least in a sort of energy landscape weight space, might be the case that it needs to actually overcome kind of a hill here, even though the minimum might be close.
+278014	282640	There's lots of research in like how minima are distributed in these weight spaces.
+282620	295043	Which I don't want to go into right here, but it is a fairly interesting observation that it's not always helpful to initialize the teacher sorry the student at the teacher's optimum

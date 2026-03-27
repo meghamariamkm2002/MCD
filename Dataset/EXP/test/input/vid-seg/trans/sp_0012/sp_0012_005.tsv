@@ -1,0 +1,66 @@
+start	end	text
+31	7344	jump into their models, they train the following four models.
+7845	13475	So they train a transformer on these two data sets, LM1B and Common Crawl.
+13495	17382	So technically it's five models on language modeling.
+20028	28644	They train the ResNet32 on C410, they train the ResNet50 on ImageNet, and they train SSD on Cocoa.
+29385	31349	Now, here is the accuracies they get.
+31449	35877	And here is, sorry, this is the target.
+35857	42229	So what they do is they train these models and then they say, okay, what's the accuracy we reach?
+42590	44233	And then they set a target value.
+44754	54473	So on ResNet 50 on ImageNet, a very common number to reach is something like 76.5.
+54453	58859	If you look at, for example, torch vision models, they reach something like this.
+59700	66049	And so they say, well, our target accuracy here is just a little bit below that.
+66429	73119	And then we just measure how many steps or how many their measurement here is fresh data points.
+73219	78486	So how many actual fresh training samples do we need to reach this target?
+78466	102955	And this is this is where it gets wonky because for example take the the 91% here on C for 10 that is quite quite low and Also the res net 50 is I mean this is standard, but still image net is much further nowadays and I think the effectiveness of something like that
+102935	107279	this has a lot to do with how competitive you want to get.
+107499	114345	Maybe this is all just an effect of how much under par this target performance really is.
+115166	132081	And I would expect that even though they say it doesn't hurt their performance in their experiments, I would at least expect it will hurt your performance in general if you try to get competitive.
+132061	142965	Because these things aren't as as as of now at least the ones I know like the the Resonance aren't really competitive, but
+144262	145484	And so what do they do?
+145524	150630	They measure data echoing with an echoing factor of two.
+151211	155276	So that means data that's incoming is output twice in a row.
+155617	160623	And every data point that's coming in is just emitted twice from the buffer.
+160643	164228	And then the next data point is emitted twice and so on.
+164208	169276	And what they measure, again, is the fresh examples read.
+169456	173242	So how many fresh data points do you need to achieve something?
+173262	177129	This is a good measurement because this is kind of independent of hardware.
+178371	188106	So if you're really in the situation where your GPU is twice as fast as the rest of your pipeline,
+188086	196822	then an echoing factor of two will speed up at most your training procedure by factor of two.
+197985	204677	All right, so you have the baseline in red, and then you have a batch echoing, which is where you echo
+204657	221434	What we said at the worst possible time right after batching so this might hurt your performance the most but also it has the potential to be the fastest if your if maybe your augmentation is very expensive then sorry or your batching.
+221414	225000	You have example echoing after augmentation.
+225281	229127	So that would mean the augmentation is very expensive.
+229167	238944	So you save the augmented data point and then you emit it multiple times, but each time it is batched differently.
+239725	243672	So it is shuffled and then batched with different other data points.
+243692	245295	So you have a shuffle buffer after it.
+245275	248240	And then you have example echoing before data augmentation.
+248561	255914	So that means the same data point emitted multiple times will be augmented in different ways and basically will lead to slightly different data points.
+256435	267975	So the results here are pretty much what you could expect in that the earlier you do the echoing, as you can see here, the more this echoing helps.
+267955	273066	So the number, for example, this is the object segmentation task.
+273086	278397	The baseline needs this many fresh examples to reach this target accuracy.
+278778	288158	With batch echoing, you need less fresh training examples.
+288138	298879	So that means even though you kind of train on the same data twice, this helps you more or this helps you.
+300162	304290	It doesn't help you fully because the dash line here is the if
+305755	310602	If it would help you as much as a fresh data point, you'd be at the dash line, right?
+310622	313627	This is exactly half of this because the echoing factor is two.
+314067	321819	So if a repeated data point was as useful as a fresh data point, you'd be at the dash line.
+322380	326887	As you can see right here, you're not at the dash line, but at least it doesn't hurt.
+327427	329791	You might expect that it hurts, but it doesn't hurt.
+329871	330893	It actually speeds up.
+330933	335239	So the repeated data points at least have some utility.
+335219	341247	Again, this is only useful if you have this asymmetry in your pipeline.
+341507	361294	If your pipeline is actually symmetric and you do an echoing factor of two, the wall time here, the wall time plot would look this for the baseline and then almost twice as high for the batch echoing because even though it needs the same amount of fresh or almost the same amount of fresh example,
+361274	369550	you echo each one twice, so it needs to process it twice, so it'll take much longer.
+369570	377606	So again, this is useful if you have this asymmetry, and if the echoing factor is kind of smaller than your asymmetry.
+378929	383097	Otherwise, you're simply wasting time repeating data points.
+383077	391090	Then if you do example echoing here after augmentation, you use even less fresh data points.
+391150	394094	And if you do it before augmentation, this is really surprising.
+395056	402047	You almost get the benefit of fresh data points, which is something you might expect, right?
+402027	417893	an augmented newly shuffled data point is kind of almost a new data point, but still it's quite surprising that you almost get to the level of the theoretical possible.
+419307	435160	And also here on the ImageNet task, now here is actually an example where you can see that it hurts to do this batch echoing, because the reasons why it could hurt is just that you have, you violate this IID assumption, you basically have correlated data points.
+435221	440151	This is a big, big problem, for example, in reinforcement learning.
+440131	450146	where already by nature of you running episodes and then feeding the episodes back into the training procedure, you have correlated data points.
+450868	456576	And that hurts your performance here, actually compared to the baseline.
+456977	467193	But then if you go to example echoing and the example echoing before augmentation, again, you get a speedup, which is pretty cool.
+469276	470037	Okay.

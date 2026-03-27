@@ -1,0 +1,6 @@
+In offline refinement learning, evaluating value function out of distribution symbols can cause extrapolation error accumulation, leading to overestimated values and misguarding policy learning.
+When extending the offline IELTS with the montage and setting,
+the joint state action space grows exponentially with the number of agents.
+So it is difficult to incorporate a proper global level of line liberalization on the joint action space.
+Some recent works used centralized training, the centralized execution framework to decommose the global value function into a combination of local value functions.
+This work turned the original offline multi-agent refinement learning problem into the offline single agent refinement learning problem and the applying policy of other levelizations at the local level.

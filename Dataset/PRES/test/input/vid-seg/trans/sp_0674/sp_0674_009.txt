@@ -1,0 +1,2 @@
+We also conducted experiments on policy learning with global information and the operation experiments on hyperparameters.
+The results showed that our design is effective.

@@ -1,0 +1,12 @@
+The last experiment they do is these linear probes, which where they just go and they just build classifiers from different parts of the network.
+And you can see right here that what is predicted and how well they work.
+So each bar here is going to be the difference of performance.
+So this is differential performance of diagnostic classifier by layer.
+sorted by task order in figure eight.
+Each plot shows the change in performance between the given layer and the previous layer.
+So a bar up shows it's performing better than the previous layer, a bar down shows it's performing worse than the previous layer.
+You see right here that these are the secondary structures right here.
+You can see that there is a lot of performance in the earlier layers right here and not that high performance in the later layers.
+Whereas for the tertiary structures, the binding site and the contact,
+You can see that there is a bit of performance in places, but it sort of tends to be more towards the middle, certainly more towards the middle of the end of the network than the secondary structures, which sort of makes sense with our hypothesis.
+You can also see this here, where they show the percent of attention focused as a function of layer, and the red is the center of mass, and you can see that as the secondary structure, their center of mass is at a lower layer in general than the tertiary.

@@ -1,0 +1,284 @@
+1
+00:00:00,031 --> 00:00:02,695
+Well, this is one of the improvements.
+
+2
+00:00:03,396 --> 00:00:05,398
+And that already helps a lot.
+
+3
+00:00:05,499 --> 00:00:07,762
+But then they run into a problem.
+
+4
+00:00:07,822 --> 00:00:10,726
+And this is not necessarily a problem with their method.
+
+5
+00:00:11,066 --> 00:00:15,212
+But this is a problem in general, when you use relative positioning codings.
+
+6
+00:00:15,232 --> 00:00:24,705
+So they say, given a sentence, a new store opened beside a new mall, right, that's a sentence, the words, store and mall,
+
+7
+00:00:24,685 --> 00:00:28,930
+Let's say you do this mask language model pre-training.
+
+8
+00:00:29,270 --> 00:00:34,096
+You mask out the words store and mall and you ask the model to reconstruct them.
+
+9
+00:00:35,198 --> 00:00:37,560
+Using only the local context, e.g.
+
+10
+00:00:37,600 --> 00:00:43,728
+relative position and surrounding words is insufficient for the model to distinguish store and mall in this sentence.
+
+11
+00:00:44,108 --> 00:00:47,352
+Since both follow the word new,
+
+12
+00:00:47,332 --> 00:00:49,454
+with the same relative positions.
+
+13
+00:00:49,474 --> 00:00:53,979
+So from the word new, you know, relatively, it's always plus one.
+
+14
+00:00:54,320 --> 00:00:55,761
+Oopsie.
+
+15
+00:00:55,781 --> 00:00:58,364
+It's plus one to this word.
+
+16
+00:00:58,745 --> 00:01:00,967
+So the model cannot distinguish the two.
+
+17
+00:01:01,368 --> 00:01:11,719
+So there is a need for absolute position encodings, because if you had absolute position encodings, you could maybe make sense, though.
+
+18
+00:01:11,699 --> 00:01:29,202
+Since you could figure out like store is probably kind of a smaller thing and mall is kind of a bigger thing, so it's more likely that the store opened beside the new mall than the mall opened beside the new store.
+
+19
+00:01:29,182 --> 00:01:34,248
+So that means we need absolute positioning coatings or something like this, right?
+
+20
+00:01:34,728 --> 00:01:51,186
+And especially we could have relative positioning coatings, but if this is a very long sentence and we truncate them somewhere, again, these two things are not in range of one another, and they're not going to know how far, you know, they are apart and each one by itself is just plus one apart.
+
+21
+00:01:52,007 --> 00:01:52,928
+So
+
+22
+00:01:52,908 --> 00:01:54,932
+How do we solve the problem?
+
+23
+00:01:55,372 --> 00:01:57,616
+We feed in absolute positioning coatings.
+
+24
+00:01:57,977 --> 00:02:00,441
+However, that's exactly what they criticize.
+
+25
+00:02:00,481 --> 00:02:05,170
+They say, no, relative positioning coatings are much better than absolute for learning.
+
+26
+00:02:05,791 --> 00:02:17,211
+And that's kind of the same reasoning why a convolution is better than a fully connected layer because you kind of slide the transformation over and it's simply data relative to each other.
+
+27
+00:02:17,191 --> 00:02:28,245
+So relative positioning makes a lot of sense if when every word can do computation, not based on where exactly it is in the sentence, but how it is in relation to other words.
+
+28
+00:02:28,386 --> 00:02:37,157
+Otherwise, if you have absolute positioning codings, what you would have to do is you would have to say, well, if I'm the word am, and I'm in position two,
+
+29
+00:02:37,137 --> 00:02:39,599
+I need to learn to attend to position three.
+
+30
+00:02:40,060 --> 00:02:44,544
+However, if I'm the word am and I'm in position three, I need to learn to attend to position four.
+
+31
+00:02:44,924 --> 00:02:47,987
+And if I'm in position four, I need to learn to attend in position five.
+
+32
+00:02:48,027 --> 00:02:49,808
+These are all different things you need to learn.
+
+33
+00:02:50,489 --> 00:02:57,716
+However, if you have relative encoding, what you can do is you can simply say, I want to attend to the word that's right after me.
+
+34
+00:02:58,536 --> 00:02:58,797
+Easy.
+
+35
+00:02:59,657 --> 00:03:05,963
+But we do need absolute position encoding for some things, namely disambiguate between tasks like this.
+
+36
+00:03:05,943 --> 00:03:14,309
+So they feed in absolute position information, but instead of doing it the beginning, they do it at the end.
+
+37
+00:03:14,690 --> 00:03:18,422
+So at the beginning, we have the word vectors, right?
+
+38
+00:03:18,482 --> 00:03:19,345
+They go in here.
+
+39
+00:03:20,708 --> 00:03:22,732
+And then we have position information.
+
+40
+00:03:23,774 --> 00:03:25,377
+One, two, three, four, five.
+
+41
+00:03:25,737 --> 00:03:29,545
+We have that at every single layer of the transformer.
+
+42
+00:03:29,585 --> 00:03:32,009
+We feed it in again and again and again.
+
+43
+00:03:32,450 --> 00:03:34,634
+We feed in the same P vectors.
+
+44
+00:03:35,195 --> 00:03:39,844
+They have different of these transformations in each layer.
+
+45
+00:03:40,665 --> 00:03:44,252
+So the actual transformation that makes the keys and the values
+
+46
+00:03:44,232 --> 00:03:57,604
+Sorry, the keys and the queries of the positional information are different, but the vectors are the same every time and then at the very top So these are p relative So this is sorry.
+
+47
+00:03:57,704 --> 00:03:58,565
+Yeah, I mixed up.
+
+48
+00:03:58,605 --> 00:04:13,058
+This is the this is this negative 2 negative 1 0 1 2 for the middle token and then at the end we're going to feed in Absolute position encodings so here we have you know your
+
+49
+00:04:13,038 --> 00:04:14,663
+Let's start at one.
+
+50
+00:04:14,883 --> 00:04:16,247
+Let's be good math lab people.
+
+51
+00:04:17,732 --> 00:04:24,551
+Here we have 12345 that we're going to now combine with the vectors that come out of here.
+
+52
+00:04:26,317 --> 00:04:27,520
+So the reasoning is
+
+53
+00:04:29,879 --> 00:04:34,506
+They say there are two methods of incorporating absolute position.
+
+54
+00:04:34,807 --> 00:04:37,771
+The BERT model incorporates absolute position in the input layer.
+
+55
+00:04:38,352 --> 00:04:46,765
+In dBERT, we incorporate them right after all the transformer layers, but before the softmax layer for mask token prediction, as shown in Figure 2.
+
+56
+00:04:47,206 --> 00:04:50,571
+I've looked at Figure 2, it's not really helpful, honestly.
+
+57
+00:04:50,551 --> 00:05:10,614
+So that is this figure in the appendix, where they say, okay, so in the BERT, in the BERT, you have the absolute positioning coding somewhere down here, it goes through all the transformer layers, and then you have this classification layer at the top that does the language model decoding.
+
+58
+00:05:11,094 --> 00:05:17,301
+However, in their model, what you'd have is you have all the transformer layers here, down here,
+
+59
+00:05:17,281 --> 00:05:22,987
+And then you have the absolute position encodings that come in through the side here.
+
+60
+00:05:23,768 --> 00:05:35,962
+And kind of the last transformer layer now has access to these absolute layers or the last N. I think N in their case is two or one, one or two.
+
+61
+00:05:36,582 --> 00:05:47,254
+So in the last layer or the last layers, now the transformer has access to the absolute positions and before it's just relative position at each step.
+
+62
+00:05:47,234 --> 00:05:56,668
+And the reason that that helps, because the transformer part learns to deal with relative positions.
+
+63
+00:05:58,470 --> 00:06:09,226
+In this way, they say here, deberta captures the relative positions in all the transformer layers and only uses the absolute position that's complementary information when decoding the masked words.
+
+64
+00:06:09,686 --> 00:06:14,473
+Thus we call deberta's decoding component an enhanced masked decoder.
+
+65
+00:06:14,453 --> 00:06:19,400
+and they compare the two and they observed that EMD works much better.
+
+66
+00:06:19,881 --> 00:06:25,168
+So feeding absolute positions at the end works better than feeding them at the beginning.
+
+67
+00:06:28,292 --> 00:06:37,305
+We conjecture that the early incorporation of absolute positions used by Bert might undesirably hamper the model from learning sufficient information of relative position.
+
+68
+00:06:37,285 --> 00:06:43,233
+In addition, EMD also enables us to introduce other useful information that is in two positions.
+
+69
+00:06:43,274 --> 00:06:44,459
+We leave it for future work.
+
+70
+00:06:44,479 --> 00:06:46,549
+So they say you could also feed in other information.
+
+71
+00:06:46,610 --> 00:06:50,046
+I guess that's the case in every single neural network ever.
+

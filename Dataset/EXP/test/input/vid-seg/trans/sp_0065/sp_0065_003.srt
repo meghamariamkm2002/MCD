@@ -1,0 +1,48 @@
+1
+00:00:00,031 --> 00:00:01,673
+it does it end to end.
+
+2
+00:00:02,394 --> 00:00:18,075
+Now adversarial simply means that you have a generator that takes in the piece of text right here and generates this sound wave and then you have a discriminator that looks at this sound wave and it looks at the real sound wave.
+
+3
+00:00:18,275 --> 00:00:20,638
+So the real
+
+4
+00:00:20,618 --> 00:00:29,935
+Okay, the real sense, let's say this over here is real, and this is what the generator has produced, the discriminator tries to discriminate between the two.
+
+5
+00:00:30,576 --> 00:00:35,385
+Now, this is not entirely the same thing as a supervised loss.
+
+6
+00:00:36,707 --> 00:00:41,977
+Usually in a GAN, you do not have the corresponding samples, right?
+
+7
+00:00:42,157 --> 00:00:44,922
+You simply input a real sample here,
+
+8
+00:00:44,902 --> 00:00:48,227
+and the generator produces a generated sample here.
+
+9
+00:00:48,748 --> 00:00:53,314
+You do not necessarily have in a classic GAN the corresponding sample.
+
+10
+00:00:53,374 --> 00:01:10,740
+Here you assume that you have the corresponding real sample, but it's still different than supervised learning in that both go through a discriminator and the discriminator tries to tell, the discriminator is a neural network, tries to tell which one is real and which one is generated.
+
+11
+00:01:10,720 --> 00:01:18,599
+In fact, the discriminator is a set of neural networks that we're going to go into that shortly.
+
+12
+00:01:20,005 --> 00:01:25,050
+So it's adversarial in the sense that there is a generator and a discriminator.
+

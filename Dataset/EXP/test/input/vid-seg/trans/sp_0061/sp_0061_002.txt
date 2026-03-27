@@ -1,0 +1,43 @@
+All right, let's dive in.
+So they say in the abstract, neural architecture search explores a large space of architectural motives, which basically, so it basically means you want to find a neural architecture, let's say you have a multi-layer perceptron.
+Right here couple of layers.
+Okay.
+And they're all connected by, you know, feet forward weights whatnot.
+And each of these weights basically is a multiplication.
+So each one of these is a multiplication of x by your weight w.
+And then there is a nonlinearity.
+So the nonlinearity could be a sigmoid.
+So the sigmoid would be something like one over one plus e to the negative x. Now there's a bit of an extension in a sigmoid where you can do a sigmoid that has like a temperature parameter attached or a slope parameter where you go CX.
+So in one case, you can set C such that the sigmoid has a shape like this.
+And then if you put C to a different value, you can make this slope, you can make it like a shape.
+Well, this is terrible.
+Like this.
+You know what I mean.
+Okay, so this this C right here can potentially change the behavior of your network.
+And you want to find a good parameter C. And this is a hyper parameter.
+Now there are many hyper parameters like this.
+For example, how many units you have in a particular layer in a CNN it could be your filter size in a transformer could be the number of heads and so on.
+It could actually be not only the slope of the nonlinearity, but the actual nonlinearity itself, or famously in recurrent neural networks, you have these recurrent cells and they're like, okay, we have an input signal and a carry signal.
+And then the input here is like,
+Dot multiplied here and then there is like a gate with an own linearity and then it's kind of like multiplied by the carry but then there's also a like a forget gate and whatnot.
+There's a minus right here.
+It's very complicated and so people do architecture search over these kind of problems to find better architectures for particular problems.
+Now, the problem is, of course, that how do you know if a given architecture is good?
+What you have to do is you'll have to go take that cell that you have dreamed up.
+You think, well, I think that's a good cell.
+And you have to train it on the full training data set.
+This is a data set, a database, right?
+This is a full training data set.
+Then you need to evaluate it on your validation data set.
+And then you have like a number.
+You have like, okay, this is eight good.
+And then you go back and you say, okay, what if I change this cell here?
+What if I change it to a plus instead of a minus?
+And you do the entire thing again, train it for, I don't know how much, validate it.
+And then this is like a nine.
+And you can say, oh, cool.
+That's a nine.
+So this is a very basic architecture search.
+And there has been a lot of development in this space.
+So like evolutionary search and so on, but they most of the time they require pretty much evaluating the entire thing on the full data.
+So you get a good, you get a good estimate of what your final performance back here is going to be.

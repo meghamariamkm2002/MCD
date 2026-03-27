@@ -1,0 +1,29 @@
+start	end	text
+31	2615	problem formulation as they see it.
+4979	10889	The entire problem formulation is you want to find these best meta learning parameters.
+11930	13413	And they call this the outer level.
+13934	21666	So on an outer level, you want to run gradient descent to find the best meta learning parameters to minimize this function f right here.
+22488	24030	Now what is f?
+24010	28374	F is the average of the validation loss function.
+28434	33940	So here this is the loss function on the test sets of the individual tasks.
+33960	52718	And the neural network that we evaluate on the test set is the neural network that is trained, the algorithm is trained on the training set of that particular task while starting from these parameters theta.
+52698	56584	Now you see there is no dependence on the task here.
+56604	62633	There is no I down here for these meta parameters because these are always the same, right?
+62653	63675	That's the crucial point.
+64196	72208	All the tasks start from the same initial parameters, then they optimize on their own training data set.
+72188	75372	And then they evaluate on their own test data set.
+75913	79497	And that will give you the loss for that particular task.
+79557	88288	And your goal is to find the meta parameters such that this function here, the average loss that results from this procedure is minimal.
+89690	90031	Okay.
+90992	95918	So where they say, um,
+97670	101516	right here, the inner level is this algorithm component.
+101536	109849	So the algorithm starts from these meta parameters and runs gradient steps on the training dataset loss.
+110270	113815	Now, this is just the first step right here of this procedure.
+114336	120606	Of course, in the next step, these are going to be replaced by the phi that
+120586	123450	by the phi i that results from the previous step.
+123470	130459	So the first step is run on the met parameters and then subsequently the task specific parameters are updated.
+131380	140812	The important thing here is that this doesn't need to be gradient descent actually with their method because their method doesn't need to back propagate through the optimization.
+141233	145278	You can think of any inner optimization procedure that you want.
+145318	149023	It can be like a black box solver, whatever you want.
+149003	157228	I'm going to be just interesting to see how this is going to affect something like reinforcement learning and so on.
+157248	160043	This might have already happened and I have not looked.

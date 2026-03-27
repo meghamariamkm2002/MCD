@@ -1,0 +1,24 @@
+Yeah, but the point is they feed in the absolute position at the end and their conjecture.
+So I'm not sure I'm not a fan of this.
+I'm here.
+You know, this is this is like saying, okay, if we only feed it in at the end right here, this is position absolute.
+then we sort of limit the model.
+Like right now the model has the same information as it had before as if we were to feed it at the beginning, but we sort of limit it to only one layer of transformation.
+So all it can do is sort of have kind of a little linear transformation in there.
+And so if we don't feed that in here, whereas we do feed it in, the model can use it any way it wants.
+That's just not a good enough reason for me so I think you know regularization has its place bottle neck layer has its place and so on restricting the capacity and so on but I'm not a fan of hampering the model in this way kind of restricting it.
+Just because it makes your number better, there's not really a reason why the same information should be worse if you give the model more steps to compute with.
+If you feed it in at the beginning, technically, if you train the model correctly, it should learn to use that information in
+at least as good a way as if you feed it in at the end, right?
+At least.
+That tells me that the model that we haven't really figured out how to train these models correctly yet with regards to positional encodings.
+And again, I'm not a fan of simply saying, well, we only feed it in at the end, because then the question immediately is, well, how many layers at the end?
+How many layers at the beginning?
+Well, when, you know, when is it too powerful?
+It's it's just
+Yeah, I don't think it's, it's, it makes a lot of sense to simply give the model information, but not let it do its best with that information, unless you have a specific kind of reasoning why this is just not good enough for me here.
+Not a criticism of the, you know, obviously it's better, like they observe, like, you know, all the, all the information, sorry, all the arguments can be invalidated by
+But it's better, right?
+That's deep learning.
+So yeah, all respect for them for trying it out and actually realizing it's better.
+Pretty cool.

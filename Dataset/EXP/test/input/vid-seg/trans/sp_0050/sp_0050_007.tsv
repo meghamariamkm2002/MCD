@@ -1,0 +1,39 @@
+start	end	text
+31	713	biology.
+2097	7974	Now what we want to do is we want to investigate higher order functions.
+8355	10682	So here
+12046	15451	we're interested in these contact maps, right?
+15751	21098	So how likely is it that two amino acids are in contact?
+21178	24603	And we'll look at it through the lens of attention as we did before.
+25203	38241	So here is the percentage of each head, of each head's attention that is aligned with contact maps, averaged over a data set, suggesting that head 12.4 is uniquely specialized for contact prediction.
+38281	39943	So look at this.
+39923	44670	This head here is just spiking.
+44931	67905	So remember before we said our analysis is whenever we're basically measuring the correlation of two things being in contact because we know it from our simulator or from our data set, the correlation of that with an attention connection being particularly strong.
+67885	72472	and we find it in this attention head right here.
+73433	80904	So this layer 12, head number 4, will always peek out whenever two things are in contact.
+80924	89657	Now you can see that it's not like always, it's like 25% of its attention, but significantly more than anything else right here.
+90835	97002	In fact, if you group the things by this attention, you can build the following plot.
+97363	113181	So you can see right here, probability two amino acids are in contact as a function of attention between the amino acids in head 12.4, showing attention approximates perfectly calibrated estimator, which would be the green line.
+113161	129028	So here we simply, for each pair of amino acids, we make a histogram right here of what they're, sorry, not a histogram.
+129208	130731	We plot the probability
+132820	141420	if they have the attention weight 0.9, we plot how likely is it that they are in contact.
+142583	151183	So this is this, if we just look at the data and we simply take this attention weight as a measure, as a predictor of being in contact,
+151163	166590	we get the blue curve and the green curve would be if we could perfectly predict from this attention head what the probably of contact would be and you can see that the fit is fairly good you can't predict
+166570	183178	with super high accuracy, but the fit is fairly good and you can see the general trend that as the attention in this head rises, the probability of the two amino acids being in contact with each other also rises.
+185521	197802	So we can sort of confidently say that Bert has learned something about a higher level biological structure just from the language modeling objective.
+198223	199385	How can we interpret this?
+200908	208761	This must somehow mean that it is possible, it is vital to
+208741	213609	It is vital for reconstructing the sequence from its surroundings.
+213649	224286	So if we delete this right here, if these two are in contact in the 3D structure,
+224266	231875	That probably means that this thing right here is a very good predictor of what was here.
+232575	239003	If we mask this out and we're asked to reconstruct which amino acid was there, then it probably helps to look at its neighbors.
+239203	244128	It probably always helps to look at one's neighbors, especially also in natural language.
+244689	248333	But if these two are in contact,
+248313	253503	They have very special connection to each other.
+253884	258653	You can basically read out from this one which one this was.
+259736	269595	This is sort of like if you have a sentence and you say, does
+272292	286032	I don't know, I can't come up with one right now, but if it's like da-da-da-da-da, and then there is a name, like mark, and then da-da-da-da-da-da, and then there is him, right?
+286553	295245	And you would expect if I drop out, okay, let's do it the other way around, if I drop out him, then...
+295225	299753	from the text right here, you can probably determine that it is some sort of pronoun.
+300074	310974	But then you go back and you see, ah, it's Mark, okay, so it's not like it or she, it's probably he or him.
+313359	316845	This is sort of the analogous structure right here in biology.

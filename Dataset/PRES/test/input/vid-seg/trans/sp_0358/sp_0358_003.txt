@@ -1,0 +1,2 @@
+In reality, the delayed feedback is ubiquitous.
+For example, in robot tele-operation, delay can happen between the human operators and the robot due to the signal transmission.

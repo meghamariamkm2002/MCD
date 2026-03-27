@@ -1,0 +1,3 @@
+So the experiments, we find $8.2 as a targeted RM, and then we use the four data sets to demonstrate our performance, two are from Finesse, two are from Medical House Care, Domain.
+So we use 2BD's 1.5 Turbo as the RM annotator, and we define the annotating budget, of course, for ourselves and for our data set.
+Human annotation is 200, and the RM is 800.

@@ -1,0 +1,41 @@
+start	end	text
+31	4718	How do you, how do you actually produce training and validation data to match these?
+4738	9865	And there are a number of ways, but what comes to mind is, is meta learning, right?
+10206	16354	So because what you're doing, they initialize the training and validation data at random points.
+16434	18578	So these are just random at the beginning.
+18638	24486	And then they optimize the data itself using gradient descent.
+24466	24806	Okay.
+25027	32536	Now see synthetic training data and they are randomly initialized.
+33197	33297	Okay.
+33497	35019	And they use gradient descent.
+35179	36741	They have it somewhere.
+37182	37402	Yes.
+37602	42308	So they have this inner training loop, okay, which is many steps of inner training.
+43009	47655	And then they have the outer loss, which is the, um,
+47635	51138	It's the validation loss after the inner training loop.
+51158	53741	And the difference from that to the true validation loss.
+53961	56744	And then they do gradient descent on this outer loss.
+57044	60187	Now this outer loss is a result of the inner loss.
+60207	64111	And the inner loss is a result of the inner training procedure.
+64131	69096	And the inner training procedure is n steps of feeding in the training data.
+69236	70938	Every step you feed in the training data.
+70958	73641	So your computational graph is going to look like.
+74141	76984	So here is your training data as train.
+76964	78889	And here are your initial parameters.
+79610	81876	You initialize them randomly.
+82216	85785	In the first step, you use the training data to produce theta 1.
+86988	93403	Then in the second step, you use your training data again to produce theta 2.
+93383	97327	And then you use it again to use data through and so on.
+97387	102211	Each time you feed the training data in order to evolve your parameters to give you a better prediction.
+103032	114802	So the gradient, since somewhere back here there's a loss, the gradient here will have to flow back through all of these paths and through all of these connections to the training data.
+115103	118726	This is kind of you back propagate through an optimization procedure.
+118746	121028	And we have this a bunch of times here.
+121008	131373	And I've looked at the code and the code is like really crazy and it looks like proper research code, but it appears to be that that's actually what's happening.
+131393	138510	They backprop through the optimization procedure to find this synthetic training and validation data.
+140110	150861	Now, that's crazy, but it also kind of limits how far you can go with this, because usually you can't backprop for more than a couple of steps doing this.
+150941	158848	Now, the fact that the inner model is small helps, but also this introduces very, very much, like these things are very brittle.
+159069	165595	If you backprop through an optimization procedure like this, these things tend to be very brittle.
+165575	171594	And so I think there's another thing there where you have to pay careful attention.
+173098	173379	All right.
+175847	177111	That's it's basically it.
+177332	180040	The last thing they say is that they can combine this with orchid

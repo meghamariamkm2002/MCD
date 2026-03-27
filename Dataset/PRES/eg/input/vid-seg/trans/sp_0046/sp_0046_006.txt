@@ -1,0 +1,3 @@
+Specifically, the SDA considers a setup where the loss function is stochastically chosen from an adversarial distribution.
+As a result, the gradient variation contains two parts.
+The stochastic change from sampling and the adversarial change of the distributions, which makes the gradient variation successfully bridges stochastic and adversarial optimization.

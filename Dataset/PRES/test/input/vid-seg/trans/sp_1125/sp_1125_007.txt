@@ -1,0 +1,2 @@
+ShredGrab framework is designed to ensure balanced log training in parity environments.
+We initially utilize the DPI to analyze the global extent of the long-tailed data and then proceed to conduct balanced log training based on these analysis.

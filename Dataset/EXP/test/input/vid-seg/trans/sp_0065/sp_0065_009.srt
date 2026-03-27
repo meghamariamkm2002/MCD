@@ -1,0 +1,312 @@
+1
+00:00:00,031 --> 00:00:00,752
+That's that.
+
+2
+00:00:01,012 --> 00:00:03,295
+Now they discover this doesn't work.
+
+3
+00:00:04,316 --> 00:00:05,498
+And why doesn't it work?
+
+4
+00:00:05,958 --> 00:00:12,206
+It's because at the beginning of training, these token length predictions here are pretty crappy.
+
+5
+00:00:12,907 --> 00:00:21,617
+And so that means that, I guess, especially this part, even where you say, well, where, where in the sound wave
+
+6
+00:00:21,597 --> 00:00:29,851
+of my 20 seconds do I even need to cut out to compare with the discriminator, right?
+
+7
+00:00:30,151 --> 00:00:48,381
+If you sample this piece here, and that's what you give to the discriminator, but your length predictions are so far off that the generator is trying to produce this particular piece because it thinks, oh, instead of producing this token here, which is what the discriminator looks at,
+
+8
+00:00:48,361 --> 00:00:50,404
+It produces these tokens here.
+
+9
+00:00:51,585 --> 00:00:57,152
+Of course, you have no chance, no matter how good your adversarial loss is.
+
+10
+00:00:57,553 --> 00:01:09,188
+Remember, these length predictions are used to see basically to see which of these tokens the generator needs to produce the sound for and how they're aligned.
+
+11
+00:01:10,585 --> 00:01:14,549
+So they have an additional loss right here.
+
+12
+00:01:15,089 --> 00:01:24,578
+What they do is they produce from the, again, they go via the spectrograms within this spectrogram prediction loss.
+
+13
+00:01:25,859 --> 00:01:31,124
+So they say, we discovered that adversarial feedback is insufficient to learn alignment.
+
+14
+00:01:31,725 --> 00:01:35,248
+At the start of training, the aligner does not produce an accurate alignment.
+
+15
+00:01:35,268 --> 00:01:39,512
+So the information in the input tokens is incorrectly temporarily distributed.
+
+16
+00:01:39,492 --> 00:01:43,539
+This encourages the decoder to ignore the aligner output.
+
+17
+00:01:45,743 --> 00:01:49,209
+The unconditional discriminators provide no useful signal to correct this.
+
+18
+00:01:49,329 --> 00:01:50,431
+Oh yeah, I should have mentioned this.
+
+19
+00:01:50,672 --> 00:01:58,485
+The discriminators here, since you don't know, you don't know which tokens you should produce, the discriminators are unconditional.
+
+20
+00:01:59,166 --> 00:02:01,170
+They don't know which text is produced.
+
+21
+00:02:01,571 --> 00:02:04,656
+You don't give them the tokens, you simply give them the sound waves.
+
+22
+00:02:04,636 --> 00:02:07,640
+That's something I find particularly interesting here.
+
+23
+00:02:07,900 --> 00:02:17,232
+Now you, of course, this wouldn't work in a like a traditional GAN because you simply have a data sample here and a data sample right here.
+
+24
+00:02:17,693 --> 00:02:21,838
+But in this case, you of course have the corresponding sound samples.
+
+25
+00:02:22,259 --> 00:02:28,146
+But still they are, you know, they are cut down to a subsequence so you don't know which text you're producing.
+
+26
+00:02:28,186 --> 00:02:30,930
+So you have to make the discriminators unconditional.
+
+27
+00:02:30,910 --> 00:02:50,337
+and therefore they are going to discriminate as we said between potentially between two completely non-overlapping pieces of the sound wave which of course doesn't help you and then the aligner can also not learn anything because there's no learning signal because everything just says this is not the same.
+
+28
+00:02:51,818 --> 00:02:52,198
+Okay.
+
+29
+00:02:53,700 --> 00:02:54,601
+And that's what they say here.
+
+30
+00:02:55,102 --> 00:02:56,264
+Um, we face a different problem.
+
+31
+00:02:56,324 --> 00:02:59,387
+We do not have aligned ground truth.
+
+32
+00:03:00,389 --> 00:03:10,641
+Um, conditional discriminators, which they don't have need an aligner module, which cannot function correctly at the start of training, effectively turning them into unconditional discriminators.
+
+33
+00:03:10,661 --> 00:03:16,729
+So even if they were to input the text, it would still be the wrong text because their aligner is wrong at the beginning.
+
+34
+00:03:18,498 --> 00:03:26,946
+Although it should be possible in theory to train the discriminators a liner module adversarily, we find that this does not work in practice and training gets stuck.
+
+35
+00:03:27,787 --> 00:03:28,668
+So what do they do?
+
+36
+00:03:28,728 --> 00:03:36,376
+They say instead we propose to guide learning by using an explicit prediction loss in the spectrogram domain.
+
+37
+00:03:36,876 --> 00:03:45,585
+We minimize the L1 loss between the log-scaled male spectrograms of the generator output and the corresponding ground truth training window.
+
+38
+00:03:47,118 --> 00:03:53,906
+This helps learning to take off and renders conditional discriminators unnecessary simplifying the model.
+
+39
+00:03:54,587 --> 00:04:08,704
+So they take the spectrogram of the generator output and the corresponding ground truth training window, and they simply calculate the L1 difference of these spectrograms.
+
+40
+00:04:08,684 --> 00:04:19,738
+Now this, as I understand it, this is different from, this is different from, because we said they also have a discriminator on the spectrograms.
+
+41
+00:04:20,499 --> 00:04:22,461
+Now this is different from that.
+
+42
+00:04:23,422 --> 00:04:25,204
+This is even in addition to that.
+
+43
+00:04:25,304 --> 00:04:30,391
+So here somewhere we had, yeah, this, this was the discriminator on the spectrograms.
+
+44
+00:04:31,732 --> 00:04:33,875
+And I think this is even different.
+
+45
+00:04:33,915 --> 00:04:36,278
+So what they're doing is they also,
+
+46
+00:04:37,962 --> 00:04:43,735
+The discriminator simply decides, do the spectrograms look real or fake?
+
+47
+00:04:43,755 --> 00:04:45,640
+Does the spectrogram look real or fake?
+
+48
+00:04:45,660 --> 00:04:53,057
+Now they also take the spectrograms and compare them with the L1 loss.
+
+49
+00:04:53,437 --> 00:04:57,186
+So this is exactly what they said they wouldn't do.
+
+50
+00:04:57,166 --> 00:04:58,228
+Right here.
+
+51
+00:04:58,709 --> 00:05:00,492
+Now it's still the case, right?
+
+52
+00:05:00,512 --> 00:05:10,669
+It's still the case that they don't use spectrograms as intermediate representations, but they now do have a supervised loss on the spectrograms.
+
+53
+00:05:11,210 --> 00:05:15,057
+And one of the motivations to do this end to end is saying,
+
+54
+00:05:15,037 --> 00:05:20,085
+You know, maybe these auxiliary losses and supervised losses, they sort of distract.
+
+55
+00:05:20,105 --> 00:05:32,785
+They're good to guide the training, but they sort of distract and now they see, okay, maybe we have to introduce this one right here in order to make the training start because this is a real signal.
+
+56
+00:05:33,606 --> 00:05:36,470
+But again, you run into a problem.
+
+57
+00:05:36,671 --> 00:05:41,398
+Namely, if you produce something with the generator and
+
+58
+00:05:42,610 --> 00:05:46,316
+So first of all, this is not a discriminator anymore.
+
+59
+00:05:46,476 --> 00:05:48,179
+This is a true L one loss.
+
+60
+00:05:48,479 --> 00:05:51,965
+So we potentially run into this problem, right?
+
+61
+00:05:52,245 --> 00:05:59,296
+Of the, of the generator simply copying the input because you always tell it what the correct input is.
+
+62
+00:05:59,316 --> 00:06:02,361
+This is now a supervised loss that we guide the training with.
+
+63
+00:06:03,363 --> 00:06:06,728
+And, um, what was I going to say?
+
+64
+00:06:09,087 --> 00:06:16,274
+Yeah, so you take the generator output, you transform it into a spectrogram, you take the real output, transform it into a spectrum, compare the L1 loss.
+
+65
+00:06:16,294 --> 00:06:23,381
+Now, you sort of run into the same problem in that if these are completely not aligned, then this is not going to work.
+
+66
+00:06:24,583 --> 00:06:33,171
+But since you have a supervised loss, this, it can, it gives you a much stronger learning signal of what the generator should produce.
+
+67
+00:06:33,432 --> 00:06:37,896
+So you're kind of counting at the beginning of training, you're counting on sort of a reverse
+
+68
+00:06:37,876 --> 00:07:00,559
+uh reverse learning process in that the real the real sound will go into a spectrogram and the generator will go here and then that learning signal will sort of travel to make the generator produce more of whatever the real sound is and that almost like if you think that
+
+69
+00:07:00,539 --> 00:07:05,170
+The aligner is so bad that we have even non-overlapping fragments.
+
+70
+00:07:05,591 --> 00:07:14,633
+Basically you teach the generator to ignore the input that it gets from down here, that it gets from its entire backbone.
+
+71
+00:07:14,933 --> 00:07:21,786
+You teach it to sort of ignore all of that, if that makes any sense.
+
+72
+00:07:22,848 --> 00:07:26,676
+It simply produces the sound according to this supervised loss.
+
+73
+00:07:26,716 --> 00:07:33,128
+Now, of course, it doesn't ignore it, it still takes the features, but it ignores this whole alignment thing.
+
+74
+00:07:33,108 --> 00:07:49,986
+And now, once the generator gets a better signal of what it should produce, that signal can travel back to the aligner module, to this length estimation module, and guide that one to make better predictions about the lengths, okay?
+
+75
+00:07:49,966 --> 00:07:58,554
+So that's how you, at the beginning of training, you sort of rely on this path of learning to make, to initialize this module of the aligner.
+
+76
+00:07:58,894 --> 00:08:12,347
+And then once these length predictors are better, then the loss can travel in its intended path where you forward produce these aligned sound waves and then these discriminators take over.
+
+77
+00:08:13,328 --> 00:08:19,213
+I don't exactly know if they trade this off during training or they simply set it to a number such that it helps them.
+
+78
+00:08:19,193 --> 00:08:30,047
+at the beginning, but it's a good idea and it's a good trick to introduce here a supervised portion to make the beginning easier.
+

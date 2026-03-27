@@ -1,0 +1,3 @@
+We further demonstrate the computational efficiency of our protocols.
+We benchmark our protocols on up to 1 million parameter models and with thousands of peers.
+For example, we show that the aggregation step of our malicious secure implementation of robust aggregation with RSA obtains a per-round CPU time of roughly 46 seconds with 100,000 parameters when trained by 1,000 peers.

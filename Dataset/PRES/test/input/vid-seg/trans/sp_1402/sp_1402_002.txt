@@ -1,0 +1,4 @@
+In this paper, we focused on the binary feedback problem, taking stream recommendation as an example.
+So recommend action algorithm can only observe the feedback corresponding to the item and recommend it to the user, such as user click.
+The other feedback is unknown.
+This result in trained policy with significantly amount of unknown feedback.

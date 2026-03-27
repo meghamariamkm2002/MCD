@@ -1,0 +1,5 @@
+sessions.
+
+And this is important because it implies two important properties.
+The first is history invariance, which basically says that the order in which we collect the points does not matter for prediction.
+And the second property is queer independence, essentially equivalent to saying that the order of the test locations or the order of the points at which we want to make the predictions also doesn't matter for the prediction.

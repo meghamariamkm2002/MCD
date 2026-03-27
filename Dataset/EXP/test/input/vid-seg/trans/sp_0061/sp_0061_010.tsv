@@ -1,0 +1,36 @@
+start	end	text
+31	1754	That's basically it to the paper.
+2515	5479	There's a lot of things to be said here.
+5499	11649	I think this works in very, very limited settings.
+12150	18900	It seems to me that it's sort of brittle with respect to how you abstract.
+18880	23267	It's always the case how large is this synthetic training data.
+23287	29277	In their case, they abstract this to 20 or 30 data points or something like this.
+29677	42137	So it seems to me, since you're optimizing this training data with gradient descent, what you would mainly find are adversarial examples to this architecture here.
+42117	46963	So I'm going to guess that the inner optimization is very noisy.
+47103	57376	And that's because if you really let your optimizer run, then it will abuse every single thing it can to match that validation loss.
+57396	62363	And that will usually lead to an adversarial example since you're optimizing the data itself.
+62823	63484	Okay.
+63464	67428	So I think this suffers from that.
+67468	82001	And we had this in the planning in learned world models in reinforcement learning, where if you have a really, really good planner, it will just abuse the mistakes that you make in approximating the true world.
+82101	82762	And the same here.
+83302	86345	You're going to make mistakes approximating this architecture here.
+86906	91750	And the better your optimizer is for producing this synthetic data,
+91730	101163	Probably the worst, the result is going to match, the worst that these losses are going to actually match.
+101663	113940	Now, okay, these losses will match because that's what you train for, but the worst these two curves will match each other because now you're just finding adversarial examples for your particular training data.
+113920	119085	Another concern I have here is with respect to the double descent phenomenon.
+119345	134781	So if you know the double descent phenomenon, if here you have your number of parameters and here you have your validation loss, let's say, and you know that if I add parameters, I can make my validation loss go down.
+134841	141868	So this is assuming I have a model with P parameters and I always train it on the train data to like two convergence.
+141848	150941	If I add parameters, I can generalize better until a point where I add too many parameters and I start overfitting, then my validation loss goes up again.
+151422	168666	But the double descent phenomenon, and I think I've done a video on this, shows that after a certain threshold, you get the interpolation threshold, the validation loss goes actually down again and goes down even further here.
+168646	183767	So this is a very strange phenomenon by itself, but I'm sort of concerned that if you do this abstraction that this paper proposes, so let's say your full model is here with a large number of parameters, so it is past this interpolation threshold.
+184668	190536	If you now seriously reduce the number of parameters because you want to go into this Petri dish,
+190516	198328	you will get, maybe you will cross this interpolation threshold and actually be on this side of the curve right here.
+198808	207882	Now, of course, at the same time, you reduce the amount of data, which would push you over here again, but it is different data.
+207982	210766	So I'm not sure how all of this is going to play out.
+210806	215173	It appears to work in these settings right here, but I
+216453	238393	I think this is, it's sort of applicable in some situations and it'd be very cool if we develop this further such that we understand when it applies and when we can use it because I feel this can be a very cool thing if we understand it better and if we can apply it throughout.
+238373	239740	All right, that's the end.
+239801	243380	If you liked this paper, leave a comment.
+243622	245110	If you didn't like it, leave a comment.
+245472	247986	And bye-bye.
+248006	248991	See you next time.

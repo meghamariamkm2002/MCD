@@ -1,0 +1,168 @@
+1
+00:00:00,622 --> 00:00:04,267
+like that's about it.
+
+2
+00:00:04,307 --> 00:00:05,709
+Let's look at the experiments.
+
+3
+00:00:06,591 --> 00:00:08,674
+So they're experiments.
+
+4
+00:00:10,717 --> 00:00:21,513
+Basically, I actually want to go down here to this industry, sorry, not the industrial control process, but to the Mujoko experiment.
+
+5
+00:00:21,553 --> 00:00:24,096
+So these are kind of continuous control tasks.
+
+6
+00:00:24,357 --> 00:00:25,178
+You might have seen it.
+
+7
+00:00:25,198 --> 00:00:25,819
+So there's
+
+8
+00:00:25,799 --> 00:00:34,512
+One is a, the ant here is basically this 3D ant.
+
+9
+00:00:35,374 --> 00:00:44,888
+It's like a blob and it has I think four legs and each leg has two joints and it just needs to walk as far as possible or reach some sort of goal.
+
+10
+00:00:44,868 --> 00:00:50,842
+And the half cheetah is like a 2D thing where I think it's something like this.
+
+11
+00:00:52,004 --> 00:00:56,194
+It also has these two legs and it's supposed to walk forward and not fall over.
+
+12
+00:00:57,537 --> 00:01:02,488
+And you can put force basically on each of the joints here.
+
+13
+00:01:02,468 --> 00:01:19,493
+So you see that their baselines are Gaussian processes and this pets thing is a previous baseline to also do model-based control with a learned model.
+
+14
+00:01:20,915 --> 00:01:22,637
+And here they
+
+15
+00:01:23,748 --> 00:01:27,032
+There's is the main, their main one is the red one.
+
+16
+00:01:27,552 --> 00:01:31,577
+And as you can see that it goes much faster.
+
+17
+00:01:31,637 --> 00:01:37,804
+Well, it basically outperforms the rest in these high, in these more complicated tasks.
+
+18
+00:01:38,205 --> 00:01:43,991
+And then card poll or something like this is, is a lower dimensional, easier tasks.
+
+19
+00:01:44,352 --> 00:01:47,055
+And you can see that at least it does not hurt.
+
+20
+00:01:49,229 --> 00:02:11,659
+They make, they say here, something they don't show in the plots, they say that if you let this run for a while, then basically their method doesn't make any improvement anymore, whereas the baseline methods will sort of at some point surpass it.
+
+21
+00:02:11,639 --> 00:02:27,100
+And the reason that is, and I'm not sure if it's on this exact task, but they mentioned that, which I respect so far, is because they say, since we only plan where we know,
+
+22
+00:02:28,548 --> 00:02:30,651
+Where did I draw it?
+
+23
+00:02:30,671 --> 00:02:36,922
+Since we only plan where we know, we basically do much less exploration than others.
+
+24
+00:02:37,362 --> 00:02:40,548
+We kind of stick to what we know when we plan.
+
+25
+00:02:40,968 --> 00:02:54,150
+So inherently we do less exploration and in our conversation with Hari, he basically said that this is intended and the intention is that you want to do your planning
+
+26
+00:02:54,130 --> 00:03:10,131
+Where you know and then explicitly add a component that does exploration so you have control over so you can basically say I. I've never been here sort of now you would be in an expression phase you would explicitly go there.
+
+27
+00:03:10,111 --> 00:03:25,470
+rather than intermingle your planning with your exploration and basically rely on your planning to screw up and your exploring because if you're planning
+
+28
+00:03:25,450 --> 00:03:29,376
+never screws up, then you won't explore either, right?
+
+29
+00:03:29,536 --> 00:03:32,941
+Then you will always reach your goal or your planning will always be correct.
+
+30
+00:03:33,301 --> 00:03:39,891
+And these other methods that don't have this explicitly, they explore every time their planning screws up and you don't want that.
+
+31
+00:03:40,171 --> 00:03:45,278
+You want your planning to be as good as possible and they do that by sticking to what they know.
+
+32
+00:03:45,719 --> 00:03:55,052
+And then the next step, which is not in this paper, would be to add an explicit exploration policy to reach areas they've never reached before.
+
+33
+00:03:55,032 --> 00:03:57,035
+Okay.
+
+34
+00:03:57,055 --> 00:04:11,320
+So that's the reason why they don't ultimately reach the best accuracy, but they do reach the initial accuracy much faster than the other tasks because they plan better.
+
+35
+00:04:11,300 --> 00:04:24,298
+They have a long discussion here of what still problems are, like local minima or the planning horizon problem, open loop versus closed loop, compounding errors in planning.
+
+36
+00:04:25,340 --> 00:04:27,483
+But I'm going to leave this out for now.
+
+37
+00:04:28,044 --> 00:04:30,567
+And I thank you for being here.
+
+38
+00:04:30,767 --> 00:04:33,952
+I very much invite you to check out the paper for more details.
+
+39
+00:04:34,212 --> 00:04:36,415
+It's pretty cool, pretty easy to read actually.
+
+40
+00:04:36,455 --> 00:04:37,917
+It's very written very well.
+
+41
+00:04:38,698 --> 00:04:40,922
+And with that, see you next time.
+
+42
+00:04:40,942 --> 00:04:41,222
+Bye bye.
+

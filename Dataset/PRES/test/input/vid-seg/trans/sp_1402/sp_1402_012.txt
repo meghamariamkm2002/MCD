@@ -1,0 +1,2 @@
+The experiments will compare with total binary algorithm on the data science class from our app, Tencent VChat.
+Our methods can achieve the improvements of more than 1% CVR and CDCV.

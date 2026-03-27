@@ -1,0 +1,3 @@
+In this paper, we assume we have a dataset sampled from an unknown data distribution PD.
+Our goal is to learn energy based model to recover the true data distribution.
+The model is denoted as Q, the function parameterized by theta representing the negative local likelihood, and Z is the intractable normalization constant.

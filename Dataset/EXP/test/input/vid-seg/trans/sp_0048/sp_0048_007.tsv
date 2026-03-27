@@ -1,0 +1,24 @@
+start	end	text
+31	1834	therefore this derivation wouldn't work.
+3256	5039	Now why is this important?
+5099	19241	Because if you look back into your drawing, what you're basically doing is you are imposing a quadratic regularizer around this initial point right here.
+20263	27895	And that creates this very strong connection between the end gradient and the initial gradient.
+27875	40266	So now when you're optimizing, when you have a training loss of the inner task, and maybe the training loss looks something like, it looks something like, like this right here.
+41968	48814	So SGD will, it would go right to the very inner point right here.
+49094	51656	If you're just let SGD run, it would go there.
+52117	57882	But now since you have this regularizer, SGD needs to find a trade off point between the two.
+57862	62131	So what it will do is it will probably go somewhere and stop somewhere here.
+62693	64897	So it will now have two forces pulling on it.
+65058	76242	The first force will be this quantity right here and the second force will be pulling it back towards this.
+76222	83480	You can pretty much count, so now SGD cannot just go to any point right here.
+83520	85465	It cannot go to any isoline.
+85485	86769	These are not equal anymore.
+87731	93285	Mainly it will go to the one point that points into the direction of this quadratic right here.
+93265	104476	So since it's a quadratic, we have closed form formulas for relating one gradient on the quadratic, namely the one out here, with the gradient back here.
+104516	122715	So we can express this Jacobian in closed form because this is a quadratic, because we have this regularizer, because you have these basically two forces pulling on this point in opposite direction, one pointing towards the training loss and one pointing towards the inside of the quadratic.
+122695	126202	So that's why this method works.
+127084	128387	Okay.
+129709	133317	I can recommend Farin Hussar's blog post.
+133417	139991	He has some very nice animations of why this basically restricts where gradient descent can go.
+141554	143638	I can link to it in the description.
+144300	145041	It's pretty cool to

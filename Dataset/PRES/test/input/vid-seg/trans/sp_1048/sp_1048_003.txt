@@ -1,0 +1,2 @@
+The most popular framework currently is called FedAverage, in which we do multiple local updates before the global aggregation.
+However, the problem is that this may introduce client drift because the model could be overfitted in the local clients.

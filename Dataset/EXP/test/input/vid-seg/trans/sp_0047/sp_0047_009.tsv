@@ -1,0 +1,17 @@
+start	end	text
+31	10624	So, yeah, as I said, this paper is very different from other research papers in that it's sort of half an engineering paper and all of these papers are.
+10985	29548	They're kind of hard to read because they just kind of state some things in the order is kind of weird sometimes, why they do things is kind of weird sometimes, but you can't deny that it had quite the effect on the community.
+29528	35618	And it is a very cool paper, a very cool series of papers.
+35818	45614	And it's very cool that actually they released the code and they made the code such that it is super duper efficient even like on a single machine.
+46155	47537	And that was
+47517	56365	very cool because, you know, being Google, they could have just released code that is very efficient on a distributed data center.
+56806	59568	And they didn't do that.
+59769	64393	So that this is, it's sort of not really like today anymore.
+64513	71540	Like today, when they release code, it's always you need, you need like 50 cloud TPUs to do it.
+71560	75043	I mean, it's still cool that they release code, but this was
+75023	79130	This was really a step into kind of democratizing AI.
+81334	84940	And yeah, so that was my rant about Word2Vec.
+85501	86904	I hope you enjoyed this.
+87004	92173	I hope this still was useful to you, even though most of you probably already knew Word2Vec.
+92995	95739	And yeah, so I'll see you next time.
+95799	96120	Bye bye.

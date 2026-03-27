@@ -1,0 +1,20 @@
+start	end	text
+31	2493	How do we even produce sound?
+3735	5296	And that's this diagram right here.
+6958	9560	So you have this GAN TTS generator.
+9901	15906	This is a generator that takes in a hidden representation.
+15946	18028	So it takes in tokens.
+18429	20010	Let's say token one, token two.
+21031	23434	Let's go from the one before.
+23494	27878	Think of a sentence, hello there.
+29326	29707	Okay.
+30848	48075	So it takes these tokens and of course it takes like hidden representations of the tokens and it will output, it will output for each one or for this joint sequence, one, hidden two, it would output the sound wave.
+48095	48415	Okay.
+50690	60885	And this has been a paper before the scan TTS and you also you condition it on the speaker and on latent variables like how you want the pitch to be and so on.
+61747	64190	That's not really important for us right here.
+64611	68597	The generator can simply take these token embeddings and produce sound.
+68577	73003	The problem is in the original paper, you had an alignment.
+73544	85201	You knew which token corresponded to which piece of sound, and therefore you sort of knew... So after that, you need to compare this to the generator thing.
+85842	90749	And you knew which token corresponded to which piece of sound right here.
+91590	97318	So the generator knew what it had to produce from each token, how long it should be, and so on.
+97298	100035	So this is the generally the alignment

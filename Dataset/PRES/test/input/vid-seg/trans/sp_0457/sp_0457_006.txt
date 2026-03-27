@@ -1,0 +1,4 @@
+Our main solution is that we cascade the zero-order optimization precisely on the upper layer of the clients.
+We first estimate the partial derivative of f with respect to the upper layer of the client with zero-order optimization.
+Then we derive the partial of f with respect to the client model using train rules.
+With this framework, we precisely apply the zero order optimization on the most needed part.

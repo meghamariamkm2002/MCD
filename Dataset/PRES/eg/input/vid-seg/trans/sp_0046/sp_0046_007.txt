@@ -1,0 +1,3 @@
+To conclude, we consider two levels of adaptivity in online convex optimization due to the practical values of universal methods and the generative gradient variation in games and SDA models.
+The key challenge is handling uncertainties from two levels simultaneously.
+In this work, we propose a single algorithm with simultaneously near-optimal problem-dependent regard box for convex exponential concave and strongly convex functions.

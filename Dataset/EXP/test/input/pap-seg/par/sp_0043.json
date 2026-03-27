@@ -1,0 +1,434 @@
+[
+  {
+    "para_id": "p1",
+    "section_heading": "Abstract",
+    "text": "Trajectory optimization using a learned model of the environment is one of the core elements of model-based reinforcement learning. This procedure often suffers from exploiting inaccuracies of the learned model. We propose to regularize trajectory optimization by means of a denoising autoencoder that is trained on the same trajectories as the model of the environment. We show that the proposed regularization leads to improved planning with both gradient-based and gradientfree optimizers. We also demonstrate that using regularized trajectory optimization leads to rapid initial learning in a set of popular motor control tasks, which suggests that the proposed approach can be a useful tool for improving sample efficiency.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p2",
+    "section_heading": "1 Introduction",
+    "text": "State-of-the-art reinforcement learning (RL) often requires a large number of interactions with the environment to learn even relatively simple tasks [11]. It is generally believed that model-based RL can provide better sample-efficiency [9, 2, 5] but showing this in practice has been challenging. In this paper, we propose a way to improve planning in model-based RL and show that it can lead to improved performance and better sample efficiency.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p3",
+    "section_heading": "1 Introduction",
+    "text": "In model-based RL, planning is done by computing the expected result of a sequence of future actions using an explicit model of the environment. Model-based planning has been demonstrated to be efficient in many applications where the model (a simulator) can be built using first principles. For example, model-based control is widely used in robotics and has been used to solve challenging tasks such as human locomotion [34, 35] and dexterous in-hand manipulation [21].",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p4",
+    "section_heading": "1 Introduction",
+    "text": "In many applications, however, we often do not have the luxury of an accurate simulator of the environment. Firstly, building even an approximate simulator can be very costly even for processes whose dynamics is well understood. Secondly, it can be challenging to align the state of an existing simulator with the state of the observed process in order to plan. Thirdly, the environment is often non-stationary due to, for example, hardware failures in robotics, change of the input feed and deactivation of materials in industrial process control. Thus, learning the model of the environment is the only viable option in many applications and learning needs to be done for a live system. And since many real-world systems are very complex, we are likely to need powerful function approximators, such as deep neural networks, to learn the dynamics of the environment.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p5",
+    "section_heading": "1 Introduction",
+    "text": "However, planning using a learned (and therefore inaccurate) model of the environment is very difficult in practice. The process of optimizing the sequence of future actions to maximize the",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p6",
+    "section_heading": "1 Introduction",
+    "text": "expected return (which we call trajectory optimization) can easily exploit the inaccuracies of the model and suggest a very unreasonable plan which produces highly over-optimistic predicted rewards. This optimization process works similarly to adversarial attacks [1, 13, 33, 7] where the input of a trained model is modified to achieve the desired output. In fact, a more efficient trajectory optimizer is more likely to fall into this trap. This can arguably be the reason why gradient-based optimization (which is very efficient at for example learning the models) has not been widely used for trajectory optimization.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p7",
+    "section_heading": "1 Introduction",
+    "text": "In this paper, we study this adversarial effect of model-based planning in several environments and show that it poses a problem particularly in high-dimensional control spaces. We also propose to remedy this problem by regularizing trajectory optimization using a denoising autoencoder (DAE) [37]. The DAE is trained to denoise trajectories that appeared in the past experience and in this way the DAE learns the distribution of the collected trajectories. During trajectory optimization, we use the denoising error of the DAE as a regularization term that is subtracted from the maximized objective function. The intuition is that the denoising error will be large for trajectories that are far from the training distribution, signaling that the dynamics model predictions will be less reliable as it has not been trained on such data. Thus, a good trajectory has to give a high predicted return and it can be only moderately novel in the light of past experience.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p8",
+    "section_heading": "1 Introduction",
+    "text": "In the experiments, we demonstrate that the proposed regularization significantly diminishes the adversarial effect of trajectory optimization with learned models. We show that the proposed regularization works well with both gradient-free and gradient-based optimizers (experiments are done with cross-entropy method [3] and Adam [14]) in both open-loop and closed-loop control. We demonstrate that improved trajectory optimization translates to excellent results in early parts of training in standard motor-control tasks and achieve competitive performance after a handful of interactions with the environment.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p9",
+    "section_heading": "2 Model-Based Reinforcement Learning",
+    "text": "In this section, we explain the basic setup of model-based RL and present the notation used. At every time step t, the environment is in state st, the agent performs action at, receives reward rt = r(st, at) and the environment transitions to new state st+1 = f(st, at). The agent acts based on the observations ot = o(st) which is a function of the environment state. In a fully observable Markov decision process (MDP), the agent observes full state ot = st. In a partially observable Markov decision process (POMDP), the observation ot does not completely reveal st. The goal of the agent is select actions {a0, a1, . . .} so as to maximize the return, which is the expected cumulative reward E [ ∑∞ t=0 r(st, at)].",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p10",
+    "section_heading": "2 Model-Based Reinforcement Learning",
+    "text": "In the model-based approach, the agent builds the dynamics model of the environment (forward model). For a fully observable environment, the forward model can be a fully-connected neural network trained to predict the state transition from time t to t+ 1:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p11",
+    "section_heading": "2 Model-Based Reinforcement Learning",
+    "text": "In partially observable environments, the forward model can be a recurrent neural network trained to directly predict the future observations based on past observations and actions:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p12",
+    "section_heading": "2 Model-Based Reinforcement Learning",
+    "text": "In this paper, we assume access to the reward function and that it can be computed from the agent observations, that is rt = r(ot, at).",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p13",
+    "section_heading": "2 Model-Based Reinforcement Learning",
+    "text": "At each time step t, the agent uses the learned forward model to plan the sequence of future actions {at, . . . , at+H} so as to maximize the expected cumulative future reward.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p14",
+    "section_heading": "2 Model-Based Reinforcement Learning",
+    "text": "This process is called trajectory optimization. The agent uses the learned model of the environment to compute the objective function G(at, . . . , at+H). The model (1) or (2) is unrolled H steps into the future using the current plan {at, . . . , at+H}.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p15",
+    "section_heading": "2 Model-Based Reinforcement Learning",
+    "text": "Algorithm 1 End-to-end model-based reinforcement learning Collect data D by random policy. for each episode do",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p16",
+    "section_heading": "2 Model-Based Reinforcement Learning",
+    "text": "Train dynamics model fθ using D. for time t until the episode is over do",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p17",
+    "section_heading": "2 Model-Based Reinforcement Learning",
+    "text": "Optimize trajectory {at, ot+1, . . . , at+H , ot+H+1}. Implement the first action at and get new observation ot. end for Add data {(s1, a1, . . . , aT , oT )} from the last episode to D.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p18",
+    "section_heading": "2 Model-Based Reinforcement Learning",
+    "text": "end for",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p19",
+    "section_heading": "2 Model-Based Reinforcement Learning",
+    "text": "The optimized sequence of actions from trajectory optimization can be directly applied to the environment (open-loop control). It can also be provided as suggestions to a human operator with the possibility for the human to change the plan (human-in-the-loop). Open-loop control is challenging because the dynamics model has to be able to make accurate long-range predictions. An approach which works better in practice is to take only the first action of the optimized trajectory and then replan at each step (closed-loop control). Thus, in closed-loop control, we account for possible modeling errors and feedback from the environment. In the control literature, this flavor of model-based RL is called model-predictive control (MPC) [22, 30, 16, 24].",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p20",
+    "section_heading": "2 Model-Based Reinforcement Learning",
+    "text": "The typical sequence of steps performed in model-based RL are: 1) collect data, 2) train the forward model fθ, 3) interact with the environment using MPC (this involves trajectory optimization in every time step), 4) store the data collected during the last interaction and continue to step 2. The algorithm is outlined in Algorithm 1.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p21",
+    "section_heading": "3.1 Problem with using learned models for planning",
+    "text": "In this paper, we focus on the inner loop of model-based RL which is trajectory optimization using a learned forward model fθ. Potential inaccuracies of the trained model cause substantial difficulties for the planning process. Rather than optimizing what really happens, planning can easily end up exploiting the weaknesses of the predictive model. Planning is effectively an adversarial attack against the agent’s own forward model. This results in a wide gap between expectations based on the model and what actually happens.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p22",
+    "section_heading": "3.1 Problem with using learned models for planning",
+    "text": "We demonstrate this problem using a simple industrial process control benchmark from [28]. The problem is to control a continuous nonlinear reactor by manipulating three valves which control flows in two feeds and one output stream. Further details of the process and the control problem are given in Appendix A. The task considered in [28] is to change the product rate of the process from 100 to 130 kmol/h. Fig. 1a shows how this task can be performed using a set of PI controllers proposed in [28]. We trained a forward model of the process using a recurrent neural network (2) and the data collected by implementing the PI control strategy for a set of randomly generated targets. Then we optimized the trajectory for the considered task using gradient-based optimization, which produced results in Fig. 1b. One can see that the proposed control signals are changed abruptly and the trajectory imagined by the model significantly deviates from reality. For example, the pressure constraint (of max 300 kPa) is violated. This example demonstrates how planning can easily exploit the weaknesses of the predictive model.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p23",
+    "section_heading": "3.2 Regularizing Trajectory Optimization with Denoising Autoencoders",
+    "text": "We propose to regularize the trajectory optimization with denoising autoencoders (DAE). The idea is that we want to reward familiar trajectories and penalize unfamiliar ones because the model is likely to make larger errors for the unfamiliar ones.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p24",
+    "section_heading": "3.2 Regularizing Trajectory Optimization with Denoising Autoencoders",
+    "text": "This can be achieved by adding a regularization term to the objective function:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p25",
+    "section_heading": "3.2 Regularizing Trajectory Optimization with Denoising Autoencoders",
+    "text": "where p(ot, at, . . . , ot+H , at+H) is the probability of observing a given trajectory in the past experience and α is a tuning hyperparameter. In practice, instead of using the joint probability of the whole trajectory, we use marginal probabilities over short windows of size w:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p26",
+    "section_heading": "3.2 Regularizing Trajectory Optimization with Denoising Autoencoders",
+    "text": "where xτ = {oτ , aτ , . . . oτ+w, aτ+w} is a short window of the optimized trajectory. Suppose we want to find the optimal sequence of actions by maximizing (4) with a gradient-based optimization procedure. We can compute gradients ∂Greg∂ai by backpropagation in a computational graph where the trained forward model is unrolled into the future (see Fig. 2). In such backpropagationthrough-time procedure, one needs to compute the gradient with respect to actions ai.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p27",
+    "section_heading": "3.2 Regularizing Trajectory Optimization with Denoising Autoencoders",
+    "text": "where we denote by xτ a concatenated vector of observations oτ , . . . oτ+w and actions aτ , . . . aτ+w, over a window of size w. Thus to enable a regularized gradient-based optimization procedure, we need means to compute ∂∂xτ log p(xτ ).",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p28",
+    "section_heading": "3.2 Regularizing Trajectory Optimization with Denoising Autoencoders",
+    "text": "In order to evaluate log p(xτ ) (or its derivative), one needs to train a separate model p(xτ ) of the past experience, which is the task of unsupervised learning. In principle, any probabilistic model can be used for that. In this paper, we propose to regularize trajectory optimization with a denoising autoencoder (DAE) which does not build an explicit probabilistic model p(xτ ) but rather learns to approximate the derivative of the log probability density. The theory of denoising [23, 27] states that",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p29",
+    "section_heading": "3.2 Regularizing Trajectory Optimization with Denoising Autoencoders",
+    "text": "the optimal denoising function g(x̃) (for zero-mean Gaussian corruption) is given by:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p30",
+    "section_heading": "3.2 Regularizing Trajectory Optimization with Denoising Autoencoders",
+    "text": "where p(x̃) is the probability density function for data x̃ corrupted with noise and σn is the standard deviation of the Gaussian corruption. Thus, the DAE-denoised signal minus the original gives the gradient of the log-probability of the data distribution convolved with a Gaussian distribution: ∂ ∂x̃ log p(x̃) ∝ g(x)− x . Assuming ∂ ∂x̃ log p(x̃) ≈ ∂ ∂x log p(x) yields",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p31",
+    "section_heading": "3.2 Regularizing Trajectory Optimization with Denoising Autoencoders",
+    "text": "Using ∂∂x̃ log p(x̃) instead of ∂ ∂x log p(x) can behave better in practice because it is similar to replacing p(x) with its Parzen window estimate [36]. In automatic differentiation software, this gradient can be computed by adding the penalty term ‖g(xτ )− xτ‖2 to G and stopping the gradient propagation through g. In practice, stopping the gradient through g did not yield any benefits in our experiments compared to simply adding the penalty term ‖g(xτ )− xτ‖2 to the cumulative reward, so we used the simple penalty term in our experiments. Also, this kind of regularization can easily be used with gradient-free optimization methods such as cross-entropy method (CEM) [3].",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p32",
+    "section_heading": "3.2 Regularizing Trajectory Optimization with Denoising Autoencoders",
+    "text": "Our goal is to tackle high-dimensional problems and expressive models of dynamics. Neural networks tend to fare better than many other techniques in modeling high-dimensional distributions. However, using a neural network or any other flexible parameterized model to estimate the input distribution poses a dilemma: the regularizing network which is supposed to keep planning from exploiting the inaccuracies of the dynamics model will itself have weaknesses which planning will then exploit. Clearly, DAE will also have inaccuracies but planning will not exploit them because unlike most other density models, DAE develops an explicit model of the gradient of logarithmic probability density.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p33",
+    "section_heading": "3.2 Regularizing Trajectory Optimization with Denoising Autoencoders",
+    "text": "The effect of adding DAE regularization in the industrial process control benchmark discussed in the previous section is shown in Fig. 1c.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p34",
+    "section_heading": "3.3 Related work",
+    "text": "Several methods have been proposed for planning with learned dynamics models. Locally linear timevarying models [17, 19] and Gaussian processes [8, 15] or mixture of Gaussians [29] are data-efficient but have problems scaling to high-dimensional environments. Recently, deep neural networks have been successfully applied to model-based RL. Nagabandi et al. [24] use deep neural networks as dynamics models in model-predictive control to achieve good performance, and then shows how model-based RL can be fine-tuned with a model-free approach to achieve even better performance. Chua et al. [5] introduce PETS, a method to improve model-based performance by estimating and propagating uncertainty with an ensemble of networks and sampling techniques. They demonstrate how their approach can beat several recent model-based and model-free techniques. Clavera et al. [6] combines model-based RL and meta-learning with MB-MPO, training a policy to quickly adapt to slightly different learned dynamics models, thus enabling faster learning.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p35",
+    "section_heading": "3.3 Related work",
+    "text": "Levine and Koltun [20] and Kumar et al. [17] use a KL divergence penalty between action distributions to stay close to the training distribution. Similar bounds are also used to stabilize training of policy gradient methods [31, 32]. While such a KL penalty bounds the evolution of action distributions, the proposed method also bounds the familiarity of states, which could be important in high-dimensional state spaces. While penalizing unfamiliar states also penalize exploration, it allows for more controlled and efficient exploration. Exploration is out of the scope of the paper but was studied in [10], where a non-zero optimum of the proposed DAE penalty was used as an intrinsic reward to alternate between familiarity and exploration.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p36",
+    "section_heading": "4 Experiments on Motor Control",
+    "text": "We show the effect of the proposed regularization for control in standard Mujoco environments: Cartpole, Reacher, Pusher, Half-cheetah and Ant available in [4]. See the description of the environments in Appendix B. We use the Probabilistic Ensembles with Trajectory Sampling (PETS) model from [5] as the baseline, which achieves the best reported results on all the considered tasks except for Ant.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p37",
+    "section_heading": "4 Experiments on Motor Control",
+    "text": "al ty",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p38",
+    "section_heading": "4 Experiments on Motor Control",
+    "text": "al ty 300000lty lty",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p39",
+    "section_heading": "4 Experiments on Motor Control",
+    "text": "The PETS model consists of an ensemble of probabilistic neural networks and uses particle-based trajectory sampling to regularize trajectory optimization. We re-implemented the PETS model using the code provided by the authors as a reference.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p40",
+    "section_heading": "4.1 Regularized trajectory optimization with models trained with PETS",
+    "text": "In MPC, the innermost loop is open-loop control which is then turned to closed-loop control by taking in new observations and replanning after each action. Fig. 3 illustrates the adversarial effect during open-loop trajectory optimization and how DAE regularization mitigates it. In Cartpole environment, the learned model is very good already after a few episodes of data and trajectory optimization stays within the data distribution. As there is no problem to begin with, regularization does not improve the results. In Half-cheetah environment, trajectory optimization manages to exploit the inaccuracies of the model which is particularly apparent in gradient-based Adam. DAE regularization improves both but the effect is much stronger with Adam.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p41",
+    "section_heading": "4.1 Regularized trajectory optimization with models trained with PETS",
+    "text": "The problem is exacerbated in closed-loop control since it continues optimization from the solution achieved in the previous time step, effectively iterating more per action. We demonstrate how regularization can improve closed-loop trajectory optimization in the Half-cheetah environment. We first train three PETS models for 300 episodes using the best hyperparameters reported in [5]. We then evaluate the performance of the three models on five episodes using four different trajectory optimizers: 1) Cross-entropy method (CEM) which was used during training of the PETS models, 2) Adam, 3) CEM with the DAE regularization and 4) Adam with the DAE regularization. The results averaged across the three models and the five episodes are presented in Table 1.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p42",
+    "section_heading": "4.1 Regularized trajectory optimization with models trained with PETS",
+    "text": "We first note that planning with Adam fails completely without regularization: the proposed actions lead to unstable states of the simulator. Using Adam with the DAE regularization fixes this problem and the obtained results are better than the CEM method originally used in PETS. CEM appears",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p43",
+    "section_heading": "4.1 Regularized trajectory optimization with models trained with PETS",
+    "text": "to regularize trajectory optimization but not as efficiently CEM+DAE. These open-loop results are consistent with the closed-loop results in Fig. 3.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p44",
+    "section_heading": "4.2 End-to-end training with regularized trajectory optimization",
+    "text": "In the following experiments, we study the performance of end-to-end training with different trajectory optimizers used during training. Our agent learns according to the algorithm presented in Algorithm 1. Since the environments are fully observable, we use a feedforward neural network as in (1) to model the dynamics of the environment. Unlike PETS, we did not use an ensemble of probabilistic networks as the forward model. We use a single probabilistic network which predicts the mean and variance of the next state (assuming a Gaussian distribution) given the current state and action. Although we only use the mean prediction, we found that also training to predict the variance improves the stability of the training.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p45",
+    "section_heading": "4.2 End-to-end training with regularized trajectory optimization",
+    "text": "For all environments, we use a dynamics model with the same architecture: three hidden layers of size 200 with the Swish non-linearity [26]. Similar to prior works, we train the dynamics model to predict the difference between st+1 and st instead of predicting st+1 directly. We train the dynamics model for 100 or more epochs (see Appendix C) after every episode. This is a larger number of updates compared to five epochs used in [5]. We found that an increased number of updates has a large effect on the performance for a single probabilistic model and not so large effect for the ensemble of models used in PETS. This effect is shown in Fig. 6.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p46",
+    "section_heading": "4.2 End-to-end training with regularized trajectory optimization",
+    "text": "For the denoising autoencoder, we use the same architecture as the dynamics model. The state-action pairs in the past episodes were corrupted with zero-mean Gaussian noise and the DAE was trained to denoise it. Important hyperparameters used in our experiments are reported in the Appendix C. For DAE-regularized trajectory optimization we used either CEM or Adam as optimizers.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p47",
+    "section_heading": "4.2 End-to-end training with regularized trajectory optimization",
+    "text": "The learning progress of the compared algorithms is presented in Fig. 4. Note that we report the average returns across different seeds, not the maximum return seen so far as was done in [5].2 In Cartpole, all the methods converge to the maximum cumulative reward but the proposed method converges the fastest. In the Cartpole environment, we also compare to a method which uses Gaussian Processes (GP) as the dynamics model (algorithm denoted GP-E in [5], which considers only the expectation of the next state prediction). The implementation of the GP algorithm was obtained from the code provided by [5]. Interestingly, our algorithm also surpasses the Gaussian Process (GP) baseline, which is known to be a sample-efficient method widely used for control of simple systems. In Reacher, the proposed method converges to the same asymptotic performance as PETS, but faster. In Pusher, all algorithms perform similarly.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p48",
+    "section_heading": "4.2 End-to-end training with regularized trajectory optimization",
+    "text": "In Half-cheetah and Ant, the proposed method shows very good sample efficiency and very rapid initial learning. The agent learns an effective running gait in only a couple of episodes.3 The results demonstrate that denoising regularization is effective for both gradient-free and gradient-based planning, with gradient-based planning performing the best. The proposed algorithm learns faster than PETS in the initial phase of training. It also achieves performance that is competitive with popular model-free algorithms such as DDPG, as reported in [5].",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p49",
+    "section_heading": "4.2 End-to-end training with regularized trajectory optimization",
+    "text": "However, the performance of the proposed method does not improve after initial 10 episodes, so it does not reach the asymptotic performance of PETS (see results for PETS for Half-cheetah after 300 episodes in Table 1). This result is evidence of the importance of exploration: the DAE regularization essentially penalizes exploration, which can harm asymptotic performance in complex environments. In PETS, CEM leaves some noise in the trajectories, which might help to obtain better asymptotic performance. The result presented in Appendix E provides some evidence that at least a part of the problem is lack of exploration.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p50",
+    "section_heading": "4.2 End-to-end training with regularized trajectory optimization",
+    "text": "We also compare the performance of our method with Model-Based Meta Policy Optimization (MB-MPO) [6], an approach that combines the benefits of model-based RL and meta learning: the algorithm trains a policy using simulations generated by an ensemble of models, learned from data. Meta-learning allows this policy to quickly adapt to the various dynamics, hence learning how to quickly adapt in the real environment, using Model-Agnostic Meta Learning (MAML) [12]. In",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p51",
+    "section_heading": "5 Discussion",
+    "text": "In recent years, a lot of effort has been put in making deep reinforcement algorithms more sampleefficient, and thus adaptable to real world scenarios. Model-based reinforcement learning has shown promising results, obtaining sample-efficiency even orders of magnitude better than model-free counterparts, but these methods have often suffered from sub-optimal performance due to many reasons. As already noted in the recent literature [24, 5], out-of-distribution errors and model overfitting are often sources of performance degradation when using complex function approximators. In this work we demonstrated how to tackle this problem using regularized trajectory optimization. Our experiments demonstrate that the proposed solution can improve the performance of model-based reinforcement learning.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p52",
+    "section_heading": "5 Discussion",
+    "text": "While trajectory optimization is a key component in model-based RL, there are clearly several other issues which need to be tackled in complex environments:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p53",
+    "section_heading": "5 Discussion",
+    "text": "• Local minima for trajectory optimization. There can be multiple trajectories that are reasonable solutions but in-between trajectories can be very bad. For example, we can take a step with a right or left foot but both will not work. We tackled this issue by trying multiple initializations, which worked for the considered environments, but better techniques will be needed for more complex environments.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p54",
+    "section_heading": "5 Discussion",
+    "text": "• The planning horizon problem. In the presented experiments, the planning procedure did not care about what happens after the planning horizon. This was not a problem for the considered environments due to nicely formatted reward. Other solutions like value functions, multiple time scales or hierarchy for planning are required with sparser reward problems. All of these are compatible with model-based RL.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p55",
+    "section_heading": "5 Discussion",
+    "text": "• Open-loop vs. closed-loop (compounding errors). The implicit planning assumption of trajectory optimization is open-loop control. However, MPC only takes the first action and then replans (closed-loop control). If the outcome is uncertain (e.g., due to stochastic environments or imperfect forward model), this can lead to overly pessimistic controls.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p56",
+    "section_heading": "5 Discussion",
+    "text": "• Local optima of the policy. This is the well-known exploration-exploitation dilemma. If the model has never seen data of alternative trajectories, it may predict their consequences incorrectly and never try them (because in-between trajectories can be genuinely worse). Good trajectory optimization (exploitation) can harm long-term performance because it reduces exploration, but we believe that it is better to add explicit exploration. With modelbased RL, intrinsically motivated exploration is a particularly interesting option because it is possible to balance exploration and the expected cost. This is particularly important in hazardous environments where safe exploration is needed.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p57",
+    "section_heading": "5 Discussion",
+    "text": "• High-dimensional input space. Sensory systems like cameras, lidars and microphones can produce vast amounts of data and it is infeasible to plan based on detailed prediction on low level such as pixels. Also, predictive models of pixels may miss the relevant state.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p58",
+    "section_heading": "5 Discussion",
+    "text": "• Changing environments. All the considered environments were static but real-world systems keep changing. Online learning and similar techniques are needed to keep track of the changing environment.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p59",
+    "section_heading": "5 Discussion",
+    "text": "Still, model-based RL is an attractive approach and not only due to its sample-efficiency. Compared to model-free approaches, model-based learning makes safe exploration and adding known constraints or first-principles models much easier. We believe that the proposed method can be a viable solution for real-world control tasks especially where safe exploration is of high importance.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p60",
+    "section_heading": "5 Discussion",
+    "text": "We are currently working on applying the proposed methods for real-world problems such as assisting operators of complex industrial processes and for control of autonomous mobile machines.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p61",
+    "section_heading": "Acknowledgments",
+    "text": "We would like to thank Jussi Sainio, Jari Rosti and Isabeau Prémont-Schwarz for their valuable contributions in the experiments on industrial process control.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p62",
+    "section_heading": "B Description of Environments",
+    "text": "Cartpole. This task involves a pole attached to a moving cart in a frictionless track, with the goal of swinging up the pole and balancing it in an upright position in the center of the screen. The cost at every time step is measured as the angular distance between the tip of the pole and the target position. Each episode is 200 steps long.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p63",
+    "section_heading": "B Description of Environments",
+    "text": "Reacher. This environment consists of a simulated PR2 robot arm with seven degrees of freedom, with the goal of reaching a particular position in space. The cost at every time step is measured as the",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p64",
+    "section_heading": "B Description of Environments",
+    "text": "distance between the arm and the target position. The target position changes every episode. Each episode is 150 steps long.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p65",
+    "section_heading": "B Description of Environments",
+    "text": "Pusher. This environment also consists of a simulated PR2 robot arm, with a goal of pushing an object to a target position that changes every episode. The cost at every time step is measured as the distance between the object and the target position. Each episode is 150 steps long.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p66",
+    "section_heading": "B Description of Environments",
+    "text": "Half-cheetah. This environment involves training a two-legged \"half-cheetah\" to run forward as fast as possible by applying torques to 6 different joints. The cost at every time step is measured as the negative forward velocity. Each episode is 1000 steps long, but the length is reduced to 200 for the benchmark with [6].",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p67",
+    "section_heading": "B Description of Environments",
+    "text": "Ant. This is the most challenging environment we consider. It consists of a four-legged \"ant\" controlled by applying torques to its 8 joints. Similar to [25], we use a gear ratio to 30 for all joints (this prevents the ant from flipping over frequently during the initially phase of training). The cost, similar to Half-cheetah, is the negative forward velocity. Each episode is 1000 steps long.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p68",
+    "section_heading": "C Additional Experimental Details",
+    "text": "For MPC, we use the same planning horizon as PETS (Table 5). The important hyperparameters for all our experiments are shown in Tables 3 and 4. We found the DAE noise level, regularization penalty weight α and Adam learning rate to be the most important hyperparameters.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p69",
+    "section_heading": "D Comparison to Gaussian regularization",
+    "text": "To emphasize the importance of denoising regularization, we also compare against a simple Gaussian regularization baseline: we fit a Gaussian distribution (with diagonal covariance matrix) to the states and actions in the replay buffer and regularize the trajectory optimization by adding a penalty term to the cost, proportional to the negative log probability of the states and actions in the trajectory (Equation 4). The performance of this baseline in the Half-cheetah task (with an episode length of 200) is shown in Fig. 7. We observe that the Gaussian distribution poorly fits the trajectories and consistently leads the optimization to a bad local minimum.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p70",
+    "section_heading": "E Preliminary Experiments on Exploration",
+    "text": "To improve the asymptotic performance of our agent, we perform some preliminary experiments on exploration by injecting random noise into the optimized actions. In Figure 8, we show that asymptotic performance can greatly benefit from random exploration, suggesting a line of future work.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p71",
+    "section_heading": "E Preliminary Experiments on Exploration",
+    "text": "F Visualization of Trajectory Optimization in End-to-End Experiments",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p72",
+    "section_heading": "E Preliminary Experiments on Exploration",
+    "text": "In Figures 9 and 10, we visualize trajectory optimization at different timesteps t during Episode 5 of end-to-end experiments in Cartpole and Half-cheetah. It can be observed that the DAE penalty correlates with the inaccuracies of the model and that the DAE regularization is effective in guiding the optimization procedure to remain within the data distribution.",
+    "seg_type": "par"
+  }
+]

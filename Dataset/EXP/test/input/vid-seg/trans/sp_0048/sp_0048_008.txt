@@ -1,0 +1,41 @@
+see, I don't have it open right now.
+So what does that give us the implicit model agnostic meta learning?
+I mammal.
+This is what this paper suggests.
+While not converge to do sample a batch bunch of bunch of tasks, right?
+For each task, compute the meta gradient G.
+average these gradients to get a gradient for the outer parameters and then do gradient descent on the outer parameters.
+Pretty easy.
+How do you do this?
+How do you do this implicit meta gradient?
+This is this procedure right here.
+So what you are going to do is
+met the parameters theta, you initialize your parameters with the theater.
+By the way, they don't need to be initializations.
+They can be actually any sort of hyper parameters that this algorithm takes.
+Any parameterization of this algorithm will do fine.
+I just always said initial parameters such that it gets easier, but it can be any sort of hyper parameters of the inner task.
+obtain task parameters using iterative optimization solvers such that the, um, the inner parameters are close to the optimum of that algorithm.
+So they actually extend this also in theory, not so that you do not, don't have to optimize the inner objective really to the optimum, but you can be like a Delta close to it.
+That's pretty useful.
+And that's in the part of the paper that we won't go over because this video would be like super long, but I invite you to read it if you're interested.
+Then you compute the partial outer level gradient.
+So this, this would be
+your partial gradient, your V would be this gradient at the end, right?
+The gradient at the end of the optimization procedure with respect to your validation data sets.
+This is one backup.
+Now we need to relate that end gradient to the beginning.
+And that's, and we do that by multiplying it with this matrix inverted right here.
+Now, because obtaining the entire matrix, this is the Hessian matrix and inverted is very memory and computation intensive, because if you have D parameters in your neural network, this is going to be a D by D matrix.
+So if you have
+five million parameters, this is going to be 25 million, million size matrix, is just not possible.
+And that's why this paper extends this method to a second degree of approximation.
+Namely, you don't have to compute the exact inverse, you just have to compute something that is very close to the inverse times this final gradient.
+And a good method to do this is this conjugate gradient method.
+And that method is able to basically use the fact that you can compute Hessian vector products without having to compute the Hessian as a matrix.
+This you can also do with a sort of modified back propagation.
+algorithm also won't go in here but see you use iterative solver for example conjugate gradient along with reverse mode differentiation to compute Hessian vector products to compute gi so gi is going to be the final gradient pulled back through this matrix right here to give you the beginning gradient this meta gradient
+Okay, so two approximations here.
+First approximation, you don't actually have to solve to the very end, you can solve it delta close.
+And second approximation, you don't actually have to compute the inverse of that final gradient, sorry, compute the multiplication of the final gradient with the inverse of this matrix right here, you can also find something that's a delta prime close to that.
+And they have a bunch of

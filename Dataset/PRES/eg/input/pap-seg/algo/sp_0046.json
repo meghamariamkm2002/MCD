@@ -1,0 +1,23 @@
+[
+  {
+    "input_path": "/tmp/megha/PDF-Extract-Kit/Presentation/layout_pap/sp_0046/sp_0046_page_8.png",
+    "page_index": null,
+    "boxes": [
+      {
+        "cls_id": 14,
+        "label": "algorithm",
+        "score": 0.9326647520065308,
+        "coordinate": [
+          442.644775390625,
+          297.87347412109375,
+          2096.262939453125,
+          1091.8887939453125
+        ],
+        "text": "Input: Curvature coefficient pool H, MsMwC-MiD number K, base learner number N\nK\nMiddle layer: {J\nMsMwC-M1D with step size 2\u03b7k and p1,k,i = 1\nBottom layer: {Bk,i}k[K],i[N]\n- base learners as specified in Section 2\nfor t = 1 to T do\nReceive xt,k,i from Bk,i, obtain xt,k = \u2211i pt,k,iXt,k,i and submit xt = \u2211k qt,kXt,k\nSuffer ft (xt)and observe the gradient information  ft (\u00b7)\nk\nAtop updates to qt+1 and A\nupdates to pt+1,k\nk\nMulti-gradient feedback model:\nSend gradient  ft(\u00b7) to Bk,i for update\n O(log2 T ) gradient que\nOne-gradient feedback model:\nConstruct surrogates hci(\u00b7),\nhc,i(x) using only  ft(xt )\nSend the surrogate functions to Bk,i for update\n Only one gradient qu",
+        "input_path": "/tmp/megha/PDF-Extract-Kit/Presentation/layout_pap/sp_0046/sp_0046_page_8.png",
+        "id": "sp_0046_page_8_1",
+        "seg_type": "algo"
+      }
+    ]
+  }
+]

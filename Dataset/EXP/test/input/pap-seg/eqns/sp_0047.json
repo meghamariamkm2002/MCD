@@ -1,0 +1,102 @@
+{
+  "sp_0047_page_0002": {
+    "bboxes": [
+      {
+        "box": [
+          473.59259033203125,
+          1329.2750244140625,
+          750.4600830078125,
+          1401.4217529296875
+        ],
+        "text": [
+          "\\frac { 1 } { T } \\sum _ { t = 1 } ^ { T } \\sum _ { - c \\leq j \\leq c , j \\neq 0 } \\log p ( w _ { t + j } | w _ { t } )"
+        ],
+        "id": "sp_0047_page_0002-1",
+        "page": "sp_0047_page_0002",
+        "seg_type": "eq"
+      }
+    ]
+  },
+  "sp_0047_page_0003": {
+    "bboxes": [
+      {
+        "box": [
+          462.4889221191406,
+          202.3824920654297,
+          763.0228881835938,
+          288.1852722167969
+        ],
+        "text": [
+          "p ( w _ { O } | w _ { I } ) = \\frac { \\exp \\left( { v _ { w _ { O } } ^ { \\prime } } ^ { \\top } v _ { w _ { I } } \\right) } { \\sum _ { w = 1 } ^ { W } \\exp \\left( { v _ { w } ^ { \\prime } } ^ { \\top } v _ { w _ { I } } \\right) }"
+        ],
+        "id": "sp_0047_page_0003-1",
+        "page": "sp_0047_page_0003",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          387.8111877441406,
+          1403.1248779296875,
+          839.23095703125,
+          1472.7008056640625
+        ],
+        "text": [
+          "\\log \\sigma { ( v _ { w _ { O } } ^ { \\prime } } ^ { \\top } v _ { w _ { I } } ) + \\sum _ { i = 1 } ^ { k } \\mathbb { E } _ { w _ { i } \\sim P _ { n } ( w ) } \\left[ \\log \\sigma { ( - { v _ { w _ { i } } ^ { \\prime } } ^ { \\top } v _ { w _ { I } } ) } \\right]"
+        ],
+        "id": "sp_0047_page_0003-2",
+        "page": "sp_0047_page_0003",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          337.6272277832031,
+          739.9404296875,
+          884.4083862304688,
+          815.4151000976562
+        ],
+        "text": [
+          "p ( w | w _ { I } ) = \\prod _ { j = 1 } ^ { L ( w ) - 1 } \\sigma \\left( \\mathbb { I } n ( w , j + 1 ) = \\mathrm { c h } ( n ( w , j ) ) \\mathbb { I } \\cdot v _ { n ( w , j ) } ^ { \\prime } \\right. ^ { \\top } v _ { w _ { I } } \\right)"
+        ],
+        "id": "sp_0047_page_0003-3",
+        "page": "sp_0047_page_0003",
+        "seg_type": "eq"
+      }
+    ]
+  },
+  "sp_0047_page_0004": {
+    "bboxes": [
+      {
+        "box": [
+          516.8196411132812,
+          1403.689453125,
+          709.6141967773438,
+          1472.8275146484375
+        ],
+        "text": [
+          "P ( w _ { i } ) = 1 - \\sqrt { \\frac { t } { f ( w _ { i } ) } }"
+        ],
+        "id": "sp_0047_page_0004-1",
+        "page": "sp_0047_page_0004",
+        "seg_type": "eq"
+      }
+    ]
+  },
+  "sp_0047_page_0006": {
+    "bboxes": [
+      {
+        "box": [
+          441.7101745605469,
+          716.763427734375,
+          781.1039428710938,
+          771.1610107421875
+        ],
+        "text": [
+          "\\mathrm { s c o r e } ( w _ { i } , w _ { j } ) = \\frac { \\mathrm { c o u n t } ( w _ { i } w _ { j } ) - \\delta } { \\mathrm { c o u n t } ( w _ { i } ) \\times \\mathrm { c o u n t } ( w _ { j } ) } ."
+        ],
+        "id": "sp_0047_page_0006-1",
+        "page": "sp_0047_page_0006",
+        "seg_type": "eq"
+      }
+    ]
+  }
+}

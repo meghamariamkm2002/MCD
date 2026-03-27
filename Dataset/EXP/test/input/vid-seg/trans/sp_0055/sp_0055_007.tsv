@@ -1,0 +1,12 @@
+start	end	text
+31	1693	you've decided on a subdivision.
+3074	5697	Let's say you decided on this one right here.
+5797	9421	You say, I want to pass through that point on my way to the goal.
+10202	16409	Now you have to subdivide that in this sub problem into two problems.
+16629	19272	Again, every possible black square.
+19292	23176	I'm not saying which one is a good thing to subdivide the problem.
+23537	26460	I'm just asking what is a possible candidate.
+26440	33089	every single black square here is a possible candidate for a path from here to here.
+34250	38035	And again, for this particular subproblem, you have to do the same thing.
+38356	54557	So the search tree here, even though we said before, this one is very deep, and this one is probably only log 2D deep,
+54537	59063	its width is going to be enormous and

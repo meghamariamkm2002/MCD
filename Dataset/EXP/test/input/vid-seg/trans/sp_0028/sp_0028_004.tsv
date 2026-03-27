@@ -1,0 +1,173 @@
+start	end	text
+31	8162	Okay, so in a bit of more formal setting, what you'll have in reinforcement learning are these rewards, right?
+8542	12167	So at each time step, you perform an action, you're in a state.
+12408	18396	So we said you get back an observation and we call the observation the state.
+18836	23803	Now, these two things aren't a, sorry, these two things aren't entirely the same thing.
+24344	27608	So the observation is what you get back directly from the environment.
+27588	37012	And then the state, it can be something more, like if you remember something from the last observation, that can be part of your state.
+37153	43048	The state is basically what you base your decision on, and the observation is the pure thing you get from the environment.
+43028	51121	Now, in this case, they do some processing, but essentially will will regard them as the same thing.
+51201	54406	So the state is what you see of the environment.
+54987	60215	Then in each of these steps, you perform an action, we'll call that this a thing right here.
+60997	65544	And in each step, you also get a reward for the last action that you took.
+66125	69390	And the reward is going to be lowercase r.
+69370	84872	Now, what you want to do formally is you want to maximize the reward that you get in time t. Sorry, that's the reward you get at time t prime.
+86555	97791	What you want to do if you play an episode, you're here and you perform an action, you go here, you perform an action, you go here, you perform an action, you go here, and then your episode is done.
+97771	102020	For each action, you'll get a reward, reward one, reward two, reward three.
+102521	107892	What you want to do is you want to maximize the total, the sum of all of these rewards.
+108213	113063	So over the course of your episode, you want to collect as much reward as you can.
+113043	122023	There is a discount factor right here, which is sort of saying that rewards that are very far in the future, they're not as important as rewards right now.
+122083	124950	However, you can set this to one if you want.
+125350	132807	So you see, you want to maximize the future, the sum of future rewards, which is this thing right here.
+132787	133488	Okay.
+134349	136392	So how do you, how do you do this?
+136492	139376	There are two main methods in reinforcement learning.
+139837	144824	The, the first one is called a policy gradient method.
+144924	154618	And very briefly, a policy we'll call it pi takes in a state s, and it gives you back an action.
+155159	155419	Okay.
+156850	169874	And I mean, this is the same for Q learning, but in a policy gradient method, which is not this paper, but is like a little bit easier to understand, I believe, will simply say, well, we'll simply train an neural network to do that.
+170214	170415	Right.
+170795	174943	And there is this, there's this policy gradient.
+174923	180812	trick where you can back propagate even though the reward isn't back propagatable and so on.
+181112	185058	You can simply say we'll learn a neural network to give us the action that's best, right?
+185358	197556	So we'll have a neural network, the state goes in neural network, and then we'll just have as many outputs as there are actions like action one, action two, action three, action four.
+197536	200360	and we'll treat it as a classification problem, right?
+200481	211117	So you simply train the network to pick the action that is best in this case, and irregardless of how you know which action is best right now.
+211137	213942	In queue learning, you do something else.
+214362	218008	Namely, you train this thing called the queue function.
+218275	234428	The Q function is a function that takes in a state and an action, and it gives you what the reward is going to be in the future if you are in this state and perform this action.
+234408	236852	Okay, so you are in a given state, right?
+237012	240077	And you have three actions at your proposal.
+240658	254779	Okay, you have action one, action two, and action three, and you are in state s. You, what you would do is you would call the q function, if you had a perfect q function, it could give you the reward.
+254759	257282	you would call the Q function three times.
+257583	263371	You would call the Q function first with A1, say what's Q of S and A1.
+264112	265934	And the Q function would maybe say that's seven.
+266776	272844	And here you say what's the Q function of S and A2 and it would maybe say that's four.
+273104	277290	And here the same thing for A3 and it maybe say that's one.
+277270	291652	Then you would know, aha, if I take action one, my reward from not only the reward for this step, but my reward from here on until the end of the episode is going to be seven.
+292353	294857	That is if you had a perfect Q function.
+294837	299267	Now the Q function is always, of course, conditioned on a policy right here.
+299467	311575	So there is what it basically says if I take action a one right now, and after that, I follow policy pi, then I'm going to get the reward of seven.
+311715	312677	It's a bit of a
+312657	315419	multi-layered reasoning approach.
+316340	324808	But ultimately, you don't have to worry much about this being conditioned on a policy.
+325148	332875	Ultimately, the Q function says, if you take this action right now, what will the reward be for the entire rest of the episode?
+333736	342664	So if you had a perfect Q function, you could simply ask it about all the actions as we did here, and then pick the action with the highest number.
+342644	355759	And then you're guaranteed because, you know, there could be a situation where, you know, your reward in a single step is going to be very high here, like a hundred and here zero, zero.
+356399	356680	Okay.
+357160	360203	And you would be tempted to take that action right here.
+360304	364989	But after that, it's just going to be zero, zero, zero.
+365009	367892	So your total reward is going to be 100.
+367872	375990	But here, even though it's zero now, it could be that after that it's 50, and then 40, and then 2000, and so on.
+377113	379579	So your total reward is going to be much, much more.
+380160	385071	If you were simply to train a function that tell you what's the reward in the next step,
+385051	390319	then you would lose because that function would not be able to look ahead sufficiently.
+390339	401997	What we're trying to do with the Q function is we're trying to predict to train a function that will tell us not only what's the reward in the next step, but what is the reward in all the steps to come from here, right?
+402577	406283	Of course, conditioned on all the decisions we make in the future, but
+406263	408487	That's this policy pi right here.
+409629	412034	I hope it's somewhat clear what a Q function is.
+412455	415781	Interestingly, we can take the same network architecture for this.
+416262	423456	So what you would do naively is you would build a neural network where you say, okay, a Q function takes a state and an action.
+423616	425740	So I'll put those into a neural network.
+425720	438121	And then out comes this estimation of the reward, which we usually call Q. So the value Q is this estimation of the future reward if you take this action in this state.
+439063	446155	Now, the disadvantage here is that we have to call this neural network once for each action in every state that we're in.
+446235	449601	So that's like, if there's 10 actions, that's like 10 forward passes.
+449581	474087	What we could do is we could simply take the same neural network we had for our initial or very initial policy method, and we use that and we simply input state and we'll train it to output the queue for action one and the queue, sorry for the state s and action one, the queue for the state s and action two,
+474067	475169	and so on.
+475549	479696	So there is going to be this kind of shared encoder.
+480337	492175	And then that's, it's basically going to encode the state into a latent space and then classify for each of the actions, how valuable this particular action would be in that state.
+492897	498285	So the, this here is called a deep queue network.
+500088	504257	It's a network that takes in a state and gives you back the Q value.
+505219	518586	Now the problem right here is we, here we said if we had a perfect Q function, a Q function that was always right, then the problem would be solved because we could just ask the Q function what to do.
+518566	521689	Of course, we don't have a perfect Q function, we need to train it.
+521810	524012	So how do we train a Q function?
+524372	526915	And the answer is surprisingly simple.
+527356	536466	So what you want to do is you are in this state and you want to estimate what your Q value is.
+536626	538388	You want to train your Q network.
+538428	543814	What you can do is you can simply play an episode according to the Q function you have.
+543794	547066	And you'll maybe play this episode right here, right?
+547086	550017	It's like, you go here and you collect all of this reward.
+550600	554715	So this entire thing now goes into your dataset.
+556619	568038	And then you have a sample, you know, I was here in this state S, I took action one, and I got in total 2,090 as a reward.
+568679	570883	So that is going to be your labeled sample, right?
+570903	579657	Your labeled sample is going to be S, I was in S, I did A1, and now I then got 2,090 reward.
+579637	580178	Cool.
+581019	588392	And in the next episode, you're going on playing and you maybe go down here and then you get a next training example.
+588592	595223	I was in state S. So you keep restarting the episode so you can get into the same state multiple times.
+595664	600632	I performed A3 and I got only 100 reward.
+600612	602435	So that's another training sample.
+602455	606120	So these training samples right here, you can use to train your Q function.
+606140	608383	This is called online reinforcement learning.
+608723	617516	You play the game at the same time as you train your neural network, and you use that improved neural network to play more games.
+618317	622182	And with time, there is this
+622162	636984	well known, there are theorems around Q learning that say if you do that iteratively, then your Q function will converge to the optimal Q functions under some assumptions, which of course not given if this is a deep neural network, but you know, who cares?
+638687	638787	Yeah.
+638767	652428	So formally, your Q function, as you can see right here, is going to be, there is this Bellman recurrence kind of recurrence property of the Q function.
+652468	660640	So if I am, if I am in a state S, and I'm wondering what is my Q
+662088	673101	of my state S and an action A. And I said with respect to a policy, which the star policy is going to be the policy where we always select the highest Q function.
+673121	683314	So we'll basically say, we're in state S, we select action A, and after that, we'll just always select whatever the highest scoring action is, right?
+683354	688260	Like right now, action A might not be the highest scoring, but we'll take A right now.
+688540	691183	And after that, the highest scoring, that's Q star.
+691163	700971	It's a queue function conditioned on the policy where after we perform the first action, which is a will take always the best one according to the queue function.
+701525	701785	right?
+701845	702426	That's right here.
+702947	709956	So we're in state s, we perform a, and s prime is going to be the state that we are going to.
+710057	713121	So we're in s, we perform a, we get to s prime.
+713641	719229	So in s prime, which is a function of your environment, we're always going to take the maximum action.
+719690	722233	And r is going to be the reward of the next step.
+722213	728504	So you can see this recurrence equation right here that q star can be framed in terms of q star.
+729325	746415	So the q star of this state is going to depend on the q star of the next state and you can use that fact and you can you know prove that pretty we've already done it basically you can use that fact to now train your neural network.
+746395	750381	So your neural network loss function is going to be the following.
+750981	764961	It's going to say, look, this here is the Q function for state S and action A. And this is my neural network telling me how much that's worth.
+764941	767363	And this is the label, right?
+767383	770906	So here you have to think in terms of backclassic supervised learning.
+771307	786480	This here is going to be your f of x. And this here is going to be your y. And we will take the squared loss between the two, except your input x is going to be which state am I in and which action am I taking.
+787021	792886	And your label is going to be bootstrapped by your own q function.
+792906	794948	So your label is going to be
+794928	799536	The reward you got, remember this comes from a replay buffer.
+799857	806488	We already played that game and we already know what happened after we performed this action.
+808031	812078	And what happened is we got this reward and we got into this state.
+812619	816987	So we can simply ask our own queue function again.
+816967	820724	What's the best action to take in this state and what reward would we get?
+821789	823958	And then we have our label, right?
+824380	826791	So our label Y is going to be.
+828560	832867	Um, yeah, I was, I was, I was pretty confused when I learned this the first time.
+832928	836393	So I'm going to assume some of you are confused as well.
+837235	846731	So your Q function is supposed to tell you what's going to be the reward from here until the end of the episode.
+846771	847733	Okay.
+847713	860166	that you can decompose in the reward that you get from this very next action plus the sum from then, so t plus one until the end of the episode.
+860286	860586	Okay.
+861107	862769	So, uh, t prime.
+862809	865271	So that's t prime equals t plus one.
+865291	865572	All right.
+865872	866993	So it's pretty simple.
+867073	874581	The total reward from now until the end, you can decompose in the reward now plus the reward after that until the end.
+875371	880619	Now, this here, we know, we've played the episode, we know what happened.
+881120	887930	This here, we can simply ask our Q function again, because we also know what state we got into.
+888471	893118	And this, as you can see, is very much this, but just one step later.
+893658	898125	So we can simply ask our own Q function, which might be imperfect, right?
+898606	900869	But it's certainly a good guess.
+901510	902712	We say, okay,
+904362	911212	This reward from now should be equal to the reward we got plus whatever reward we get later.
+911252	924330	And yes, you might be astounded by the fact that we are using our own neural network, though, be with the parameters one time step ago in order to produce our label.
+924551	928396	But that is exactly what these Q learning theorems are about.
+928516	931821	They basically say under some assumptions, if you do this,
+931801	937528	and you iterate, then this will converge to the optimal Q function.
+938630	943576	So as you can see right here, this is the gradient of the loss.
+943977	949484	It's astounding that back then they still wrote down the gradient of the loss, like almost no one does this now.
+949704	953809	You just say, put this into TensorFlow and go.
+953789	960764	Yeah, so they make some remarks here, namely that this algorithm is model free, right?
+961686	963049	There's no model of the environment.
+963069	968381	You simply learn a function that for each state tells you the key value for each action.
+969764	970465	That's
+970445	977139	That's all everything, everything that all the logic needs to be within the neural network itself.
+977540	978722	So that's pretty cool.
+979825	981969	And they say it's also off policy.
+982851	989685	It learns about the greedy strategy while following a behavior distribution that ensures adequate exploration of the state space.
+989665	1003263	So while training, they do this epsilon greedy strategy that follows the greedy strategy, which is where you always take the maximum with one minus epsilon, selects a random action with probability epsilon.
+1003764	1011133	So while you do your experience, you follow your Q function, you always ask the Q function, what's the best thing to do right here?
+1011994	1016801	But, you know, that gets you into too much of exploitation.
+1016961	1019284	So in epsilon amount of time,
+1019264	1022725	you want to do a bit of exploration and just take a random action.
+1024033	1028259	All right, so that's basically the algorithm.
+1028299	1030050	So the algorithm is right here, and they have

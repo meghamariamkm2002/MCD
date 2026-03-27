@@ -1,0 +1,5 @@
+In conclusion, our paper addressed the inconsistency problem in denoising school mention.
+We have identified the existence of the online game model and provide a pursuit-gib sampling to sample from it.
+We also derived the optimal form for the full-quarantine Gaussian mode mention for the denoising distribution.
+Our results also show that pursuit-gib sampling can effectively apply to sampling for high-dimension data distributions.
+Thank you for your attention.

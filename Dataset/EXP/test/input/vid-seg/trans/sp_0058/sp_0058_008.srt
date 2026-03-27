@@ -1,0 +1,100 @@
+1
+00:00:00,031 --> 00:00:04,055
+All right, that's the rebel algorithm.
+
+2
+00:00:04,836 --> 00:00:09,621
+And they also describe how they actually sample data for learning with the exploration.
+
+3
+00:00:10,222 --> 00:00:23,997
+And they also show that running algorithm one with T iterations of CFR in each sub game will produce a value approximator that has an error of at most this for any PBS that could be encountered during play.
+
+4
+00:00:23,977 --> 00:00:42,183
+So they're going to say that the value approximator, given that it is sort of idealized, will actually converge to a good value approximator if you sample it depending on how many iterations of CF are you do.
+
+5
+00:00:42,603 --> 00:00:46,889
+But you can see that the more iterations you do, the better of an approximation you get.
+
+6
+00:00:47,470 --> 00:00:53,258
+And if you have a good value estimator, as we already said, you basically have solved the game.
+
+7
+00:00:53,238 --> 00:00:59,225
+The last thing is that they determine now, what do we do at test time?
+
+8
+00:00:59,245 --> 00:01:00,526
+You might not have thought of this.
+
+9
+00:01:00,786 --> 00:01:14,862
+This seems sort of obvious if you know alpha zero, but they determine that at inference time, you can simply run this same algorithm except you don't want to produce training data from it and you don't want to learn anything.
+
+10
+00:01:15,242 --> 00:01:17,064
+You simply want to run this algorithm too.
+
+11
+00:01:17,465 --> 00:01:22,030
+If you run that algorithm at test time, that will actually give you a
+
+12
+00:01:22,010 --> 00:01:23,834
+Nash equilibrium.
+
+13
+00:01:24,395 --> 00:01:26,380
+So that's theorem three right here.
+
+14
+00:01:26,961 --> 00:01:38,466
+If algorithm run one runs a test time with no off policy exploration value network with error at most this and this, and was trained as described in theorem two, with T iterations of that.
+
+15
+00:01:38,446 --> 00:02:06,124
+Then the algorithm plays a this kind of approximation Nash equilibrium where C1 and C2 are game specific constants Okay, so you can see right here that the Nash equilibrium is going to be perfect depending on how many iterations you do and Depending on I believe how accurate in your neural network is yes your value network error
+
+16
+00:02:06,526 --> 00:02:10,054
+Okay, if you make that smaller, your Nash equilibrium is going to be better.
+
+17
+00:02:10,578 --> 00:02:11,828
+Pretty pretty cool.
+
+18
+00:02:12,466 --> 00:02:14,509
+So that was the algorithm.
+
+19
+00:02:14,549 --> 00:02:22,581
+They do a bunch of experiments where they say, what kind of network they use, if they use the value net or not, if they use self play or not.
+
+20
+00:02:23,522 --> 00:02:30,713
+And they can also introduce a policy net, I believe for initializing or searching more effectively.
+
+21
+00:02:31,994 --> 00:02:37,242
+They compare against previous things like deep stack, Libratus and so on.
+
+22
+00:02:37,222 --> 00:02:38,806
+they do beat top humans.
+
+23
+00:02:39,227 --> 00:02:48,070
+As you can see, poker has been for a long time kind of an not so solved game by machine learning, but this area has been over for a while right now.
+
+24
+00:02:48,491 --> 00:02:54,927
+And they do release the code of, I believe, of the Liarstice.
+
+25
+00:02:54,947 --> 00:03:00,040
+So they have the code released for rebel and the implementation for Liarstice, but not for
+

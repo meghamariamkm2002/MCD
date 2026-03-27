@@ -1,0 +1,2 @@
+In this scenario, directly minimizing the fissure divergence in the noisy model is more straightforward even in higher emission space.
+This method is also called the noisy school matching and is widely used in diffusion model literature.

@@ -1,0 +1,1 @@
+In table one, we present the result of our experiments compiling fact-wrap with other state-of-the-art methods on C410 and with different periodicity and degree of long-term data.

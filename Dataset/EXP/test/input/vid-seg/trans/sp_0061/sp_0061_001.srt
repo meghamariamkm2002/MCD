@@ -1,0 +1,24 @@
+1
+00:00:00,807 --> 00:00:01,167
+Hi there.
+
+2
+00:00:01,288 --> 00:00:13,222
+Today we're looking at Synthetic Petri dish, a novel surrogate model for rapid architecture search by Adi Tarawal, Joel Lehman, Felipe Petrovsky Such, Jeff Klune and Kenneth O. Stanley.
+
+3
+00:00:14,904 --> 00:00:30,763
+This paper on a high level, it basically says if you want to do neural architecture search, if you, for example, search for a better nonlinearity, you should be able to extract that nonlinearity instantiated in a very small network.
+
+4
+00:00:30,743 --> 00:00:41,513
+and then evaluate that very small network in order to predict the performance of a large network and therefore you can find a better non-linearity in much less time.
+
+5
+00:00:42,074 --> 00:00:47,939
+Now, the exact procedure how you do this in the small network is the topic of this paper.
+
+6
+00:00:48,900 --> 00:00:59,991
+As always, if you like content like this, I encourage you to subscribe if you are not already and to share out the video so other people can experience the joy themselves.
+

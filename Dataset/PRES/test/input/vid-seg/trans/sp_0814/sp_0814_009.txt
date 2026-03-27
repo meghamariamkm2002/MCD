@@ -1,0 +1,2 @@
+We propose an analytical solution for the covariance of the denoising distribution, which is Gaussian approximation in this form.
+However, as a true underlying denoising distribution is not a Gaussian for nonlinear energy, our method represents only a pseudo-gift sampler.

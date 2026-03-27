@@ -1,0 +1,21 @@
+They had a lot of conclusions and future work they already say you know conditional guns are very easy to do straightforward learn the proximity inference can be performed by training an auxiliary network to predict z given x and this of course as you know has come you know has come to fruit.
+very often early papers already introduced.
+So if you have the G network producing some producing an X and then the D network discriminating that you would also have like a encoder right here to produce back the Z noise to give you the latent encoding.
+Sort of like a variational autoencoder, but not really.
+It's more like a reverse generator.
+You know, these models nowadays are big by-gan and things like this that employ this exact thing that was sort of predicted right here.
+Of course, they're much earlier models also using this.
+As long as I can remember, people have attempted to bring encoders into GANs.
+They have a bunch of other things like semi-supervised learning.
+You can use this to do get more data for a classifier, which is also done.
+So a lot of things here already foresight in this papers is pretty cool.
+And the coolest thing, look at that.
+Savages, good fellow, not even using the full eight pages, just dropping this on the world.
+Absolutely cool.
+Mad respect.
+So, yeah, this was kind of my take on, yeah, it is generative adversarial nets.
+And yeah, please tell me if you like historic paper overviews.
+It's more kind of a rant than it really is a paper explanation, but I do enjoy going through this papers and kind of looking at them in hindsight.
+All right, that was it from me.
+I wish you a nice day.
+Bye-bye.

@@ -1,0 +1,734 @@
+[
+  {
+    "para_id": "p1",
+    "section_heading": "Abstract",
+    "text": "Machine learning (ML) models can underperform on certain population groups due to choices made during model development and bias inherent in the data. We categorize sources of discrimination in the ML pipeline into two classes: aleatoric discrimination, which is inherent in the data distribution, and epistemic discrimination, which is due to decisions made during model development. We quantify aleatoric discrimination by determining the performance limits of a model under fairness constraints, assuming perfect knowledge of the data distribution. We demonstrate how to characterize aleatoric discrimination by applying Blackwell\u2019s results on comparing statistical experiments. We then quantify epistemic discrimination as the gap between a model\u2019s accuracy when fairness constraints are applied and the limit posed by aleatoric discrimination. We apply this approach to benchmark existing fairness interventions and investigate fairness risks in data with missing values. Our results indicate that state-of-the-art fairness interventions are effective at removing epistemic discrimination on standard (overused) tabular datasets. However, when data has missing values, there is still significant room for improvement in handling aleatoric discrimination.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p2",
+    "section_heading": "1 Introduction",
+    "text": "Algorithmic discrimination may occur in different stages of the machine learning (ML) pipeline. For example, historical biases in the data-generating process can propagate to downstream tasks; human biases can influence a ML model through inductive bias; optimizing solely for accuracy can lead to disparate model performance across groups in the data (Suresh and Guttag, 2019; Mayson, 2019). The past years have seen a rapid increase in algorithmic interventions that aim to mitigate biases in ML models (see e.g., Zemel et al., 2013; Feldman et al., 2015; Calmon et al., 2017; Menon and Williamson, 2018; Zhang et al., 2018; Zafar et al., 2019; Friedler et al., 2019; Bellamy et al., 2019; Kim et al., 2019; Celis et al., 2019; Yang et al., 2020; Jiang and Nachum, 2020; Jiang et al., 2020; Martinez et al., 2020; Lowy et al., 2021; Alghamdi et al., 2022). A recent survey (Hort et al., 2022) found nearly 400 fairness-intervention algorithms, including 123 pre-processing, 212 in-processing, and 56 post-processing algorithms introduced in the past decade.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p3",
+    "section_heading": "1 Introduction",
+    "text": "Which sources of biases are (the hundreds of) existing fairness interventions trying to control? In order to create effective strategies for reducing algorithmic discrimination, it is critical to disentangle where biases in model performance originate. For instance, if a certain population group has significantly more missing features in training data, then it is more beneficial to collect data than selecting a more complex model class or training strategy. Conversely, if the model class does not accurately represent",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p4",
+    "section_heading": "1 Introduction",
+    "text": "the underlying distribution of a specific population group, then collecting more data for that group will not resolve performance disparities.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p5",
+    "section_heading": "1 Introduction",
+    "text": "We divide algorithmic discrimination1 into two categories: aleatoric and epistemic discrimination.2 Aleatoric discrimination captures inherent biases in the data distribution that can lead to unfair decisions in downstream tasks. Epistemic discrimination, in turn, is due to algorithmic choices made during model development and lack of knowledge about the optimal \u201cfair\u201d predictive model.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p6",
+    "section_heading": "1 Introduction",
+    "text": "In this paper, we provide methods for measuring aleatoric and epistemic discrimination in classification tasks for group fairness metrics. Since aleatoric discrimination only depends on properties of the data distribution and the fairness measure of choice, we quantify it by asking a fundamental question:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p7",
+    "section_heading": "1 Introduction",
+    "text": "For a given data distribution, what is the best achievable performance (e.g., accuracy) under a set of group fairness constraints?",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p8",
+    "section_heading": "1 Introduction",
+    "text": "We refer to the answer as the fairness Pareto frontier. This frontier delineates the optimal performance achievable by a classifier when unlimited data and computing power are available. For a fixed data distribution, the fairness Pareto frontier represents the ultimate, information-theoretic limit for accuracy and group fairness beyond which no model can achieve. Characterizing this limit enables us to (i) separate sources of discrimination and create strategies to control them accordingly; (ii) evaluate the effectiveness of existing fairness interventions for reducing epistemic discrimination; and (iii) inform the development of data collection methods that promote fairness in downstream tasks.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p9",
+    "section_heading": "1 Introduction",
+    "text": "At first, computing the fairness Pareto frontier can appear to be an intractable problem since it requires searching over all possible classifiers\u2014even if the data distribution is known exactly. Our main technical contribution is to provide an upper bound estimate for this frontier by solving a sequence of optimization problems. The proof technique is based on Blackwell\u2019s seminal results (Blackwell, 1953), which proposed the notion of comparisons of statistical experiments and inspired a line of works introducing alternative comparison criteria (see e.g., Shannon, 1958; Cam, 1964; Torgersen, 1991; Cohen et al., 1998; Raginsky, 2011). Here, we apply these results to develop an algorithm that iteratively refines the achievable fairness Pareto frontier. We also prove convergence guarantees for our algorithm and demonstrate how it can be used to benchmark existing fairness interventions.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p10",
+    "section_heading": "1 Introduction",
+    "text": "We quantify epistemic discrimination by comparing a classifier\u2019s performance with the informationtheoretic optimal given by the fairness Pareto frontier. Our experiments indicate that given sufficient data, state-of-the-art (SOTA) group fairness interventions are effective at reducing epistemic discrimination as their gap to the information-theoretic limit is small (see Figure 1 and 2). Consequently, there are diminishing returns in benchmarking new fairness interventions on standard (overused) tabular datasets (e.g., UCI Adult and ProPublica COMPAS datasets). However, existing interventions do not eliminate aleatoric discrimination as this type of discrimination is not caused by choice of learning algorithm or model class, and is due to the data distribution. Factors such as data missing values can significantly contribute to aleatoric discrimination. We observe that when population groups have disparate missing patterns, aleatoric discrimination escalates, leading to a sharp decline in the effectiveness of fairness intervention algorithms (see Figure 3).",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p11",
+    "section_heading": "Related Work",
+    "text": "There is significant work analyzing the tension between group fairness measures and model performance metrics (see e.g., Kleinberg et al., 2016; Chouldechova, 2017; Corbett-Davies et al., 2017; Chen et al., 2018; Wick et al., 2019; Dutta et al., 2020; Wang et al., 2021). For example, there is a growing body of work on omnipredictors (Gopalan et al., 2021; Hu et al., 2023; Globus-Harris et al., 2023) discussing how, and under which conditions, the fair Bayes optimal classifier can be derived using post-processing techniques from multicalibrated regressors. While previous studies (Hardt et al., 2016; Corbett-Davies et al., 2017; Menon and Williamson, 2018; Chzhen et al., 2019; Yang et al., 2020; Zeng et al., 2022a,b) have investigated the fairness Pareto frontier and fair Bayes",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p12",
+    "section_heading": "Related Work",
+    "text": "optimal classifier, our approach differs from this prior work in the following aspects: our approach is applicable to multiclass classification problems with multiple protected groups; it avoids disparate treatment by not requiring the classifier to use group attributes as an input variable; and it can handle multiple fairness constraints simultaneously and produce fairness-accuracy trade-off curves (instead of a single point). Additionally, our proof techniques based on Blackwell\u2019s results on comparing statistical experiments are unique and may be of particular interest to fair ML and information theory communities. We present a detailed comparison with this line of work in Table 2 of Appendix E.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p13",
+    "section_heading": "Related Work",
+    "text": "We recast the fairness Pareto frontier in terms of the conditional distribution PY\u0302|Y,S of predicted outcome Y\u0302 given true label Y and group attributes S. This conditional distribution is related to confusion matrices conditioned on each subgroup. In this regard, our work is related to Verma and Rubin (2018); Alghamdi et al. (2020); Kim et al. (2020); Yang et al. (2020); Berk et al. (2021), which observed that many group fairness metrics can be written in terms of the confusion matrices for each subgroup. Among them, the closest work to ours is Kim et al. (2020), which optimized accuracy and fairness objectives over these confusion matrices and proposed a post-processing technique for training fair classifiers. However, they only imposed marginal sum constraints for the confusion matrices. We demonstrate that the feasible region of confusion matrices can be much smaller (see Remark 2 for an example), leading to a tighter approximation of the fairness Pareto frontier.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p14",
+    "section_heading": "Related Work",
+    "text": "Recently, many strategies have been proposed to reduce the tension between group fairness and model performance by investigating properties of the data distribution. For example, Blum and Stangl (2019); Suresh and Guttag (2019); Fogliato et al. (2020); Wang et al. (2020); Mehrotra and Celis (2021); Fernando et al. (2021); Wang and Singh (2021); Zhang and Long (2021); Tomasev et al. (2021); Jacobs and Wallach (2021); Kallus et al. (2022); Jeong et al. (2022) studied how noisy or missing data affect fairness and model accuracy. Dwork et al. (2018); Ustun et al. (2019); Wang et al. (2021) considered training a separate classifier for each subgroup when their data distributions are different. Another line of research introduces data pre-processing techniques that manipulate data distribution for reducing its bias (e.g., Calmon et al., 2017; Kamiran and Calders, 2012). Among all these works, the closest one to ours is Chen et al. (2018), which decomposed group fairness measures into bias, variance, and noise (see their Theorem 1) and proposed strategies for reducing each term. Compared with Chen et al. (2018), the main difference is that we characterize a fairness Pareto frontier that depends on fairness metrics and a performance measure, giving a complete picture of how the data distribution influences fairness and accuracy.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p15",
+    "section_heading": "2 Preliminaries",
+    "text": "Next, we introduce notation, overview the key results in Blackwell (1953) on comparisons of experiments, and outline the fair classification setup considered in this paper.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p16",
+    "section_heading": "2 Preliminaries",
+    "text": "Notation. For a positive integer n, let [n] \u225c {1, \u00b7 \u00b7 \u00b7 , n}. We denote all probability distributions on the set X by P(X ). Moreover, we define the probability simplex \u2206m \u225c P([m]). When random variables A, X, Z form a Markov chain, we write A \u2212 X \u2212 Z. We write the mutual information between A, X as I(A;X) \u225c EPA,X [ log PA,X(A,X) PA(A)PX(X) ] . Since I(A;X) is determined by the marginal distribution PA and the conditional distribution PX|A, we also write I(A;X) as I(PA;PX|A). When A, X are independent, we write A |= X. If a random variable A \u2208 [n] has finite support, the conditional distribution PX|A : [n] \u2192 P(X ) can be equivalently written as P \u225c (P1, \u00b7 \u00b7 \u00b7 , Pn) where each Pi = PX|A=i \u2208 P(X ). Additionally, if X is a finite set [m], then PX|A can be fully characterized by a transition matrix. We use T (m|n) to denote all transition matrices from [n] to [m]: { P \u2208 Rn\u00d7m",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p17",
+    "section_heading": "2 Preliminaries",
+    "text": "\u2223\u2223\u2223 0 \u2264 Pi,j \u2264 1,\u2211mj=1 Pi,j = 1,\u2200i \u2208 [n]}.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p18",
+    "section_heading": "Comparisons of Experiments",
+    "text": "Given two statistical experiments (i.e., conditional distributions) P and Q, is there a way to decide which one is more informative? Here P and Q have the common input alphabet [n] and potentially different output spaces. Blackwell gave an answer in his seminal work (Blackwell, 1953) from a decision-theoretic perspective. We review these results next.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p19",
+    "section_heading": "Comparisons of Experiments",
+    "text": "Let A be a closed, bounded, convex subset of Rn. A decision function f(x) = (a1(x), \u00b7 \u00b7 \u00b7 , an(x)) is any mapping from X to A. It is associated with a loss vector:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p20",
+    "section_heading": "Comparisons of Experiments",
+    "text": "The collection of all v(f) is denoted by B(P ,A). Blackwell defined that P is more informative than Q if for every A, B(P ,A) \u2287 B(Q,A). Intuitively, this result means any risk achievable with Q is also achievable with P . Moreover, Blackwell considered the standard measure P \u2217 which is the probability distribution of p(X\u0304) where p(x) : X \u2192 \u2206n is a function defined as",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p21",
+    "section_heading": "Comparisons of Experiments",
+    "text": "and X\u0304 follows the probability distribution P1+\u00b7\u00b7\u00b7+Pnn . One of the most important findings by Blackwell in his paper is to discover the following equivalent conditions.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p22",
+    "section_heading": "Comparisons of Experiments",
+    "text": "Lemma 1 (Blackwell (1951, 1953)). The following three conditions are equivalent:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p23",
+    "section_heading": "Comparisons of Experiments",
+    "text": "\u2022 P is more informative than Q; \u2022 for any continuous and convex function \u03d5 : \u2206n \u2192 R, \u222b \u03d5(p)dP \u2217(p) \u2265 \u222b \u03d5(p)dQ\u2217(p);",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p24",
+    "section_heading": "Comparisons of Experiments",
+    "text": "\u2022 there is a stochastic transformation T s.t. TPi = Qi. In other words, there exists a Markov chain A \u2212 X \u2212 Z for any distributions on A such that P = PX|A and Q = PZ|A.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p25",
+    "section_heading": "Comparisons of Experiments",
+    "text": "If P = PX|A is more informative than Q = PZ|A, by the third condition of Lemma 1 and the data processing inequality, I(PA;PX|A) \u2265 I(PA;PZ|A) holds for any marginal distribution PA. However, the converse does not hold in general\u2014even if the above inequality holds for any PA, P is not necessarily more informative than Q (Rauh et al., 2017). In this regard, Blackwell\u2019s conditions are \u201cstronger\u201d than the mutual information based data processing inequality.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p26",
+    "section_heading": "Group Fair Classification",
+    "text": "Consider a multi-class classification task, where the goal is to train a probabilistic classifier h : X \u2192 \u2206C that uses input features X to predict their true label Y \u2208 [C]. Additionally, assume the classifier produces a predicted outcome Y\u0302 \u2208 [C] and let S \u2208 [A] represent group attributes (e.g., race and sex). Depending on the domain of interest, X can either include or exclude S as an input to the classifier. Our framework can be easily extended to the setting where multiple subgroups overlap (Kearns et al., 2018). Throughout this paper, we focus on three standard group fairness measures: statistical parity (SP) (Feldman et al., 2015), equalized odds (EO) (Hardt et al., 2016; Pleiss et al., 2017), and overall accuracy equality (OAE) (Berk et al., 2021) (see Table 1 for their definitions) but our analysis can be extended to many other group fairness metrics, including the ones in Table 1 of Kim et al. (2020), as well as alternative performance measures beyond accuracy.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p27",
+    "section_heading": "3 Fairness Pareto Frontier",
+    "text": "In this section, we introduce our main concept\u2014fairness Pareto frontier (FairFront). We use it to measure aleatoric discrimination and quantify epistemic discrimination by comparing a classifier\u2019s performance to the FairFront. We recast FairFront in terms of the conditional distribution PY\u0302|S,Y and apply Blackwell\u2019s conditions to characterize the feasible region of this conditional distribution. This effort converts a functional optimization problem into a convex program with a small number of variables. However, this convex program may involve infinitely many constraints. Hence, we introduce a greedy improvement algorithm that iteratively refines the approximation of FairFront and tightens the feasible region of PY\u0302|S,Y. Finally, we establish a convergence guarantee for our algorithm.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p28",
+    "section_heading": "3 Fairness Pareto Frontier",
+    "text": "Recall that we refer to aleatoric discrimination as the inherent biases of the data distribution that can lead to an unfair or inaccurate classifier. As its definition suggests, aleatoric discrimination only relies on properties of the data distribution and fairness metric of choice\u2014it does not depend on the hypothesis class nor optimization method. Below we introduce FairFront that delineates a curve of optimal accuracy over all probabilistic classifiers under certain fairness constraints for a given data distribution PS,X,Y. We use FairFront to quantify aleatoric discrimination. Definition 1. For \u03b1SP, \u03b1EO, \u03b1OAE \u2265 0 and a given PS,X,Y, we define FairFront(\u03b1SP, \u03b1EO, \u03b1OAE) by",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p29",
+    "section_heading": "3 Fairness Pareto Frontier",
+    "text": "where I is the indicator function; Y\u0302 is produced by applying the classifier h to X; the maximum is taken over all measurable h; and the definitions of SP, EO, and OAE are in Table 1. As a special case, if \u03b1SP, \u03b1EO, \u03b1OAE \u2265 1, then FairFront(\u03b1SP, \u03b1EO, \u03b1OAE) is the accuracy of the Bayes optimal classifier.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p30",
+    "section_heading": "3 Fairness Pareto Frontier",
+    "text": "Solving this functional optimization problem is difficult since it optimizes over all measurable classifiers. There is a line of works that proposed different fairness-intervention algorithms for training group-fair classifiers (see e.g., Menon and Williamson, 2018; Zhang et al., 2018; Zafar et al., 2019; Celis et al., 2019; Yang et al., 2020; Wei et al., 2021; Alghamdi et al., 2022). They restrict the model class and vary loss functions and optimizers to find classifiers that approach FairFront as close as possible. However, these algorithms only describe a lower bound for FairFront. They do not determine what is the best achievable accuracy for a given set of fairness constraints.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p31",
+    "section_heading": "3 Fairness Pareto Frontier",
+    "text": "We circumvent the above-mentioned challenges by rewriting FairFront in terms of the conditional distribution PY\u0302|S,Y. The caveat is that although each classifier yields a PY\u0302|S,Y, not every conditional distribution corresponds to a valid classifier. Hence, we introduce the following definition which characterizes all feasible PY\u0302|S,Y.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p32",
+    "section_heading": "3 Fairness Pareto Frontier",
+    "text": "Definition 2. Given PX|S,Y, we define C as the set of all conditional distributions PY\u0302|S,Y where Y\u0302 is produced by some probabilistic classifier h. In other words,",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p33",
+    "section_heading": "3 Fairness Pareto Frontier",
+    "text": "Throughout this paper, we write PY\u0302|S,Y or its corresponding transition matrix P \u2208 T (C|AC) interchangeably. Specifically, the (C(s\u2212 1) + y)-th row, y\u0302-th column of P represents PY\u0302|S,Y(y\u0302|s, y) and we denote it by P(s,y),y\u0302 . Remark 1. We demonstrate the connection between the conditional distribution PY\u0302|S,Y and confusion matrices in the setting of binary classification with binary groups. We define C\u0302 as the counterpart of C when we replace PX|S,Y with an empirical distribution P\u0302X|S,Y computed from a dataset. The confusion matrix for group s \u2208 {0, 1} consists of four numbers: True Positive (TPs), False Positive (FPs), False Negative (FNs), True Negative (TNs). Assume that the number of positive-label data n+s = TPs+FNs and negative-label data n \u2212 s = TNs+FPs are given\u2014these numbers do not depend on the classifier. Then there is a one-to-one mapping from each element in C\u0302 to a confusion matrix:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p34",
+    "section_heading": "3 Fairness Pareto Frontier",
+    "text": "Hence, C\u0302 essentially characterizes all feasible confusion matrices and C is the population counterpart of C\u0302. Note that C is determined by the underlying data distribution while C\u0302 (and confusion matrices) are tailored to a specific dataset. Proposition 1. FairFront(\u03b1SP, \u03b1EO, \u03b1OAE) in (3) is equal to the solution of the following convex optimization:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p35",
+    "section_heading": "3 Fairness Pareto Frontier",
+    "text": "Here the constants \u00b5s,y \u225c Pr(S = s,Y = y) and \u00b5s \u225c Pr(S = s) for s \u2208 [A], y \u2208 [A] and P(s,y),y\u0302 denotes the (C(s\u2212 1) + y)-th row, y\u0302-th column of the transition matrix P , which is PY\u0302|S,Y(y\u0302|s, y).",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p36",
+    "section_heading": "3 Fairness Pareto Frontier",
+    "text": "For example, in binary classification with a binary group attribute, the above optimization only has 8 variables, 14 linear constraints + a single convex constraint P \u2208 C. Hence, standard convex optimization solvers can directly compute its optimal value as long as we know how to characterize C. Remark 2. Note that Kim et al. (2020) investigated fairness Pareto frontiers via confusion matrices. The main difference is that Definition 1 in Kim et al. (2020) relaxed the constraint (5c) to P \u2208 T (C|AC) where T (C|AC) represents all transition matrices from [AC] to [C]. This leads to a loose approximation of the frontier because C is often a strict subset of T (C|AC). To demonstrate this point, consider the scenario where X |= (S,Y). Then Y\u0302 |= (S,Y) by data processing inequality so",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p37",
+    "section_heading": "3 Fairness Pareto Frontier",
+    "text": "Optimizing over C rather than T (C|AC) can significantly tighten the fairness Pareto frontier. Before diving into the analysis, we first introduce a function g : X \u2192 \u2206AC defined as g(x) =( PS,Y|X(1, 1|x), \u00b7 \u00b7 \u00b7 , PS,Y|X(A,C|x) ) . To obtain this function in practice, a common strategy among various post-processing fairness interventions (see e.g., Menon and Williamson, 2018; Alghamdi et al., 2022) is to train a probabilistic classifier that uses input features X to predict (S,Y). The output probability generated by this classifier is then utilized as an approximation of the function g.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p38",
+    "section_heading": "3 Fairness Pareto Frontier",
+    "text": "The following theorem is the main theoretical result in this paper. It provides a precise characterization of the set C through a series of convex constraints. Theorem 1. The set C is the collection of all transition matrices P \u2208 T (C|AC) such that the following condition holds: For any k \u2208 N and any {ai | ai \u2208 [\u22121, 1]AC , i \u2208 [k]},",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p39",
+    "section_heading": "3 Fairness Pareto Frontier",
+    "text": "where py\u0302 is the y\u0302-th column of P and \u039b\u00b5 = diag(\u00b51,1, \u00b7 \u00b7 \u00b7 , \u00b5A,C).",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p40",
+    "section_heading": "3 Fairness Pareto Frontier",
+    "text": "Intuitively, (7) uses piecewise linear functions to approximate the boundary of the convex set C where k represents the number of linear pieces. Unfortunately, replacing P \u2208 C with this series of constraints in (5) may result in an intractable problem since standard duality-based approaches will lead to infinitely many dual variables. To resolve this issue, we first fix k and let Ck be the set of P such that (7) holds under this fixed k. Accordingly, we define FairFrontk(\u03b1SP, \u03b1EO, \u03b1OAE) as the optimal value of (5) when replacing C with Ck. Since C1 \u2287 C2 \u2287 \u00b7 \u00b7 \u00b7 \u2287 C, we have FairFront1(\u03b1SP, \u03b1EO, \u03b1OAE) \u2265 FairFront2(\u03b1SP, \u03b1EO, \u03b1OAE) \u2265 \u00b7 \u00b7 \u00b7 \u2265 FairFront(\u03b1SP, \u03b1EO, \u03b1OAE). However, computing FairFrontk(\u03b1SP, \u03b1EO, \u03b1OAE) still involves infinitely many constraints.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p41",
+    "section_heading": "3 Fairness Pareto Frontier",
+    "text": "Next, we introduce a greedy improvement algorithm that consists of solving a sequence of tractable optimization problems for approximating FairFrontk(\u03b1SP, \u03b1EO, \u03b1OAE). We use A to collect the constraints of P and set A = \u2205 initially. At each iteration, our algorithm solves a convex program to find an optimal P that maximizes the accuracy while satisfying the desired group fairness constraints and the constraints in A; then we verify if this P is within the set Ck by solving a DC (difference of",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p42",
+    "section_heading": "3 Fairness Pareto Frontier",
+    "text": "convex) program (Shen et al., 2016; Horst and Thoai, 1999). If P \u2208 Ck, then the algorithm stops. Otherwise, the algorithm will find the constraint that is mostly violated by P and add this constraint to A. Specifically, we determine a piecewise linear function that divides the space into two distinct regions: one containing P and the other containing Ck. By \u201cmostly violated\u201d, we mean the function is constructed to maximize the distance between P and the boundary defined by the function. We describe our algorithm in Algorithm 1 and establish a convergence guarantee below.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p43",
+    "section_heading": "3 Fairness Pareto Frontier",
+    "text": "Theorem 2. Let T = \u221e. If Algorithm 1 stops, its output P t is an optimal solution of FairFrontk(\u03b1SP, \u03b1EO, \u03b1OAE). Otherwise, any convergent sub-sequence of {P t}\u221et=1 converges to an optimal solution of FairFrontk(\u03b1SP, \u03b1EO, \u03b1OAE).",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p44",
+    "section_heading": "3 Fairness Pareto Frontier",
+    "text": "Note that the output vt from Algorithm 1 is always an upper bound for FairFront(\u03b1SP, \u03b1EO, \u03b1OAE), assuming the estimation error is sufficiently small. The tightness of this upper bound is determined by k (i.e., how well the piecewise linear functions approximate the boundary of C), T (i.e., the total number of iterations). On the other hand, running off-the-shelf in-processing and post-processing fairness interventions can only yield lower bounds for FairFront(\u03b1SP, \u03b1EO, \u03b1OAE).",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p45",
+    "section_heading": "4 Numerical Experiments",
+    "text": "In this section, we demonstrate the tightness of our upper bound approximation of FairFront, apply it to benchmark existing group fairness interventions, and show how data biases, specifically missing values, impact their effectiveness. We find that given sufficient data, SOTA fairness interventions are successful at reducing epistemic discrimination as their gap to (our upper bound estimate of) FairFront is small. However, we also discover that when different population groups have varying missing data patterns, aleatoric discrimination increases, which diminishes the performance of fairness intervention algorithms. Our numerical experiments are semi-synthetic since we apply fairness interventions to train classifiers using the entire dataset and resample from it as the test set. This setup enables us to eliminate the estimation error associated with Algorithm 1 (see Appendix E for a discussion). We provide additional experimental results and details in Appendix C.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p46",
+    "section_heading": "4.1 Benchmark Fairness Interventions",
+    "text": "Setup. We evaluate our results on the UCI Adult dataset (Bache and Lichman, 2013), the ProPublica COMPAS dataset (Angwin et al., 2016), the German Credit dataset (Bache and Lichman, 2013), and HSLS (High School Longitudinal Study) dataset (Ingels et al., 2011; Jeong et al., 2022). We recognize that Adult, COMPAS, and German Credit datasets are overused and acknowledge the recent calls to move away from them (see e.g., Ding et al., 2021). We adopt these datasets for benchmarking purposes only since most fairness interventions have available code for these datasets. The HSLS dataset is a new dataset that first appeared in the fair ML literature last year and captures a common use-case of ML in education (student performance prediction, see Jeong et al., 2022). It has multi-class labels and multiple protected groups. We apply existing (group) fairness interventions to these datasets and measure their fairness violations via Max equalized odds:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p47",
+    "section_heading": "4.1 Benchmark Fairness Interventions",
+    "text": "where the max is taken over y, y\u0302, s, s\u2032. We run Algorithm 1 with k = 6 pieces, 20 iterations, and varying \u03b1EO to estimate FairFront on each dataset. We compute the expectations and the g function from the empirical distributions and solve the DC program by using the package in Shen et al. (2016). The details about how we pre-process these datasets and additional experimental results on the German Credit and HSLS datasets are deferred to Appendix C.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p48",
+    "section_heading": "4.1 Benchmark Fairness Interventions",
+    "text": "Group fairness interventions. We consider five existing fairness-intervention algorithms: Reduction (Agarwal et al., 2018), EqOdds (Hardt et al., 2016), CalEqOdds (Pleiss et al., 2017), LevEqOpp (Chzhen et al., 2019), and FairProjection Alghamdi et al. (2022). Among them, Reduction is an in-processing method and the rest are all post-processing methods. For the first three benchmarks, we use the implementations from IBM AIF360 library (Bellamy et al., 2018); for LevEqOpp and FairProjection, we use the Python implementations from the Github repo in Alghamdi et al. (2022). For Reduction and FairProjection, we can vary their tolerance of fairness violations to produce a fairness-accuracy curve; for EqOdds, CalEqOdds, and LevEqOpp, each of them produces a single point since they only allow hard equality constraint. We note that FairProjection is optimized for transforming probabilistic classifier outputs (see also Wei et al., 2021), but here we threshold the probabilistic outputs to generate binary predictions which may limit its performance. Finally, we train a random forest as the Baseline classifier.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p49",
+    "section_heading": "4.1 Benchmark Fairness Interventions",
+    "text": "Results. We observe that if we run Algorithm 1 for a single iteration, which is equivalent to solving Proposition 1 without (5c), its solution is very close to 1 for all \u03b1EO. This demonstrates the benefits of incorporating Blackwell\u2019s conditions into the fairness Pareto frontier.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p50",
+    "section_heading": "4.1 Benchmark Fairness Interventions",
+    "text": "We train a classifier that approximates the Bayes optimal and use it as a basis for both Reduction and FairProjection, which are SOTA fairness interventions. We then apply these two fairness interventions to the entire dataset and evaluate their performance on the same dataset. Figure 1 shows that in this infinite sample regime, the fairness-accuracy curves produced by Reduction and FairProjection can approach our upper bound estimate of FairFront. This result not only demonstrates the tightness of our approximation (recall that Algorithm 1 gives an upper bound of FairFront and existing fairness interventions give lower bounds) but also shows that SOTA fairness interventions have already achieved near-optimal fairness-accuracy curves.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p51",
+    "section_heading": "4.1 Benchmark Fairness Interventions",
+    "text": "Recall that we use FairFront to quantify aleatoric discrimination since it characterizes the highest achievable accuracy among all classifiers satisfying the desired fairness constraints. Additionally, we measure epistemic discrimination by comparing a classifier\u2019s accuracy and fairness violation with FairFront. Given that our Algorithm 1 provides a tight approximation of FairFront, we use it to benchmark existing fairness interventions. Specifically, we first train a base classifier which may not achieve Bayes optimal accuracy. Then we use it as a basis for all existing fairness interventions. The results in Figure 2 show that SOTA fairness interventions remain effective at reducing epistemic discrimination. In what follows, we demonstrate how missing values in data can increase aleatoric discrimination and dramatically reduce the effectiveness of SOTA fairness interventions.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p52",
+    "section_heading": "4.2 Fairness Risks in Missing Values",
+    "text": "Real-world data often have missing values and the missing patterns can be different across different protected groups (see Jeong et al., 2022, for some examples). There is a growing line of research (see e.g., Jeong et al., 2022; Fernando et al., 2021; Wang and Singh, 2021; Subramonian et al., 2022; Caton et al., 2022; Zhang and Long, 2021; Schelter et al., 2019) studying the fairness risks of data with missing values. In this section, we apply our result to demonstrate how disparate missing patterns influence the fairness-accuracy curves.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p53",
+    "section_heading": "4.2 Fairness Risks in Missing Values",
+    "text": "Setup. We choose sex (group 0: female, group 1: male) as the group attribute for the Adult dataset, and race (group 0: African-American, group 1: Caucasian) for the COMPAS dataset. To investigate the impact of disparate missing patterns on aleatoric discrimination, we artificially generate missing values in both datasets. This is necessary as the datasets do not contain sufficient missing data. The missing values are generated according to different probabilities for different population groups. For each data point from group 0, we erase each input feature with a varying probability p0 \u2208 {10%, 50%, 70%}, while for group 1, we erase each input feature with a fixed probability p1 = 10%. We then apply mode imputation to the missing values, replacing them with the mode of non-missing values for each feature. Finally, we apply Algorithm 1 along with Reduction and Baseline to the imputed data. The experimental results are shown in Figure 3.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p54",
+    "section_heading": "4.2 Fairness Risks in Missing Values",
+    "text": "Results. As we increase the missing probability of group 0, (our upper bound estimate of) FairFront decreases since it becomes more difficult to accurately predict outcomes for group 0. This in turn affects the overall model performance, since the fairness constraint requires that the model performs similarly for both groups. We also observe the fairness-accuracy curves of Reduction decrease as the missing data for group 0 become more prevalent. In other words, as the missing data for group 0 increase, it becomes more difficult to maintain both high accuracy and fairness in the model\u2019s prediction.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p55",
+    "section_heading": "5 Final Remarks",
+    "text": "The past years have witnessed a growing line of research introducing various group fairnessintervention algorithms. Most of these interventions focus on optimizing model performance subject to group fairness constraints. Though comparing and benchmarking these methods on various datasets is valuable (e.g., see benchmarks in Friedler et al., 2019; Bellamy et al., 2019; Wei et al., 2021), this does not reveal if there is still room for improvement in their fairness-accuracy curves, or if existing methods approach the information-theoretic optimal limit when infinite data is available. Our results address this gap by introducing the fairness Pareto frontier, which measures the highest possible accuracy under a set of group fairness constraints. We precisely characterize the fairness Pareto frontier using Blackwell\u2019s conditions and present a greedy improvement algorithm that approximates it from data. Our results show that the fairness-accuracy curves produced by SOTA fairness interventions are very close to the fairness Pareto frontier on standard datasets.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p56",
+    "section_heading": "5 Final Remarks",
+    "text": "Additionally, we demonstrate that when data are biased due to missing values, the fairness Pareto frontier degrades. Although existing fairness interventions can still reduce performance disparities, they come at the cost of significantly lowering overall model accuracy. The methods we present for computing the fairness Pareto frontier can also be applied to analyze other sources of aleatoric discrimination, such as when individuals may misreport their data or when there are measurement errors. Overall, the fairness Pareto frontier can serve as a valuable framework for guiding data collection and cleaning. Our results indicate that existing fairness interventions can be effective in reducing epistemic discrimination, and there are diminishing returns in developing new fairness interventions focused solely on optimizing accuracy for a given group fairness constraint on pristine data. However, existing fairness interventions have yet to effectively provide both fair and accurate classification when additional sources of aleatoric discrimination are present (such as missing values in data). This suggests that there is still significant need for research on handling aleatoric sources of discrimination that appear throughout the data collection process.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p57",
+    "section_heading": "5 Final Remarks",
+    "text": "We provide an in-depth discussion on future work in Appendix E.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p58",
+    "section_heading": "Acknowledgement",
+    "text": "This material is based upon work supported by the National Science Foundation under grants CAREER 1845852, CIF 2312667, FAI 2040880, CIF 1900750.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p59",
+    "section_heading": "A Technical Background",
+    "text": "In this section, we extend some results in Blackwell (1951, 1953) to our setting. For a random variable X, we denote its probability distribution by L(X). A conditional distribution PX|A : [n] \u2192 P(X ) can be equivalently written as P \u225c (P1, \u00b7 \u00b7 \u00b7 , Pn) where each Pi = PX|A=i \u2208 P(X ). Let A be a closed, bounded, convex subset of Rn. A decision function is a mapping f : X \u2192 A, which can also be written as f(x) = (a1(x), \u00b7 \u00b7 \u00b7 , an(x)). A decision function is associated a loss vector:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p60",
+    "section_heading": "A Technical Background",
+    "text": "The collection of all v(f) is denoted by B(PX|A,A) or B(P ,A).",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p61",
+    "section_heading": "A Technical Background",
+    "text": "For a vector \u03bb \u2208 \u2206n such that \u03bb > 0, we define a function p\u03bb(x) : X \u2192 \u2206n:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p62",
+    "section_heading": "A Technical Background",
+    "text": "Note that p\u03bb(X) is a sufficient statistic for X, considering A as the parameter (it can be proved by Fisher-Neyman factorization theorem). In other words, two Markov chains hold: A \u2212 p\u03bb(X)\u2212 X and A \u2212 X \u2212 p\u03bb(X) for any distribution on A.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p63",
+    "section_heading": "A Technical Background",
+    "text": "Consider a new set of probability distributions P \u2217\u03bb \u225c (L(p\u03bb(X1)), \u00b7 \u00b7 \u00b7 ,L(p\u03bb(Xn))) where L(Xi) = Pi. Here P \u2217\u03bb can be viewed as a conditional distribution from [n] to P(\u2206n) since each L(p\u03bb(Xi)) is a probability distribution over \u2206n. The following lemma follows from the sufficiency of p\u03bb(X). Lemma 2 (Adaptation of Theorem 3 in Blackwell (1951)). For any A, B(P ,A) = B(P \u2217\u03bb ,A).",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p64",
+    "section_heading": "A Technical Background",
+    "text": "Proof. Suppose that f\u2217(p) = (a\u22171(p), \u00b7 \u00b7 \u00b7 , a\u2217n(p)) is a decision function for (P \u2217\u03bb ,A). Accordingly, we define f(x) = (a\u22171(p\u03bb(x)), \u00b7 \u00b7 \u00b7 , an(p\u03bb(x))) where the function p\u03bb is defined in (10). Then it is clear that f is a decision function for (P ,A). By the law of unconscious statistician, we have",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p65",
+    "section_heading": "A Technical Background",
+    "text": "Hence, v(f\u2217) = v(f), which implies B(P \u2217\u03bb ,A) \u2286 B(P ,A). For the other direction, suppose f(x) = (a1(x), \u00b7 \u00b7 \u00b7 , an(x)) is a decision function for (P ,A). Let f\u2217(p) = (a\u22171(p), \u00b7 \u00b7 \u00b7 , a\u2217n(p)) where a\u2217i (p) \u225c E [ai(Xi) | p\u03bb(Xi) = p]. Since p\u03bb(X) is a sufficient statistics, for any i \u2208 [n]",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p66",
+    "section_heading": "A Technical Background",
+    "text": "Therefore, f\u2217(p) = E [f(X1)|p\u03bb(X1) = p]. Since A is a convex set, f\u2217 is a decision function for (P \u2217,A). By the law of total expectation, we have",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p67",
+    "section_heading": "A Technical Background",
+    "text": "Hence, v(f) = v(f\u2217), which implies B(P ,A) \u2286 B(P \u2217\u03bb ,A).",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p68",
+    "section_heading": "A Technical Background",
+    "text": "For a vector \u03bb \u2208 \u2206n such that \u03bb > 0, the condition distribution PX|A induces a weighted standard measure P \u2217\u03bb \u225c L (p\u03bb(X\u0304)) where L(X\u0304) = \u03bb1P1 + \u00b7 \u00b7 \u00b7+ \u03bbnPn. Theorem 3 (Adaptation of Theorem 4 in Blackwell (1951)). For any two conditional distributions PX|A and QY|A, let P \u2217\u03bb and Q \u2217 \u03bb be their weighted standard measures, respectively. Then B(PX|A,A) \u2287",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p69",
+    "section_heading": "A Technical Background",
+    "text": "B(QY|A,A) for any closed, bounded, convex set A if and only if for any continuous convex \u03d5 : \u2206n \u2192 R, \u222b \u03d5(p)dP \u2217\u03bb (p) \u2265 \u222b \u03d5(p)dQ\u2217\u03bb(p)",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p70",
+    "section_heading": "A Technical Background",
+    "text": "Proof. First, by Lemma 2, we know B(PX|A,A) = B(P \u2217\u03bb ,A) and B(QY|A,A) = B(Q\u2217\u03bb ,A). We denote \u039b = diag(\u03bb1, \u00b7 \u00b7 \u00b7 , \u03bbn). Consider any A = conv(a1, \u00b7 \u00b7 \u00b7 ,ak). Let",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p71",
+    "section_heading": "A Technical Background",
+    "text": "Note that f\u2217(p) \u2208 {a1, \u00b7 \u00b7 \u00b7 ,ak} since this set contains all the extreme points of A.3 By definition, for any decision function w.r.t. (P \u2217\u03bb ,A), we have",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p72",
+    "section_heading": "A Technical Background",
+    "text": "Let v = v(f). By the same reason with (11), we have",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p73",
+    "section_heading": "A Technical Background",
+    "text": "where the last step is due to the law of unconscious statistician. Therefore,",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p74",
+    "section_heading": "A Technical Background",
+    "text": "The equality is achieved by v(f\u2217). Hence, for any A = conv(a1, \u00b7 \u00b7 \u00b7 ,ak)",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p75",
+    "section_heading": "A Technical Background",
+    "text": "Recall that Theorem 2.(3) in Blackwell (1951) states",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p76",
+    "section_heading": "A Technical Background",
+    "text": "By approximation theory, the second condition can be relaxed to any A that is a convex hull of a finite set. By (24), this relaxed condition is equivalent to",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p77",
+    "section_heading": "A Technical Background",
+    "text": "for all \u03d5(p) that are the maximum of finitely many linear functions. By approximation theory again, the above condition is equivalent to the one holding for any continuous convex function \u03d5.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p78",
+    "section_heading": "B.1 Proof of Lemma 3",
+    "text": "Proof. Clearly, C is a subset of T (C|AC). Let \u03bb \u2208 (0, 1) and PY\u03020|S,Y, PY\u03021|S,Y \u2208 C. Now we introduce a Bernoulli random variable B such that Pr(B = 0) = \u03bb. Finally, we define Y\u0302\u03bb = BY\u03021 + (1\u2212 B)Y\u03020. By definition, we have (S,Y)\u2212 X \u2212 Y\u0302\u03bb so PY\u0302\u03bb|S,Y \u2208 C. Moreover,",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p79",
+    "section_heading": "B.1 Proof of Lemma 3",
+    "text": "3If (14) has multiple optimal solutions, we always choose the one from {a1, \u00b7 \u00b7 \u00b7 ,ak}.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p80",
+    "section_heading": "B.1 Proof of Lemma 3",
+    "text": "Hence, C is convex. Let \u03bb \u2208 (0, 1). Assume P and P\u0304 achieve the maximal values of Proposition 1 under (\u03b1SP, \u03b1EO, \u03b1OAE) and (\u03b1\u0304SP, \u03b1\u0304EO, \u03b1\u0304OAE), respectively. We define P\u03bb = \u03bbP + (1\u2212 \u03bb)P\u0304 , which satisfies the constraints of Proposition 1 with thresholds (\u03bb\u03b1SP+(1\u2212\u03bb)\u03b1\u0304SP, \u03bb\u03b1EO+(1\u2212\u03bb)\u03b1\u0304EO, \u03bb\u03b1OAE+(1\u2212\u03bb)\u03b1\u0304OAE). Finally, since the objective function of Proposition 1 is a linear function, it is equal to \u03bbFairFront(\u03b1SP, \u03b1EO, \u03b1OAE) + (1\u2212 \u03bb)FairFront(\u03b1\u0304SP, \u03b1\u0304EO, \u03b1\u0304OAE) under P\u03bb.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p81",
+    "section_heading": "B.2 Proof of Theorem 1",
+    "text": "Proof. The proof relies on Theorem 3 and Lemma 1. For simplicity, we write the conditional PY\u0302|S,Y as its corresponding transition matrix P . Let \u00b5 = (Pr(S = 1,Y = 1), \u00b7 \u00b7 \u00b7 ,Pr(S = A,Y = C)). The function (10) in our setting can be written as:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p82",
+    "section_heading": "B.2 Proof of Theorem 1",
+    "text": "Note that p\u00b5(x) = g(x) due to Bayes\u2019 rule. By Lemma 1, we can rewrite C in Definition 2 as",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p83",
+    "section_heading": "B.2 Proof of Theorem 1",
+    "text": "By Lemma 1 and Theorem 3, the above set is further equivalent to all transition matrices P \u2208 T (C|AC) satisfying",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p84",
+    "section_heading": "B.2 Proof of Theorem 1",
+    "text": "for any function \u03d5 : \u2206AC \u2192 R which is the maximum of finitely many linear functions. Now we can write \u03d5(p) = maxi\u2208[k] { aTi p } \u2014we ignore the bias term because aTi p+ bi = (ai + bi1)",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p85",
+    "section_heading": "B.2 Proof of Theorem 1",
+    "text": "Tp. Then the inequality in (29) can be simplified as",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p86",
+    "section_heading": "B.2 Proof of Theorem 1",
+    "text": "where py\u0302 is the y\u0302-th column of P and\u039b\u00b5 = diag(\u00b51,1, \u00b7 \u00b7 \u00b7 , \u00b5A,C). Finally, we can always normalize the above inequality so that each ai \u2208 [\u22121, 1]AC .",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p87",
+    "section_heading": "B.3 Proof of Theorem 2",
+    "text": "Proof. We denote",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p88",
+    "section_heading": "B.3 Proof of Theorem 2",
+    "text": "Let F t be the constraint set of P at the t-th iteration of our algorithm. Note that F \u2286 F t by definition. If the algorithm stops at the t-th iteration, then for any {ai | ai \u2208 [\u22121, 1]AC , i \u2208 [k]}, P t satisfies",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p89",
+    "section_heading": "B.3 Proof of Theorem 2",
+    "text": "which implies P t \u2208 F . Consequently,",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p90",
+    "section_heading": "B.3 Proof of Theorem 2",
+    "text": "As a result, f(P t) = maxP\u2208F f(P ) so P t is an optimal solution of FairFrontk(\u03b1SP, \u03b1EO, \u03b1OAE).",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p91",
+    "section_heading": "B.3 Proof of Theorem 2",
+    "text": "If the algorithm never stops, consider any convergent sub-sequence of P t that converges to a limit point P \u2217 \u2208 T (C|AC). To simplify our notation, we assume P t \u2192 P \u2217 as t \u2192 \u221e. Since {F t}t\u22651 is non-increasing and they all contain F , there exists a set F\u2217 such that",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p92",
+    "section_heading": "B.3 Proof of Theorem 2",
+    "text": "Therefore, we have",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p93",
+    "section_heading": "B.3 Proof of Theorem 2",
+    "text": "Since F \u2286 F\u2217, we have",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p94",
+    "section_heading": "B.3 Proof of Theorem 2",
+    "text": "If P \u2217 \u0338\u2208 F , then there exists a (a\u03041, \u00b7 \u00b7 \u00b7 , a\u0304k), such that g(P \u2217; a\u03041, \u00b7 \u00b7 \u00b7 , a\u0304k) > 0. Let (a1,t, \u00b7 \u00b7 \u00b7 ,ak,t) be the output of Step 2 at t-th iteration. Since P \u2217 \u2208 F t for all t, we have",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p95",
+    "section_heading": "B.3 Proof of Theorem 2",
+    "text": "By the optimality of (a1,t, \u00b7 \u00b7 \u00b7 ,ak,t), we have",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p96",
+    "section_heading": "B.3 Proof of Theorem 2",
+    "text": "Suppose that some sub-sequence of (a1,t, \u00b7 \u00b7 \u00b7 ,ak,t) converges to a vector (a\u22171, \u00b7 \u00b7 \u00b7 ,a\u2217k). For the sake of simplicity, we assume (a1,t, \u00b7 \u00b7 \u00b7 ,ak,t) \u2192 (a\u22171, \u00b7 \u00b7 \u00b7 ,a\u2217k) as t \u2192 \u221e. On the one hand, taking limit of t \u2192 \u221e on both sides of (32) leads to",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p97",
+    "section_heading": "B.3 Proof of Theorem 2",
+    "text": "On the other hand, taking limit of t \u2192 \u221e on both sides of (31) leads to",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p98",
+    "section_heading": "B.3 Proof of Theorem 2",
+    "text": "Therefore,",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p99",
+    "section_heading": "B.3 Proof of Theorem 2",
+    "text": "which is impossible. Therefore, P \u2217 \u2208 F and, as a result, we have",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p100",
+    "section_heading": "B.4 Additional Results",
+    "text": "We establish basic properties of C and FairFront(\u03b1SP, \u03b1EO, \u03b1OAE) in the following lemma. Lemma 3. C is a convex subset of T (C|AC) and FairFront(\u03b1SP, \u03b1EO, \u03b1OAE) is a concave function w.r.t. \u03b1SP, \u03b1EO, \u03b1OAE. Here the constants A and C denote the number of protected groups and the number of classes.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p101",
+    "section_heading": "B.4 Additional Results",
+    "text": "Next, we discuss a special case\u2014X is discrete\u2014under which C has a simple characterization. Remark 3. If X is a discrete variable with a finite support [D], we can write PX|S,Y as a transition matrix \u03a6 \u2208 T (D|AC). By introducing an auxiliary variable M \u2208 T (C|D), we can write P \u2208 C equivalently as linear constraints: P = \u03a6M by using the last condition of Lemma 1. Consequently, Proposition 1 boils down to a linear program. However, this characterization fails to generalize to continuous data because \u03a6 and M will have an infinite dimension; for categorical data, this characterization suffers from the curse of dimensionality since the support size of X grows exponentially fast w.r.t. the number of features.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p102",
+    "section_heading": "C.1 Additional Experiments",
+    "text": "In this section, we present additional experimental results to further support our findings. We reproduce our experimental results on the German Credit dataset (Bache and Lichman, 2013) and HSLS (High School Longitudinal Study) dataset (Ingels et al., 2011; Jeong et al., 2022) in Figure 4 and Figure 5. In particular, the HSLS dataset experiment is a multi-group, multi-label experiment. Our observation is consistent with those on the previous two datasets\u2014the fairness-accuracy curves given by SOTA fairness interventions, such as Reduction and FairProjection, are close to the information-theoretic limit.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p103",
+    "section_heading": "C.2 Dataset",
+    "text": "Adult. We use sex (female or male) as the group attribute and income (> 50K or <= 50K) as the target for prediction. We use sex, hours-per-week, education-num, age, marital status, relationship status (husband or wife) as the input features\u2014we include the group attribute as an input feature. We group age into a total of 12 disjoint intervals: [0, 20), [20, 25), \u00b7 \u00b7 \u00b7 , [65, 70), [70,\u221e); we group hours-per-week into a total of 14 disjoint intervals: [0, 10), [10, 15), \u00b7 \u00b7 \u00b7 , [65, 70), [70,\u221e).",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p104",
+    "section_heading": "C.2 Dataset",
+    "text": "COMPAS. We use race (African-American or Caucasian) as the group attribute and is_recid (recid. or no recid.) as the target for prediction. We use race, age, c_charge_degree, sex, priors_count, c_jail_in, c_jail_out as the input features\u2014we include the group attribute as an input feature. We use the last two features by taking their difference to be their length_of_stay. We remove entries where COMPAS case could not be found (is_recid = -1) and entries with inconsistent arrest information. We also binarize sex and remove traffic offenses. We quantize age the same way we do in the Adult dataset and quantize length_of_stay by every 30 days and let 0 be a separate category.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p105",
+    "section_heading": "C.2 Dataset",
+    "text": "German Credit. We use age (below or above 25 years old) as the group attribute and the credit column, which represents whether the loan was a good decision, as the target for prediction. We use",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p106",
+    "section_heading": "C.2 Dataset",
+    "text": "loan duration in month, credit amount, age, number of existing credits at this bank, sex, credit history, savings, and length of present employment as input features. We include the group attribute age as an input feature. We group credit amount into three disjoint intervals: [0, 5000), [5000, 10000), [10000,\u221e). We group duration of loan into two categories: under 36 months and over 36 months.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p107",
+    "section_heading": "C.2 Dataset",
+    "text": "HSLS. We use race as the group attribute and mathematics test score (number of questions answered correctly out of 72) as the target for prediction. This is a multi-group and multi-label dataset. The entire population is grouped by 4 categories: White, Asian, African American, and Others. We seek to predict the mathematics test performance from a set of attributes, including the scale of student\u2019s mathematical identity, scale of student\u2019s mathematics utility, scale of one\u2019s mathematics self-efficacy, parent\u2019s education, parent\u2019s income, scale of student\u2019s sense of school belonging, race, and sex. Note that we include the group attribute as an input feature. We group the target column (estimated number of questions answered correctly) into a total of 5 disjoint intervals: [0, 30), [30, 40), [40, 50), [50, 60), [60,\u221e); we group the scale of student\u2019s mathematical identity, mathematics utility, mathematics self-efficacy, and sense of school belonging into a total of 4 disjoint intervals, characterized by standard deviations away from the mean: (\u2212\u221e,\u22121), [\u22121, 0), [0, 1), [1,\u221e).",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p108",
+    "section_heading": "C.3 Benchmark",
+    "text": "Each benchmark method\u2019s hyper-parameter values are provided below. Each point in Figure 2 for Baseline, EqOdds, CalEqOdds, Reduction, LevEqOpp, and FairProjection is obtained by applying the obtained classifier to 10 different test sets. For the Adult dataset, we use Random Forest with n_estimators=15, min_samples_leaf=3, criterion = log_loss, bootstrap = False as our baseline classifier; for the COMPAS dataset, we use Random Forest with n_estimators = 17 as our baseline classifier. For the German Credit dataset, we use Random Forest with n_estimators=100,min_samples_split =2,min_samples_leaf=1 as our baseline classifier. They are all implemented by Scikit-learn (Pedregosa et al., 2011).",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p109",
+    "section_heading": "C.3 Benchmark",
+    "text": "EqOdds (Hardt et al., 2016). We use AIF360 implementation of EqOddsPostprocessing and the default hyper-parameter setup.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p110",
+    "section_heading": "C.3 Benchmark",
+    "text": "CalEqOdds (Pleiss et al., 2017). We use AIF360 implementation of CalibratedEqOddsPostprocessing and the default hyper-parameter setup.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p111",
+    "section_heading": "C.3 Benchmark",
+    "text": "Reduction (Agarwal et al., 2018). We use AIF360 implementation of ExponentiatedGradientReduction. We vary the allowed fairness constraint violation \u03f5 \u2208 {0.001, 0.01, 0.2, 0.5, 1, 2, 5, 10, 15} for Adult dataset and \u03f5 \u2208 {0.001, 0.01, 0.2, 0.5, 1, 2, 5, 10, 15} for Adult with missing values. We vary \u03f5 \u2208 {0.001, 2, 5, 10, 15, 20, 25, 30, 35, 40} for COMPAS to obtain a fairness-accuracy curve, and \u03f5 \u2208 {0.001, 0.1, 0.5, 1, 2, 7, 8, 10, 15, 20, 25, 30} for COMPAS with 50% missing values in the minority group. We use \u03f5 \u2208 {20, 50, 80, 95} for German Credit dataset and \u03f5 \u2208 {5, 8, 10, 20, 23} when using Bayes Optimal classifier.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p112",
+    "section_heading": "C.3 Benchmark",
+    "text": "LevEqOpp (Chzhen et al., 2019). We use the Python implementation of LevEqopp from the Github repo in Alghamdi et al. (2022). We follow the same hyperparameters setup as in the original method.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p113",
+    "section_heading": "C.3 Benchmark",
+    "text": "FairProjection Alghamdi et al. (2022). We use the implementation from the Github repo in Alghamdi et al. (2022) and set use_protected = True. We use Random Forest with n_estimators = 17 as the baseline classifier to predict S from (X,Y). We set the list of fairness violation tolerance to be {0.07, 0.075, 0.08, 0.085, 0.09, 0.095, 0.1, 0.5, 0.75, 1.0} for Adult dataset and {0.02, 0.03, 0.04, 0.05, 0.06, 0.07, 0.08, 0.1, 0.5, 1.0} for COMPAS dataset to obtain a fairnessaccuracy curve. We set the list of fairness violation tolerance to be {0.005, 0.01, 0.02, 0.07, 0.1, 0.15} on the German Credit dataset experiment, and {0.0001, 0.001, 0.005, 0.01, 0.015, 0.02, 0.05} when using a Bayes optimal baseline classifier. For the HSLS dataset, the list of tolerance is {0.06, 0.065, 0.07, 0.08, 0.1, 0.09, 0.15, 0.2, 0.3}.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p114",
+    "section_heading": "D More on Related Work",
+    "text": "We provide a detailed comparison with existing work on fairness Pareto frontier and ML uncertainty in this section.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p115",
+    "section_heading": "D.1 Fairness Pareto Frontier",
+    "text": "We present in Table 2 a detailed comparison of our approach with previous studies that have investigated the fairness Pareto frontier and fair Bayes optimal classifier. In short, our approach is different from this line of research as it simultaneously combines several important aspects: it is applicable to multiclass classification problems with multiple protected groups; it avoids disparate treatment by not requiring the classifier to use group attributes as an input variable; and it can handle multiple fairness constraints simultaneously and produce fairness-accuracy trade-off curves (instead of a single point).",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p116",
+    "section_heading": "D.2 Aleatoric and Epistemic Uncertainty",
+    "text": "In this paper, we divide algorithmic discrimination into aleatoric and epistemic discrimination. We borrow this notion from ML uncertainty literature (see H\u00fcllermeier and Waegeman, 2021, for a survey). Here we provide a detailed comparison between them.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p117",
+    "section_heading": "D.2 Aleatoric and Epistemic Uncertainty",
+    "text": "In terms of their definitions, epistemic uncertainty arises from a lack of knowledge about the best model, such as the Bayes predictor, while epistemic discrimination results from a lack of knowledge about the optimal \u201cfair\u201d predictive model. On the other hand, aleatoric uncertainty is the irreducible part of uncertainty caused by the random relationship between input features and label, while aleatoric discrimination is due to inherent biases in the data-generating distribution.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p118",
+    "section_heading": "D.2 Aleatoric and Epistemic Uncertainty",
+    "text": "In terms of their characterization, epistemic uncertainty can in principle be reduced by including additional information (e.g., more data); epistemic discrimination can be reduced in a similar approach since a data scientist can choose a more effective fairness-intervention algorithm with access to more information.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p119",
+    "section_heading": "D.2 Aleatoric and Epistemic Uncertainty",
+    "text": "Finally, in the infinite sample regime, a consistent learner will be able to remove all epistemic uncertainty, assuming the model class is large enough and there are no computational constraints. Analogously, we demonstrate in Figure 1 that when the underlying distribution is known, SOTA fairness interventions are able to eliminate epistemic discrimination as their fairness-accuracy curves are close to the fair front.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p120",
+    "section_heading": "E More on Future Work",
+    "text": "In this paper, we present an upper bound estimate for FairFront in Algorithm 1. It is important to note that this estimate may be subjected to errors originating from various sources. These include (i)",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p121",
+    "section_heading": "E More on Future Work",
+    "text": "the approximation error of the function g, (ii) estimation errors from computing the expectation in (7) with a finite dataset, and (iii) the influence of hyperparameters, T (number of running iterations of Algorithm 1) and k (number of segments in the piece-wise linear functions). Regarding the dependence on T , our Theorem 2 ensures the algorithm\u2019s asymptotic convergence as T \u2192 \u221e. However, we have not established a proof for its behavior at a finite T . Regarding the dependence on k, we conjecture that k = A \u2217 C should suffice, where A is the number of protected groups and C is the number of labels. While Blackwell proved this result for k = 2 in Theorem 10 of Blackwell (1953), an extension of this proof to a general value of k appears to remain an open problem.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p122",
+    "section_heading": "E More on Future Work",
+    "text": "We define aleatoric and epistemic discrimination with respect to the entire population. Investigating their per-instance counterparts and the relationship to individual fairness would be a compelling area of future research. Additionally, a more nuanced analysis of aleatoric and epistemic discrimination is desirable, further breaking them down into fine-grained components. For instance, epistemic discrimination may be attributed to various factors including limited training data, noisy observations of labels or sensitive attributes, and limitations of learning algorithms. Finally, investigating other criteria, such as scalability, generalization, and robustness in evaluating existing fairness interventions is a significant topic for future exploration.",
+    "seg_type": "par"
+  }
+]

@@ -1,0 +1,140 @@
+1
+00:00:00,031 --> 00:00:01,754
+That's basically it to the paper.
+
+2
+00:00:02,515 --> 00:00:05,479
+There's a lot of things to be said here.
+
+3
+00:00:05,499 --> 00:00:11,649
+I think this works in very, very limited settings.
+
+4
+00:00:12,150 --> 00:00:18,900
+It seems to me that it's sort of brittle with respect to how you abstract.
+
+5
+00:00:18,880 --> 00:00:23,267
+It's always the case how large is this synthetic training data.
+
+6
+00:00:23,287 --> 00:00:29,277
+In their case, they abstract this to 20 or 30 data points or something like this.
+
+7
+00:00:29,677 --> 00:00:42,137
+So it seems to me, since you're optimizing this training data with gradient descent, what you would mainly find are adversarial examples to this architecture here.
+
+8
+00:00:42,117 --> 00:00:46,963
+So I'm going to guess that the inner optimization is very noisy.
+
+9
+00:00:47,103 --> 00:00:57,376
+And that's because if you really let your optimizer run, then it will abuse every single thing it can to match that validation loss.
+
+10
+00:00:57,396 --> 00:01:02,363
+And that will usually lead to an adversarial example since you're optimizing the data itself.
+
+11
+00:01:02,823 --> 00:01:03,484
+Okay.
+
+12
+00:01:03,464 --> 00:01:07,428
+So I think this suffers from that.
+
+13
+00:01:07,468 --> 00:01:22,001
+And we had this in the planning in learned world models in reinforcement learning, where if you have a really, really good planner, it will just abuse the mistakes that you make in approximating the true world.
+
+14
+00:01:22,101 --> 00:01:22,762
+And the same here.
+
+15
+00:01:23,302 --> 00:01:26,345
+You're going to make mistakes approximating this architecture here.
+
+16
+00:01:26,906 --> 00:01:31,750
+And the better your optimizer is for producing this synthetic data,
+
+17
+00:01:31,730 --> 00:01:41,163
+Probably the worst, the result is going to match, the worst that these losses are going to actually match.
+
+18
+00:01:41,663 --> 00:01:53,940
+Now, okay, these losses will match because that's what you train for, but the worst these two curves will match each other because now you're just finding adversarial examples for your particular training data.
+
+19
+00:01:53,920 --> 00:01:59,085
+Another concern I have here is with respect to the double descent phenomenon.
+
+20
+00:01:59,345 --> 00:02:14,781
+So if you know the double descent phenomenon, if here you have your number of parameters and here you have your validation loss, let's say, and you know that if I add parameters, I can make my validation loss go down.
+
+21
+00:02:14,841 --> 00:02:21,868
+So this is assuming I have a model with P parameters and I always train it on the train data to like two convergence.
+
+22
+00:02:21,848 --> 00:02:30,941
+If I add parameters, I can generalize better until a point where I add too many parameters and I start overfitting, then my validation loss goes up again.
+
+23
+00:02:31,422 --> 00:02:48,666
+But the double descent phenomenon, and I think I've done a video on this, shows that after a certain threshold, you get the interpolation threshold, the validation loss goes actually down again and goes down even further here.
+
+24
+00:02:48,646 --> 00:03:03,767
+So this is a very strange phenomenon by itself, but I'm sort of concerned that if you do this abstraction that this paper proposes, so let's say your full model is here with a large number of parameters, so it is past this interpolation threshold.
+
+25
+00:03:04,668 --> 00:03:10,536
+If you now seriously reduce the number of parameters because you want to go into this Petri dish,
+
+26
+00:03:10,516 --> 00:03:18,328
+you will get, maybe you will cross this interpolation threshold and actually be on this side of the curve right here.
+
+27
+00:03:18,808 --> 00:03:27,882
+Now, of course, at the same time, you reduce the amount of data, which would push you over here again, but it is different data.
+
+28
+00:03:27,982 --> 00:03:30,766
+So I'm not sure how all of this is going to play out.
+
+29
+00:03:30,806 --> 00:03:35,173
+It appears to work in these settings right here, but I
+
+30
+00:03:36,453 --> 00:03:58,393
+I think this is, it's sort of applicable in some situations and it'd be very cool if we develop this further such that we understand when it applies and when we can use it because I feel this can be a very cool thing if we understand it better and if we can apply it throughout.
+
+31
+00:03:58,373 --> 00:03:59,740
+All right, that's the end.
+
+32
+00:03:59,801 --> 00:04:03,380
+If you liked this paper, leave a comment.
+
+33
+00:04:03,622 --> 00:04:05,110
+If you didn't like it, leave a comment.
+
+34
+00:04:05,472 --> 00:04:07,986
+And bye-bye.
+
+35
+00:04:08,006 --> 00:04:08,991
+See you next time.
+

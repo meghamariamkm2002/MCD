@@ -1,0 +1,40 @@
+already knew how to build image classifiers.
+This was shortly, as you can see before ResNet came on the scene.
+So people already kind of knew how to build CNNs, build really good image classifiers.
+And the thought here was really generative models weren't really a thing until then.
+People were in language models work to back was kind of coming up, but they were would still be doing like RNNs using these were to back vectors for generating language in images this type generative models weren't really much of a thing so.
+you would do like compositional models or you would do auto encoders, which were just either really blurry or really, really artifactory.
+And there were also approaches like deep belief networks and so on, but they had their own problems.
+So there wasn't really a satisfactory way to do image generation that resulted in really high quality images.
+Now here I think the entire thought and this is not really spelled out but the entire thought here is that hey we know how to train really really good image classifiers right this has been evident in these since since Alex net.
+So for two years, this was evident how to build really good image classifiers.
+And the question here is to say that rather than also building really good generators, can't we like harness the power of building really good classifiers for training a generator, right?
+And this is this idea right here.
+This wasn't the one before.
+As you know, in like an auto encoder, what you do is you'd input a sample into some kind of auto bottleneck
+thing, whatever.
+And then at the end, you train your output sample to match the input sample as close as possible.
+And then in here, after you've trained this, this part here is your generative model.
+And then here in here, you'd input like a MCMC sampler or whatnot.
+And then of course, variational auto encoders came up and so on.
+But still what you always would do is you would somehow use the data directly.
+So this is data.
+In order to train your model so you would somehow say ah the output here should probably match the input in some way or in some at least distributional way.
+This this was a new thing as you can see right here there is no direct connection between the data and the generator.
+And I think this, this was the success of this model, the fact that the generator did not, it wasn't trained from the data like you would do if you were just approaching this problem.
+But the philosophy here is let's use the power of discriminative models, which we know how to build in order to train this generator, right?
+So the generators task now isn't
+to match any sort of data point, the generator's task is to produce images that the discriminator would classify as data.
+And you can do that by simply back propagating through the discriminator to the generator.
+Okay, so I think that's the only thing that's kind of unstated in this paper, the reasoning behind why this is new, why this might work.
+But everything else is spelled out very well in this paper, I have to say, if you read through it.
+So the training procedure for G is to maximize the probability of D making a mistake.
+this framework corresponds to a mini max two player game.
+So as I said, the paper is very much focused on convincing you that there's something sound happening here because at that time, if you were to look at this, you would say something like, there is no way, right?
+You would be like, yeah.
+Um, so, so I can understand the, uh, motivation here to really convince people that, you know, something, something good is happening also on the, on the theoretical side.
+In the space of arbitrary functions, a unique solution exists with g recovering the training data distribution, d equals to 1 half everywhere.
+In the case where g and d are defined by multi-layer perceptrons, the entire system can be trained with back propagation.
+There is no need for any Markov chains or unrolled approximate inference networks during either training or generation of samples.
+Okay, so the point here is that it's much easier than current methods of producing of generative models, and also it does something sound.
+Now,

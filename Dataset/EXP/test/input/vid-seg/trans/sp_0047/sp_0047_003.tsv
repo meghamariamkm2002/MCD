@@ -1,0 +1,72 @@
+start	end	text
+31	2175	they have performed very, very well.
+3097	6002	So how does the skipgram model work?
+6142	12313	How does it assign vectors to each word?
+12814	16621	So first of all, it has a dictionary.
+17022	19847	So there is a word, an input word.
+20348	23153	And for each word, you have a big dictionary.
+23133	32148	And the big dictionary basically says that the word two is going to be mapped to this vector point one and so on.
+32529	36936	The word learn is going to be mapped to that vector.
+37658	41985	And then you also have these output vectors.
+41965	42566	right here.
+43507	51259	And what you're trying to do is you're trying to take a phrase from the data set like this one right here.
+52401	57008	And you take out one word like this word vector right here.
+58310	58590	And
+61169	65016	you're trying to frame this as a prediction task.
+65036	70106	So you're trying to frame this as, in this case, four different prediction tasks.
+70627	79363	So you're telling your machine, I give you the word vector, and which other words are around the word vector?
+79343	80625	You just tell it that.
+80685	81906	You don't tell it anything else.
+81926	85351	You just say which other words are around the word vector.
+85992	92460	And the correct answers in this case would be to learn word and representations.
+93001	104255	So this you construct four different training examples where you have an x and a y. So the x is always vector and the y is 2.
+105276	108220	And then the next training sample the x is vector.
+108200	112529	and the y is learn and so on.
+113892	118882	So this here, each training sample is a classification task.
+119183	125095	And the classification task is, as you can see,
+125075	126577	No, you can't see right here.
+126597	137389	But the classification task is you have the input word and you classify it into one of many, many, many, many, many, many, many classes.
+137830	141614	Namely, there are as many classes as you have words in the dictionary.
+142675	148602	So each word in the dictionary will have a class associated with it.
+148582	162262	So in ImageNet, you have like a thousand classes, but in these, that's already a lot, but in these tasks, you're going to have a hundred thousand classes because there are a hundred thousand words in the English language that you want to treat.
+162302	168692	And there are many more, but in this case, they leave away all the words that appear less than five times in their corpus.
+168952	170695	That's still a lot of words.
+170815	175382	So it's like a super-duper-duper lot of a classification task.
+175362	187478	But ultimately, if you do something like this, then the representation that you end up with is going to be very, very good at doing these kind of downstream tasks.
+187518	188820	And that's what they discovered.
+189861	198433	So their skipgram model is nothing else than taking a word and predicting the surrounding words from that word.
+200236	201940	And this is what it means.
+202401	205248	This is the formal statement of the skipgram objective.
+205689	214190	What you want to do is the objective of the skipgram model is to maximize the average log probability, this one.
+214671	218160	So for the word we're considering the word T,
+218140	233297	We want to maximize the log probability of each word W that is around the word C, sorry, around the word W in a context window of C. That's exactly what we did before.
+233437	243388	We take a word like this model right here and from it, we predict all of the words around it in a given window, right?
+244752	245235	That's all.
+245717	246923	That's the entire objective.
+247406	250442	And that will give you very good representations.
+252582	254645	And this is how you would implement that.
+254905	263355	So what you'll have is you'll have these vector representation V that comes from your original dictionary.
+263375	264757	Those are the things you learn.
+265257	275670	And then because you have like an 30,000 way classifier, you know that a classification layer is nothing else than a linear layer followed by a softmax operation.
+275650	278272	And that linear layer also has parameters.
+278493	279714	These are the V primes.
+280034	280314	Okay.
+280334	286840	So first you have the look up in the dictionary for the word vector right here.
+287361	290623	And this is the vector of the classification layer.
+290704	296409	Now there are modifications where you can use like the same vectors and so on, or you can also make use of these vectors.
+296849	301273	But ultimately you care about these vectors right here.
+301794	305657	And the vectors here are simply the classification layers weights.
+305637	320396	So here you can see that there is what you're trying to maximize is the inner product between the word that you're considering and the words around that word.
+322178	325903	And you're trying to do a classification task.
+325923	327165	So you need to normalize.
+327565	333012	Now this is the normalization constant and it goes over all of your vocabulary.
+334662	336925	So that's what they tackle here.
+337425	342291	They say W is the number of words in the vocabulary.
+342511	350942	This formulation is impractical because the cost of computing the gradient is proportional to W, which is often large.
+351142	353925	And that's 10 to the five to 10 to the seven terms.
+353965	359111	So many, like tens of millions of terms in your vocabulary.
+359472	361294	That's just not feasible, right?
+361274	368152	So people have been sort of trying different ways to get around very, very large number of classes.
+368713	371841	And here it seems that that is really our bottleneck.
+371861	377496	In the previous paper, they've already shown that this objective can give you very good word representation.
+377856	380042	But now we need to get around the fact

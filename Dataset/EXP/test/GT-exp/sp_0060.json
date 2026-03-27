@@ -1,0 +1,1221 @@
+[
+  {
+    "start_time": 0.0,
+    "end_time": 65.0,
+    "id": "001",
+    "title": "Intro & Overview",
+    "filename": "Videos/sp_0060.mp4",
+    "paper_filename": "Papers/sp_0060.pdf",
+    "type": "exp-vid",
+    "relevant_segments": [
+      {
+        "para_id": "p1",
+        "section_heading": "Abstract",
+        "text": "We present Noisy Student Training, a semi-supervised learning approach that works well even when labeled data is abundant. Noisy Student Training achieves 88.4% top1 accuracy on ImageNet, which is 2.0% better than the state-of-the-art model that requires 3.5B weakly labeled Instagram images. On robustness test sets, it improves ImageNet-A top-1 accuracy from 61.0% to 83.7%, reduces ImageNet-C mean corruption error from 45.7 to 28.3, and reduces ImageNet-P mean flip rate from 27.8 to 12.2. Noisy Student Training extends the idea of self-training and distillation with the use of equal-or-larger student models and noise added to the student during learning. On ImageNet, we first train an EfficientNet model on labeled images and use it as a teacher to generate pseudo labels for 300M unlabeled images. We then train a larger EfficientNet as a student model on the combination of labeled and pseudo labeled images. We iterate this process by putting back the student as the teacher. During the learning of the student, we inject noise such as dropout, stochastic depth, and data augmentation via RandAugment to the student so that the student generalizes better than the teacher.1",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p4",
+        "section_heading": "1. Introduction",
+        "text": "Here, we use unlabeled images to improve the SOTA ImageNet accuracy and show that the accuracy gain has an out-",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p5",
+        "section_heading": "1. Introduction",
+        "text": "sized impact on robustness (out-of-distribution generalization). For this purpose, we use a much larger corpus of unlabeled images, where a large fraction of images do not belong to ImageNet training set distribution (i.e., they do not belong to any category in ImageNet). We train our model with Noisy Student Training, a semi-supervised learning approach, which has three main steps: (1) train a teacher model on labeled images, (2) use the teacher to generate pseudo labels on unlabeled images, and (3) train a student model on the combination of labeled images and pseudo labeled images. We iterate this algorithm a few times by treating the student as a teacher to relabel the unlabeled data and training a new student.",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p7",
+        "section_heading": "1. Introduction",
+        "text": "Using Noisy Student Training, together with 300M unlabeled images, we improve EfficientNet’s [83] ImageNet top-1 accuracy to 88.4%. This accuracy is 2.0% better than the previous SOTA results which requires 3.5B weakly labeled Instagram images. Not only our method improves standard ImageNet accuracy, it also improves classification robustness on much harder test sets by large margins: ImageNet-A [32] top-1 accuracy from 61.0% to 83.7%, ImageNet-C [31] mean corruption error (mCE) from 45.7 to 28.3 and ImageNet-P [31] mean flip rate (mFR) from 27.8 to 12.2. Our main results are shown in Table 1.",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p80",
+        "section_heading": "6. Conclusion",
+        "text": "Our experiments showed that Noisy Student Training and EfficientNet can achieve an accuracy of 88.4% which is 2.9% higher than without Noisy Student Training. This result is also a new state-of-the-art and 2.0% better than the previous best method that used an order of magnitude more weakly labeled data [55, 86].",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p81",
+        "section_heading": "6. Conclusion",
+        "text": "An important contribution of our work was to show that Noisy Student Training boosts robustness in computer vision models. Our experiments showed that our model significantly improves performances on ImageNet-A, C and P.",
+        "seg_type": "par"
+      }
+    ]
+  },
+  {
+    "start_time": 65.0,
+    "end_time": 345.0,
+    "id": "002",
+    "title": "Semi-Supervised & Transfer Learning",
+    "filename": "Videos/sp_0060.mp4",
+    "paper_filename": "Papers/sp_0060.pdf",
+    "type": "exp-vid",
+    "relevant_segments": [
+      {
+        "para_id": "p1",
+        "section_heading": "Abstract",
+        "text": "We present Noisy Student Training, a semi-supervised learning approach that works well even when labeled data is abundant. Noisy Student Training achieves 88.4% top1 accuracy on ImageNet, which is 2.0% better than the state-of-the-art model that requires 3.5B weakly labeled Instagram images. On robustness test sets, it improves ImageNet-A top-1 accuracy from 61.0% to 83.7%, reduces ImageNet-C mean corruption error from 45.7 to 28.3, and reduces ImageNet-P mean flip rate from 27.8 to 12.2. Noisy Student Training extends the idea of self-training and distillation with the use of equal-or-larger student models and noise added to the student during learning. On ImageNet, we first train an EfficientNet model on labeled images and use it as a teacher to generate pseudo labels for 300M unlabeled images. We then train a larger EfficientNet as a student model on the combination of labeled and pseudo labeled images. We iterate this process by putting back the student as the teacher. During the learning of the student, we inject noise such as dropout, stochastic depth, and data augmentation via RandAugment to the student so that the student generalizes better than the teacher.1",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p4",
+        "section_heading": "1. Introduction",
+        "text": "Here, we use unlabeled images to improve the SOTA ImageNet accuracy and show that the accuracy gain has an out-",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p5",
+        "section_heading": "1. Introduction",
+        "text": "sized impact on robustness (out-of-distribution generalization). For this purpose, we use a much larger corpus of unlabeled images, where a large fraction of images do not belong to ImageNet training set distribution (i.e., they do not belong to any category in ImageNet). We train our model with Noisy Student Training, a semi-supervised learning approach, which has three main steps: (1) train a teacher model on labeled images, (2) use the teacher to generate pseudo labels on unlabeled images, and (3) train a student model on the combination of labeled images and pseudo labeled images. We iterate this algorithm a few times by treating the student as a teacher to relabel the unlabeled data and training a new student.",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p6",
+        "section_heading": "1. Introduction",
+        "text": "Noisy Student Training improves self-training and distillation in two ways. First, it makes the student larger than, or at least equal to, the teacher so the student can better learn from a larger dataset. Second, it adds noise to the student so the noised student is forced to learn harder from the pseudo labels. To noise the student, we use input noise such as RandAugment data augmentation [18] and model noise such as dropout [76] and stochastic depth [37] during training.",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p3",
+        "section_heading": "1. Introduction",
+        "text": "Deep learning has shown remarkable successes in image recognition in recent years [45, 80, 75, 30, 83]. However state-of-the-art (SOTA) vision models are still trained with supervised learning which requires a large corpus of labeled images to work well. By showing the models only labeled images, we limit ourselves from making use of unlabeled images available in much larger quantities to improve accuracy and robustness of SOTA models.",
+        "seg_type": "par"
+      }
+    ]
+  },
+  {
+    "start_time": 345.0,
+    "end_time": 600.0,
+    "id": "003",
+    "title": "Self-Training & Knowledge Distillation",
+    "filename": "Videos/sp_0060.mp4",
+    "paper_filename": "Papers/sp_0060.pdf",
+    "type": "exp-vid",
+    "relevant_segments": [
+      {
+        "para_id": "p1",
+        "section_heading": "Abstract",
+        "text": "We present Noisy Student Training, a semi-supervised learning approach that works well even when labeled data is abundant. Noisy Student Training achieves 88.4% top1 accuracy on ImageNet, which is 2.0% better than the state-of-the-art model that requires 3.5B weakly labeled Instagram images. On robustness test sets, it improves ImageNet-A top-1 accuracy from 61.0% to 83.7%, reduces ImageNet-C mean corruption error from 45.7 to 28.3, and reduces ImageNet-P mean flip rate from 27.8 to 12.2. Noisy Student Training extends the idea of self-training and distillation with the use of equal-or-larger student models and noise added to the student during learning. On ImageNet, we first train an EfficientNet model on labeled images and use it as a teacher to generate pseudo labels for 300M unlabeled images. We then train a larger EfficientNet as a student model on the combination of labeled and pseudo labeled images. We iterate this process by putting back the student as the teacher. During the learning of the student, we inject noise such as dropout, stochastic depth, and data augmentation via RandAugment to the student so that the student generalizes better than the teacher.1",
+        "seg_type": "par"
+      },
+      {
+        "box": [
+          270.987548828125,
+          600.6797485351562,
+          479.9922180175781,
+          659.7684326171875
+        ],
+        "text": [
+          "{ \\frac { 1 } { n } } \\sum _ { i = 1 } ^ { n } \\ell ( y _ { i } , f ^ { n o i s e d } ( x _ { i } , \\theta ^ { t } ) )"
+        ],
+        "id": "sp_0060_page_0002-1",
+        "page": "sp_0060_page_0002",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          153.70272827148438,
+          846.2598876953125,
+          596.2699584960938,
+          905.23779296875
+        ],
+        "text": [
+          "\\frac { 1 } { n } \\sum _ { i = 1 } ^ { n } \\ell ( y _ { i } , f ^ { n o i s e d } ( x _ { i } , \\theta ^ { s } ) ) + \\frac { 1 } { m } \\sum _ { i = 1 } ^ { m } \\ell ( \\tilde { y } _ { i } , f ^ { n o i s e d } ( \\tilde { x } _ { i } , \\theta ^ { s } ) )"
+        ],
+        "id": "sp_0060_page_0002-2",
+        "page": "sp_0060_page_0002",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          261.248291015625,
+          733.0179443359375,
+          491.4696960449219,
+          761.2555541992188
+        ],
+        "text": [
+          "\\tilde { y } _ { i } = f ( \\tilde { x } _ { i } , \\theta _ { * } ^ { t } ) , \\forall i = 1 , \\cdots \\, , m"
+        ],
+        "id": "sp_0060_page_0002-3",
+        "page": "sp_0060_page_0002",
+        "seg_type": "eq"
+      },
+      {
+        "caption": "Table 1: Summary of key results compared to previous state-of-the-art models [86, 55]. Lower is better for mean corruption error (mCE) and mean flip rate (mFR).",
+        "captionBoundary": {
+          "x1": 308.86199951171875,
+          "x2": 545.1151123046875,
+          "y1": 666.6345825195312,
+          "y2": 696.5469970703125
+        },
+        "figType": "Table",
+        "imageText": [
+          "Prev.",
+          "SOTA",
+          "86.4%",
+          "61.0%",
+          "45.7",
+          "27.8",
+          "Ours",
+          "88.4%",
+          "83.7%",
+          "28.3",
+          "12.2",
+          "ImageNet",
+          "ImageNet-A",
+          "ImageNet-C",
+          "ImageNet-P",
+          "top-1",
+          "acc.",
+          "top-1",
+          "acc.",
+          "mCE",
+          "mFR"
+        ],
+        "name": "1",
+        "page": 0,
+        "regionBoundary": {
+          "x1": 307.68,
+          "x2": 556.3199999999999,
+          "y1": 604.8,
+          "y2": 654.24
+        },
+        "renderDpi": 150,
+        "renderURL": "//Users/meghamariam/PROJECTS/PROJ1_Dataset/PROJ1_Crossmodal-Traversal/DATASET/pap-seg/fig/sp_0060/sp_0060-Table1-1.png",
+        "id": "sp_0060-Table1-1",
+        "seg_type": "tab"
+      },
+      {
+        "para_id": "p63",
+        "section_heading": "4.3. Additional Ablation Study Summarization",
+        "text": "• Finding #4: A large student model is important to enable the student to learn a more powerful model.",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p4",
+        "section_heading": "1. Introduction",
+        "text": "Here, we use unlabeled images to improve the SOTA ImageNet accuracy and show that the accuracy gain has an out-",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p5",
+        "section_heading": "1. Introduction",
+        "text": "sized impact on robustness (out-of-distribution generalization). For this purpose, we use a much larger corpus of unlabeled images, where a large fraction of images do not belong to ImageNet training set distribution (i.e., they do not belong to any category in ImageNet). We train our model with Noisy Student Training, a semi-supervised learning approach, which has three main steps: (1) train a teacher model on labeled images, (2) use the teacher to generate pseudo labels on unlabeled images, and (3) train a student model on the combination of labeled images and pseudo labeled images. We iterate this algorithm a few times by treating the student as a teacher to relabel the unlabeled data and training a new student.",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p6",
+        "section_heading": "1. Introduction",
+        "text": "Noisy Student Training improves self-training and distillation in two ways. First, it makes the student larger than, or at least equal to, the teacher so the student can better learn from a larger dataset. Second, it adds noise to the student so the noised student is forced to learn harder from the pseudo labels. To noise the student, we use input noise such as RandAugment data augmentation [18] and model noise such as dropout [76] and stochastic depth [37] during training.",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p7",
+        "section_heading": "1. Introduction",
+        "text": "Using Noisy Student Training, together with 300M unlabeled images, we improve EfficientNet’s [83] ImageNet top-1 accuracy to 88.4%. This accuracy is 2.0% better than the previous SOTA results which requires 3.5B weakly labeled Instagram images. Not only our method improves standard ImageNet accuracy, it also improves classification robustness on much harder test sets by large margins: ImageNet-A [32] top-1 accuracy from 61.0% to 83.7%, ImageNet-C [31] mean corruption error (mCE) from 45.7 to 28.3 and ImageNet-P [31] mean flip rate (mFR) from 27.8 to 12.2. Our main results are shown in Table 1.",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p8",
+        "section_heading": "2. Noisy Student Training",
+        "text": "Algorithm 1 gives an overview of Noisy Student Training. The inputs to the algorithm are both labeled and unlabeled images. We use the labeled images to train a teacher model using the standard cross entropy loss. We then use the teacher model to generate pseudo labels on unlabeled images. The pseudo labels can be soft (a continuous distribution) or hard (a one-hot distribution). We then train a student model which minimizes the combined cross entropy loss on both labeled images and unlabeled images. Finally, we iterate the process by putting back the student as a teacher to generate new pseudo labels and train a new student. The algorithm is also illustrated in Figure 1.",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p9",
+        "section_heading": "2. Noisy Student Training",
+        "text": "Require: Labeled images {(x1, y1), (x2, y2), ..., (xn, yn)} and unlabeled images {x̃1, x̃2, ..., x̃m}.",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p10",
+        "section_heading": "2. Noisy Student Training",
+        "text": "1: Learn teacher model θt∗ which minimizes the cross entropy loss on labeled images",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p11",
+        "section_heading": "2. Noisy Student Training",
+        "text": "2: Use a normal (i.e., not noised) teacher model to generate soft or hard pseudo labels for clean (i.e., not distorted) unlabeled images",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p12",
+        "section_heading": "2. Noisy Student Training",
+        "text": "3: Learn an equal-or-larger student model θs∗ which minimizes the cross entropy loss on labeled images and unlabeled images with noise added to the student model",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p13",
+        "section_heading": "2. Noisy Student Training",
+        "text": "4: Iterative training: Use the student as a teacher and go back to step 2.",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p14",
+        "section_heading": "2. Noisy Student Training",
+        "text": "Algorithm 1: Noisy Student Training.",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p17",
+        "section_heading": "2. Noisy Student Training",
+        "text": "Our key improvements lie in adding noise to the student and using student models that are not smaller than the teacher. This makes our method different from Knowledge Distillation [33] where 1) noise is often not used and 2) a smaller student model is often used to be faster than the teacher. One can think of our method as knowledge expansion in which we want the student to be better than the teacher by giving the student model enough capacity and difficult environments in terms of noise to learn through.",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p18",
+        "section_heading": "2. Noisy Student Training",
+        "text": "Noising Student – When the student is deliberately noised it is trained to be consistent to the teacher that is not noised when it generates pseudo labels. In our experiments, we use two types of noise: input noise and model noise. For input noise, we use data augmentation with RandAugment [18]. For model noise, we use dropout [76] and stochastic depth [37].",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p19",
+        "section_heading": "2. Noisy Student Training",
+        "text": "When applied to unlabeled data, noise has an important benefit of enforcing invariances in the decision function on both labeled and unlabeled data. First, data augmentation is an important noising method in Noisy Student Training because it forces the student to ensure prediction consistency across augmented versions of an image (similar to UDA [91]). Specifically, in our method, the teacher produces high-quality pseudo labels by reading in clean images, while the student is required to reproduce those labels with augmented images as input. For example, the student must ensure that a translated version of an image should have the same category as the original image. Second, when dropout and stochastic depth function are used as noise, the teacher behaves like an ensemble at inference time (when it generates pseudo labels), whereas the student behaves like a single model. In other words, the student is forced to mimic a more powerful ensemble model. We present an ablation study on the effects of noise in Section 4.1.",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p51",
+        "section_heading": "4.1. The Importance of Noise in Self-training",
+        "text": "Since we use soft pseudo labels generated from the teacher model, when the student is trained to be exactly the same as the teacher model, the cross entropy loss on unlabeled data would be zero and the training signal would vanish. Hence, a question that naturally arises is why the student can outperform the teacher with soft pseudo labels. As stated earlier, we hypothesize that noising the student is needed so that it does not merely learn the teacher’s knowledge. We investigate the importance of noising in two scenarios with different amounts of unlabeled data and different teacher model accuracies. In both cases, we gradually remove augmentation, stochastic depth and dropout for unlabeled images when training the student model, while keeping them for labeled images. This way, we can isolate the influence of noising on unlabeled images from the influence of preventing overfitting for labeled images. In addition, we compare using a noised teacher and an unnoised teacher to study if it is necessary to disable noise when generating pseudo labels.",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p52",
+        "section_heading": "4.1. The Importance of Noise in Self-training",
+        "text": "Here, we show the evidence in Table 6, noise such as stochastic depth, dropout and data augmentation plays an important role in enabling the student model to perform better than the teacher. The performance consistently drops with noise function removed. However, in the case with 130M unlabeled images, when compared to the supervised baseline, the performance is still improved to 84.3% from 84.0% with noise function removed. We hypothesize that the improvement can be attributed to SGD, which introduces stochasticity into the training process.",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p53",
+        "section_heading": "4.1. The Importance of Noise in Self-training",
+        "text": "One might argue that the improvements from using noise can be resulted from preventing overfitting the pseudo labels on the unlabeled images. We verify that this is not the case when we use 130M unlabeled images since the model does not overfit the unlabeled set from the training loss. While removing noise leads to a much lower training loss for labeled images, we observe that, for unlabeled images, removing noise leads to a smaller drop in training loss. This is probably because it is harder to overfit the large unlabeled dataset.",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p54",
+        "section_heading": "4.1. The Importance of Noise in Self-training",
+        "text": "Lastly, adding noise to the teacher model that generates pseudo labels leads to lower accuracy, which shows the importance of having a powerful unnoised teacher model.",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p80",
+        "section_heading": "6. Conclusion",
+        "text": "Our experiments showed that Noisy Student Training and EfficientNet can achieve an accuracy of 88.4% which is 2.9% higher than without Noisy Student Training. This result is also a new state-of-the-art and 2.0% better than the previous best method that used an order of magnitude more weakly labeled data [55, 86].",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p81",
+        "section_heading": "6. Conclusion",
+        "text": "An important contribution of our work was to show that Noisy Student Training boosts robustness in computer vision models. Our experiments showed that our model significantly improves performances on ImageNet-A, C and P.",
+        "seg_type": "par"
+      }
+    ]
+  },
+  {
+    "start_time": 600.0,
+    "end_time": 1220.0,
+    "id": "004",
+    "title": "Noisy Student Algorithm Overview",
+    "filename": "Videos/sp_0060.mp4",
+    "paper_filename": "Papers/sp_0060.pdf",
+    "type": "exp-vid",
+    "relevant_segments": [
+      {
+        "caption": "Figure 1: Illustration of the Noisy Student Training. (All shown images are from ImageNet.)",
+        "captionBoundary": {
+          "x1": 50.11199951171875,
+          "x2": 286.36505126953125,
+          "y1": 667.685546875,
+          "y2": 685.6430053710938
+        },
+        "figType": "Figure",
+        "imageText": [
+          "Infer",
+          "pseudo-labels",
+          "on",
+          "unlabeled",
+          "data",
+          "Train",
+          "teacher",
+          "model",
+          "with",
+          "labeled",
+          "data",
+          "Make",
+          "the",
+          "student",
+          "a",
+          "new",
+          "teacher",
+          "steel",
+          "arch",
+          "bridge",
+          "canoe",
+          "…",
+          "…",
+          "Dropout",
+          "Stochastic",
+          "depth",
+          "Data",
+          "augmentation",
+          "Train",
+          "equal-or-",
+          "larger",
+          "student",
+          "model",
+          "with",
+          "combined",
+          "data",
+          "and",
+          "noise",
+          "injected"
+        ],
+        "name": "1",
+        "page": 1,
+        "regionBoundary": {
+          "x1": 55.68,
+          "x2": 281.28,
+          "y1": 521.28,
+          "y2": 644.64
+        },
+        "renderDpi": 150,
+        "renderURL": "//Users/meghamariam/PROJECTS/PROJ1_Dataset/PROJ1_Crossmodal-Traversal/DATASET/pap-seg/fig/sp_0060/sp_0060-Figure1-1.png",
+        "id": "sp_0060-Figure1-1",
+        "seg_type": "fig"
+      },
+      {
+        "para_id": "p8",
+        "section_heading": "2. Noisy Student Training",
+        "text": "Algorithm 1 gives an overview of Noisy Student Training. The inputs to the algorithm are both labeled and unlabeled images. We use the labeled images to train a teacher model using the standard cross entropy loss. We then use the teacher model to generate pseudo labels on unlabeled images. The pseudo labels can be soft (a continuous distribution) or hard (a one-hot distribution). We then train a student model which minimizes the combined cross entropy loss on both labeled images and unlabeled images. Finally, we iterate the process by putting back the student as a teacher to generate new pseudo labels and train a new student. The algorithm is also illustrated in Figure 1.",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p9",
+        "section_heading": "2. Noisy Student Training",
+        "text": "Require: Labeled images {(x1, y1), (x2, y2), ..., (xn, yn)} and unlabeled images {x̃1, x̃2, ..., x̃m}.",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p10",
+        "section_heading": "2. Noisy Student Training",
+        "text": "1: Learn teacher model θt∗ which minimizes the cross entropy loss on labeled images",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p11",
+        "section_heading": "2. Noisy Student Training",
+        "text": "2: Use a normal (i.e., not noised) teacher model to generate soft or hard pseudo labels for clean (i.e., not distorted) unlabeled images",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p12",
+        "section_heading": "2. Noisy Student Training",
+        "text": "3: Learn an equal-or-larger student model θs∗ which minimizes the cross entropy loss on labeled images and unlabeled images with noise added to the student model",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p13",
+        "section_heading": "2. Noisy Student Training",
+        "text": "4: Iterative training: Use the student as a teacher and go back to step 2.",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p14",
+        "section_heading": "2. Noisy Student Training",
+        "text": "Algorithm 1: Noisy Student Training.",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p18",
+        "section_heading": "2. Noisy Student Training",
+        "text": "Noising Student – When the student is deliberately noised it is trained to be consistent to the teacher that is not noised when it generates pseudo labels. In our experiments, we use two types of noise: input noise and model noise. For input noise, we use data augmentation with RandAugment [18]. For model noise, we use dropout [76] and stochastic depth [37].",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p19",
+        "section_heading": "2. Noisy Student Training",
+        "text": "When applied to unlabeled data, noise has an important benefit of enforcing invariances in the decision function on both labeled and unlabeled data. First, data augmentation is an important noising method in Noisy Student Training because it forces the student to ensure prediction consistency across augmented versions of an image (similar to UDA [91]). Specifically, in our method, the teacher produces high-quality pseudo labels by reading in clean images, while the student is required to reproduce those labels with augmented images as input. For example, the student must ensure that a translated version of an image should have the same category as the original image. Second, when dropout and stochastic depth function are used as noise, the teacher behaves like an ensemble at inference time (when it generates pseudo labels), whereas the student behaves like a single model. In other words, the student is forced to mimic a more powerful ensemble model. We present an ablation study on the effects of noise in Section 4.1.",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p22",
+        "section_heading": "2. Noisy Student Training",
+        "text": "soft or hard pseudo labels as both work well in our experiments. Soft pseudo labels, in particular, work slightly better for out-of-domain unlabeled data. Thus in the following, for consistency, we report results with soft pseudo labels unless otherwise indicated.",
+        "seg_type": "par"
+      }
+    ]
+  },
+  {
+    "start_time": 1220.0,
+    "end_time": 1350.0,
+    "id": "005",
+    "title": "Noise Methods",
+    "filename": "Videos/sp_0060.mp4",
+    "paper_filename": "Papers/sp_0060.pdf",
+    "type": "exp-vid",
+    "relevant_segments": [
+      {
+        "para_id": "p18",
+        "section_heading": "2. Noisy Student Training",
+        "text": "Noising Student – When the student is deliberately noised it is trained to be consistent to the teacher that is not noised when it generates pseudo labels. In our experiments, we use two types of noise: input noise and model noise. For input noise, we use data augmentation with RandAugment [18]. For model noise, we use dropout [76] and stochastic depth [37].",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p19",
+        "section_heading": "2. Noisy Student Training",
+        "text": "When applied to unlabeled data, noise has an important benefit of enforcing invariances in the decision function on both labeled and unlabeled data. First, data augmentation is an important noising method in Noisy Student Training because it forces the student to ensure prediction consistency across augmented versions of an image (similar to UDA [91]). Specifically, in our method, the teacher produces high-quality pseudo labels by reading in clean images, while the student is required to reproduce those labels with augmented images as input. For example, the student must ensure that a translated version of an image should have the same category as the original image. Second, when dropout and stochastic depth function are used as noise, the teacher behaves like an ensemble at inference time (when it generates pseudo labels), whereas the student behaves like a single model. In other words, the student is forced to mimic a more powerful ensemble model. We present an ablation study on the effects of noise in Section 4.1.",
+        "seg_type": "par"
+      }
+    ]
+  },
+  {
+    "start_time": 1350.0,
+    "end_time": 1520.0,
+    "id": "006",
+    "title": "Dataset Balancing",
+    "filename": "Videos/sp_0060.mp4",
+    "paper_filename": "Papers/sp_0060.pdf",
+    "type": "exp-vid",
+    "relevant_segments": [
+      {
+        "para_id": "p20",
+        "section_heading": "2. Noisy Student Training",
+        "text": "Other Techniques – Noisy Student Training also works better with an additional trick: data filtering and balancing, similar to [91, 93]. Specifically, we filter images that the teacher model has low confidences on since they are usually out-of-domain images. To ensure that the distribution of the unlabeled images match that of the training set, we also need to balance the number of unlabeled images for each class, as all classes in ImageNet have a similar number of labeled images. For this purpose, we duplicate images in classes where there are not enough images. For classes where we have too many images, we take the images with the highest confidence.2",
+        "seg_type": "par"
+      }
+    ]
+  },
+  {
+    "start_time": 1520.0,
+    "end_time": 1815.0,
+    "id": "007",
+    "title": "Results",
+    "filename": "Videos/sp_0060.mp4",
+    "paper_filename": "Papers/sp_0060.pdf",
+    "type": "exp-vid",
+    "relevant_segments": [
+      {
+        "caption": "Table 7: Iterative training improves the accuracy, where batch size ratio denotes the ratio between unlabeled data and labeled data.",
+        "captionBoundary": {
+          "x1": 50.11199951171875,
+          "x2": 286.3651123046875,
+          "y1": 539.66455078125,
+          "y2": 569.5770263671875
+        },
+        "figType": "Table",
+        "imageText": [
+          "1",
+          "EfﬁcientNet-L2",
+          "14:1",
+          "87.6%",
+          "2",
+          "EfﬁcientNet-L2",
+          "14:1",
+          "88.1%",
+          "3",
+          "EfﬁcientNet-L2",
+          "28:1",
+          "88.4%",
+          "Iteration",
+          "Model",
+          "Batch",
+          "Size",
+          "Ratio",
+          "Top-1",
+          "Acc."
+        ],
+        "name": "7",
+        "page": 7,
+        "regionBoundary": {
+          "x1": 49.92,
+          "x2": 286.08,
+          "y1": 471.84,
+          "y2": 527.04
+        },
+        "renderDpi": 150,
+        "renderURL": "//Users/meghamariam/PROJECTS/PROJ1_Dataset/PROJ1_Crossmodal-Traversal/DATASET/pap-seg/fig/sp_0060/sp_0060-Table7-1.png",
+        "id": "sp_0060-Table7-1",
+        "seg_type": "tab"
+      },
+      {
+        "caption": "Table 2: Top-1 and Top-5 Accuracy of Noisy Student Training and previous state-of-the-art methods on ImageNet. EfficientNet-L2 with Noisy Student Training is the result of iterative training for multiple iterations by putting back the student model as the new teacher. It has better tradeoff in terms of accuracy and model size compared to previous state-ofthe-art models. †: Big Transfer is a concurrent work that performs transfer learning from the JFT dataset.",
+        "captionBoundary": {
+          "x1": 50.11199951171875,
+          "x2": 545.11376953125,
+          "y1": 373.7375183105469,
+          "y2": 415.6049499511719
+        },
+        "figType": "Table",
+        "imageText": [
+          "Noisy",
+          "Student",
+          "Training",
+          "(EfﬁcientNet-L2)",
+          "480M",
+          "300M",
+          "unlabeled",
+          "images",
+          "from",
+          "JFT",
+          "88.4%",
+          "98.7%",
+          "Big",
+          "Transfer",
+          "(BiT-L)",
+          "[43]†",
+          "928M",
+          "300M",
+          "weakly",
+          "labeled",
+          "images",
+          "from",
+          "JFT",
+          "87.5%",
+          "98.5%",
+          "3.5B",
+          "images",
+          "labeled",
+          "with",
+          "tags",
+          "81.2%",
+          "96.0%",
+          "ResNeXt-101",
+          "Billion-scale",
+          "[93]",
+          "193M",
+          "84.8%",
+          "-",
+          "ResNeXt-101",
+          "WSL",
+          "[55]",
+          "829M",
+          "85.4%",
+          "97.6%",
+          "FixRes",
+          "ResNeXt-101",
+          "WSL",
+          "[86]",
+          "829M",
+          "86.4%",
+          "98.0%",
+          "ResNet-50",
+          "Billion-scale",
+          "[93]",
+          "26M",
+          "ResNet-50",
+          "[30]",
+          "26M",
+          "-",
+          "76.0%",
+          "93.0%",
+          "ResNet-152",
+          "[30]",
+          "60M",
+          "-",
+          "77.8%",
+          "93.8%",
+          "DenseNet-264",
+          "[36]",
+          "34M",
+          "-",
+          "77.9%",
+          "93.9%",
+          "Inception-v3",
+          "[81]",
+          "24M",
+          "-",
+          "78.8%",
+          "94.4%",
+          "Xception",
+          "[15]",
+          "23M",
+          "-",
+          "79.0%",
+          "94.5%",
+          "Inception-v4",
+          "[79]",
+          "48M",
+          "-",
+          "80.0%",
+          "95.0%",
+          "Inception-resnet-v2",
+          "[79]",
+          "56M",
+          "-",
+          "80.1%",
+          "95.1%",
+          "ResNeXt-101",
+          "[92]",
+          "84M",
+          "-",
+          "80.9%",
+          "95.6%",
+          "PolyNet",
+          "[100]",
+          "92M",
+          "-",
+          "81.3%",
+          "95.8%",
+          "SENet",
+          "[35]",
+          "146M",
+          "-",
+          "82.7%",
+          "96.2%",
+          "NASNet-A",
+          "[104]",
+          "89M",
+          "-",
+          "82.7%",
+          "96.2%",
+          "AmoebaNet-A",
+          "[65]",
+          "87M",
+          "-",
+          "82.8%",
+          "96.1%",
+          "PNASNet",
+          "[50]",
+          "86M",
+          "-",
+          "82.9%",
+          "96.2%",
+          "AmoebaNet-C",
+          "[17]",
+          "155M",
+          "-",
+          "83.5%",
+          "96.5%",
+          "GPipe",
+          "[38]",
+          "557M",
+          "-",
+          "84.3%",
+          "97.0%",
+          "EfﬁcientNet-B7",
+          "[83]",
+          "66M",
+          "-",
+          "85.0%",
+          "97.2%",
+          "EfﬁcientNet-L2",
+          "[83]",
+          "480M",
+          "-",
+          "85.5%",
+          "97.5%",
+          "Method",
+          "#",
+          "Params",
+          "Extra",
+          "Data",
+          "Top-1",
+          "Acc.",
+          "Top-5",
+          "Acc."
+        ],
+        "name": "2",
+        "page": 3,
+        "regionBoundary": {
+          "x1": 61.919999999999995,
+          "x2": 533.28,
+          "y1": 71.52,
+          "y2": 362.4
+        },
+        "renderDpi": 150,
+        "renderURL": "//Users/meghamariam/PROJECTS/PROJ1_Dataset/PROJ1_Crossmodal-Traversal/DATASET/pap-seg/fig/sp_0060/sp_0060-Table2-1.png",
+        "id": "sp_0060-Table2-1",
+        "seg_type": "tab"
+      },
+      {
+        "caption": "Figure 2: Noisy Student Training leads to significant improvements across all model sizes. We use the same architecture for the teacher and the student and do not perform iterative training.",
+        "captionBoundary": {
+          "x1": 50.11199951171875,
+          "x2": 286.3651123046875,
+          "y1": 548.89453125,
+          "y2": 590.7620239257812
+        },
+        "figType": "Figure",
+        "imageText": [
+          "AmoebaNet-A",
+          "AmoebaNet-C",
+          "SENetNASNet-A",
+          "ResNeXt-101",
+          "Inception-resnet-v2",
+          "Xception",
+          "DenseNet-201",
+          "ResNet-152",
+          "ResNet-50",
+          "NASNet-A",
+          "Inception-v2",
+          "ResNet-34",
+          "EfﬁcientNet-B7",
+          "B6",
+          "Noisy",
+          "Student",
+          "Training",
+          "(EfﬁcientNet-B7)",
+          "B4",
+          "B5",
+          "B3",
+          "Model",
+          "Top-1",
+          "Acc.",
+          "EfﬁcientNet-B0",
+          "77.3%",
+          "Noisy",
+          "Student",
+          "Training",
+          "(B0)",
+          "78.1%",
+          "EfﬁcientNet-B2",
+          "80.0%",
+          "Noisy",
+          "Student",
+          "Training",
+          "(B2)",
+          "81.1%",
+          "EfﬁcientNet-B5",
+          "84.0%",
+          "Noisy",
+          "Student",
+          "Training",
+          "(B5)",
+          "85.1%",
+          "EfﬁcientNet-B7",
+          "85.0%",
+          "Noisy",
+          "Student",
+          "Training",
+          "(B7)",
+          "86.4%",
+          "(%",
+          ")",
+          "ac",
+          "y",
+          "cc",
+          "ur",
+          "1",
+          "A",
+          "To",
+          "p-",
+          "eN",
+          "et",
+          "Im",
+          "ag",
+          "86",
+          "84",
+          "82",
+          "80",
+          "78",
+          "76",
+          "74",
+          "0",
+          "20",
+          "40",
+          "60",
+          "80",
+          "100",
+          "120",
+          "140",
+          "160",
+          "Number",
+          "of",
+          "Parameters",
+          "(Millions)"
+        ],
+        "name": "2",
+        "page": 4,
+        "regionBoundary": {
+          "x1": 59.519999999999996,
+          "x2": 276.0,
+          "y1": 350.88,
+          "y2": 532.8
+        },
+        "renderDpi": 150,
+        "renderURL": "//Users/meghamariam/PROJECTS/PROJ1_Dataset/PROJ1_Crossmodal-Traversal/DATASET/pap-seg/fig/sp_0060/sp_0060-Figure2-1.png",
+        "id": "sp_0060-Figure2-1",
+        "seg_type": "fig"
+      },
+      {
+        "para_id": "p35",
+        "section_heading": "3.1. Experiment Details",
+        "text": "Iterative training. The best model in our experiments is a result of three iterations of putting back the student as the new teacher. We first trained an EfficientNet-B7 on ImageNet as the teacher model. Then by using the B7 model as the teacher, we trained an EfficientNet-L2 model with the unlabeled batch size set to 14 times the labeled batch size. Then, we trained a new EfficientNet-L2 model with the EfficientNet-L2 model as the teacher. Lastly, we iterated again and used an unlabeled batch size of 28 times the labeled batch size. The detailed results of the three iterations are available in Section 4.2.",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p38",
+        "section_heading": "3.2. ImageNet Results",
+        "text": "Model size study: Noisy Student Training for EfficientNet B0-B7 without Iterative Training. In addition to improving state-of-the-art results, we conduct experiments to verify if Noisy Student Training can benefit other EfficienetNet models. In previous experiments, iterative training was used to optimize the accuracy of EfficientNet-L2 but here we skip it as it is difficult to use iterative training for many experiments. We vary the model size from EfficientNet-B0 to EfficientNet-B7 [83] and use the same model as both the teacher and the student. We apply RandAugment to all EfficientNet baselines, leading to more competitive baselines. We set the unlabeled batch size to be three times the batch size of labeled images for all model sizes except for EfficientNet-B0. For EfficientNet-B0, we set the unlabeled batch size to be the same as the batch size of labeled images. As shown in Figure 2, Noisy Student Training leads to a consistent improvement of around 0.8% for all model sizes. Overall, EfficientNets with Noisy Student Training provide a much better tradeoff between model size and accuracy than prior works. The results also confirm that vision models can benefit from Noisy Student Training even without iterative training.",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p57",
+        "section_heading": "4.2. A Study of Iterative Training",
+        "text": "As shown in Table 7, the model performance improves to 87.6% in the first iteration and then to 88.1% in the second iteration with the same hyperparameters (except using a teacher model with better performance). These results indicate that iterative training is effective in producing increasingly better models. For the last iteration, we make use of a larger ratio between unlabeled batch size and labeled batch size to boost the final performance to 88.4%.",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p66",
+        "section_heading": "4.3. Additional Ablation Study Summarization",
+        "text": "• Finding #7: Using a large ratio between unlabeled batch size and labeled batch size enables models to train longer on unlabeled data to achieve a higher accuracy.",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p36",
+        "section_heading": "3.2. ImageNet Results",
+        "text": "We first report the validation set accuracy on the ImageNet 2012 ILSVRC challenge prediction task as commonly done in literature [45, 80, 30, 83] (see also [66]). As shown in Table 2, EfficientNet-L2 with Noisy Student Training achieves 88.4% top-1 accuracy which is significantly better than the best reported accuracy on EfficientNet of 85.0%. The total gain of 3.4% comes from two sources: by making the model larger (+0.5%) and by Noisy Student Training (+2.9%). In other words, Noisy Student Training makes a much larger impact on the accuracy than changing the architecture.",
+        "seg_type": "par"
+      }
+    ]
+  },
+  {
+    "start_time": 1815.0,
+    "end_time": 2075.0,
+    "id": "008",
+    "title": "Perturbation Robustness",
+    "filename": "Videos/sp_0060.mp4",
+    "paper_filename": "Papers/sp_0060.pdf",
+    "type": "exp-vid",
+    "relevant_segments": [
+      {
+        "caption": "Figure 3: Selected images from robustness benchmarks ImageNet-A, C and P. Test images from ImageNet-C underwent artificial transformations (also known as common corruptions) that cannot be found on the ImageNet training set. Test images on ImageNet-P underwent different scales of perturbations. On ImageNet-A, C, EfficientNet with Noisy Student Tranining produces correct top-1 predictions (shown in bold black texts) and EfficientNet without Noisy Student Training produces incorrect top-1 predictions (shown in red texts). On ImageNet-P, EfficientNet without Noisy Student Training flips predictions frequently.",
+        "captionBoundary": {
+          "x1": 50.11199951171875,
+          "x2": 545.11376953125,
+          "y1": 351.60150146484375,
+          "y2": 417.3799133300781
+        },
+        "figType": "Figure",
+        "imageText": [
+          "(c)",
+          "ImageNet-P",
+          "refrigeratorplate",
+          "rack",
+          "racing",
+          "car",
+          "car",
+          "wheel",
+          "medicine",
+          "chestplate",
+          "rack",
+          "racing",
+          "car",
+          "car",
+          "wheelmedicine",
+          "chestplate",
+          "rack",
+          "racing",
+          "car",
+          "fire",
+          "engine",
+          "(b)",
+          "ImageNet-C",
+          "swing",
+          "mosquito",
+          "netelectric",
+          "raysnow",
+          "leopard",
+          "televisioncannonparking",
+          "meter",
+          "vacuum",
+          "gown",
+          "skipill",
+          "bottletoaster",
+          "(a)",
+          "ImageNet-A",
+          "hummingbird",
+          "bald",
+          "eagle",
+          "basketball",
+          "parking",
+          "meter",
+          "bullfrogdragonfly",
+          "starfish",
+          "wreck",
+          "lighthousesea",
+          "lion",
+          "submarine",
+          "canoe"
+        ],
+        "name": "3",
+        "page": 5,
+        "regionBoundary": {
+          "x1": 55.68,
+          "x2": 539.04,
+          "y1": 74.88,
+          "y2": 337.44
+        },
+        "renderDpi": 150,
+        "renderURL": "//Users/meghamariam/PROJECTS/PROJ1_Dataset/PROJ1_Crossmodal-Traversal/DATASET/pap-seg/fig/sp_0060/sp_0060-Figure3-1.png",
+        "id": "sp_0060-Figure3-1",
+        "seg_type": "fig"
+      },
+      {
+        "caption": "Figure 4: Noisy Student Training improves adversarial robustness against an FGSM attack though the model is not optimized for adversarial robustness. The accuracy is improved by 11% at ε = 2 and gets better as ε gets larger.",
+        "captionBoundary": {
+          "x1": 50.11199951171875,
+          "x2": 286.3651123046875,
+          "y1": 649.3275756835938,
+          "y2": 691.1959838867188
+        },
+        "figType": "Figure",
+        "imageText": [
+          "Noisy",
+          "Student",
+          "Training",
+          "(L2)",
+          "EfficientNet-L2",
+          "(%",
+          ")",
+          "ac",
+          "y",
+          "cc",
+          "ur",
+          "-1",
+          "A",
+          "T",
+          "op",
+          "eN",
+          "et",
+          "Im",
+          "ag",
+          "85",
+          "80",
+          "75",
+          "70",
+          "65",
+          "60",
+          "0",
+          "2",
+          "4",
+          "6",
+          "8",
+          "10",
+          "12",
+          "14",
+          "16",
+          "epsilon"
+        ],
+        "name": "4",
+        "page": 6,
+        "regionBoundary": {
+          "x1": 71.03999999999999,
+          "x2": 264.0,
+          "y1": 471.84,
+          "y2": 634.0799999999999
+        },
+        "renderDpi": 150,
+        "renderURL": "//Users/meghamariam/PROJECTS/PROJ1_Dataset/PROJ1_Crossmodal-Traversal/DATASET/pap-seg/fig/sp_0060/sp_0060-Figure4-1.png",
+        "id": "sp_0060-Figure4-1",
+        "seg_type": "fig"
+      },
+      {
+        "para_id": "p48",
+        "section_heading": "3.4. Adversarial Robustness Results",
+        "text": "After testing our model’s robustness to common corruptions and perturbations, we also study its performance on adversarial perturbations. We evaluate our EfficientNet-L2 models with and without Noisy Student Training against an FGSM attack. This attack performs one gradient descent step on the input image [25] with the update on each pixel set to . As shown in Figure 4, Noisy Student Training leads to very significant improvements in accuracy even though the model is not optimized for adversarial robustness. Under a stronger attack PGD with 10 iterations [54], at = 16, Noisy Student Training improves EfficientNet-L2’s accuracy from 1.1% to 4.4%.",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p39",
+        "section_heading": "C and ImageNet-P",
+        "text": "We evaluate the best model, that achieves 88.4% top1 accuracy, on three robustness test sets: ImageNetA, ImageNet-C and ImageNet-P. ImageNet-C and P test sets [31] include images with common corruptions and perturbations such as blurring, fogging, rotation and scaling. ImageNet-A test set [32] consists of difficult images that",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p40",
+        "section_heading": "C and ImageNet-P",
+        "text": "cause significant drops in accuracy to state-of-the-art models. These test sets are considered as “robustness” benchmarks because the test images are either much harder, for ImageNet-A, or the test images are different from the training images, for ImageNet-C and P.",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p41",
+        "section_heading": "C and ImageNet-P",
+        "text": "For ImageNet-C and ImageNet-P, we evaluate models on two released versions with resolution 224x224 and 299x299 and resize images to the resolution EfficientNet trained on.",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p42",
+        "section_heading": "C and ImageNet-P",
+        "text": "As shown in Table 3, 4 and 5, Noisy Student Training yields substantial gains on robustness datasets compared to the previous state-of-the-art model ResNeXt-101 WSL [55, 59] trained on 3.5B weakly labeled images. On ImageNet-A, it improves the top-1 accuracy from 61.0% to 83.7%. On ImageNet-C, it reduces mean corruption error (mCE) from 45.7 to 28.3. On ImageNet-P, it leads to a mean flip rate (mFR) of 14.2 if we use a resolution of 224x224 (direct comparison) and 12.2 if we use a resolution of 299x299.3 These significant gains in robustness in ImageNet-C and ImageNet-P are surprising because our method was not deliberately optimized for robustness.4",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p43",
+        "section_heading": "C and ImageNet-P",
+        "text": "Qualitative Analysis. To intuitively understand the significant improvements on the three robustness benchmarks, we show several images in Figure 3 where the predictions of the standard model are incorrect while the predictions of the model with Noisy Student Training are correct.",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p44",
+        "section_heading": "C and ImageNet-P",
+        "text": "Figure 3a shows example images from ImageNet-A and the predictions of our models. The model with Noisy Student Training can successfully predict the correct labels of these highly difficult images. For example, without Noisy Student Training, the model predicts bullfrog for the image shown on the left of the second row, which might be resulted from the black lotus leaf on the water. With Noisy Student Training, the model correctly predicts dragonfly for the image. At the top-left image, the model without Noisy Student Training ignores the sea lions and mistakenly recognizes a buoy as a lighthouse, while the model with Noisy Student Training can recognize the sea lions.",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p45",
+        "section_heading": "C and ImageNet-P",
+        "text": "Figure 3b shows images from ImageNet-C and the corresponding predictions. As can be seen from the figure, our model with Noisy Student Training makes correct predictions for images under severe corruptions and perturbations such as snow, motion blur and fog, while the model without",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p46",
+        "section_heading": "C and ImageNet-P",
+        "text": "Noisy Student Training suffers greatly under these conditions. The most interesting image is shown on the right of the first row. The swing in the picture is barely recognizable by human while the model with Noisy Student Training still makes the correct prediction.",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p47",
+        "section_heading": "C and ImageNet-P",
+        "text": "Figure 3c shows images from ImageNet-P and the corresponding predictions. As can be seen, our model with Noisy Student Training makes correct and consistent predictions as images undergone different perturbations while the model without Noisy Student Training flips predictions frequently.",
+        "seg_type": "par"
+      }
+    ]
+  },
+  {
+    "start_time": 2075.0,
+    "end_time": 2370.0,
+    "id": "009",
+    "title": "Ablation Studies",
+    "filename": "Videos/sp_0060.mp4",
+    "paper_filename": "Papers/sp_0060.pdf",
+    "type": "exp-vid",
+    "relevant_segments": [
+      {
+        "para_id": "p59",
+        "section_heading": "4.3. Additional Ablation Study Summarization",
+        "text": "• Finding #1: Using a large teacher model with better performance leads to better results.",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p60",
+        "section_heading": "4.3. Additional Ablation Study Summarization",
+        "text": "• Finding #2: A large amount of unlabeled data is nec-",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p61",
+        "section_heading": "4.3. Additional Ablation Study Summarization",
+        "text": "essary for better performance.",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p62",
+        "section_heading": "4.3. Additional Ablation Study Summarization",
+        "text": "• Finding #3: Soft pseudo labels work better than hard pseudo labels for out-of-domain data in certain cases.",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p63",
+        "section_heading": "4.3. Additional Ablation Study Summarization",
+        "text": "• Finding #4: A large student model is important to enable the student to learn a more powerful model.",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p64",
+        "section_heading": "4.3. Additional Ablation Study Summarization",
+        "text": "• Finding #5: Data balancing is useful for small models.",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p65",
+        "section_heading": "4.3. Additional Ablation Study Summarization",
+        "text": "• Finding #6: Joint training on labeled data and unlabeled data outperforms the pipeline that first pretrains with unlabeled data and then finetunes on labeled data.",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p66",
+        "section_heading": "4.3. Additional Ablation Study Summarization",
+        "text": "• Finding #7: Using a large ratio between unlabeled batch size and labeled batch size enables models to train longer on unlabeled data to achieve a higher accuracy.",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p67",
+        "section_heading": "4.3. Additional Ablation Study Summarization",
+        "text": "• Finding #8: Training the student from scratch is sometimes better than initializing the student with the teacher and the student initialized with the teacher still requires a large number of training epochs to perform well.",
+        "seg_type": "par"
+      },
+      {
+        "caption": "Table 6: Ablation study of noising. We use EfficientNetB5 as the teacher model and study two cases with different numbers of unlabeled images and different augmentations. For the experiment with 1.3M unlabeled images, we use the standard augmentation including random translation and flipping for both the teacher and the student. For the experiment with 130M unlabeled images, we use RandAugment. Aug and SD denote data augmentation and stochastic depth respectively. We remove the noise for unlabeled images while keeping them for labeled images. Here, iterative training is not used and unlabeled batch size is set to be the same as the labeled batch size to save training time.",
+        "captionBoundary": {
+          "x1": 50.11199951171875,
+          "x2": 286.3651428222656,
+          "y1": 166.18453979492188,
+          "y2": 303.6941223144531
+        },
+        "figType": "Table",
+        "imageText": [
+          "Noisy",
+          "Student",
+          "Training",
+          "(B5)",
+          "83.9%",
+          "85.1%",
+          "student",
+          "w/o",
+          "Aug",
+          "83.6%",
+          "84.6%",
+          "student",
+          "w/o",
+          "Aug,",
+          "SD,",
+          "Dropout",
+          "83.2%",
+          "84.3%",
+          "teacher",
+          "w.",
+          "Aug,",
+          "SD,",
+          "Dropout",
+          "83.7%",
+          "84.4%",
+          "EfﬁcientNet-B5",
+          "83.3%",
+          "84.0%",
+          "Model",
+          "/",
+          "Unlabeled",
+          "Set",
+          "Size",
+          "1.3M",
+          "130M"
+        ],
+        "name": "6",
+        "page": 7,
+        "regionBoundary": {
+          "x1": 68.64,
+          "x2": 267.36,
+          "y1": 71.52,
+          "y2": 154.07999999999998
+        },
+        "renderDpi": 150,
+        "renderURL": "//Users/meghamariam/PROJECTS/PROJ1_Dataset/PROJ1_Crossmodal-Traversal/DATASET/pap-seg/fig/sp_0060/sp_0060-Table6-1.png",
+        "id": "sp_0060-Table6-1",
+        "seg_type": "tab"
+      },
+      {
+        "para_id": "p52",
+        "section_heading": "4.1. The Importance of Noise in Self-training",
+        "text": "Here, we show the evidence in Table 6, noise such as stochastic depth, dropout and data augmentation plays an important role in enabling the student model to perform better than the teacher. The performance consistently drops with noise function removed. However, in the case with 130M unlabeled images, when compared to the supervised baseline, the performance is still improved to 84.3% from 84.0% with noise function removed. We hypothesize that the improvement can be attributed to SGD, which introduces stochasticity into the training process.",
+        "seg_type": "par"
+      }
+    ]
+  },
+  {
+    "start_time": 2370.0,
+    "end_time": 2435,
+    "id": "010",
+    "title": "Conclusion & Comments",
+    "filename": "Videos/sp_0060.mp4",
+    "paper_filename": "Papers/sp_0060.pdf",
+    "type": "exp-vid",
+    "relevant_segments": []
+  }
+]

@@ -1,0 +1,6 @@
+Then, we come to linear MDPs.
+Heavy LSVI UCB, the proposed algorithm, features a novel combination of adaptive human regression and existing algorithm frameworks to tackle heavy-tailed rewards.
+At a high level, it employs separate estimation techniques to handle heavy-tailed rewards and transition kernels.
+We utilize adaptive-huber regression to estimate heavy-tailed rewards, while awaited-rich regression to estimate the expected next-date value functions.
+Then, we update the optimistic and pessimistic estimation of the optimal value function following the value iteration scheme.
+We further adapt a real switching policy for both statistical and computationally efficient.

@@ -1,0 +1,52 @@
+start	end	text
+31	5862	Why does this give you such extraordinary representations in unsupervised fashion?
+6604	15261	And I sort of, I have two things that I think contribute mostly to this.
+16163	19930	So if we look at the question of why, right?
+19910	24357	The first thing I think is the augmentations.
+25318	35753	The augmentations have played a large role, not as much in NLP.
+35833	37716	In NLP, we do it a little bit differently.
+37696	44189	but augmentations in computer vision and self supervised learning have a central role.
+44570	50963	And it's really important that you have the correct ones, which is a thing they also say right here, right?
+50983	57696	They really stress that this multi crop augmentation is quite important.
+57676	60920	So augmentations seem to be central.
+61300	70171	And to me, augmentations are a bit like that's where you put the, that's where you put the human prior.
+70231	75837	That's where you tell the model what it should pay attention to and what it shouldn't pay attention to, right?
+76198	84347	Because all the things you destroy with an augmentation, like you make the color brighter, that's, you tell the model color doesn't matter, right?
+84407	86890	Or brightness variations don't matter.
+86870	94857	So by augmenting, you tell the model what it should and shouldn't or, you know, what it shouldn't pay attention to, essentially.
+95238	101904	So all the things that, you know, it's the same if you have an, if you have a data set of dogs and cats, right?
+102804	107709	And, um, you know, you tell it, you know, this is a dog, this is a dog, this is a dog.
+107969	113794	Essentially, you tell it, you shouldn't pay attention to, you know, what is different in these images.
+113834	116877	You should only pay attention to what is the same.
+116857	121223	And the augmentations, that's kind of where the knowledge goes in.
+121344	137447	So if we want to go towards fully, let's say fully autonomous self supervised learning, that's what we need to get rid of, we need to get rid of the augmentations, or we need to get rid of
+137427	141013	us designing augmentations for the domain.
+141134	156841	If we want this to be, you know, domain agnostic, and also if we want better image representations, because the probability that we as humans exactly capture the correct augmentations is zero, right?
+156982	158845	We seem to capture pretty good ones.
+158825	164592	But, you know, the probability that we have the best ones is like zero.
+165353	165453	Okay.
+165473	172102	The second thing, and this is a thing that's, I think more hidden is the data set.
+172702	175826	And what I mean is how the data set is constructed.
+176187	181093	So these things are often, you know, trained on something like ImageNet data set.
+181113	182875	And you can see
+182855	190234	in these pictures, there always seems to be like an object of interest in these in these pictures, right?
+191116	199277	Even if you train this from pictures in the wild, like you scrape pictures from Instagram or whatever,
+199257	204062	the way people don't take pictures of random things.
+204402	213391	People, if you're, you know, it would be pretty weird to have a picture and, you know, there's just like dirt road.
+213691	217795	Like it's just like dirt road and here's like, you know, a bit of grass.
+218476	222740	And you post this on social media and you're like, whoa, look at this.
+224021	225703	So,
+225683	237991	by how you construct the data set, even if you scrape it from the internet by how humanity takes pictures, you are implicitly telling the model what's important.
+238331	240857	So the model learns
+240837	242039	How should I say this?
+242800	249833	How you make the data set speaks a lot about where your attention goes.
+250674	253679	And that's what you feed the model, right?
+254401	263757	So these things, these self supervised methods in this way, they rely a lot on data set construction.
+263737	272688	So we shouldn't expect this to transfer to domains where we get like random IID data from the world, because these things aren't IID.
+273129	278315	We tell the model pretty clearly by the data we give it, what's important, what isn't.
+279557	281780	So that is a little bit of my opinion.
+281800	283182	And I think that's correct, right?
+283322	291432	I think the model, if we have self supervised learning, the information should be taken from the data set.
+291412	291854	Right.
+291874	300872	So that the model should look at the data sense a what seems to be given how this data set is, what seem to be the important things in there.
+301816	305050	I'm more a fan of getting rid of the augmentations.

@@ -1,0 +1,2 @@
+Next, in the algorithm, we introduce the noisy value iteration by using the posterior sampling.
+We aim to approximate the posterior of the value functions, which are in proportion to the prior times the likelihood.

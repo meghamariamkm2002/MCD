@@ -1,0 +1,35 @@
+That's basically it to the paper.
+There's a lot of things to be said here.
+I think this works in very, very limited settings.
+It seems to me that it's sort of brittle with respect to how you abstract.
+It's always the case how large is this synthetic training data.
+In their case, they abstract this to 20 or 30 data points or something like this.
+So it seems to me, since you're optimizing this training data with gradient descent, what you would mainly find are adversarial examples to this architecture here.
+So I'm going to guess that the inner optimization is very noisy.
+And that's because if you really let your optimizer run, then it will abuse every single thing it can to match that validation loss.
+And that will usually lead to an adversarial example since you're optimizing the data itself.
+Okay.
+So I think this suffers from that.
+And we had this in the planning in learned world models in reinforcement learning, where if you have a really, really good planner, it will just abuse the mistakes that you make in approximating the true world.
+And the same here.
+You're going to make mistakes approximating this architecture here.
+And the better your optimizer is for producing this synthetic data,
+Probably the worst, the result is going to match, the worst that these losses are going to actually match.
+Now, okay, these losses will match because that's what you train for, but the worst these two curves will match each other because now you're just finding adversarial examples for your particular training data.
+Another concern I have here is with respect to the double descent phenomenon.
+So if you know the double descent phenomenon, if here you have your number of parameters and here you have your validation loss, let's say, and you know that if I add parameters, I can make my validation loss go down.
+So this is assuming I have a model with P parameters and I always train it on the train data to like two convergence.
+If I add parameters, I can generalize better until a point where I add too many parameters and I start overfitting, then my validation loss goes up again.
+But the double descent phenomenon, and I think I've done a video on this, shows that after a certain threshold, you get the interpolation threshold, the validation loss goes actually down again and goes down even further here.
+So this is a very strange phenomenon by itself, but I'm sort of concerned that if you do this abstraction that this paper proposes, so let's say your full model is here with a large number of parameters, so it is past this interpolation threshold.
+If you now seriously reduce the number of parameters because you want to go into this Petri dish,
+you will get, maybe you will cross this interpolation threshold and actually be on this side of the curve right here.
+Now, of course, at the same time, you reduce the amount of data, which would push you over here again, but it is different data.
+So I'm not sure how all of this is going to play out.
+It appears to work in these settings right here, but I
+I think this is, it's sort of applicable in some situations and it'd be very cool if we develop this further such that we understand when it applies and when we can use it because I feel this can be a very cool thing if we understand it better and if we can apply it throughout.
+All right, that's the end.
+If you liked this paper, leave a comment.
+If you didn't like it, leave a comment.
+And bye-bye.
+See you next time.

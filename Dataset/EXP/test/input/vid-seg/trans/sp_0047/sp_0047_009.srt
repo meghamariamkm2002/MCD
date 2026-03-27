@@ -1,0 +1,64 @@
+1
+00:00:00,031 --> 00:00:10,624
+So, yeah, as I said, this paper is very different from other research papers in that it's sort of half an engineering paper and all of these papers are.
+
+2
+00:00:10,985 --> 00:00:29,548
+They're kind of hard to read because they just kind of state some things in the order is kind of weird sometimes, why they do things is kind of weird sometimes, but you can't deny that it had quite the effect on the community.
+
+3
+00:00:29,528 --> 00:00:35,618
+And it is a very cool paper, a very cool series of papers.
+
+4
+00:00:35,818 --> 00:00:45,614
+And it's very cool that actually they released the code and they made the code such that it is super duper efficient even like on a single machine.
+
+5
+00:00:46,155 --> 00:00:47,537
+And that was
+
+6
+00:00:47,517 --> 00:00:56,365
+very cool because, you know, being Google, they could have just released code that is very efficient on a distributed data center.
+
+7
+00:00:56,806 --> 00:00:59,568
+And they didn't do that.
+
+8
+00:00:59,769 --> 00:01:04,393
+So that this is, it's sort of not really like today anymore.
+
+9
+00:01:04,513 --> 00:01:11,540
+Like today, when they release code, it's always you need, you need like 50 cloud TPUs to do it.
+
+10
+00:01:11,560 --> 00:01:15,043
+I mean, it's still cool that they release code, but this was
+
+11
+00:01:15,023 --> 00:01:19,130
+This was really a step into kind of democratizing AI.
+
+12
+00:01:21,334 --> 00:01:24,940
+And yeah, so that was my rant about Word2Vec.
+
+13
+00:01:25,501 --> 00:01:26,904
+I hope you enjoyed this.
+
+14
+00:01:27,004 --> 00:01:32,173
+I hope this still was useful to you, even though most of you probably already knew Word2Vec.
+
+15
+00:01:32,995 --> 00:01:35,739
+And yeah, so I'll see you next time.
+
+16
+00:01:35,799 --> 00:01:36,120
+Bye bye.
+

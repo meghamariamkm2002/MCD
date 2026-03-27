@@ -1,0 +1,52 @@
+Now, what does this buy us?
+It buys us what I've essentially shown you at the beginning.
+And also it buys us K nearest neighbor classification, which are zero shot classifiers.
+Okay, like right now I can I can pump this through
+the system pump a data set through the system, I can come with a new image, and I can simply do k nearest neighbor, I don't even have to train the network anymore, I can come with a new data set, I can do image retrieval, I can do linear classification on top of the representation.
+And all of this works much better than previous systems.
+no matter the architecture, but it seems to work especially well with the visual transformers down here.
+If you see this, for example, compared to the, to the best Resnets.
+So there's this 5% difference in linear evaluation, which, you know,
+This is 25% error.
+This is 20% error on ImageNet.
+And there is even a bigger difference when you look at K nearest neighbor classification, which is the right most column.
+They do a lot of experiments, as I said, in image retrieval.
+In copy detection, which is really interesting.
+That's, I think, where you want to realize if someone has taken an image and made another image out of it.
+And don't know if that's such a good thing given that the entire meme culture relies on it.
+If you look at the CLS token, the CLS token is ultimately where the representation that you take comes out.
+If you look at the attention heads of that and you visualize the attention maps, it gives you this, not only this segmentation map,
+Yeah, like not only does it tell you where to look, but it even seems to be sort of segmenting the individual objects here in the horse.
+You can see the straps of the horse.
+You can see, sorry, this is a zebra.
+Yeah, you can see there in the trucks, you can see the roads is or the wheels are separate from the truck and so on.
+They do ablations.
+They compare it with sort of supervised baselines.
+You can see this works much better.
+And what I think is pretty cool is down here in the appendix somewhere, yeah, they have more of these attention maps compared to supervised attention maps.
+And this, I mean, the comparison is very, very strong.
+Yeah.
+Because yeah, so compared to supervised, what I think is happening that if you give the these things a supervised problem, they, you can see they do pay attention.
+For example, here, they pay attention to whatever the cats face or something in the ears, you can see the cat shape.
+However,
+there is this thing like there is the shortcut learning which is a I think a data set problem but also supervised system just stops kind of learning once it has mastered the task or it might it might try out various optimizations for the task that you give it right and and these optimizations I think are what you know pop up all over the place with these
+little specs of attention that it also does you know these it might not make sense in this particular image but you know the same attention pattern or the same.
+Thing to pay attention to might make a lot of sense in like three other images in the data set so that's why that's there.
+Whereas, if you do this unsupervised, there is no hyper-optimization on a single task.
+There is no real, there is only, especially if you have also more images, which you can do in unsupervised, right?
+You also can't hyper-optimize for individual samples and so on.
+So that's one thing.
+And here is this complete map of ImageNet, I think.
+And maybe you can't read it, but like here's Tractor and right next to it is like Harvester and Trasher.
+There's mini bus down here.
+So all of these, like the vehicles are clustered together.
+There is kind of butcher shop and grocery store right next to each other.
+This, you know, it appears to be really, really good.
+the representations.
+Now the question is why, right?
+That's the question.
+So this was the paper.
+I encourage you to go read the experiment section and so on.
+It's very cool, cool ablations.
+They show why exactly they use this loss and what happens without the momentum of the teacher and so on.
+But what interests me is

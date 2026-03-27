@@ -1,0 +1,140 @@
+WEBVTT
+
+00:00.031 --> 00:01.613
+So that's a visual transformer.
+
+00:02.014 --> 00:05.499
+Now, what do we do with it in this dyno architecture?
+
+00:05.899 --> 00:07.542
+I've already shown you this picture.
+
+00:07.602 --> 00:10.206
+Let's go a little bit deeper into that.
+
+00:10.927 --> 00:15.653
+Self-supervised learning naturally means you have no labels.
+
+00:15.874 --> 00:22.984
+And in this case, you don't even have a negative sample mechanism or a contrastive learning mechanism.
+
+00:22.964 --> 00:32.876
+So what you want to do is you want to train a model that sort of gives you, gives you sensible representations.
+
+00:33.717 --> 00:37.182
+And that is easier said than done.
+
+00:37.242 --> 00:39.485
+If you have no labels.
+
+00:40.526 --> 00:47.014
+Now, the, when you do contrastive learning, the goal is that you have an image.
+
+00:48.530 --> 00:55.891
+And you just take two patches from the image, let's say, and you have another image, and you take a patch from that.
+
+00:56.713 --> 00:59.380
+And now you have what's called your anchor.
+
+00:59.641 --> 01:00.463
+This is your anchor.
+
+01:01.165 --> 01:03.552
+And then you have patch.
+
+01:03.532 --> 01:17.870
+patch A from the same patch B. Now you present the model, all the three patches, and you tell it which one is the anchor, and it needs to decide is the patch A or patch B from the same image.
+
+01:17.950 --> 01:23.397
+You can see how this objective can give you a sort of representation because the model learns
+
+01:23.377 --> 01:26.640
+what kind of stuff is likely to be in the same image.
+
+01:27.181 --> 01:28.923
+This is not the case right here.
+
+01:29.083 --> 01:30.825
+We don't do contrastive learning.
+
+01:30.865 --> 01:32.086
+We don't have negative samples.
+
+01:32.126 --> 01:38.793
+We only, we take one image and then we augment that image in different ways.
+
+01:39.314 --> 01:42.698
+Now augmentations are kind of a science by itself.
+
+01:42.938 --> 01:49.505
+I think they say they follow the paper BYOL in terms of augmentations.
+
+01:49.645 --> 01:51.527
+I've also made a video on that.
+
+01:51.507 --> 02:17.447
+Essentially what you do is you do various random perturbations of the image, you might flip it, you might apply some color jitter, you might apply like some solarization, anything like this, anything you can do to make the image different, but that you're relatively sure that, you know, it still looks like the same, like you would still recognize it as the same image.
+
+02:17.427 --> 02:22.313
+So a part of these augmentations are also crops.
+
+02:22.734 --> 02:25.618
+What I've shown you here are crops of the same image.
+
+02:26.319 --> 02:28.582
+They do something special right here.
+
+02:29.443 --> 02:34.169
+When they have an image, they crop in two different ways.
+
+02:34.509 --> 02:36.872
+One, they call, I think, global crops.
+
+02:37.373 --> 02:42.760
+And these are crops which generally cover more than 50% of the image.
+
+02:42.740 --> 02:50.530
+Whereas the other ones, they called local crops, and these are crops that cover less than 50% of the image.
+
+02:52.493 --> 02:55.477
+This is going to be important in one while.
+
+02:55.497 --> 03:00.723
+So these are global and these are local crops of the same image.
+
+03:02.065 --> 03:02.706
+So
+
+03:04.053 --> 03:08.061
+they exactly and keep that in mind.
+
+03:08.702 --> 03:12.610
+And now we have to understand what's up with this student and this teacher.
+
+03:12.670 --> 03:17.640
+So what we ideally want to do is we want to have
+
+03:19.645 --> 03:22.249
+two different augmentations of the same image.
+
+03:22.269 --> 03:27.679
+So here you have an image and you can see we make two different versions of that image.
+
+03:28.119 --> 03:35.592
+Now this could be two different crops and then we apply two different color jitters, we apply two different random rotations and so on.
+
+03:35.632 --> 03:39.679
+We just want two different versions of the same image.
+
+03:39.659 --> 03:48.293
+And our goal finally is going to be here, you can see the loss is that the representation we get out of it is the same.
+
+03:48.414 --> 03:57.449
+So we teach the network that look, these two things, they might look different, you know, but they are, in fact, the same.
+
+03:58.310 --> 04:05.903
+They are, you know, from their crops, differently augmented, differently cropped, but from the same image.
+
+04:05.883 --> 04:10.037
+So the easiest thing would be to just pass the two through
+

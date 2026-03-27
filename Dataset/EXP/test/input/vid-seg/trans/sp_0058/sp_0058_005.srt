@@ -1,0 +1,564 @@
+1
+00:00:00,031 --> 00:00:04,864
+So this is all sort of the build up.
+
+2
+00:00:04,884 --> 00:00:11,421
+So we've built up that we can't deal with world states like in classic games, we need to deal with info states.
+
+3
+00:00:11,923 --> 00:00:12,644
+Okay.
+
+4
+00:00:12,665 --> 00:00:15,492
+And now
+
+5
+00:00:16,096 --> 00:00:24,089
+with info states, we have a problem, namely, we can't use the alpha zero algorithm again, because it will result in the thing on the right.
+
+6
+00:00:24,569 --> 00:00:37,530
+Okay, because if we simply ask our value estimator, our value estimator, even if it's perfect, it won't lead us to the correct strategy, because the value estimator here
+
+7
+00:00:37,510 --> 00:00:51,165
+is the wrong tool, if we don't know all of the information, because of this fact that the value of a node doesn't only depend on the downstream actions, but also depends on the upstream strategies.
+
+8
+00:00:52,546 --> 00:00:55,750
+Okay, so in an info state, we can't distinguish where we are.
+
+9
+00:00:55,790 --> 00:01:01,476
+And that means our value estimations are going to be rather
+
+10
+00:01:01,456 --> 00:01:04,546
+useless if we just apply this algorithm straightforward.
+
+11
+00:01:04,947 --> 00:01:13,474
+So we need a way to transform a game where we don't know everything to a game where we do know everything.
+
+12
+00:01:13,589 --> 00:01:17,676
+It sounds a bit weird, but that's exactly what we're going to do right here.
+
+13
+00:01:18,237 --> 00:01:21,944
+So we're going to go from world states to public belief states.
+
+14
+00:01:23,066 --> 00:01:29,878
+And the world states are sort of what we would like to have, but don't know.
+
+15
+00:01:30,319 --> 00:01:35,749
+The public belief states, those are going to be things that
+
+16
+00:01:35,729 --> 00:01:37,391
+everyone knows.
+
+17
+00:01:37,872 --> 00:01:48,487
+So if we go from world states to public belief states we're going to be in a situation again where everyone knows everything and therefore it is a perfect information game.
+
+18
+00:01:48,607 --> 00:01:58,341
+It's going to be a different game but if we find the solution to this different game we're going to end up with the solution to this to the original game.
+
+19
+00:02:00,064 --> 00:02:03,428
+For that they ask you to imagine the following game.
+
+20
+00:02:03,689 --> 00:02:05,331
+Consider a game
+
+21
+00:02:05,446 --> 00:02:09,772
+in which one of 52 cards is privately dealt to each player.
+
+22
+00:02:10,753 --> 00:02:14,679
+Okay, so you get a card, your opponent gets a card.
+
+23
+00:02:15,700 --> 00:02:16,161
+One card.
+
+24
+00:02:16,501 --> 00:02:25,834
+By the way, 52 for those of you maybe in different parts of the world, that's the number of cards in a standard card deck for like poker and blackjack and so on.
+
+25
+00:02:25,814 --> 00:02:41,848
+I know different countries have different things like in Switzerland, you'll very often find 36 cards to a deck, but just that's why because 52 appears like a bit of a weird number in any case so
+
+26
+00:02:41,828 --> 00:02:46,393
+On each turn, a player chooses between three actions.
+
+27
+00:02:46,753 --> 00:02:48,615
+Fold, call, or raise.
+
+28
+00:02:49,075 --> 00:02:51,578
+So these are the sort of standard poker actions.
+
+29
+00:02:51,598 --> 00:03:00,367
+You can either throw away your card if you don't like it, you can match the bet of your opponent, or you can put in some money or some more money yourself.
+
+30
+00:03:00,827 --> 00:03:06,573
+And at the end, I'm going to guess, yeah, here, eventually the game ends and players receive a reward.
+
+31
+00:03:06,773 --> 00:03:11,498
+So let's say whoever has the higher card wins all the money in the middle.
+
+32
+00:03:12,389 --> 00:03:17,758
+Now consider a modification of this game in which the players cannot see their private cards.
+
+33
+00:03:19,601 --> 00:03:23,107
+Instead, their cards are seen by a referee.
+
+34
+00:03:24,068 --> 00:03:32,001
+On the player's turn, they announce the probability they would take each action with each possible private card.
+
+35
+00:03:32,352 --> 00:03:42,885
+The referee then samples an action and the player on the player's behalf from the announced probability distribution for the player's true private card.
+
+36
+00:03:43,709 --> 00:03:45,372
+This is this is weird.
+
+37
+00:03:45,833 --> 00:03:49,881
+So usually you'd look at your card like I have an ace.
+
+38
+00:03:50,222 --> 00:03:50,522
+Okay.
+
+39
+00:03:51,204 --> 00:03:55,632
+And then you come up with a with a sort of strategy.
+
+40
+00:03:55,672 --> 00:03:57,496
+You come up with a policy.
+
+41
+00:03:58,037 --> 00:04:02,305
+You want to say I'm going to raise with probability.
+
+42
+00:04:02,766 --> 00:04:03,508
+Ace is pretty good.
+
+43
+00:04:03,528 --> 00:04:06,173
+So I'm going to raise with probability 0.7.
+
+44
+00:04:06,153 --> 00:04:13,363
+I'm going to call with a probability of 0.2 and I'm going to fold with a probability of 0.1.
+
+45
+00:04:14,104 --> 00:04:20,733
+So this here, this would be an appropriate policy, let's say for getting an ace at the beginning, right?
+
+46
+00:04:21,174 --> 00:04:27,823
+Maybe this goes back and forth a bit and you might change because you might change your belief, you don't know what your opponent has.
+
+47
+00:04:28,310 --> 00:04:30,995
+Now the game changes.
+
+48
+00:04:31,496 --> 00:04:37,889
+Namely, the game is going to be your opponent gets a card and you get a card and you don't get to look at even your card.
+
+49
+00:04:38,390 --> 00:04:41,296
+So now you don't know your opponent's card and you don't know your card.
+
+50
+00:04:41,797 --> 00:04:48,951
+But what you can do is you can announce to the referee, you can say okay referee,
+
+51
+00:04:48,931 --> 00:04:51,094
+I am going to do this.
+
+52
+00:04:51,795 --> 00:04:59,766
+If I have an ace, I'm going to raise with 0.7, call with 0.2, and fold with 0.1.
+
+53
+00:05:00,647 --> 00:05:04,412
+If I have a king, I'm going to... Okay, I need a bit more space.
+
+54
+00:05:04,672 --> 00:05:14,245
+If I have a king, I'm going to raise with 0.6, I'm going to call with 0.3, and I'm going to fold with 0.1.
+
+55
+00:05:14,606 --> 00:05:17,149
+And so on until if I have a two,
+
+56
+00:05:17,129 --> 00:05:24,465
+I'm going to raise with probability zero, I'm going to call with probability point one, I'm going to fold almost all of it.
+
+57
+00:05:25,126 --> 00:05:31,560
+Okay, so you get to announce your entire strategy to the referee.
+
+58
+00:05:31,844 --> 00:05:54,510
+the referee who is a super user or God or choose your favorite deity, sees everything, sees all the cards, the referee will take this entire table that you give it as input, it will go look at your card
+
+59
+00:05:54,490 --> 00:06:06,205
+it will see, ah, it's a king or it's an ace and it will then choose the appropriate subtable here for you and then it will sample an action from that.
+
+60
+00:06:06,606 --> 00:06:17,981
+So instead of you looking and just producing this table, you produce all the tables for all the things that you could have and then the referee does the same thing for you, okay?
+
+61
+00:06:18,001 --> 00:06:19,603
+And so does your opponent.
+
+62
+00:06:19,803 --> 00:06:20,905
+And you simply do this.
+
+63
+00:06:21,345 --> 00:06:24,790
+So now you see it's a bit of a different game.
+
+64
+00:06:24,810 --> 00:06:27,794
+The, the, namely the actions are different.
+
+65
+00:06:27,974 --> 00:06:37,387
+So the action is no longer that you produce or sort of policy is no longer, you simply look at what you have and you determine the probabilities.
+
+66
+00:06:37,467 --> 00:06:43,395
+Now the policy is you spout out this table for all the things you could have.
+
+67
+00:06:43,555 --> 00:06:48,342
+And in each case for all the things you could do, the important thing is,
+
+68
+00:06:49,553 --> 00:06:59,488
+So they say, okay, at when the game starts, each player's belief distribution about their private card is uniform random, and also about the opponent's private card, right?
+
+69
+00:06:59,869 --> 00:07:08,001
+However, after each action by their referee, players can update their belief distribution about which card they are holding via base rule.
+
+70
+00:07:07,981 --> 00:07:13,888
+Likewise, players can update their belief distribution about the opponent's private card through the same operation.
+
+71
+00:07:14,589 --> 00:07:19,215
+So it's important to note that this already happened before.
+
+72
+00:07:19,635 --> 00:07:28,967
+So even in the original game, you would update your belief about the opponent's private card according to Bayes' rule or whatever rule you want.
+
+73
+00:07:29,027 --> 00:07:33,212
+You simply try to infer what they have.
+
+74
+00:07:33,192 --> 00:07:41,051
+Now the difference is you also have to infer what you have depending on what actions the referee does.
+
+75
+00:07:41,071 --> 00:07:50,695
+So you sort of treat yourself like a player, like a different player, like an opponent player that you don't know the private cards of.
+
+76
+00:07:52,801 --> 00:08:00,691
+Thus, the probability that each player is holding each private card is common knowledge among all players at all times in this game.
+
+77
+00:08:01,512 --> 00:08:04,596
+So that makes it such that you don't know your opponent's card.
+
+78
+00:08:04,616 --> 00:08:05,497
+You don't know your card.
+
+79
+00:08:05,517 --> 00:08:09,442
+You have to use sort of the same algorithm to determine what everyone has.
+
+80
+00:08:09,942 --> 00:08:13,327
+So that means that all the knowledge is shared.
+
+81
+00:08:13,607 --> 00:08:14,488
+Like...
+
+82
+00:08:14,468 --> 00:08:19,601
+No one knows the true private cards, but everyone knows the same things.
+
+83
+00:08:20,363 --> 00:08:23,531
+So if no one knows, then everyone knows the same.
+
+84
+00:08:23,972 --> 00:08:27,682
+It's a bit like probability socialism.
+
+85
+00:08:28,283 --> 00:08:30,469
+No one has anything, everyone's equal.
+
+86
+00:08:31,462 --> 00:08:34,086
+Sorry, that was a slight right there.
+
+87
+00:08:35,128 --> 00:08:42,861
+So the important thing, they say, the critical insight is that these two games are strategically identical.
+
+88
+00:08:43,963 --> 00:08:49,352
+And that's very surprising, but if you think a bit about it, it becomes clear that
+
+89
+00:08:49,332 --> 00:08:52,478
+Your strategy up here is the same as down here.
+
+90
+00:08:52,518 --> 00:09:00,132
+You simply don't fully announce it every time explicitly, but we said anyway that policies are public.
+
+91
+00:09:00,653 --> 00:09:04,160
+Therefore, this game here is equivalent to this game.
+
+92
+00:09:04,320 --> 00:09:05,803
+These are the same games.
+
+93
+00:09:07,647 --> 00:09:12,015
+But the latter contains no private information.
+
+94
+00:09:13,632 --> 00:09:18,858
+and is instead a continuous state and action space perfect information game.
+
+95
+00:09:20,100 --> 00:09:36,079
+While players do not announce their action probabilities for each possible card in the first game, we assume that all players policies are common knowledge and therefore the probability that a player would choose each action for each possible card is indeed known by all players.
+
+96
+00:09:38,472 --> 00:09:45,240
+And this, you can even lift the restriction that you know or don't know the opponent's strategy.
+
+97
+00:09:45,280 --> 00:09:50,806
+So you don't actually need to know it, but we'll simply assume that everyone knows everyone's strategy.
+
+98
+00:09:50,906 --> 00:09:54,711
+They just don't know their private cards.
+
+99
+00:09:55,712 --> 00:10:01,138
+So this is a new game that we've constructed where
+
+100
+00:10:02,165 --> 00:10:03,609
+It's a bit different, right?
+
+101
+00:10:03,729 --> 00:10:06,014
+There are different states and different actions.
+
+102
+00:10:06,155 --> 00:10:10,185
+So the states that we deal with in this game, let's quickly analyze this.
+
+103
+00:10:10,425 --> 00:10:15,297
+So we have state and action.
+
+104
+00:10:15,530 --> 00:10:20,157
+in the in game one, the state is an info state.
+
+105
+00:10:20,478 --> 00:10:21,700
+So this is an info state.
+
+106
+00:10:22,301 --> 00:10:26,648
+And the action is going to be a probability distribution over actions.
+
+107
+00:10:26,788 --> 00:10:28,731
+So P of each of the actions.
+
+108
+00:10:29,893 --> 00:10:34,060
+In this game down here, we have different states and different actions.
+
+109
+00:10:34,160 --> 00:10:36,183
+Now the states we're going to get to in a minute.
+
+110
+00:10:36,504 --> 00:10:37,365
+But what's the action?
+
+111
+00:10:37,385 --> 00:10:41,031
+The action is to send a table of
+
+112
+00:10:41,011 --> 00:10:47,706
+all these probability distributions in each case, like in case I have this, in case I have this, in case I have this.
+
+113
+00:10:48,308 --> 00:10:50,032
+So that's going to be the action.
+
+114
+00:10:50,052 --> 00:10:53,640
+The action is going to be to send this entire table to the referee.
+
+115
+00:10:54,963 --> 00:10:56,607
+Now, what are the states?
+
+116
+00:10:57,278 --> 00:10:58,620
+This is this next section.
+
+117
+00:10:59,080 --> 00:11:07,211
+We refer to the first game as the discrete representation, that's the top game, and the second game as the belief representation.
+
+118
+00:11:07,892 --> 00:11:24,535
+In the example above, a history in the belief representation, which we refer to as a public belief state, is described by a sequence of public observations and 104 probabilities, the probability that each player holds each of the 52 possible private cards.
+
+119
+00:11:24,515 --> 00:11:26,157
+Okay.
+
+120
+00:11:26,358 --> 00:11:27,960
+So this is going to be the state.
+
+121
+00:11:28,020 --> 00:11:30,203
+It's going to be called a public belief state.
+
+122
+00:11:30,864 --> 00:11:36,211
+And it's described by the sequence of public observations and 104 probabilities.
+
+123
+00:11:36,632 --> 00:11:47,507
+So the probabilities that probability that you have an ace, you have a king, you have a queen, and so on, like the distribution over your cards and this distribution of your opponent's cards.
+
+124
+00:11:47,868 --> 00:11:49,290
+So it's simply the info.
+
+125
+00:11:49,550 --> 00:11:51,653
+It's like an info state.
+
+126
+00:11:51,869 --> 00:11:54,633
+of someone that just observes the game.
+
+127
+00:11:55,214 --> 00:11:59,801
+That is going to be the public belief state.
+
+128
+00:12:00,743 --> 00:12:09,777
+Likewise, an action is described by 156 probabilities, one per discrete action per private card.
+
+129
+00:12:10,550 --> 00:12:16,176
+In general terms, the PBS is described by a joint probability distribution over the agent's possible info states.
+
+130
+00:12:16,757 --> 00:12:20,301
+You see, it's a distribution over info states.
+
+131
+00:12:21,121 --> 00:12:31,633
+So the state is a distribution for each info state, or they also call this a public belief state.
+
+132
+00:12:33,495 --> 00:12:38,160
+So now we've gone from a game
+
+133
+00:12:38,360 --> 00:12:43,225
+that is imperfect information to a game that is perfect information.
+
+134
+00:12:43,325 --> 00:12:43,565
+Okay.
+
+135
+00:12:43,806 --> 00:12:49,512
+This is, this is, this has unknowns, like many, like, oh, this is different for each player.
+
+136
+00:12:50,012 --> 00:12:52,675
+But here, all the information is known.
+
+137
+00:12:53,155 --> 00:12:54,617
+And these two games are equivalent.
+
+138
+00:12:55,218 --> 00:12:57,480
+It's just that you can see already the problem.
+
+139
+00:12:57,900 --> 00:13:05,228
+Like the states are way bigger because it's a distribution over each state that could be.
+
+140
+00:13:05,208 --> 00:13:07,361
+And the actions are also way bigger.
+
+141
+00:13:07,522 --> 00:13:15,049
+Namely, it's one policy for each state that you could be in.
+

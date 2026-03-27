@@ -1,0 +1,208 @@
+1
+00:00:01,010 --> 00:00:01,711
+Hello there.
+
+2
+00:00:02,111 --> 00:00:04,074
+I hope you have all seen this.
+
+3
+00:00:04,174 --> 00:00:07,438
+This is a new system by Facebook AI.
+
+4
+00:00:07,878 --> 00:00:14,426
+And what you're seeing here is a visualization of the attention maps of that neural network.
+
+5
+00:00:14,446 --> 00:00:16,589
+In the middle is a supervised baseline.
+
+6
+00:00:17,009 --> 00:00:20,213
+And on the right is this new system called dyno.
+
+7
+00:00:20,634 --> 00:00:27,642
+It's not as much a system as it is a methodology for unsupervised pre-training
+
+8
+00:00:27,622 --> 00:00:55,536
+visual transformers and you can see that the system has neither been trained to learn what a dog is nor has it been trained to do any sort of segmentation yet if you look at the attention maps it clearly can track objects it knows what to pay attention to in the images and it can do much more than that so here you can see that it can sort of track
+
+9
+00:00:55,516 --> 00:01:10,538
+objects behind occlusion, so the ship goes behind the waves, the horse goes behind the grass, and you can see in the attention map that this is well reflected.
+
+10
+00:01:10,518 --> 00:01:12,521
+You can do more than that, though, even.
+
+11
+00:01:12,901 --> 00:01:29,826
+So if you use this feature representation that this model gives you for ImageNet, then as the model gets trained and you represent ImageNet in its feature space, it will cluster the
+
+12
+00:01:29,806 --> 00:01:57,197
+Same the images of the same class will cluster them together, which is already pretty cool because it has no labels at training time, but also it will cluster similar classes with each other, which you know speaks to the it kind of speaks to the fact that this might be the next step in unsupervised representation learning for images and
+
+13
+00:01:57,177 --> 00:02:10,718
+Specifically, it appears that the features that come out of a network that is trained with dyno are extremely valuable for the kinds of things we, you know, we are interested in when working with natural images.
+
+14
+00:02:11,239 --> 00:02:14,764
+So this is image retrieval.
+
+15
+00:02:14,744 --> 00:02:16,727
+and classification.
+
+16
+00:02:17,348 --> 00:02:20,754
+So this system, let's just switch over to the paper right here.
+
+17
+00:02:21,215 --> 00:02:25,822
+The paper is called Emerging Properties in Self-Supervised Vision Transformers.
+
+18
+00:02:25,962 --> 00:02:28,026
+It presents a system called Dino.
+
+19
+00:02:28,507 --> 00:02:41,528
+It's by Mathilde Caron, Hugo Touvrand, Ishan Misra, Hervé Gégo, Julia Mayral, Piotr Boyanovsky, and Armo Joulin of Facebook Air Research, India, and Sorbonne University.
+
+20
+00:02:41,508 --> 00:02:50,500
+You can see a bit more here in these pictures, where again, this is the self-attention.
+
+21
+00:02:50,580 --> 00:02:59,753
+So the attention map from a vision transformer that was trained with dyno and no supervision.
+
+22
+00:02:59,733 --> 00:03:00,194
+Okay.
+
+23
+00:03:00,735 --> 00:03:13,400
+And you can clearly see that in all the cases, the attention falls on what you would consider as a human, the relevant things in the image.
+
+24
+00:03:13,440 --> 00:03:20,273
+Now, I have my hypotheses, why this is the case, like completely without labels, and we'll see about that.
+
+25
+00:03:20,253 --> 00:03:26,162
+But the representations that come out of the systems are really useful.
+
+26
+00:03:26,283 --> 00:03:34,656
+For example, you can fine tune linear classifiers on top of these representations and that gives you really good image classifiers.
+
+27
+00:03:34,816 --> 00:03:36,018
+They do that with ImageNet.
+
+28
+00:03:36,459 --> 00:03:43,290
+You can use these for image retrieval because similar images are clustered together.
+
+29
+00:03:43,270 --> 00:03:50,499
+use even do zero shot classification simply by doing a k nearest neighbor classifier in that feature space.
+
+30
+00:03:51,180 --> 00:03:58,669
+And yeah, here you can also do some sort of proto image segmentation by looking at the attention maps.
+
+31
+00:03:58,689 --> 00:04:02,653
+You don't even have to do something special to visualize this like you have to do in CNNs.
+
+32
+00:04:03,174 --> 00:04:10,543
+The attention map directly gives you the sort of segmentation map or something pretty close to it.
+
+33
+00:04:11,283 --> 00:04:27,598
+As an overview, the system dyno is simply a, they push the self-supervised learning and they specifically make the case that self-supervised and visual transformer, they go together really well.
+
+34
+00:04:28,258 --> 00:04:33,503
+And they, as I said, the dyno is called self distillation with no labels.
+
+35
+00:04:33,783 --> 00:04:36,185
+So that is dyno.
+
+36
+00:04:37,006 --> 00:04:41,290
+And yeah, they push various kind of,
+
+37
+00:04:41,270 --> 00:04:59,413
+metrics in in self supervised systems or, you know, then linear classifier trained on top of them, for example, 80.1% top one on ImageNet in linear evaluation with the with a visual transformer base.
+
+38
+00:04:59,393 --> 00:05:03,780
+A quick overview over the system is right here.
+
+39
+00:05:03,840 --> 00:05:10,890
+So two things they say are important next to all the other self-supervised systems.
+
+40
+00:05:11,291 --> 00:05:15,076
+First of all, they have a kind of student teacher.
+
+41
+00:05:15,116 --> 00:05:17,139
+That's the self-distillation part.
+
+42
+00:05:18,021 --> 00:05:27,595
+The teacher is a momentum teacher, and it does this centering, and it also does sharpening in the softmax right here.
+
+43
+00:05:27,575 --> 00:05:31,040
+And then there is no contrastive learning.
+
+44
+00:05:31,080 --> 00:05:41,553
+There's no negative samples that the sharpening and the centering sort of take care of keeping the model from mode collapse or from collapsing.
+
+45
+00:05:42,014 --> 00:05:43,115
+Also, there's no batch norm.
+
+46
+00:05:43,536 --> 00:05:52,688
+So if those things don't don't mean anything to you, maybe stay tuned, we'll we'll discuss them in a bit more detail as we go through the paper.
+
+47
+00:05:52,668 --> 00:06:05,128
+If you like paper summaries like this and other content, for example, our cooking video, feel free to share this out and tell your friends about it.
+
+48
+00:06:05,228 --> 00:06:07,252
+By the way, the cooking video did terribly.
+
+49
+00:06:07,492 --> 00:06:08,113
+I don't know why.
+
+50
+00:06:09,575 --> 00:06:14,603
+I guess my YouTuber skills are just not on par.
+
+51
+00:06:15,284 --> 00:06:16,587
+But yeah, I don't know.
+
+52
+00:06:17,949 --> 00:06:19,992
+Yeah, if anyone has any ideas.
+

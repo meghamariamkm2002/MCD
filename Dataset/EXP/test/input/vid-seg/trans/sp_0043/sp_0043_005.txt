@@ -1,0 +1,39 @@
+Okay.
+So how do they do it?
+Via what they call trajectory, via regularization of trajectory optimization.
+So in essence, what do we want to regularize here?
+There are many things we could do to solve this, but the way this paper goes is they say we not only do we want the most return, we also
+want a high log probability of our taken path.
+So this here, as you can see, this is observation action and so on, observation action.
+So this is the future.
+This right here is the future.
+So this, this sequence here is going, is what is going to give me the reward right here.
+Right.
+So G is also dependent on these things, but it's not said explicitly here.
+So G is dependent on your plan or maybe let's not call this the future.
+This is the plan.
+Okay.
+This is the plan you came up with.
+So this is directly going to influence G and G is the reward you're going to get under your model.
+But also you want the log probability of the plan itself to be high.
+Now there, I think there is a bit, there is something missing here and that is conditioned on your training distribution right here.
+And I think that's a actually a rather crucial part.
+No, that's, that's the KL thing.
+So this is conditioned on your training.
+So what you want is you want the plan to be basically in your training distribution.
+So you want your plan that you're going to execute if that is actually part of your training data set.
+then you know I have already executed this once before and it's reasonable to assume that therefore my world model has learned from this experience and is going to give me an accurate reward.
+If we go back to our rooms example then
+up here somewhere.
+If we go back to our room's example, you see that anywhere in the green area where I have already explored, the world model is fairly good.
+It's going to give me accurate reflection of the world, but as soon as I go outside the green area, it is not.
+And inside the green area is basically where my training data is.
+Now, if I in the future actually take a path here, crash into a wall right here, right?
+You saw in the algorithm, at the end of an episode, I'm going to add my trajectory to the training data for the world model.
+So this green part here expands to include that.
+And now, if I go here again,
+If my plan goes there again, now I can trust the world model, but also now it has, it is actually correct because it has a wall here.
+So you see that the regularization basically, not only do I want the biggest reward possible under my world model, I also want that the plan that I'm about to execute is, has a high probability under my training distribution.
+Okay.
+And the way we do this is by denoising auto-encoders.
+So I want the log probability here to be high and you do this via a denoising autoencoder.

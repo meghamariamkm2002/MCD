@@ -1,0 +1,39 @@
+start	end	text
+31	4276	or synthetic PetriDitch is a way to combine the two together.
+4316	14749	It says, can we take the building plan here, but actually run on the data, on data to predict the performance.
+14769	26663	So what they're saying is basically, if I have this cell right here, and usually this cell, you know, it deals with vectors of let's say size 512 and so on.
+26643	44955	it will say it since this is let me draw it again up here so here you have the cell and here you have somehow the connections in there when you carry and the input and the input here okay and this is the output or the carry
+44935	66538	I have 512 embedding like size of this so this is a giant cell there's 512 the vector has 512 dimensions going in basically can't I take the exact same thing but and keep the connection pattern so I would keep the entire pattern of connection right here but I only do it for
+66518	71692	1 or 2, so this is 512 and this is just 2.
+71713	81540	I just reduce the dimensionality, but I sort of keep the connection pattern alive.
+81520	85350	If I only do that, I have like a very small network right now.
+85971	92608	And the same goes for if this is so a lot of times these RNNs, they have multiple layers of these things.
+92628	98483	So they have another exactly equal box up here, and then another up here.
+98463	100767	I can just reduce this to one layer.
+101308	116818	And out of the regularity of these neural network things, it is known that, or one can make the assumption that the performance on this thing will sort of kind of be correlated to the performance of the entire thing.
+117239	121247	And that's one of the things that this Petri dish paper does.
+122577	128971	So we try to take out what we are trying to search over, namely the connection pattern.
+129312	135205	We keep that as it is up here, but we reduce everything else.
+135366	138793	We reduce the dimensionality, we reduce the number of layers and so on.
+138813	141379	Now they don't actually reduce the number of layers here.
+141359	144327	But you can reduce the number of units and so on.
+144387	144668	Okay.
+145210	156381	So this, in essence, this works whenever you can do that, whenever you can keep the structure you're searching over, but can reduce the rest.
+156361	158403	So that's one precondition.
+158423	159564	It doesn't work for everything.
+160625	168013	The second part here is that you don't want to use this particular training data and then this particular validation data.
+168293	170516	Because first of all, it's a lot of training data.
+171036	175361	And second of all, it won't give you that good of a prediction.
+175441	186132	Instead of what you're trying to do, and this is the second part of the idea of PetriDish, is you're trying to abstract the training data.
+186112	209250	to get you a very small data set, such that and the validation data as well, such that if you train on this data and evaluate on this data, the performance that you get will be very predictive of the performance had you trained the big model on the big data set.
+209230	218606	In fact, in this Petri dish paper, these little data sets, they have nothing to do with the original train and validation data.
+219327	221731	I think that's one of the cool things here.
+222613	226159	These things, this training data and this validation data,
+226139	229384	They are optimized as well by the procedure.
+229664	234131	They're optimized special data points that are trained.
+234211	248873	These are trained parameters such that if you train on the training, on the small training data and evaluate on the small eval data, you will be able to predict this performance back here with high accuracy.
+248853	264465	And this I think is where previous approaches have or might have failed because it's, you know, the idea of scaling down your network in order to do the architecture search is probably has appeared to many people before that's not, you know,
+264445	269633	really genius idea, but probably they have all found that now we can't really do it.
+269693	271956	It doesn't really give us accurate enough numbers.
+272297	291685	But in this case, the addition of adding these synthetic data sets that are much smaller, but can still, if you train and evaluate on them, can still predict with high accuracy the full score of the full model that I think makes this idea work.
+291665	299582	Alright, so I guess we're already through the idea and problem setting and everything without actually reading the paper.

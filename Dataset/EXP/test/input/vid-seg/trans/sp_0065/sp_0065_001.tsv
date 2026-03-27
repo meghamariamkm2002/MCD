@@ -1,0 +1,17 @@
+start	end	text
+1820	17927	In this work, we take on the challenging task of learning to synthesize speech from normalized text or phonemes in an end-to-end manner, resulting in models which operate directly on character or phoneme input sequences and produce raw speech audio outputs.
+17947	19650	Okay, that wasn't the real model.
+19710	21413	I just thought it sounded really funny.
+22435	27844	This is a text-to-speech model, and it actually sounds like this.
+29090	42745	In this work, we take on the challenging task of learning to synthesize speech from normalized text or phonemes in an end-to-end manner, resulting in models which operate directly on character or phoneme input sequences and produce raw speech audio outputs.
+45475	46416	Okay.
+46436	54408	Now, you've probably, if you have listened to the text and not just how the text sounds, you have gotten what this paper is about.
+54749	69711	So the paper is called End to End Adversarial Text to Speech by Jeff Donoway, Sander Diehlmann, Mikolaj Binkowski, Eric Elson, and Karen Simonian of, I believe, of mostly deep mind.
+71159	83830	And this paper on a high level, it produces speech, so sound, the sound waves of speech directly from text or from what they call normalized text or phoneme text.
+84191	88455	And it does so without any intermediate supervised representations.
+89095	91798	And that's a challenging task.
+91818	101166	And the main problems here are the alignment problem that they have to solve and actually making, making this work in an adversarial manner.
+101146	103813	So, we're going to look at this paper.
+104094	109127	As always, if you like work like this, consider subscribing and sharing it out.
+109328	112256	And if you have any comments, leave them in the comment section.
+113078	115003	Okay, so what's the problem with text

@@ -1,0 +1,6 @@
+In this paper, we focus on online convex optimization, which is a two-round game.
+In each round, the learner summates a decision, and at the same time, the environments decide a convex loss function.
+Later, the learner suffers loss of a decision and receives some feedback.
+We choose regret as a performance measure, which is the excess cumulative loss against the best-fixed comparator.
+Recent study is considered two levels of adaptivity.
+At a higher level, the algorithm is required to be adaptive to unknown function curvature, and at a lower level, the algorithm is required to be adaptive to unknown environmental messiness.

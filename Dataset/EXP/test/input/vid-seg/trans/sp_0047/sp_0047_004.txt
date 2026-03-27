@@ -1,0 +1,25 @@
+that we have such large vocabularies.
+So the first idea here is hierarchical softmax.
+And this is kind of a tangent.
+I find this paper, by the way, it's sort of hard to read because it's like a half engineering paper.
+But yeah, so first they introduced this hierarchical softmax, which is kind of a distraction.
+It's kind of a, here is what we do, here is what we considered first, but then didn't end up using really, they do compare with it, but
+The flow of text is sort of that you expect this to be part of the final model, which it isn't.
+So in the hierarchical softmax, what you do instead of having this giant multi-class classification task right here, you take all of these classes right here and you put them in a sort of a tree.
+So you take this and you put them into a tree.
+So instead of classifying, you know, let's say we have a thousand classes, instead of classifying a thousand ways, we first classify in two ways.
+And then we classify in two ways again, from each one.
+And then we classify in two ways again, as you know, a thousand is like two to the 10.
+So
+We need approximately 10 layers of this before we are actually arriving at a thousand classes, but it also means that we only have two-way classifications each time.
+So in the hierarchical softmax, we build trees like this, and then we have a word, we look up its vector, sorry, its vector,
+And then we classify it for each of these nodes.
+So your output isn't going to be a thousand, um, a thousand log probabilities.
+Your output is going to be a log probability, a binary log probability for each of the nodes right here.
+So you want to know, okay, here is it in the upper half or the lower half of my classes?
+Okay, cool.
+It's in the upper half.
+okay here is in the upper half or the lower half and so on and you learn all to predict all of these junctions right here and that's going to end up you with you having to predict less now of course you are constrained you impose a very big prior on the class distribution classes aren't independently anymore.
+Namely, if two classes here are in the same subtree, that means that their predictions are going to be correlated because the path to them is the same partially.
+How you arrange the classes here is very important, and there has been a lot of work in this, but as I said, this is rather a distraction right here.
+Hierarchical Softmax is a way to solve this, however, they went with a different way right here.

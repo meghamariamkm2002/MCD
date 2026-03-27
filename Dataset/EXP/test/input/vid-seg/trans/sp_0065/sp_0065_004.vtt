@@ -1,0 +1,62 @@
+WEBVTT
+
+00:00.031 --> 00:06.778
+And it is end-to-end in the sense that usually what these pipelines do is they take the text.
+
+00:07.558 --> 00:12.623
+And we've looked at this, for example, in the video about this Facebook's text-to-speech system.
+
+00:12.963 --> 00:29.059
+So they take the text and the first thing they do is they would produce a set of whatever they would call features, like textual features, call it textual features.
+
+00:31.250 --> 00:36.536
+So these are sort of intermediate features for the text to be produced.
+
+00:36.877 --> 00:42.544
+And then another model would take these and it would produce something like spectrograms.
+
+00:44.045 --> 00:46.048
+Spectrograms.
+
+00:46.629 --> 00:53.697
+And then another model would take the spectrograms and finally produce sound or speech.
+
+00:53.677 --> 01:10.639
+So you have usually in these systems you have intermediate representation and each of these models right here can be trained by itself so that's an advantage that you can train for example you can train a model that goes from a spectrogram to a sound wave by itself.
+
+01:10.619 --> 01:13.423
+And you simply need sound for that.
+
+01:13.483 --> 01:16.928
+The computation from sound to spectrogram is super easy.
+
+01:17.769 --> 01:19.832
+So you can generate your own training data.
+
+01:20.053 --> 01:22.416
+So you can go from spectrogram to sound.
+
+01:22.696 --> 01:24.178
+You can train a model like this.
+
+01:24.639 --> 01:32.290
+So in these pipelines, usually there are multiple stages and each of these models has to be trained by itself.
+
+01:32.270 --> 01:34.855
+This paper tries to do this end to end.
+
+01:35.316 --> 01:41.750
+That means you input the text and you get out the sound wave.
+
+01:41.770 --> 01:53.154
+And there's nothing in between that the, I mean, of course there are latent representations, but you train it end to end in one go.
+
+01:53.996 --> 01:54.096
+Okay.
+
+01:54.437 --> 01:57.945
+So let's look at the different systems they employ.
+
+01:59.247 --> 02:00.049
+First of all,
+

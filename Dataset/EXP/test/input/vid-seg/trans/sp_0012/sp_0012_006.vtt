@@ -1,0 +1,275 @@
+WEBVTT
+
+00:00.031 --> 00:07.939
+So they do a bunch of other experiments and I appreciate these experiments here to really show what's going on and until when can you push this.
+
+00:09.581 --> 00:15.947
+So here they have a plot of example echoing before augmentation can reduce training time for ResNet 50 on ImageNet.
+
+00:15.967 --> 00:24.396
+So this is before augmentation and the echoing factor describes how often you repeat each data point.
+
+00:24.496 --> 00:26.798
+So this goes from two to five.
+
+00:26.778 --> 00:31.805
+And you can see that basically you get the speed up.
+
+00:32.165 --> 00:35.349
+You just sort of get it for free.
+
+00:35.570 --> 00:46.324
+As you can see, the dashed line again is as if a repeated data point were as useful as a fresh data point, you'd be at the dashed line.
+
+00:46.764 --> 00:51.250
+And you can see right here that you are just above this dashed line.
+
+00:51.230 --> 01:01.672
+So this can help a lot, and so this is the fresh examples read, and this is the wall time in their particular situation.
+
+01:02.714 --> 01:11.533
+In this case, it doesn't help as much, but again, if that very much depends on how the asymmetry in your pipeline is.
+
+01:11.513 --> 01:22.780
+Now, in these experiments, I would actually appreciate something like they do down here, where I would always like to see where it breaks.
+
+01:23.061 --> 01:28.854
+So how far can you go with the echoing factor until it doesn't help anymore?
+
+01:29.155 --> 01:29.556
+Because
+
+01:29.536 --> 01:49.435
+This sort of tells me pretty much nothing I want to see where is the low point where is kind of the optimal echoing factor and what can you tell me about this optimal echoing factor how can we determine it sort of beforehand or how can you reason how does it connect to the different parts of your architecture.
+
+01:49.415 --> 02:01.328
+So if I had to point out a flaw in this paper, it would be that right here I would expect them to continue this echoing factor increase until it breaks.
+
+02:01.989 --> 02:03.891
+Sort of like they do down here.
+
+02:03.911 --> 02:11.440
+I believe this is for the transformer on LM1B.
+
+02:11.800 --> 02:15.945
+Now here they have a batch size of 1024.
+
+02:15.925 --> 02:34.211
+And you can see, and this is their standard setting for the transformer, the 1024 batch size, you can see that the baseline uses this many 1.5 times 10 to the 7th fresh examples to train until their target.
+
+02:34.811 --> 02:44.565
+If you increase the echoing factor by 2, you basically need half as many fresh examples as long as you echo each one twice.
+
+02:44.545 --> 02:56.561
+Again, very surprising the fact how close you can get to the, as if each batch were a perfect fresh data point.
+
+02:58.904 --> 03:04.231
+But you can see as you increase this echoing factor, and here is exactly what I said, right?
+
+03:04.972 --> 03:06.494
+At some point, this hurts.
+
+03:06.554 --> 03:14.164
+At some point, you get to the point where the non-IIDness, the correlation of successive data points,
+
+03:14.144 --> 03:16.146
+will actually hurt you.
+
+03:16.846 --> 03:22.932
+And they make a point here of saying that this is, for example, dependent on batch size.
+
+03:24.193 --> 03:28.297
+Now, in this experiment over here, they have a larger batch size.
+
+03:28.877 --> 03:35.703
+And here is again, the baseline number of data points to reach the target.
+
+03:36.544 --> 03:38.486
+And you can see again, it goes down.
+
+03:39.447 --> 03:44.151
+But now with the echoing factor where before you had a
+
+03:44.131 --> 03:48.298
+You had an increase again, now it continues to decrease.
+
+03:48.719 --> 04:03.424
+Again, it will be interesting to see where it goes up here and how the number at the slowest, like here the four and here the, I don't know what it's gonna be, maybe the 16, how this will kind of depend on your batch size.
+
+04:04.226 --> 04:09.615
+And here is another problem, and that's what I alluded to at the beginning, this performance dependence.
+
+04:09.595 --> 04:24.398
+Now, I have not read anything differently in the paper, so I had to assume that they trained this here, this number of fresh examples to reach the target is still the target that they determined at the beginning.
+
+04:24.819 --> 04:27.203
+So it's that 3.9 in the table.
+
+04:27.644 --> 04:31.430
+That 3.9 was achieved with this batch size with 1024.
+
+04:31.490 --> 04:36.818
+And we know especially in language models that larger batch sizes
+
+04:36.798 --> 04:42.804
+will lead to a better performance even if you need, let's say, more samples.
+
+04:42.824 --> 04:50.792
+So here you can see that the samples, here it's 1.5 and here it's actually 4 because you increase that batch size.
+
+04:51.352 --> 04:53.495
+So that will tell you something.
+
+04:53.515 --> 05:02.063
+1.5 and 4, that is like a times, okay, that's like a times 2.5.
+
+05:02.043 --> 05:13.021
+So you go with the batch sizes of times four, and you need 2.5 more fresh training samples to reach the same target accuracy.
+
+05:13.561 --> 05:17.988
+First of all, we know that the larger batch sizes can reach higher target accuracies.
+
+05:18.369 --> 05:28.405
+So again, these results, the dependence of them on the actual performance to the maximum achievable value
+
+05:28.385 --> 05:36.457
+To me, that's kind of a shady world here to always, to always say, okay, how long does it take to reach that particular target?
+
+05:37.900 --> 05:46.413
+Because we know that this model right here can reach a much higher target, but we don't know this about these models here.
+
+05:46.954 --> 05:49.818
+What is their kind of performance in the limit?
+
+05:49.838 --> 05:54.926
+And they try to make these experiments, but I don't really believe them.
+
+05:55.587 --> 05:55.847
+Maybe.
+
+05:56.048 --> 05:56.248
+Yeah.
+
+05:57.933 --> 06:03.722
+And yeah, so in the second, right, that will be, that is already interesting.
+
+06:04.143 --> 06:10.593
+So this ratio right here, this 2.5 to four, this ratio must mean something, right?
+
+06:10.994 --> 06:22.692
+It's, I go to a higher batch size, four times higher batch size, and I need 2.5, many more fresh training samples to reach the same target.
+
+06:22.672 --> 06:30.382
+that must somehow tell you something about the usefulness of a single data point versus a succession of data points, right?
+
+06:30.703 --> 06:36.610
+So it doesn't seem because I would expect if each data point was valuable, I would expect this to be times four.
+
+06:37.772 --> 06:46.283
+And if it were, if it were times one, so if it were no, no speed up at all,
+
+06:47.883 --> 06:49.025
+Sorry, not times four.
+
+06:49.286 --> 06:50.769
+It would be times one.
+
+06:50.809 --> 06:54.878
+It would mean I'd need the same number of fresh training samples, right?
+
+06:54.938 --> 06:56.301
+No matter how I batch them.
+
+06:57.343 --> 06:58.405
+But it were times four.
+
+06:58.465 --> 07:08.406
+That means basically that it doesn't matter really how many training points I have in a batch as long as I have enough and that 1,024 seems to be enough.
+
+07:08.386 --> 07:12.899
+It just matters how many SGD steps I do.
+
+07:12.999 --> 07:17.371
+So basically what we're saying SGD isn't getting the most out of these data points.
+
+07:17.752 --> 07:23.408
+And this ratio, this 2.5, this tells you something about the information content of a
+
+07:23.388 --> 07:29.580
+of an additional data point versus the usefulness content of an additional step of SGD.
+
+07:29.920 --> 07:40.219
+And I would expect that to depend to intrinsically be connected to where the low point of this echoing factor is because that's exactly what the echoing does.
+
+07:40.259 --> 07:44.367
+It trades off freshness of data point versus
+
+07:44.347 --> 07:48.195
+doing more steps on the same information.
+
+07:49.438 --> 08:00.482
+And for a paper, especially a paper by Google Brain, this is a connection that I would love to see investigated.
+
+08:00.462 --> 08:02.826
+But enough of the ranting.
+
+08:03.206 --> 08:04.849
+They do investigate other things.
+
+08:05.090 --> 08:09.036
+They do investigate, for example, what happens if we just up the batch size.
+
+08:09.657 --> 08:12.061
+And you can see here, yeah, this is interesting.
+
+08:12.161 --> 08:15.847
+Even the baseline needs more fresh samples as you up the batch size.
+
+08:16.308 --> 08:23.820
+But, and at the beginning, this batch echoing, for example, doesn't help, doesn't hurt, but doesn't help.
+
+08:23.800 --> 08:30.530
+But as you go to higher and higher batch sizes, this batch echoing starts to help more and more.
+
+08:31.711 --> 08:37.299
+Again, I believe this is connected to the usefulness of the single date point.
+
+08:37.319 --> 08:41.285
+At some point, your batch size is just too large for the problem.
+
+08:41.305 --> 08:44.049
+You'd rather do more steps and that's why this helps.
+
+08:45.250 --> 08:48.475
+But also this model right here,
+
+08:48.455 --> 08:50.719
+might have a higher ceiling accuracy.
+
+08:51.080 --> 09:05.147
+So, and it is the question whether this model right here has the same or whether this model right here, the batch echoing model would actually fall back to the ceiling accuracy of one of these models over here.
+
+09:07.827 --> 09:22.234
+Yeah, in any case, their point is basically that as you increase the batch size, this echoing tends to help more relatively because maybe it's because what I said, right?
+
+09:22.254 --> 09:28.445
+They say as batch size increases, the performance of batch echoing relative to the baseline stays either stays the same or improves.
+
+09:29.026 --> 09:31.050
+While for example,
+
+09:31.030 --> 09:38.237
+echoing it either stays the same or it gets sorry, while for example, echoing it either stays the same or gets worse.
+
+09:39.718 --> 09:44.883
+dashed lines indicate the expected values if repeated examples were as useful as fresh examples.
+
+09:45.324 --> 09:55.093
+Yeah, so there's an intrinsic connection here between the usefulness of more data and usefulness of doing additional steps.
+
+09:55.514 --> 09:59.097
+And here the example echoing, you can almost see it as more data because
+
+09:59.077 --> 10:09.998
+especially here, you're going to do augmentation on top of it and you see the non-augmented versus the augmented ratio changes dramatically from here to here.
+

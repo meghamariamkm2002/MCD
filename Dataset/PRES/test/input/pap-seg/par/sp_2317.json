@@ -1,0 +1,368 @@
+[
+  {
+    "para_id": "p1",
+    "section_heading": "Abstract",
+    "text": "Transformers have surpassed RNNs in popularity due to their superior abilities in parallel training and long-term dependency modeling. Recently, there has been a renewed interest in using linear RNNs for efficient sequence modeling. These linear RNNs often employ gating mechanisms in the output of the linear recurrence layer while ignoring the significance of using forget gates within the recurrence. In this paper, we propose a gated linear RNN model dubbed Hierarchically Gated Recurrent Neural Network (HGRN), which includes forget gates that are lower bounded by a learnable value. The lower bound increases monotonically when moving up layers. This allows the upper layers to model long-term dependencies and the lower layers to model more local, short-term dependencies. Experiments on language modeling, image classification, and long-range arena benchmarks showcase the efficiency and effectiveness of our proposed model. The source code is available at https://github.com/OpenNLPLab/HGRN.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p2",
+    "section_heading": "1 Introduction",
+    "text": "Sequence modeling is a fundamental problem in various domains such as natural language processing [12, 43, 44, 61, 64], time series analysis [84], computer vision [3, 13, 45, 74], and audio processing [1, 18, 73]. Prior to the invention of Transformers [81], RNN and its variants were the primary selections of architectures for sequence modeling, and have been widely used in machine translation [6], stock price prediction [68], weather forecasting [65], speech recognition [51], and etc.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p3",
+    "section_heading": "1 Introduction",
+    "text": "RNNs have two main drawbacks: slow sequential training and limited capability in modeling longterm dependencies. With the swift development of deep learning and the pervasive use of GPUs, these drawbacks prevent it from flourishing in modern long-sequence modeling tasks. Meanwhile, Transformers [81] have rapidly gained popularity and now dominate various research areas in sequence modeling due to their better abilities in parallel training and long-term dependency modeling. However, Transformer\u2019s quadratic time complexity makes long sequence modeling expensive. On the other hand, RNN offers linear complexity and serves as an ideal choice for long sequence modeling. This works aim to addressing these RNN drawbacks, revitalizing their applicability in long-sequence modeling tasks.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p4",
+    "section_heading": "1 Introduction",
+    "text": "To address the training inefficiency problem, we turn to more efficient RNN variants that employ element-wise linear recurrence (ELR) relations [48]. ELR provides two main advantages: (i) By removing nonlinearities in the recurrence, it enables parallelized training. (ii) By assuming independence between distinct hidden states, it enables efficient hidden state updates (through element-wise product instead of matrix multiplication) [20, 40]. Notably, ELR has been used in many modern linear RNN models, including the diagonalized versions of structured state-space models [21] (S4) [20, 26, 71] and RWKV [55]. In recent advancements, numerous studies have incorporated",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p5",
+    "section_heading": "1 Introduction",
+    "text": "gating mechanisms into the outputs of linear recurrence layers [11, 46, 49, 55, 82], similar to the output gates in LSTMs and leading to considerable performance gains. However, most current studies overlook the significance of the forget gate, which is often regarded as the most important gate in LSTMs [19, 80]. In this work, we underscore the importance of employing forget gates in linear RNNs and adopt gated linear RNNs for both efficiency and high performance.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p6",
+    "section_heading": "1 Introduction",
+    "text": "To effectively capture long-term dependencies in gated RNNs, it is crucial to maintain high forget gate values close to one [23]. However, gates in saturated regimes (i.e., close to zero or one) suffer from the gradient vanishing issue [23]. Moreover, if all forget gate values are close to one, RNNs will not be able to effectively forget irrelevant information, compromising their ability to model short-term dependencies. To address these challenges, we introduce Hierarchically Gated Recurrent Units(HGRU). In HGRU, we add an additive learnable value, referred to as the lower bound, to the original forget gate value, effectively mitigating the issue of saturated gates [23] by pushing gate activations away from the saturated regimes. Furthermore, we design the lower bounds to increase monotonically as we move up the layers of the RNN. This ensures that the forget gate values in the lower layers remain relatively small, enabling the necessary forgetting of past information for modeling short-term dependencies. In contrast, in the uppermost layer, the forget gate values approach one, facilitating the effective modeling of long-term dependencies. Our proposed model has proven to be highly efficient and effective, as demonstrated by its outstanding performance in language modeling, image classification, and long-range arena benchmarks.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p7",
+    "section_heading": "2 Related work",
+    "text": "Efficient token mixing for sequence modeling. [83] abstracts self-attention (SA) as token mixing, thereby transforming the Transformer architecture into MetaFormer. MetaFormer comprises essential components such as token mixer, channel mixer, residual connections, and LayerNorm. This abstraction highlights that the success of Transformers does not solely rely on SA but rather on the holistic integration of these components. Notably, token mixers can be replaced with simpler alternatives like pooling layers without compromising the model\u2019s performance in the context of vision transformer. For sequence modeling tasks, [29] provides a comprehensive analysis and discussion of different token mixing strategies. Two prominent contenders, long convolution and linear recurrence, show promise as replacements for SA modules in long sequence modeling due to their superior asymptotic time complexity and competitive performances. In long convolution models [14, 41, 57, 59], the kernel size matches the input sequence length, enabling a broader context compared to traditional convolutions. Training is accomplished using the efficient O(n log n) fast Fourier transforms (FFT) algorithm. However, long convolutions face challenges such as the need for causal convolution inference, which requires caching all historical computations similar to the key-value (KV) cache in SA. This can lead to memory limitations when processing long sequences. Moreover, the inference complexity of long convolutions remains higher than that of RNNs. These factors make linear RNNs a more suitable alternative to replace SA in long-sequence modeling. TransNormerLLM [61] scales efficient token mixing in large language models to achieve competitive performance and superior training and inference efficiency compared to transformer-based models.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p8",
+    "section_heading": "2 Related work",
+    "text": "Element-wise linear recurrence. The slower training speeds of traditional RNNs can be attributed to two main factors: (i) The updating of the hidden state involves full matrix multiplication. (ii) The presence of nonlinearity within the recurrence prevents parallel computation. To tackle the first issue, [40] introduced a simplified interaction between hidden states. This allowed the hidden state update to be performed using an element-wise product instead of full matrix multiplication. They demonstrated that this approach is notably fast when the (nonlinear) recurrence for each dimension is fused within a single CUDA kernel. Likewise, for the linear case, diagonalized versions of S4 [20, 26] have also exhibited speed improvements over S4 by leveraging element-wise recurrence. Regarding the second challenge, the ability to capture nonlinear dependencies on past data can be achieved by stacking multiple linear recurrence layers interleaved with nonlinear MLP blocks. This indicates the potential to eliminate nonlinearity, as suggested by [4, 25, 48]. Empirical support for this strategy\u2019s effectiveness came later, as demonstrated by [11, 20, 24, 53, 55, 71]. [52] further highlighted that such an architecture still possesses Universal Approximator properties, thus justifying the employment of linear recurrence. By excluding nonlinearity, [48, 71] showed that the parallel scan algorithm can be used for parallel training.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p9",
+    "section_heading": "2 Related work",
+    "text": "Linear recurrence can be broadly categorized into exponential moving averages (EMA) and gating schemes, as noted by [48]. The key difference is whether the decay rate is data-dependent. Models such as S4 [21], S4D [20], MEGA [46], RWKV [55], and LRU [53] utilize the EMA approach, where the decay rate is static for all time steps (i.e., data-independent), while our model uses a datadependent dynamic decay rate through the use of the forget gate. We remark on the importance of incorporating a data-dependent decay rate, which is largely ignored by current works in linear RNNs. Although liquid S4 [28] uses a dynamic transition matrix (which amounts to a data-dependent decay rate), it employs a limited form for FFT-based training. Our model does not have the convolutional view and thus cannot use FFT for training but allows the use of parallel scan.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p10",
+    "section_heading": "2 Related work",
+    "text": "The field of linear Transformers and linear RNNs exhibits a close relationship. [34] shows that linear Transformers can be reformulated as RNNs during auto-regressive decoding, revealing similarities to the update rules observed in fast weight additive outer products [66, 67]. These updates can be seen as a special case of element-wise linear recurrence, where forget gate values are consistently set to one across time and hidden states are two-dimensional. However, this formulation in linear Transformers lacks the ability to forget irrelevant information, resulting in the attention dilution issue [60]. To address this limitation, [66] introduced the delta rule to forget values associated with the current write key by removing the corresponding value before adding the new value. Alternatively, [47, 56] proposed gating mechanisms similar to those in gated RNNs to facilitate the forgetting of irrelevant information.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p11",
+    "section_heading": "2 Related work",
+    "text": "Long-term dependencies in RNNs. RNNs fall short in long-term dependency modeling, which is commonly attributed to the gradient vanishing issue. Three methods are typically applied to mitigate this issue. (i) Gating mechanisms [9, 17, 23, 30, 70], which are believed to be crucial to the success of LSTMs, use additive (instead of multiplicative) hidden state update rules to improve gradient flow. (ii) Regularizing or initializing the eigenvalues of the recurrent weight matrix (close) to one via identity matrices [38] or unitary matrices [2]. In the diagonal linear RNN case, the eigenvalues coincide with the element-wise decay rates, and LRU [53] uses randomized linear algebra techniques to initialize eigenvalues to be close to one. [53] also interestingly points out that many modern state-space models use a very small time step value on initialization for discretization, resulting in eigenvalues or decay rates close to one. (iii) Adding skip connections between distant time steps to allow shortcuts for gradient flow [5, 8, 37].Our approach combines (i) and (ii), which improves gating mechanisms with a regularized dynamic decay rate that approaches one in the upper layer.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p12",
+    "section_heading": "3.1 Architecture overview",
+    "text": "Our proposed Hierarchically Gated Recurrent Network (HGRN) is depicted in Figure 1. It has multiple stacked layers, each of which consists of a token mixing module HGRU and a channel mixing module GLU (Gated Linear Unit [69]).",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p13",
+    "section_heading": "3.2 HGRU exploration",
+    "text": "We begin with a simple gated linear recurrent layer, which is defined as:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p14",
+    "section_heading": "3.2 HGRU exploration",
+    "text": "where \u2299 denotes the element-wise product. Following the terminology used in the RNN literature, we refer to ft and it as the forget and input gates, respectively. It is worth noting that ft and it depend only on xt and not on ht\u22121. This characteristic enables the use of the parallel scan algorithm [48, 71], otherwise it is infeasible. We then make the following changes toward our final HGRU step by step.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p15",
+    "section_heading": "3.2 HGRU exploration",
+    "text": "Complex-valued recurrence. For linear RNNs with static decay rates, it is common to perform eigendecompositions on the recurrent weight matrix to achieve element-wise linear recurrence. However, if only real-valued eigenvalues are allowed, it restricts the range of the recurrent weight matrix to be symmetric, limiting the model\u2019s expressiveness. To overcome this limitation, linear RNNs often employ complex-valued eigenvalues to enhance the model\u2019s expressive power [20, 26, 27, 32, 53]. Motivated by this, we extend our model to consider ht, it, ct \u2208 C1\u00d7d as complex values. For the input ct, we parameterize its real and imaginary parts separately as follows:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p16",
+    "section_heading": "3.2 HGRU exploration",
+    "text": "Regarding the forget gate values, we find it convenient to use the exponential representation of complex numbers and parameterize ft as follows: ft = \u03bbt \u2299 exp(i\u03b8t). Here, i2 = \u22121, \u03bbt, \u03b8t \u2208 Rd and exp(i\u03b8t) = cos \u03b8t+sin \u03b8ti. The magnitude argument \u03bbt determines the intensity of remembering historical information, while the phase argument \u03b8t determines the oscillation frequencies. We find that parameterizing \u03b8t in a data-independent manner is preferable, as it allows for a clear interpretation of encoding relative position information (see next subsection for more discussions) , which is reminiscent of Rotary Positional Embedding (RoPE) [72]. We shared \u03b8 arcoss times steps, i.e., ft = \u03bbt \u2299 exp(i\u03b8), initialize \u03b8 as RoPE does, but make it learnable like LRPE [63].",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p17",
+    "section_heading": "3.2 HGRU exploration",
+    "text": "Lower bound on forget gate values. Since the intensity of remembering information is only related to the magnitude argument \u03bbt, we focus on how to add a lower bound to \u03bbt. As mentioned earlier, we want to set a monotonically increasing lower bound on the forget gate (magnitude) values. Inspired by ON-LSTM [70], we employ the cummax activation function to achieve this. Concretely, we allocate \u0393 \u2208 RH\u00d7d to parameterize lower bounds independently for all hidden states, where H is the number of layer. Assuming the layer index is k, we have the following calculations:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p18",
+    "section_heading": "3.2 HGRU exploration",
+    "text": "Here we define [Cumsum(x)]k = ( \u2211k",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p19",
+    "section_heading": "3.2 HGRU exploration",
+    "text": "i=1 xi)\u2212 x1 to prevent the highest layer\u2019s lower bound from being one as we still want the ability to forget irrelevant information.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p20",
+    "section_heading": "3.2 HGRU exploration",
+    "text": "We remark that there is a difference in the use of cummax between our model and ON-LSTM. In ON-LSTM, cummax is applied to the hidden state dimension within a single layer, while in our case, we apply cummax on the layer dimension across different layers to enable upper layers to model long-range dependencies.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p21",
+    "section_heading": "3.2 HGRU exploration",
+    "text": "Finally, \u03bbt in the k-th layer is parameterized as follows:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p22",
+    "section_heading": "3.2 HGRU exploration",
+    "text": "Comparing to before (i.e., without lower bounds), to achieve the same forget rate value \u03b3\u0304 closed to one, \u00b5t will be pushed away from the Sigmoid activation function\u2019s saturated regions (i.e., near one),",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p23",
+    "section_heading": "3.2 HGRU exploration",
+    "text": "thereby mitigating the gradient vanishing issue [23] and making gradient-based optimization easier.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p24",
+    "section_heading": "3.2 HGRU exploration",
+    "text": "Tying input and forget gates. To reduce the number of parameters, it is common to use leaky units, i.e., tying the input gate with the forget gate using it = 1\u2212 ft, which has a close relationship to the discretization of continuous-time system [75] and exponential moving average [33], and has been proven effective empirically [9, 19]. To allows for a clear interpretation of encoding relative position information, we only apply this strategy on the magnitude argument:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p25",
+    "section_heading": "3.2 HGRU exploration",
+    "text": "Output gates and projection. The addition of gates to the output of the recurrence layer has been shown to be effective in state-space models [11, 46, 49, 82]. Motivated by this, we incorporate an output gate before performing the output projection as follows and get HGRU:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p26",
+    "section_heading": "3.3 Token mixing perspective of HGRU",
+    "text": "We provide the token mixing perspective of HGRU similar to [32]. Expanding Equation 2, we have:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p27",
+    "section_heading": "3.3 Token mixing perspective of HGRU",
+    "text": "Written in matrix form, we have:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p28",
+    "section_heading": "3.3 Token mixing perspective of HGRU",
+    "text": "So the token mixing module can be formed as follows:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p29",
+    "section_heading": "3.3 Token mixing perspective of HGRU",
+    "text": "Note that the token mixing matrix A can be decomposed into two parts A = \u039b\u2299\u0398:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p30",
+    "section_heading": "3.3 Token mixing perspective of HGRU",
+    "text": "This decomposition means that the Token mixing matrix \u039b can be decoupled into two independent modules, where \u039b models the long-distance dependency and \u0398, a Toeplitz matrix, models the relative positional relationship and enhanced expressiveness. Note that if \u0398 depends on the input, then the matrix \u039b will no longer be a Toeplitz matrix, thus unable to capture relative position information. It can be also viewed as a RoPE-enhanced attention mechanism: \u039b corresponds to the attention matrix but the attention score here is the cumulative product of data-dependent decay rates; \u0398 directly corresponds to RoPE.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p31",
+    "section_heading": "4 Experiments",
+    "text": "We conduct a comparative analysis between our proposed HGRN and four widely adopted sequence modeling structures, i.e., attention-based, MLP-based, FFT-based, and state-space-based. We evaluate HGRN on the WikiText-103 dataset [50] and the Pile [15] dataset for autoregressive language modeling, as well as the length extrapolation ability. To assess the accuracy and efficiency of our model in handling long-term dependencies, we utilize the LRA benchmark [78]. Additionally, we showcase the robustness of HGRN in computer vision task on the ImageNet-1k dataset.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p32",
+    "section_heading": "4.1 Setting",
+    "text": "We implement our models in Pytorch [54] and train them on 8 Nvidia A100 GPUs. For HGRN, we found that fusing element-wise recurrence into a single CUDA kernel results in fast running speed in practice. [48] also found that unless the sequence length is sufficiently large, the parallel scan\u2019s implementation is not necessarily faster than the sequential scan. As such, we use a CUDAbased sequential scan for implementation; however, our model has the potential to model very long sequences through the use of a parallel scan.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p33",
+    "section_heading": "4.1 Setting",
+    "text": "We adopt the same training configuration for all competitors, including batch size, learning rate, training epochs or iterations, etc. We list detailed hyper-parameters in the Appendix. For the autoregressive language modeling, we conducted three sets of experiments. Firstly, we validated the performance of two different-scale models on the Wikitext-103 dataset. We used the TNN configuration to verify the performance of the model at around 44m, and the Hyena configuration to verify the performance of the model at around 125m. To evaluate the performance of larger-scale models, we trained a 1b Transformer and HGRN on the Pile dataset using 10b tokens. To assess the performance in downstream tasks, we trained HGRN models of 150m, 350m, and 1b on the Pile dataset using 100b tokens and conducted zero-shot evaluations on downstream tasks.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p34",
+    "section_heading": "4.1 Setting",
+    "text": "For the LRA benchmark, We report results on all 6 tasks. For the image classification on the ImageNet-1k dataset, We integrate HGRN into the DeiT [79] structure, we replace the transformer layers with our HGRN modules. It is compared to the performance of the vanilla DeiT on the ImageNet-1K dataset for image classification.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p35",
+    "section_heading": "4.1 Setting",
+    "text": "4.2 Results",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p36",
+    "section_heading": "4.1 Setting",
+    "text": "Autoregressive Language Modeling Autoregressive language modeling stands as a prominent task within the field of natural language processing, as it serves as a measure of a language model\u2019s causal inference capability. This task requires the model to estimate the probability distribution of the subsequent token based on the previously seen tokens.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p37",
+    "section_heading": "4.1 Setting",
+    "text": "We show the performances of the autoregressive language modeling in table 1 and table 2. Compared to transformer-based methods, HGRN performs favourably than most efficient variants of the vanilla transformer such as FLASH [31], 1+elu [35], Performer [7] and cosFormer [62]. Also, HGRN achieves better results than the MLP-based methods with a notable margin. Nevertheless, HGRN performs similarly to the original transformer [81]. Finally, HGRN shares similar concepts with RNN-based such as S4 [22], DSS [26], GSS [49], RWKV [55], and LRU [53], our HGRN also achieves superior performance to all RNN-based methods. This provide evidence HRGN may be an effective method in LM We also report the extrapolation ability of HGRN compared to previous methods in Table 14.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p38",
+    "section_heading": "4.1 Setting",
+    "text": "We also trained a 1b model on the Pile dataset and compared it with LRU and Transformer. Specifically, our training parameters included a sequence length of 1024, batch size of 96, 100k updates, and a learning rate of 5e-4. It can be seen that HGRN still performs better at the 1b scale. Additionally, we trained 100b tokens of HGRN on the Pile dataset at 150m, 350m, and 1b sizes, and evaluated them against open-source Transformer-based models in downstream tasks. We selected Comparison on Commonsense Reasoning and Super GLUE tasks, and all evaluations were done using the lm-evaluation-harness [16]. HGRN achieves comparable performance to Transformer-based models when consuming only 1/3 of the tokens.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p39",
+    "section_heading": "4.1 Setting",
+    "text": "Long Range Arena LRA [77] is proposed as a comprehensive evaluation for assessing the performances of models in processing long-term dependencies in various sequential modeling tasks. We show a performance comparison between HGRN and existing methods in Table 6. HGRN achieves comparable results with other SOTA methods.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p40",
+    "section_heading": "4.1 Setting",
+    "text": "Image Classification The image classification results on the ImageNet-1K dataset are presented in Table 7. Notably, with comparable parameter sizes, our proposed HGRN model demonstrates superior performance compared to previous methods such as TNN and the vanilla transformer. It demonstrates the capability of HGRN in modeling visual modalities.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p41",
+    "section_heading": "4.3 Ablation Study",
+    "text": "We conducted ablation studies in the smallestscaled setting (i.e., TNN[59]\u2019s setting on WikiText103 dataset) to thoroughly verify the effectiveness of each of our proposed components in HGRN. Experiments were conducted on the Pile dataset using a 1b model with 10b tokens for the forget gate experiment.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p42",
+    "section_heading": "4.3 Ablation Study",
+    "text": "The influence of input gate and output gate Table. 9 validates the effectiveness of using output gates and tying input and forget gates. w/o input gate means to remove the 1 \u2212 \u03bbt term. w/o output gate means remove the left branch of HGRN in figure 1. Our design achieves the best performance.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p43",
+    "section_heading": "4.3 Ablation Study",
+    "text": "The influence of lower bounds in forget gate values We demonstrate the effectiveness of introducing a lower bound in Table 10 and Table 13. From Table 10, we observe that gating (i.e., without lower bound) is more critical than the lower bound (i.e., only lower bound). Combining gating and the lower bound consistently provides benefits, but the most significant improvement arises from the monotonically increasing lower bound. This aligns with the intuition that lower layers should primarily focus on nearby tokens, while upper layers should attend more broadly to capture long-term dependencies [58].",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p44",
+    "section_heading": "4.3 Ablation Study",
+    "text": "Table 10: Lower bound ablation on autoregressive language modeling. A random lower bound means the lower bound in each layer is independent. Decrease lower bound means the lower bound is monotonically decreasing with respect to layer k, only the lower bound means the forget rate is independent of input.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p45",
+    "section_heading": "4.3 Ablation Study",
+    "text": "Table 13 highlights the essential role of the lower bound in long sequence processing tasks. In these tasks, the model\u2019s performance is notably poor and sometimes fails to converge without the lower bound. It is worth noting that language modeling tasks do not require extensive long-term dependencies, which explains why the model performs well even without the lower bound. However, in the task of LRA, the ability to capture long-term dependencies is crucial for achieving satisfactory performance.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p46",
+    "section_heading": "4.3 Ablation Study",
+    "text": "The influence of complex-valued recurrence",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p47",
+    "section_heading": "4.3 Ablation Study",
+    "text": "Table 11 validates the utility of incorporating",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p48",
+    "section_heading": "4.3 Ablation Study",
+    "text": "complex values in element-wise linear recurrence. Additionally, the experiments show that the phase argument \u03b8 should not be data-dependent.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p49",
+    "section_heading": "4.4 Analysis on forget gate values",
+    "text": "We present the distributions of forget gate values across layers for different methods in Table 12 and visualize the histogram of each layer in Figure 2, trained on the autoregressive language modeling task. The results demonstrate that the addition of lower bounds effectively increases the average forget gate values in higher layers (5-6). Notably, the medium forget gate values in the highest layer reach 0.98, enabling the modeling of long-term dependencies.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p50",
+    "section_heading": "4.4 Analysis on forget gate values",
+    "text": "It is interesting to note that the average forget gate values of the LRU model consistently exceed those of our variant model without lower bounds, as per their eigenvalues. However, despite this, the language modeling performance of LRU is lower than that of our variant. Specifically, LRU scored 24.71, while our variant scored 31.12. This suggests that using data-dependent gates to selectively retain relevant information is advantageous, rather than relying on data-independent forget gate values across all time steps.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p51",
+    "section_heading": "4.4 Analysis on forget gate values",
+    "text": "Tabl gsequ",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p52",
+    "section_heading": "5 Conclusion",
+    "text": "In this work, we have shown that gated linear RNNs could obtain impressive performance across different tasks and modalities without compromising efficiency. We highlighted the significance of the forget gate for linear RNNs in language modeling and emphasized the importance of an additive lower bound on forget gate values for modeling long-term dependencies.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p53",
+    "section_heading": "Acknowledgement",
+    "text": "This work is partially supported by the National Key R&D Program of China (NO.2022ZD0160100).",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p54",
+    "section_heading": "Acknowledgement",
+    "text": "Limitations and broader impact",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p55",
+    "section_heading": "Acknowledgement",
+    "text": "Our empirical evaluation of HGRN remains on a smaller scale compared to other large-scale models. Potentially negative social consequences include the misuse of brain models for unsuitable purposes or applications, which must be prohibited by appropriate rules. In the era of large language models, the inference cost is the key limitation of transformer-based models. RNNs provide a solution with their lower inference costs. This could potentially lead to a significant evolution in the field.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p56",
+    "section_heading": "6 Appendix",
+    "text": "In this appendix, we examine the extrapolation ability of HGRN and provide the training and inference speed comparison of HGRN and existing efficient sequence modeling methods. We also illustrate the forget rates of each layer on a trained language model of HGRN.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p57",
+    "section_heading": "6 Appendix",
+    "text": "We also report the extrapolation ability of HGRN compared to previous methods in Table 14.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p58",
+    "section_heading": "6.1 Extrapolation test",
+    "text": "In this section, we tested HGRN \u2019s extrapolation ability by directly inferring the model with a variety of sequence lengths. As shown in Table 14, our method has the ability to train short and test long.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p59",
+    "section_heading": "6.2 Speed comparison",
+    "text": "In this section, we benchmark the speed of our method on the LRA benchmark. Our method achieves state-of-the-art training and inference speed.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p60",
+    "section_heading": "6.3 Visualization",
+    "text": "In this section, we visualize the forget rates of each layer on a model trained on language modeling tasks.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p61",
+    "section_heading": "6.4 Configurations",
+    "text": "We list detailed hyper-parameters of our experiments here.",
+    "seg_type": "par"
+  }
+]

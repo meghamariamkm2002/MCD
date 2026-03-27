@@ -1,0 +1,17 @@
+That is the catch.
+This is not a method that is like a magic pill.
+The catch is even though your tree is not as deep, it is much, much wider.
+And it is intuitive, right?
+Because you still have to have the ability to construct any possible plan.
+So your tree is going to have as many nodes as the original Monte Carlo tree search tree, if you were to fully expand it.
+So it's your trading of depth for width here.
+I hope that's a bit clear.
+your entire, your entire promise of this method is going to be, can you, from all of these possibilities, so from all of these, you don't even, you don't even want to go and search even one layer deep through all of these.
+You don't even want to consider all of them, right?
+You want to search in this tree, you want to limit your search to very particular ways of subdivision here.
+If you can do that efficiently, if you can pick efficiently
+candidates to subdivide, then this could be a successful thing because your tree is not as deep as the original search tree would have been, and you can limit the width effectively to only very few candidates.
+So here we could, for example, make a heuristic that will always only pick squares that are kind of on this straight path to the goal.
+So everything rests on how you do this select action.
+This thing here, the entire algorithm relies on the fact that you can select effectively select in between states where you're pretty sure that the algorithm will have to pass through there.
+Because the worse you make these predictions, the worse your tree search is going to work.

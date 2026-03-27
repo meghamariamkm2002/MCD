@@ -1,0 +1,38 @@
+biology.
+Now what we want to do is we want to investigate higher order functions.
+So here
+we're interested in these contact maps, right?
+So how likely is it that two amino acids are in contact?
+And we'll look at it through the lens of attention as we did before.
+So here is the percentage of each head, of each head's attention that is aligned with contact maps, averaged over a data set, suggesting that head 12.4 is uniquely specialized for contact prediction.
+So look at this.
+This head here is just spiking.
+So remember before we said our analysis is whenever we're basically measuring the correlation of two things being in contact because we know it from our simulator or from our data set, the correlation of that with an attention connection being particularly strong.
+and we find it in this attention head right here.
+So this layer 12, head number 4, will always peek out whenever two things are in contact.
+Now you can see that it's not like always, it's like 25% of its attention, but significantly more than anything else right here.
+In fact, if you group the things by this attention, you can build the following plot.
+So you can see right here, probability two amino acids are in contact as a function of attention between the amino acids in head 12.4, showing attention approximates perfectly calibrated estimator, which would be the green line.
+So here we simply, for each pair of amino acids, we make a histogram right here of what they're, sorry, not a histogram.
+We plot the probability
+if they have the attention weight 0.9, we plot how likely is it that they are in contact.
+So this is this, if we just look at the data and we simply take this attention weight as a measure, as a predictor of being in contact,
+we get the blue curve and the green curve would be if we could perfectly predict from this attention head what the probably of contact would be and you can see that the fit is fairly good you can't predict
+with super high accuracy, but the fit is fairly good and you can see the general trend that as the attention in this head rises, the probability of the two amino acids being in contact with each other also rises.
+So we can sort of confidently say that Bert has learned something about a higher level biological structure just from the language modeling objective.
+How can we interpret this?
+This must somehow mean that it is possible, it is vital to
+It is vital for reconstructing the sequence from its surroundings.
+So if we delete this right here, if these two are in contact in the 3D structure,
+That probably means that this thing right here is a very good predictor of what was here.
+If we mask this out and we're asked to reconstruct which amino acid was there, then it probably helps to look at its neighbors.
+It probably always helps to look at one's neighbors, especially also in natural language.
+But if these two are in contact,
+They have very special connection to each other.
+You can basically read out from this one which one this was.
+This is sort of like if you have a sentence and you say, does
+I don't know, I can't come up with one right now, but if it's like da-da-da-da-da, and then there is a name, like mark, and then da-da-da-da-da-da, and then there is him, right?
+And you would expect if I drop out, okay, let's do it the other way around, if I drop out him, then...
+from the text right here, you can probably determine that it is some sort of pronoun.
+But then you go back and you see, ah, it's Mark, okay, so it's not like it or she, it's probably he or him.
+This is sort of the analogous structure right here in biology.

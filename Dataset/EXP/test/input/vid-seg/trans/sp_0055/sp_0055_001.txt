@@ -1,0 +1,6 @@
+Hi there.
+What you're seeing here is a divide and conquer Monte Carlo tree search in action.
+This is a planning algorithm that plans in a kind of an unconventional fashion.
+So we're going to explore this today in this paper, divide and conquer Monte Carlo tree search for goal-directed planning.
+by Giambattista Parascondolo and Lars Busing and a list of other authors and I believe this is from Deep Mind and Max Planck and Eta and yeah, that's it.
+All right

@@ -1,0 +1,28 @@
+Hi there.
+Today we'll look at playing Atari with Deep Reinforcement Learning by Vladimir Mne at All of DeepMind.
+So this is another one of our series of impactful past papers.
+This paper right here kicked off an entire revolution in reinforcement learning.
+Specifically, it sort of started the Deep Reinforcement Learning hype.
+Before that I reinforcement learning was kind of this weird field of Markov decision processes and so on.
+Now I know there were successes and all and stuff was happening.
+But this really made a lot of waves because it brought the power of deep neural networks.
+to reinforcement learning and with a pretty simple application of convolutional networks managed to solve these reinforcement learning games where previous algorithms really couldn't either or were heavily reliant on hand engineered features.
+So we'll take a look here and what people did back then, what was the state of the art and what they are telling us about that.
+Kind of set it in relation to today.
+Alright, if you do like papers like this, commentary like this, share it out, leave a like and tell me in the comments what you think.
+So, let's dive in.
+They say we present the first deep learning model to successfully learn control policies directly from high-dimensional sensory input using reinforcement learning.
+The model is a convolutional neural network trained with a variant of Q-learning,
+whose input is raw pixels and whose output is a value function estimating future rewards.
+We apply our method to seven Atari 2600 games from the arcade learning environment with no adjustment of the architecture or learning algorithm.
+We find that it outperforms all approaches on six of the games and surpasses a human expert on three of them.
+So there's a lot packed into this.
+First of all, I wanted to recognize the absolute Lattec savagery right here and here.
+Yeah, you know, it's just something.
+I'm not OCD about that kind of stuff.
+I think we should ditch Lattec, honestly.
+But
+So there's a lot of information packed in this abstract right here.
+So they say this is the first deep learning model to learn control policies.
+So that's the task of these reinforcement learning algorithms directly from high dimensional sensory inputs using using reinforcement learning.
+So what do they mean, these are

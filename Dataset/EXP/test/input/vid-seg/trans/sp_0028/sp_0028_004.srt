@@ -1,0 +1,688 @@
+1
+00:00:00,031 --> 00:00:08,162
+Okay, so in a bit of more formal setting, what you'll have in reinforcement learning are these rewards, right?
+
+2
+00:00:08,542 --> 00:00:12,167
+So at each time step, you perform an action, you're in a state.
+
+3
+00:00:12,408 --> 00:00:18,396
+So we said you get back an observation and we call the observation the state.
+
+4
+00:00:18,836 --> 00:00:23,803
+Now, these two things aren't a, sorry, these two things aren't entirely the same thing.
+
+5
+00:00:24,344 --> 00:00:27,608
+So the observation is what you get back directly from the environment.
+
+6
+00:00:27,588 --> 00:00:37,012
+And then the state, it can be something more, like if you remember something from the last observation, that can be part of your state.
+
+7
+00:00:37,153 --> 00:00:43,048
+The state is basically what you base your decision on, and the observation is the pure thing you get from the environment.
+
+8
+00:00:43,028 --> 00:00:51,121
+Now, in this case, they do some processing, but essentially will will regard them as the same thing.
+
+9
+00:00:51,201 --> 00:00:54,406
+So the state is what you see of the environment.
+
+10
+00:00:54,987 --> 00:01:00,215
+Then in each of these steps, you perform an action, we'll call that this a thing right here.
+
+11
+00:01:00,997 --> 00:01:05,544
+And in each step, you also get a reward for the last action that you took.
+
+12
+00:01:06,125 --> 00:01:09,390
+And the reward is going to be lowercase r.
+
+13
+00:01:09,370 --> 00:01:24,872
+Now, what you want to do formally is you want to maximize the reward that you get in time t. Sorry, that's the reward you get at time t prime.
+
+14
+00:01:26,555 --> 00:01:37,791
+What you want to do if you play an episode, you're here and you perform an action, you go here, you perform an action, you go here, you perform an action, you go here, and then your episode is done.
+
+15
+00:01:37,771 --> 00:01:42,020
+For each action, you'll get a reward, reward one, reward two, reward three.
+
+16
+00:01:42,521 --> 00:01:47,892
+What you want to do is you want to maximize the total, the sum of all of these rewards.
+
+17
+00:01:48,213 --> 00:01:53,063
+So over the course of your episode, you want to collect as much reward as you can.
+
+18
+00:01:53,043 --> 00:02:02,023
+There is a discount factor right here, which is sort of saying that rewards that are very far in the future, they're not as important as rewards right now.
+
+19
+00:02:02,083 --> 00:02:04,950
+However, you can set this to one if you want.
+
+20
+00:02:05,350 --> 00:02:12,807
+So you see, you want to maximize the future, the sum of future rewards, which is this thing right here.
+
+21
+00:02:12,787 --> 00:02:13,488
+Okay.
+
+22
+00:02:14,349 --> 00:02:16,392
+So how do you, how do you do this?
+
+23
+00:02:16,492 --> 00:02:19,376
+There are two main methods in reinforcement learning.
+
+24
+00:02:19,837 --> 00:02:24,824
+The, the first one is called a policy gradient method.
+
+25
+00:02:24,924 --> 00:02:34,618
+And very briefly, a policy we'll call it pi takes in a state s, and it gives you back an action.
+
+26
+00:02:35,159 --> 00:02:35,419
+Okay.
+
+27
+00:02:36,850 --> 00:02:49,874
+And I mean, this is the same for Q learning, but in a policy gradient method, which is not this paper, but is like a little bit easier to understand, I believe, will simply say, well, we'll simply train an neural network to do that.
+
+28
+00:02:50,214 --> 00:02:50,415
+Right.
+
+29
+00:02:50,795 --> 00:02:54,943
+And there is this, there's this policy gradient.
+
+30
+00:02:54,923 --> 00:03:00,812
+trick where you can back propagate even though the reward isn't back propagatable and so on.
+
+31
+00:03:01,112 --> 00:03:05,058
+You can simply say we'll learn a neural network to give us the action that's best, right?
+
+32
+00:03:05,358 --> 00:03:17,556
+So we'll have a neural network, the state goes in neural network, and then we'll just have as many outputs as there are actions like action one, action two, action three, action four.
+
+33
+00:03:17,536 --> 00:03:20,360
+and we'll treat it as a classification problem, right?
+
+34
+00:03:20,481 --> 00:03:31,117
+So you simply train the network to pick the action that is best in this case, and irregardless of how you know which action is best right now.
+
+35
+00:03:31,137 --> 00:03:33,942
+In queue learning, you do something else.
+
+36
+00:03:34,362 --> 00:03:38,008
+Namely, you train this thing called the queue function.
+
+37
+00:03:38,275 --> 00:03:54,428
+The Q function is a function that takes in a state and an action, and it gives you what the reward is going to be in the future if you are in this state and perform this action.
+
+38
+00:03:54,408 --> 00:03:56,852
+Okay, so you are in a given state, right?
+
+39
+00:03:57,012 --> 00:04:00,077
+And you have three actions at your proposal.
+
+40
+00:04:00,658 --> 00:04:14,779
+Okay, you have action one, action two, and action three, and you are in state s. You, what you would do is you would call the q function, if you had a perfect q function, it could give you the reward.
+
+41
+00:04:14,759 --> 00:04:17,282
+you would call the Q function three times.
+
+42
+00:04:17,583 --> 00:04:23,371
+You would call the Q function first with A1, say what's Q of S and A1.
+
+43
+00:04:24,112 --> 00:04:25,934
+And the Q function would maybe say that's seven.
+
+44
+00:04:26,776 --> 00:04:32,844
+And here you say what's the Q function of S and A2 and it would maybe say that's four.
+
+45
+00:04:33,104 --> 00:04:37,290
+And here the same thing for A3 and it maybe say that's one.
+
+46
+00:04:37,270 --> 00:04:51,652
+Then you would know, aha, if I take action one, my reward from not only the reward for this step, but my reward from here on until the end of the episode is going to be seven.
+
+47
+00:04:52,353 --> 00:04:54,857
+That is if you had a perfect Q function.
+
+48
+00:04:54,837 --> 00:04:59,267
+Now the Q function is always, of course, conditioned on a policy right here.
+
+49
+00:04:59,467 --> 00:05:11,575
+So there is what it basically says if I take action a one right now, and after that, I follow policy pi, then I'm going to get the reward of seven.
+
+50
+00:05:11,715 --> 00:05:12,677
+It's a bit of a
+
+51
+00:05:12,657 --> 00:05:15,419
+multi-layered reasoning approach.
+
+52
+00:05:16,340 --> 00:05:24,808
+But ultimately, you don't have to worry much about this being conditioned on a policy.
+
+53
+00:05:25,148 --> 00:05:32,875
+Ultimately, the Q function says, if you take this action right now, what will the reward be for the entire rest of the episode?
+
+54
+00:05:33,736 --> 00:05:42,664
+So if you had a perfect Q function, you could simply ask it about all the actions as we did here, and then pick the action with the highest number.
+
+55
+00:05:42,644 --> 00:05:55,759
+And then you're guaranteed because, you know, there could be a situation where, you know, your reward in a single step is going to be very high here, like a hundred and here zero, zero.
+
+56
+00:05:56,399 --> 00:05:56,680
+Okay.
+
+57
+00:05:57,160 --> 00:06:00,203
+And you would be tempted to take that action right here.
+
+58
+00:06:00,304 --> 00:06:04,989
+But after that, it's just going to be zero, zero, zero.
+
+59
+00:06:05,009 --> 00:06:07,892
+So your total reward is going to be 100.
+
+60
+00:06:07,872 --> 00:06:15,990
+But here, even though it's zero now, it could be that after that it's 50, and then 40, and then 2000, and so on.
+
+61
+00:06:17,113 --> 00:06:19,579
+So your total reward is going to be much, much more.
+
+62
+00:06:20,160 --> 00:06:25,071
+If you were simply to train a function that tell you what's the reward in the next step,
+
+63
+00:06:25,051 --> 00:06:30,319
+then you would lose because that function would not be able to look ahead sufficiently.
+
+64
+00:06:30,339 --> 00:06:41,997
+What we're trying to do with the Q function is we're trying to predict to train a function that will tell us not only what's the reward in the next step, but what is the reward in all the steps to come from here, right?
+
+65
+00:06:42,577 --> 00:06:46,283
+Of course, conditioned on all the decisions we make in the future, but
+
+66
+00:06:46,263 --> 00:06:48,487
+That's this policy pi right here.
+
+67
+00:06:49,629 --> 00:06:52,034
+I hope it's somewhat clear what a Q function is.
+
+68
+00:06:52,455 --> 00:06:55,781
+Interestingly, we can take the same network architecture for this.
+
+69
+00:06:56,262 --> 00:07:03,456
+So what you would do naively is you would build a neural network where you say, okay, a Q function takes a state and an action.
+
+70
+00:07:03,616 --> 00:07:05,740
+So I'll put those into a neural network.
+
+71
+00:07:05,720 --> 00:07:18,121
+And then out comes this estimation of the reward, which we usually call Q. So the value Q is this estimation of the future reward if you take this action in this state.
+
+72
+00:07:19,063 --> 00:07:26,155
+Now, the disadvantage here is that we have to call this neural network once for each action in every state that we're in.
+
+73
+00:07:26,235 --> 00:07:29,601
+So that's like, if there's 10 actions, that's like 10 forward passes.
+
+74
+00:07:29,581 --> 00:07:54,087
+What we could do is we could simply take the same neural network we had for our initial or very initial policy method, and we use that and we simply input state and we'll train it to output the queue for action one and the queue, sorry for the state s and action one, the queue for the state s and action two,
+
+75
+00:07:54,067 --> 00:07:55,169
+and so on.
+
+76
+00:07:55,549 --> 00:07:59,696
+So there is going to be this kind of shared encoder.
+
+77
+00:08:00,337 --> 00:08:12,175
+And then that's, it's basically going to encode the state into a latent space and then classify for each of the actions, how valuable this particular action would be in that state.
+
+78
+00:08:12,897 --> 00:08:18,285
+So the, this here is called a deep queue network.
+
+79
+00:08:20,088 --> 00:08:24,257
+It's a network that takes in a state and gives you back the Q value.
+
+80
+00:08:25,219 --> 00:08:38,586
+Now the problem right here is we, here we said if we had a perfect Q function, a Q function that was always right, then the problem would be solved because we could just ask the Q function what to do.
+
+81
+00:08:38,566 --> 00:08:41,689
+Of course, we don't have a perfect Q function, we need to train it.
+
+82
+00:08:41,810 --> 00:08:44,012
+So how do we train a Q function?
+
+83
+00:08:44,372 --> 00:08:46,915
+And the answer is surprisingly simple.
+
+84
+00:08:47,356 --> 00:08:56,466
+So what you want to do is you are in this state and you want to estimate what your Q value is.
+
+85
+00:08:56,626 --> 00:08:58,388
+You want to train your Q network.
+
+86
+00:08:58,428 --> 00:09:03,814
+What you can do is you can simply play an episode according to the Q function you have.
+
+87
+00:09:03,794 --> 00:09:07,066
+And you'll maybe play this episode right here, right?
+
+88
+00:09:07,086 --> 00:09:10,017
+It's like, you go here and you collect all of this reward.
+
+89
+00:09:10,600 --> 00:09:14,715
+So this entire thing now goes into your dataset.
+
+90
+00:09:16,619 --> 00:09:28,038
+And then you have a sample, you know, I was here in this state S, I took action one, and I got in total 2,090 as a reward.
+
+91
+00:09:28,679 --> 00:09:30,883
+So that is going to be your labeled sample, right?
+
+92
+00:09:30,903 --> 00:09:39,657
+Your labeled sample is going to be S, I was in S, I did A1, and now I then got 2,090 reward.
+
+93
+00:09:39,637 --> 00:09:40,178
+Cool.
+
+94
+00:09:41,019 --> 00:09:48,392
+And in the next episode, you're going on playing and you maybe go down here and then you get a next training example.
+
+95
+00:09:48,592 --> 00:09:55,223
+I was in state S. So you keep restarting the episode so you can get into the same state multiple times.
+
+96
+00:09:55,664 --> 00:10:00,632
+I performed A3 and I got only 100 reward.
+
+97
+00:10:00,612 --> 00:10:02,435
+So that's another training sample.
+
+98
+00:10:02,455 --> 00:10:06,120
+So these training samples right here, you can use to train your Q function.
+
+99
+00:10:06,140 --> 00:10:08,383
+This is called online reinforcement learning.
+
+100
+00:10:08,723 --> 00:10:17,516
+You play the game at the same time as you train your neural network, and you use that improved neural network to play more games.
+
+101
+00:10:18,317 --> 00:10:22,182
+And with time, there is this
+
+102
+00:10:22,162 --> 00:10:36,984
+well known, there are theorems around Q learning that say if you do that iteratively, then your Q function will converge to the optimal Q functions under some assumptions, which of course not given if this is a deep neural network, but you know, who cares?
+
+103
+00:10:38,687 --> 00:10:38,787
+Yeah.
+
+104
+00:10:38,767 --> 00:10:52,428
+So formally, your Q function, as you can see right here, is going to be, there is this Bellman recurrence kind of recurrence property of the Q function.
+
+105
+00:10:52,468 --> 00:11:00,640
+So if I am, if I am in a state S, and I'm wondering what is my Q
+
+106
+00:11:02,088 --> 00:11:13,101
+of my state S and an action A. And I said with respect to a policy, which the star policy is going to be the policy where we always select the highest Q function.
+
+107
+00:11:13,121 --> 00:11:23,314
+So we'll basically say, we're in state S, we select action A, and after that, we'll just always select whatever the highest scoring action is, right?
+
+108
+00:11:23,354 --> 00:11:28,260
+Like right now, action A might not be the highest scoring, but we'll take A right now.
+
+109
+00:11:28,540 --> 00:11:31,183
+And after that, the highest scoring, that's Q star.
+
+110
+00:11:31,163 --> 00:11:40,971
+It's a queue function conditioned on the policy where after we perform the first action, which is a will take always the best one according to the queue function.
+
+111
+00:11:41,525 --> 00:11:41,785
+right?
+
+112
+00:11:41,845 --> 00:11:42,426
+That's right here.
+
+113
+00:11:42,947 --> 00:11:49,956
+So we're in state s, we perform a, and s prime is going to be the state that we are going to.
+
+114
+00:11:50,057 --> 00:11:53,121
+So we're in s, we perform a, we get to s prime.
+
+115
+00:11:53,641 --> 00:11:59,229
+So in s prime, which is a function of your environment, we're always going to take the maximum action.
+
+116
+00:11:59,690 --> 00:12:02,233
+And r is going to be the reward of the next step.
+
+117
+00:12:02,213 --> 00:12:08,504
+So you can see this recurrence equation right here that q star can be framed in terms of q star.
+
+118
+00:12:09,325 --> 00:12:26,415
+So the q star of this state is going to depend on the q star of the next state and you can use that fact and you can you know prove that pretty we've already done it basically you can use that fact to now train your neural network.
+
+119
+00:12:26,395 --> 00:12:30,381
+So your neural network loss function is going to be the following.
+
+120
+00:12:30,981 --> 00:12:44,961
+It's going to say, look, this here is the Q function for state S and action A. And this is my neural network telling me how much that's worth.
+
+121
+00:12:44,941 --> 00:12:47,363
+And this is the label, right?
+
+122
+00:12:47,383 --> 00:12:50,906
+So here you have to think in terms of backclassic supervised learning.
+
+123
+00:12:51,307 --> 00:13:06,480
+This here is going to be your f of x. And this here is going to be your y. And we will take the squared loss between the two, except your input x is going to be which state am I in and which action am I taking.
+
+124
+00:13:07,021 --> 00:13:12,886
+And your label is going to be bootstrapped by your own q function.
+
+125
+00:13:12,906 --> 00:13:14,948
+So your label is going to be
+
+126
+00:13:14,928 --> 00:13:19,536
+The reward you got, remember this comes from a replay buffer.
+
+127
+00:13:19,857 --> 00:13:26,488
+We already played that game and we already know what happened after we performed this action.
+
+128
+00:13:28,031 --> 00:13:32,078
+And what happened is we got this reward and we got into this state.
+
+129
+00:13:32,619 --> 00:13:36,987
+So we can simply ask our own queue function again.
+
+130
+00:13:36,967 --> 00:13:40,724
+What's the best action to take in this state and what reward would we get?
+
+131
+00:13:41,789 --> 00:13:43,958
+And then we have our label, right?
+
+132
+00:13:44,380 --> 00:13:46,791
+So our label Y is going to be.
+
+133
+00:13:48,560 --> 00:13:52,867
+Um, yeah, I was, I was, I was pretty confused when I learned this the first time.
+
+134
+00:13:52,928 --> 00:13:56,393
+So I'm going to assume some of you are confused as well.
+
+135
+00:13:57,235 --> 00:14:06,731
+So your Q function is supposed to tell you what's going to be the reward from here until the end of the episode.
+
+136
+00:14:06,771 --> 00:14:07,733
+Okay.
+
+137
+00:14:07,713 --> 00:14:20,166
+that you can decompose in the reward that you get from this very next action plus the sum from then, so t plus one until the end of the episode.
+
+138
+00:14:20,286 --> 00:14:20,586
+Okay.
+
+139
+00:14:21,107 --> 00:14:22,769
+So, uh, t prime.
+
+140
+00:14:22,809 --> 00:14:25,271
+So that's t prime equals t plus one.
+
+141
+00:14:25,291 --> 00:14:25,572
+All right.
+
+142
+00:14:25,872 --> 00:14:26,993
+So it's pretty simple.
+
+143
+00:14:27,073 --> 00:14:34,581
+The total reward from now until the end, you can decompose in the reward now plus the reward after that until the end.
+
+144
+00:14:35,371 --> 00:14:40,619
+Now, this here, we know, we've played the episode, we know what happened.
+
+145
+00:14:41,120 --> 00:14:47,930
+This here, we can simply ask our Q function again, because we also know what state we got into.
+
+146
+00:14:48,471 --> 00:14:53,118
+And this, as you can see, is very much this, but just one step later.
+
+147
+00:14:53,658 --> 00:14:58,125
+So we can simply ask our own Q function, which might be imperfect, right?
+
+148
+00:14:58,606 --> 00:15:00,869
+But it's certainly a good guess.
+
+149
+00:15:01,510 --> 00:15:02,712
+We say, okay,
+
+150
+00:15:04,362 --> 00:15:11,212
+This reward from now should be equal to the reward we got plus whatever reward we get later.
+
+151
+00:15:11,252 --> 00:15:24,330
+And yes, you might be astounded by the fact that we are using our own neural network, though, be with the parameters one time step ago in order to produce our label.
+
+152
+00:15:24,551 --> 00:15:28,396
+But that is exactly what these Q learning theorems are about.
+
+153
+00:15:28,516 --> 00:15:31,821
+They basically say under some assumptions, if you do this,
+
+154
+00:15:31,801 --> 00:15:37,528
+and you iterate, then this will converge to the optimal Q function.
+
+155
+00:15:38,630 --> 00:15:43,576
+So as you can see right here, this is the gradient of the loss.
+
+156
+00:15:43,977 --> 00:15:49,484
+It's astounding that back then they still wrote down the gradient of the loss, like almost no one does this now.
+
+157
+00:15:49,704 --> 00:15:53,809
+You just say, put this into TensorFlow and go.
+
+158
+00:15:53,789 --> 00:16:00,764
+Yeah, so they make some remarks here, namely that this algorithm is model free, right?
+
+159
+00:16:01,686 --> 00:16:03,049
+There's no model of the environment.
+
+160
+00:16:03,069 --> 00:16:08,381
+You simply learn a function that for each state tells you the key value for each action.
+
+161
+00:16:09,764 --> 00:16:10,465
+That's
+
+162
+00:16:10,445 --> 00:16:17,139
+That's all everything, everything that all the logic needs to be within the neural network itself.
+
+163
+00:16:17,540 --> 00:16:18,722
+So that's pretty cool.
+
+164
+00:16:19,825 --> 00:16:21,969
+And they say it's also off policy.
+
+165
+00:16:22,851 --> 00:16:29,685
+It learns about the greedy strategy while following a behavior distribution that ensures adequate exploration of the state space.
+
+166
+00:16:29,665 --> 00:16:43,263
+So while training, they do this epsilon greedy strategy that follows the greedy strategy, which is where you always take the maximum with one minus epsilon, selects a random action with probability epsilon.
+
+167
+00:16:43,764 --> 00:16:51,133
+So while you do your experience, you follow your Q function, you always ask the Q function, what's the best thing to do right here?
+
+168
+00:16:51,994 --> 00:16:56,801
+But, you know, that gets you into too much of exploitation.
+
+169
+00:16:56,961 --> 00:16:59,284
+So in epsilon amount of time,
+
+170
+00:16:59,264 --> 00:17:02,725
+you want to do a bit of exploration and just take a random action.
+
+171
+00:17:04,033 --> 00:17:08,259
+All right, so that's basically the algorithm.
+
+172
+00:17:08,299 --> 00:17:10,050
+So the algorithm is right here, and they have
+

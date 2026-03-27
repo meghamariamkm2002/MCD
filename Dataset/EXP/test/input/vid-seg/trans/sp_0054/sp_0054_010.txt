@@ -1,0 +1,9 @@
+Yeah, so that's the paper.
+They have kind of a discussion, the depiction of attention matrices down here, where they show that their model, you know, does something kind of different from other models in terms of where it attends and it has less of these global attention patterns like Roberta has right here.
+except for the very first one, which is the CLS vector, which makes sense and otherwise has a rather diagonal attention matrix.
+So that's, you know, it's pretty sensible, though you can also make the case that sometimes there are just really important words in a sentence that everything should attend to.
+I don't know, but it is state-of-the-art and it is a cool algorithm and is worth considering if you build your next model.
+Alright, with that, I thank you for listening.
+Subscribe if you haven't.
+I'll see you next time.
+Bye-bye.

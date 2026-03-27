@@ -1,0 +1,2 @@
+We then extend this algorithm into linear MDPs with heavy-tailed rewards, resulting in a new computationally efficient algorithm, heavy LSVI UCB.
+Our regret bound is instance-dependent, since the main term only relies on the instance-dependent quantities, which vanishes when the dynamics and rewards are deterministic.

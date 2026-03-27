@@ -1,0 +1,20 @@
+WEBVTT
+
+00:01.162 --> 00:12.615
+Hi there, today we'll look at context RCNN long-term temporal context for per-camera object detection by Sara Beery, Guan Hongwu, Vivek Rathad, Ronnie Votel and Jonathan Huang.
+
+00:13.276 --> 00:21.606
+So on a high level, this paper tries to do object detection for cameras where the camera is in the same place for a long time.
+
+00:21.966 --> 00:26.832
+For example, these wild trap cameras or traffic cameras right here.
+
+00:26.812 --> 00:38.069
+It proposes to do object detection by incorporating data from the images that the camera has seen in the past to help the detection in the current frame.
+
+00:38.950 --> 00:46.862
+And it does so via an attention mechanism that it runs over a memory of past data.
+
+00:46.842 --> 01:09.998
+So we're going to take a look at how this is done and how well it works and Yes, take a round if you want to know As always if you enjoy content like this then consider sharing it out telling your friends about it Subscribe if you haven't and tell me what you think in the comments So the paper starts off and describes the process
+

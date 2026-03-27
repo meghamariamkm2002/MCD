@@ -1,0 +1,67 @@
+start	end	text
+31	572	jump in.
+1252	7579	So they basically make a point of saying that machine learning doesn't happen in just one thing.
+7639	10982	It's not like sklearn.fit anymore.
+11423	12984	It is more of a pipeline.
+13725	15107	So what do we mean by this?
+15627	25077	If you have, if you think of something like you want to train an ImageNet model, what you want to do is you have like your data set somewhere.
+25057	30965	And that could be on in a database, it could be in the network somewhere.
+31285	38575	So if you have even something larger than ImageNet, you'll probably store it on a central server on an Amazon bucket somewhere.
+38615	40217	So this is in AWS.
+40878	44723	And the first thing you actually need to do is you need to read that data set.
+45203	51992	Now, usually you're not going to have enough memory on a machine to just load in the entire data set into memory.
+51972	55616	So that means this process here is streaming.
+57398	59660	So this is continuously streaming data points.
+59700	64466	And once you have used the data point, you're going to throw it away because you need space for the next one.
+65427	68470	And so the streaming is done continuously.
+69111	71674	The next process is read and decode.
+72054	81304	That means you have to read it from the network and actually bring it into a format where you can use it, usually something like an umpire array or a TensorFlow tensor.
+81284	90981	You need to apply some shuffling because usually you can't really trust the order that it is stored in.
+91181	95409	Often times there is a bias in the ordering, so you need some sort of a shuffle buffer here.
+97092	100298	Then often you want to apply some data augmentation to it.
+100718	103984	That means that you have one image.
+103964	115445	And we know for these models, if this is your cat, we know for these models that what can help is to basically make many, many different images from one image.
+115846	124922	So this could be by cropping part of it and saying, well, if it was a cat before the small upper right part here is still a cat.
+124942	128048	So this is one date, it's called data augmentation.
+128028	130912	and you're gonna apply a whole bunch of these things.
+130932	134857	So you can crop, you can rotate the image a bit, it's still a cat, right?
+135158	144190	And you can also change its luminance and a bit of its colors, you can jitter the colors, you can horizontally flip it and it'll still be a cat.
+144691	148416	And that's basically how you make many data points from one data point.
+148676	149918	And we know that helps.
+149898	154064	Then what you want to do is you want to batch this data.
+154084	155947	So you want to put it into mini batches.
+157288	169105	Since you've shuffled here, that means when the next time the same data point comes along, it's going to be batched with a different group of images and of course augmented differently.
+169085	175175	with a different group of images and that basically means it's a different training batch for the model.
+175375	186152	So this entire pipeline is basically a way that we take data points that we have and we make a whole bunch of variations and various groupings and batchings of it.
+186432	192021	And we know that helps enormously with the generalization capability of your final models.
+192001	195847	And then here you do your apply your SGD update.
+195868	206105	So that's usually where you forward propagate your data through your network, which here is F, you'll get like some Y hat as an output.
+206566	210432	And then you have your labels that also come through the pipeline.
+210412	217565	And you have some sort of loss function L that takes both as an input and gives you an output.
+218166	220590	And then you do your back propagation.
+220710	228825	So the back propagation would go through your loss function through your network and update the network parameters.
+228805	231409	search that your network learned something.
+232951	238018	Now this step to the right here is usually what we focus on when we do deep learning.
+239921	251758	The step on the right here, all of this, this can be done on a GPU or is usually done on something like a GPU or a TPU.
+253156	258226	But these things are getting faster and faster.
+258267	263036	The point the paper makes is that the TPUs and GPUs of the world are getting faster.
+264058	269229	But this entire other thing right here, this is basically CPU land.
+269530	274540	Now, I know there is some data augmentation now happening on the GPU and so on.
+274520	282672	But in essence, you can think of a pipeline where the thing to the left is happening on CPU and the thing to the right is happening on TPU.
+283073	290865	And even worse, let's say, the speed is continuously increasing.
+291125	298857	So in your pipeline, the kind of speed would be... So here is the network reading.
+300490	306136	And here over here is the GPU SGD step.
+306156	307197	And this is speed.
+308378	316746	Basically, the further to the right in your pipeline you go, the faster your hardware gets.
+317487	323373	And that means that if this is a continuous pipeline, right?
+323793	327797	That basically means that if I input something here,
+327777	329359	It goes through the pipeline.
+329399	335187	And even if this is all running in parallel, this thing over here is going to idle.
+336288	341215	Since this is the fastest part of the pipeline, it is going to just idle a lot.
+343678	347203	Because it can only consume things as fast as this thing can produce.
+347183	357198	Now, if you have some sort of a multi GPU machine and just train ImageNet, like you just run the code, usually, this is not the bottleneck.
+357318	361544	Usually, your GPUs here are at 100% capacity.
+361985	363367	So this paper is not for you.
+363907	371959	But if you are, let's say, a big company, have this network storage, have a big data set, have very expensive data augmentation,
+371939	375852	This happens, for example, this can happen in NLP and so on.
+376916	385003	This can be quite your situation where the earlier in the pipeline, the slower it is.

@@ -1,0 +1,19 @@
+start	end	text
+31	4818	these samples in the video description for sure.
+5660	7162	So I think we've gone over everything.
+7442	15114	The generator starts off with text, puts that into normalized text, calculates hidden features right here.
+15475	27253	These hidden features on one hand are used to predict the lengths of each of the tokens in the sound and are also used as an input to the generator here.
+27233	42833	Now they can only be used as an input to the generator if the generator knows how to align them in time and how to align them in time is predicted from these predicted lengths right here via this aligner algorithm.
+43314	45757	The lengths are the only thing that is predicted.
+46238	48260	Everything then is deterministic.
+48661	55890	The aligner is simply a Gaussian kernel over the predicted locations on the
+55870	64205	on the time axis, so the Gaussian kernel is to make this alignment a bit fuzzy, to make this prediction fuzzy.
+64786	71859	You perform a weighted sum with these features and then the generator knows where to put the tokens.
+72360	78030	Finally, the generator can upsample the now aligned tokens into sound.
+78010	80213	This goes into the discriminator.
+80514	91970	The discriminator is actually five different discriminators, which each try to discriminate the generated from the real at different time scales.
+92892	104929	In addition to that, you have a discriminator on the spectrograms, and you also have an L1 loss on the spectrograms, which helps especially at the beginning of training.
+104909	129297	For the L1 loss of the spectrograms, you have to again compute an alignment, but you do this in a deterministic way by this thing down here, this dynamic time warping where you simply assume that they are aligned and forgive them for not being aligned with a soft penalty and not a hard zero score.
+130306	131731	All right, this was the paper.
+131992	137871	Again, if you like this, leave a like, a comment, share it out, subscribe and have a good day.
+138092	138493	Bye-bye.

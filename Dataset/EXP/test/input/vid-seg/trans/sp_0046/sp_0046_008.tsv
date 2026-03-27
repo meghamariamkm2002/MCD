@@ -1,0 +1,16 @@
+start	end	text
+31	992	disadvantages.
+1152	8681	So disadvantages mainly come with training these things because you have to train them in lockstep.
+9222	15089	But then also, the disadvantages that you don't have an explicit representation.
+15390	23980	So there is no explicit representation of this probability distribution, you never build the data distribution, you can only sample from it.
+23960	36376	However, the advantages are that Markov chains are never needed, only backprop is used to obtain gradients, no inferences needed during learning, and a wide variety of functions can be incorporated into the model.
+36756	47470	I haven't read this paper in a while and I just have to laugh nowadays because now all the people are trying to
+47450	58760	reintroduce, like there are as many papers like reintroducing Markov chains into GANs, being like, oh, GANs would be so much better if they had an MCMC sampler somewhere.
+59641	62824	You're like, no, the point was to get rid of it.
+63384	74815	And like no inference is needed during learning, which, you know, for some of these other models, you actually need an inference during training, right?
+74875	77457	So this is very, very costly.
+77437	84730	And how many models are there nowadays where it's like, oh, if we just do this inference during training.
+85098	85459	Yeah.
+86281	102603	So it's quite funny to see people kind of trying to just combine everything with everything and in the process sort of reverse whatever these methods were originally meant to get rid of.
+102643	106794	Now, I'm not saying anything against these methods, but it's just kind of funny.
+109280	110042	Yeah.

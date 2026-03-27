@@ -1,0 +1,182 @@
+WEBVTT
+
+00:00.031 --> 00:01.519
+in GAN variations.
+
+00:02.304 --> 00:07.915
+They introduced the reasoning behind this so that there's an intuition right here.
+
+00:09.413 --> 00:16.019
+And you can see already, in practice, equation one may not provide sufficient gradient for G to learn well.
+
+00:16.700 --> 00:22.185
+Early in learning when G is poor, D can reject samples with high confidence because they're clearly different from the training data.
+
+00:22.205 --> 00:38.880
+In this case, this saturates rather than training G to minimize that, we can train G to maximize log D. This objective function results in the same fixed point for the dynamic, but provides much stronger gradients in early, much stronger gradients early in learning.
+
+00:38.860 --> 00:47.637
+This is in contrast to like other papers that simply say, oh, we do this and they at least say it provides the same fixed point, right?
+
+00:47.938 --> 00:53.950
+Yeah, so again, they're trying to convince you that this is doing something useful and that this is easier.
+
+00:53.930 --> 00:55.152
+Okay.
+
+00:55.172 --> 01:09.009
+So this strategy is analogous to other things training, maintain samples, um, from a Markov chain from one learning step in the next order to avoid burning in a Markov chain in another loop of learning.
+
+01:09.029 --> 01:09.389
+Sorry.
+
+01:09.410 --> 01:09.610
+Okay.
+
+01:09.630 --> 01:10.851
+This is from another paper.
+
+01:10.891 --> 01:13.795
+So their point here is that it's analogous.
+
+01:13.775 --> 01:33.218
+to other papers that use these Markov chains where you always do one step in G and one step in D. We alternate between K steps of optimizing D and one step of optimizing G because you have this inner maximization over D and then the outer maximization, outer minimization over G.
+
+01:33.198 --> 01:39.149
+So this has already been around the fact that you kind of have to have these optimizations in lockstep.
+
+01:39.169 --> 01:45.361
+But the difference here is you don't need any sort of like Markov chain in the inner loop and so on.
+
+01:45.381 --> 01:46.984
+You simply need back propagation.
+
+01:48.046 --> 01:50.751
+So here's an illustration of how that might
+
+01:50.731 --> 01:51.252
+work.
+
+01:51.512 --> 01:58.422
+So at the beginning here, you have your Z space, and this is always sampled uniformly, as you can see right here.
+
+01:58.682 --> 02:00.345
+This is from a prior distribution.
+
+02:01.006 --> 02:15.386
+And through the mapping, so this here is from Z to X is G. So this is the mapping G. You can see that the uniform distribution is now mapped to something non uniform, which results in the green thing.
+
+02:15.406 --> 02:17.329
+So G is the green line.
+
+02:17.309 --> 02:22.417
+while as this is data, the black dots are data.
+
+02:23.399 --> 02:31.972
+And if you have a discriminator, the discriminator is supposed to tell you where there's data and where there's fake data.
+
+02:32.593 --> 02:34.997
+Now, so green here is fake.
+
+02:37.053 --> 02:40.378
+Now this blue line is sort of a half trained discriminator.
+
+02:40.518 --> 02:42.221
+Now you train D, right?
+
+02:42.361 --> 02:49.052
+You maximize D the discriminator, and that gives you this blue line right here.
+
+02:49.212 --> 02:54.080
+So this is a perfect discriminator for these two data distributions.
+
+02:55.101 --> 03:00.630
+It tells you it's basically the ratio of green to black at each point.
+
+03:00.610 --> 03:04.981
+And now you train the generator according to this.
+
+03:05.141 --> 03:13.542
+And you can see that the gradient of the discriminator is in this direction.
+
+03:14.244 --> 03:16.830
+So it's like up this hill.
+
+03:16.810 --> 03:24.466
+And that's why you want to shift your green curve over here according to the gradient of the discriminator.
+
+03:24.827 --> 03:35.950
+Note that we first trained the discriminator and now in a second step we optimize the generator.
+
+03:35.930 --> 03:44.081
+So now we shift this green curve over in order to along the gradient of the blue curve.
+
+03:44.842 --> 03:49.027
+So it's important the green curve doesn't see the black curve ever.
+
+03:49.628 --> 03:51.310
+The generator doesn't see the data.
+
+03:51.350 --> 03:58.680
+The generator simply sees that blue curve and it goes along the gradient of that blue curve of the discriminator.
+
+03:58.660 --> 03:59.121
+Okay.
+
+03:59.702 --> 04:13.085
+And then if you do this many, many steps, actually there are dots right here, you will end up with a discriminator that has no clue what's where this is one half probability everywhere because the ratio is the same.
+
+04:13.626 --> 04:23.082
+And you will end up with the probability of data equal to the probability of the output generated samples.
+
+04:23.888 --> 04:28.873
+And this can happen if the generator simply remembers the training data.
+
+04:29.113 --> 04:31.255
+But there are a number of things that counter that.
+
+04:31.476 --> 04:38.463
+For example, the generator is continuous while the training data is, of course, discrete.
+
+04:38.843 --> 04:44.769
+So there is this in-between things right here where there is no training data.
+
+04:45.210 --> 04:49.494
+In fact, to hit exactly training data is very, very unlikely.
+
+04:49.514 --> 04:53.558
+But of course, you can still peek at the training data.
+
+04:53.538 --> 05:04.368
+But also, I think there are two things why the generator doesn't simply remember the training data first because it doesn't ever see the training data directly.
+
+05:04.749 --> 05:08.560
+So it can only see it through the discriminator.
+
+05:08.540 --> 05:22.656
+And second of all, because it is built as these multi-layer neural networks, it doesn't have the power to just remember this because as there is kind of this notion of continuous function.
+
+05:23.156 --> 05:27.361
+So, and the, these neural networks are rather smooth functions often.
+
+05:27.902 --> 05:34.429
+And therefore I think that is something that helps the generator avoid remembering the training data.
+
+05:34.713 --> 05:38.697
+Of course, there is still this problem of mode collapse that was really big in GANs.
+
+05:38.757 --> 05:45.845
+So even if it doesn't remember the training data, it might focus on the easiest part of the training data and forget all other parts.
+
+05:46.205 --> 05:51.111
+And that was a direct result, actually, of this objective.
+
+05:51.591 --> 05:52.812
+So where was it?
+
+05:53.453 --> 06:04.585
+So this objective directly led to mode collapse in some form because it penalizes different errors differently.
+
+06:04.565 --> 06:10.035
+Of course, people have come up with ways to solve that.
+

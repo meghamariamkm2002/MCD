@@ -1,0 +1,167 @@
+start	end	text
+31	3855	this implicit gradient correspondence.
+3875	7338	So they formulate their entire algorithm as follows.
+7959	28620	We want to find the best meta learning parameters by minimizing the function F, where F is the average losses and L here, now that's the test set loss, the average validation loss for each task,
+30305	37936	of the parameters that the inner optimization procedure finds when it runs to its optimum.
+38938	41682	You can see here this is already different from the original mammal.
+41722	50275	The original mammal was simply running it for a number of steps and now we're really running it to the optimum, at least in the ideal case.
+51296	53680	What does the inner optimization algorithm do?
+53660	60373	The Alex star here minimizes this function g. Now, g has two arguments.
+60754	67327	G has these parameters, which are the local parameters, and these are the meta parameters.
+67447	70132	And we only optimize the local parameters.
+70593	75162	We take these as initial, and then fine tune them.
+76441	84110	where the function g is defined as the training loss of the local parameters plus this closeness regularizer.
+84150	85171	Okay.
+87333	88975	Cool.
+88995	93060	Now the question of course is how does that lead to gradient descent?
+93100	97945	So ultimately we want to minimize this function f right here.
+98546	103832	So we're going to have to do something like df.
+103812	105494	by d theta.
+105914	112300	In order to run gradient descent, we need to calculate this gradient because we need to do gradient descent.
+112840	114442	So what's that going to be?
+115503	125231	That's going to be, of course, since f is this one over m up here, the gradient simply distributes over that sum.
+126232	133819	Now, it's the derivative of each of these inner loss functions.
+133799	143170	Let's go with this alg star i theta.
+143190	145092	That's basically what you have right here.
+146794	154222	So in order to take the gradient of f, we need to be able to derive these loss functions.
+155083	159108	And you can see right here, theta is not the argument to the loss function.
+159288	161571	Theta is the argument to this inner procedure.
+161771	163553	So by the chain rule,
+163533	166459	Right now, this gives us this.
+166619	172772	So the chain rule says we derive the outer thing with respect to its input.
+172792	179907	That's this part right here, the gradient of the loss with respect to the neural network.
+179927	183955	And that thing here, that's the ALG star.
+185082	191831	So we need the gradient of the loss function with respect to the end parameters of the optimization procedure.
+191951	192752	Now that's easy.
+193153	194655	That's, we know how to do that.
+195035	206010	That is the, or that is the, so if you remember the drawing at the beginning, this gradient is the end arrow right here.
+207256	207837	This is easy.
+207897	209680	This is one backward propagation.
+209720	212524	This is regular supervised learning back prop.
+213025	213185	Right.
+213205	217371	You have parameters of a neural network, a gradient for the loss function.
+217511	217772	Cool.
+219034	227366	The hard part is to have the derivative of the algorithm itself with respect to the, to the meta parameters.
+228728	232133	So this is going to be, this here is going to be a vector.
+234593	255825	It's the gradient with respect to these parameters, and this is going to be a matrix, and the matrix will relate basically one dimension, each dimension of this vector, sorry, this is going to be a product between this thing and this thing, and it will result in this thing.
+255805	259930	So the left thing is the gradient we want.
+260030	262333	This is the derivative of the entire thing.
+262774	263295	That's this.
+265037	269242	Now, the right thing is the gradient at the end of the optimization procedure.
+269723	281018	And this matrix here relates the individual dimension of this end gradient to the gradient that we want, right?
+281038	284462	This is a matrix that relates the two in a linear fashion.
+285067	286008	This is what we're looking.
+286389	296825	How do we need to change the initial parameters in order to change the end parameters in a certain way?
+296905	300109	Because we only know this, but we want to know this.
+300690	304236	So how do we calculate this thing here, this Jacobian?
+304796	305798	That's the question, right?
+305858	311867	How do we derive the algorithmic procedure, this thing here?
+313889	322756	And the paper goes on to say, well, okay, yeah, so we need to do this, this is the entire gradient descent optimization procedure.
+322836	326768	So we must compute this thing right here.
+328402	330285	and they just throw it in your face.
+330705	331066	It's this.
+331566	332828	Boom.
+332848	333429	Shagadabam.
+334170	334711	This thing here.
+335592	335792	Done.
+336513	337014	Let's go on.
+337154	337275	No.
+338436	348851	So you can see it's basically putting this just right here, but we kind of want to explore where that comes from.
+348931	353177	So the fact you can see here, you can derive this gradient
+353157	371242	as a close form expression of the inverse of a matrix that contains, this is the identity matrix, contains somehow this lambda factor that we saw before, and it contains this Hessian matrix of the training loss, right?
+371282	374466	So this is this end gradient that we can calculate easily.
+375027	378692	And the second derivative of that is the Hessian.
+378672	382098	which is basically the curvature in the landscape of that loss.
+382499	391875	But nowhere in this thing is the, is the SGD procedure showing up, even though this thing here is the SGD procedure.
+392356	393477	And that's pretty impressive.
+393798	397504	And we're going to look at how that comes about.
+398326	402553	So, so where,
+404558	406952	Where do we start?
+407717	411700	First, let's take this, let's take this G right here.
+413300	415983	this G function, right?
+416003	422550	And let's calculate the derivative with respect to these parameters right here.
+423151	425354	So let's go for this end gradient.
+425374	427115	What's this end gradient going to be?
+428577	434724	So we'll derive the G with respect to these parameters.
+436005	436506	All right.
+439895	440918	So this is a sum.
+441881	443505	This first thing is pretty easy.
+444327	449522	It's going to be the gradient of this loss function, loss function is a scalar, right?
+450023	451086	So we can
+454238	459225	This we can calculate, this is the one backward prop through the network.
+460207	463852	The second thing we can also do pretty easily, this is an L2 norm.
+464273	466897	We know how to derive a square.
+467798	476271	So the two comes down and this will simply result in this vector right here.
+476411	480938	So it's going to be lambda times phi minus theta.
+482065	486074	Okay, now this was relatively easy.
+487597	500344	Now, imagine what happens when in this particular thing, we have one additional information, namely that f, the inside of f, f
+501893	505340	we will always optimize to the end.
+505560	509007	We will always optimize this to its minimum, right?
+509388	516462	This star denotes that the inner optimization procedure will always go to the minimum of that function.
+517284	520089	So what do we know about the minimum of a function?
+520250	524037	We know that it's gradient at that particular point.
+524017	524978	is zero.
+526281	528063	This is an important part.
+528103	529666	So now we can restructure.
+530407	536456	So if we take one to the right, I might actually use black here because it's kind of burning my eyes.
+537498	540122	We can isolate this part right here.
+540883	546632	So we say the phi is equal to, first of all, let's
+546612	549855	Let's take this to the right side.
+550035	555060	So we'll have this gradient right here, and I'm just going to write L phi.
+556882	558464	Let's keep the hat alive.
+559865	562648	We'd have to divide this by lambda, right?
+563028	564990	And then bring over the theta.
+565871	576602	So we have an expression that says at the optimum, the parameters phi, the inner parameters, are going to be given by this expression.
+578050	581314	Now that's pretty, pretty cool.
+582276	593130	But we know also that these parameters aren't just, you know, parameters per se, they depend on these parameters, right?
+593150	600700	The end parameters depend on the initial parameters because we use the initial parameters to initialize these end parameters.
+600680	604448	So these are actually a function of the initial parameters.
+604568	608697	So what we can do is we can derive this using red again.
+609819	610480	Let's use blue.
+611302	612765	We can derive this thing.
+614332	616054	by the initial parameters, right?
+616335	620259	How do the end parameters relate to the initial parameters?
+620540	630172	Now, this is our basic question all along, but we now have an exact expression for the end parameters, which we didn't have before, before we just knew they came about by SGD.
+631073	635058	So, important to say this only works at the optimum, right?
+635078	639484	This is at the optimum that this relation counts, not anywhere.
+641025	643849	And the paper is abusing this quite a bit right here.
+643829	649902	So what does this do if we derive this thing here with respect to theta?
+649942	652347	It's simply giving us the identity matrix, right?
+652367	655494	This is now our Jacobian that appears here.
+656396	663812	It's simply giving us this, then this one divided by lambda is going to stay.
+663792	675509	And now it gets a bit tricky because these things right here, of course, are also a function of theta.
+675529	686425	So essentially this thing right here is a gradient of another function of theta.
+686405	689088	So we can apply the chain rule again.
+689589	706128	Since this is already the first derivative, it will give us the second derivative with respect to the loss function right here of with whatever goes into the loss function.
+706769	712115	So that times the inner derivative.
+712836	715399	Now the inner derivative is simply how
+716712	726672	to derive again the phi by the theta.
+728120	730844	Just, okay.
+730864	731084	Yes.
+731725	743021	So you can see, first of all, interesting that the expression here, or the expression that we're looking to find appears in the expression itself, right?
+743201	756220	Since these parameters appear over here as a function argument as well, we'll get basically this expression here twice, but we can reformulate that
+756200	767034	and find that this term, this Jacobian, is basically this here, inverted.
+767655	771980	So the matrix we're looking for is, sorry, the inverse Jacobian.
+772421	780351	The matrix we're looking for is given by this quantity right here, the identity matrix minus this Hessian term right here.
+782272	782612	Okay.
+782632	785776	And this is exactly what you see appearing here.
+786797	787839	This is exactly that.
+788680	795949	So the derivative we're looking for, sorry, this is actually the Jacobian, not the inverse.
+796049	796730	That's my bad.
+798271	801976	What you're looking for is given by this expression.
+802216	804539	Now my eraser got stuck.
+806281	806601	Hello.
+809305	809545	Cool.
+812512	813854	So that's how that appears.
+814614	817978	You see, it's the same thing if I had done everything correctly.
+819660	828931	And so this you do by simply shipping this to the other side, which will make it the inverse, right?
+829251	837180	So you basically divide both sides by this, and then you get this as an inverse.
+837200	838722	Now, why does this work?
+838702	843789	Again, I want to stress, why did we get this identity here?
+843909	851520	Why were we able to express, get a close form solution for the inner thing?
+852561	855765	Or sorry, for the end parameters in terms of the beginning parameters.
+856406	857708	That doesn't have SGD.
+858089	863055	First reason, because we optimized to the end, to the optimum.
+863516	866380	That's why we got the equal zero right here.
+866360	874909	Second reason, because we have this regularizer, you see this directly comes from this expression right here.
+875431	885043	If we wouldn't have this regularizer, then we could not make this expression, we could not get phi as a standalone quantity here.

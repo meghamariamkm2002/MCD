@@ -1,0 +1,23 @@
+or what I call the alignment problem.
+So if you take a piece of text like this entire paragraph right here,
+Let's look at this paragraph.
+This paragraph to read it out takes like 30 to 60 seconds.
+You can train really models that output this long of sound.
+It would be, it would be too big of a sample.
+You want to train ideally on segments.
+They train segments that are, I believe here, two second windows from each examples.
+So because they say if we train on 20 seconds, that would just be wasteful and prohibitively expensive.
+Now the problem, of course, is if I simply take a window here, like this one, of two seconds, and I have my human that has read this entire paragraph in one go, I have no clue, again, which part of the entire sound wave of this paragraph.
+this this subsequence corresponds to a good guess would be to go like well this is about 50% in so maybe here to here maybe who knows okay and even within that and that's what we discussed before you have no clue how long this word here is going to take up within this piece of sound
+And that's the general alignment problem right here.
+So in this entire sound wave, where is the piece and how do these words distribute across the wave of sound?
+The original model had, as I understand it,
+such alignments and therefore this generator could work really well because you had these alignments.
+Without these alignments it doesn't work as well.
+And you can, on their website that I've shown you initially, you can listen to samples where they disable each of these things.
+So this generator is really good at producing sound when it has these alignments.
+So the challenging task here is how do you compute these alignments?
+How do you compute this thing if you don't have it, if you don't have it in your training data?
+So it needs to be part of the loss.
+So that's what this entire architecture down here is.
+All right, so the text is

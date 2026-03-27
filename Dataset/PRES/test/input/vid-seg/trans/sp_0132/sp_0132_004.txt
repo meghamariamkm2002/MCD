@@ -1,0 +1,5 @@
+In language modeling tasks, the input to the transformer are usually interpreted in a row-wise manner, where
+Each row of the input corresponds to an embedding of a specific token.
+But for PDE problems, column-wise, viewpoint is actually a more appropriate viewpoint.
+In this case, each channel of the input corresponds to a learned function, and each row of it is the sampling of this function at a specific grid point.
+Based on the column-wise viewpoints, various work has tweaked and modified attention to better suited for specific PD learning tasks.

@@ -1,0 +1,3 @@
+we additionally derive an explicit gridding formula to minimize the integral KL divergence, which lies in this form.
+We can see that in the explicit gridding formula, we do not know the SQT, which is the score function of the diffused student distribution in practice.
+we introduce an additional auxiliary score network, auxiliary diffusion model S5, which we fine-tune with samples consistently drawn from the student model to approximate such score function.

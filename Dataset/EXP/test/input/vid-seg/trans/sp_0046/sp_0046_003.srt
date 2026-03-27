@@ -1,0 +1,180 @@
+1
+00:00:00,031 --> 00:00:04,397
+Let's jump into the loss function right here.
+
+2
+00:00:04,938 --> 00:00:19,558
+So they say G and D play the following two player minimax game with value function V. And this is still understood until today that
+
+3
+00:00:19,538 --> 00:00:32,190
+It was already like if this was a pure engineering paper, they could simply build the architecture and say, oh, we let these networks fight and they are kind of adversarial and they pump each other up and so on.
+
+4
+00:00:32,510 --> 00:00:40,658
+And this here was much more into the direction of kind of a theoretical reasoning into why something like this would work.
+
+5
+00:00:40,698 --> 00:00:45,883
+Of course, there are still a lot of engineering going on to actually make it work.
+
+6
+00:00:45,863 --> 00:00:50,272
+So they, they have, there's this value function right here.
+
+7
+00:00:50,773 --> 00:00:51,193
+Okay.
+
+8
+00:00:51,213 --> 00:00:53,578
+And the value function is the following.
+
+9
+00:00:54,139 --> 00:01:05,982
+So what you have is you have the log probability of data, and you have one, the log one minus D of the generated samples.
+
+10
+00:01:05,962 --> 00:01:10,470
+So here you can see, and this was introduced, this seems also obvious now, right?
+
+11
+00:01:10,810 --> 00:01:16,139
+But you have a prior on what this is called the noise distribution.
+
+12
+00:01:16,299 --> 00:01:16,600
+Okay.
+
+13
+00:01:16,980 --> 00:01:25,815
+So you have a prior on your input noise to the generator, because the generator is supposed to come up with very many different data points.
+
+14
+00:01:26,296 --> 00:01:28,780
+And if it is a, if it is a
+
+15
+00:01:28,760 --> 00:01:36,397
+Non-stochastic function like a neural network, then you need some way to produce different images.
+
+16
+00:01:36,878 --> 00:01:40,305
+So there is this prior distribution over the noise.
+
+17
+00:01:40,867 --> 00:01:43,392
+You feed that noise into the generator.
+
+18
+00:01:43,432 --> 00:01:45,717
+The generator will produce an output.
+
+19
+00:01:45,777 --> 00:01:47,882
+You put that into the discriminator.
+
+20
+00:01:47,862 --> 00:01:54,238
+And then this right here, as you can see, the discriminator is trying to maximize this objective.
+
+21
+00:01:54,899 --> 00:02:05,365
+So the discriminator is trying to maximize the probability of real data, and it is trying to minimize the probability of fake data.
+
+22
+00:02:05,345 --> 00:02:08,949
+This is simply a two-way classification problem.
+
+23
+00:02:09,750 --> 00:02:15,315
+At the same time, the generator, as you can see, is trying to minimize the objective.
+
+24
+00:02:15,896 --> 00:02:18,679
+In fact, the order here is quite important.
+
+25
+00:02:20,440 --> 00:02:27,087
+The generator, as you can see, is trying to minimize whatever this here is.
+
+26
+00:02:27,468 --> 00:02:32,753
+The generator is trying to minimize against the best possible discriminator.
+
+27
+00:02:32,733 --> 00:02:41,305
+And so this is one, one observation right here is that the formulation is always with respect to a perfect discriminator.
+
+28
+00:02:41,866 --> 00:02:50,358
+Now we know that this doesn't work because if you have a perfect discriminator, then generator cannot catch up because you have insufficient gradients and so on.
+
+29
+00:02:50,979 --> 00:02:54,124
+And this was already recognized in this paper as well.
+
+30
+00:02:54,344 --> 00:03:01,474
+But the formulation is with respect to a min max game and not a max min game.
+
+31
+00:03:01,454 --> 00:03:10,993
+So the other point I want to make here is that you can see the discriminator appears in both terms right here.
+
+32
+00:03:11,254 --> 00:03:14,661
+However, the generator only appears right here.
+
+33
+00:03:15,823 --> 00:03:23,378
+And this basically means that the objective for the generator is only this part here because the other part is constant.
+
+34
+00:03:23,358 --> 00:03:30,169
+So the generator is just trying to make the discriminator think that fake data is real.
+
+35
+00:03:30,670 --> 00:03:44,151
+So it is trying to make the discriminator the class of fake data as small as possible for the data that it outputs while the discriminator is trying to make the class of fake data.
+
+36
+00:03:44,131 --> 00:03:48,619
+more than the class of, sorry, real data.
+
+37
+00:03:48,639 --> 00:03:53,428
+Yeah, it's trying to make, it's trying to classify fake data as fake and real data as real.
+
+38
+00:03:54,610 --> 00:03:57,035
+Whereas the generator has only this part on the right.
+
+39
+00:03:57,135 --> 00:04:00,761
+This is, I feel this is, it's quite important.
+
+40
+00:04:01,463 --> 00:04:01,743
+Why?
+
+41
+00:04:02,104 --> 00:04:08,215
+Because already in this paper, they recognize that this might not be the best practical objective.
+
+42
+00:04:08,195 --> 00:04:29,308
+And for the generator, they can actually exchange this part here on the right to simply say we want to instead of log 1 minus d, we simply want to use minus log d as an objective for the generator.
+
+43
+00:04:29,288 --> 00:04:31,057
+So you can kind of play around with this.
+
+44
+00:04:31,137 --> 00:04:35,539
+And as you know, lots of formulations have played around with this loss right here.
+
+45
+00:04:36,021 --> 00:04:40,041
+And yeah, that's why we have like a billion billion billion billion
+

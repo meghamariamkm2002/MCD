@@ -1,0 +1,65 @@
+WEBVTT
+
+00:00.031 --> 00:00.412
+speech.
+
+00:00.472 --> 00:18.086
+Text-to-speech is basically you take a piece of text, like this one, modern text-to-speech synthesis, pipelines typically involved, blah, blah, blah, and you want to make a model that takes this and outputs sound waves as if a human would say it, right?
+
+00:18.106 --> 00:23.035
+So either modern text to speech and so on.
+
+00:23.015 --> 00:25.558
+Now, I have multiple problems when doing this.
+
+00:27.359 --> 00:30.743
+First of all, the text here is words.
+
+00:30.803 --> 00:33.205
+Let's say we can tokenize the text into words.
+
+00:33.665 --> 00:36.348
+So you have modern text to speech.
+
+00:36.708 --> 00:37.669
+Those are four tokens.
+
+00:37.930 --> 00:42.875
+However, sound waves are, of course, much, much densely sampled.
+
+00:43.235 --> 00:49.461
+So these sound waves, they are typically in the order of something like 24 kilohertz sampled.
+
+00:49.441 --> 00:58.019
+So that's the ratio of one token to output samples is super high.
+
+00:58.039 --> 01:04.733
+So one token will produce many, many thousand samples in the speech.
+
+01:04.713 --> 01:05.997
+So that's the first problem.
+
+01:06.618 --> 01:19.735
+The second problem is that if you have training data, so you have data that has a piece of text and you have the sound wave that a human, you know the human read that particular piece of text.
+
+01:19.715 --> 01:25.685
+You still don't know which word exactly corresponds to which portion of that text.
+
+01:25.726 --> 01:29.132
+You simply know the entire text corresponds to the entire sound wave.
+
+01:29.492 --> 01:32.017
+You don't know this word text right here.
+
+01:32.077 --> 01:32.578
+You don't know.
+
+01:32.858 --> 01:37.386
+You don't know where it starts and where it ends in this sound wave.
+
+01:37.366 --> 01:50.222
+And the last problem you obviously have is that you want to make this in a way that it generalizes, that it sounds like a human, but also generalizes to some other text.
+
+01:50.924 --> 02:00.049
+And this paper here solves all of these problems jointly by doing an adversarial approach to learning.
+

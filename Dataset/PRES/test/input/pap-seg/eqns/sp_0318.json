@@ -1,0 +1,538 @@
+{
+  "sp_0318_page_0004": {
+    "bboxes": [
+      {
+        "box": [
+          402.6402587890625,
+          571.253173828125,
+          821.1331176757812,
+          626.60986328125
+        ],
+        "text": [
+          "v ( f ) = \\left( \\int a _ { 1 } ( x ) \\mathrm { d } P _ { 1 } ( x ) , \\cdot \\cdot \\cdot , \\int a _ { n } ( x ) \\mathrm { d } P _ { n } ( x ) \\right) ."
+        ],
+        "page": "sp_0318_page_0004",
+        "id": "sp_0318_page_0004-1",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          424.5733947753906,
+          739.7581787109375,
+          800.0587768554688,
+          794.9511108398438
+        ],
+        "text": [
+          "\\left( { \\frac { \\mathrm { d } P _ { 1 } } { \\mathrm { d } P _ { 1 } + \\cdot \\cdot \\cdot + \\mathrm { d } P _ { n } } } , \\cdot \\cdot \\cdot , { \\frac { \\mathrm { d } P _ { n } } { \\mathrm { d } P _ { 1 } + \\cdot \\cdot \\cdot + \\mathrm { d } P _ { n } } } \\right) ."
+        ],
+        "page": "sp_0318_page_0004",
+        "id": "sp_0318_page_0004-2",
+        "seg_type": "eq"
+      }
+    ]
+  },
+  "sp_0318_page_0005": {
+    "bboxes": [
+      {
+        "box": [
+          390.4667053222656,
+          1341.8323974609375,
+          832.3965454101562,
+          1448.0260009765625
+        ],
+        "text": [
+          "\\begin{array} { l l } { \\hat { P } _ { \\hat { \\mathrm { Y } } | \\mathrm { S } , \\mathrm { Y } } ( 1 | s , 1 ) = \\displaystyle \\frac { 1 } { n _ { s } ^ { + } } \\bar { \\Gamma } P _ { s } , \\quad \\hat { P } _ { \\hat { \\mathrm { Y } } | \\mathrm { S } , \\mathrm { Y } } ( 1 | s , 0 ) = \\displaystyle \\frac { 1 } { n _ { s } ^ { - } } \\bar { \\Gamma } P _ { s } , } \\\\ { \\hat { P } _ { \\hat { \\mathrm { Y } } | \\mathrm { S } , \\mathrm { Y } } ( 0 | s , 1 ) = \\displaystyle \\frac { 1 } { n _ { s } ^ { + } } \\bar { \\Gamma } \\mathsf { N } _ { s } , \\quad \\hat { P } _ { \\hat { \\mathrm { Y } } | \\mathrm { S } , \\mathrm { Y } } ( 0 | s , 0 ) = \\displaystyle \\frac { 1 } { n _ { s } ^ { - } } \\bar { \\Gamma } \\mathsf { N } _ { s } . } \\end{array}"
+        ],
+        "page": "sp_0318_page_0005",
+        "id": "sp_0318_page_0005-1",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          480.5425720214844,
+          1048.7275390625,
+          744.4287109375,
+          1082.275634765625
+        ],
+        "text": [
+          "{ \\mathcal { C } } \\triangleq \\{ P _ { \\hat { \\Upsilon } \\mid \\mathrm { S , Y } } \\mid ( \\mathrm { S , Y } ) - \\mathrm { X - \\hat { Y } } \\} ."
+        ],
+        "page": "sp_0318_page_0005",
+        "id": "sp_0318_page_0005-2",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          335.5561828613281,
+          569.9732666015625,
+          885.8779296875,
+          639.8591918945312
+        ],
+        "text": [
+          "\\begin{array} { r } { \\mathsf { F a i r F r o n t } \\big ( \\alpha _ { \\mathsf { S P } } , \\alpha _ { \\mathsf { E O } } , \\alpha _ { \\mathsf { o A E } } \\big ) \\overset { \\Delta } { = } \\operatorname* { m a x } \\mathbb { \\ P } \\left[ \\mathbb { I } _ { \\hat { \\mathbf { Y } } = \\mathsf { Y } } \\right] \\qquad \\qquad \\qquad } \\\\ { \\qquad \\qquad \\quad \\quad \\mathrm { s . t . } \\; \\mathsf { S P } \\le \\alpha _ { \\mathsf { s P } } , \\mathsf { E O } \\le \\alpha _ { \\mathsf { E O } } , \\mathsf { O A E } \\le \\alpha _ { \\mathsf { o A E } } } \\end{array}"
+        ],
+        "page": "sp_0318_page_0005",
+        "id": "sp_0318_page_0005-3",
+        "seg_type": "eq"
+      }
+    ]
+  },
+  "sp_0318_page_0006": {
+    "bboxes": [
+      {
+        "box": [
+          424.3763427734375,
+          1028.4462890625,
+          794.5230102539062,
+          1099.92919921875
+        ],
+        "text": [
+          "\\sum _ { \\hat { y } = 1 } ^ { C } \\operatorname* { m a x } _ { i \\in [ k ] } \\left\\{ a _ { i } ^ { T } \\mathbf { h } _ { \\mu } p _ { \\hat { y } } \\right\\} \\leq \\mathbb { E } \\left[ \\operatorname* { m a x } _ { i \\in [ k ] } \\{ a _ { i } ^ { T } g ( \\mathrm { X } ) \\} \\right] ,"
+        ],
+        "page": "sp_0318_page_0006",
+        "id": "sp_0318_page_0006-1",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          429.2161560058594,
+          274.8347473144531,
+          795.177734375,
+          407.02264404296875
+        ],
+        "text": [
+          "\\begin{array} { r l } { \\displaystyle \\operatorname* { m a x } _ { P \\in \\mathbb R ^ { A C \\times C } } } & { \\displaystyle \\sum _ { s = 1 } ^ { A } \\sum _ { y = 1 } ^ { C } \\mu _ { s , y } P _ { ( s , y ) , y } } \\\\ & { \\quad \\quad \\quad \\quad \\quad \\quad s . \\mathsf { t } . \\mathsf { S P } \\leq \\alpha _ { s P } , \\mathsf { E O } \\leq \\alpha _ { \\mathsf { E } o } , \\mathsf { O A E } \\leq \\alpha _ { \\mathsf { o a k } } } \\\\ & { \\quad \\quad \\quad \\quad P \\in \\mathbb C . } \\end{array}"
+        ],
+        "page": "sp_0318_page_0006",
+        "id": "sp_0318_page_0006-2",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          399.8606262207031,
+          703.8460083007812,
+          824.50537109375,
+          730.1441040039062
+        ],
+        "text": [
+          "{ \\mathcal { C } } = \\{ P \\in { \\mathcal { T } } ( C | A C ) \\mid { \\mathrm { e a c h ~ r o w ~ o f ~ } } P { \\mathrm { ~ i s ~ t h e ~ s a m e } } \\} \\, ."
+        ],
+        "page": "sp_0318_page_0006",
+        "id": "sp_0318_page_0006-3",
+        "seg_type": "eq"
+      }
+    ]
+  },
+  "sp_0318_page_0008": {
+    "bboxes": [
+      {
+        "box": [
+          359.1158142089844,
+          913.918701171875,
+          860.7577514648438,
+          944.198486328125
+        ],
+        "text": [
+          "\\operatorname* { m a x } \\ | \\operatorname* { P r } ( { \\hat { \\mathbf { Y } } } = { \\hat { y } } | \\mathbf { S } = s , \\mathbf { Y } = y ) - \\operatorname* { P r } ( { \\hat { \\mathbf { Y } } } = { \\hat { y } } | \\mathbf { S } = s ^ { \\prime } , \\mathbf { Y } = y ) |"
+        ],
+        "page": "sp_0318_page_0008",
+        "id": "sp_0318_page_0008-1",
+        "seg_type": "eq"
+      }
+    ]
+  },
+  "sp_0318_page_0016": {
+    "bboxes": [
+      {
+        "box": [
+          459.52862548828125,
+          1047.4940185546875,
+          764.2947998046875,
+          1099.0670166015625
+        ],
+        "text": [
+          "\\int a _ { i } ^ { * } ( \\boldsymbol { p } ) \\mathrm { d } P _ { \\lambda , i } ^ { * } ( \\boldsymbol { p } ) = \\int a _ { i } ( \\boldsymbol { x } ) \\mathrm { d } P _ { i } ( \\boldsymbol { x } ) ."
+        ],
+        "page": "sp_0318_page_0016",
+        "id": "sp_0318_page_0016-1",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          365.26495361328125,
+          806.4275512695312,
+          857.6090087890625,
+          858.2532958984375
+        ],
+        "text": [
+          "\\int a _ { i } ^ { * } ( p ) \\mathrm { d } { P _ { \\lambda , i } ^ { * } } ( p ) = \\mathbb { E } \\left[ a _ { i } ^ { * } ( p _ { \\lambda } ( \\boldsymbol { \\mathrm { X } } _ { i } ) ) \\right] = \\int a _ { i } ^ { * } ( p _ { \\lambda } ( \\boldsymbol { x } ) ) \\mathrm { d } { P _ { i } } ( \\boldsymbol { x } ) ."
+        ],
+        "page": "sp_0318_page_0016",
+        "id": "sp_0318_page_0016-2",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          402.7440490722656,
+          321.0131530761719,
+          820.6217651367188,
+          375.8140563964844
+        ],
+        "text": [
+          "v ( f ) = \\left( \\int a _ { 1 } ( x ) \\mathrm { d } P _ { 1 } ( x ) , \\cdot \\cdot \\cdot , \\int a _ { n } ( x ) \\mathrm { d } P _ { n } ( x ) \\right) ."
+        ],
+        "page": "sp_0318_page_0016",
+        "id": "sp_0318_page_0016-3",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          343.0326843261719,
+          457.97113037109375,
+          879.9931640625,
+          512.982666015625
+        ],
+        "text": [
+          "p _ { \\lambda } ( x ) = \\left( { \\frac { \\lambda _ { 1 } \\mathrm { d } P _ { 1 } } { \\lambda _ { 1 } \\mathrm { d } P _ { 1 } + \\cdot \\cdot + \\lambda _ { n } \\mathrm { d } P _ { n } } } , \\cdot \\cdot \\cdot , { \\frac { \\lambda _ { n } \\mathrm { d } P _ { n } } { \\lambda _ { 1 } \\mathrm { d } P _ { 1 } + \\cdot \\cdot + \\lambda _ { n } \\mathrm { d } P _ { n } } } \\right) ."
+        ],
+        "page": "sp_0318_page_0016",
+        "id": "sp_0318_page_0016-4",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          500.3804931640625,
+          1397.306884765625,
+          724.1922607421875,
+          1441.09228515625
+        ],
+        "text": [
+          "\\pmb { f } ^ { \\ast } ( \\pmb { p } ) = \\operatorname * { a r g m i n } _ { \\pmb { a } \\in \\mathcal { A } } \\pmb { p } ^ { T } \\pmb { \\Lambda } ^ { - 1 } \\pmb { a } ."
+        ],
+        "page": "sp_0318_page_0016",
+        "id": "sp_0318_page_0016-5",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          438.4529113769531,
+          951.2131958007812,
+          786.3972778320312,
+          978.9315795898438
+        ],
+        "text": [
+          "\\begin{array} { r } { \\mathcal { L } ( \\mathbf { X } _ { i } | p _ { \\lambda } ( \\mathbf { X } _ { i } ) = p ) = \\mathcal { L } ( \\mathbf { X } _ { 1 } | p _ { \\lambda } ( \\mathbf { X } _ { 1 } ) = p ) . } \\end{array}"
+        ],
+        "page": "sp_0318_page_0016",
+        "id": "sp_0318_page_0016-6",
+        "seg_type": "eq"
+      }
+    ]
+  },
+  "sp_0318_page_0017": {
+    "bboxes": [
+      {
+        "box": [
+          300.2186279296875,
+          274.4425354003906,
+          921.3008422851562,
+          545.0146484375
+        ],
+        "text": [
+          "\\begin{array} { l } { \\displaystyle v _ { j } = \\int a _ { j } ( p _ { \\lambda } ( x ) ) \\mathrm { d } P _ { j } ( x ) } \\\\ { \\displaystyle \\ \\ = \\frac { 1 } { \\lambda _ { j } } \\int a _ { j } ( p _ { \\lambda } ( x ) ) \\frac { \\lambda _ { j } \\mathrm { d } P _ { j } } { \\lambda _ { 1 } \\mathrm { d } P _ { 1 } + \\ldots + \\lambda _ { n } \\mathrm { d } P _ { n } } ( x ) ( \\lambda _ { 1 } \\mathrm { d } P _ { 1 } + \\ldots + \\lambda _ { n } \\mathrm { d } P _ { n } ) ( x ) } \\\\ { \\displaystyle \\ = \\frac { 1 } { \\lambda _ { j } } \\int a _ { j } ( p _ { \\lambda } ( x ) ) [ p _ { \\lambda } ( x ) ] _ { j } ( \\lambda _ { 1 } \\mathrm { d } P _ { 1 } + \\ldots + \\lambda _ { n } \\mathrm { d } P _ { n } ) ( x ) } \\\\ { \\displaystyle \\ = \\frac { 1 } { \\lambda _ { j } } \\mathbb { E } \\ensuremath { [ a _ { j } ( p _ { \\lambda } ( \\tilde { x } ) ) [ p _ { \\lambda } ( \\tilde { x } ) ] _ { j } ] } } \\\\ { \\displaystyle \\ = \\frac { 1 } { \\lambda _ { j } } \\int a _ { j } ( p ) p _ { j } \\mathrm { d } P _ { 1 } ^ { \\ast } ( p ) , } \\end{array}"
+        ],
+        "page": "sp_0318_page_0017",
+        "id": "sp_0318_page_0017-1",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          470.6767883300781,
+          1060.855712890625,
+          753.6784057617188,
+          1113.401123046875
+        ],
+        "text": [
+          "\\int \\phi ( { \\boldsymbol { p } } ) \\mathrm { d } P _ { \\lambda } ^ { * } ( { \\boldsymbol { p } } ) \\geq \\int \\phi ( { \\boldsymbol { p } } ) \\mathrm { d } Q _ { \\lambda } ^ { * } ( { \\boldsymbol { p } } )"
+        ],
+        "page": "sp_0318_page_0017",
+        "id": "sp_0318_page_0017-2",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          415.59149169921875,
+          794.1156005859375,
+          808.5656127929688,
+          862.0868530273438
+        ],
+        "text": [
+          "\\operatorname* { m i n } _ { v \\in \\mathcal { B } ( P _ { \\mathrm { X } | \\mathrm { A } } , \\mathcal { A } ) } \\sum _ { j = 1 } ^ { n } v _ { j } = \\int \\operatorname* { m i n } _ { i } \\{ a _ { i } ^ { T } \\mathbf { A } ^ { - 1 } p \\} \\mathrm { d } P _ { \\lambda } ^ { * } ( p ) ."
+        ],
+        "page": "sp_0318_page_0017",
+        "id": "sp_0318_page_0017-3",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          457.4642028808594,
+          580.5895385742188,
+          763.910888671875,
+          756.4238891601562
+        ],
+        "text": [
+          "\\begin{array} { l } { \\displaystyle \\sum _ { j = 1 } ^ { n } v _ { j } = \\int p ^ { T } \\Lambda ^ { - 1 } f ( p ) \\mathrm { d } P _ { \\lambda } ^ { * } ( p ) } \\\\ { \\displaystyle \\qquad \\geq \\int p ^ { T } \\Lambda ^ { - 1 } f ^ { * } ( p ) \\mathrm { d } P _ { \\lambda } ^ { * } ( p ) } \\\\ { \\displaystyle \\qquad = \\int \\operatorname* { m i n } \\{ p ^ { T } \\Lambda ^ { - 1 } a _ { i } \\} \\mathrm { d } P _ { \\lambda } ^ { * } ( p ) . } \\end{array}"
+        ],
+        "page": "sp_0318_page_0017",
+        "id": "sp_0318_page_0017-4",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          461.31878662109375,
+          201.10086059570312,
+          762.8064575195312,
+          231.83885192871094
+        ],
+        "text": [
+          "\\begin{array} { r } { p ^ { T } \\mathbf { A } ^ { - 1 } f ( p ) \\geq p ^ { T } \\mathbf { A } ^ { - 1 } f ^ { * } ( p ) , \\quad \\forall p . } \\end{array}"
+        ],
+        "page": "sp_0318_page_0017",
+        "id": "sp_0318_page_0017-5",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          455.3990478515625,
+          1378.6710205078125,
+          767.379150390625,
+          1410.3831787109375
+        ],
+        "text": [
+          "P _ { \\hat { \\mathrm { Y } } _ { \\lambda } | \\mathrm { s } , \\mathrm { Y } } = \\lambda P _ { \\hat { \\mathrm { Y } } _ { 0 } | \\mathrm { s } , \\mathrm { Y } } + ( 1 - \\lambda ) P _ { \\hat { \\mathrm { Y } } _ { 1 } | \\mathrm { s } , \\mathrm { Y } } ."
+        ],
+        "page": "sp_0318_page_0017",
+        "id": "sp_0318_page_0017-6",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          277.7275390625,
+          901.0770874023438,
+          944.1371459960938,
+          1002.9448852539062
+        ],
+        "text": [
+          "\\begin{array} { r l r } & { } & { B ( P _ { \\mathrm { X } | \\boldsymbol { \\Lambda } } , \\boldsymbol { A } ) \\supseteq B ( P _ { \\mathrm { Y } | \\boldsymbol { \\Lambda } } , \\boldsymbol { \\mathcal { A } } ) \\quad \\mathrm { f o r ~ e v e r y ~ c l o s e d , ~ b o u n d e d , ~ c o n v e x \\ } \\mathcal { A } \\ } \\\\ & { } & { \\Leftrightarrow _ { v \\in B ( P _ { \\mathrm { X } | \\boldsymbol { \\Lambda } } , \\boldsymbol { \\mathcal { A } } ) } \\sum _ { j = 1 } ^ { n } v _ { j } \\le \\underset { v \\in B ( P _ { \\mathrm { Y } | \\boldsymbol { \\Lambda } } , \\boldsymbol { \\mathcal { A } } ) } { \\operatorname* { m i n } } \\sum _ { j = 1 } ^ { n } v _ { j } \\quad \\mathrm { f o r ~ e v e r y ~ c l o s e d , ~ b o u n d e d , ~ c o n v e x } \\ \\mathcal { A } . } \\end{array}"
+        ],
+        "page": "sp_0318_page_0017",
+        "id": "sp_0318_page_0017-7",
+        "seg_type": "eq"
+      }
+    ]
+  },
+  "sp_0318_page_0018": {
+    "bboxes": [
+      {
+        "box": [
+          424.3115234375,
+          868.95654296875,
+          794.4421997070312,
+          940.8638916015625
+        ],
+        "text": [
+          "\\sum _ { \\hat { y } = 1 } ^ { C } \\operatorname* { m a x } _ { i \\in [ k ] } \\left\\{ a _ { i } ^ { T } \\mathbf { A } _ { \\mu } p _ { \\hat { y } } \\right\\} \\leq \\mathbb { E } \\left[ \\operatorname* { m a x } _ { i \\in [ k ] } \\{ a _ { i } ^ { T } g ( \\mathrm { X } ) \\} \\right] ,"
+        ],
+        "page": "sp_0318_page_0018",
+        "id": "sp_0318_page_0018-1",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          280.03204345703125,
+          1093.46875,
+          944.2120971679688,
+          1273.90576171875
+        ],
+        "text": [
+          "\\begin{array} { c } { { \\displaystyle f ( { \\cal P } ) \\triangleq \\sum _ { s = 1 } ^ { \\Lambda } \\sum _ { y = 1 } ^ { C } \\mu _ { s , y } { \\cal P } _ { ( s , y ) , y } } , } \\\\ { { g ( { \\cal P } ; a _ { 1 } , \\cdot \\cdot \\cdot \\cdot , a _ { k } ) \\triangleq \\sum _ { i \\subseteq \\ln \\left\\{ { \\cal k } \\right\\} } ^ { C } \\operatorname* { m a x } \\left\\{ a _ { i } ^ { T } \\Lambda _ { \\mu } p _ { i } \\right\\} - { \\displaystyle \\mathbb E \\left[ \\operatorname* { m a x } _ { i \\in \\left\\{ k \\right\\} } \\! \\left\\{ a _ { i } ^ { T } g ( { \\bf X } ) \\right\\} \\right] , } } \\\\ { { \\displaystyle { \\cal F } \\triangleq C _ { k } \\cap \\{ { \\cal P } \\in { \\cal T } ( C | A C ) \\mid S \\} \\leq \\alpha _ { \\mathrm { s p } } , { \\cal E } 0 \\leq \\alpha _ { \\mathrm { t o } } , 0 { \\cal \\mathsf k } \\in \\alpha _ { \\mathrm { o u t } } \\} \\, . } } \\end{array}"
+        ],
+        "page": "sp_0318_page_0018",
+        "id": "sp_0318_page_0018-2",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          313.3901672363281,
+          435.2316589355469,
+          911.7964477539062,
+          571.4247436523438
+        ],
+        "text": [
+          "\\begin{array} { r l } & { p _ { \\pm } ( \\hat { y } ) = \\left( \\frac { \\mu _ { 1 , 1 } P _ { ( 1 , 1 ) , \\hat { y } } } { \\sum _ { s , y } \\mu _ { s , y } P _ { ( s , y ) , \\hat { y } } } , \\cdots , \\frac { \\mu _ { A , C } P _ { ( A , C ) , \\hat { y } } } { \\sum _ { s , y } \\mu _ { s , y } P _ { ( s , y ) , \\hat { y } } } \\right) . } \\\\ & { p _ { \\pmb { \\nu } } ( x ) = \\left( \\frac { \\mu _ { 1 , 1 } \\mathrm { d } P _ { \\mathrm { X | S = 1 , Y = 1 } } } { \\sum _ { s , y } \\mu _ { s , y } \\mathrm { d } P _ { \\mathrm { X | S = s , Y = y } } } ( x ) , \\cdots , \\frac { \\mu _ { A , C } \\mathrm { d } P _ { \\mathrm { X | S = A , Y = C } } } { \\sum _ { s , y } \\mu _ { s , y } \\mathrm { d } P _ { \\mathrm { X | S = s , Y = y } } } ( x ) \\right) . } \\end{array}"
+        ],
+        "page": "sp_0318_page_0018",
+        "id": "sp_0318_page_0018-3",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          255.76832580566406,
+          714.7964477539062,
+          935.7192993164062,
+          786.7044067382812
+        ],
+        "text": [
+          "\\sum _ { \\tilde { y } = 1 } ^ { C } \\phi \\left( \\frac { \\mu _ { 1 , 1 } P _ { ( 1 , 1 ) , \\tilde { y } } } { \\sum _ { s , y } \\mu _ { s , y } P _ { ( s , y ) , \\tilde { y } } } , \\cdots , \\frac { \\mu _ { A , C } P _ { ( A , C ) , \\tilde { y } } } { \\sum _ { s , y } \\mu _ { s , y } P _ { ( s , y ) , \\tilde { y } } } \\right) \\sum _ { s , y } \\mu _ { s , y } P _ { ( s , y ) , \\tilde { y } } \\leq \\mathbb { E } \\left[ \\phi ( g ( \\boldsymbol { \\mathbf { X } } ) ) \\right]"
+        ],
+        "page": "sp_0318_page_0018",
+        "id": "sp_0318_page_0018-4",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          418.6026916503906,
+          609.4769897460938,
+          804.2171630859375,
+          652.9932250976562
+        ],
+        "text": [
+          "{ \\mathcal { C } } = \\left\\{ P \\mid P _ { { \\hat { \\mathrm { X } } } | \\mathrm { s , Y } { \\mathrm { ~ i s ~ m o r e ~ i n f o r m a t i v e ~ t h a n } } } \\, P \\right\\} ."
+        ],
+        "page": "sp_0318_page_0018",
+        "id": "sp_0318_page_0018-5",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          426.611083984375,
+          1402.735595703125,
+          795.015625,
+          1441.1329345703125
+        ],
+        "text": [
+          "f ( P ^ { t } ) = \\operatorname* { m a x } _ { P \\in \\mathcal { F } ^ { t } } f ( P ) \\geq \\operatorname* { m a x } _ { P \\in \\mathcal { F } } f ( P ) \\geq f ( P ^ { t } ) ."
+        ],
+        "page": "sp_0318_page_0018",
+        "id": "sp_0318_page_0018-6",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          513.747802734375,
+          1333.55419921875,
+          707.5369873046875,
+          1361.8299560546875
+        ],
+        "text": [
+          "g ( { \\cal P } ^ { t } ; a _ { 1 } , \\cdots , a _ { k } ) \\le 0 ,"
+        ],
+        "page": "sp_0318_page_0018",
+        "id": "sp_0318_page_0018-7",
+        "seg_type": "eq"
+      }
+    ]
+  },
+  "sp_0318_page_0019": {
+    "bboxes": [
+      {
+        "box": [
+          458.7540588378906,
+          369.11773681640625,
+          764.4680786132812,
+          405.8426513671875
+        ],
+        "text": [
+          "f ( P ^ { * } ) = \\operatorname* { m a x } _ { P \\in \\mathcal { F } ^ { * } } \\; f ( P ) \\ge \\operatorname* { m a x } _ { P \\in \\mathcal { F } } \\; f ( P ) ."
+        ],
+        "page": "sp_0318_page_0019",
+        "id": "sp_0318_page_0019-1",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          374.5013427734375,
+          304.4101257324219,
+          848.3623657226562,
+          344.15386962890625
+        ],
+        "text": [
+          "f ( P ^ { * } ) = \\operatorname* { l i m } _ { t \\to \\infty } f ( P ^ { t } ) = \\operatorname* { l i m } _ { t \\to \\infty } \\operatorname* { m a x } _ { P \\in \\mathcal { F } ^ { t } } \\; f ( P ) = \\operatorname* { m a x } _ { P \\in \\mathcal { F } ^ { * } } \\; f ( P ) ."
+        ],
+        "page": "sp_0318_page_0019",
+        "id": "sp_0318_page_0019-2",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          404.093994140625,
+          709.8424072265625,
+          817.21533203125,
+          736.3806762695312
+        ],
+        "text": [
+          "0 \\geq g ( { \\cal P } ^ { * } ; a _ { 1 } ^ { * } , \\cdot \\cdot \\cdot , a _ { k } ^ { * } ) \\geq g ( { \\cal P } ^ { * } ; \\bar { a } _ { 1 } , \\cdot \\cdot \\cdot , \\bar { a } _ { k } ) > 0 ,"
+        ],
+        "page": "sp_0318_page_0019",
+        "id": "sp_0318_page_0019-3",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          433.195556640625,
+          509.2613830566406,
+          789.927001953125,
+          537.1461181640625
+        ],
+        "text": [
+          "g ( P ^ { t } ; a _ { 1 , t } , \\cdot \\cdot \\ , a _ { k , t } ) \\geq g ( P ^ { t } ; { \\bar { a } } _ { 1 } , \\cdot \\cdot \\ , { \\bar { a } } _ { k } ) ."
+        ],
+        "page": "sp_0318_page_0019",
+        "id": "sp_0318_page_0019-4",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          305.74658203125,
+          762.3980102539062,
+          913.5265502929688,
+          798.103759765625
+        ],
+        "text": [
+          "f ( P ^ { * } ) = \\operatorname* { m a x } _ { P \\in { \\mathcal { F } } ^ { * } } \\; f ( P ) \\ge \\operatorname* { m a x } _ { P \\in { \\mathcal { F } } } \\; f ( P ) \\ge f ( P ^ { * } ) \\implies \\operatorname* { m a x } _ { P \\in { \\mathcal { F } } } \\; f ( P ) = f ( P ^ { * } ) ."
+        ],
+        "page": "sp_0318_page_0019",
+        "id": "sp_0318_page_0019-5",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          441.8827819824219,
+          605.9154052734375,
+          779.8128662109375,
+          632.1376953125
+        ],
+        "text": [
+          "g ( { \\cal P } ^ { * } ; a _ { 1 } ^ { * } , \\cdot \\cdot \\cdot , a _ { k } ^ { * } ) \\geq g ( { \\cal P } ^ { * } ; \\bar { a } _ { 1 } , \\cdot \\cdot \\cdot , \\bar { a } _ { k } ) ."
+        ],
+        "page": "sp_0318_page_0019",
+        "id": "sp_0318_page_0019-6",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          502.09503173828125,
+          455.1627197265625,
+          720.4608764648438,
+          482.27313232421875
+        ],
+        "text": [
+          "g ( P ^ { * } ; a _ { 1 , t } , \\cdot \\cdot \\cdot , a _ { k , t } ) \\leq 0 ."
+        ],
+        "page": "sp_0318_page_0019",
+        "id": "sp_0318_page_0019-7",
+        "seg_type": "eq"
+      }
+    ]
+  }
+}

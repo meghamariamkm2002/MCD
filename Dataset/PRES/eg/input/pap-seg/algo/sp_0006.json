@@ -1,0 +1,23 @@
+[
+  {
+    "input_path": "/tmp/megha/PDF-Extract-Kit/Presentation/layout_pap/sp_0006/sp_0006_page_6.png",
+    "page_index": null,
+    "boxes": [
+      {
+        "input_path": "/tmp/megha/PDF-Extract-Kit/Presentation/layout_pap/sp_0006/sp_0006_page_6.png",
+        "cls_id": 14,
+        "label": "algorithm",
+        "score": 0.8857222199440002,
+        "coordinate": [
+          442.4596862792969,
+          2440.171630859375,
+          1273.811279296875,
+          2896.747314453125
+        ],
+        "text": "gorithm 1: Obtain \u03c6z for an input x\n1: Input: input x, g(x), and an Z  {1, 2, .., p}\n2: Output: \u03c6t\n3: Set 0-I\nto be a p-length vector with 1's in the positions indexe\nby I and O's elsewhere\n4: Calculate the following function: (Note that \u03c6t\u2032 (x) is also\ncalculated via the same recursive function.)\n\u222b g(0\u2212I  x) \u2212 \u2211I\u2032\u2282I \u03c6I \u2032 (x), I 6\u2260 ,\n\u03c6h(x) =\ng(0),\nI = \nwhere  is the Hadamard product operator.",
+        "id": "sp_0006_page_6_1",
+        "seg_type": "algo"
+      }
+    ]
+  }
+]

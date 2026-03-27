@@ -1,0 +1,4 @@
+In faculty learning, we want to train the model using multiple clients without direct inter-client communication.
+The challenges are that the data is usually non-ID and is locally distributed on each client.
+And the communication between clients and the server is very heavy.
+Therefore, we want to design a framework that can maintain both privacy and also efficiency.

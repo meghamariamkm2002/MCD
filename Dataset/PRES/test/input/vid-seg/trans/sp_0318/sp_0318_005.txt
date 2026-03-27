@@ -1,0 +1,3 @@
+However, computing the fear from directly is difficult because it requires solving a functional optimization over all possible classifiers.
+To circumvent this issue, we note that both accuracy and group fairness can be written in terms of the conditional distribution of the predicted outcome given true label and system group attributes.
+which we write fear from by maximizing over the discountation of distribution, which results in a linear program with only eight variables.

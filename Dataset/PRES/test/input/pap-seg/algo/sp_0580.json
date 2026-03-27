@@ -1,0 +1,59 @@
+[
+  {
+    "input_path": "/tmp/megha/PDF-Extract-Kit/Presentation/layout_pap/sp_0580/sp_0580_page_6.png",
+    "page_index": null,
+    "boxes": [
+      {
+        "cls_id": 14,
+        "label": "algorithm",
+        "score": 0.9330750703811646,
+        "coordinate": [
+          401.4106140136719,
+          1023.9430541992188,
+          2097.581298828125,
+          1746.0828857421875
+        ],
+        "text": "Input: Bi-weighted matroid (E, r, w1, w2)\nOutput: S, \u039b\nS,\u039b'\u2190 ;\n\u039b \u2190 {0, 1};\nwhile \u039b |\u039b' \u2260 \u00d8 do\nfor \u03bb  \u039b | A' do\na, b \u2190 bases minimizing (1 \u2212 \u03bb)w1 + \u03bbw2 prioritizing w1 and w2, respectively;\nS \u2190 SU{a, b};\nN\u2190NUA;\n\u039b\u2190;\n\u03c0 \u2190 element indexes of S in increasing w1 (\u00b7) order;\nfor i  {1, . . . , |S| \u2212 1} do\n\u03b41, \u03b42 \u2190 w1S\u03c0(i+1) \u2212 w1S\u03c0(i), w2S\u03c0(i) \u2212 w2S\u03c0(i+1);\n\u039b \u2190 \u039b U {\u03b41/(\u03b41 + \u03b42)};",
+        "input_path": "/tmp/megha/PDF-Extract-Kit/Presentation/layout_pap/sp_0580/sp_0580_page_6.png",
+        "id": "sp_0580_page_6_1",
+        "seg_type": "algo"
+      },
+      {
+        "cls_id": 14,
+        "label": "algorithm",
+        "score": 0.9113147854804993,
+        "coordinate": [
+          404.1665344238281,
+          309.89166259765625,
+          2097.759765625,
+          911.47314453125
+        ],
+        "text": "Algorithm T: Finding extreie poits and d coinpro\nInput: Multi-weighted matroid (E, r, w)\nOutput: S, A\nS,A'\u2190 ;\nk\nP \u2190 all permutations over {1, . . . , k};\nwhile \u039b | A'\u2260 \u00d8 do\nfor \u03bb  \u039b |'do\n\u2200p  P, ap \u2190 base minimizing w(\u03bb) prioritizing weights ranked by p;\nS \u2190 S U {ap}pP;\nN\u2190NUA;\n\u039b \u2190 non-negative normal vectors to facets of Conv({wx : x  S});",
+        "input_path": "/tmp/megha/PDF-Extract-Kit/Presentation/layout_pap/sp_0580/sp_0580_page_6.png",
+        "id": "sp_0580_page_6_2",
+        "seg_type": "algo"
+      }
+    ]
+  },
+  {
+    "input_path": "/tmp/megha/PDF-Extract-Kit/Presentation/layout_pap/sp_0580/sp_0580_page_7.png",
+    "page_index": null,
+    "boxes": [
+      {
+        "input_path": "/tmp/megha/PDF-Extract-Kit/Presentation/layout_pap/sp_0580/sp_0580_page_7.png",
+        "cls_id": 14,
+        "label": "algorithm",
+        "score": 0.9241017699241638,
+        "coordinate": [
+          400.2541198730469,
+          309.9227294921875,
+          2097.57763671875,
+          1022.4598999023438
+        ],
+        "text": "Agol S: MOEA/D Tor MOMWB\nInput: A MOMWB instance, trade-off set \u039b, neighborhood size N \u2265 1\nOutput: S\n\u2200\u03bb  \u039b, B\u03bb \u2190 N nearest neighbors of \u03bb in \u039b (Euclidean distance);\n\u2200\u03bb  \u039b, P\u03bb\u2190 a random sample from {0, 1}m,\nS \u2190 ;\nwhile stopping conditions not met do\nfor \u03bb  \u039b do\nx \u2190 uniformly sampled from P\u03bb;\ny \u2190 independent bit flips on x with probability 1/m;\nD \u2190 {l  B\u03bb : \u2200z  Pl, fi(y) < fi(z)};\nT \u2190 {l  B : \u2200z  Pl, f(y) = fi(z)};\n\u2200l  D, Pl \u2190 {y};\n\u2200l  T, Pl \u2190 Pi U {y} removing solutions with duplicate images;\nS \u2190 non-dominated individuals in S U {y} under relation \u2264a;",
+        "id": "sp_0580_page_7_1",
+        "seg_type": "algo"
+      }
+    ]
+  }
+]

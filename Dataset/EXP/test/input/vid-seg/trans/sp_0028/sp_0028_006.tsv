@@ -1,0 +1,18 @@
+start	end	text
+31	1316	line and do that.
+2159	9568	It's also pretty interesting the neural network that they actually used was like super duper small.
+11202	18291	The input to the neural network consists of 84 by 84 by 4 image produced by this, so this is the pre-processing.
+18812	29265	The first hidden layer convolves 16 8 by 8 filters with Stride 4 with the input image and applies the rectifier non-linearity, so the ReLU.
+29865	36754	The second hidden layer convolves 32 4 by 4 filters with Stride 2, again followed by rectifier non-linearity.
+36734	41768	The final hidden layer is fully connected and consists of 256 rectifier units.
+42069	47002	The output layer is a fully connected linear layer with single output for each valid action.
+47784	51655	Number of valid actions is vary between 4 and 18 on the games we considered.
+52748	56574	Okay, as you can see, the neural network is pretty small.
+56635	57817	It's two conv layers.
+58438	62625	And as was in fashion back then, you had like big filters.
+62765	65049	So you know, big filters from like AlexNet.
+66631	69456	Yeah, big filters, but fewer than today.
+69616	75687	So today, the trend is more like deeper layers, more filters, but they are not as big.
+75707	78351	They're like three by three filters today only.
+78331	81660	Pretty interesting how they did it back then.
+82447	85050	Interesting also no max pooling and so on.

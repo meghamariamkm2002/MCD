@@ -1,0 +1,7 @@
+To solve this task, we propose VL attack.
+The overall structure is shown on the slide.
+Here the VL attack consists of two parts.
+The first is the single model level attack, where we use a from image text attack order as the firmware can be perturbed on continuous space.
+We will later introduce the details of the BSA in the block-wise similarity attack.
+If the image attack fails, we move to a text attack using the bridge attack method.
+If both single-model attack fails, we move to the multi-model level attack, where we iteratively cross-search the combination between the image perturbation and the text perturbation.

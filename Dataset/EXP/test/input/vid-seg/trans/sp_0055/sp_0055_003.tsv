@@ -1,0 +1,36 @@
+start	end	text
+31	5022	The algorithm is pretty simple in this case.
+5804	10094	So this algorithm rests on this traverse procedure.
+11157	17010	So we're going to traverse what they call these OR nodes.
+16990	21454	So they divide the problem into and nodes and or nodes.
+21574	28521	I don't believe that's particularly necessary for us to think about, but here's how this works.
+28641	31684	So they traverse the or node s to s prime.
+32144	44095	This is simply, again, this is a node, but the node is a path from s to s prime, where we don't know yet what happens in between, right?
+45560	51510	So what we'll do is we'll run this procedure select and select it.
+52372	61948	You can see it outputs an S prime and the S prime is going to be a node here somewhere in the middle where the model says this is your subdivision point.
+63363	69874	and then it will recursively traverse the left and the right branch of this tree.
+69934	76586	So it will subdivide the problem into two problems and then recursively call this traverse.
+76806	79110	You see that's the function that we're defining.
+79090	82074	call this traverse function on these.
+83356	99941	So it will subdivide this problem into these problems and for the next step again it will for each of the problems propose a middle node and subdivide it further and so on until you have a full plan.
+100281	103005	At some point you're going to have a full plan.
+102985	107271	Now, here, again, is the important thing to remember.
+107291	110956	This is just one branch of the search.
+111016	112898	This is just one possible plan.
+113239	117905	And we are going to do a tree search over these plans.
+118526	128059	So this select function here, it has returned this s prime, but it could have returned any point between s and s double prime.
+128079	131203	So let, in it, this is just one branch.
+131183	137490	I'm going to, I don't have space to draw here, but I'm going to draw it down here again.
+137510	150325	So it could have also returned this particular node here, like it's a different s' and then subdivided the problem into different problems.
+151046	157073	And then of course those problems are now different, so they would be subdivided differently again and so on.
+157053	165187	So this top part here is just, if you consider this thing here, your root node, this is where you search from.
+165207	175626	This top part is just one node, one branch in the tree, but we could also subdivide like this, and then that would be another branch in your tree.
+176066	181035	And this tree here is the thing that you're searching over.
+181015	184201	So, it's important to keep this in mind.
+184241	187407	We're searching over these different possibilities.
+188168	194720	Now, the rest of this algorithm here is basically the carryover from Monte Carlo Tree Search.
+195081	198467	And I don't want to go into that in this video.
+198447	212584	But if you're interested in how to actually implement this, you'll have to go look at MCTS and then all of this just carries over from that algorithm because you have to keep estimates of value and visit counts in this tree and so on.
+213144	215387	And also you have some sort of a value estimator.
+216128	221434	But yeah, I'm mainly concerned with how the tree is constructed right here.
+221414	233061	So basically, here's the difference between the Monte Carlo tree search and the divide and conquer Monte Carlo.

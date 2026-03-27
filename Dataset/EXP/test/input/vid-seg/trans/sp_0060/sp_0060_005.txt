@@ -1,0 +1,18 @@
+So they say here, noising student, when the student is deliberately noised, it is trained to be consistent to the teacher that is not noised when it generates the pseudo labels.
+In our experiments, we use two types of noise, input noise and model noise.
+First, data augmentation is an important noisy method in noisy student training because it forces the student to ensure prediction consistency across augmented versions of an image.
+Specifically in our method, the teacher produces high quality pseudo labels by reading in clean images while the student is required to reproduce those labels with augmented images as an input.
+Second, when dropout and stochastic depth function are used as noise, the teacher behaves like an ensemble at inference time when it generates pseudo labels, whereas the student behaves like a single model.
+In other words, the student is forced to mimic a more powerful ensemble model.
+We present an ablation study.
+So it's a bit weird what they say here.
+Don't be confused.
+You use the dropout and the stochastic depth on the student model.
+And they say here, if you do this, the teacher behaves like an ensemble at inference time.
+whereas the student behaves like a single model.
+It's a bit of a weird formulation, but it's true.
+The teacher will produce the same label for different pathways through the student if you use dropout and stochastic depth.
+And therefore the student is kind of required to approximate each time, each forward pass has a different forward pass through the layers, through the connections with dropout.
+And it's forced to approximate that teacher label with all of these different things.
+So you see that you put in a lot of techniques.
+So they have even other techniques.

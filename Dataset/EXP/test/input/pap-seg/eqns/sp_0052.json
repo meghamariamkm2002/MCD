@@ -1,0 +1,34 @@
+{
+  "sp_0052_page_0005": {
+    "bboxes": [
+      {
+        "box": [
+          639.2692260742188,
+          1159.195556640625,
+          1042.02685546875,
+          1202.822021484375
+        ],
+        "text": [
+          "w = { \\bf S o f t m a x } \\left( \\left( k ( A ^ { p o o l } ; \\theta ) \\cdot q ( B ; \\theta ) \\right) / \\left( T \\sqrt { d } \\right) \\right) ,"
+        ],
+        "id": "sp_0052_page_0005-1",
+        "page": "sp_0052_page_0005",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          732.33642578125,
+          1320.0867919921875,
+          974.4571533203125,
+          1348.609375
+        ],
+        "text": [
+          "F ^ { c o n t e x t } = f ( w \\cdot v ( B ; \\theta ) ; \\theta ) ,"
+        ],
+        "id": "sp_0052_page_0005-2",
+        "page": "sp_0052_page_0005",
+        "seg_type": "eq"
+      }
+    ]
+  }
+}

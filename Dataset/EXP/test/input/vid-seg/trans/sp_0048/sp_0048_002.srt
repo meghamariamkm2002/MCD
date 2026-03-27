@@ -1,0 +1,344 @@
+1
+00:00:00,031 --> 00:00:04,499
+Now, if you don't know what meta learning is, let me quickly introduce the term.
+
+2
+00:00:05,140 --> 00:00:09,869
+So in meta learning, you assume you have some sort of a distribution of tasks ahead.
+
+3
+00:00:10,410 --> 00:00:11,592
+So let's make some examples.
+
+4
+00:00:12,153 --> 00:00:22,933
+For example, task one could be you get an image, you have a data set of images, and you want to classify them into cats or dogs.
+
+5
+00:00:24,314 --> 00:00:28,819
+And you know, you have a little data set with labeled images and you can train, test, split that.
+
+6
+00:00:29,220 --> 00:00:30,401
+And that's one task.
+
+7
+00:00:31,002 --> 00:00:43,216
+Now task two is going to be, again, you have a small data set of different images, but let's just all make image examples here, but you want to locate the pedestrian.
+
+8
+00:00:43,356 --> 00:00:46,220
+So you want to locate the human in the image.
+
+9
+00:00:46,960 --> 00:00:50,284
+So where is the human, right?
+
+10
+00:00:50,605 --> 00:00:52,667
+And the task three could be,
+
+11
+00:00:54,503 --> 00:01:09,323
+Again, a small database of tasks as sorry of images and in each of the image you want to visually question answer you want to or let's say you want to point out
+
+12
+00:01:10,552 --> 00:01:14,598
+All right, there is a ground, there is a tree, and there is a question about it.
+
+13
+00:01:14,979 --> 00:01:17,002
+Yeah, let's take visual question answering, right?
+
+14
+00:01:17,263 --> 00:01:20,969
+We wish, which give you yes or no questions, something like this.
+
+15
+00:01:23,593 --> 00:01:27,499
+Now let's just say you have to segment, you have to segment that image.
+
+16
+00:01:28,020 --> 00:01:31,125
+So down here would be ground, you have to segment the ground.
+
+17
+00:01:31,105 --> 00:01:34,812
+Okay, so these are all image tasks, right?
+
+18
+00:01:34,832 --> 00:01:39,881
+These are all perfectly fine independent tasks, each for each one you have a small data set.
+
+19
+00:01:40,442 --> 00:01:48,496
+Now, sometimes these data sets are very, very small, such that you cannot really train a state of the art model on them.
+
+20
+00:01:49,157 --> 00:01:51,882
+For example, if you have medical images,
+
+21
+00:01:51,862 --> 00:01:55,347
+Oftentimes the labels of these are very hard to get.
+
+22
+00:01:55,427 --> 00:02:02,458
+I mean, there's privacy concerns and then, you know, doctors have to look at it to produce the images costs money and so on.
+
+23
+00:02:03,399 --> 00:02:08,026
+So it's not like you have a lot of images and you could profit from more images.
+
+24
+00:02:08,286 --> 00:02:13,654
+So one method that people come up with is called transfer learning.
+
+25
+00:02:13,834 --> 00:02:18,261
+So in transfer learning, you say, I have this giant database of images.
+
+26
+00:02:18,321 --> 00:02:21,025
+Let's, let's, let's say this is image net, right?
+
+27
+00:02:21,005 --> 00:02:24,630
+I have this giant database image net with labeled images.
+
+28
+00:02:25,031 --> 00:02:29,517
+What I can do is I can use this to train a neural network.
+
+29
+00:02:30,779 --> 00:02:33,683
+Let's this are the bunch of layers of neural network.
+
+30
+00:02:33,703 --> 00:02:39,992
+And I can train the neural network on this big database and get parameters theta, right?
+
+31
+00:02:39,972 --> 00:02:42,897
+These are the parameters of the neural network.
+
+32
+00:02:43,378 --> 00:02:47,825
+And then I will basically adapt these parameters to each task individually.
+
+33
+00:02:48,206 --> 00:02:55,237
+So in task one, sorry about that, I would then take these parameters as an input to the neural network.
+
+34
+00:02:55,277 --> 00:02:58,362
+I would initialize the neural network with these parameters.
+
+35
+00:02:58,863 --> 00:03:05,013
+And then I would use this training set in order to fine tune.
+
+36
+00:03:05,073 --> 00:03:06,756
+This is what's called fine tuning.
+
+37
+00:03:06,736 --> 00:03:10,843
+to the task specific parameters here, phi.
+
+38
+00:03:11,243 --> 00:03:13,788
+So phi one, because it's task one.
+
+39
+00:03:14,168 --> 00:03:25,707
+For task two, I would also take these as a starting point in order to train its neural network to fine tune it on this bounding box task.
+
+40
+00:03:25,687 --> 00:03:28,812
+in order to obtain the parameters for task two.
+
+41
+00:03:29,093 --> 00:03:35,624
+So you can see that there's a pre-training stage here to obtain good initial parameters.
+
+42
+00:03:36,245 --> 00:03:43,257
+And then we adapt these initial parameters for each task separately in a fine tuning stage.
+
+43
+00:03:43,237 --> 00:03:45,180
+So this is one way we can do it.
+
+44
+00:03:45,901 --> 00:03:49,245
+Another way we can do it is called multitask learning.
+
+45
+00:03:49,826 --> 00:04:03,404
+What we do in multitask learning is we say, well, see, probably an neural network that can segment the grounds is also pretty good at doing bounding boxes, like it'll use some of the same features.
+
+46
+00:04:03,825 --> 00:04:09,953
+So can't we just kind of pull together these data sets into one bigger data set?
+
+47
+00:04:09,933 --> 00:04:17,064
+And then train on, like if it's an image from task one, we'll train on the loss of task one.
+
+48
+00:04:17,444 --> 00:04:21,010
+And if it's an image from task two, we'll train on the loss of task two and so on.
+
+49
+00:04:21,431 --> 00:04:24,415
+But we'll sort of use the same neural network basis.
+
+50
+00:04:24,475 --> 00:04:27,820
+We just have kind of different heads on top of them.
+
+51
+00:04:28,521 --> 00:04:36,193
+And we'll basically, so this is called multitask learning, have one shared neural network with different outputs for the different tasks.
+
+52
+00:04:36,173 --> 00:04:44,441
+And basically counting on the fact that you can sort of learn from one task what's useful in the other.
+
+53
+00:04:44,481 --> 00:05:01,118
+Now, this is a good method to combine the tasks and to basically share data information, but it will also limit you because you now have to trade off between the tasks, like this neural network right here, this joint encoder.
+
+54
+00:05:01,098 --> 00:05:13,240
+will never be able to, will never be able to fully gear to one task because it all also has to, you know, it has to perform for the other tasks as well.
+
+55
+00:05:13,640 --> 00:05:16,986
+So you kind of limit yourself in your top out accuracy.
+
+56
+00:05:17,908 --> 00:05:19,731
+Now, maybe the regularization effect is good.
+
+57
+00:05:20,217 --> 00:05:22,200
+So these are two methods.
+
+58
+00:05:22,260 --> 00:05:28,190
+The first is called transfer learning here on the left and the other is called multitask learning.
+
+59
+00:05:29,051 --> 00:05:32,777
+Now, meta learning goes a different direction.
+
+60
+00:05:33,018 --> 00:05:40,470
+Meta learning is like transfer learning, but it says, well, what if we don't have this giant data set right here?
+
+61
+00:05:40,450 --> 00:05:48,785
+What if we find a way to learn these initial parameters, right?
+
+62
+00:05:48,805 --> 00:05:54,877
+So what we'll do is we'll start out with a guess, a guess of good initial parameters.
+
+63
+00:05:55,478 --> 00:05:57,261
+Let's call that theta zero.
+
+64
+00:05:57,241 --> 00:06:11,628
+And now we have all of these three tasks take Theta0 and run their fine tuning to come up with their own parameters, starting at Theta0.
+
+65
+00:06:11,689 --> 00:06:15,997
+So this is Phi1 started from Theta0.
+
+66
+00:06:16,117 --> 00:06:19,283
+And we'll also give it to Task2 and to Task3.
+
+67
+00:06:19,263 --> 00:06:19,924
+Right.
+
+68
+00:06:19,944 --> 00:06:32,506
+And each of these tasks is going to train on its own training data set and then evaluate on its own validation data set and then report back a number.
+
+69
+00:06:33,748 --> 00:06:42,283
+So we do this for every task and every task basically trains this runs through the validation data set reports back a generalization error.
+
+70
+00:06:42,263 --> 00:06:49,942
+And then we know, once we get all the information from all the tasks, we know how good were these initial parameters, right?
+
+71
+00:06:49,962 --> 00:06:58,483
+We get a measure of how easy is it for the tasks to adapt these initial parameters to their own data set.
+
+72
+00:07:00,033 --> 00:07:07,828
+And then we somehow need to figure out a way, okay, these parameters were on average 81% good.
+
+73
+00:07:08,429 --> 00:07:14,420
+Can we come up with a better set of initial parameters theta one in some way?
+
+74
+00:07:14,741 --> 00:07:23,357
+Can we somehow find a better set of initial parameters such that it is easier for the tasks to adapt these initial parameters, right?
+
+75
+00:07:23,337 --> 00:07:31,718
+And even more so, there could be task four, which we are not seeing during this training phase, right?
+
+76
+00:07:31,758 --> 00:07:36,550
+This is kind of our, so these up here could be our train training tasks.
+
+77
+00:07:36,771 --> 00:07:39,658
+And this down here could be our validation task.
+
+78
+00:07:39,638 --> 00:07:56,858
+So basically, we're trying to come up with a set of initial parameters that if a new task comes along and it takes this thing as its initial parameters, it will be able to adapt very quickly these initial parameters to its own data set.
+
+79
+00:07:57,439 --> 00:07:59,922
+And most importantly, it can do that.
+
+80
+00:08:00,462 --> 00:08:08,852
+It will result in a much better model than had the task just trained on its own small data set from scratch.
+
+81
+00:08:08,832 --> 00:08:20,424
+So our task is in meta learning is basically to come up with a learning procedure to generate to iteratively generate better and better and better initial parameters, right?
+
+82
+00:08:20,444 --> 00:08:24,495
+And what better way to do this than using gradient descent?
+
+83
+00:08:24,475 --> 00:08:34,134
+So, this is meta-learning using gradient descent is the core of this paper, basically.
+
+84
+00:08:35,737 --> 00:08:37,400
+Now, what do you need for gradient descent?
+
+85
+00:08:37,480 --> 00:08:46,297
+So, if you want to go from one task to the next using SGD or even GD, gradient descent, you need to come up with a gradient.
+
+86
+00:08:46,638 --> 00:08:50,044
+Now, why is this a problem in this case?
+

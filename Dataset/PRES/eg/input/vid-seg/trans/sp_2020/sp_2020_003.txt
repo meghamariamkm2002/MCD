@@ -1,0 +1,6 @@
+Mathematically, this problem can be formulated as following.
+Here's i-prime and t-prime are adversarial images and text.
+They are the perturbation degree are constrained under the L-infinity distance and cosine similarity using the universal sentence encoder.
+This problem faces following two challenges.
+The first is task-specific challenge, where the attack mechanism is to be general and work for different tasks.
+And the second challenge is the model-specific challenge, which needs to learn the transferability between the pre-trained and finite models.

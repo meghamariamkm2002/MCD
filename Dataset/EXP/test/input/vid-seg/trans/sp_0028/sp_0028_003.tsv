@@ -1,0 +1,44 @@
+start	end	text
+31	2174	to maximize the reward.
+2635	7261	In a formal framework, you have an agent and an environment.
+7842	16373	And the environment would always give you an observation, which in this case, the observation is one of these images.
+17134	20138	And the agent will give back an action.
+20379	21280	So the action
+22525	29776	In this case would be the, which button to press or which direction to move the joystick into.
+30337	34403	And then the environment would get back, give back a reward.
+34763	40732	So the reward is could be, you know, it could be this, you scored a goal.
+41073	42755	So that's zero most of the time.
+42795	48744	And sometimes it's one or, or nine or it could be like how long you're alive and so on.
+48764	51148	This is very, very, very variable.
+51128	59783	So the difficulty of reinforcement learning very often is that these episodes can go for a while.
+59883	62868	So this whole process here will repeat over time.
+63529	73086	And this can go on for hundreds of steps or thousands of steps until you're done, you know, playing a game like this, like this right here.
+73066	77011	And the reward can be very sparse.
+77251	80315	So you might only get a reward at the very end of the game.
+80415	87644	Sometimes, most often in these games you get one in between, but still there can be multiple time steps where you don't have a reward.
+88105	92070	And your task is to figure out which of the actions were the good ones.
+92230	94753	This is known as the credit assignment problem.
+94733	103605	And to do the credit assignment problem just from pixels alone, that was unheard of at the time this paper came out.
+103806	113299	That's why they say we are the first deep learning model to successfully learn directly from high dimensional sensory input.
+113279	123112	So the power of deep learning, they argue, is that a deep neural network, a convolutional neural network, can extract these high level features by itself.
+123552	133625	However, at this time, people only knew that it could do so for supervised learning, basically for every input of an image, you had a label.
+134086	137110	And that's how you train these convolutional neural network.
+137090	138993	Here it's very different.
+139233	145542	Here you'll get maybe a thousand of those images and you'll simply say, well, you got a score of 1100.
+145682	155035	And somehow you need to figure out which ones of these were the ones that gave you the good score and how to generalize that.
+155716	164869	So there are various difficulties here to apply convolutional neural networks to this problem and they have detail right here how they did it.
+166148	171293	Um, so they say the model is a convolutional neural network, which, you know, have been demonstrated.
+171333	184705	So this is after things like Alex net, uh, though before res net, um, trained with a variant of Q learning whose input is raw pixels and whose output is a value function estimating the future.
+184765	186286	So we'll get into Q learning.
+186306	196155	Q learning is a reinforcement learning algorithm that hasn't been around, you know, um, for a long time, uh, but just not combined with deep neural networks.
+196135	207396	And yeah, then they say the last cool thing here is that they apply them to seven games with no adjustment of the architecture or learning algorithm.
+207836	218616	So that they apply the same algorithm, the same hyper parameters to all of the seven games and the model learns all of the seven games, not as a single model.
+218596	226246	but as seven different models, however, they all have the same hyperparameters, so they don't need to tune them, which is an additional benefit.
+226426	237700	This would have been a cool paper, even if they had to sort of tune the algorithm to each of the seven games, but they didn't, which makes it even more impressive.
+237720	247472	It's kind of their point here that this reinforcement, deep reinforcement learning can be some sort of a general learning mechanism.
+247452	264457	Of course, you know, later there has been like giant amount of development since this and people have come up with all kinds of giant architectures and whatever corrections of policy corrections seem to real continuous control.
+264517	271047	This is, this is, most of it is a derivation of this work right here.
+271027	275437	This work, it reads surprisingly simple, I have to say.
+275457	287666	And it's almost like they had little idea what problems were to be tackled later in RL, because it kind of reads like, you know, we have this thing and you can learn general things.
+288367	292096	So yeah, that was, we're still not done with reinforcement learning.
+292257	295043	I guess we've just started.

@@ -1,0 +1,3 @@
+Advanced machine learning techniques require a large number of training data.
+However, data sharing also presents a significant risk of privacy leakage.
+Additionally, data protection regulations restrict the external sharing of private data, also its transfer across geographic boundaries.

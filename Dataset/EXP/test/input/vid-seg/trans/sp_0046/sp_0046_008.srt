@@ -1,0 +1,60 @@
+1
+00:00:00,031 --> 00:00:00,992
+disadvantages.
+
+2
+00:00:01,152 --> 00:00:08,681
+So disadvantages mainly come with training these things because you have to train them in lockstep.
+
+3
+00:00:09,222 --> 00:00:15,089
+But then also, the disadvantages that you don't have an explicit representation.
+
+4
+00:00:15,390 --> 00:00:23,980
+So there is no explicit representation of this probability distribution, you never build the data distribution, you can only sample from it.
+
+5
+00:00:23,960 --> 00:00:36,376
+However, the advantages are that Markov chains are never needed, only backprop is used to obtain gradients, no inferences needed during learning, and a wide variety of functions can be incorporated into the model.
+
+6
+00:00:36,756 --> 00:00:47,470
+I haven't read this paper in a while and I just have to laugh nowadays because now all the people are trying to
+
+7
+00:00:47,450 --> 00:00:58,760
+reintroduce, like there are as many papers like reintroducing Markov chains into GANs, being like, oh, GANs would be so much better if they had an MCMC sampler somewhere.
+
+8
+00:00:59,641 --> 00:01:02,824
+You're like, no, the point was to get rid of it.
+
+9
+00:01:03,384 --> 00:01:14,815
+And like no inference is needed during learning, which, you know, for some of these other models, you actually need an inference during training, right?
+
+10
+00:01:14,875 --> 00:01:17,457
+So this is very, very costly.
+
+11
+00:01:17,437 --> 00:01:24,730
+And how many models are there nowadays where it's like, oh, if we just do this inference during training.
+
+12
+00:01:25,098 --> 00:01:25,459
+Yeah.
+
+13
+00:01:26,281 --> 00:01:42,603
+So it's quite funny to see people kind of trying to just combine everything with everything and in the process sort of reverse whatever these methods were originally meant to get rid of.
+
+14
+00:01:42,643 --> 00:01:46,794
+Now, I'm not saying anything against these methods, but it's just kind of funny.
+
+15
+00:01:49,280 --> 00:01:50,042
+Yeah.
+

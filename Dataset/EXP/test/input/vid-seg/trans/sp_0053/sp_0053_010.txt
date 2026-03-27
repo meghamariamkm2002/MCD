@@ -1,0 +1,6 @@
+So that's my opinion.
+If you want more experiments, it's, you know, it's also faster and has less parameters and, and so on.
+But again, dyno is a method of self supervised learning where and they, their argument is that it combines naturally well with the vision transformer.
+Right.
+That was it for me.
+Check out paper, check out blogs, subscribe, share, and bye bye.

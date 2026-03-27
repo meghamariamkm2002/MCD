@@ -1,0 +1,4 @@
+Our model is built around an unobserved tree, which is a directed acyclic graph with two properties.
+Firstly, it is connected, and secondly, each vertex has at most one parent.
+We observe the data matrix Y, which represents n p-dimensional vectors, where each vector has an associated latent assignment representing position on the tree.
+And for each dimension, we generate a collection of random variables with the conditional independent structure given by the tree.

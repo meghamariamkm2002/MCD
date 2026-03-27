@@ -1,0 +1,29 @@
+start	end	text
+31	271	it.
+1073	6203	Okay, so this paper on a high level deals with model based reinforcement learning.
+6965	13638	Model based reinforcement learning means that you are using a model of the world to do reinforcement learning.
+14119	16183	So in essence,
+17395	27629	If you have your reinforcement learning setup where you are an agent and you have to interact with the world, you have to do so in many steps in like a round trip fashion.
+27709	41108	So you put an action, you act and the world gives you back an observation and you have to act in the world over and over and over such that you will be able to maximize your reward.
+41088	43778	Now, what is model based reinforcement learning?
+44159	49680	Model based reinforcement learning basically means that the agent here has internally
+51601	52944	a model of the world.
+53445	57092	So it sort of understands how the world works.
+58274	62162	Situations where you have a accurate model of the world are things like chess.
+62322	64326	So in chess, the rules are very clear.
+64386	68534	You know how the world's going to behave if you perform a certain action.
+68955	74065	But in real world applications, it's very, very hard to actually make a model.
+74045	76769	So people usually rely on learned models.
+77230	78071	So what does it mean?
+78092	83460	You basically learn a neural network that tries to predict how the world is going to act.
+84342	90732	So this here is going to be a deep neural network that you learn from what you see in the world.
+91353	93977	Now trajectory optimization
+93957	110278	Basically means that you are now you now have this world model and you use it to look ahead as I said so you are in the state like here and you can do let's say three different actions and you use your world model here world.
+110258	115126	And you see, you think, how's the world going to react if I do either of those three things?
+115366	117169	And then you get into three different states.
+117590	123900	And then again, after each one, you consider three actions, three actions here, three actions here, and so on.
+124340	134376	So ultimately, you're going to kind of have an overview over a planning horizon, which here we call H. You kind of look ahead a couple of steps.
+134356	141928	Or there are various ways of doing this, but ultimately you will basically find that this path here is really good.
+142309	145674	So I think I'm going to take this as a first action.
+148298	157473	So trajectory optimization considers finding the best green path here in this tree of possibilities that your world model gives you.
+157513	158575	Okay.

@@ -1,0 +1,5 @@
+In this work, our contribution can be concluded in the following three parts, which will firstly explore the adversarial vulnerability across pre-trained and finite VL models.
+To solve this problem, we propose a VL attack method to attack from different levels, and we conduct extensive experiments on five VL models and six tasks.
+For the limitation, currently our recent problem is formulated by assuming the pre-trained model and the downstream model share the similar structures.
+The adversarial transferability between the different pre-trained and finite models is worth exploring, which we left it to the future study.
+Thanks for watching this video.

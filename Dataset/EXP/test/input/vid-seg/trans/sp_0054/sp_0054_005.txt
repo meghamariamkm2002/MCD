@@ -1,0 +1,37 @@
+So as I said, they do relative position encoding.
+What does that mean?
+So that means that the position encoding depends on where you look from.
+So what I've drawn at the beginning, like this here, this isn't entirely correct.
+You have to look at each token individually.
+So for this middle token here, for example,
+The positions look like this.
+They look like negative 2, negative 1, 0, 1, 2.
+And you would have kind of a table, not with absolute positions, but you'd actually have a table with negative 2, negative 1, 0, plus 1, plus 2, and so on.
+And you would retrieve those vectors.
+And then when you consider the next vector, this one right here, it would look different.
+It would write this would be 0, this minus 1, minus 2, and so on.
+So they do two things.
+First of all, they truncate at some point.
+They simply say, well, our context window is two.
+So instead of going negative three here, we simply keep it at negative two.
+So everything beyond negative two gets also the vector for negative two.
+So that vector here is going to be just plugged into here and into here for this token.
+And for this token, for the previous token, it is only going to be plugged here.
+nowhere else.
+There are ways to efficiently implement this, and that's this algorithm right here.
+Don't want to go too much into it, but just so you're aware, you don't have to consider each token really individually during it attention.
+That would be prohibitively expensive.
+So you can do one big matrix multiply and then sort of pick and choose together from your, from the matrix that results, especially with this truncation.
+This is this algorithm.
+So they call it efficient implementation.
+All right, so that is this position enhanced or disentangled information.
+Why is it disentangled again?
+Because in every layer, they have a side input.
+This piece right here is the side input that they sort of feed on top of this information.
+And they specifically construct the attention matrix out of the three things.
+It's almost like two contributions.
+The one contribution is, hey, let's feed in position information in each layer.
+And I think that has been tried before.
+That's pretty simple.
+But then the second thing is that we don't simply add the two vectors when we input it into the attention, but we're going to construct basically three attention matrices and then add those together once we determine the inner products between each of those.
+Okay.

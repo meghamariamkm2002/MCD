@@ -1,0 +1,4 @@
+In this talk, I will introduce three of the key contributions from our paper.
+I will describe a generic probabilistic graphical model for hierarchical data.
+I will briefly explain how hierarchical information translates into tree geometry.
+And I recommend a simple variant of the agglomative clustering algorithm.

@@ -1,0 +1,59 @@
+start	end	text
+31	2295	And don't you just love these graphics?
+3698	6302	So here's time.
+6322	10630	And apparently it goes in both directions.
+11551	13896	And so does it go like this?
+13916	18664	I think what they mean is just time goes in this direction.
+18644	22668	And you're here and your upstream.
+23830	25411	So your upstream is your network.
+25692	30777	This is your network reading or your pre processing and the downstream, this is the GPU.
+31939	40228	So as you are pre processing things, you, you, um, and this should be, this should be different.
+41049	45073	It should mean, okay, to correct this right here.
+45173	48617	This is idle and this is running.
+50639	53443	So as your upstream processes images, right?
+53483	60492	At the beginning, your GPU is idle, but then as soon as it ships off the first batch of images, your GPU can run.
+60532	61533	Now it's running.
+61993	73768	While you're doing that, your upstream, your network is still reading new images, pre-processing them and so on, but it cannot, is too slow to insert a batch at the time that the GPU is done.
+74189	80477	The time the GPU is done, it's still processing this batch, so the GPU is idle.
+80457	105891	Until here where it finally manages to process that batch and then the GPU is running again I think that would have been a much better graphic But you know so their goal basically is that what you'll have is Right here for example after the batch what you'll do is you scrap this connection You take this and you put it into a smaller buffer
+107542	110256	And the buffer is a repeat buffer.
+110738	113552	So what it does is it simply will repeat.
+116317	121365	the whatever you have in the buffer until something new comes in, right?
+121385	126432	So new data point comes in, you just output that data point again, again, again, again.
+126492	133083	The for the GPU, it's going to feel like these are all new batches and they will continuously come in.
+133543	141295	But it's always the same until the next data point comes in, and then you output that one again, and again, and again, and again.
+141275	148233	Now the actual factor here you can of course tune by hand or you can just say repeat until something else comes in.
+149596	156634	In this paper they have an explicit factor where they say we repeat each data point four times or three times or so on.
+156614	158477	So this is data echoing.
+158537	161882	You basically echo the data point multiple times.
+163265	166790	And this can be done in various places.
+167171	171057	So they experiment with echoing in any of these places right here.
+171317	178088	So they experiment with it right here after reading and decoding, after shuffling.
+179170	182335	No, I think always before shuffling.
+182315	191957	Because if you have a shuffle buffer anyway, they say it makes sense that if you do the echoing, you do your shuffle buffer after your echoing.
+191977	196206	So here, then after augmentation and after batching.
+196473	202401	So they experiment with these three locations in echoing.
+202902	205545	Now, what could be the downturn of something like this?
+206006	220646	The downturn, of course, is that this SGD procedure right here, basically, it relies on the data incoming being an IID sample from your data distribution, right?
+220786	225332	That's how we formulate SGD, is that there's always new data incoming.
+225312	233421	Now, if you just output the same data point all the time, that is like no new information, first of all.
+233702	246797	And second of all, it could bias the SGD update, because it sees the same information over and over, it's going to think that's the whole data set.
+246777	250781	potentially it can make too many steps into the wrong direction.
+251661	255405	That just happens to be the bias in this particular data point.
+256205	259789	So the IID assumption is invalid.
+261270	264753	Now, why do you experiment with this in different locations?
+264913	272100	Because what you expect is that it hurts more or it hurts less the earlier you introduce this.
+272580	276784	So if you introduce echoing right here, so if you echo,
+276764	283278	your data until new data from the network comes in, it's still going to be shuffled differently, right?
+283659	286464	And it's still going to be augmented differently.
+286505	297608	So each time the data point comes out of the echo buffer, it is going to be shuffled and it is going to be augmented in a different way than the last time the same data point came out.
+297588	301473	And this is going to be batched together because you've shuffled differently.
+301833	305397	It's going to be batched together with a different bunch of data points.
+305517	308401	And that means SGD gets new information.
+308962	324080	But if you go onto the very last thing where you just after the batch right here, or you input the echo, that means SGD just gets to see the same batch of data augmented in the same way all the time, right?
+324961	326903	So the
+326883	331910	Of course, where you exactly have to echo, you have to trade this off.
+332270	343185	So you have to trade off the how much you basically violate the IID fresh data assumption against where in your data pipeline is the bottleneck.
+343205	352738	So if your bottleneck is in the data augmentation, it may make little sense to echo before that because your bottleneck is the data augmentation.
+352718	360216	And that being said, if the bottleneck is that you don't have enough GPUs, then it probably doesn't make sense to data echo at all.
+360960	365040	Though their experiments are somehow wonky on this.

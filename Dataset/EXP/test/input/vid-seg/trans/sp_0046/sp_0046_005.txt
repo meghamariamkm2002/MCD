@@ -1,0 +1,28 @@
+Okay, now here is the algorithm, as you can see, this was already quite the algorithm we use nowadays.
+So for K steps, this is the inner maximization, and here they say that we use K equals one.
+So this is pretty much what we use today.
+The early days of GAN were still like, how much do I need to discriminate per generator and so on.
+Nowadays everyone's just using one step here, one step there, or even training and jointly works in some cases.
+So you want to sample a mini batch of noise samples, and then you will sample a mini batch of m examples from training data generation.
+So from this data, you want to update the discriminator by ascending its stochastic gradient.
+And this is simply the gradient of the objective.
+And then after those case steps you want to sample another mini batch of noise samples and update the generator by descending its stochastic gradient.
+And you can see right here already there is this reduced objective that doesn't include this because it falls away in the gradient, right?
+And they say the gradient based updates can use any standard learning based rule.
+We use momentum in our experiments.
+Very cool.
+So I believe they already also say that.
+It is somewhere here.
+It's pretty fun that they say, oh, in our generator, we only input noise at the lowest layer.
+This is also something that, if you think that G here is a multi-layer network, so it's kind of a multi-layer network that outputs an image.
+And if you ask yourself, if I have noise, how would I input that into there?
+It's so clear nowadays that, you know, we just put it here.
+But this was not clear at all.
+This was kind of an invention of this paper because you could, you know, put it pretty much at all layers.
+You could distribute it and so on.
+You could add some right here.
+It was this paper that already established the fact that we input noise kind of as a vector at the very beginning and then just let the neural network produce the image from that.
+So yeah, pretty, pretty cool.
+It's pretty sneaky how many things are hidden in these initial papers, how many decisions that are made there then are just taken over.
+And, you know, this one, I guess turned out to be fairly, fairly good.
+Okay.

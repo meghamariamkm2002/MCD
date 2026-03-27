@@ -1,0 +1,37 @@
+word relationships.
+So the skipgram model was already introduced by Mikloff in an earlier paper that came out, I believe, not like one or two months prior to this one.
+As I said, Word2Vec is a series of papers.
+I don't think there is a paper called Word2Vec.
+Rather, they here have released the code along with the with the paper.
+The code was called Word2Vec.
+So the skipgram model was introduced previously, but it is replicated right here.
+So in the skipgram model, what you're trying to do is you're trying to get a distributed word representation.
+So what does that mean?
+That means that for each word in your language, let's take these words right here.
+For each word in the language, you want to come up with a vector that somehow describes that word in a continuous fashion.
+In the two might be mapped to, I don't know, 0.1, 0.9 and 0.3.
+Learn might be mapped to negative 0.5 and so on.
+So each word gets assigned a vector in the same dimensional space.
+And what the previous paper kind of discovered is that if you do this correctly, then these vectors, they have some kind of properties.
+And we can already kind of jump ahead because this was already a bit researched in the last paper.
+The semantics of these vectors will be something like this.
+So here they have a two dimensional PCA, so these are the first two dimensions of the 1000 dimensional skipgram vectors.
+So the vectors they obtain, they can do things like this, where they can show that in these spaces, for example,
+there appears to be a vector direction that characterizes the capital of a country.
+So if you take a few countries and their capitals and you average that vector, you get a kind of a direction for capitalness of a city given a country.
+You can see that there is a pretty clear relation here.
+Now some of these things have later been revised to such that they are ultimately ended up being not that impressive.
+For example, there was always this kind of math with vectors.
+And I don't, I believe this is, this might not be in this.
+This is in the last paper where they discovered that if you take the vector for
+king and you subtract the vector for man and you add the vector for woman, then that would result in the vector for queen.
+So the way they did it was basically they did this calculation right here and then they searched in the point they ended up, they searched for the nearest neighbor in their vocabulary.
+And that turned out to be queen.
+But in order to make it queen, actually, you have to exclude the original word king.
+And people quickly discovered that if you don't exclude the original word, the result of this kind of arithmetic will almost always lead back to the original word.
+And then a lot of these analogy tasks are simply the result of you
+Then discarding that word during the nearest neighbor search.
+And then Queen just happens to be one of the closest words.
+And it's sort of much less dependent on which exact calculation you do here.
+So there's been a lot of follow-up work kind of analyzing, criticizing these vector masks.
+But definitely we know that these word vectors turned out to be extremely, extremely helpful and syntactically and semantically relevant in downstream tasks.

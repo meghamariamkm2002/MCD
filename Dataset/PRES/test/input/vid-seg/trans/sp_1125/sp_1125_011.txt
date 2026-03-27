@@ -1,0 +1,3 @@
+In conclusion, FATGRAP successfully tackles FATLT tasks with innovative components containing DPA and SGP, proven through comprehensive experiments.
+Future work aim to incorporate personalization serves strategies and expands its applicability to real-world datasets.
+Thanks for your attention.

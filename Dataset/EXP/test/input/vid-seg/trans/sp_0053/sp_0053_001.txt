@@ -1,0 +1,52 @@
+Hello there.
+I hope you have all seen this.
+This is a new system by Facebook AI.
+And what you're seeing here is a visualization of the attention maps of that neural network.
+In the middle is a supervised baseline.
+And on the right is this new system called dyno.
+It's not as much a system as it is a methodology for unsupervised pre-training
+visual transformers and you can see that the system has neither been trained to learn what a dog is nor has it been trained to do any sort of segmentation yet if you look at the attention maps it clearly can track objects it knows what to pay attention to in the images and it can do much more than that so here you can see that it can sort of track
+objects behind occlusion, so the ship goes behind the waves, the horse goes behind the grass, and you can see in the attention map that this is well reflected.
+You can do more than that, though, even.
+So if you use this feature representation that this model gives you for ImageNet, then as the model gets trained and you represent ImageNet in its feature space, it will cluster the
+Same the images of the same class will cluster them together, which is already pretty cool because it has no labels at training time, but also it will cluster similar classes with each other, which you know speaks to the it kind of speaks to the fact that this might be the next step in unsupervised representation learning for images and
+Specifically, it appears that the features that come out of a network that is trained with dyno are extremely valuable for the kinds of things we, you know, we are interested in when working with natural images.
+So this is image retrieval.
+and classification.
+So this system, let's just switch over to the paper right here.
+The paper is called Emerging Properties in Self-Supervised Vision Transformers.
+It presents a system called Dino.
+It's by Mathilde Caron, Hugo Touvrand, Ishan Misra, Hervé Gégo, Julia Mayral, Piotr Boyanovsky, and Armo Joulin of Facebook Air Research, India, and Sorbonne University.
+You can see a bit more here in these pictures, where again, this is the self-attention.
+So the attention map from a vision transformer that was trained with dyno and no supervision.
+Okay.
+And you can clearly see that in all the cases, the attention falls on what you would consider as a human, the relevant things in the image.
+Now, I have my hypotheses, why this is the case, like completely without labels, and we'll see about that.
+But the representations that come out of the systems are really useful.
+For example, you can fine tune linear classifiers on top of these representations and that gives you really good image classifiers.
+They do that with ImageNet.
+You can use these for image retrieval because similar images are clustered together.
+use even do zero shot classification simply by doing a k nearest neighbor classifier in that feature space.
+And yeah, here you can also do some sort of proto image segmentation by looking at the attention maps.
+You don't even have to do something special to visualize this like you have to do in CNNs.
+The attention map directly gives you the sort of segmentation map or something pretty close to it.
+As an overview, the system dyno is simply a, they push the self-supervised learning and they specifically make the case that self-supervised and visual transformer, they go together really well.
+And they, as I said, the dyno is called self distillation with no labels.
+So that is dyno.
+And yeah, they push various kind of,
+metrics in in self supervised systems or, you know, then linear classifier trained on top of them, for example, 80.1% top one on ImageNet in linear evaluation with the with a visual transformer base.
+A quick overview over the system is right here.
+So two things they say are important next to all the other self-supervised systems.
+First of all, they have a kind of student teacher.
+That's the self-distillation part.
+The teacher is a momentum teacher, and it does this centering, and it also does sharpening in the softmax right here.
+And then there is no contrastive learning.
+There's no negative samples that the sharpening and the centering sort of take care of keeping the model from mode collapse or from collapsing.
+Also, there's no batch norm.
+So if those things don't don't mean anything to you, maybe stay tuned, we'll we'll discuss them in a bit more detail as we go through the paper.
+If you like paper summaries like this and other content, for example, our cooking video, feel free to share this out and tell your friends about it.
+By the way, the cooking video did terribly.
+I don't know why.
+I guess my YouTuber skills are just not on par.
+But yeah, I don't know.
+Yeah, if anyone has any ideas.

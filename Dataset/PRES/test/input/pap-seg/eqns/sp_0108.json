@@ -1,0 +1,102 @@
+{
+  "sp_0108_page_0004": {
+    "bboxes": [
+      {
+        "box": [
+          319.8603210449219,
+          1204.530029296875,
+          899.418212890625,
+          1230.7357177734375
+        ],
+        "text": [
+          "F ^ { C } : { \\mathcal { D } } \\times { \\mathcal { S } } \\times \\Omega \\to U \\quad \\qquad F ^ { P } : U \\to V \\quad \\qquad F ^ { R } : V ^ { m } \\to \\Omega"
+        ],
+        "page": "sp_0108_page_0004",
+        "id": "sp_0108_page_0004-1",
+        "seg_type": "eq"
+      }
+    ]
+  },
+  "sp_0108_page_0017": {
+    "bboxes": [
+      {
+        "box": [
+          360.6483459472656,
+          1327.7559814453125,
+          864.2581176757812,
+          1447.279052734375
+        ],
+        "text": [
+          "\\begin{array} { r l } & { \\displaystyle \\boldsymbol { x } _ { i } ^ { k + 1 } = \\boldsymbol { x } _ { i } ^ { k } - \\eta ^ { k } \\left( \\nabla F ( \\boldsymbol { x } _ { i } ^ { k } , \\xi _ { i } ^ { k } ) + \\lambda \\mathrm { s i g n } ( \\boldsymbol { x } _ { i } ^ { k } - \\boldsymbol { w } ^ { k } ) \\right) } \\\\ & { \\displaystyle \\boldsymbol { w } ^ { k + 1 } = \\boldsymbol { w } ^ { k } - \\eta ^ { k } \\left( \\nabla f _ { 0 } ( \\boldsymbol { w } ^ { k } ) + \\lambda \\left( \\sum _ { i \\in [ n ] } \\mathrm { s i g n } ( \\boldsymbol { w } ^ { k } - \\boldsymbol { x } _ { i } ^ { k } ) \\right) \\right) } \\end{array}"
+        ],
+        "page": "sp_0108_page_0017",
+        "id": "sp_0108_page_0017-1",
+        "seg_type": "eq"
+      }
+    ]
+  },
+  "sp_0108_page_0019": {
+    "bboxes": [
+      {
+        "box": [
+          414.5196228027344,
+          831.9005126953125,
+          811.9473266601562,
+          970.8358764648438
+        ],
+        "text": [
+          "\\begin{array} { r l } & { \\displaystyle x _ { i } ^ { k + 1 } = ( x _ { i } ^ { k + 1 } - w ^ { k } ) \\operatorname* { m i n } \\left( 1 , \\frac { \\tau } { | | x _ { i } ^ { k + 1 } - w ^ { k } | | _ { 2 } } \\right) } \\\\ & { \\displaystyle w ^ { k + 1 } = w ^ { k } + \\frac { 1 } { n } \\sum _ { i = 1 } ^ { n } x _ { i } ^ { k + 1 } } \\end{array}"
+        ],
+        "page": "sp_0108_page_0019",
+        "id": "sp_0108_page_0019-1",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          465.4844665527344,
+          1116.9344482421875,
+          759.8289184570312,
+          1147.8837890625
+        ],
+        "text": [
+          "\\begin{array} { r } { x _ { i } ^ { k + 1 } = ( 1 - \\beta ) \\nabla F ( w ^ { k } , \\xi _ { i } ^ { k } ) + \\beta x _ { i } ^ { k } } \\end{array}"
+        ],
+        "page": "sp_0108_page_0019",
+        "id": "sp_0108_page_0019-2",
+        "seg_type": "eq"
+      }
+    ]
+  },
+  "sp_0108_page_0020": {
+    "bboxes": [
+      {
+        "box": [
+          407.4564208984375,
+          163.8447723388672,
+          816.8309936523438,
+          228.84593200683594
+        ],
+        "text": [
+          "w _ { k + 1 } = w _ { k } + \\frac { 1 } { m } \\sum _ { i = 1 } ^ { m } \\operatorname* { m i n } ( \\tau , \\operatorname* { m a x } ( - \\tau , x _ { i } - w _ { k } ) )"
+        ],
+        "page": "sp_0108_page_0020",
+        "id": "sp_0108_page_0020-1",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          494.413818359375,
+          890.7271118164062,
+          730.4190673828125,
+          1042.2689208984375
+        ],
+        "text": [
+          "\\begin{array} { r } { \\boldsymbol { T } \\boldsymbol { S } _ { i } = R e L U \\left( \\displaystyle \\frac { \\langle g _ { i } , g _ { 0 } \\rangle } { | | g _ { i } | | | | g _ { 0 } | | } \\right) } \\\\ { \\boldsymbol { g } = \\displaystyle \\frac { 1 } { \\sum _ { j = 1 } ^ { m } T S _ { i } } \\displaystyle \\sum _ { i = 1 } ^ { m } \\boldsymbol { T } S _ { i } \\cdot \\bar { g _ { i } } } \\\\ { \\boldsymbol { w } = \\boldsymbol { w } + \\boldsymbol { \\alpha } \\cdot \\boldsymbol { g } } \\end{array}"
+        ],
+        "page": "sp_0108_page_0020",
+        "id": "sp_0108_page_0020-2",
+        "seg_type": "eq"
+      }
+    ]
+  }
+}

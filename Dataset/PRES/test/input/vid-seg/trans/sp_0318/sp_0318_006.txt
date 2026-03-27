@@ -1,0 +1,3 @@
+But wait a second, there's still an issue.
+Not every conditional distribution corresponds to a Facebook classifier.
+And in fact, depending on the data distribution, the achievable set of conditional distributions can be much, much smaller than the set of all conditional distributions.

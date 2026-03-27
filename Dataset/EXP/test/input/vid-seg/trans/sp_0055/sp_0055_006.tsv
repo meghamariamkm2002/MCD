@@ -1,0 +1,15 @@
+start	end	text
+31	3816	in divide and conquer Monte Carlo tree search.
+3836	5578	You're not searching over actions.
+5898	10604	You are searching over the best way to subdivide this problem, right?
+10624	20857	You're searching over which of these all the black squares should I use to subdivide my problem into sub-problems, and that's what you build your search tree from.
+21338	29228	So naturally, you can already see what kind of possibilities do we have here to subdivide this problem.
+29208	35618	I drew one white square, but any of the black squares are candidates to subdivide this problem, right?
+36038	39904	Any of the black squares could be potential subdivisions.
+40365	42388	And this is what we search over.
+42749	51722	So in Monte Carlo tree search, we search over the actions, which gives us this four to the D tree.
+52143	54186	But in divide and conquer,
+55853	59423	we're searching over all the ways to subdivide the problem.
+59724	63314	And as you can see there, that are many, many more possibilities.
+63735	73783	So from this first starting node, we have like, like a hundred possibilities to subdivide this problem into two problems, right?
+74084	77052	And each of those, again, if you now

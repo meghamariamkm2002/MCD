@@ -1,0 +1,4 @@
+We propose an algorithm to recurrently estimate the interaction effects without knowing the polyhedral attention modules function.
+In our algorithm, the function is regarded as a black box, and by changing elements of the input, the importance of the constant, main, and interaction effects
+will be calculated via the output of the function.
+In our experiment, we utilized the polyhedron technology to predict the brain age with the volume of the brain matter and rank the importance of the two-way interactions between the brain regions.

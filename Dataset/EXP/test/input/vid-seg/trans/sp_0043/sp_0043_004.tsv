@@ -1,0 +1,82 @@
+start	end	text
+537	4464	They propose actually to solve this problem.
+4764	13659	They say we propose to regularize trajectory optimization by means of a denoising autoencoder that is trained on the same trajectories as the model of the environment.
+14500	21432	We show that the proposed regularization leads to improved planning with both gradient based and gradient free optimizers.
+21412	35671	We also demonstrate that using regularized trajectory optimization leads to rapid initial learning in a set of popular motor control tasks, which suggests that the proposed approach can be a useful tool for improving sample efficiency.
+37073	39476	So, in essence, what do they do?
+40457	46305	They basically say, okay, we want to regularize this using a denoising autoencoder.
+47838	52988	And I think it's best if we look at the math for doing this.
+54335	62084	So the math here starts off as follows saying you want to learn a world model.
+62324	63185	This is F here.
+63305	64326	F is the world model.
+64466	70874	It takes in a state and an action and it gives you the next state or an approximation to it.
+71494	77521	And the parameters here indicate that this is some sort of function that you learn like a deep neural network.
+77541	80865	You can do this in fully or partially observed environments.
+82837	90269	Now, when you plan, what you want to do is you say, I have a planning horizon H, right?
+90309	91751	And I have a reward function.
+93134	97761	And the reward function is going to give me a reward for each state action pair.
+98502	98642	Right?
+98662	102909	So if I'm in a state and I do a certain action, I'm going to get some reward.
+103230	109620	This could be you have reached the target, or this could be, you know, how much money you've collected or whatnot.
+109600	119418	So you're going to look a horizon H, you're going to look H steps into the future, and you want to maximize the sum of all the rewards here.
+120200	129938	So in the limit, this reduces to simply like, for example, reaching the target in our room's case, if H is infinite.
+129918	131905	But you can consider a lower planning horizon.
+131925	138067	So you want to find the action sequence that maximizes this reward in the future.
+138107	139351	Okay.
+139813	141278	And now this reward.
+142861	145827	relies on your environment model.
+148031	149875	Here's the algorithm.
+151118	152801	First, you collect some data.
+153302	154204	That's how you start off.
+154845	160617	Then train the dynamics model, the world model, using the data you've already collected.
+160597	165964	Then for each time step T, you want to optimize this trajectory.
+165984	172913	So I want to find the best next action sequence and take the first action, implement the first action and get the new observation.
+173694	175737	And do you do this in a loop until the end?
+175757	180223	And at the end you say add this data to D. So that's what you do.
+180323	182065	You use your world model.
+183412	185837	to get the best action sequence.
+185877	187521	That's how you optimize the trajectory.
+188403	192412	And then at the end of the episode, you've, you've done an episode, right?
+192452	197944	You went somewhere, you put all of this into your training data to make the world model better.
+199460	207016	Important to note here is that the world model will only learn about things that you have done, right?
+208038	209781	So there is kind of an interaction effect.
+209841	211304	That's the green area here.
+211585	213970	The world model only knows the paths.
+214070	220303	The world model only can accurately estimate the world where you have been.
+220283	230310	And that's going to turn out to be the entire problem because this blue arrow finder can now go away from there from that.
+233851	234793	That's explained here.
+235173	240982	Potential inaccuracies of the trained model cause substantial difficulties for the planning process.
+242144	249156	Rather than optimizing what really happens, planning can easily end up exploiting the weaknesses of the predictive model.
+249777	254244	Planning is effectively an adversarial attack against the agent's own forward model.
+254324	261175	This results in a wide gap between expectations based on the model and what actually happens.
+261155	267142	Okay, and they have this example here, where it's like an industrial control process.
+267643	273590	And what you have to imagine, there's like some sort of a container here with a liquid in it.
+274371	280819	And there are two pipes that lead to this container, pipe one and pipe two.
+281240	282561	And there are valves here.
+282601	284864	So there's this valve right here.
+284884	287647	And there's this valve right here.
+287687	290571	So these are valve one and valve two.
+290551	296062	And there is also an output pipe right here, and that's another valve right here.
+296443	307405	So you can control these three valves, the two inputs and one output, and you have to somehow optimize the reaction in here.
+307485	312154	So this is a chemical reaction made up out of the two liquids that flow in here.
+312134	330480	and you have to somehow optimize a property of that and that's highly non-linear and has maybe like a time shift so when you open a valve it's going to take a while and then it's very non-linear and then you are not supposed to break the pressure limit so you have to also outflow some stuff.
+330460	335285	And if you just do this with a learned model, it looks like this.
+335305	338768	So first of all, here is a classic controller.
+338848	344194	Like people have been doing this stuff in industry and they basically build controllers for it.
+345395	349439	And you can do that and that works out really okay-ish.
+350000	354564	As you can see right here, this is the product rate, what you're supposed to optimize.
+354884	358408	And you see some sort of a smooth
+358388	361332	You're supposed to actually bring it to this dashed line right here.
+362513	365457	And this is some sort of smooth thing, right?
+366118	371305	And you're supposed to, I guess, bring the pressure here and the A in purge.
+371605	379215	I don't know what these quantities are, but you're supposed to bring them to the dashed line and it's very nonlinear and very time dependent.
+379195	380478	So that works.
+380738	384386	And you see here kind of the smoothness by which the variables are manipulated.
+384807	398858	Now, if you just learn a world model and then do this trajectory optimization, basically, this is some sort of a planning based reinforcement learning with a world model.
+398838	403784	You see right here, it works, but it's super jittery.
+404184	409991	The pressure spikes here, and apparently this here is a pressure limit, so it spikes the pressure limit.
+410532	420964	And you can see that the manipulated variables are up and down and up and down and up and down, because at each step, it basically completely overestimates its potential reward.
+421004	428052	It thinks like, wow, this is really good, but all it does is find a weakness in the model and not a really good action per se.
+428032	439796	Now, with their method to already take it away, you can see that now the control task super smoothly and very quickly converges to these optimal things.
+440157	445748	And you can see that the variables being manipulated are also rather smoothly manipulated.
+446149	453043	And that's an indication that the model is accurately estimating their rewards.

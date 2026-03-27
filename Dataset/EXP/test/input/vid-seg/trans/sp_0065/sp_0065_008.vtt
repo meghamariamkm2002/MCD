@@ -1,0 +1,257 @@
+WEBVTT
+
+00:00.031 --> 00:01.012
+This is down here.
+
+00:01.994 --> 00:11.528
+It goes in and the first thing they do is they normalize the text and they transform it into phonemes, which is you can do this in a deterministic fashion.
+
+00:11.568 --> 00:13.631
+There are scripts that do this.
+
+00:14.052 --> 00:16.656
+This is the only pre-processing they do.
+
+00:17.637 --> 00:21.323
+And they can also leave it away in the Heaven Ablation on their website.
+
+00:21.343 --> 00:25.549
+So this is like phoneme text, cat sat on the mat.
+
+00:25.529 --> 00:33.267
+Now, this phoneme text goes through these big block of convolutions and of dilated convolutions.
+
+00:33.808 --> 00:40.584
+And this outputs a 200 Hertz representation token length alignment.
+
+00:41.005 --> 00:42.829
+Okay, I should specify this.
+
+00:42.809 --> 00:48.418
+So for each token here, it outputs a length.
+
+00:48.939 --> 00:52.825
+So this thing predicts the length of each of the tokens.
+
+00:53.426 --> 01:01.179
+These, all of this, all of this thing here is to, um, to embed the tokens in hidden space and then predict its length.
+
+01:01.800 --> 01:06.708
+You can see that right here.
+
+01:07.629 --> 01:07.870
+Okay.
+
+01:08.691 --> 01:09.913
+So first,
+
+01:11.446 --> 01:23.061
+We use F to, to take X. So F is a stack of dilated convolutions and it takes X and outputs a hidden representation.
+
+01:23.281 --> 01:33.775
+So H. So first X goes to H and then H is used to predict L and L is the length of that token.
+
+01:35.847 --> 01:40.556
+So we embed this into a hidden representation with this right here.
+
+01:41.157 --> 01:45.385
+And then we use this stack to predict the length of each token.
+
+01:45.485 --> 01:54.582
+So this could be, this could say something like this cat token right here is 20 milliseconds long or
+
+01:54.562 --> 01:58.908
+Instead of milliseconds, you would use something like frames or data points.
+
+01:59.429 --> 02:04.877
+Maybe this is 200 data points long.
+
+02:05.478 --> 02:07.061
+And then SAT is a bit shorter.
+
+02:07.081 --> 02:08.503
+So this is 100 long.
+
+02:08.963 --> 02:10.285
+And ON is really short.
+
+02:10.325 --> 02:11.647
+So this is 50 long.
+
+02:12.088 --> 02:14.832
+So for each token, it predicts the length.
+
+02:14.812 --> 02:21.603
+So now if we have the length of each, we can sort of calculate where the starting point is.
+
+02:21.984 --> 02:31.740
+So if we want to know, if we know that here is the beginning and the beginning of the sentence, we conservatively assume that there is
+
+02:31.720 --> 02:41.239
+So they give some silence buffer here, but roughly you can assume that the beginning of the speech corresponds to the first token.
+
+02:41.259 --> 02:47.451
+You can simply trace the waveform and whenever it goes up, that's where the first token starts.
+
+02:47.431 --> 02:59.436
+So then, since we know that's where the first token starts, and if we could predict the length of each one correctly, we could simply sum those up to figure out where our word starts.
+
+02:59.456 --> 03:07.633
+So if we want to know where on starts, we simply go from the beginning and go 200 plus 100 milliseconds or data points.
+
+03:07.613 --> 03:13.464
+200 plus 100, here is where on starts, okay.
+
+03:14.205 --> 03:20.918
+And if we want to figure out the middle of on, we simply add the half of this number.
+
+03:21.258 --> 03:24.625
+So plus 25 gets you to the middle.
+
+03:24.665 --> 03:31.377
+So this is, this here is the center of the token on.
+
+03:32.335 --> 03:48.100
+So for each token, we predict the length like this and thereby we can just calculate for each one by summing up from the beginning and then adding half of its own length where the center of that token in the entire sequence is.
+
+03:48.080 --> 03:58.536
+Okay, now we do this, we said we take random two second audio, but we do this procedure for the entire text.
+
+03:58.857 --> 04:13.480
+Okay, for every single token in the text that we look at, so in the 20 second text, we do this because then for each token, we'll get a token center.
+
+04:13.460 --> 04:19.774
+and now the aligners job here is to align that to the actual sound.
+
+04:21.442 --> 04:49.693
+so what we also give the generators here the offset so let's say we have this twenty second of speech and we randomly sampled these two seconds and that's maybe five seconds from the beginning we also tell it this is five seconds right here so what we can now do is we can calculate back sort of and and say okay here i have
+
+04:49.673 --> 05:01.730
+I first need to discard five seconds of my signal, and I have a prediction how long each token is, so I can just cross out tokens until I have basically wasted five seconds.
+
+05:02.471 --> 05:13.487
+And then I know, okay, from here to wherever these things sum up to two seconds, from here to that, those are my two seconds that I want to look at.
+
+05:13.467 --> 05:20.216
+Now, this is how I figure out where in the big sound wave my fragment is.
+
+05:21.238 --> 05:28.548
+Because I have this offset where I sampled it, and I simply use this and the predicted lengths to figure it out.
+
+05:28.968 --> 05:34.536
+Now I still need to figure out these tokens that are actually in the span, how do they distribute?
+
+05:35.417 --> 05:37.720
+And that's what this aligner here does.
+
+05:37.700 --> 05:57.104
+Since we've already predicted the token centers, we simply assume that if these are correct, right, then if this is, let's say, if this is one second long, I assume that the middle is after 0.5 seconds or this is one second, the middle is 0.5 seconds.
+
+05:57.124 --> 06:00.869
+So I think that this token is aligned right here.
+
+06:01.529 --> 06:03.572
+This is the center of the token.
+
+06:03.552 --> 06:11.086
+Now, we want to be a little bit fuzzy with respect to that.
+
+06:11.667 --> 06:16.756
+So what they do is they sort of use a Gaussian kernel right here.
+
+06:16.796 --> 06:23.027
+So for each token, as you can see here, each token has a center, which is here.
+
+06:23.127 --> 06:27.535
+So the y-axis is the time in sound and the x-axis is the token.
+
+06:27.515 --> 06:31.619
+And for each token, we say, well, it doesn't have to be exactly there.
+
+06:32.040 --> 06:36.024
+It can be, so they put a Gaussian kernel like this.
+
+06:36.645 --> 06:43.151
+Okay, if you imagine this kernel popping out of the frame, they say this is about where the center is.
+
+06:43.472 --> 06:52.902
+And for this token right here, they say, well, it's probably here in the middle, but it could also be here, or here, or here, or here.
+
+06:53.442 --> 06:57.066
+And we wait this like this.
+
+06:57.046 --> 07:04.014
+So these are the weights and then you simply sum up the weights with these embeddings.
+
+07:04.915 --> 07:20.472
+So for each token out of this dilated convolution block you get a hidden embedding and by using this alignment matrix that you computed by predicting the lengths and therefore predicting the centers of the tokens you can then
+
+07:20.452 --> 07:21.834
+sort of shift.
+
+07:22.034 --> 07:31.264
+So first, you assume that h1, h2, h3, if you were to do nothing, these would just all take up like a third of the time.
+
+07:31.284 --> 07:49.986
+And now by multiplying with this matrix, you have the opportunity, because you predicted a longer length for the first token, you have the opportunity to shift that a bit to the right, and maybe shorten the second token a bit, and then the third token goes until the end.
+
+07:49.966 --> 07:52.689
+Okay, that's what this aligner thing is.
+
+07:53.049 --> 07:54.751
+This is not a model by itself.
+
+07:55.192 --> 08:00.037
+All that this takes in is the computation right here of the token lengths.
+
+08:00.197 --> 08:03.801
+This estimates these token lengths for each of the tokens.
+
+08:04.161 --> 08:05.843
+And the rest is deterministic.
+
+08:05.863 --> 08:08.846
+It's simply saying, okay, how much is the offset?
+
+08:09.307 --> 08:09.587
+Cool.
+
+08:10.067 --> 08:12.270
+That's how we know where in the sound wave we are.
+
+08:12.610 --> 08:15.113
+And then where is each of the centers?
+
+08:15.273 --> 08:18.977
+And we simply do that by summing up the predicted token lengths.
+
+08:18.957 --> 08:27.478
+And then we use a Gaussian kernel with like a set hyper parameter to be a little bit fuzzy with respect to these lengths right here.
+
+08:27.599 --> 08:29.443
+So to be differentiable basically.
+
+08:30.065 --> 08:36.561
+And that will, that will ultimately train this loss, this model right here that computes the token lengths.
+
+08:38.110 --> 08:45.758
+So we sum up in a weighted fashion these embeddings right here, and that's what goes into the generator.
+
+08:45.778 --> 08:55.849
+So now we have embeddings and we have the alignments for the embeddings, which are these pieces of where in the sound wave these are.
+
+08:56.289 --> 09:01.975
+And from that, the generator can now produce the sound wave itself.
+
+09:01.955 --> 09:04.522
+And that's basically, that's just an up sampling here.
+
+09:04.642 --> 09:13.345
+I think that's just an up convolution, um, up sampling from 200 Hertz signal to a 24 kilohertz signal.
+
+09:17.415 --> 09:17.676
+Cool.
+
+09:18.338 --> 09:18.799
+So.
+

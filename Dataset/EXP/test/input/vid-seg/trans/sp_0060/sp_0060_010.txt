@@ -1,0 +1,7 @@
+Okay, so this was the paper and you know, this is the type of research where I do appreciate kind of these large labs taking it on because they have the resources to do all of these ablations, all of these different models, cross them with these giant data sets and so on, which I guess university labs just would not have.
+And this is a fairly thorough paper, really investigating which parts of the pipeline do something and which ones don't.
+And usually I'm fairly critical of pipelines that have like 50 billion tricks because you never know where the improvement exactly is coming from.
+But you can sort of mitigate that criticism by doing all of these kind of ablations on the different parts and really showing, look, this is important, but this is also important, but this is also important, but this is also important.
+So yeah, that was my two cents to this paper.
+I hope you enjoyed this and I'll see you next time.
+Bye-bye.

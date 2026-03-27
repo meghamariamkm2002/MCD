@@ -1,0 +1,71 @@
+WEBVTT
+
+00:00.031 --> 00:02.040
+or what I call the alignment problem.
+
+00:02.522 --> 00:07.223
+So if you take a piece of text like this entire paragraph right here,
+
+00:08.570 --> 00:09.872
+Let's look at this paragraph.
+
+00:10.413 --> 00:14.138
+This paragraph to read it out takes like 30 to 60 seconds.
+
+00:14.739 --> 00:19.466
+You can train really models that output this long of sound.
+
+00:19.606 --> 00:22.250
+It would be, it would be too big of a sample.
+
+00:22.350 --> 00:24.173
+You want to train ideally on segments.
+
+00:24.493 --> 00:31.363
+They train segments that are, I believe here, two second windows from each examples.
+
+00:31.984 --> 00:38.273
+So because they say if we train on 20 seconds, that would just be wasteful and prohibitively expensive.
+
+00:39.451 --> 00:58.793
+Now the problem, of course, is if I simply take a window here, like this one, of two seconds, and I have my human that has read this entire paragraph in one go, I have no clue, again, which part of the entire sound wave of this paragraph.
+
+00:58.773 --> 01:20.562
+this this subsequence corresponds to a good guess would be to go like well this is about 50% in so maybe here to here maybe who knows okay and even within that and that's what we discussed before you have no clue how long this word here is going to take up within this piece of sound
+
+01:20.542 --> 01:23.609
+And that's the general alignment problem right here.
+
+01:23.990 --> 01:33.192
+So in this entire sound wave, where is the piece and how do these words distribute across the wave of sound?
+
+01:34.094 --> 01:36.981
+The original model had, as I understand it,
+
+01:36.961 --> 01:42.690
+such alignments and therefore this generator could work really well because you had these alignments.
+
+01:42.730 --> 01:45.735
+Without these alignments it doesn't work as well.
+
+01:46.095 --> 01:53.367
+And you can, on their website that I've shown you initially, you can listen to samples where they disable each of these things.
+
+01:53.347 --> 01:59.881
+So this generator is really good at producing sound when it has these alignments.
+
+02:00.202 --> 02:05.153
+So the challenging task here is how do you compute these alignments?
+
+02:05.273 --> 02:11.908
+How do you compute this thing if you don't have it, if you don't have it in your training data?
+
+02:12.970 --> 02:14.414
+So it needs to be part of the loss.
+
+02:15.175 --> 02:17.921
+So that's what this entire architecture down here is.
+
+02:18.643 --> 02:20.046
+All right, so the text is
+

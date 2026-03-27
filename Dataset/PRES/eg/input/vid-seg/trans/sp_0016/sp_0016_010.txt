@@ -1,0 +1,3 @@
+Our architecture predicts directly the acquisition function values given the context and the test locations.
+And then to compute the policy over the next points, we do this softmax step.
+And the full objective is then the sum of the two objectives I mentioned before, J is the reinforcement learning loss and lambda is the hyper parameter times the supervised

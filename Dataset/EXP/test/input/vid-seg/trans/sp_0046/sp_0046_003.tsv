@@ -1,0 +1,46 @@
+start	end	text
+31	4397	Let's jump into the loss function right here.
+4938	19558	So they say G and D play the following two player minimax game with value function V. And this is still understood until today that
+19538	32190	It was already like if this was a pure engineering paper, they could simply build the architecture and say, oh, we let these networks fight and they are kind of adversarial and they pump each other up and so on.
+32510	40658	And this here was much more into the direction of kind of a theoretical reasoning into why something like this would work.
+40698	45883	Of course, there are still a lot of engineering going on to actually make it work.
+45863	50272	So they, they have, there's this value function right here.
+50773	51193	Okay.
+51213	53578	And the value function is the following.
+54139	65982	So what you have is you have the log probability of data, and you have one, the log one minus D of the generated samples.
+65962	70470	So here you can see, and this was introduced, this seems also obvious now, right?
+70810	76139	But you have a prior on what this is called the noise distribution.
+76299	76600	Okay.
+76980	85815	So you have a prior on your input noise to the generator, because the generator is supposed to come up with very many different data points.
+86296	88780	And if it is a, if it is a
+88760	96397	Non-stochastic function like a neural network, then you need some way to produce different images.
+96878	100305	So there is this prior distribution over the noise.
+100867	103392	You feed that noise into the generator.
+103432	105717	The generator will produce an output.
+105777	107882	You put that into the discriminator.
+107862	114238	And then this right here, as you can see, the discriminator is trying to maximize this objective.
+114899	125365	So the discriminator is trying to maximize the probability of real data, and it is trying to minimize the probability of fake data.
+125345	128949	This is simply a two-way classification problem.
+129750	135315	At the same time, the generator, as you can see, is trying to minimize the objective.
+135896	138679	In fact, the order here is quite important.
+140440	147087	The generator, as you can see, is trying to minimize whatever this here is.
+147468	152753	The generator is trying to minimize against the best possible discriminator.
+152733	161305	And so this is one, one observation right here is that the formulation is always with respect to a perfect discriminator.
+161866	170358	Now we know that this doesn't work because if you have a perfect discriminator, then generator cannot catch up because you have insufficient gradients and so on.
+170979	174124	And this was already recognized in this paper as well.
+174344	181474	But the formulation is with respect to a min max game and not a max min game.
+181454	190993	So the other point I want to make here is that you can see the discriminator appears in both terms right here.
+191254	194661	However, the generator only appears right here.
+195823	203378	And this basically means that the objective for the generator is only this part here because the other part is constant.
+203358	210169	So the generator is just trying to make the discriminator think that fake data is real.
+210670	224151	So it is trying to make the discriminator the class of fake data as small as possible for the data that it outputs while the discriminator is trying to make the class of fake data.
+224131	228619	more than the class of, sorry, real data.
+228639	233428	Yeah, it's trying to make, it's trying to classify fake data as fake and real data as real.
+234610	237035	Whereas the generator has only this part on the right.
+237135	240761	This is, I feel this is, it's quite important.
+241463	241743	Why?
+242104	248215	Because already in this paper, they recognize that this might not be the best practical objective.
+248195	269308	And for the generator, they can actually exchange this part here on the right to simply say we want to instead of log 1 minus d, we simply want to use minus log d as an objective for the generator.
+269288	271057	So you can kind of play around with this.
+271137	275539	And as you know, lots of formulations have played around with this loss right here.
+276021	280041	And yeah, that's why we have like a billion billion billion billion

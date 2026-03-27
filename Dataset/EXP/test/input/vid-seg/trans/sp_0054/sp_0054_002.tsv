@@ -1,0 +1,84 @@
+start	end	text
+31	652	techniques.
+1154	9293	The first is the disentangled attention mechanism, where each word is represented using two vectors that encode its content and position respectively.
+10075	18394	And the attention weights among the words are computed using disentangled matrices on their contents and relative positions respectively.
+18374	20497	Okay, we'll look at that first.
+21879	39522	So what they mean is when you have a, when you have a multi head attention layer, what we want to do is we want to transform one sequence of tokens of token representations into the next sequence of token representations.
+39582	46812	Now, usually every token, let's say these are our tokens, and this could be a sentence in a language like I am hungry.
+48125	56158	And here is like this classification token that we always add when we train BERT.
+56899	60785	Every one of these tokens is represented by a vector.
+63049	63970	Like this is a vector.
+64591	65353	This is a vector.
+65493	66515	It has many entries.
+66775	67556	This is a vector.
+68037	70100	Some of the vectors are thicker than others.
+70942	71803	I mean, that's just a
+73083	74686	This one just hasn't eaten enough.
+76248	79513	So every one of these tokens is represented by a vector.
+80014	90150	And what a multi head attention layer does is it simply transforms this via means of the attention mechanism into a series of vectors again.
+90210	96981	So we put in a series of vectors and we end up with another series of vectors.
+96961	112675	If you want to know what a multi head attention does in detail, please go look at my video attention is all you need where that's explained specifically it is a attention it is sort of an information routing algorithm.
+112655	123251	that sees how information needs to be routed from tokens to tokens, using queries, keys, values, and so on.
+123371	130302	If you haven't seen the video, it's a beautiful mechanism, but I'm not going to explain it again right here.
+130322	130963	I'm sorry.
+132105	132405	All right.
+133166	136131	So in this,
+137208	139994	What you usually do is you transform vectors into vectors.
+140635	152179	And because of how the multi-head attention mechanism works, the mechanism has no way to discern where in a sentence, for example, a given token is.
+152540	157731	So it cannot differentiate between this sentence here and the sentence, am I hungry?
+157711	168793	If it's just multi head attention is just not possible for it because it treats the incoming Sentence as like a bag of words, which is not the case in for example a recurrent neural network.
+168833	176108	So recurrent neural network would go one by one over these word representations and
+176088	180598	it has kind of a mechanism to see what a sequence is.
+181039	182563	However, multi-edit tension doesn't.
+182783	188717	So what people usually do is they augment these representations with position encodings.
+189679	194991	So that's at the beginning, you know, where you might ask, where do these vectors come from?
+194971	200578	Of course, they come from the last layer, but the very first vectors you put in come from a table.
+201039	203382	And these are your classic word vectors.
+203782	211292	So at some point, you have a big table, and the big table has your entire vocabulary in it.
+211332	213475	So every word in the language that you consider.
+213515	219763	So there's I, and there's M, and there is you, and there is Apple, and there is Hungry.
+219743	227655	And there is even this CLS token, all of them have a table entry and all of them have a vector associated with them.
+227675	237409	Now these vectors are trainable, so the neural network can decide itself what goes into these vectors, but every word has a fixed vector in there.
+237810	245802	And in the very first layer, because you don't have a last layer to draw from, you simply look at what token it is, you go to the table,
+245782	272329	right here you retrieve this vector and you put it here and that's your start and then you transform up the layers of course every time from the last layer but at the beginning you have embeddings now the same thing you do for positions okay so you also have a second table usually and the original transformer paper by the way these were fixed vectors but nowadays I think most of them are also trained
+272309	273731	So you label the positions.
+273951	278637	So that's position, that's position one, that's position two, three and four.
+279058	284625	So for every position two, three, four, and maybe you have also five and six, there is a maximum length.
+285106	291254	But right now we consider sentences of length three with the CLS token appended.
+291675	293237	So these are length four.
+293217	296084	So every position also has a vector.
+296646	301298	And I'm going to actually draw these vectors in this color.
+301318	303784	So every position has a vector.
+304372	306895	irrespective of what word there is, okay?
+307176	310540	Right now, we just have vectors for words irrespective of where they are.
+310841	314005	And we have vectors of positions irrespective of what words there are.
+314425	326982	And what you do is same, you look at what position is here, you go to the table, you retrieve that embedding, and you somehow also put it here.
+327503	332910	Now, I've made a bit of a mess here with this thing, sorry.
+333953	339399	So how do you, now you have two vectors all of a sudden per word.
+339879	347568	So you have one that is a position and you have one that is the kind of the word itself that represents the word itself.
+348469	352953	And the neural network, it needs both in order to understand the sentence, right?
+353414	362283	If every word has these two vectors at the beginning, now it can understand, aha, this is the word I that is at the beginning of the sentence.
+362303	363825	So it's probably the subject.
+363805	364847	of a sentence.
+365147	374623	However, if the word am was at the beginning, it could be, oh, it's probably a question because it starts with a verb like am I hungry?
+375625	375725	Okay.
+375745	379952	And it can also evaluate the relative distances of things to each other and so on.
+380293	387585	So given this information, the neural network has all the tools it sort of needs to understand that sentence as a sequence.
+387565	393895	Now, you have basically two ways of combining the two things.
+394335	398021	First of all, you can concatenate them, which means that I'm going to do it in this.
+398101	401005	You just put, no, that's terrible.
+402287	407295	You just put the, I'm not too skilled yet with this new thing.
+407275	411441	You put this on top here, imagine this is the same length and you just concatenate the vector.
+411481	413364	So now the vector is longer.
+413744	418010	Of course, that also increases your dimensionality, computational issues and so on.
+418030	425200	So what a lot of people do is they simply, you know, line them up if they're the same size and they add them together element wise.
+425180	430708	And, you know, in the worst case, the neural network now can decide because both of these are trained, right?
+431029	437518	So the neural network can absolutely decide that, you know, in the top part here, it simply learns a bunch of zeros.
+437538	440262	And then the bottom part here, it simply learns a bunch of zeros here.
+440302	442445	So essentially it's a concatenation.
+442786	443747	That's the worst case.
+444168	451198	In the best case, the neural network can actually do some kind of information combining already in this addition step down here.
+452219	452480	Okay.
+452860	454022	So the,
+454002	459299	You you give both encodings to the neural network as a single vector, right?
+459420	460047	So what goes into

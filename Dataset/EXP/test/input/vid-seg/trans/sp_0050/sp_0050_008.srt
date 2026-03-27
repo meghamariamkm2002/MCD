@@ -1,0 +1,140 @@
+1
+00:00:00,031 --> 00:00:05,498
+The second thing we're looking at is these binding sites.
+
+2
+00:00:05,558 --> 00:00:17,213
+Now these are single properties of different amino acids and we're simply looking at all the other tokens that focuses their attention.
+
+3
+00:00:17,393 --> 00:00:18,595
+Why is this important?
+
+4
+00:00:18,695 --> 00:00:26,044
+Because these binding sites are central to the structure or to the function of the protein.
+
+5
+00:00:26,245 --> 00:00:28,047
+If this here is a binding site,
+
+6
+00:00:28,027 --> 00:00:31,735
+then that's a very central important point of the protein.
+
+7
+00:00:32,657 --> 00:00:39,311
+So a lot of these other things are going to be determined by what this binding site is.
+
+8
+00:00:40,072 --> 00:00:47,588
+This binding site needs to have a very particular function and therefore probably needs to be a very particular amino acid.
+
+9
+00:00:47,568 --> 00:00:54,478
+And the other things here are sort of supporting this binding site because they form the 3D structure around it and so on.
+
+10
+00:00:54,498 --> 00:01:01,488
+So you would expect a lot of attention to be put on this binding site.
+
+11
+00:01:01,508 --> 00:01:02,549
+And what do we find?
+
+12
+00:01:04,011 --> 00:01:08,277
+We find that it's a bit more murky than before.
+
+13
+00:01:08,257 --> 00:01:11,984
+So, you can see that the attention is kind of spread out.
+
+14
+00:01:12,485 --> 00:01:15,530
+Percentage of each head's attention that focuses on binding sites.
+
+15
+00:01:15,971 --> 00:01:21,922
+Especially in the deeper layers, binding sites are targeted at much higher frequency than would occur by chance.
+
+16
+00:01:22,643 --> 00:01:26,991
+Head 7.1 has the highest percentage, with 34%.
+
+17
+00:01:27,798 --> 00:01:39,696
+So also here, you can see that it is spread out, but this is because multiple heads are now focusing on these binding sites, because probably binding sites come in different variations.
+
+18
+00:01:40,076 --> 00:01:44,764
+So you'll have lots of heads specializing on attending to binding sites.
+
+19
+00:01:45,124 --> 00:01:48,930
+And they say it is much higher frequency than would occur by chance.
+
+20
+00:01:49,010 --> 00:01:56,421
+And you can see here, this head is the highest with 34% of its attention focused on binding sites.
+
+21
+00:01:56,401 --> 00:02:05,373
+You can also see the general trend of the attention being rather in the later layers, which we would expect from a tertiary structure.
+
+22
+00:02:06,094 --> 00:02:10,019
+Now, yeah, it would be interesting here.
+
+23
+00:02:10,480 --> 00:02:16,047
+Here you also see that actually most of the things are in the last layer.
+
+24
+00:02:16,027 --> 00:02:25,025
+which points to points to rather maybe lower lower level information, because we reasoned before about the last layer, or I was just wrong.
+
+25
+00:02:25,365 --> 00:02:35,385
+But also in a general trend, you can see that the attention is rather shifted towards the later layers, because this is sort of a higher order function.
+
+26
+00:02:37,255 --> 00:02:37,656
+Okay.
+
+27
+00:02:38,377 --> 00:02:45,748
+If you look at the same calibration experiment, you can see that the picture is not as clear.
+
+28
+00:02:45,808 --> 00:02:49,313
+There is the general trend at the beginning, but then it sort of flattens out.
+
+29
+00:02:49,734 --> 00:02:58,808
+So you can sort of differentiate the very probably not a binding site from the somewhat probably a binding site.
+
+30
+00:02:58,788 --> 00:03:01,973
+but it's not a perfectly calibrated classifier.
+
+31
+00:03:02,333 --> 00:03:08,562
+And that might just be because there are many things specializing in different types of binding sites.
+
+32
+00:03:08,842 --> 00:03:10,905
+So you can't just go to this one head.
+
+33
+00:03:10,945 --> 00:03:12,828
+So this is just for this one head.
+
+34
+00:03:13,890 --> 00:03:26,027
+You can't just go to that one and expect that to classify all the binding sites because you might want to combine all of the high ranking ones here.
+
+35
+00:03:27,897 --> 00:03:29,150
+to form a classifier.
+

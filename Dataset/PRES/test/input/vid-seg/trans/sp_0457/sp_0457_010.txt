@@ -1,0 +1,2 @@
+Here are some experiment highlights on reducing communication costs.
+You can see that under all stages of training, our framework has much smaller communication costs than the baselines.

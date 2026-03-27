@@ -1,0 +1,43 @@
+start	end	text
+622	4267	like that's about it.
+4307	5709	Let's look at the experiments.
+6591	8674	So they're experiments.
+10717	21513	Basically, I actually want to go down here to this industry, sorry, not the industrial control process, but to the Mujoko experiment.
+21553	24096	So these are kind of continuous control tasks.
+24357	25178	You might have seen it.
+25198	25819	So there's
+25799	34512	One is a, the ant here is basically this 3D ant.
+35374	44888	It's like a blob and it has I think four legs and each leg has two joints and it just needs to walk as far as possible or reach some sort of goal.
+44868	50842	And the half cheetah is like a 2D thing where I think it's something like this.
+52004	56194	It also has these two legs and it's supposed to walk forward and not fall over.
+57537	62488	And you can put force basically on each of the joints here.
+62468	79493	So you see that their baselines are Gaussian processes and this pets thing is a previous baseline to also do model-based control with a learned model.
+80915	82637	And here they
+83748	87032	There's is the main, their main one is the red one.
+87552	91577	And as you can see that it goes much faster.
+91637	97804	Well, it basically outperforms the rest in these high, in these more complicated tasks.
+98205	103991	And then card poll or something like this is, is a lower dimensional, easier tasks.
+104352	107055	And you can see that at least it does not hurt.
+109229	131659	They make, they say here, something they don't show in the plots, they say that if you let this run for a while, then basically their method doesn't make any improvement anymore, whereas the baseline methods will sort of at some point surpass it.
+131639	147100	And the reason that is, and I'm not sure if it's on this exact task, but they mentioned that, which I respect so far, is because they say, since we only plan where we know,
+148548	150651	Where did I draw it?
+150671	156922	Since we only plan where we know, we basically do much less exploration than others.
+157362	160548	We kind of stick to what we know when we plan.
+160968	174150	So inherently we do less exploration and in our conversation with Hari, he basically said that this is intended and the intention is that you want to do your planning
+174130	190131	Where you know and then explicitly add a component that does exploration so you have control over so you can basically say I. I've never been here sort of now you would be in an expression phase you would explicitly go there.
+190111	205470	rather than intermingle your planning with your exploration and basically rely on your planning to screw up and your exploring because if you're planning
+205450	209376	never screws up, then you won't explore either, right?
+209536	212941	Then you will always reach your goal or your planning will always be correct.
+213301	219891	And these other methods that don't have this explicitly, they explore every time their planning screws up and you don't want that.
+220171	225278	You want your planning to be as good as possible and they do that by sticking to what they know.
+225719	235052	And then the next step, which is not in this paper, would be to add an explicit exploration policy to reach areas they've never reached before.
+235032	237035	Okay.
+237055	251320	So that's the reason why they don't ultimately reach the best accuracy, but they do reach the initial accuracy much faster than the other tasks because they plan better.
+251300	264298	They have a long discussion here of what still problems are, like local minima or the planning horizon problem, open loop versus closed loop, compounding errors in planning.
+265340	267483	But I'm going to leave this out for now.
+268044	270567	And I thank you for being here.
+270767	273952	I very much invite you to check out the paper for more details.
+274212	276415	It's pretty cool, pretty easy to read actually.
+276455	277917	It's very written very well.
+278698	280922	And with that, see you next time.
+280942	281222	Bye bye.

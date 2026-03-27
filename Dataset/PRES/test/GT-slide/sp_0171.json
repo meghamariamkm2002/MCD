@@ -1,0 +1,341 @@
+[
+  {
+    "id": "002",
+    "title": "sp_0171_002",
+    "filename": "Videos/sp_0171.mp4",
+    "paper_filename": "Papers/sp_0171.pdf",
+    "type": "slides",
+    "relevant_segments": [
+      {
+        "para_id": "p1",
+        "section_heading": "Abstract",
+        "text": "In this paper we offer a new perspective on the well established agglomerative clustering algorithm, focusing on recovery of hierarchical structure. We recommend a simple variant of the standard algorithm, in which clusters are merged by maximum average dot product and not, for example, by minimum distance or within-cluster variance. We demonstrate that the tree output by this algorithm provides a bona fide estimate of generative hierarchical structure in data, under a generic probabilistic graphical model. The key technical innovations are to understand how hierarchical information in this model translates into tree geometry which can be recovered from data, and to characterise the benefits of simultaneously growing sample size and data dimension. We demonstrate superior tree recovery performance with real data over existing approaches such as UPGMA, Ward\u2019s method, and HDBSCAN.",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p7",
+        "section_heading": "1 Introduction",
+        "text": "Existing theoretical treatments of hierarchical clustering involve different mathematical problem formulations and assumptions to ours. One common setup is to assume an underlying ultrametric space whose geometry specifies the unknown tree, and/or to study tree recovery as n \u2192 \u221e with respect to a cost function, e.g, [10, 16, 43, 11, 14, 15, 31, 12]. An alternative problem formulation addresses recovery of the cluster tree of the probability density from which it is assumed data are sampled [42, 20, 27]. The unknown tree in our problem formulation specifies conditional independence structure, and so it has a very different interpretation to the trees in all these cited works. Moreover, our data are vectors in Rp, and p \u2192 \u221e is a crucial aspect of our convergence arguments, but in the above cited works p plays no role or is fixed. Our definition of dendrogram is different to that in e.g. [10]: we do not require all leaf vertices to be equidistant from the root \u2013 a condition which arises as the \u201cfixed molecular clock\u201d hypothesis [18, 34] in phylogenetics. We also allow data to be sampled from non-leaf vertices. There is an enormous body of work on tree reconstruction methods in phylogenetics, e.g. listed at [4], but these are mostly not general-purpose solutions to the problem of inferring hierarchy. Associated theoretical convergence results are limited in scope, e.g, the famous work [18] is limited to a fixed molecular clock, five taxa and does not allow observation error.",
+        "seg_type": "par"
+      }
+    ]
+  },
+  {
+    "id": "003",
+    "title": "sp_0171_003",
+    "filename": "Videos/sp_0171.mp4",
+    "paper_filename": "Papers/sp_0171.pdf",
+    "type": "slides",
+    "relevant_segments": [
+      {
+        "para_id": "p4",
+        "section_heading": "1 Introduction",
+        "text": "We suggest an agglomerative algorithm which merges clusters according to highest sample average dot product (section 2.2). This is in contrast to many existing approaches which quantify dissimilarity",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p5",
+        "section_heading": "1 Introduction",
+        "text": "between data vectors using Euclidean distance. We also consider the case where data are preprocessed by reducing dimension using PCA. We mathematically analyse the performance of our dot product clustering algorithm and establish that under our model, with sample size n and data dimension p growing simultaneously at appropriate rates, the merge distortion [20, 27] between the algorithm output and underlying tree vanishes. In numerical examples with real data (section 4), where we have access to labels providing a notion of true hierarchy, we compare performance of our algorithm against existing methods in terms of a Kendall \u03c4b correlation performance measure, which quantifies association between ground-truth and estimated tree structure. We examine statistical performance with and without dimension reduction by PCA, and illustrate how dot products versus Euclidean distances relate to semantic structure in ground-truth hierarchy.",
+        "seg_type": "par"
+      }
+    ]
+  },
+  {
+    "id": "004",
+    "title": "sp_0171_004",
+    "filename": "Videos/sp_0171.mp4",
+    "paper_filename": "Papers/sp_0171.pdf",
+    "type": "slides",
+    "relevant_segments": [
+      {
+        "para_id": "p8",
+        "section_heading": "2.1 Statistical model, tree and dendrogram",
+        "text": "Where possible, we use conventional terminology from the field of probabilistic graphical models, e.g., [28] to define our objects and concepts. Our model is built around an unobserved tree T = (V, E), that is a directed acyclic graph with vertex and edge sets V and E , with two properties: T is connected (ignoring directions of edges), and each vertex has at most one parent, where we say u is a parent of v if there is an edge from u to v. We observe data vectors Yi \u2208 Rp, i = 1, . . . , n, which we model as:",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p13",
+        "section_heading": "2.1 Statistical model, tree and dendrogram",
+        "text": "For each v \u2208 Z , one can think of the vector X(v) as the random centre of a \"cluster\", with correlation structure of the cluster determined by the matrix S(z). The latent variable Zi indicates which cluster",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p14",
+        "section_heading": "2.1 Statistical model, tree and dendrogram",
+        "text": "the ith data vector Yi is associated with. The vectors X(v), v \u2208 V \\ Z , correspond to unobserved vertices in the underlying tree. As an example, Z could be the set of leaf vertices of T , but neither our methods nor theory require this to be the case. Throughout this paper, we assume that the tree T determines two distributional properties of X. Firstly, we assume T is the conditional independence graph of the collection of random variables Xj := {Xj(v); v \u2208 V} for each j, that is, A1. for all j = 1, . . . , p, the marginal probability density or mass function of Xj factorises as:",
+        "seg_type": "par"
+      }
+    ]
+  },
+  {
+    "id": "005",
+    "title": "sp_0171_005",
+    "filename": "Videos/sp_0171.mp4",
+    "paper_filename": "Papers/sp_0171.pdf",
+    "type": "slides",
+    "relevant_segments": [
+      {
+        "para_id": "p3",
+        "section_heading": "1 Introduction",
+        "text": "Agglomerative clustering methods are not model-based procedures, but rather simple algorithms. Nevertheless, in this work we uncover a new perspective on agglomerative clustering by introducing a general form of generative statistical model for the data, but without assuming specific parametric families of distributions (e.g., Gaussian). In our model (section 2.1), hierarchy takes the form of a tree defining the conditional independence structure of latent variables, using elementary concepts from probabilistic graphical modelling [30, 28]. In a key innovation, we then augment this conditional independence tree to form what we call a dendrogram, whose geometry is related to population statistics of the data. The new insight which enables tree recovery in our setting (made precise and explained in section 3) is that dot products between data vectors reveal heights of most recent common ancestors in the dendrogram.",
+        "seg_type": "par"
+      },
+      {
+        "box": [
+          301.9671936035156,
+          1305.0855712890625,
+          924.5786743164062,
+          1370.5328369140625
+        ],
+        "text": [
+          "\\begin{array} { r l r } & { m ( u , v ) : = h ( \\operatorname { m o s t \\, r e c e n t \\, c o m m o n \\, a n c e s t o r \\, o f } \\, u \\, \\operatorname { a n d } \\, v ) , \\qquad } & { u , v \\in \\mathcal { V } , } \\\\ & { \\hat { m } ( u , v ) : = \\hat { h } ( \\operatorname { m o s t \\, r e c e n t \\, c o m m o n \\, a n c e s t o r \\, o f } \\, u \\, \\operatorname { a n d } \\, v ) , \\qquad } & { u , v \\in \\hat { \\mathcal { V } } . } \\end{array}"
+        ],
+        "page": "sp_0171_page_0004",
+        "id": "sp_0171_page_0004-2",
+        "seg_type": "eq"
+      },
+      {
+        "caption": "Figure 1: (a) An example of the dendrogram D with V = {a, b, c, d, e, f, g}, see lemma 1 for interpretation of the merge height m(\u00b7, \u00b7) and distance d(\u00b7, \u00b7). Horizontal distances in this diagram are chosen arbitrarily. (b) D augmented according to Z = {a, b, c, d} and the realization: Z1, Z2, Z3 = a, Z4 = b, Z5 = Z6 = d, see section 3.3 for discussion. (c) The dendrogram D\u0302 output from algorithm 1 in the case \u03b1\u0302 = \u03b1\u0302data. D\u0302 can be seen to approximate the dendrogram in (b) and hence D.",
+        "captionBoundary": {
+          "x1": 108.0,
+          "x2": 505.24481201171875,
+          "y1": 245.64651489257812,
+          "y2": 300.4750061035156
+        },
+        "figType": "Figure",
+        "imageText": [
+          "(a)",
+          "(b)",
+          "(c)"
+        ],
+        "name": "1",
+        "page": 3,
+        "regionBoundary": {
+          "x1": 116.16,
+          "x2": 496.32,
+          "y1": 78.72,
+          "y2": 219.35999999999999
+        },
+        "renderDpi": 150,
+        "renderURL": "/Users/meghamariam/PROJECTS/PROJ1_Dataset/PROJ1_Crossmodal-Traversal/DATASET/Presentation/pap-seg/fig/sp_0171/sp_0171-Figure1-1.png",
+        "id": "sp_0171-Figure1-1",
+        "seg_type": "fig"
+      }
+    ]
+  },
+  {
+    "id": "006",
+    "title": "sp_0171_006",
+    "filename": "Videos/sp_0171.mp4",
+    "paper_filename": "Papers/sp_0171.pdf",
+    "type": "slides",
+    "relevant_segments": [
+      {
+        "cls_id": 14,
+        "label": "algorithm",
+        "score": 0.8990903496742249,
+        "coordinate": [
+          436.833984375,
+          1302.22021484375,
+          2093.01806640625,
+          2105.053466796875
+        ],
+        "text": "Input: pairwise affinities \u00e2(., \u00b7) between n data points\n1: Initialise partition P0 := {{1}, . . . , {n}}, vertex set  := P0 and edge set  to the empty set\n2: for m  {1, . . . , n \u2212 1} do\nFind distinct pair u, v  Pm\u22121 with largest affinity\nUpdate Pm\u22121 to Pm by merging u, v to form w := u U v\nAppend vertex w to V and directed edges w \u2192 u and w \u2192 v to \nDefine affinity between w and other members of Pm as\n|n|\n|a|\n\u03b1(w, \u00b7) :=\n\u03b1(u,\u00b7)+\n\u03b1(v, \u00b7),\n|w|\n|w|\nand \u03b1(w, w) := \u00e2(u, v).\n7: end for\nutput: Dendrogram D := (T , h), comprising tree T = (v, \u03b5) and heights h(v) := \u03b1(v, v) fo\nv \\ Po and h(v) := max{h(Pa,), \u03b1(v, v)} for v  Po",
+        "input_path": "/tmp/megha/PDF-Extract-Kit/Presentation/layout_pap/sp_0171/sp_0171_page_4.png",
+        "id": "sp_0171_page_4_1",
+        "seg_type": "algo"
+      },
+      {
+        "para_id": "p20",
+        "section_heading": "2.2 Algorithm",
+        "text": "Combining the model (1) with (2) we have \u03b1(Zi, Zj) = p\u22121E[\u27e8Yi,Yj\u27e9|Zi, Zj ] for i \u0338= j \u2208 [n], [n] := {1, . . . , n}. The input to algorithm 1 is an estimate \u03b1\u0302(\u00b7, \u00b7) of all the pairwise affinities \u03b1(Zi, Zj), i \u0338= j \u2208 [n]. We consider two approaches to estimating \u03b1(Zi, Zj), with and without dimension reduction by uncentered PCA. For some r \u2264 min{p, n}, let V \u2208 Rp\u00d7r denote the matrix whose columns are orthonormal eigenvectors of \u2211n i=1 YiY \u22a4 i associated with its r largest eigenvalues. Then \u03b6i := V\u22a4Yi is r-dimensional vector of principal component scores for the ith data vector. The two possibilities for \u03b1\u0302(\u00b7, \u00b7) we consider are:",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p22",
+        "section_heading": "2.2 Algorithm",
+        "text": "Algorithm 1 returns a dendrogram D\u0302 = (T\u0302 , h\u0302), comprising a tree T\u0302 = (V\u0302, E\u0302) and height function h\u0302. Each vertex in V\u0302 is a subset of [n], thus indexing a subset of the data vectors Y1, . . . ,Yn. The leaf vertices are the singleton sets {i}, i \u2208 [n], corresponding to the data vectors themselves. As algorithm 1 proceeds, vertices are appended to V\u0302 , edges are appended to E\u0302 , and the domain of the function \u03b1\u0302(\u00b7, \u00b7) is extended as affinities between elements of V\u0302 are computed. Throughout the paper we simplify notation by writing \u03b1\u0302(i, j) as shorthand for \u03b1\u0302({i}, {j}) for i, j \u2208 [n], noting that each argument of \u03b1\u0302(\u00b7, \u00b7) is in fact a subset of [n].",
+        "seg_type": "par"
+      }
+    ]
+  },
+  {
+    "id": "007",
+    "title": "sp_0171_007",
+    "filename": "Videos/sp_0171.mp4",
+    "paper_filename": "Papers/sp_0171.pdf",
+    "type": "slides",
+    "relevant_segments": [
+      {
+        "caption": "Table 1: Kendall \u03c4b ranking performance measure. For the dot product method, i.e., algorithm 1, Y1:n as input corresponds to using \u03b1\u0302data, and \u03b61:n corresponds to \u03b1\u0302pca. The mean Kendall \u03c4b correlation coefficient is reported alongside the standard error (numerical value shown is the standard error\u00d7103).",
+        "captionBoundary": {
+          "x1": 107.69100189208984,
+          "x2": 505.7430114746094,
+          "y1": 72.83255767822266,
+          "y2": 101.85498046875
+        },
+        "figType": "Table",
+        "imageText": [
+          "Simulated",
+          "Y1:n",
+          "0.86",
+          "(1)",
+          "0.81",
+          "(2)",
+          "0.52",
+          "(8)",
+          "0.52",
+          "(8)",
+          "0.52",
+          "(8)",
+          "\u03b61:n",
+          "0.86",
+          "(1)",
+          "0.81",
+          "(2)",
+          "0.52",
+          "(8)",
+          "0.52",
+          "(8)",
+          "0.52",
+          "(8)",
+          "S&P",
+          "500",
+          "Y1:n",
+          "0.34",
+          "(10)",
+          "0.34",
+          "(10)",
+          "0.14",
+          "(9.3)",
+          "0.34",
+          "(1)",
+          "0.35",
+          "(10)",
+          "\u03b61:n",
+          "0.36",
+          "(9.4)",
+          "0.42",
+          "(11)",
+          "0.33",
+          "(13)",
+          "0.39",
+          "(11)",
+          "0.39",
+          "(11)",
+          "Reviews",
+          "Y1:n",
+          "0.15",
+          "(2.5)",
+          "0.12",
+          "(1.9)",
+          "0.014",
+          "(1.1)",
+          "0.070",
+          "(1.5)",
+          "0.10",
+          "(1.8)",
+          "\u03b61:n",
+          "0.14",
+          "(2.4)",
+          "0.14",
+          "(2.4)",
+          "-0.0085",
+          "(0.78)",
+          "0.14",
+          "(2.6)",
+          "0.12",
+          "(2.4)",
+          "Zebrafish",
+          "Y1:n",
+          "0.34",
+          "(3.4)",
+          "0.25",
+          "(3.1)",
+          "0.023",
+          "(2.9)",
+          "0.27",
+          "(3.2)",
+          "0.30",
+          "(3.8)",
+          "\u03b61:n",
+          "0.34",
+          "(3.4)",
+          "0.27",
+          "(3.2)",
+          "0.11",
+          "(2.8)",
+          "0.16",
+          "(2.5)",
+          "0.29",
+          "(3.8)",
+          "Newsgroups",
+          "Y1:n",
+          "0.26",
+          "(2.9)",
+          "0.26",
+          "(2.9)",
+          "-0.010",
+          "(0.65)",
+          "0.23",
+          "(2.7)",
+          "0.18",
+          "(2.5)",
+          "\u03b61:n",
+          "0.24",
+          "(2.6)",
+          "0.18",
+          "(1.9)",
+          "-0.016",
+          "(1.9)",
+          "0.038",
+          "(1.5)",
+          "0.19",
+          "(2.7)",
+          "Data",
+          "Input",
+          "Dot",
+          "product",
+          "UPGMA",
+          "w/",
+          "HDBSCAN",
+          "UPGMA",
+          "w/",
+          "Ward",
+          "cos.",
+          "dist.",
+          "Eucl.",
+          "dist."
+        ],
+        "name": "1",
+        "page": 7,
+        "regionBoundary": {
+          "x1": 108.0,
+          "x2": 504.0,
+          "y1": 111.83999999999999,
+          "y2": 275.03999999999996
+        },
+        "renderDpi": 150,
+        "renderURL": "/Users/meghamariam/PROJECTS/PROJ1_Dataset/PROJ1_Crossmodal-Traversal/DATASET/Presentation/pap-seg/fig/sp_0171/sp_0171-Table1-1.png",
+        "id": "sp_0171-Table1-1",
+        "seg_type": "tab"
+      }
+    ]
+  },
+  {
+    "id": "008",
+    "title": "sp_0171_008",
+    "filename": "Videos/sp_0171.mp4",
+    "paper_filename": "Papers/sp_0171.pdf",
+    "type": "slides",
+    "relevant_segments": [
+      {
+        "para_id": "p57",
+        "section_heading": "5 Limitations and opportunities",
+        "text": "Our algorithm is motivated by modelling assumptions. If these assumptions are not appropriate for the data at hand, then the algorithm cannot be expected to perform well. A notable limitation of our model is that \u03b1(u, v) \u2265 0 for all u, v \u2208 V (see lemma 3 in appendix C). This is an inappropriate assumption when there are strong negative cross-correlations between some pairs of data vectors, and may explain why our algorithm has inferior performance on the S&P 500 data in table 1. Further discussion is given in appendix E. A criticism of agglomerative clustering algorithms in their basic form is that their computational cost scales faster than O(n2). Approximations to standard agglomerative methods which improve computational scalability have been proposed [33, 5, 35]. Future research could investigate analogous approximations and speed-up of our method. Fairness in hierarchical clustering has been recently studied in cost function-based settings by [6] and in greedy algorithm settings by [13]. Future work could investigate versions of our algorithm which incorporate fairness measures.",
+        "seg_type": "par"
+      }
+    ]
+  }
+]

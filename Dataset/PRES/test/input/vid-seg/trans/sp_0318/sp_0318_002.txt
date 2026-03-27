@@ -1,0 +1,4 @@
+Machinery techniques have been increasingly used in applications with individual-level consequences.
+However, these algorithms can be biased against certain protective groups.
+Given this issue, there's a green line of work that introduces fear-learning algorithms to mitigate algorithmic discrimination.
+A recent survey found 341 fear-learning algorithms.

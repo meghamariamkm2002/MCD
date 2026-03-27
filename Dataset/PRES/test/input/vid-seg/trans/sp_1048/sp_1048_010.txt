@@ -1,0 +1,3 @@
+Here, we give the main theorem by just relying on some standard assumptions in STD analysis and FL literature.
+So we can see that the final bound can be decomposed into a term related to V decay, and also the grand drift and data heterogeneity error.
+So if capital C is said to be zero, the first term will be zero, and then the remaining bounds are just the same as previous results.

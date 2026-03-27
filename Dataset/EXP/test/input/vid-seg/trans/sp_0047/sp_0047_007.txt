@@ -1,0 +1,14 @@
+The other thing they do is they do a subsampling of frequent words.
+So again, this is a way to kind of push down the often appearing words where they say the most frequent words can easily occur hundreds of millions of times, like in the or a such words usually provide less information value than the rare words.
+For example, while the skipgram model benefits from observing the co-occurrences of France and
+Paris, it benefits much less from observing the frequent co-occurrences of France and the as nearly every word co-occurs frequently within a sentence with the.
+So they do another trick here to counter this imbalance between rare and frequent words.
+Use a simple subsampling approach.
+Each word in the training set is discarded with probability computed by that formula.
+right so therefore formula right here and asking again why why this formula so this is the sampling probability of a word and it goes with one over t t is a temperature parameter and f is the frequency with which the word appears in the corpus so as you can see as the word appears more in the
+in the corpus then so this is the frequency as the word appears more then this thing goes down then this thing goes up so it's discarded with this probability so it's discarded with a higher probability if it appears more often
+where f is the frequency of a word, t is a chosen threshold.
+We chose this subsampling formula because it aggressively subsamples words whose frequency is greater than t while preserving the ranking of the frequencies.
+Although this subsampling formula was chosen heuristically, we found it to work well in practice.
+It accelerates learning and even significantly improves the accuracy of the learned vectors of the rare words as will be shown in the following sections.
+so again something sort of arbitrary it's even it's more understandable than the three quarters but still it's sort of arbitrary the experimented around they found this works well and then every everybody ended up you know using that so that's how this kind of stuff happens okay so

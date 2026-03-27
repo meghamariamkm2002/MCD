@@ -1,0 +1,2 @@
+We also run additional experiments on several data sets from the UCI.
+As shown in this table, our method consistently improves the utility of synthetic data without degrading the performance of downstream models or statistical measures.

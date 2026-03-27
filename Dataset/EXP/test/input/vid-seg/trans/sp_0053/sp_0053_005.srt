@@ -1,0 +1,52 @@
+1
+00:00:00,031 --> 00:00:04,459
+But now it breaks down because the teacher is constructed from the student.
+
+2
+00:00:05,460 --> 00:00:12,152
+So we have a teacher, we train the student to predict the same thing as the teacher does, like learning from the teacher.
+
+3
+00:00:12,452 --> 00:00:18,242
+But then at the same time, after we have done after we've updated the student, we then
+
+4
+00:00:18,222 --> 00:00:21,947
+have we then build the teacher from the new student.
+
+5
+00:00:22,387 --> 00:00:26,913
+And the way we do this you can see right here is by exponentially moving average.
+
+6
+00:00:27,294 --> 00:00:37,427
+So we keep the teacher model and then as we update the student model we simply update the teacher a little bit into the direction of the student model.
+
+7
+00:00:37,727 --> 00:00:46,238
+And there is also a schedule associated with this exponentially moving average like how much the exponential decay is and so on.
+
+8
+00:00:46,218 --> 00:00:52,607
+This seems all to be loaded with hyperparameters, but again, the results are really cool.
+
+9
+00:00:53,408 --> 00:01:00,097
+And I guess it's yet going to turn out how sensitive to hyperparameters this whole setup is.
+
+10
+00:01:00,858 --> 00:01:07,467
+They do make ablations, but we'll see how other people with other datasets fare.
+
+11
+00:01:08,780 --> 00:01:13,882
+Alright, so we have the teacher that is built from the student exponentially moving average.
+
+12
+00:01:14,424 --> 00:01:23,162
+And we want to make the two predict the same represents or the same output for different augmentations of the same image.
+
+13
+00:01:24,146 --> 00:01:25,050
+Okay, in fact,
+

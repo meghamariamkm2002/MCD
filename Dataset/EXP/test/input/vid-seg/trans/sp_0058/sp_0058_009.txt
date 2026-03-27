@@ -1,0 +1,37 @@
+for poker, because that's what they discuss in the broader impact statement.
+So let's quickly look at broader impact, then we're done.
+So just to say I love this broader impact statement, it is, it describes like
+it praises the paper.
+So it's kind of more advertisement for the paper.
+It does almost like no harm to the paper itself, to its reputation.
+It is actually accurate.
+So this broader impact statement actually makes tangible predictions and it doesn't go beyond the, or it mostly doesn't go beyond the tangible things you can say about this algorithm.
+And it actually
+has as a conclusion an action that they take.
+So, and further, it is nothing like what the original specification of broader impact statement says.
+And that makes me happy.
+So good job on this one.
+We believe Rebel is a major step towards general agreement finding algorithm, yada yada yada, so they say if this is good because many things are, sorry, sort of these kind of games, if you can extend it to multi-agent and so on.
+So this is the technology good section, but then the bad section is interesting.
+The most immediate risk posed by this work is its potential for cheating in recreational games such as poker.
+While a algorithm already exists, they say why they're better, why this particular algorithm could be used for cheating, where the others can't be done so easily.
+By the way, this algorithm, by nature of performing this search is over and over again.
+It needs a lot of compute.
+Like it needs a lot of compute.
+The learning isn't the problem.
+The problem is performing these searches over and over and over again.
+Yeah, so it's not super easy to replicate.
+Like don't try this at home.
+However, if they were to release the pre-trained network, that would make it easy.
+And they also say if they release the code, that would maybe make it easier to cheat if you can simply run.
+Maybe you don't have the hardware, but given massive poker winnings, who knows.
+Retraining the algorithms to account for arbitrary cheek size requires more computational as feasible in real time.
+That's about the other algorithms.
+However, Rebel can compute a policy for arbitrary stack size and arbitrary bet size in seconds.
+So that's at inference time.
+Partly for this reason, we have decided to not to release the code for poker.
+We instead open-sourcer implementation for Liars Dice Recreational Game that is not played competitively by humans.
+Okay, so it's a concrete prediction of the impact of this work.
+It has a concrete action to kind of its conclusion, and it doesn't dabble in who knows if we now solve these two player imperfect information games, then surely in the future bombs will fly and stuff like this.
+Yeah, good job on this again.
+All right, so this was the overview of

@@ -1,0 +1,3 @@
+The Gromov-Wasserstein distance is a powerful tool for comparing probability distributions supported on distinct metric spaces.
+Given two metric measure spaces, the GW distance can be computed using the following form, where the x and dy are the metric of the space x and y, and pi is the transport plan.
+The GW distance defines a metric on the space of all the metric measure spaces, modular measure preserving as a matrix.

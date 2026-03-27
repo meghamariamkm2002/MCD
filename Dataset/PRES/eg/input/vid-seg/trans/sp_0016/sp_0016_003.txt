@@ -1,0 +1,5 @@
+mission.
+
+Quickly in the background, we're in the Bayesian optimization setting where we are trying to optimize a black box function that is expensive.
+So we build a cheap proxy, usually with the Gaussian process.
+And combining this with an acquisition function, we have a very simple efficient method.

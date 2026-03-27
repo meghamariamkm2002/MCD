@@ -1,0 +1,131 @@
+WEBVTT
+
+00:00.031 --> 00:02.174
+to maximize the reward.
+
+00:02.635 --> 00:07.261
+In a formal framework, you have an agent and an environment.
+
+00:07.842 --> 00:16.373
+And the environment would always give you an observation, which in this case, the observation is one of these images.
+
+00:17.134 --> 00:20.138
+And the agent will give back an action.
+
+00:20.379 --> 00:21.280
+So the action
+
+00:22.525 --> 00:29.776
+In this case would be the, which button to press or which direction to move the joystick into.
+
+00:30.337 --> 00:34.403
+And then the environment would get back, give back a reward.
+
+00:34.763 --> 00:40.732
+So the reward is could be, you know, it could be this, you scored a goal.
+
+00:41.073 --> 00:42.755
+So that's zero most of the time.
+
+00:42.795 --> 00:48.744
+And sometimes it's one or, or nine or it could be like how long you're alive and so on.
+
+00:48.764 --> 00:51.148
+This is very, very, very variable.
+
+00:51.128 --> 00:59.783
+So the difficulty of reinforcement learning very often is that these episodes can go for a while.
+
+00:59.883 --> 01:02.868
+So this whole process here will repeat over time.
+
+01:03.529 --> 01:13.086
+And this can go on for hundreds of steps or thousands of steps until you're done, you know, playing a game like this, like this right here.
+
+01:13.066 --> 01:17.011
+And the reward can be very sparse.
+
+01:17.251 --> 01:20.315
+So you might only get a reward at the very end of the game.
+
+01:20.415 --> 01:27.644
+Sometimes, most often in these games you get one in between, but still there can be multiple time steps where you don't have a reward.
+
+01:28.105 --> 01:32.070
+And your task is to figure out which of the actions were the good ones.
+
+01:32.230 --> 01:34.753
+This is known as the credit assignment problem.
+
+01:34.733 --> 01:43.605
+And to do the credit assignment problem just from pixels alone, that was unheard of at the time this paper came out.
+
+01:43.806 --> 01:53.299
+That's why they say we are the first deep learning model to successfully learn directly from high dimensional sensory input.
+
+01:53.279 --> 02:03.112
+So the power of deep learning, they argue, is that a deep neural network, a convolutional neural network, can extract these high level features by itself.
+
+02:03.552 --> 02:13.625
+However, at this time, people only knew that it could do so for supervised learning, basically for every input of an image, you had a label.
+
+02:14.086 --> 02:17.110
+And that's how you train these convolutional neural network.
+
+02:17.090 --> 02:18.993
+Here it's very different.
+
+02:19.233 --> 02:25.542
+Here you'll get maybe a thousand of those images and you'll simply say, well, you got a score of 1100.
+
+02:25.682 --> 02:35.035
+And somehow you need to figure out which ones of these were the ones that gave you the good score and how to generalize that.
+
+02:35.716 --> 02:44.869
+So there are various difficulties here to apply convolutional neural networks to this problem and they have detail right here how they did it.
+
+02:46.148 --> 02:51.293
+Um, so they say the model is a convolutional neural network, which, you know, have been demonstrated.
+
+02:51.333 --> 03:04.705
+So this is after things like Alex net, uh, though before res net, um, trained with a variant of Q learning whose input is raw pixels and whose output is a value function estimating the future.
+
+03:04.765 --> 03:06.286
+So we'll get into Q learning.
+
+03:06.306 --> 03:16.155
+Q learning is a reinforcement learning algorithm that hasn't been around, you know, um, for a long time, uh, but just not combined with deep neural networks.
+
+03:16.135 --> 03:27.396
+And yeah, then they say the last cool thing here is that they apply them to seven games with no adjustment of the architecture or learning algorithm.
+
+03:27.836 --> 03:38.616
+So that they apply the same algorithm, the same hyper parameters to all of the seven games and the model learns all of the seven games, not as a single model.
+
+03:38.596 --> 03:46.246
+but as seven different models, however, they all have the same hyperparameters, so they don't need to tune them, which is an additional benefit.
+
+03:46.426 --> 03:57.700
+This would have been a cool paper, even if they had to sort of tune the algorithm to each of the seven games, but they didn't, which makes it even more impressive.
+
+03:57.720 --> 04:07.472
+It's kind of their point here that this reinforcement, deep reinforcement learning can be some sort of a general learning mechanism.
+
+04:07.452 --> 04:24.457
+Of course, you know, later there has been like giant amount of development since this and people have come up with all kinds of giant architectures and whatever corrections of policy corrections seem to real continuous control.
+
+04:24.517 --> 04:31.047
+This is, this is, most of it is a derivation of this work right here.
+
+04:31.027 --> 04:35.437
+This work, it reads surprisingly simple, I have to say.
+
+04:35.457 --> 04:47.666
+And it's almost like they had little idea what problems were to be tackled later in RL, because it kind of reads like, you know, we have this thing and you can learn general things.
+
+04:48.367 --> 04:52.096
+So yeah, that was, we're still not done with reinforcement learning.
+
+04:52.257 --> 04:55.043
+I guess we've just started.
+

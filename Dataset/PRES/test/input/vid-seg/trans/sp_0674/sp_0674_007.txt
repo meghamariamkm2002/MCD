@@ -1,0 +1,4 @@
+The compliance algorithm process is showing the figure.
+First, it learns the local state value function, and then it learns the local value function, the waste function, and the offset function.
+Finally, it learns the local policy.
+It is worth noting that the training process using compliance in simple learning without occurring all the action symbols.

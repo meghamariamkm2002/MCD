@@ -1,0 +1,56 @@
+[
+  {
+    "input_path": "layout_results/sp_0053/sp_0053_page_15.png",
+    "page_index": null,
+    "boxes": [
+      {
+        "cls_id": 14,
+        "label": "algorithm",
+        "score": 0.8176223039627075,
+        "coordinate": [
+          1271.2486572265625,
+          1181.5147705078125,
+          2276.626953125,
+          1663.716796875
+        ],
+        "id": "sp_0053_page_15_1",
+        "seg_type": "algo",
+        "text": "# x is n-by-K\n# tau is Sinkhorn regularization param\nx = exp(x / tau)\nfor _ in range(num_iters): # 1 iter of Sinkhorn\n# total weight per dimension (or cluster)\nc = sum(x, dim=0, keepdim=True)\nx /= c\n# total weight per sample\nn = sum(x, dim=1, keepdim=True)\n# x sums to 1 for each sample (assignment)"
+      },
+      {
+        "cls_id": 14,
+        "label": "algorithm",
+        "score": 0.6447487473487854,
+        "coordinate": [
+          1265.8878173828125,
+          1919.170654296875,
+          2281.019775390625,
+          2019.4259033203125
+        ],
+        "id": "sp_0053_page_15_2",
+        "seg_type": "algo",
+        "text": "x = softmax(x ( tau, dim=0)\nx /= sum(x, dim=1, keepdim=True)"
+      }
+    ]
+  },
+  {
+    "input_path": "layout_results/sp_0053/sp_0053_page_3.png",
+    "page_index": null,
+    "boxes": [
+      {
+        "cls_id": 14,
+        "label": "algorithm",
+        "score": 0.9423554539680481,
+        "coordinate": [
+          1273.1513671875,
+          302.3379211425781,
+          2288.217529296875,
+          1115.295654296875
+        ],
+        "id": "sp_0053_page_3_1",
+        "seg_type": "algo",
+        "text": "Algorithm 1 DINO PyTorch pseudocode w/o multi-crop.\n#\ngs, gt:\nstudent\nand\nteacher\nnetworks\nH\nC: center\n(K)\n# tps, tpt:\nstudent\nand teacher\ntemperatures\n4 1, m: network\nand\ncenter\nmomentum\nrates\ngt.params = gs.params\nfor x in loader: # load a minibatch\nx\nwith\nn\nsamples\nx1, x2 = augment(x), augment(x)\n#\nrandom\nviews\ns1, s2 = gs(x1), gs(x2)\n#\nstudent\noutput\nn-by-K\nt1, t2 = gt(x1), gt(x2)\n# teacher output\nn-by-K\n1oss = H(t1, s2)/2 + H(t2, s1)/2\nloss.backward() # back-propagate\n# student, teacher and center updates\nupdate(gs) # SGD\ngt.params = l*gt.params + (1-l)*gs.params\nC = m*C + (1-m)*cat([t1, t2]).mean(dim=0)\nlef H(t, s):\nt = t.detach() # stop gradient\ns = softmax(s / tps, dim=1)\nreturn - (t * log(s)).sum(dim=1)"
+      }
+    ]
+  }
+]

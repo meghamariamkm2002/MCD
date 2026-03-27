@@ -1,0 +1,2 @@
+We can see from this figure, figure A, that in baseline factory-to-learning setting, VTK has a huge influence on the final performance.
+However, if we either reduce the number of local updates in figure B, or we use more balanced data distribution in figure C, we can see that the influence of VTK is mitigated.

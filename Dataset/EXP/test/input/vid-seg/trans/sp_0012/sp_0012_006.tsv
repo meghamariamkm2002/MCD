@@ -1,0 +1,92 @@
+start	end	text
+31	7939	So they do a bunch of other experiments and I appreciate these experiments here to really show what's going on and until when can you push this.
+9581	15947	So here they have a plot of example echoing before augmentation can reduce training time for ResNet 50 on ImageNet.
+15967	24396	So this is before augmentation and the echoing factor describes how often you repeat each data point.
+24496	26798	So this goes from two to five.
+26778	31805	And you can see that basically you get the speed up.
+32165	35349	You just sort of get it for free.
+35570	46324	As you can see, the dashed line again is as if a repeated data point were as useful as a fresh data point, you'd be at the dashed line.
+46764	51250	And you can see right here that you are just above this dashed line.
+51230	61672	So this can help a lot, and so this is the fresh examples read, and this is the wall time in their particular situation.
+62714	71533	In this case, it doesn't help as much, but again, if that very much depends on how the asymmetry in your pipeline is.
+71513	82780	Now, in these experiments, I would actually appreciate something like they do down here, where I would always like to see where it breaks.
+83061	88854	So how far can you go with the echoing factor until it doesn't help anymore?
+89155	89556	Because
+89536	109435	This sort of tells me pretty much nothing I want to see where is the low point where is kind of the optimal echoing factor and what can you tell me about this optimal echoing factor how can we determine it sort of beforehand or how can you reason how does it connect to the different parts of your architecture.
+109415	121328	So if I had to point out a flaw in this paper, it would be that right here I would expect them to continue this echoing factor increase until it breaks.
+121989	123891	Sort of like they do down here.
+123911	131440	I believe this is for the transformer on LM1B.
+131800	135945	Now here they have a batch size of 1024.
+135925	154211	And you can see, and this is their standard setting for the transformer, the 1024 batch size, you can see that the baseline uses this many 1.5 times 10 to the 7th fresh examples to train until their target.
+154811	164565	If you increase the echoing factor by 2, you basically need half as many fresh examples as long as you echo each one twice.
+164545	176561	Again, very surprising the fact how close you can get to the, as if each batch were a perfect fresh data point.
+178904	184231	But you can see as you increase this echoing factor, and here is exactly what I said, right?
+184972	186494	At some point, this hurts.
+186554	194164	At some point, you get to the point where the non-IIDness, the correlation of successive data points,
+194144	196146	will actually hurt you.
+196846	202932	And they make a point here of saying that this is, for example, dependent on batch size.
+204193	208297	Now, in this experiment over here, they have a larger batch size.
+208877	215703	And here is again, the baseline number of data points to reach the target.
+216544	218486	And you can see again, it goes down.
+219447	224151	But now with the echoing factor where before you had a
+224131	228298	You had an increase again, now it continues to decrease.
+228719	243424	Again, it will be interesting to see where it goes up here and how the number at the slowest, like here the four and here the, I don't know what it's gonna be, maybe the 16, how this will kind of depend on your batch size.
+244226	249615	And here is another problem, and that's what I alluded to at the beginning, this performance dependence.
+249595	264398	Now, I have not read anything differently in the paper, so I had to assume that they trained this here, this number of fresh examples to reach the target is still the target that they determined at the beginning.
+264819	267203	So it's that 3.9 in the table.
+267644	271430	That 3.9 was achieved with this batch size with 1024.
+271490	276818	And we know especially in language models that larger batch sizes
+276798	282804	will lead to a better performance even if you need, let's say, more samples.
+282824	290792	So here you can see that the samples, here it's 1.5 and here it's actually 4 because you increase that batch size.
+291352	293495	So that will tell you something.
+293515	302063	1.5 and 4, that is like a times, okay, that's like a times 2.5.
+302043	313021	So you go with the batch sizes of times four, and you need 2.5 more fresh training samples to reach the same target accuracy.
+313561	317988	First of all, we know that the larger batch sizes can reach higher target accuracies.
+318369	328405	So again, these results, the dependence of them on the actual performance to the maximum achievable value
+328385	336457	To me, that's kind of a shady world here to always, to always say, okay, how long does it take to reach that particular target?
+337900	346413	Because we know that this model right here can reach a much higher target, but we don't know this about these models here.
+346954	349818	What is their kind of performance in the limit?
+349838	354926	And they try to make these experiments, but I don't really believe them.
+355587	355847	Maybe.
+356048	356248	Yeah.
+357933	363722	And yeah, so in the second, right, that will be, that is already interesting.
+364143	370593	So this ratio right here, this 2.5 to four, this ratio must mean something, right?
+370994	382692	It's, I go to a higher batch size, four times higher batch size, and I need 2.5, many more fresh training samples to reach the same target.
+382672	390382	that must somehow tell you something about the usefulness of a single data point versus a succession of data points, right?
+390703	396610	So it doesn't seem because I would expect if each data point was valuable, I would expect this to be times four.
+397772	406283	And if it were, if it were times one, so if it were no, no speed up at all,
+407883	409025	Sorry, not times four.
+409286	410769	It would be times one.
+410809	414878	It would mean I'd need the same number of fresh training samples, right?
+414938	416301	No matter how I batch them.
+417343	418405	But it were times four.
+418465	428406	That means basically that it doesn't matter really how many training points I have in a batch as long as I have enough and that 1,024 seems to be enough.
+428386	432899	It just matters how many SGD steps I do.
+432999	437371	So basically what we're saying SGD isn't getting the most out of these data points.
+437752	443408	And this ratio, this 2.5, this tells you something about the information content of a
+443388	449580	of an additional data point versus the usefulness content of an additional step of SGD.
+449920	460219	And I would expect that to depend to intrinsically be connected to where the low point of this echoing factor is because that's exactly what the echoing does.
+460259	464367	It trades off freshness of data point versus
+464347	468195	doing more steps on the same information.
+469438	480482	And for a paper, especially a paper by Google Brain, this is a connection that I would love to see investigated.
+480462	482826	But enough of the ranting.
+483206	484849	They do investigate other things.
+485090	489036	They do investigate, for example, what happens if we just up the batch size.
+489657	492061	And you can see here, yeah, this is interesting.
+492161	495847	Even the baseline needs more fresh samples as you up the batch size.
+496308	503820	But, and at the beginning, this batch echoing, for example, doesn't help, doesn't hurt, but doesn't help.
+503800	510530	But as you go to higher and higher batch sizes, this batch echoing starts to help more and more.
+511711	517299	Again, I believe this is connected to the usefulness of the single date point.
+517319	521285	At some point, your batch size is just too large for the problem.
+521305	524049	You'd rather do more steps and that's why this helps.
+525250	528475	But also this model right here,
+528455	530719	might have a higher ceiling accuracy.
+531080	545147	So, and it is the question whether this model right here has the same or whether this model right here, the batch echoing model would actually fall back to the ceiling accuracy of one of these models over here.
+547827	562234	Yeah, in any case, their point is basically that as you increase the batch size, this echoing tends to help more relatively because maybe it's because what I said, right?
+562254	568445	They say as batch size increases, the performance of batch echoing relative to the baseline stays either stays the same or improves.
+569026	571050	While for example,
+571030	578237	echoing it either stays the same or it gets sorry, while for example, echoing it either stays the same or gets worse.
+579718	584883	dashed lines indicate the expected values if repeated examples were as useful as fresh examples.
+585324	595093	Yeah, so there's an intrinsic connection here between the usefulness of more data and usefulness of doing additional steps.
+595514	599097	And here the example echoing, you can almost see it as more data because
+599077	609998	especially here, you're going to do augmentation on top of it and you see the non-augmented versus the augmented ratio changes dramatically from here to here.

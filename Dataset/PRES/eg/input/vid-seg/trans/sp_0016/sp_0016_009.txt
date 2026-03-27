@@ -1,0 +1,6 @@
+The problem is that the reward we have defined is the best we can do, but it only gives sparse information.
+In fact, in the paper, we have a formal argument where we show that the number of informative events in one episode is of the order of log t, the maximum time steps of one episode.
+So to improve the training, we introduce an auxiliary task that is a supervised task.
+And the auxiliary loss becomes the log likelihood of the predicted subset.
+condition over the observed subsets.
+So this is the same loss as in the neural process, actually.

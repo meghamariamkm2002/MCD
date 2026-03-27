@@ -1,0 +1,45 @@
+Let's jump into the loss function right here.
+So they say G and D play the following two player minimax game with value function V. And this is still understood until today that
+It was already like if this was a pure engineering paper, they could simply build the architecture and say, oh, we let these networks fight and they are kind of adversarial and they pump each other up and so on.
+And this here was much more into the direction of kind of a theoretical reasoning into why something like this would work.
+Of course, there are still a lot of engineering going on to actually make it work.
+So they, they have, there's this value function right here.
+Okay.
+And the value function is the following.
+So what you have is you have the log probability of data, and you have one, the log one minus D of the generated samples.
+So here you can see, and this was introduced, this seems also obvious now, right?
+But you have a prior on what this is called the noise distribution.
+Okay.
+So you have a prior on your input noise to the generator, because the generator is supposed to come up with very many different data points.
+And if it is a, if it is a
+Non-stochastic function like a neural network, then you need some way to produce different images.
+So there is this prior distribution over the noise.
+You feed that noise into the generator.
+The generator will produce an output.
+You put that into the discriminator.
+And then this right here, as you can see, the discriminator is trying to maximize this objective.
+So the discriminator is trying to maximize the probability of real data, and it is trying to minimize the probability of fake data.
+This is simply a two-way classification problem.
+At the same time, the generator, as you can see, is trying to minimize the objective.
+In fact, the order here is quite important.
+The generator, as you can see, is trying to minimize whatever this here is.
+The generator is trying to minimize against the best possible discriminator.
+And so this is one, one observation right here is that the formulation is always with respect to a perfect discriminator.
+Now we know that this doesn't work because if you have a perfect discriminator, then generator cannot catch up because you have insufficient gradients and so on.
+And this was already recognized in this paper as well.
+But the formulation is with respect to a min max game and not a max min game.
+So the other point I want to make here is that you can see the discriminator appears in both terms right here.
+However, the generator only appears right here.
+And this basically means that the objective for the generator is only this part here because the other part is constant.
+So the generator is just trying to make the discriminator think that fake data is real.
+So it is trying to make the discriminator the class of fake data as small as possible for the data that it outputs while the discriminator is trying to make the class of fake data.
+more than the class of, sorry, real data.
+Yeah, it's trying to make, it's trying to classify fake data as fake and real data as real.
+Whereas the generator has only this part on the right.
+This is, I feel this is, it's quite important.
+Why?
+Because already in this paper, they recognize that this might not be the best practical objective.
+And for the generator, they can actually exchange this part here on the right to simply say we want to instead of log 1 minus d, we simply want to use minus log d as an objective for the generator.
+So you can kind of play around with this.
+And as you know, lots of formulations have played around with this loss right here.
+And yeah, that's why we have like a billion billion billion billion

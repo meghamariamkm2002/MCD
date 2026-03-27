@@ -1,0 +1,141 @@
+start	end	text
+31	1853	information game or perfect information.
+3235	9461	Okay, so let's shortly go over a little bit of background.
+9662	11884	So we're going to need some terms right here.
+13926	17090	The first term we're going to need is what's called a world state.
+17590	21475	So a world state is the state of the world.
+21755	24418	I know easy, easy, but
+24398	43757	it's quite important that to see that in poker what is the world state so in heads up the limit hold them there are your cards you get two your opponent gets two cards right and then there are board cards like at at the end there are five but um
+44176	47103	Maybe there are only three or they're none yet depends on the state of the game.
+47424	51053	So the board cards, you know, this is maybe an ace, a king, an eight.
+51534	59755	You know your two whole cards, which is maybe an ace and an ace, but you don't know your opponent's cards.
+60617	60717	Okay.
+60697	67584	We're also going to assume that the actions are always public for the purposes of this video.
+67965	76093	They don't, not necessarily for rebel the algorithm, but for us, let's just say the actions are all public.
+77315	84843	So the world state is the fixed entire state of the world.
+85343	89067	So the world state would include
+90464	95291	the your cards, the public cards and your opponent's cards.
+95732	100860	So the world state is sort of like a super user can look at all of the cards.
+101400	102522	Okay, that's the world state.
+103143	107089	No one knows the full world state, but it still exists.
+108183	108724	Okay.
+108744	112830	What we also need is, so there's a concept of actions.
+113070	119159	There's an action space, which in poker is something like you can bet, you can raise and so on.
+119179	125869	So these are your classic actions and there is a transition function like in classic reinforcement learning.
+125889	128773	So the transition function depends on the world state.
+128753	131697	and the action and it gives you the next world state.
+132238	138427	And after an action, each agent receives a reward that is also a function of the world state and the action.
+139008	139408	Okay.
+139428	148060	So important to note that this is the reward you receive, but you don't know the, you maybe know the function, but you don't know the world state, right?
+148081	152006	So you can't explicitly sort of predict your reward.
+152146	154069	You can maybe predict the distribution.
+155686	159112	Alright, the next concepts are the concepts of observation.
+159132	165522	Since we are in an imperfect information game, an observation and the world state, these are not the same thing.
+165803	170610	Like in chess, you need to look at the board and that's all there is.
+170630	172193	That's all there is to know.
+172173	175479	So the world state and the observation are the same thing.
+175900	180187	Here, there is the concept of private and public observations.
+181149	194653	So public observation is what everyone knows in each step, whereas private observations are things that are just revealed to you personally.
+195022	202291	In poker, the private observation is simply your two whole cards and the public observation is the middle cards.
+202311	207478	So this is the public observation and this is your private observation.
+207939	214247	So the private observation is different for each player while the public observation is the same.
+214447	224640	I guess you could model the public observation as simply another player that doesn't get any whole cards, but that's a question of semantics.
+224620	225321	All right.
+225341	231087	The observations can also include the actions that happen so far, just for completeness.
+231647	236813	If you, like, you can get information about hidden actions and so on.
+237113	245242	There's lots of mathematical freedom here, but just the concept is you have private observations to each player individually and then public observations.
+245642	252990	The subscript I here always denotes a individual player while you see there is no such subscript in the public
+252970	255370	in the public observations.
+256396	261041	All right, the next concept is a history, and a history is pretty much what you think.
+261121	266587	A history or a trajectory is a finite sequence of legal actions and world states denoted by this.
+266647	271692	So you can see it's simply the history of world states and actions that happened.
+272533	279080	Again, no one knows the history fully, but it's still, it is still the case.
+279120	285947	And I know, I know, you can, I don't know, quantum mechanics, many worlds, theorem, blah, blah, blah.
+286298	291292	we'll just assume that whatever you don't know these, these are fixed currents.
+291332	292395	They're actually there.
+292436	296226	They have a value even though no one has looked at them yet.
+296367	299616	So the world state is defined even if you don't know it.
+300203	304969	So the first real interesting concept here is called an info state.
+306571	317104	So the info state is like the world state or like the history, but it's conditioned on what an individual player knows.
+317524	325594	The info state also called an action observation history for agent I is a sequence of an agent's observations and actions.
+326074	329839	So you can see it's very much like a history, except
+329819	331761	that it doesn't have the world states.
+332062	334044	So usually there would be the world state here.
+334244	334865	You said no.
+334905	340231	There is the observation for player i at each of the time steps.
+340271	344416	And these observations, they include public and private observations.
+345237	348962	And along with the actions, but we'll say the actions are public anyway.
+349502	351625	So an info state
+351605	358235	is basically the history as it looks to player i. Okay, that's an info state.
+358615	365966	In our original game, we said that player two can't distinguish between the three nodes.
+366367	378304	So if you look at the three nodes individually, like this node one, node two, node three, these are three different world states with three different histories.
+378453	390067	And to player two, they're simply the same info state, because all player two knows is that player one has taken some action, it doesn't know which action.
+390488	394573	So the observation that player two has is exactly the same.
+394593	396495	Therefore, it can't distinguish.
+396555	402182	So you can see that the info state is sort of the correct abstraction that we're going to look at here.
+402162	407911	In turn, if you look for player one, it looks different.
+408352	415303	Even though for player one, it's also three different world states, it is also three different info states, okay?
+415523	418668	Because player one knows which action they have taken.
+419009	423736	So player one can decide which of these three states player two is in.
+424217	429165	So player one, this corresponds to three different info states.
+429618	437228	So the info states is always conditioned on a player, and it is the unit that we'll look at here.
+438870	449685	So the info state, briefly, it includes the observations and actions for a given player, and the observations include the private and the public observations.
+449665	470189	the unique info state corresponding to a history for agent I is denoted by this, the set of histories that corresponds to some info state is denoted by large H. So as we said, if you have an info state, there are many different histories that could have led to the info state.
+470510	470830	Okay.
+472008	501559	so there are many different like there maybe for player two it looks like three different histories that could have happened lead to the same info state okay that's but any given history determined fully determines the info state if i tell you what happened you can give me the info state for each player you can say ah player one played rocks therefore player two is in that info state and player one is in that info state so that's why
+502113	508671	There is a unique info state for each history, but there is a set of histories for each info state.
+510796	515228	So the last concept from here is a policy.
+515967	519372	A policy is, again, what you think it is.
+519592	528124	So it is something, usually it's something that maps from an observation to an action or from a history to an action or from a world state to an action.
+528184	535835	But here it is a function necessarily that maps from an info state to a probability distribution over actions.
+535895	537217	So two things important here.
+537637	540321	The input to the policy is an info state.
+540301	546870	since the players they can't distinguish between the world states as long as they correspond to the same info state.
+547151	552338	Therefore their policy necessarily must be taking an info state as an input.
+552679	561151	So player 2's policy cannot depend on what player 1 did because it can't distinguish.
+561171	565617	It can depend on the strategy of player 1 but not on the concrete action.
+565597	570105	The second thing is that we map to a probability distribution over actions.
+570286	575836	Now this is usually the case in RL if you frame it as a general principle.
+576477	581065	However, here it's going to be quite important that this is always a probability distribution.
+581125	583690	Very often in these games your
+583670	586253	strategy is probabilistic.
+586353	599229	So there is no single best move in Rock, Paper, Scissors, but the best thing to do, the best strategy is to play each move with a one-third probability or the modified version at the beginning.
+599830	609762	But it's important to see that a policy will output a probability distribution and I will also call this the strategy of a player.
+609803	613407	So the strategy is going to be the policy.
+614602	621301	And I like to call it a strategy because it's a kind of a plan, what you would do in each situation.
+621321	628341	And we're going to see that that is going to be a central theme, lifting in solving these games right here using Rebel.
+628574	631618	So a policy profile is simply a tuple of policies.
+631999	634122	So it's simply the policies of all players.
+634382	635664	That's the policy profile.
+636405	646379	If you combine the policy profile with some info state or some history, you can calculate the expected value.
+646779	655071	So the expected value for a given history, given that the players play policy, players play policy profile pi,
+655051	663543	So this is all players play their strategies in history H. And we're going to look at player I and its value.
+663563	669291	So we can calculate the expected value of some policies.
+669731	675399	So I can, I can, given this function V, I can input, okay, here's what happened.
+675640	677242	And here's how everyone's strategy.
+677783	683050	Now tell me in expectation what the first player is going to net from this.
+683519	688611	Solving the value function is pretty much equivalent to solving the game.
+688651	697833	So if you give me a good value function, I can solve the game by simply choosing the next action that gives me the best value function.
+697873	699537	But there's a difficulty.
+699517	706912	We said, okay, we know Pi strategies are public, but we don't know what history we're in, right?
+706952	710840	So even if you had the perfect value function, I don't know what to input.
+711240	712663	So this is going to be a problem.
+713665	719517	All right, the last thing is a Nash equilibrium, you might know this term.
+719497	726029	Nash equilibrium is a policy profile such that no agent can achieve a higher expected value by switching to a different policy.
+726390	732461	Our goal here is going to be to find a Nash equilibrium strategy for these games.
+733042	738231	And the rebel algorithm is going to provably converge to a Nash equilibrium.
+738211	740094	All right.
+740114	742938	So, okay, there's also the concept of a sub game.
+743198	745361	A sub game is defined by a root history.
+745742	750849	It's simply if you're in a, it's simply a game that starts at some intermediate state.
+751050	751891	That's a sub game.
+753033	753654	Okay.
+753674	757018	Alpha zero, for example, constructs sub games.
+757679	761485	In fact, it constructs these depth limited sub games.
+761465	763567	because you only solve up to a certain depth.
+764027	768832	And at that point, you sort of ask your value estimator what the value is.
+769932	771734	This is different in different things.
+771854	778780	Like you can also do this, this kind of Monte Carlo estimation where you just play one trace to the end and so on.
+779161	782724	But the notion is we iteratively construct these depth limited sub games.
+784105	789750	That means we play for a certain depth and then we evaluate at that depth.
+790827	795049	The question is, how are we going to evaluate?

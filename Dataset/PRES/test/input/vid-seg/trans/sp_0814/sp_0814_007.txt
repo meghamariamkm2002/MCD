@@ -1,0 +1,2 @@
+To sample from the underlying lean model, we can construct a Gibbs sampling procedure by iteratively sample by any noise and then sample from the denoised distribution px give x tilde.
+Here we assume we can access to the true denoised distribution.

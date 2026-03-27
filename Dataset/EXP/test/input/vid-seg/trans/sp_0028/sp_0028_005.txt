@@ -1,0 +1,55 @@
+some tricks to get it to work.
+And the biggest trick they got it to work is the so-called replay buffer, this experience replay.
+Because what happens if you play a game of Atari, right, of Pong specifically, then, you know, you have this and you're here and your opponent is here and the ball is here.
+And then the next frame, you are here again, your opponent might be a bit up and the ball is here.
+Okay.
+And so on.
+So these samples here, they are all very, very correlated, right?
+The ones after another, especially if you now build mini batch, let's say our mini batch size is two, this mini batch has almost no variability in it.
+So if I do something like batch norm or whatnot,
+this this will be like terrible because these data samples are correlated and we in supervised learning we make a pretty big deal out of you know shuffling our data set and all of the data points being iid and so on so what they say is rather than using the data samples as we collect them we put them into a big big buffer a big replay buffer and from that replay buffer we basically sample at random
+Okay.
+So that means that, you know, some samples can be used multiple times.
+Other samples can be never sampled because there is a fixed size and the new ones will always kick out the oldest ones.
+So some samples might not be used.
+Some samples might be used twice or three times.
+We can also learn, you know, four times as fast as we sample.
+And then every sample on average will be used four times.
+So this experience replay proved very, very important for this algorithm to work.
+That's why they say deep Q learning with experience replay.
+So they have this replay memory D right here to capacity and
+and you initialize your queue function with random weights as you do with a neural network.
+And then you play these episodes.
+For each episode, you start out with S1, the state one, and you do pre-processing.
+So in pre-process, they have some more tricks where they downscale the image, they
+concatenate four images in a row because sometimes in Atari you get these flicker things and also if you concatenate four things in a row you for example can tell in which direction the ball is moving and so on so give a little bit of history so one sample technically would be four frames
+They also do sticky actions and so on.
+All of these things that you can find today in these emulators that are almost default now, like sticky actions, they invented right here.
+So for the time steps within the episode, we've probably the epsilon select a random action.
+Otherwise, just ask your queue function, what should I do right here?
+Give me the best action in this particular state.
+Then you would execute that action.
+and observe a reward and the next state.
+So the next image right here.
+You would set the next state to this transition.
+Okay, so in the state, there can be more, as I said, there can be more than the image like the previous state and the action you took.
+But right here, I believe it's like purely the current last four frames.
+And then you store that transition in the replay buffer.
+After that, you sample a random mini batch of transitions from the replay buffer.
+So here you can see this here is where we decorrelate the inputs, because if we simply were to use our last transition for learning, then we would run into a problem.
+But right here, we sample from that replay buffer.
+So this is going to be your input.
+This is going to be your X for your supervised learning of the deep neural network.
+What's going to be your, sorry, without the reward, of course, what's going to be your Y. Your Y, if you're at the end of the episode, it's simply the reward that you got because there's no more reward coming.
+However, if you're not at the end, it's the reward that you got from this last step, plus all of the reward that you're going to get in the future.
+Now, you aren't in the future yet, but you can ask yourself, you can ask your Q function, what that reward is most likely going to be.
+If your Q function gets better, then this estimate gets better, then your labels get better, then your Q function gets better, and so on in a big circle.
+And then you perform a gradient descent step on this L2 loss between the label and your prediction.
+Note that if you are in a deep learning framework, there is like a stop gradient on this label right here.
+So the back propagation only happens with respect to this right here, which makes sense, right?
+So this is your x, this is your input, and f of x is usually what we back propagate into.
+Okay, there's no notion yet of like a second queue network and so on, which proved very valuable in the future of this paper.
+This paper simply applied kind of the most basic version of this, and they simply got it to work.
+They just got deep neural networks to work with reinforcement learning.
+And yeah, there's a big, a big chance that this was due to this experience replay.
+Which I believe they did not invent I mean the the this has of course around been around before but they were the ones to realize and come

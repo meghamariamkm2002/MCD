@@ -1,0 +1,980 @@
+[
+  {
+    "para_id": "p1",
+    "section_heading": "Abstract",
+    "text": "Gromov-Wasserstein (GW) distance is a powerful tool for comparing and aligning probability distributions supported on different metric spaces. Recently, GW has become the main modeling technique for aligning heterogeneous data for a wide range of graph learning tasks. However, the GW distance is known to be highly sensitive to outliers, which can result in large inaccuracies if the outliers are given the same weight as other samples in the objective function. To mitigate this issue, we introduce a new and robust version of the GW distance called RGW. RGW features optimistically perturbed marginal constraints within a KullbackLeibler divergence-based ambiguity set. To make the benefits of RGW more accessible in practice, we develop a computationally efficient and theoretically provable procedure using Bregman proximal alternating linearized minimization algorithm. Through extensive experimentation, we validate our theoretical results and demonstrate the effectiveness of RGW on real-world graph learning tasks, such as subgraph matching and partial shape correspondence.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p2",
+    "section_heading": "1 Introduction",
+    "text": "Gromov-Wasserstein distance (GW) [26, 28] acts as a main model tool in data science to compare data distributions on unaligned metric spaces. Recently, it has received much attention across a host of applications in data analysis, e.g., shape correspondence [24, 31, 36, 27], graph alignment and partition [37, 38, 15, 18, 14, 44], graph embedding and classification [41, 43], unsupervised word embedding and translation [3, 19], generative modeling across incomparable spaces [8, 45].",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p3",
+    "section_heading": "1 Introduction",
+    "text": "In practice, the robustness of GW distance suffers heavily from its sensitivity to outliers. Here, outliers mean the samples with large noise, which usually are far away from the clean samples or have different structures from the clean samples. The hard constraints on the marginals in the Gromov-Wasserstein distance require all the mass in the source distribution to be entirely transported to the target distribution, making it highly sensitive to outliers. When the outliers are weighted similarly as other clean samples, even a small fraction of outliers corrupted can largely impact the GW distance value and the optimal coupling, which is unsatisfactory in real-world applications.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p4",
+    "section_heading": "1 Introduction",
+    "text": "To overcome the above issue, some recent works are trying to relax the marginal constraints of GW distance. [33] introduces a L1 relaxation of mass conservation of the GW distance. However, this reformulation replaces the strict marginal constraint that the transport plan should be a joint distribution with marginals as specific distributions by the constraint that only requires the transport plan to be a joint distribution, which can easily lead to over-relaxation. On another front, [10] propose a so-called partial GW distance (PGW), which only transports a fraction of mass from source distribution to target distribution. The formulation of PGW is limited to facilitating mass",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p5",
+    "section_heading": "1 Introduction",
+    "text": "destruction, which restricts its ability to handle situations where outliers exist predominantly on one side. A formulation that allows both mass destruction and creation is proposed in [35] called unbalanced GW (UGW). The UGW relaxes the marginal constraint via adding the quadratic \u03c6divergence as the penalty function in the objective function and extends GW distance to compare metric spaces equipped with arbitrary positive measures. Additionally, [40] proved that UGW is robust to outliers and can effectively remove the mass of outliers with high transportation costs. However, UGW is sensitive to the penalty parameter as it balances the reduction of outlier impact and the control of marginal distortion in the transport plan. On the computational side, an alternate Sinkhorn minimization method is proposed to calculate the entropy-regularized UGW. Note that the algorithm does not exactly solve UGW but approximates the lower bound of the entropic regularized UGW instead. From a statistical viewpoint, these works do not establish a direct link between the reformulated GW distance and the GW distance in terms of uncontaminated levels.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p6",
+    "section_heading": "1 Introduction",
+    "text": "In this work, we propose the robust Gromov-Wasserstein (RGW) to estimate the GW distance robustly when dealing with outliers. To achieve this, RGW simultaneously optimizes the transport plan and selects the best marginal distribution from a neighborhood of the given marginal distributions, avoiding contaminated distributions. Perturbed marginal distributions help to re-weight the samples and lower the weight assigned to the outliers. The introduction of relaxed distributions to handle outliers draws inspiration from robust OT techniques [4, 29, 23]. Unlike robust OT, which is convex, RGW is non-convex, posing algorithmic challenges. This idea is also closely related to optimistic modelings of distribution ambiguity in data-driven optimization, e.g., upper confidence bound in the multi-armed bandit problem and reinforcement learning [7, 30, 1], data-driven distributionally robust decision-making with outliers [21, 9], etc.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p7",
+    "section_heading": "1 Introduction",
+    "text": "Moreover, inspired by UGW, RGW relaxes the marginal constraint via adding the Kullback-Leibler (KL) divergence between the marginals of the transport plan and the perturbed distributions as the penalty function in the objective function to lessen the impact of the outliers further. Instead of utilizing the quadratic KL divergence as employed in unbalanced GW, we opt for KL divergence due to its computational advantages. It allows for convex subproblems with closed-form solutions, as opposed to the linearization required for non-convex quadratic KL divergence, which could be challenging algorithmically. Furthermore, we leverage the convexity of KL divergence to establish the statistical properties of RGW, leading to an upper bound by the true GW distance with explicit control through marginal relaxation parameters and marginal penalty parameters. This statistical advantage is disrupted by the non-convex nature of quadratic KL divergence. Additionally, KL divergence aligns with our goal of outlier elimination and is less sensitive to outliers compared to quadratic KL divergence, which is more outlier-sensitive due to its quadratic nature. Overall, RGW combines the introduction of perturbed marginal distributions with the relaxation of hard marginal constraints to achieve greater flexibility, allowing control over marginal distortion through marginal penalty parameters and reduction of outlier impact using marginal relaxation parameters.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p8",
+    "section_heading": "1 Introduction",
+    "text": "To realize the modeling benefits of RGW, we further propose an efficient algorithm based on the Bregman proximal alternating linearized minimization (BPALM) method. The updates in each",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p9",
+    "section_heading": "1 Introduction",
+    "text": "iteration of BPALM can be computed in a highly efficient manner. On the theoretical side, we prove that the BPALM algorithm converges to a critical point of the RGW problem. Empirically, we demonstrate the effectiveness of RGW and the proposed BPALM algorithm through extensive numerical experiments on subgraph alignment and partial shape correspondence tasks. The results reveal that RGW surpasses both the balanced GW-based method and the reformulations of GW, including PGW and UGW.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p10",
+    "section_heading": "1 Introduction",
+    "text": "Our Contributions We summarize our main contributions as follows:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p11",
+    "section_heading": "1 Introduction",
+    "text": "\u2022 We develop a new robust model called RGW to alleviate the impact of outliers on the GW distance. The key insight is to simultaneously optimize the transport plan and perturb marginal distributions in the most efficient way.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p12",
+    "section_heading": "1 Introduction",
+    "text": "\u2022 On the statistical side, we demonstrate that the robust Gromov-Wasserstein is bounded above by the true GW distance under the Huber \u03f5-contamination model.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p13",
+    "section_heading": "1 Introduction",
+    "text": "\u2022 On the computational side, we propose an efficient algorithm for solving RGW using the BPALM method and prove that the algorithm converges to a critical point of the RGW problem.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p14",
+    "section_heading": "1 Introduction",
+    "text": "\u2022 Empirical results on subgraph alignment and partial shape correspondence tasks demonstrate the effectiveness of RGW. This is the first successful attempt to apply GW-based methods to partial shape correspondence, a challenging problem pointed out in [36].",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p15",
+    "section_heading": "2 Problem Formulation",
+    "text": "In this section, we review the definition of Gromov-Wasserstein distance and formally formulate the robust Gromov-Wasserstein. Following that, we discuss the statistical properties of the proposed robust Gromov-Wasserstein model under the Huber \u03f5-contamination model.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p16",
+    "section_heading": "2 Problem Formulation",
+    "text": "For the rest of the paper, we will use the following notation. Let (X, dX) be a complete separable metric space and denote the finite, positive Borel measure on X by M+(X). Let P(X) \u2282 M+(X) denotes the space of Borel probability measures on X . We use \u2206n to denote the simplex in Rn. We use 1n and 1n\u00d7m to denote the n-dimensional all-one vector and n\u00d7m all-one matrix. We use Sn to denote the set of n\u00d7 n symmetric matrice. The indicator function of set C is denoted as IC(\u00b7).",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p17",
+    "section_heading": "2.1 Robust Gromov-Wasserstein",
+    "text": "The Gromov-Wasserstein (GW) distance aims at matching distributions defined in different metric spaces. It is defined as follows:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p18",
+    "section_heading": "2.1 Robust Gromov-Wasserstein",
+    "text": "Definition 2.1 (Gromov-Wasserstein). Suppose that we are given two unregistered complete separable metric spaces (X, dX), (Y, dY ) accompanied with Borel probability measures \u00b5, \u03bd respectively. The GW distance between \u00b5 and \u03bd is defined as",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p19",
+    "section_heading": "2.1 Robust Gromov-Wasserstein",
+    "text": "where \u03a0(\u00b5, \u03bd) is the set of all probability measures on X \u00d7 Y with \u00b5 and \u03bd as marginals.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p20",
+    "section_heading": "2.1 Robust Gromov-Wasserstein",
+    "text": "As shown in the definition, the sensitivity to outliers of Gromov-Wasserstein distance is due to its hard constraints on marginal distributions. This suggests relaxing the marginal constraints such that the weight assigned to the outliers by the transport plan can be small. To do it, we invoke the Kullback-Leibler divergence, defined as dKL(\u03b1, \u00b5) = \u222b X \u03b1(x) log (\u03b1(x)/\u00b5(x)) dx, to soften the constraint on marginal distributions. We also introduce an optimistically distributionally robust mechanism to perturb the marginal distributions and reduce the weight assigned to outliers. Further details on this mechanism will be discussed later.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p21",
+    "section_heading": "2.1 Robust Gromov-Wasserstein",
+    "text": "Definition 2.2 (Robust Gromov-Wasserstein). Suppose that we are given two unregistered complete separable metric spaces (X, dX), (Y, dY ) accompanied with Borel probability measures \u00b5, \u03bd respectively. The Robust GW between \u00b5 and \u03bd is defined as",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p22",
+    "section_heading": "2.1 Robust Gromov-Wasserstein",
+    "text": "where F (\u03b1, \u03b2) =",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p23",
+    "section_heading": "2.1 Robust Gromov-Wasserstein",
+    "text": "and (\u03c01, \u03c02) are two marginals of the joint distribution \u03c0, defined by \u03c01(A) = \u03c0(A \u00d7 Y ) for any Borel set A \u2282 X and \u03c02(B) = \u03c0(X \u00d7B) for any Borel set B \u2282 Y .",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p24",
+    "section_heading": "2.1 Robust Gromov-Wasserstein",
+    "text": "The main idea of our formulation is to optimize the transport plan and perturbed distribution variables in the ambiguity set of the observed marginal distributions jointly. This formulation aims to find the perturbed distributions that approximate the clean distributions and compute the transport plan based on the perturbed distributions. However, incorporating the constraints of equal marginals between the transport plan \u03c0 and the perturbed distributions \u03b1 and \u03b2 directly poses challenges in developing an algorithm due to potential non-smoothness issues. Inspired by [35], we address this challenge by relaxing these marginal constraints and incorporating the KL divergence terms, denoted as dKL(\u03c01, \u03b1) and dKL(\u03c02, \u03b2), into the objective function as penalty functions. Different from [35], we use KL divergence instead of quadratic KL divergence due to its joint convexity, which is more amenable to algorithm development, as quadratic KL divergence is typically non-convex. Besides, transforming the hard marginal constraints into penalty functions can further lessen the impact of outliers on the transport plan.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p25",
+    "section_heading": "2.1 Robust Gromov-Wasserstein",
+    "text": "Our new formulation extends the balanced GW distance and can recover it by choosing \u03c11 = \u03c12 = 0 and letting \u03c41 and \u03c42 tend to infinity. When properly chosen, \u03c11 and \u03c12 can encompass the clean distributions within the ambiguity sets. In this scenario, the relaxed reformulation closely approximates the original GW distance in a certain manner. Building on this concept, we prove that RGW can serve as a robust approximation of the GW distance without outliers, given some mild assumptions on the outliers.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p26",
+    "section_heading": "2.2 Robustness Guarantees",
+    "text": "Robust Gromov-Wasserstein aims at mitigating the sensitivity of the GW distance to outliers, which can result in large inaccuracies if the outliers are given the same weight as other samples in the objective function. Specifically, RGW is designed to address the issue of the GW distance exploding as the distance between the clean samples and the outliers goes to infinity. In general, even a small number of outliers can cause the GW distance to change dramatically when added to the marginal distributions. To formalize this, consider the Huber \u03f5-contamination model popularized in robust statistics [22, 11, 12]. In that model, a base measure \u00b5c is contaminated by an outlier distribution \u00b5a to obtain a contaminated measure \u00b5,",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p27",
+    "section_heading": "2.2 Robustness Guarantees",
+    "text": "Under this model, data are drawn from \u00b5 defined in (2).",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p28",
+    "section_heading": "2.2 Robustness Guarantees",
+    "text": "Under the assumption of the Huber \u03f5-contamination model, it can be demonstrated that by selecting suitable values of \u03c11 and \u03c12, the robust Gromov-Wasserstein distance ensures that outliers are unable to substantially inflate the transportation distance. For robust Gromov-Wasserstein, we have the following bound:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p29",
+    "section_heading": "2.2 Robustness Guarantees",
+    "text": "Theorem 2.3. Let \u00b5 and \u03bd be two distributions corrupted by fractions \u03f51 and \u03f52 of outliers, respectively. Specifically, \u00b5 is defined as (1\u2212 \u03f51)\u00b5c + \u03f51\u00b5a, and \u03bd is defined as (1\u2212 \u03f52)\u03bdc + \u03f52\u03bda, where \u00b5c and \u03bdc represent the clean distributions, and \u00b5a and \u03bda represent the outlier distributions. Then,",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p30",
+    "section_heading": "2.2 Robustness Guarantees",
+    "text": "In Appendix B, we provide a proof that constructs a feasible transport plan and relaxed marginal distributions. By relaxing the strict marginal constraints, we can find a feasible transport plan that closely approximates the transport plan between the clean distributions and obtain relaxed marginal distributions that approximate the clean distributions.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p31",
+    "section_heading": "2.2 Robustness Guarantees",
+    "text": "The derived bound indicates that robust Gromov-Wasserstein provides a provably robust estimate under the Huber \u03f5-contamination model. If the fraction of outliers is known, the upper bound for the robust GW is determined by the true Gromov-Wasserstein distance, along with additional terms that account for the KL divergence between the clean distribution and the outlier distribution for both \u00b5 and \u03bd. The impact of this factor is determined by the extent of relaxation in the marginal distributions \u03c11 and \u03c12. By carefully choosing \u03c11 = \u03f51dKL(\u00b5a, \u00b5c) and \u03c12 = \u03f52dKL(\u03bda, \u03bdc), we can tighten the upper bound on the robust GW value, while still keeping it below the original GW distance (excluding outliers). Importantly, substituting these values of \u03c11 and \u03c12 yields GWrob\u03c11,\u03c12(\u00b5, \u03bd) \u2264 GW(\u00b5c, \u03bdc), indicating that the robust GW between the contaminated distribution \u00b5 and \u03bd is upper bounded by the original GW distance between the clean distribution \u00b5c and \u03bdc. Remark 2.4. The following inequality for UGW under the Huber \u03f5-contamination model can be derived using the same techniques as in Theorem 2.3:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p32",
+    "section_heading": "2.2 Robustness Guarantees",
+    "text": "We observe that the terms d\u2297KL(\u00b5c, \u00b5) and d \u2297 KL(\u00b5c, \u00b5) cannot be canceled out unless \u03c41 and \u03c42 are set to zero, resulting in over-relaxation. However, RGW allows us to control the error terms dKL(\u00b5c, \u00b5a) and dKL(\u03bdc, \u03bda) through the marginal relaxation parameters \u03c11 and \u03c12.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p33",
+    "section_heading": "3.1 Problem Setup",
+    "text": "To start with our algorithmic developments, we consider the discrete case for simplicity and practicality, where \u00b5 and \u03bd are two empirical distributions, i.e., \u00b5 = \u2211n i=1 \u00b5i\u03b4xi and \u03bd = \u2211m j=1 \u03bdj\u03b4yj . Denote D \u2208 Sn, Dik = dX(xi, xk) and D\u0304 \u2208 Sm and D\u0304jl = dY (yj , yl). We construct a 4-way tensor as follows:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p34",
+    "section_heading": "3.1 Problem Setup",
+    "text": "We define the tensor-matrix multiplication as",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p35",
+    "section_heading": "3.1 Problem Setup",
+    "text": "Then, the robust GW admits the following reformulation:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p36",
+    "section_heading": "3.1 Problem Setup",
+    "text": "Here, \u03c01 = \u03c01m and \u03c02 = \u03c0T1n.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p37",
+    "section_heading": "3.2 Bregman Proximal Alternating Linearized Minimization (BPALM) Method",
+    "text": "As Problem (3) is non-convex and involves three variables, we employ BPALM [5, 2] to solve it. By choosing the KL divergence as Bregman distance, the updates of this algorithm are given by:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p38",
+    "section_heading": "3.2 Bregman Proximal Alternating Linearized Minimization (BPALM) Method",
+    "text": "Here, tk, ck, and rk are stepsizes in BPALM.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p39",
+    "section_heading": "3.2 Bregman Proximal Alternating Linearized Minimization (BPALM) Method",
+    "text": "In our algorithm updates, we employ distinct proximal operators for \u03c0 and \u03b1 (and \u03b2). The use of dKL(\u03c0, \u03c0k) in \u03c0-subproblem (4) allows for the application of the Sinkhorn algorithm, while the introduction of dKL(\u03b1k, \u03b1) in \u03b1-subproblem (5) facilitates a closed-form solution, which we will detail in the following part.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p40",
+    "section_heading": "3.2 Bregman Proximal Alternating Linearized Minimization (BPALM) Method",
+    "text": "To solve the \u03c0-subproblem, we can utilize the Sinkhorn algorithm for the entropic regularized unbalanced optimal transport problem. This algorithm, which has been previously introduced in [13, 32], is well-suited for our needs. As for the \u03b1-subproblem, we consider the case where \u03c11 is strictly larger than 0. Otherwise, when \u03c11 = 0, \u03b1 should simply equal \u00b5, making the subproblem unnecessary. To solve the \u03b1-subproblem, we attempt to find the optimal dual multiplier w\u2217. Specifically, consider the problem:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p41",
+    "section_heading": "3.2 Bregman Proximal Alternating Linearized Minimization (BPALM) Method",
+    "text": "Let \u03b1\u0302(w) represent the optimal solution to (7), and we define the function p : R+ \u2192 R by p(w) = dKL(\u00b5, \u03b1\u0302(w)) \u2212 \u03c11. We prove the convexity, differentiability, and monotonicity of p, which are crucial for developing an efficient algorithm for (5) later. Proposition 3.1. Problem (7) has a closed-form solution",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p42",
+    "section_heading": "3.2 Bregman Proximal Alternating Linearized Minimization (BPALM) Method",
+    "text": "If w satisfies (i) w = 0 and p(w) \u2264 0, or (ii) w > 0, p(w) = 0, then \u03b1\u0302(w) is the optimal solution to the \u03b1-subproblem (5). Moreover, p(\u00b7) is convex, twice differentiable, and monotonically non-increasing on R+.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p43",
+    "section_heading": "3.2 Bregman Proximal Alternating Linearized Minimization (BPALM) Method",
+    "text": "Given Proposition 3.1, we begin by verifying p(0) \u2264 0. If this condition is not met, and given that p(0) > 0 while limw\u2192+\u221e p(w) = \u2212\u03c11 < 0, it implies that p possesses at least one root within R+. The following proposition provides the framework to seek the root of p by employing Newton\u2019s method, with the initialization set at 0. Hence, the \u03b1-subproblem can be cast to search a root of p in one dimension, in which case it can be solved efficiently. Proposition 3.2. Let p(\u00b7) : I \u2192 R be a convex, twice differentiable, and monotonically nonincreasing on the interval I \u2282 R. Assume that there exists an x\u0303, x\u0304 \u2208 I such that p(x\u0303) > 0 and p(x\u0304) < 0. Then p has a unique root on I , and the sequence obtained from Newton\u2019s method with initial point x0 = x\u0303 will converge to the root of p.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p44",
+    "section_heading": "3.2 Bregman Proximal Alternating Linearized Minimization (BPALM) Method",
+    "text": "Since the \u03b2-subproblem shares the same structure as the \u03b1-subproblem, we can apply this method to search for the optimal solution to the \u03b2-subproblem.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p45",
+    "section_heading": "3.3 Convergence Analysis",
+    "text": "To illustrate the convergence result of BPALM, we consider the compact form for simplicity:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p46",
+    "section_heading": "3.3 Convergence Analysis",
+    "text": "where f(\u03c0) = \u27e8L(D, D\u0304) \u2297 \u03c0, \u03c0\u27e9, q(\u03c0) = I{\u03c0\u22650}(\u03c0), g1(\u03c0, \u03b1) = \u03c41dKL(\u03c01m, \u03b1), g2(\u03c0, \u03b2) = \u03c42dKL(\u03c0",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p47",
+    "section_heading": "3.3 Convergence Analysis",
+    "text": "T1n, \u03b2), h1(\u03b1) = I{\u03b1\u2208\u2206n,dKL(\u00b5,\u03b1)\u2264\u03c11}(\u03b1), and h2(\u03b2) = I{\u03b2\u2208\u2206m,dKL(\u03bd,\u03b2)\u2264\u03c12}(\u03b2). The following theorem states that any limit point of the sequence generated by BPALM belongs to the critical point set of problem (3). Theorem 3.3 (Subsequence Convergence). Suppose that in Problem (1), the step size tk in (4) satisfies 0 < t \u2264 tk < t\u0304 \u2264 \u03c3/Lf for k \u2265 0 where t, t\u0304 are given constants and Lf is the gradient Lipschitz constant of f . The step size ck in (5) and rk in (6) satisfy 0 < r \u2264 ck, rk < r\u0304 for k \u2265 0 where r, r\u0304 are given constants. Any limit point of the sequence of solutions {\u03c0k, \u03b1k, \u03b2k}k\u22650 belongs to the critical point set X , where X is defined by",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p48",
+    "section_heading": "3.3 Convergence Analysis",
+    "text": "For the sake of brevity, we omit the proof. We refer the reader to Appendix C for further details.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p49",
+    "section_heading": "4 Experiment Results",
+    "text": "In this section, we present comprehensive experimental results to validate the effectiveness of our proposed RGW model and BPALM algorithm in various graph learning tasks, specifically subgraph alignment and partial shape correspondence. Traditionally, balanced GW has been applied successfully in scenarios where the source and target graphs have similar sizes. However, in our approach, we treat the missing part of the target graph as outliers and leverage RGW for improved performance. All simulations are conducted in Python 3.9 on a high-performance computing server running Ubuntu 20.10, equipped with an Intel(R) Xeon(R) Silver 4214R CPU. Our code is available at https://github.com/lmkong020/outlier-robust-GW.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p50",
+    "section_heading": "4.1 Partial Shape Correspondence",
+    "text": "In this subsection, we first investigate a toy matching problem in a 2D setting to support and validate our theoretical insights and results presented in Section 2. Figure 2 (a) illustrates an example where we aim to map a two-dimensional shape without symmetries to a rotated version of the same shape while accounting for outliers in the source domain. Here, we sample 300 points from the source shape and 400 points from the target shape. Additionally, we introduce 50 outliers by randomly adding points from a discrete uniform distribution on [\u22123,\u22122.5]\u00d7 [0, 0.5] to the source domain. The distance matrices, D and D\u0304 are computed using pairwise Euclidean distances.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p51",
+    "section_heading": "4.1 Partial Shape Correspondence",
+    "text": "We evaluate the matching performance of RGW on the TOSCA dataset [6, 34] for partial shape correspondence. For the initial estimation of the transport plan in both RGW and PGW, we utilize the partial functional map method [34], employing 30 eigenfunctions. This method establishes an initial matching relationship between the source and target shapes. This method establishes an initial matching relationship between the source and target shapes by setting \u03c0ik to 1 for matching pairs (i, k) and 0 otherwise. The resultant transport plan is scaled by \u2225\u03c0\u22251 = \u2211 ij \u03c0ij . UGW is not suitable for this large-scale task due to its long execution time. As shown in Figure 3, RGW outperforms PGW, and it enhances the performance of the initial point.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p52",
+    "section_heading": "4.2 Subgraph Alignment",
+    "text": "The subgraph alignment problem, which involves determining the isomorphism between a query graph and a subgraph of a larger target graph, has been extensively studied [16, 20]. While the",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p53",
+    "section_heading": "4.2 Subgraph Alignment",
+    "text": "restricted quadratic assignment problem is commonly used for graphs of similar sizes, the GW distance provides an optimal probabilistic correspondence that preserves the isometric property. In the subgraph alignment context, the nodes in the target graph, excluding those in the source graph, can be considered outliers, making the RGW model applicable to this task. In our comparison, we evaluate RGW against various methods, including unbalanced GW, partial GW, semi-relaxed GW (srGW) [42], RGWD [25], and methods for computing balanced GW such as FW [39], BPG [46], SpecGW [15], eBPG [36], and BAPG [24].",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p54",
+    "section_heading": "4.2 Subgraph Alignment",
+    "text": "Database Statistics We evaluate the methods on synthetic and real databases. In the synthetic database, we generate target graphs Gt using Barabasi-Albert models with scales ranging from 100 to 500 nodes. The source graphs Gs are obtained by sampling connected subgraphs of Gt with a specified percentage of nodes. This process results in five synthetic graph pairs for each setup, totaling 200 graph pairs. The Proteins and Enzymes biological graph databases from [15] are also used, following the same subgraph generation routine. For the Proteins database, we evaluate the accuracy of matching the overlap between two subgraphs with 90% overlap and between a subgraph and the entire graph, presented in the \"Proteins-2\" and \"Proteins-1\" columns, respectively. We compute the matching accuracy by comparing the predicted correspondence set Spred to the ground truth correspondence set Sgt, with accuracy calculated as Acc = |Sgt \u2229 Spred|/|Sgt| \u00d7 100%. In addition, we also evaluate our methods on the Douban Online-Offline social network dataset, which consists of online and offline graphs, representing user interactions and presence at social gatherings, respectively. The online graph includes all users from the offline graph, with 1,118 users serving as ground truth alignments. Node locations are used as features in both graphs. In line with previous works [18, 37], we gauge performance using the Hit@k metric, which calculates the percentage of nodes in set Vt where the ground truth alignment includes Vs among the top-k candidates.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p55",
+    "section_heading": "4.2 Subgraph Alignment",
+    "text": "Parameters Setup We use unweighted symmetric adjacency matrices D and D\u0304 as input distance matrices. SpecGW employs the heat kernel (exp(\u2212L)) with the normalized graph Laplacian matrix L. Both \u00b5 and \u03bd are set as uniform distributions. For SpecGW, BPG, eBPG, BAPG, srGW, and RGWD, we follow their respective paper setups. FW is implemented using the default PythonOT package. UGW selects the best results from regularization parameter sets {0.5, 0.2, 0.1, 0.01, 0.001} and marginal penalty parameter sets {0.1, 0.01, 0.001}. PGW reports the best results in the range of transported mass from 0.1 to 0.9. RGW sets \u03c41 = \u03c42 = 0.1 and selects the best results from the ranges {0.05, 0.1, 0.2, 0.5} for marginal relaxation parameters and {0.01, 0.05, 0.1, 0.5, 1} for step size parameters (tk, ck, rk). The transport plan initialization uses different approaches depending on the dataset. For the Synthetic, Proteins, and Enzymes datasets, we employ the 1n\u00d7m/(nm) approach. For the Douban Online-Offline dataset, we initialize the transport plan using classical optimal transport conducted on the feature space. Additionally, for all datasets, we initialize \u03b1 and \u03b2 with uniform distributions.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p56",
+    "section_heading": "4.2 Subgraph Alignment",
+    "text": "Result of All Methods Table 1 and Figure 4 provide a comprehensive comparison of matching accuracy and computation time across various methods on the Synthetic, Proteins, and Enzymes datasets. Notably, RGW demonstrates superior accuracy compared to other methods, while maintaining comparable computation time with UGW and PGW. On the other hand, methods for computing the balanced GW exhibit poor performance on all datasets, particularly on the extensive Synthetic graph database. This can be attributed to their struggle in fulfilling the hard marginal constraint on the source side and addressing the presence of outliers. Furthermore, the introduction of local minima in the balanced GW problem due to partial source graph structures contributes to the suboptimal results. UGW performs well with low target graph partiality but suffers significant degradation as partiality increases. PGW, aimed at mitigating outlier impact, inadvertently affects the matching between clean samples by reducing the mass transported from the source domain. In addition, RGW achieved the best results with the highest Hit@1 and Hit@10 on the Douban Online-Offline dataset, improving performance from 4.04% and 14.9% respectively for the initial point created by features.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p57",
+    "section_heading": "4.2 Subgraph Alignment",
+    "text": "Selection of Hyperparameters \u03c1 and \u03c4 The hyperparameters \u03c11, \u03c12, \u03c41, and \u03c42 in our formulation serve distinct roles. Specifically, \u03c11 and \u03c12 control the extent of marginal relaxation, while \u03c41 and \u03c42 act as the marginal penalty parameters. As indicated by Theorem 2.3, we have the flexibility to fix the value of \u03c4 and adjust \u03c1 to accommodate outlier effects. To determine optimal hyperparameter values, we conduct two analyses. First, we examine the effect of varying \u03c1 while maintaining a fixed subgraph node ratio and constant \u03c4 on the Enzymes dataset. Second, we adjust \u03c4 while holding \u03c1 constant and assess the impact across the Synthesis, Proteins, and Enzymes datasets in the task of matching a 50%",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p58",
+    "section_heading": "4.2 Subgraph Alignment",
+    "text": "subgraph to the entire graph. In Figure 5, the left side demonstrates that while keeping the ratio and \u03c4 fixed but varying \u03c1, accuracy diminishes when \u03c1 becomes either excessively large or too small. However, within the range of 0.05 to 1, accuracy remains resilient, highlighting the mitigating effect of marginal relaxation on outlier influence. Notably, accuracy significantly improves when \u03c1 falls within the range of 0.05 to 1 compared to the scenario with \u03c1 = 0, thus affirming the significance of marginal relaxation in our model. A similar trend is observed for \u03c4 on the right side of Figure 5, where maintaining a fixed ratio and \u03c1 while adjusting \u03c4 results in stable accuracy within the range of 0.1 to 1 but declining beyond this range. Consequently, in RGW computations, we can initially set \u03c1 to 0.2 and \u03c4 to 0.1 by default and subsequently adjust \u03c1 based on the outlier ratio: increasing it for a large ratio and decreasing it for a small ratio.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p59",
+    "section_heading": "4.3 Tightness of the Bound in Theorem 2.3",
+    "text": "Our primary focus is on scenarios where the GW distance between clean samples is nearly zero or zero due to noise, such as in partial shape correspondence and subgraph alignment tasks. In such cases, it is possible to find an isometric mapping from the query subgraph to a portion of the entire graph. By appropriately selecting the value of \u03c1, as discussed in Section 2.2, the upper bound in RGW becomes the GW distance between clean samples, which is zero. As RGW is always nonnegative, this upper bound is tight in this context.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p60",
+    "section_heading": "4.3 Tightness of the Bound in Theorem 2.3",
+    "text": "To empirically validate this, we conducted experiments on the toy example in Section 4.1, and",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p61",
+    "section_heading": "5 Conclusion",
+    "text": "In this paper, we introduce RGW, a robust reformulation of Gromov-Wasserstein that incorporates distributionally optimistic modeling. Our theoretical analysis demonstrates its robustness to outliers, establishing RGW as a reliable estimator. We propose a Bregman proximal alternating linearized minimization method to efficiently solve RGW. Extensive numerical experiments validate our theoretical results and demonstrate the effectiveness of the proposed algorithm. Regarding the robust estimation of Gromov-Wasserstein, a natural question is whether we can recover the transport plan from the RGW model. On the computational side, our algorithm suffers from the heavy computation cost due to the use of the unbalanced OT as our subroutine, which limits its application in largescale real-world settings. To address this issue, a natural future direction is to develop single-loop algorithms to leverage the model benefits of robust GW for real applications.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p62",
+    "section_heading": "Acknowledgments and Disclosure of Funding",
+    "text": "Anthony Man-Cho So is supported in part by the Hong Kong Research Grants Council (RGC) General Research Fund (GRF) project CUHK 14203920.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p63",
+    "section_heading": "A Organization of the Appendix",
+    "text": "We organize the appendix as follows:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p64",
+    "section_heading": "A Organization of the Appendix",
+    "text": "\u2022 The proof details of Theorem 2.3 and discussion of Remark 2.4 are given in Section B. \u2022 The proof details of the algorithm, including the properties of p, the convergence analysis of",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p65",
+    "section_heading": "A Organization of the Appendix",
+    "text": "Newton\u2019s method, and Bregman proximal alternating linearized minimization method are collected in C.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p66",
+    "section_heading": "A Organization of the Appendix",
+    "text": "\u2022 Additional experiment results are summarized in Section D.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p67",
+    "section_heading": "Proof. GWrob\u03c11,\u03c12(\u00b5, \u03bd) is defined as",
+    "text": "Consider \u03c0c, the optimal transport plans for GW(\u00b5c, \u03bdc). Notably, \u03c0c serves as a feasible solution for GWrob\u03c11,\u03c12(\u00b5, \u03bd). Consequently, we can deduce that:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p68",
+    "section_heading": "Proof. GWrob\u03c11,\u03c12(\u00b5, \u03bd) is defined as",
+    "text": ".",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p69",
+    "section_heading": "Proof. GWrob\u03c11,\u03c12(\u00b5, \u03bd) is defined as",
+    "text": "To establish an upper bound for GWrob\u03c11,\u03c12(\u00b5, \u03bd), let us begin by addressing the following problem:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p70",
+    "section_heading": "Proof. GWrob\u03c11,\u03c12(\u00b5, \u03bd) is defined as",
+    "text": "We consider the distribution of the form (1 \u2212 \u03b3)\u00b5 + \u03b3\u00b5c, for \u03b3 \u2208 [0, 1]. Then we prove that if \u03b3 \u2264 min (",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p71",
+    "section_heading": "Proof. GWrob\u03c11,\u03c12(\u00b5, \u03bd) is defined as",
+    "text": "\u03c11 \u03f51dKL(\u00b5a, \u00b5c) , 1",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p72",
+    "section_heading": "Proof. GWrob\u03c11,\u03c12(\u00b5, \u03bd) is defined as",
+    "text": ") , then (1\u2212 \u03b3)\u00b5+ \u03b3\u00b5c is a feasible solution for problem (8).",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p73",
+    "section_heading": "Proof. GWrob\u03c11,\u03c12(\u00b5, \u03bd) is defined as",
+    "text": "By the joint convexity of KL divergence, we have",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p74",
+    "section_heading": "Proof. GWrob\u03c11,\u03c12(\u00b5, \u03bd) is defined as",
+    "text": "Therefore,",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p75",
+    "section_heading": "Proof. GWrob\u03c11,\u03c12(\u00b5, \u03bd) is defined as",
+    "text": "The largest value \u03b3 can take is \u03c11",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p76",
+    "section_heading": "Proof. GWrob\u03c11,\u03c12(\u00b5, \u03bd) is defined as",
+    "text": "\u03f51dKL(\u00b5a, \u00b5c) . This gives",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p77",
+    "section_heading": "Proof. GWrob\u03c11,\u03c12(\u00b5, \u03bd) is defined as",
+    "text": "Similarly, we can prove that",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p78",
+    "section_heading": "Proof. GWrob\u03c11,\u03c12(\u00b5, \u03bd) is defined as",
+    "text": "This completes the proof.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p79",
+    "section_heading": "B.2 Proof and Discussion of Remark 2.4",
+    "text": "Utilizing the same notations as in the proof of Theorem 2.3, and considering that \u03c0c is a feasible solution to the UGW problem, substituting it directly leads to the desired result.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p80",
+    "section_heading": "B.2 Proof and Discussion of Remark 2.4",
+    "text": "Furthermore, referring to [40, Theorem 1] and adapting the notations to our framework, we have the following property: specifically, when considering only \u00b5 is corrupted with outliers, characterized by \u00b5 = (1\u2212\u03f51)\u00b5c+\u03f51\u00b5a, while \u03bd = \u03bdc. If we let \u03b4 = 2(\u03c41+\u03c42)\u03f51, and K = M+ 1M UGW(\u00b5c, \u03bd)+\u03b4, where M represents the transported mass between clean data and \u2206\u221e signifies the maximal deviation between the contaminated source and the target, then the following inequality holds:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p81",
+    "section_heading": "B.2 Proof and Discussion of Remark 2.4",
+    "text": "Given that UGW(\u00b5c, \u03bd) \u2264 GW(\u00b5c, \u03bd), we can derive the following relationship:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p82",
+    "section_heading": "B.2 Proof and Discussion of Remark 2.4",
+    "text": "Comparing this result to Remark 2.4, (9) also incorporates GW(\u00b5c, \u03bd) in the exponential term and M , the transported mass between clean data. These variables may be influenced by the marginal parameters \u03c41 and \u03c42. As a result, finding an optimal choice for \u03c41 and \u03c42 to establish a tight upper bound for UGW using the GW distance between clean samples, as presented in (9), proves challenging. As outlined in Remark 2.4, it is worth noting that setting \u03c41 = \u03c42 = 0 represents the sole means to attain a tight upper bound. Nevertheless, in real-world applications, this approach is impractical, as it could lead to over-relaxation and compromise the performance.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p83",
+    "section_heading": "C Proof Details of Bregman Proximal Alternating Linearized Minimization Method for Robust GW",
+    "text": "Given a vector x, we use \u2225x\u22252 to denote its \u21132 norm. We use \u2225X\u2225F to denote the Frobenius norm of matrix X . For a convex set C and a point x, we define the distance between C and x as",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p84",
+    "section_heading": "C.1 Proof of Proposition 3.1",
+    "text": "Proof. Problem (7) can be written as",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p85",
+    "section_heading": "C.1 Proof of Proposition 3.1",
+    "text": "We first consider a relaxed problem of the problem above:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p86",
+    "section_heading": "C.1 Proof of Proposition 3.1",
+    "text": "Consider the Lagrangian function of the relaxed problem",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p87",
+    "section_heading": "C.1 Proof of Proposition 3.1",
+    "text": "Let",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p88",
+    "section_heading": "C.1 Proof of Proposition 3.1",
+    "text": "Then we obtain that",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p89",
+    "section_heading": "C.1 Proof of Proposition 3.1",
+    "text": "Since \u2211n i=1 \u03b1i = 1, \u2211n i=1 \u03b1 k i = 1, and \u2211n i=1 \u00b5i = 1, then 1 + \u03bb = \u2211 ij \u03c0 k+1 ij + 1 ck",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p90",
+    "section_heading": "C.1 Proof of Proposition 3.1",
+    "text": "+w. Thus, the optimal solution to the relaxed problem is",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p91",
+    "section_heading": "C.1 Proof of Proposition 3.1",
+    "text": "We can see that \u03b1\u0302(w) \u2265 0. Hence, \u03b1\u0302(w) is also the optimal solution to problem (7). Since if w satisfies (i) or (ii), (\u03b1\u0302(w), w) is a solution to KKT conditions of problem (5), therefore, \u03b1\u0302(w) is an optimal solution to problem (5). Next, we prove that p is differentiable when h is relative entropy. Problem (7) admits the closed-form solution",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p92",
+    "section_heading": "C.1 Proof of Proposition 3.1",
+    "text": "By substituting (10) into p, p(w) can be written as",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p93",
+    "section_heading": "C.1 Proof of Proposition 3.1",
+    "text": "Thus, p is twice differentiable. The first-order derivative and second-order of p are",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p94",
+    "section_heading": "C.1 Proof of Proposition 3.1",
+    "text": "and",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p95",
+    "section_heading": "C.1 Proof of Proposition 3.1",
+    "text": "Then we prove that p\u2032(w) \u2264 0 and p\u2032\u2032(w) \u2265 0 for w \u2265 0, so p is monotonically non-increasing and convex on R+. Let si = ( \u03c0k+11m ) i + 1ck\u03b1 k i + \u00b5iw and s = ( \u03c0k+11m ) i + 1ck\u03b1 k i + \u00b5iw. Note that",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p96",
+    "section_heading": "C.1 Proof of Proposition 3.1",
+    "text": "s = \u2211n",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p97",
+    "section_heading": "C.1 Proof of Proposition 3.1",
+    "text": "i=1 si. Then p \u2032 and p\u2032\u2032 can be written as",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p98",
+    "section_heading": "C.1 Proof of Proposition 3.1",
+    "text": "and",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p99",
+    "section_heading": "C.1 Proof of Proposition 3.1",
+    "text": "Therefore, it is equivalent to show \u2211n",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p100",
+    "section_heading": "C.1 Proof of Proposition 3.1",
+    "text": "i=1 \u00b5i \u00b5is",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p101",
+    "section_heading": "C.1 Proof of Proposition 3.1",
+    "text": "si \u2265 1 and",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p102",
+    "section_heading": "C.1 Proof of Proposition 3.1",
+    "text": "\u2211n i=1 \u00b5i \u00b52i s 2",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p103",
+    "section_heading": "C.1 Proof of Proposition 3.1",
+    "text": "s2i \u2265 1.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p104",
+    "section_heading": "C.1 Proof of Proposition 3.1",
+    "text": "Recall that 1",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p105",
+    "section_heading": "C.1 Proof of Proposition 3.1",
+    "text": "x and",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p106",
+    "section_heading": "C.1 Proof of Proposition 3.1",
+    "text": "x2 are convex on R++, then",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p107",
+    "section_heading": "C.2 Proof of Proposition 3.2",
+    "text": "Proof. First, prove that p only has one root on I . Since p is continuous on I and there exists x\u0303, x\u0304 \u2208 I such that p(x\u0303) > 0 and p(x\u0304) < 0, p contains at least one root on [x\u0303, x\u0304]. Since p is non-increasing, p cannot have roots outside [x\u0303, x\u0304]. Suppose that p have two different roots z1 and z2 on [x\u0303, x\u0304] and z1 < z2. By convexity of p, we have",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p108",
+    "section_heading": "C.2 Proof of Proposition 3.2",
+    "text": "This is a contradiction. So p has a unique root on I .",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p109",
+    "section_heading": "C.2 Proof of Proposition 3.2",
+    "text": "p\u2032(x) \u2264 0 since p is non-increasing on I . Denote the root of p as r. Claim that p\u2032(x) < 0 for x \u2208 [x\u0303, r]. Otherwise, there exist x \u2208 [x\u0303, r] such that p\u2032(x) = 0, then",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p110",
+    "section_heading": "C.2 Proof of Proposition 3.2",
+    "text": "which leads to a contradiction. Especially, p\u2032(x\u0303) < 0, and we can set x\u0303 as the initial point of Newton\u2019s method.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p111",
+    "section_heading": "C.2 Proof of Proposition 3.2",
+    "text": "The update of Newton\u2019s method is",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p112",
+    "section_heading": "C.2 Proof of Proposition 3.2",
+    "text": "Therefore, xk+1 \u2265 xk and {xk}k\u22651 is an increasing sequence. Since p is convex,",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p113",
+    "section_heading": "C.2 Proof of Proposition 3.2",
+    "text": "xk \u2264 r because p is a monotonically non-increasing function. {xk}k\u22651 is an increasing sequence with an upper bound, so it has a limit x\u2217 and limk\u2192\u221e(xk \u2212 xk+1) = 0. Also, p\u2032 is bounded on [x\u0303, r] since it is continuous. Therefore,",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p114",
+    "section_heading": "C.2 Proof of Proposition 3.2",
+    "text": "Hence, the sequence generated by Newton\u2019s method converges to a root of p.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p115",
+    "section_heading": "C.3 Proof of Theorem 3.3",
+    "text": "Assumption C.1. The critical point set X is non-empty.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p116",
+    "section_heading": "C.3 Proof of Theorem 3.3",
+    "text": "Before the proof of Theorem 3.3, we first prove that sequence {\u03c0k}k\u22650 generated by BPALM lies in a compact set. Proposition C.2. Sequence {\u03c0k}k\u22650 generated by BPALM lies in a compact set.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p117",
+    "section_heading": "C.3 Proof of Theorem 3.3",
+    "text": "Proof. We prove that {\u03c0k}k\u22650 lies in the compact set A := {\u03c0 \u2208 Rn\u00d7m : 0 \u2264 \u03c0ij \u2264 1} by mathematical induction. For k = 0, we can initialize \u03c00 with 0 \u2264 \u03c00ij \u2264 1. Suppose that \u03c0k \u2208 A and \u03c0k+1 /\u2208 A. Then there exist i \u2208 [n] and j \u2208 [m] such that \u03c0k+1ij > 1. Recall that \u03c0k+1 is the optimal solution to the problem",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p118",
+    "section_heading": "C.3 Proof of Theorem 3.3",
+    "text": "Observe that function \u03d5(x) := x log x",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p119",
+    "section_heading": "C.3 Proof of Theorem 3.3",
+    "text": "a \u2212x+a is a unimodal function on R+ and achieve its minimum",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p120",
+    "section_heading": "C.3 Proof of Theorem 3.3",
+    "text": "at x = a. Since \u03b1i, \u03b2j , and \u03c0kij are smaller than or equal to 1, \u03b1i, \u03b2j , and \u03c0 k ij are strictly smaller than \u03c0k+1ij . Let \u03c0\u0303 \u2208 Rn\u00d7m,",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p121",
+    "section_heading": "C.3 Proof of Theorem 3.3",
+    "text": "Then \u03c6(\u03c0\u0303) < \u03c6(\u03c0k), this contradicts to \u03c0k+1 is the optimal solution to problem (11). Thus, \u03c0k+1 \u2208 A.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p122",
+    "section_heading": "C.3 Proof of Theorem 3.3",
+    "text": "For the proof of Theorem 3.3, we first prove the sufficient decrease property of BPALM, i.e., there exist a constant \u03ba1 > 0 and an index k1 \u2265 0 such that for k \u2265 k1,",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p123",
+    "section_heading": "C.3 Proof of Theorem 3.3",
+    "text": "And then we prove the subsequence convergence result. Proof. It is worth noting that f(\u03c0) is a quadratic function, i.e., f(\u03c0) = \u2329 L(D, D\u0304)\u2297 \u03c0, \u03c0 \u232a , then f(\u03c0)",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p124",
+    "section_heading": "C.3 Proof of Theorem 3.3",
+    "text": "is gradient Lipschitz continuous with the constant maxi,j (\u2211 k,l L(D, D\u0304)2i,j,k,l )1/2 . To simplify the",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p125",
+    "section_heading": "C.3 Proof of Theorem 3.3",
+    "text": "notation, let Lf = maxi,j (\u2211 k,l L(D, D\u0304)2i,j,k,l )1/2 .",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p126",
+    "section_heading": "C.3 Proof of Theorem 3.3",
+    "text": "(\u2662) is because as x log x is \u03c3-strongly convex, we have",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p127",
+    "section_heading": "C.3 Proof of Theorem 3.3",
+    "text": "By letting \u03ba1 = \u03c3",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p128",
+    "section_heading": "C.3 Proof of Theorem 3.3",
+    "text": "2 min",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p129",
+    "section_heading": "C.3 Proof of Theorem 3.3",
+    "text": "(( 1",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p130",
+    "section_heading": "C.3 Proof of Theorem 3.3",
+    "text": "tk \u2212 Lf \u03c3",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p131",
+    "section_heading": "C.3 Proof of Theorem 3.3",
+    "text": ") , 1",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p132",
+    "section_heading": "C.3 Proof of Theorem 3.3",
+    "text": "r\u0304",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p133",
+    "section_heading": "C.3 Proof of Theorem 3.3",
+    "text": ") > 0, we get",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p134",
+    "section_heading": "C.3 Proof of Theorem 3.3",
+    "text": "Summing up (12) from k = 0 to +\u221e, we obtain",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p135",
+    "section_heading": "C.3 Proof of Theorem 3.3",
+    "text": "As F is coercive and {( \u03c0k, \u03b1k, \u03b2k )}",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p136",
+    "section_heading": "C.3 Proof of Theorem 3.3",
+    "text": "is a bounded sequence, it follows that the left-hand side is bounded. This implies",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p137",
+    "section_heading": "C.3 Proof of Theorem 3.3",
+    "text": "and",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p138",
+    "section_heading": "C.3 Proof of Theorem 3.3",
+    "text": "Let l(x) = \u2211",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p139",
+    "section_heading": "C.3 Proof of Theorem 3.3",
+    "text": "i xi log xi. Recall the optimality condition of BPALM, we have",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p140",
+    "section_heading": "C.3 Proof of Theorem 3.3",
+    "text": "Let (\u03c0\u221e, \u03b1\u221e, \u03b2\u221e) be a limit point of the sequence { (\u03c0k, \u03b1k, \u03b2k) } k\u22650. Then, there exists a sequence {nk}k\u22650 such that {(\u03c0nk , \u03b1nk , \u03b2nk)}k\u22650 converges to (\u03c0\u221e, \u03b1\u221e, \u03b2\u221e). Since we assume that h is twice continuous differentiable and \u03b1k and \u03b2k are in a compact set, then \u22072l(\u03b1k) and \u22072l(\u03b2k) are bounded. Therefore, limk\u2192\u221e \u22072l(\u03b1k+1)(\u03b1k+1\u2212\u03b1k) = 0 and limk\u2192\u221e \u22072l(\u03b2k+1)(\u03b2k+1\u2212\u03b2k) = 0. Replacing the k by nk in (13), (14), and (15), taking limits on both sides as k \u2192 \u221e, we obtain that",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p141",
+    "section_heading": "C.3 Proof of Theorem 3.3",
+    "text": "Thus (\u03c0\u221e, \u03b1\u221e, \u03b2\u221e) belongs to X .",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p142",
+    "section_heading": "C.4 Discussion of Computational Complexity of PGW, UGW, and RGW",
+    "text": "We consider the measure min0\u2264k\u2264K(\u2225\u03c0k+1 \u2212 \u03c0k\u2225F + \u2225\u03b1k+1 \u2212 \u03b1k\u22252 + \u2225\u03b2k+1 \u2212 \u03b2k\u22252) as the stationary measure, and it is observed that the convergence rate of our algorithm is O( 1\u221a",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p143",
+    "section_heading": "C.4 Discussion of Computational Complexity of PGW, UGW, and RGW",
+    "text": "K ). Similarly,",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p144",
+    "section_heading": "C.4 Discussion of Computational Complexity of PGW, UGW, and RGW",
+    "text": "the Frank-Wolfe algorithm for PGW also exhibits a convergence rate of O( 1\u221a K ). The literature on UGW does not provide a discussion on the convergence rate of alternate Sinkhorn minimization for UGW. In each iteration of PGW, UGW, and RGW, the computation of L(D, D\u0304) \u2297 \u03c0k is a crucial step. According to [31], the complexity of this computation is O(n2m + m2n). Additionally, PGW involves utilizing the network simplex algorithm to solve a linear programming problem as a subroutine, which has a complexity of O((n2m+m2n) log2(n+m)). On the other hand, both UGW and RGW utilize the sinkhorn algorithm to solve an entropic unbalanced optimal transport problem. The complexity of the sinkhorn algorithm for unbalanced OT is O((n2 +m2)/(\u03b5 log(\u03b5))) for computing an \u03b5-approximation.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p145",
+    "section_heading": "D.1 Additional Experiment Results on Subgraph Alignment",
+    "text": "Source codes of all baselines used in this paper:",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p146",
+    "section_heading": "D.1 Additional Experiment Results on Subgraph Alignment",
+    "text": "\u2022 FW [17]: https://github.com/PythonOT/POT",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p147",
+    "section_heading": "D.1 Additional Experiment Results on Subgraph Alignment",
+    "text": "\u2022 SpecGW [15]: https://github.com/trneedham/Spectral-Gromov-Wasserstein",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p148",
+    "section_heading": "D.1 Additional Experiment Results on Subgraph Alignment",
+    "text": "\u2022 eBPG [17]: https://github.com/PythonOT/POT",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p149",
+    "section_heading": "D.1 Additional Experiment Results on Subgraph Alignment",
+    "text": "\u2022 BAPG [24]: https://github.com/squareRoot3/Gromov-Wasserstein-for-Graph",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p150",
+    "section_heading": "D.1 Additional Experiment Results on Subgraph Alignment",
+    "text": "\u2022 UGW [35]: https://github.com/thibsej/unbalanced_gromov_wasserstein",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p151",
+    "section_heading": "D.1 Additional Experiment Results on Subgraph Alignment",
+    "text": "\u2022 PGW [10, 17]: https://github.com/PythonOT/POT",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p152",
+    "section_heading": "D.1 Additional Experiment Results on Subgraph Alignment",
+    "text": "\u2022 srGW: [42]: https://github.com/cedricvincentcuaz/srGW",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p153",
+    "section_heading": "D.1 Additional Experiment Results on Subgraph Alignment",
+    "text": "\u2022 RGWD: [25]: https://github.com/cxxszz/rgdl",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p154",
+    "section_heading": "D.1 Additional Experiment Results on Subgraph Alignment",
+    "text": "Results in Figure 4 The data utilized to create Figure 4 is provided in Table 2 and Table 3.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p155",
+    "section_heading": "D.1 Additional Experiment Results on Subgraph Alignment",
+    "text": "Tabl n sub",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p156",
+    "section_heading": "D.1 Additional Experiment Results on Subgraph Alignment",
+    "text": "Selection of Stepsize tk, ck, and rk In the subgraph alignment task, we have used constant values for the stepsizes tk, ck and rk. We have conducted a sensitivity analysis for these parameters, and the details are summarized in Tables 4 and 5. Specifically, Table 4 reveals that RGW achieves its highest accuracy with t in the range of 0.01 to 0.05, allowing us to select t = 0.01 as the default. Table 5 further indicates that accuracy is not significantly affected by variations in c, leading us to set c = 0.1 as the default.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p157",
+    "section_heading": "D.1 Additional Experiment Results on Subgraph Alignment",
+    "text": "Tabl s.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p158",
+    "section_heading": "D.1 Additional Experiment Results on Subgraph Alignment",
+    "text": "Experiment Results of Normalized Degree as Marginal Distribution In addition to employing the uniform distribution as node distribution, we also explore the use of normalized degrees as node distribution. The results presented in Table 6 confirm that RGW surpasses other methods in terms of accuracy when utilizing normalized degrees as marginal distributions.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p159",
+    "section_heading": "D.1 Additional Experiment Results on Subgraph Alignment",
+    "text": "Experiment Results of Adding Noise to Query Graph We conducted an experiment by adding 10% pseudo edges to the subgraphs, and the results can be found in Table 7. These findings",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p160",
+    "section_heading": "D.1 Additional Experiment Results on Subgraph Alignment",
+    "text": "Tabl s.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p161",
+    "section_heading": "D.1 Additional Experiment Results on Subgraph Alignment",
+    "text": "demonstrate that RGW significantly outperforms other methods on the Enzymes and Proteins datasets.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p162",
+    "section_heading": "D.2 Additional Experiment Results on Partial Shape Correspondence",
+    "text": "Convergence of BPALM The convergence results for the proposed BPALM using various step sizes are presented in Figure 7 for the toy example discussed in Section 4.1.",
+    "seg_type": "par"
+  },
+  {
+    "para_id": "p163",
+    "section_heading": "D.2 Additional Experiment Results on Partial Shape Correspondence",
+    "text": "Additional Experiment Result on TOSCA Dataset Additional experiment results on TOSCA Dataset are shown in Figure 8, 9, and 10.",
+    "seg_type": "par"
+  }
+]

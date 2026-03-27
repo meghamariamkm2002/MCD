@@ -1,0 +1,4 @@
+This problem is non-conversed with three variables.
+We employ the Bragman-Prosmo Alternating Linearized Minimization method to solve it.
+For the pi sub-problem, we use the Senghorn algorithm for entropy unbalanced optimal transfer absorptive.
+And for alpha and beta sub-problems, we use Newton's method to find the optimal dual multipliers and then compute the optimal solution.

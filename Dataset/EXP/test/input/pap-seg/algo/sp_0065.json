@@ -1,0 +1,62 @@
+[
+  {
+    "input_path": "layout_results/sp_0065/sp_0065_page_16.png",
+    "page_index": null,
+    "boxes": [
+      {
+        "cls_id": 14,
+        "label": "algorithm",
+        "score": 0.7372894287109375,
+        "coordinate": [
+          681.9849243164062,
+          334.2840881347656,
+          1881.9866943359375,
+          2972.298095703125
+        ],
+        "id": "sp_0065_page_16_1",
+        "seg_type": "algo",
+        "text": "\"Returns\naudio-aligned features and lengths for the given input sequences.\nArgs:\ntoken_sequences: batch of token sequences indicating the ID of each token,\npadded to a fixed maximum sequence length (400 for training, 600 for\nsampling). Tokens may either correspond to raw characters or phonemes (as\noutput by Phonemizer). Each sequence should begin\nsilence token\nand end with a special\n(assumed to have already been\n(dtype=int,\nadded\nto the inputs).\nshape= [N,\nin_sequence_length=600])\ntoken_vocab_size:\nscalar int indicating\n(All values in\nthe\nnumber\nof tokens.\ntoken_sequences\nlengths: indicates\nshould\nbe\nin\n[0,\ntoken_vocab_size).)\nthe\ntrue\nlength <= in_sequence_length=600 of each\nsequence in\ntoken_sequences before padding was added.\n(dtype=int,\nshape=[N])\nspeaker_ids:\nints\nindicating the speaker ID.\n(dtype=int,\nshape=[N])\nnum_speakers:\nscalar int\nindicating the number of speakers.\n(All values\nin speaker_ids should be in [0,\nnoise: 128D\nnum_speakers).)\nnoise sampled from a standard isotropic Gaussian (N(0,1)).\n(dtype=float,\nshape= [N,\n128])\nout_offset:\nfirst timestep to output.\nRandomly sampled for training, O for\nsampling.\n(dtype=int,\nshape=[N])\neturns:\naligned_features: audio-aligned features to be fed into the decoder.\n(dtype=float, shape=[N, out_sequence_length, 256])\naligned_lengths: the predicted audio-aligned lengths.\n(dtype=float, shape=[N])\nII\nLearn embeddings of the input tokens and speaker IDs.\nembedded_tokens = Embed(input_vocab_size=token_vocab_size,\n# -> [N, 600, 256\noutput_dim=256) (token_sequences)\nembedded_speaker_ids = Embed(input_vocab_size=num_speakers,\n, # −> [N, 128]\noutput_dim=128) (speaker_ids)\n# Make the \"class-conditioning\" inputs for class-conditional batch norm (CCBN\n# using the embedded speaker IDs and the noise.\nccbn_condition = Concat([embedded_speaker_ids, noise], axis=1)\n# -> [N, 256]\n# Add a dummy sequence axis to ccbn_condition for broadcasting.\nCcbn_condition = ccbn_condition[:, None, :] # -> [N, 1, 256]\n# Use 'lengths' to make a mask indicating valid entries of token_sequences.\nsequence_length = token_sequences.shape[1] # = 600\nnask = Range(sequence_length) [None, :] < lengths[:, None] # -> [N, 600]\nDilated 1D convolution stack.\n 10 blocks * 6 convs per block = 60 convolutions total.\n= embedded_tokens\nconv_mask = mask[:, :, None] # -> [N, 600, 1]; dummy axis for broadcast.\nfor _ in range(10):\nfor a, bin [(1, 2), (4, 8), (16, 32)]:\nblock_inputs = x\nx = ReLU(ClassConditionalBatchNorm(x, ccbn_condition))\nx = MaskedConv1D(output_channels=256, kernel_size=3, dilation=a) (\nx, conv_mask)\nx = ReLU(ClassConditionalBatchNorm(x, ccbn_condition))\nx = MaskedConvlD(output_channels=256, kernel_size=3, dilation=b) (\nx, conv_mask)\nx += block_inputs # -> [N, 600, 256]\nSave dilated conv stack outputs as unaligned_features.\nnaligned_features = x # [N, 600, 256]\nMap to predicted token lengths.\nReLU(ClassConditionalBatchNorm(x, ccbn_condition))\nConvlD(output_channels=256, kernel_size=1) (x)\nReLU(ClassConditionalBatchNorm(x, ccbn_condition))\n= ConvlD(output_channels=1, kernel_size=1) (x) # -> [N, 600, 1]\noken_lengths = ReLU(x[:, :, 0]) # -> [N, 600]\noken_ends = CumSum(token_lengths, axis=1) # -> [N, 600]\noken_centres = token_ends - (token_lengths / 2.) 1# -> [N, 600]\nCompute predicted length as the last valid entry of token_ends.\n. -> [N]\nCompute output grid -> [N, out_sequence_length=6000]\nut_pos = Range(out_sequence_length) [None, :] + out_offset[:, None]\nout_pos = Cast(out_pos[:, :, None], float) # -> [N, 600o, 1]\nliff = token_centres[:, None, :] - out_pos # -> [N, 6000, 600]\nogits = -(diff**2 / sigma2) # -> [N, 6000, 600]\nMask out invalid input locations (flip 0/1 to 1/0); add dummy output axis.\n# Do a batch matmul (written as an einsum) to compute the aligned features.\n# aligned_features -> [N, 6000, 256]\naligned_features = Einsum('noi,nid->nod'."
+      }
+    ]
+  },
+  {
+    "input_path": "layout_results/sp_0065/sp_0065_page_17.png",
+    "page_index": null,
+    "boxes": [
+      {
+        "cls_id": 14,
+        "label": "algorithm",
+        "score": 0.83475261926651,
+        "coordinate": [
+          470.04791259765625,
+          332.941162109375,
+          2087.40185546875,
+          2146.221435546875
+        ],
+        "text": "fivert_mu_1aw=True, mu=255.,\njitter=False, max_jitter_steps=60):\n\"\"\"Computes mel-spectrograms for the given waveforms.\nArgs:\nwaveforms: a tf.Tensor corresponding to a batch of waveforms\nsampled at 24 kHz.\n(dtype=tf.float32, shape=[N, sequence_length])\ninvert_mu_law: whether to apply mu-law inversion\nto the input waveforms.\nIn EATs both the real data and generator outputs\nare\nmu-law'ed, so this i\nalways set to\nTrue.\nmu:\nThe mu value\nused if invert_mu_law=True\n(ignored\nd otherwise).\njitter: whether to apply random jitter to the\ninput\nwaveforms\nbefore\ncomputing spectrograms.\nSet to True only\nfor\nGT\nspectrograms\ninput to the\nprediction loss.\nmax_jitter_steps: maximum number of steps\nby\nwhich\n the\ninput\nwaveforms\nare\nrandomly\njittered if jitter=True\ne (ignored otherwise).\nReturns:\nA 3D tensor with spectrograms for the corresponding input waveforms.\n(dtype=tf.float32,\nshape=[N, num_frames=ceil(sequence_length/1024), r\nnum_bins=80])\nII\n−I\nwaveforms.shape.assert_has_rank(2)\nt = waveforms\nif jitter:\nassert max_jitter_steps >= 0\ncrop_shape = [t.shape[1]]\nt = tf.pad(t, [[0, 0], [max_jitter_steps, max_jitter_steps]])\n# Jitter independently for each batch item.\nt = tf.map_fn(lambda ti: tf.image.random_crop(ti, crop_shape), t)\nf invert_mu_law:\nt = tf.sign(t) / mu * ((1 + mu)**tf.abs(t) - 1)\nL = tf.signal.stft(t, frame_length=2048, frame_step=1024, pad_end=True)\nt = tf.abs(t)\nmel_weight_matrix = tf.signal.linear_to_mel_weight_matrix(\nnum_mel_bins=80, num_spectrogram_bins=t.shape[-1],\nsample_rate=24000., lower_edge_hertz=80., upper_edge_hertz=7600.)\nt = tf.tensordot(t, mel_weight_matrix, axes=l)\nt = tf.log(1. + 10000.*t)\nreturn t\nn_spectrograms_for_pred_loss = get_mel_spectrogram(gen_waveforms,\njitter=False)\neal_spectrograms_for_pred_loss = get_mel_spectrogram(real_waveforms,\n + + F5\nTrue)",
+        "id": "sp_0065_page_17_1",
+        "seg_type": "algo"
+      }
+    ]
+  },
+  {
+    "input_path": "layout_results/sp_0065/sp_0065_page_18.png",
+    "page_index": null,
+    "boxes": [
+      {
+        "cls_id": 14,
+        "label": "algorithm",
+        "score": 0.7773997783660889,
+        "coordinate": [
+          458.92144775390625,
+          327.68670654296875,
+          2067.228515625,
+          1738.2701416015625
+        ],
+        "text": "3Tn3nToduuoa4ae\nreturn -temperature * log(sum(exp(-values / temperature)))\nef skew_matrix(x) :\n\"\"\"Skew a matrix so that the diagonals become the rows.\"\"\"\nheight, width = x.shape\ny = zeros(height + width - 1, width)\nfor i in range(height + width - 1):\nfor j in range(width): # Shift each column j down by j steps.\ny[i, j] = x[clip(i - j, 0, height - 1), j]\nreturn y\nf spectrogram_dtw_error(spec_a, spec_b, warp_penalty=1.0, temperature=0.0l):\n\"\"\"Compute DTW error given a pair of spectrograms.\n\" I \"\n# Compute cost matrix.\ndiffs = abs(spec_a[None, :, :] - spec_b[:, None, :])\ncosts = mean(diffs, axis=-l) # pairwise Ll cost, square the diffs for L2.\nsize = cost.shape[-1]\n# Initialise path costs.\npath_cost = INFINITY * ones(size + 1)\npath_cost_prev = INFINITY * ones(size + 1)\npath_cost_prev[0] = 0.0\n# Aggregate path costs from cost[0, O] to cost[-1, -1].\ncost = skew_matrix(cost) # Shape is now (2 * size - 1, size).\nfor i in range(2 * size - 1):\ndirections = [path_cost_prev[:-1],\npath_cost[1:] + warp_penalty,\npath_cost[:-1] + warp_penalty]\npath_cost_next = cost[i] + soft_minimum(directions, temperature)\n# Replace soft minimum with regular minimum for regular DTW.\npath_cost_next = concatenate([[INFINITY], path_cost_next])\npath_cost, path_cost_prev = path_cost_next, path_cost",
+        "id": "sp_0065_page_18_1",
+        "seg_type": "algo"
+      }
+    ]
+  }
+]

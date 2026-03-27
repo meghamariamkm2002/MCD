@@ -1,0 +1,17 @@
+start	end	text
+31	7121	cod learning environment, if you don't know what it is, it's basically these old games right here, you can kind of emulate them and run them.
+7682	10887	And the inputs are always sort of the same.
+10967	13591	So you have one joystick, I believe.
+13711	20701	So you have kind of this joystick, and it can go into various directions like left, right, up, down, and then also the intermediate directions.
+21161	25768	And then you have a, I think also a button that you can push
+25748	32600	And that gives you a total of some somewhere around 16 or 20 actions in each of the games.
+32640	37008	So the good thing about this environment is that the actions are always the same.
+37088	39472	But of course, they mean different things in different games.
+39993	46845	So the games here, you know, for example, Pong or this breakout, these games are
+46825	53831	kind of really low pixel games, as you can see, and they come in form of an image, right?
+53851	54632	So this is an image.
+54712	58716	This is like 180 pixels, and this is like 150 pixels.
+59416	73749	And the task here is to learn a policy, which means which buttons and directions you need to push, depending on the observation right here, these pixels, and achieve the maximum amount of reward.
+73989	76832	So reward is given in each game differently as well.
+76812	91912	For example, in this pong game, the reward is every time you score kind of a goal against your opponent in breakout, you get a reward every time you manage to hit or kill a one of these blocks and so on.
+92152	95040	So reward is different, but your objective is

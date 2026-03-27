@@ -1,0 +1,18 @@
+these samples in the video description for sure.
+So I think we've gone over everything.
+The generator starts off with text, puts that into normalized text, calculates hidden features right here.
+These hidden features on one hand are used to predict the lengths of each of the tokens in the sound and are also used as an input to the generator here.
+Now they can only be used as an input to the generator if the generator knows how to align them in time and how to align them in time is predicted from these predicted lengths right here via this aligner algorithm.
+The lengths are the only thing that is predicted.
+Everything then is deterministic.
+The aligner is simply a Gaussian kernel over the predicted locations on the
+on the time axis, so the Gaussian kernel is to make this alignment a bit fuzzy, to make this prediction fuzzy.
+You perform a weighted sum with these features and then the generator knows where to put the tokens.
+Finally, the generator can upsample the now aligned tokens into sound.
+This goes into the discriminator.
+The discriminator is actually five different discriminators, which each try to discriminate the generated from the real at different time scales.
+In addition to that, you have a discriminator on the spectrograms, and you also have an L1 loss on the spectrograms, which helps especially at the beginning of training.
+For the L1 loss of the spectrograms, you have to again compute an alignment, but you do this in a deterministic way by this thing down here, this dynamic time warping where you simply assume that they are aligned and forgive them for not being aligned with a soft penalty and not a hard zero score.
+All right, this was the paper.
+Again, if you like this, leave a like, a comment, share it out, subscribe and have a good day.
+Bye-bye.

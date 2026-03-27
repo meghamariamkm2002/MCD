@@ -1,0 +1,20 @@
+WEBVTT
+
+00:00.031 --> 00:01.334
+Hi there.
+
+00:01.734 --> 00:06.965
+What you're seeing here is a divide and conquer Monte Carlo tree search in action.
+
+00:07.506 --> 00:14.941
+This is a planning algorithm that plans in a kind of an unconventional fashion.
+
+00:15.321 --> 00:22.275
+So we're going to explore this today in this paper, divide and conquer Monte Carlo tree search for goal-directed planning.
+
+00:22.255 --> 00:39.183
+by Giambattista Parascondolo and Lars Busing and a list of other authors and I believe this is from Deep Mind and Max Planck and Eta and yeah, that's it.
+
+00:39.865 --> 00:40.045
+All right
+

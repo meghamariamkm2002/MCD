@@ -1,0 +1,1 @@
+Alternatively, we can incorporate Gaussian noise into the data distribution and using an energy-based model to learn the noisy data distribution.

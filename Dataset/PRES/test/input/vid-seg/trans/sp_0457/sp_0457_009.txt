@@ -1,0 +1,3 @@
+We also theoretically explained the privacy protection of zero-order optimization in our framework.
+That's the zero-order optimization provides intrinsic differential privacy guarantee for sharing the deal gradient to the client.
+You can refer to our paper for more

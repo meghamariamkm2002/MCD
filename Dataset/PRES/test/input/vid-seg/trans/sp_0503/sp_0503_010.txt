@@ -1,0 +1,4 @@
+The other task is the partial shape correspondence.
+In this task, we aim to match a subset of a shape to its full version.
+We utilize the partial functional map method to generate an initial point for both partial GW and RGW.
+As shown in the HimMap of the transport plant pi, we can observe that our proposed RGW can recover the ground truth.

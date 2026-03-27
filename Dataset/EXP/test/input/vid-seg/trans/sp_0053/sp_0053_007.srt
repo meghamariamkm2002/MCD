@@ -1,0 +1,208 @@
+1
+00:00:00,031 --> 00:00:07,023
+not cross product inner product, or you do L two distance between the representations or something.
+
+2
+00:00:07,384 --> 00:00:08,966
+Here we do cross entropy.
+
+3
+00:00:09,928 --> 00:00:17,060
+And the cross entropy after a softmax and the way I interpret this is the following.
+
+4
+00:00:17,581 --> 00:00:24,553
+A softmax is like, what you get out is a normalized distribution, right?
+
+5
+00:00:25,613 --> 00:00:27,897
+However, we have no class labels here.
+
+6
+00:00:28,518 --> 00:00:34,489
+So what you do is you simply choose, you choose a number, any number, right?
+
+7
+00:00:34,549 --> 00:00:40,500
+This is you as an implementer of this algorithm, choose what dimension you want to output here.
+
+8
+00:00:41,678 --> 00:00:51,510
+Now, after the softmax, whatever your input is going to be, a distribution over the amount of things that you have input.
+
+9
+00:00:52,872 --> 00:00:54,955
+And you can interpret this as classes, right?
+
+10
+00:00:55,315 --> 00:00:57,858
+There's class zero, one, two, three, and so on.
+
+11
+00:00:58,339 --> 00:01:08,952
+And you're gonna get class zero is probability 10%, class one, zero percent, class two, 40%, and so on.
+
+12
+00:01:08,932 --> 00:01:10,556
+right?
+
+13
+00:01:10,576 --> 00:01:16,288
+You don't know what it means, but you know, you get this as an output.
+
+14
+00:01:16,769 --> 00:01:22,462
+And the teacher having this sharpening, it will have a much more peaked distribution.
+
+15
+00:01:22,802 --> 00:01:27,733
+So for the same thing, it might have a distribution that's
+
+16
+00:01:27,713 --> 00:01:33,019
+not as much class zero, not as much class one, very much class two.
+
+17
+00:01:33,640 --> 00:01:35,523
+Alright, this even goes off screen for you.
+
+18
+00:01:35,543 --> 00:01:38,506
+Yeah, very much class two, and so on.
+
+19
+00:01:39,688 --> 00:01:45,074
+And since this is the since the teacher is the target for the student, you see here is a stop gradient.
+
+20
+00:01:45,735 --> 00:01:48,979
+The student is sort of, this is a common
+
+21
+00:01:48,959 --> 00:01:53,207
+I guess, I guess this is a common trick in distillation, like the teacher is very sure.
+
+22
+00:01:53,247 --> 00:01:57,836
+And that means the student gets a better learning signal to match the teacher.
+
+23
+00:01:58,417 --> 00:02:05,049
+So this this sharpening of the teacher gives these less noisy for the student.
+
+24
+00:02:05,390 --> 00:02:09,297
+And also, I think it also helps prevent this.
+
+25
+00:02:09,277 --> 00:02:10,158
+I'm not sure.
+
+26
+00:02:10,478 --> 00:02:13,922
+So they speak of sharpening and centering.
+
+27
+00:02:14,542 --> 00:02:24,152
+And one, I think one, they claim furthers collapse, probably the sharpening and one prevents it, which might be the centering, I might mix them up.
+
+28
+00:02:24,672 --> 00:02:33,581
+But, you know, one sort of reduces the noise, but encourages, I think the sharpening must reduce noise, but encourage collapse.
+
+29
+00:02:34,302 --> 00:02:38,406
+And then the centering counteracts that counteracts the collapse.
+
+30
+00:02:40,664 --> 00:02:41,926
+Yeah, probably.
+
+31
+00:02:42,767 --> 00:02:50,540
+Though there's an argument to be made that the sharpening might also counter collapse because, oh yes, that's what they say.
+
+32
+00:02:50,600 --> 00:02:51,241
+Now I remember.
+
+33
+00:02:51,462 --> 00:03:03,381
+So they say the sharp, so they, they say, uh, naturally this would then be biased towards the uniform distribution, um, with the centering, I believe, but the sharpening then counteracts that again.
+
+34
+00:03:03,401 --> 00:03:04,222
+I don't know.
+
+35
+00:03:04,242 --> 00:03:06,486
+It's in the text somewhere.
+
+36
+00:03:06,466 --> 00:03:11,295
+I'm more interested in why this is even a softmax in the first place.
+
+37
+00:03:11,315 --> 00:03:20,813
+So I interpret this as you force the model to come up with an k-dimensional classification problem by itself.
+
+38
+00:03:21,012 --> 00:03:25,021
+And it has to choose by itself what the classes are, right?
+
+39
+00:03:25,582 --> 00:03:35,303
+So it has to somehow make representations that allow itself to come up with a classification problem that it can solve.
+
+40
+00:03:36,165 --> 00:03:38,751
+And I think that's, that's pretty smart.
+
+41
+00:03:38,731 --> 00:03:45,711
+Um, you know, you instead of giving it a classification problem, you simply ask it to come up with one.
+
+42
+00:03:46,613 --> 00:03:49,341
+Um, now this could go horribly wrong, right?
+
+43
+00:03:49,762 --> 00:03:54,495
+But, uh, apparently if you do it like this, it goes well.
+
+44
+00:03:55,623 --> 00:03:59,449
+So that's the dino architecture.
+
+45
+00:03:59,830 --> 00:04:04,638
+Again, we augment image, we augment it in different ways.
+
+46
+00:04:05,559 --> 00:04:09,987
+We put all the things through the student and through the teacher.
+
+47
+00:04:10,848 --> 00:04:13,733
+The teacher is an exponential moving average of the student.
+
+48
+00:04:13,713 --> 00:04:19,487
+That gives us different representations of different augmentations of the same image.
+
+49
+00:04:20,048 --> 00:04:27,486
+We require the representations to be the same in terms of their
+
+50
+00:04:28,917 --> 00:04:36,308
+So we take the representations, we ship them through a classifier, through a softmax, into a distribution.
+
+51
+00:04:36,889 --> 00:04:54,756
+We require the outputs to be the same of the student and the teacher, while the teacher has centering, which is centering the logits by an exponential running average of all the representations it has ever seen.
+
+52
+00:04:54,736 --> 00:05:10,045
+also it has a sharper softmax all of this together and yeah the teacher has a stop gradient so it's we train the student of this together gives us a system that comes up with good representations and does not collide
+

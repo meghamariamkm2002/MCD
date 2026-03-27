@@ -1,0 +1,4 @@
+As mentioned, we look at MOAD, a class of multi-objective evolutionary algorithms which operates on a decomposition of the vector-objective functions into single-objective functions that get optimized.
+The decomposition is done via linear scalarization at different trade-offs, each forming a separate single-objective sub-problems.
+We use a pair of these terms to handle mutual-based constraints, which is previously used for single-objective variance.
+Here, WMAS denotes the maximum waste across all objectives.

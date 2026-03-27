@@ -1,0 +1,2 @@
+We also apply the polyhedron technology module to the click-through rate prediction problem, which is a critical task in the recommendation system.
+Polyhedron technology module achieves the state of the art performance on two massive industry design, which is called Critero and Amazon.

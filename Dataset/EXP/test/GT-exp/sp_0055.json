@@ -1,0 +1,482 @@
+[
+  {
+    "start_time": 0.0,
+    "end_time": 40.0,
+    "id": "001",
+    "title": "Intro",
+    "filename": "Videos/sp_0055.mp4",
+    "paper_filename": "Papers/sp_0055.pdf",
+    "type": "exp-vid",
+    "relevant_segments": [
+      {
+        "para_id": "p1",
+        "section_heading": "Abstract",
+        "text": "Standard planners for sequential decision making (including Monte Carlo planning, tree search, dynamic programming, etc.) are constrained by an implicit sequential planning assumption: The order in which a plan is constructed is the same in which it is executed. We consider alternatives to this assumption for the class of goal-directed Reinforcement Learning (RL) problems. Instead of an environment transition model, we assume an imperfect, goal-directed policy. This low-level policy can be improved by a plan, consisting of an appropriate sequence of sub-goals that guide it from the start to the goal state. We propose a planning algorithm, Divide-and-Conquer Monte Carlo Tree Search (DC-MCTS), for approximating the optimal plan by means of proposing intermediate sub-goals which hierarchically partition the initial tasks into simpler ones that are then solved independently and recursively. The algorithm critically makes use of a learned sub-goal proposal for finding appropriate partitions trees of new tasks based on prior experience. Different strategies for learning sub-goal proposals give rise to different planning strategies that strictly generalize sequential planning. We show that this algorithmic flexibility over planning order leads to improved results in navigation tasks in grid-worlds as well as in challenging continuous control environments.",
+        "seg_type": "par"
+      },
+      {
+        "caption": "Figure 2. Grid-world maze examples for wall density d = 0.75 (top row) and d = 0.95 (bottom row). (a) The distribution over sub-goals induced by the policy prior p that guides the DC-MCTS planner. (b)-(d) Visualization of the solution tree found by DC-MCTS: (b) The first sub-goal, i.e. at depth 0 of the solution tree. It approximately splits the problem in half. (c) The sub-goals at depth 1. Note there are two of them. (d) The final plan with the depth of each sub-goal shown. See supplementary material for animations.",
+        "captionBoundary": {
+          "x1": 54.93798828125,
+          "x2": 541.4439086914062,
+          "y1": 357.582763671875,
+          "y2": 395.8609924316406
+        },
+        "figType": "Figure",
+        "imageText": [
+          "(a)",
+          "(b)",
+          "(c)",
+          "(d)"
+        ],
+        "name": "2",
+        "page": 5,
+        "regionBoundary": {
+          "x1": 54.72,
+          "x2": 542.4,
+          "y1": 82.56,
+          "y2": 340.32
+        },
+        "renderDpi": 150,
+        "renderURL": "//Users/meghamariam/PROJECTS/PROJ1_Dataset/PROJ1_Crossmodal-Traversal/DATASET/pap-seg/fig/sp_0055/sp_0055-Figure2-1.png",
+        "id": "sp_0055-Figure2-1",
+        "seg_type": "fig"
+      },
+      {
+        "para_id": "p98",
+        "section_heading": "C. More solved mazes",
+        "text": "In Figure 8 we show more mazes as solved by the trained Divide and Conquer MCTS.",
+        "seg_type": "par"
+      }
+    ]
+  },
+  {
+    "start_time": 40.0,
+    "end_time": 567.0,
+    "id": "002",
+    "title": "What is planning",
+    "filename": "Videos/sp_0055.mp4",
+    "paper_filename": "Papers/sp_0055.pdf",
+    "type": "exp-vid",
+    "relevant_segments": [
+      {
+        "para_id": "p1",
+        "section_heading": "Abstract",
+        "text": "Standard planners for sequential decision making (including Monte Carlo planning, tree search, dynamic programming, etc.) are constrained by an implicit sequential planning assumption: The order in which a plan is constructed is the same in which it is executed. We consider alternatives to this assumption for the class of goal-directed Reinforcement Learning (RL) problems. Instead of an environment transition model, we assume an imperfect, goal-directed policy. This low-level policy can be improved by a plan, consisting of an appropriate sequence of sub-goals that guide it from the start to the goal state. We propose a planning algorithm, Divide-and-Conquer Monte Carlo Tree Search (DC-MCTS), for approximating the optimal plan by means of proposing intermediate sub-goals which hierarchically partition the initial tasks into simpler ones that are then solved independently and recursively. The algorithm critically makes use of a learned sub-goal proposal for finding appropriate partitions trees of new tasks based on prior experience. Different strategies for learning sub-goal proposals give rise to different planning strategies that strictly generalize sequential planning. We show that this algorithmic flexibility over planning order leads to improved results in navigation tasks in grid-worlds as well as in challenging continuous control environments.",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p2",
+        "section_heading": "1. Introduction",
+        "text": "This is the first sentence of this paper, but it was not the first one we wrote. In fact, the entire introduction section was actually one of the last sections to be added to this manuscript. The discrepancy between the order of inception of ideas and",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p3",
+        "section_heading": "1. Introduction",
+        "text": "the order of their presentation in this paper probably does not come as a surprise to the reader. Nonetheless, it serves as a point for reflection that is central to the rest of this work, and that can be summarized as “the order in which we construct a plan does not have to coincide with the order in which we execute it”.",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p4",
+        "section_heading": "1. Introduction",
+        "text": "Most standard planners for sequential decision making problems—including Monte Carlo planning, Monte Carlo Tree Search (MCTS) and dynamic programming—have a baked-in sequential planning assumption (Browne et al., 2012; Bertsekas et al., 1995). These methods begin at either the initial or final state and then proceed to plan actions sequentially forward or backwards in time. However, this sequential approach faces two main challenges. (i) The transition model used for planning needs to be reliable over long horizons, which is often difficult to achieve when it has to be inferred from data. (ii) Credit assignment to each individual action is difficult: In a planning problem spanning a horizon of 100 steps, to assign credit to the first action, we have to compute the optimal cost-to-go for the remaining problem with a horizon of 99 steps, which is only slightly easier than solving the original problem.",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p5",
+        "section_heading": "1. Introduction",
+        "text": "To overcome these two fundamental challenges, we consider alternatives to the basic assumptions of sequential planners in this work. To this end, we focus on goal-directed decision making problems where an agent should reach a goal state from a start state. Instead of a transition and reward model of the environment, we assume a given goal-directed policy",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p6",
+        "section_heading": "1. Introduction",
+        "text": "(the “low-level” policy) and the associated value oracle that returns the success probability of the low-level policy on any given task. In general, a low-level policy will not be not optimal, e.g. it might be too “myopic” to reliably reach goal states that are far away from its current state. We now seek to improve the low-level policy via a suitable sequence of subgoals that effectively guide it from the start to the final goal, thus maximizing the overall task success probability. This formulation of planning as finding good sub-goal sequences, makes learning of explicit environment models unnecessary, as they are replaced by low-level policies and their value functions.",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p7",
+        "section_heading": "1. Introduction",
+        "text": "The sub-goal planning problem can still be solved by a conventional sequential planner that begins by searching for the first sub-goal to reach from the start state, then planning the next sub-goal in sequence, and so on. Indeed, this is the approach taken in most hierarchical RL settings based on options or sub-goals (e.g. Dayan & Hinton, 1993; Sutton et al., 1999; Vezhnevets et al., 2017). However, the credit assignment problem mentioned above still persists, as assessing if the first sub-goal is useful still requires evaluating the success probability of the remaining plan. Instead, it could be substantially easier to reason about the utility of a sub-goal “in the middle” of the plan, as this breaks the long-horizon problem into two sub-problems with much shorter horizons: how to get to the sub-goal and how to get from there to the final goal. Based on this intuition, we propose the Divide-and-Conquer MCTS (DC-MCTS) planner that searches for sub-goals to split the original task into two independent sub-tasks of comparable complexity and then recursively solves these, thereby drastically facilitating credit assignment. To search the space of intermediate subgoals efficiently, DC-MCTS uses a heuristic for proposing promising sub-goals that is learned from previous search results and agent experience.",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p8",
+        "section_heading": "1. Introduction",
+        "text": "The paper is structured as follows. In Section 2, we formulate planning in terms of sub-goals instead of primitive actions. In Section 3, as our main contribution, we propose the novel Divide-and-Conquer Monte Carlo Tree Search algorithm for this planning problem. In Section 5, we show that it outperforms sequential planners both on grid world and continuous control navigation tasks, demonstrating the utility of constructing plans in a flexible order that can be different from their execution order.",
+        "seg_type": "par"
+      },
+      {
+        "para_id": "p45",
+        "section_heading": "4. Related Work",
+        "text": "2002; Jégou & Terrioux, 2003; Dechter & Mateescu, 2004; Marinescu & Dechter, 2004). Our approach is related to work on using AND/OR trees for sub-goal ordering in the context of logic inference (Ledeniov & Markovitch, 1998). While DC-MCTS is closely related to the AO∗ algorithm (Nilsson, N. J., 1980), which is the generalization of the heuristic A∗ search to AND/OR search graphs, interesting differences exist: AO∗ assumes a fixed search heuristic, which is required to be lower bound on the cost-to-go. In contrast, we employ learned value functions and policy priors that are not required to be exact bounds. Relaxing this assumption, thereby violating the principle of “optimism in the face of uncertainty”, necessitates explicit exploration incentives in the SELECT method. Alternatives for searching AND/OR spaces include proof-number search, which has recently been successfully applied to chemical synthesis planning (Kishimoto et al., 2019).",
+        "seg_type": "par"
+      }
+    ]
+  },
+  {
+    "start_time": 567.0,
+    "end_time": 800.0,
+    "id": "003",
+    "title": "The algorithm",
+    "filename": "Videos/sp_0055.mp4",
+    "paper_filename": "Papers/sp_0055.pdf",
+    "type": "exp-vid",
+    "relevant_segments": [
+      {
+        "cls_id": 14,
+        "label": "algorithm",
+        "score": 0.9211390614509583,
+        "coordinate": [
+          223.64280700683594,
+          278.7278137207031,
+          1208.9935302734375,
+          1590.9205322265625
+        ],
+        "text": "Algorithm 1 Divide-and-Conquer MCTS procedures Global low-level value oracle v\" Global high-level value function v Global policy prior p Global search tree T 1: procedure TRAVERSE(OR node (s, s\")) 2: if (s, s\")  T then. 3: T ExPAND(T,(s,s\") 4: return max(v\"(s, s\"), v(s, s\" > bootstrap 5: end if 6: s'< SeLeCT(s, s\") > OR node 7: if s' =  or max-depth reached then 8: Gv\"(s, s\") 9: else > AND node 10: Gleft  TRAVERSE(S, S' 11: Gright  TRAVERSE(S', s 12: // BACKUP 13: G  Gleft  Gright 14: end if 15: G max(G, v\"(s, s\" > threshold the return. 16: // UPDATE 17: V(s,s\") (V(s,s\")N(s,s\")+G)/(N(s,s\")+1 18: N(s,s\") N(s,s\")+1 19: return G 20: end procedure",
+        "id": "sp_0055_page_4_1",
+        "seg_type": "algo"
+      }
+    ]
+  },
+  {
+    "start_time": 800.0,
+    "end_time": 820.0,
+    "id": "004",
+    "title": "Finding the next action",
+    "filename": "Videos/sp_0055.mp4",
+    "paper_filename": "Papers/sp_0055.pdf",
+    "type": "exp-vid",
+    "relevant_segments": [
+      {
+        "caption": "Figure 2. Grid-world maze examples for wall density d = 0.75 (top row) and d = 0.95 (bottom row). (a) The distribution over sub-goals induced by the policy prior p that guides the DC-MCTS planner. (b)-(d) Visualization of the solution tree found by DC-MCTS: (b) The first sub-goal, i.e. at depth 0 of the solution tree. It approximately splits the problem in half. (c) The sub-goals at depth 1. Note there are two of them. (d) The final plan with the depth of each sub-goal shown. See supplementary material for animations.",
+        "captionBoundary": {
+          "x1": 54.93798828125,
+          "x2": 541.4439086914062,
+          "y1": 357.582763671875,
+          "y2": 395.8609924316406
+        },
+        "figType": "Figure",
+        "imageText": [
+          "(a)",
+          "(b)",
+          "(c)",
+          "(d)"
+        ],
+        "name": "2",
+        "page": 5,
+        "regionBoundary": {
+          "x1": 54.72,
+          "x2": 542.4,
+          "y1": 82.56,
+          "y2": 340.32
+        },
+        "renderDpi": 150,
+        "renderURL": "//Users/meghamariam/PROJECTS/PROJ1_Dataset/PROJ1_Crossmodal-Traversal/DATASET/pap-seg/fig/sp_0055/sp_0055-Figure2-1.png",
+        "id": "sp_0055-Figure2-1",
+        "seg_type": "fig"
+      }
+    ]
+  },
+  {
+    "start_time": 820.0,
+    "end_time": 833.0,
+    "id": "005",
+    "title": "Building your search tree",
+    "filename": "Videos/sp_0055.mp4",
+    "paper_filename": "Papers/sp_0055.pdf",
+    "type": "exp-vid",
+    "relevant_segments": [
+      {
+        "caption": "Figure 2. Grid-world maze examples for wall density d = 0.75 (top row) and d = 0.95 (bottom row). (a) The distribution over sub-goals induced by the policy prior p that guides the DC-MCTS planner. (b)-(d) Visualization of the solution tree found by DC-MCTS: (b) The first sub-goal, i.e. at depth 0 of the solution tree. It approximately splits the problem in half. (c) The sub-goals at depth 1. Note there are two of them. (d) The final plan with the depth of each sub-goal shown. See supplementary material for animations.",
+        "captionBoundary": {
+          "x1": 54.93798828125,
+          "x2": 541.4439086914062,
+          "y1": 357.582763671875,
+          "y2": 395.8609924316406
+        },
+        "figType": "Figure",
+        "imageText": [
+          "(a)",
+          "(b)",
+          "(c)",
+          "(d)"
+        ],
+        "name": "2",
+        "page": 5,
+        "regionBoundary": {
+          "x1": 54.72,
+          "x2": 542.4,
+          "y1": 82.56,
+          "y2": 340.32
+        },
+        "renderDpi": 150,
+        "renderURL": "//Users/meghamariam/PROJECTS/PROJ1_Dataset/PROJ1_Crossmodal-Traversal/DATASET/pap-seg/fig/sp_0055/sp_0055-Figure2-1.png",
+        "id": "sp_0055-Figure2-1",
+        "seg_type": "fig"
+      }
+    ]
+  },
+  {
+    "start_time": 833.0,
+    "end_time": 910.0,
+    "id": "006",
+    "title": "Search over subproblems",
+    "filename": "Videos/sp_0055.mp4",
+    "paper_filename": "Papers/sp_0055.pdf",
+    "type": "exp-vid",
+    "relevant_segments": [
+      {
+        "caption": "Figure 2. Grid-world maze examples for wall density d = 0.75 (top row) and d = 0.95 (bottom row). (a) The distribution over sub-goals induced by the policy prior p that guides the DC-MCTS planner. (b)-(d) Visualization of the solution tree found by DC-MCTS: (b) The first sub-goal, i.e. at depth 0 of the solution tree. It approximately splits the problem in half. (c) The sub-goals at depth 1. Note there are two of them. (d) The final plan with the depth of each sub-goal shown. See supplementary material for animations.",
+        "captionBoundary": {
+          "x1": 54.93798828125,
+          "x2": 541.4439086914062,
+          "y1": 357.582763671875,
+          "y2": 395.8609924316406
+        },
+        "figType": "Figure",
+        "imageText": [
+          "(a)",
+          "(b)",
+          "(c)",
+          "(d)"
+        ],
+        "name": "2",
+        "page": 5,
+        "regionBoundary": {
+          "x1": 54.72,
+          "x2": 542.4,
+          "y1": 82.56,
+          "y2": 340.32
+        },
+        "renderDpi": 150,
+        "renderURL": "//Users/meghamariam/PROJECTS/PROJ1_Dataset/PROJ1_Crossmodal-Traversal/DATASET/pap-seg/fig/sp_0055/sp_0055-Figure2-1.png",
+        "id": "sp_0055-Figure2-1",
+        "seg_type": "fig"
+      }
+    ]
+  },
+  {
+    "start_time": 910.0,
+    "end_time": 969.0,
+    "id": "007",
+    "title": "Subdivide",
+    "filename": "Videos/sp_0055.mp4",
+    "paper_filename": "Papers/sp_0055.pdf",
+    "type": "exp-vid",
+    "relevant_segments": [
+      {
+        "caption": "Figure 2. Grid-world maze examples for wall density d = 0.75 (top row) and d = 0.95 (bottom row). (a) The distribution over sub-goals induced by the policy prior p that guides the DC-MCTS planner. (b)-(d) Visualization of the solution tree found by DC-MCTS: (b) The first sub-goal, i.e. at depth 0 of the solution tree. It approximately splits the problem in half. (c) The sub-goals at depth 1. Note there are two of them. (d) The final plan with the depth of each sub-goal shown. See supplementary material for animations.",
+        "captionBoundary": {
+          "x1": 54.93798828125,
+          "x2": 541.4439086914062,
+          "y1": 357.582763671875,
+          "y2": 395.8609924316406
+        },
+        "figType": "Figure",
+        "imageText": [
+          "(a)",
+          "(b)",
+          "(c)",
+          "(d)"
+        ],
+        "name": "2",
+        "page": 5,
+        "regionBoundary": {
+          "x1": 54.72,
+          "x2": 542.4,
+          "y1": 82.56,
+          "y2": 340.32
+        },
+        "renderDpi": 150,
+        "renderURL": "//Users/meghamariam/PROJECTS/PROJ1_Dataset/PROJ1_Crossmodal-Traversal/DATASET/pap-seg/fig/sp_0055/sp_0055-Figure2-1.png",
+        "id": "sp_0055-Figure2-1",
+        "seg_type": "fig"
+      }
+    ]
+  },
+  {
+    "start_time": 969.0,
+    "end_time": 1095.0,
+    "id": "008",
+    "title": "The Catch",
+    "filename": "Videos/sp_0055.mp4",
+    "paper_filename": "Papers/sp_0055.pdf",
+    "type": "exp-vid",
+    "relevant_segments": [
+      {
+        "caption": "Figure 2. Grid-world maze examples for wall density d = 0.75 (top row) and d = 0.95 (bottom row). (a) The distribution over sub-goals induced by the policy prior p that guides the DC-MCTS planner. (b)-(d) Visualization of the solution tree found by DC-MCTS: (b) The first sub-goal, i.e. at depth 0 of the solution tree. It approximately splits the problem in half. (c) The sub-goals at depth 1. Note there are two of them. (d) The final plan with the depth of each sub-goal shown. See supplementary material for animations.",
+        "captionBoundary": {
+          "x1": 54.93798828125,
+          "x2": 541.4439086914062,
+          "y1": 357.582763671875,
+          "y2": 395.8609924316406
+        },
+        "figType": "Figure",
+        "imageText": [
+          "(a)",
+          "(b)",
+          "(c)",
+          "(d)"
+        ],
+        "name": "2",
+        "page": 5,
+        "regionBoundary": {
+          "x1": 54.72,
+          "x2": 542.4,
+          "y1": 82.56,
+          "y2": 340.32
+        },
+        "renderDpi": 150,
+        "renderURL": "//Users/meghamariam/PROJECTS/PROJ1_Dataset/PROJ1_Crossmodal-Traversal/DATASET/pap-seg/fig/sp_0055/sp_0055-Figure2-1.png",
+        "id": "sp_0055-Figure2-1",
+        "seg_type": "fig"
+      },
+      {
+        "cls_id": 14,
+        "label": "algorithm",
+        "score": 0.9211390614509583,
+        "coordinate": [
+          223.64280700683594,
+          278.7278137207031,
+          1208.9935302734375,
+          1590.9205322265625
+        ],
+        "text": "Algorithm 1 Divide-and-Conquer MCTS procedures Global low-level value oracle v\" Global high-level value function v Global policy prior p Global search tree T 1: procedure TRAVERSE(OR node (s, s\")) 2: if (s, s\")  T then. 3: T ExPAND(T,(s,s\") 4: return max(v\"(s, s\"), v(s, s\" > bootstrap 5: end if 6: s'< SeLeCT(s, s\") > OR node 7: if s' =  or max-depth reached then 8: Gv\"(s, s\") 9: else > AND node 10: Gleft  TRAVERSE(S, S' 11: Gright  TRAVERSE(S', s 12: // BACKUP 13: G  Gleft  Gright 14: end if 15: G max(G, v\"(s, s\" > threshold the return. 16: // UPDATE 17: V(s,s\") (V(s,s\")N(s,s\")+G)/(N(s,s\")+1 18: N(s,s\") N(s,s\")+1 19: return G 20: end procedure",
+        "id": "sp_0055_page_4_1",
+        "seg_type": "algo"
+      }
+    ]
+  },
+  {
+    "start_time": 1095.0,
+    "end_time": 1190.0,
+    "id": "009",
+    "title": "Deep Learning",
+    "filename": "Videos/sp_0055.mp4",
+    "paper_filename": "Papers/sp_0055.pdf",
+    "type": "exp-vid",
+    "relevant_segments": [
+      {
+        "caption": "Figure 2. Grid-world maze examples for wall density d = 0.75 (top row) and d = 0.95 (bottom row). (a) The distribution over sub-goals induced by the policy prior p that guides the DC-MCTS planner. (b)-(d) Visualization of the solution tree found by DC-MCTS: (b) The first sub-goal, i.e. at depth 0 of the solution tree. It approximately splits the problem in half. (c) The sub-goals at depth 1. Note there are two of them. (d) The final plan with the depth of each sub-goal shown. See supplementary material for animations.",
+        "captionBoundary": {
+          "x1": 54.93798828125,
+          "x2": 541.4439086914062,
+          "y1": 357.582763671875,
+          "y2": 395.8609924316406
+        },
+        "figType": "Figure",
+        "imageText": [
+          "(a)",
+          "(b)",
+          "(c)",
+          "(d)"
+        ],
+        "name": "2",
+        "page": 5,
+        "regionBoundary": {
+          "x1": 54.72,
+          "x2": 542.4,
+          "y1": 82.56,
+          "y2": 340.32
+        },
+        "renderDpi": 150,
+        "renderURL": "//Users/meghamariam/PROJECTS/PROJ1_Dataset/PROJ1_Crossmodal-Traversal/DATASET/pap-seg/fig/sp_0055/sp_0055-Figure2-1.png",
+        "id": "sp_0055-Figure2-1",
+        "seg_type": "fig"
+      }
+    ]
+  },
+  {
+    "start_time": 1190.0,
+    "end_time": 1533,
+    "id": "010",
+    "title": "Training",
+    "filename": "Videos/sp_0055.mp4",
+    "paper_filename": "Papers/sp_0055.pdf",
+    "type": "exp-vid",
+    "relevant_segments": [
+      {
+        "caption": "Figure 2. Grid-world maze examples for wall density d = 0.75 (top row) and d = 0.95 (bottom row). (a) The distribution over sub-goals induced by the policy prior p that guides the DC-MCTS planner. (b)-(d) Visualization of the solution tree found by DC-MCTS: (b) The first sub-goal, i.e. at depth 0 of the solution tree. It approximately splits the problem in half. (c) The sub-goals at depth 1. Note there are two of them. (d) The final plan with the depth of each sub-goal shown. See supplementary material for animations.",
+        "captionBoundary": {
+          "x1": 54.93798828125,
+          "x2": 541.4439086914062,
+          "y1": 357.582763671875,
+          "y2": 395.8609924316406
+        },
+        "figType": "Figure",
+        "imageText": [
+          "(a)",
+          "(b)",
+          "(c)",
+          "(d)"
+        ],
+        "name": "2",
+        "page": 5,
+        "regionBoundary": {
+          "x1": 54.72,
+          "x2": 542.4,
+          "y1": 82.56,
+          "y2": 340.32
+        },
+        "renderDpi": 150,
+        "renderURL": "//Users/meghamariam/PROJECTS/PROJ1_Dataset/PROJ1_Crossmodal-Traversal/DATASET/pap-seg/fig/sp_0055/sp_0055-Figure2-1.png",
+        "id": "sp_0055-Figure2-1",
+        "seg_type": "fig"
+      },
+      {
+        "caption": "Figure 4. Navigation in a physical MuJoCo domain. The agent, situated in an \"ant\"-like body, should navigate to the green target.",
+        "captionBoundary": {
+          "x1": 54.9379997253418,
+          "x2": 290.5617980957031,
+          "y1": 223.01174926757812,
+          "y2": 239.37298583984375
+        },
+        "figType": "Figure",
+        "imageText": [],
+        "name": "4",
+        "page": 7,
+        "regionBoundary": {
+          "x1": 74.88,
+          "x2": 270.24,
+          "y1": 66.72,
+          "y2": 208.32
+        },
+        "renderDpi": 150,
+        "renderURL": "//Users/meghamariam/PROJECTS/PROJ1_Dataset/PROJ1_Crossmodal-Traversal/DATASET/pap-seg/fig/sp_0055/sp_0055-Figure4-1.png",
+        "id": "sp_0055-Figure4-1",
+        "seg_type": "fig"
+      },
+      {
+        "caption": "Figure 5. Performance of DC-MCTS and standard MCTS on continuous control maze navigation as a function of planning budget. Mazes have wall density d = 1.0. Shown is the outcome of the single best hyper-parameter run, confidence intervals are defined as one standard deviation of the corresponding multinomial computed over 100 mazes.",
+        "captionBoundary": {
+          "x1": 306.93798828125,
+          "x2": 543.0090942382812,
+          "y1": 204.50277709960938,
+          "y2": 264.698974609375
+        },
+        "figType": "Figure",
+        "imageText": [],
+        "name": "5",
+        "page": 7,
+        "regionBoundary": {
+          "x1": 326.88,
+          "x2": 522.24,
+          "y1": 66.72,
+          "y2": 189.12
+        },
+        "renderDpi": 150,
+        "renderURL": "//Users/meghamariam/PROJECTS/PROJ1_Dataset/PROJ1_Crossmodal-Traversal/DATASET/pap-seg/fig/sp_0055/sp_0055-Figure5-1.png",
+        "id": "sp_0055-Figure5-1",
+        "seg_type": "fig"
+      },
+      {
+        "para_id": "p60",
+        "section_heading": "5.2. Continuous Control Mazes",
+        "text": "We applied the MCTS and DC-MCTS planners to this problem to find symbolic plans consisting of sub-goals in {1, . . . , 21}2. The high-level heuristics p and v were trained for 65k episodes, exactly as described in Section 5.1, except using vπ m instead of vπ 0",
+        "seg_type": "par"
+      }
+    ]
+  }
+]

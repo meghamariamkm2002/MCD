@@ -1,0 +1,5 @@
+Thank you.
+
+However, we also noted a multi-class phenomenon when using only one noise level in transient generation.
+This is perhaps unsurprising as the Gibbs sampling may not mix well between all of the modes.
+When running the Gibbs sample for a longer period, we found that the FID score increases and observed less variety in the samples.

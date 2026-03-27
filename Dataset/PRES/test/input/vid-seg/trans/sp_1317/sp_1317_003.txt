@@ -1,0 +1,2 @@
+Nowadays, the de facto standard for privacy protection is differential privacy.
+It means for randomized mechanism, if you remove or add one specific individual's record into the training set, the output of that mechanism should not change too much.

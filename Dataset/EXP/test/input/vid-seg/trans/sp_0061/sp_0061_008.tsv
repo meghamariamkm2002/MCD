@@ -1,0 +1,14 @@
+start	end	text
+31	20673	architecture search in that, so not only can you predict good architectures, what you can do is you can actually predict which architectures are good, and then you can use that prediction to get new, to basically input this into your neural architecture search to inform it.
+21034	26680	So instead of the neural architecture search having to evaluate all of the candidates that it produces,
+26660	35748	It only has to now evaluate the very small subset of candidates that the synthetic petri dish training deems most worthy of being evaluated.
+36149	48100	In this case here, instead of evaluating all of the things here, it would limit itself to whatever the synthetic petri dish says are the highest performing ones.
+48580	55907	Because if the synthetic petri dish is any good, then it will give accurate predictions of how they're performing.
+55887	58269	And then that can go in multiple rounds.
+58309	67238	So the architecture search can come up with new things that it thinks are better through an evolutionary mutation algorithm.
+67478	77308	The Petri dish can evaluate them in the synthetic way and then suggest the 10 candidates to evaluate on the full test set.
+77748	82172	And that way you don't have to evaluate all the 1,000 candidates.
+83313	83674	All right?
+84054	84915	All right.
+84895	85400	Cool.
+85743	90045	They do this for this MNIST and they also do it for

@@ -1,0 +1,3 @@
+Here are the details of the block-wide similarity attack we named as BSA.
+The BSA aims to enlarging the dissimilarity between the perturbed features and the original features in both image encoder and multi-modeling encoder.
+Thus, the perturbed features can be transferred to downstream task model to cause the wrong prediction.

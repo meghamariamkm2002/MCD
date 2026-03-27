@@ -1,0 +1,66 @@
+start	end	text
+31	8723	And first they look simply, can we find attention heads that correlate with a given amino acid?
+9384	13990	So here you see the attention to the amino acid.
+14291	15993	This is proline, I believe.
+16013	19458	And this is phenylalanine.
+19758	21100	Is that the same in English?
+21200	23423	Yes, phenylalanine.
+23403	27270	phenylalanine and proline right here.
+29094	44483	So you can see that the plots here are, there's almost no attention pretty much throughout the network that pays special attention to the amino acid proline.
+44463	55101	except this head right here seems to have, if you look at the scale, over like a 70% of attention always goes to proline in this particular head.
+55122	61172	So this is layer one, head number 11, focuses
+62941	66066	78% of its attention on pro-lean.
+66607	83194	Now this is not that special if you think about it because in language models as well, in natural language models, you might want to think that you have some mechanism in your neural network that's especially specialized on like a very particular word in the language because
+83174	87538	that might just be an often occurring very particular word.
+88179	93684	For example, in English, maybe the is very important or the word what.
+94585	98709	These are like very indicative, very often occurring words.
+99150	111342	So it is reasonable to expect to find an attention head that pays a lot of attention to these things, especially here where our vocabulary size is 20 instead of like 30,000 in natural language.
+113279	122977	And the same goes for this phenylalanine, where you can see that in the layer in the last layer, and in the first layer, you have attention.
+123077	125262	And also in the proline you have in the last layer.
+125622	126845	So why does this make sense?
+127205	134038	Because what we would expect from like single tokens, these are not interactions yet, these are not biological functions yet.
+134018	142647	So, we know that in the lower layers of a neural network, we have these kind of basic features, basic feature extractors.
+142728	153179	And here, these basic feature extractors appear to be simply paying attention to one specific token in the vocabulary a lot.
+153339	159486	So, these heads sort of specialize for single amino acids.
+159466	161688	And the same in the last layer.
+161768	170656	So in the very last layer, the task of the very last layer is to prepare for the classification task.
+170676	175220	So if you remember the BERT model, you have layer, layer, layer, layer.
+175581	179865	And at the end, you'll have to predict which ones are masked down here.
+180365	183528	So at the end, you'll have to predict single amino acids again.
+183628	189253	So if there's a proline masked here, you'll have to predict the proline.
+189233	195560	So it also makes sense that the last layers would very much specialize to single tokens.
+196982	198884	So this does make sense.
+199765	205952	Now, our question is going to be, do we find the biological function?
+206032	207434	Where would you expect them?
+207474	218667	We would expect, let's say, the secondary structures, which are sort of one level higher than the primary structures, we would expect to find them maybe here.
+218647	224495	And then we would expect to find the tertiary structures maybe somewhere here, okay?
+224535	226665	Because these are most highest level.
+228552	230335	And then it goes back again.
+230575	237925	Or maybe it's like we find the tertiary structures rather here and here again.
+238346	242732	And then in the middle, we'll find the most high-level tertiary structures.
+242752	244335	Sorry, yeah, blue secondary.
+245056	248801	This drawing is getting too weird.
+249702	253528	But there could be multiple scenarios that could fit here.
+254149	257293	But until now, it sort of makes sense.
+257273	266648	So they do an additional investigation where, as I told you, sometimes you can substitute an amino acid and nothing really happens.
+267829	271816	And in fact, this probably happens in you right now.
+271876	280690	You probably might have some mutation that changed some amino acid and you don't even realize because it's fine.
+282072	283534	No notice.
+283514	291185	The biologists can build these matrices of how much you can substitute proteins with each other.
+291265	297994	So here you see this Blossom 62 substitution scores, which are very, I guess, very high.
+298395	307007	If you can substitute two protein, two amino acids with each other and the effect is negligible.
+308810	312175	and it's very low if it's the other way around.
+313217	318245	Now this is interesting so far, but you compare this to this matrix right here.
+319046	321029	This is the attention similarity.
+321069	333990	So what we'll do is for each two amino acids, we take those two attention things, those two attention matrices, and we'll calculate the correlation between the attention matrices.
+333970	344748	And our hypothesis is that the more correlated the attention patterns are between the two amino acids, the more likely we are to substitute them.
+345168	355185	Because as a direct result of our language model, our language model is reconstructing these things.
+356752	363945	Our language model is going to treat, if in natural language it's like a synonym, right?
+365167	371619	Our language model is going to treat synonyms very similar to each other because they're synonyms, they can be exchanged.
+371900	380295	So a good language model should learn that they are almost the same and therefore the attention pattern is going to be almost the same.
+380275	391993	So a high correlation we hypothesize means that the function of the amino acid is similar and therefore we can substitute it easily.
+392694	400967	So this here is the matrix of the correlations between each two attention patterns of these amino acid.
+400947	405556	And if you compare the two right here, they look extremely similar.
+407840	418441	Just have a look for a little while, and you'll see that the patterns, they do not match perfectly, but they are very, very similar.
+418761	422589	The dark spots are in the same places, the light spots are in the same places.
+423210	430043	So this already makes a good case that the language model here has learned something about

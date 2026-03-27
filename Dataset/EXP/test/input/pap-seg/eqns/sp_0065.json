@@ -1,0 +1,116 @@
+{
+  "sp_0065_page_0002": {
+    "bboxes": [
+      {
+        "box": [
+          410.95343017578125,
+          943.84423828125,
+          811.7290649414062,
+          974.4625854492188
+        ],
+        "text": [
+          "\\mathcal { L } _ { G } = \\mathcal { L } _ { G , \\mathrm { a d v } } + \\lambda _ { \\mathrm { p r e d } } \\cdot \\mathcal { L } _ { \\mathrm { p r e d } } ^ { \\prime \\prime } + \\lambda _ { \\mathrm { l e n g t h } } \\cdot \\mathcal { L } _ { \\mathrm { l e n g t h } } ,"
+        ],
+        "id": "sp_0065_page_0002-1",
+        "page": "sp_0065_page_0002",
+        "seg_type": "eq"
+      }
+    ]
+  },
+  "sp_0065_page_0003": {
+    "bboxes": [
+      {
+        "box": [
+          457.6719970703125,
+          212.34059143066406,
+          765.611328125,
+          276.8305969238281
+        ],
+        "text": [
+          "w _ { t } ^ { n } = \\frac { \\exp { \\left( - \\sigma ^ { - 2 } ( t - c _ { n } ) ^ { 2 } \\right) } } { \\sum _ { m = 1 } ^ { N } \\exp { \\left( - \\sigma ^ { - 2 } ( t - c _ { m } ) ^ { 2 } \\right) } } ."
+        ],
+        "id": "sp_0065_page_0003-1",
+        "page": "sp_0065_page_0003",
+        "seg_type": "eq"
+      }
+    ]
+  },
+  "sp_0065_page_0004": {
+    "bboxes": [
+      {
+        "box": [
+          418.4602355957031,
+          632.43408203125,
+          806.057861328125,
+          668.25244140625
+        ],
+        "text": [
+          "\\begin{array} { r } { \\mathcal { L } _ { \\mathrm { p r e d } } = \\frac { 1 } { F } \\sum _ { t = 1 } ^ { T } \\sum _ { f = 1 } ^ { F } | S _ { \\mathrm { g e n } } [ t , f ] - S _ { \\mathrm { g t } } [ t , f ] | . } \\end{array}"
+        ],
+        "id": "sp_0065_page_0004-1",
+        "page": "sp_0065_page_0004",
+        "seg_type": "eq"
+      }
+    ]
+  },
+  "sp_0065_page_0005": {
+    "bboxes": [
+      {
+        "box": [
+          483.2392578125,
+          1068.9608154296875,
+          741.3425903320312,
+          1115.6673583984375
+        ],
+        "text": [
+          "\\begin{array} { r } { \\mathcal { L } _ { \\mathrm { l e n g t h } } = \\frac { 1 } { 2 } \\left( L - \\sum _ { n = 1 } ^ { N } l _ { n } \\right) ^ { 2 } . } \\end{array}"
+        ],
+        "id": "sp_0065_page_0005-1",
+        "page": "sp_0065_page_0005",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          344.6459655761719,
+          239.50343322753906,
+          878.8712158203125,
+          281.5101623535156
+        ],
+        "text": [
+          "\\begin{array} { r } { c _ { p } = \\sum _ { k = 1 } ^ { K _ { p } } \\left( \\boldsymbol { w } \\cdot \\boldsymbol { \\delta } _ { k } + \\frac { 1 } { F } \\sum _ { f = 1 } ^ { F } | \\boldsymbol { S } _ { \\mathrm { g e n } } [ p _ { \\mathrm { g e n } , k } , f ] - \\boldsymbol { S } _ { \\mathrm { g t } } [ p _ { \\mathrm { g t } , k } , f ] | \\right) . } \\end{array}"
+        ],
+        "id": "sp_0065_page_0005-2",
+        "page": "sp_0065_page_0005",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          543.8831176757812,
+          311.44561767578125,
+          679.03466796875,
+          350.38653564453125
+        ],
+        "text": [
+          "\\mathcal { L } _ { \\mathrm { p r e d } } ^ { \\prime } = \\operatorname* { m i n } _ { p \\in \\mathcal { P } } c _ { p } ,"
+        ],
+        "id": "sp_0065_page_0005-3",
+        "page": "sp_0065_page_0005",
+        "seg_type": "eq"
+      },
+      {
+        "box": [
+          334.04986572265625,
+          520.8269653320312,
+          632.0511474609375,
+          553.0149536132812
+        ],
+        "text": [
+          "\\begin{array} { r } { \\mathcal { L } _ { \\mathrm { p r e d } } ^ { \\prime \\prime } = - \\tau \\cdot \\log \\sum _ { p \\in \\mathcal { P } } \\exp \\left( - \\frac { c _ { p } } { \\tau } \\right) , } \\end{array}"
+        ],
+        "id": "sp_0065_page_0005-4",
+        "page": "sp_0065_page_0005",
+        "seg_type": "eq"
+      }
+    ]
+  }
+}
