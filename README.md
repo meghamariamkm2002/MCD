@@ -5,8 +5,7 @@
 <p align="left">
   <a href="#-quick-start"><b>Quick Start</b></a> |
   <a href="https://meghamariamkm2002.github.io/mcd_2026/"><b>ProjectPage</b></a> |
-  <a href=""><b>arXiv</b></a> |
-  <a href=""><b>Citation</b></a> <br>
+  <a href="https://arxiv.org/abs/2605.05831"><b>arXiv</b></a> |
 </p>
 
 ## 🎩Abstract
